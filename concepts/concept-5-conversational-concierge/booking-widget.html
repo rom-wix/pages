@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Concept 5 — Conversational Booking Concierge</title>
+  <style>
+    * { font-family: 'Comic Sans MS', cursive; transition: none !important; animation: none !important; box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-size: 14px; color: #000; background: #f9f8f6; min-height: 100vh; }
+    a { color: #374151; text-decoration: underline; }
+    button, input, select, textarea { border-radius: 0 !important; font-family: 'Comic Sans MS', cursive; font-size: 14px; }
+
+    .site-header { display: flex; align-items: center; justify-content: space-between; padding: 0 48px; height: 60px; border-bottom: 1px solid #e5e7eb; background: #f9f8f6; }
+    .site-logo { font-size: 16px; font-weight: bold; letter-spacing: 3px; }
+    .site-nav { display: flex; gap: 32px; }
+    .site-nav a { text-decoration: none; font-size: 12px; color: #333; letter-spacing: 1px; text-transform: uppercase; }
+    .site-header-right { display: flex; align-items: center; gap: 24px; }
+    .book-now-btn { border: 1px solid #000; background: transparent; padding: 8px 20px; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; }
+    .login-link { font-size: 12px; color: #333; text-decoration: none; display: flex; align-items: center; gap: 6px; }
+
+    .page-content { max-width: 820px; margin: 0 auto; padding: 32px 24px 0; }
+    .back-link { font-size: 13px; color: #555; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; margin-bottom: 16px; }
+
+    .concept-banner { background: #fff; border: 1px solid #000; padding: 10px 14px; font-size: 12px; margin-bottom: 16px; }
+    .concept-banner .tag { background: #000; color: #fff; padding: 2px 8px; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; margin-right: 8px; }
+    .experimental-tag { background: #fff; color: #000; border: 1px solid #000; padding: 2px 8px; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; margin-left: 4px; }
+
+    /* Chat container */
+    .chat-wrap { display: flex; gap: 24px; align-items: flex-start; }
+    .chat-main {
+      flex: 1; min-width: 0; background: #fff; border: 1px solid #000;
+      display: flex; flex-direction: column; height: calc(100vh - 180px); min-height: 600px;
+    }
+    .chat-header {
+      border-bottom: 1px solid #000; padding: 14px 16px;
+      display: flex; gap: 10px; align-items: center; background: #f4f3f0;
+    }
+    .concierge-avatar {
+      width: 36px; height: 36px; border: 1px solid #000; background: #000; color: #fff;
+      display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px;
+    }
+    .chat-header-name { font-weight: bold; font-size: 14px; }
+    .chat-header-sub { font-size: 11px; color: #666; }
+
+    .chat-messages {
+      flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px;
+      background: #fafaf8;
+    }
+
+    .msg { display: flex; gap: 8px; max-width: 80%; }
+    .msg.user { align-self: flex-end; flex-direction: row-reverse; }
+    .msg-avatar {
+      width: 28px; height: 28px; border: 1px solid #000;
+      display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 11px;
+      flex-shrink: 0;
+    }
+    .msg.bot .msg-avatar { background: #000; color: #fff; }
+    .msg.user .msg-avatar { background: #fff; color: #000; }
+
+    .bubble { padding: 10px 14px; border: 1px solid #000; background: #fff; font-size: 13px; line-height: 1.5; }
+    .msg.bot .bubble { background: #fff; }
+    .msg.user .bubble { background: #000; color: #fff; }
+
+    .chip-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+    .chip {
+      border: 1px solid #000; background: #fff; color: #000;
+      padding: 6px 12px; font-size: 11px; cursor: pointer; font-family: 'Comic Sans MS', cursive;
+    }
+    .chip:hover { background: #000; color: #fff; }
+
+    /* In-bubble booking preview */
+    .preview-card {
+      margin-top: 8px; padding: 10px; border: 1px dashed #000; background: #f9f8f6; font-size: 12px;
+    }
+    .preview-row { display: flex; justify-content: space-between; padding: 3px 0; }
+    .preview-row.total { font-weight: bold; border-top: 1px solid #000; margin-top: 6px; padding-top: 6px; }
+
+    /* Smart suggestion */
+    .suggestion-card {
+      margin-top: 8px; border: 1px solid #000; background: #fff; padding: 12px;
+    }
+    .suggestion-heading {
+      font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #666; margin-bottom: 6px;
+    }
+    .attendee-row {
+      display: flex; gap: 10px; align-items: center; padding: 8px 0; border-bottom: 1px dashed #d1d5db;
+    }
+    .attendee-row:last-child { border-bottom: none; }
+    .ar-avatar { width: 28px; height: 28px; border: 1px solid #000; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 11px; }
+    .ar-name { font-weight: bold; font-size: 12px; }
+    .ar-tag { font-size: 10px; color: #666; }
+    .ar-check { margin-left: auto; width: 14px; height: 14px; accent-color: #000; }
+
+    /* Input area */
+    .chat-input-wrap { border-top: 1px solid #000; padding: 14px 16px; background: #fff; }
+    .chat-input-row { display: flex; gap: 8px; }
+    .chat-input {
+      flex: 1; padding: 10px 12px; border: 1px solid #d1d5db; background: #f9f8f6;
+      font-family: 'Comic Sans MS', cursive; font-size: 13px;
+    }
+    .chat-input:focus { outline: 2px solid #000; border-color: #000; background: #fff; }
+    .btn-send { padding: 10px 18px; border: none; background: #000; color: #fff; font-family: 'Comic Sans MS', cursive; font-size: 13px; cursor: pointer; }
+
+    .quick-prompts {
+      padding: 10px 16px; background: #f4f3f0; border-top: 1px solid #e5e7eb;
+      display: flex; gap: 6px; flex-wrap: wrap;
+      font-size: 11px;
+    }
+    .quick-prompts-label { color: #666; margin-right: 4px; align-self: center; }
+    .quick-prompt {
+      border: 1px solid #d1d5db; background: #fff; padding: 4px 10px; font-size: 11px;
+      cursor: pointer; font-family: 'Comic Sans MS', cursive;
+    }
+    .quick-prompt:hover { border-color: #000; }
+
+    /* Side panel */
+    .side-panel { width: 240px; flex-shrink: 0; }
+    .panel-card { border: 1px solid #d1d5db; background: #fff; padding: 14px; margin-bottom: 12px; }
+    .panel-title { font-size: 12px; font-weight: bold; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; color: #666; }
+    .panel-item { font-size: 12px; margin-bottom: 4px; display: flex; justify-content: space-between; }
+    .panel-total { font-weight: bold; font-size: 14px; border-top: 1px solid #000; padding-top: 8px; margin-top: 8px; }
+    .classic-link-card { padding: 10px; border: 1px dashed #000; background: #fff; font-size: 11px; text-align: center; }
+    .classic-link-card a { font-size: 12px; display: block; margin-top: 4px; }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="site-nav">
+    <a href="#">Treatments</a>
+    <a href="#">Events</a>
+    <a href="#">Membership</a>
+    <a href="#">Contact</a>
+  </nav>
+  <div class="site-logo">PARKYSPA</div>
+  <div class="site-header-right">
+    <button class="book-now-btn">Book now →</button>
+    <a href="#" class="login-link">👤 Log In</a>
+  </div>
+</header>
+
+<div class="page-content">
+  <a href="#" class="back-link">‹ Back</a>
+
+  <div class="concept-banner">
+    <span class="tag">Concept 5</span>
+    <span class="experimental-tag">Experimental</span>
+    <strong>Conversational Booking Concierge</strong> — AI chat understands natural language like "book a massage for me and my daughter this Saturday morning" and handles identity, count, scheduling, and per-person details through dialogue.
+  </div>
+
+  <div class="chat-wrap">
+
+    <div class="chat-main">
+      <div class="chat-header">
+        <div class="concierge-avatar">PS</div>
+        <div>
+          <div class="chat-header-name">ParkySpa Concierge</div>
+          <div class="chat-header-sub">I help you book — just tell me what you need.</div>
+        </div>
+      </div>
+
+      <div class="chat-messages" id="msgList">
+
+        <div class="msg bot">
+          <div class="msg-avatar">PS</div>
+          <div>
+            <div class="bubble">Hi Carlos! What would you like to book today?</div>
+            <div class="chip-row">
+              <div class="chip" onclick="pickPrompt('I\'d like a massage for myself')">A massage for myself</div>
+              <div class="chip" onclick="pickPrompt('Book the group session for me and my family Saturday')">Group session for my family Saturday</div>
+              <div class="chip" onclick="pickPrompt('Facial for my mom next week')">Facial for my mom next week</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="msg user">
+          <div class="msg-avatar">CL</div>
+          <div class="bubble">Book the group session for me, Maya and Leo this Saturday morning</div>
+        </div>
+
+        <div class="msg bot">
+          <div class="msg-avatar">PS</div>
+          <div>
+            <div class="bubble">
+              Got it — <strong>Weekly Group Sessions</strong> on <strong>Saturday, April 26</strong> at <strong>9:30 am</strong>. Let me pull up the attendees.
+              <div class="suggestion-card">
+                <div class="suggestion-heading">Suggested attendees</div>
+                <div class="attendee-row">
+                  <div class="ar-avatar">CL</div>
+                  <div>
+                    <div class="ar-name">Carlos Lampel</div>
+                    <div class="ar-tag">You · Payer</div>
+                  </div>
+                  <input type="checkbox" checked class="ar-check">
+                </div>
+                <div class="attendee-row">
+                  <div class="ar-avatar">M</div>
+                  <div>
+                    <div class="ar-name">Maya Lampel</div>
+                    <div class="ar-tag">Daughter · age 8 · allergies on file</div>
+                  </div>
+                  <input type="checkbox" checked class="ar-check">
+                </div>
+                <div class="attendee-row">
+                  <div class="ar-avatar">L</div>
+                  <div>
+                    <div class="ar-name">Leo Lampel</div>
+                    <div class="ar-tag">Son · age 11</div>
+                  </div>
+                  <input type="checkbox" checked class="ar-check">
+                </div>
+              </div>
+              <div class="preview-card">
+                <div class="preview-row"><span>3 × $80</span><span>$240</span></div>
+                <div class="preview-row"><span>Family discount (10%)</span><span>−$24</span></div>
+                <div class="preview-row total"><span>Total</span><span>$216</span></div>
+              </div>
+            </div>
+            <div class="chip-row">
+              <div class="chip" onclick="pickPrompt('Looks good, book it')">◆ Looks good, book it</div>
+              <div class="chip" onclick="pickPrompt('Add my wife Dana too')">+ Add Dana</div>
+              <div class="chip" onclick="pickPrompt('Different time please')">Change time</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="msg user">
+          <div class="msg-avatar">CL</div>
+          <div class="bubble">Actually I can't make it — just Maya and Leo</div>
+        </div>
+
+        <div class="msg bot">
+          <div class="msg-avatar">PS</div>
+          <div>
+            <div class="bubble">
+              No problem. Booking <strong>Maya and Leo only</strong>, you'll still be the payer and get the receipt. Maya and Leo's confirmations will be sent to their emails on file.
+              <div class="preview-card">
+                <div class="preview-row"><span>Attendees</span><span>Maya, Leo</span></div>
+                <div class="preview-row"><span>Payer</span><span>You (Carlos)</span></div>
+                <div class="preview-row"><span>Confirmations to</span><span>maya.l@…, leo.l@…</span></div>
+                <div class="preview-row total"><span>Total</span><span>$160</span></div>
+              </div>
+              Before I book — Leo doesn't have allergies on file. Anything I should tell the therapist?
+            </div>
+            <div class="chip-row">
+              <div class="chip" onclick="pickPrompt('No allergies')">No allergies</div>
+              <div class="chip" onclick="pickPrompt('Peanuts')">Peanut allergy</div>
+              <div class="chip" onclick="pickPrompt('Let me type it')">Let me type it</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="quick-prompts">
+        <span class="quick-prompts-label">Try:</span>
+        <button class="quick-prompt" onclick="pickPrompt('Book for just my mom next Tuesday')">Book for just my mom next Tuesday</button>
+        <button class="quick-prompt" onclick="pickPrompt('Something relaxing for 4 people on a Sunday')">Something relaxing for 4 on Sunday</button>
+        <button class="quick-prompt" onclick="pickPrompt('Same as last time but add a friend')">Same as last time + a friend</button>
+      </div>
+
+      <div class="chat-input-wrap">
+        <div class="chat-input-row">
+          <input class="chat-input" id="userInput" placeholder="Tell me what you'd like to book..." />
+          <button class="btn-send" onclick="sendMessage()">Send →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Side panel -->
+    <div class="side-panel">
+
+      <div class="panel-card">
+        <div class="panel-title">Draft Booking</div>
+        <div class="panel-item"><span>Service</span><strong>Group Session</strong></div>
+        <div class="panel-item"><span>When</span><strong>Sat Apr 26, 9:30</strong></div>
+        <div class="panel-item"><span>Attendees</span><strong>2</strong></div>
+        <div class="panel-item"><span>Payer</span><strong>Carlos</strong></div>
+        <div class="panel-item panel-total"><span>Total</span><span>$160</span></div>
+      </div>
+
+      <div class="panel-card">
+        <div class="panel-title">How I help</div>
+        <div style="font-size: 11px; color: #555; line-height: 1.6;">
+          • I remember your saved people<br>
+          • I suggest best times based on history<br>
+          • I flag missing intake info<br>
+          • I split payments and confirmations automatically
+        </div>
+      </div>
+
+      <div class="classic-link-card">
+        Prefer the classic form?<br>
+        <a href="#">Switch to form view →</a>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function pickPrompt(text) {
+    document.getElementById('userInput').value = text;
+    document.getElementById('userInput').focus();
+  }
+  function sendMessage() {
+    const input = document.getElementById('userInput');
+    const text = input.value.trim();
+    if (!text) return;
+    const list = document.getElementById('msgList');
+    const user = document.createElement('div');
+    user.className = 'msg user';
+    user.innerHTML = `<div class="msg-avatar">CL</div><div class="bubble">${text}</div>`;
+    list.appendChild(user);
+    const bot = document.createElement('div');
+    bot.className = 'msg bot';
+    bot.innerHTML = `<div class="msg-avatar">PS</div><div><div class="bubble">Got it — updating the draft. This is a demo reply; a real concierge would parse your intent and update the booking.</div></div>`;
+    list.appendChild(bot);
+    list.scrollTop = list.scrollHeight;
+    input.value = '';
+  }
+  document.getElementById('userInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') sendMessage();
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking Calendar — Wix Bookings</title>
+  <style>
+    * { font-family: 'Comic Sans MS', cursive; transition: none !important; animation: none !important; box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-size: 14px; color: #000; background: #f3f4f6; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+    button { border-radius: 0 !important; font-family: 'Comic Sans MS', cursive; }
+
+    /* Top header */
+    .page-header {
+      background: #fff; border-bottom: 1px solid #e5e7eb; flex-shrink: 0;
+      padding: 0 24px; height: 52px; display: flex; align-items: center; gap: 16px;
+    }
+    .page-title { font-size: 16px; font-weight: bold; margin-right: 8px; }
+
+    .header-spacer { flex: 1; }
+
+    /* Nav group */
+    .nav-group { display: flex; align-items: center; gap: 6px; }
+    .nav-btn { padding: 5px 10px; border: 1px solid #d1d5db; background: #fff; cursor: pointer; font-size: 12px; }
+    .nav-btn:hover { background: #f3f4f6; }
+    .date-range-btn { padding: 5px 14px; border: 1px solid #d1d5db; background: #fff; cursor: pointer; font-size: 12px; font-weight: bold; }
+
+    /* View toggle */
+    .view-toggle { display: flex; }
+    .view-btn { padding: 5px 12px; border: 1px solid #d1d5db; background: #fff; cursor: pointer; font-size: 12px; border-right: none; }
+    .view-btn:last-child { border-right: 1px solid #d1d5db; }
+    .view-btn.active { background: #374151; color: #fff; border-color: #374151; }
+    .view-btn:hover:not(.active) { background: #f3f4f6; }
+
+    /* Filters */
+    .filter-group { display: flex; gap: 8px; }
+    .filter-select {
+      padding: 5px 28px 5px 10px; border: 1px solid #d1d5db; background: #fff;
+      font-family: 'Comic Sans MS', cursive; font-size: 12px; appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath fill='%23555' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 8px center; cursor: pointer;
+    }
+
+    /* CTAs */
+    .add-sessions-btn { padding: 6px 14px; background: #374151; color: #fff; border: none; cursor: pointer; font-size: 12px; }
+    .add-sessions-btn:hover { background: #1f2937; }
+    .more-actions-btn { padding: 6px 10px; border: 1px solid #d1d5db; background: #fff; cursor: pointer; font-size: 12px; }
+    .more-actions-btn:hover { background: #f3f4f6; }
+
+    /* Calendar area */
+    .calendar-wrapper { flex: 1; display: flex; overflow: hidden; background: #fff; }
+
+    /* Time column */
+    .time-col { width: 60px; flex-shrink: 0; padding-top: 44px; border-right: 1px solid #e5e7eb; background: #fff; }
+    .time-slot { height: 64px; padding-right: 8px; text-align: right; font-size: 11px; color: #9ca3af; display: flex; align-items: flex-start; padding-top: 3px; justify-content: flex-end; }
+
+    /* Days area */
+    .days-area { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
+    .days-header { display: grid; grid-template-columns: repeat(7, 1fr); height: 44px; border-bottom: 1px solid #e5e7eb; flex-shrink: 0; }
+    .day-header-cell { text-align: center; border-right: 1px solid #f3f4f6; padding: 4px 0; }
+    .day-name-label { font-size: 10px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; }
+    .day-num-label { font-size: 20px; font-weight: bold; color: #374151; line-height: 1; }
+    .day-header-cell.today .day-num-label { background: #1f2937; color: #fff; width: 30px; height: 30px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 16px; }
+
+    /* Day columns */
+    .days-body { flex: 1; display: grid; grid-template-columns: repeat(7, 1fr); overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(0,0,0,0.1) transparent; }
+    .day-col { border-right: 1px solid #f3f4f6; position: relative; }
+    .day-col:last-child { border-right: none; }
+    .hour-line { height: 64px; border-bottom: 1px solid #f3f4f6; position: relative; }
+
+    /* Events */
+    .event {
+      position: absolute; left: 3px; right: 3px; padding: 3px 6px;
+      background: #d1d5db; border-left: 3px solid #6b7280; font-size: 11px;
+      overflow: hidden; cursor: pointer; z-index: 2;
+    }
+    .event:hover { background: #c4c9d3; }
+    .event-name { font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
+    .event-time { color: #555; font-size: 10px; white-space: nowrap; overflow: hidden; }
+    .event-staff { color: #777; font-size: 10px; white-space: nowrap; overflow: hidden; }
+
+    /* Slot modal on click */
+    .event-popover {
+      display: none; position: fixed; background: #fff; border: 1px solid #d1d5db;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12); padding: 12px 16px; width: 220px; z-index: 100;
+    }
+    .event-popover.visible { display: block; }
+    .popover-title { font-size: 13px; font-weight: bold; margin-bottom: 4px; }
+    .popover-time { font-size: 12px; color: #555; margin-bottom: 8px; }
+    .popover-actions { display: flex; gap: 6px; }
+    .popover-btn { flex: 1; padding: 6px; border: 1px solid #d1d5db; background: #fff; cursor: pointer; font-size: 11px; }
+    .popover-btn.primary { background: #374151; color: #fff; border-color: #374151; }
+    .popover-close { float: right; background: none; border: none; cursor: pointer; font-size: 14px; color: #9ca3af; }
+  </style>
+</head>
+<body>
+
+<!-- Page header -->
+<div class="page-header">
+  <div class="page-title">Booking Calendar</div>
+
+  <div class="nav-group">
+    <button class="nav-btn">‹</button>
+    <button class="date-range-btn">Apr 27 – May 3, 2026</button>
+    <button class="nav-btn">›</button>
+  </div>
+
+  <div class="view-toggle">
+    <button class="view-btn">Daily</button>
+    <button class="view-btn active">Weekly</button>
+    <button class="view-btn">Monthly</button>
+  </div>
+
+  <div class="filter-group">
+    <select class="filter-select">
+      <option>All Services</option>
+      <option>Weekly Group Sessions</option>
+      <option>Deep Tissue Massage</option>
+      <option>Facial Treatment</option>
+    </select>
+    <select class="filter-select">
+      <option>All Staff</option>
+      <option>Orly Meyers</option>
+      <option>David Cohen</option>
+      <option>Sarah Klein</option>
+    </select>
+    <select class="filter-select">
+      <option>All Locations</option>
+      <option>Spa Main Studio</option>
+    </select>
+  </div>
+
+  <div class="header-spacer"></div>
+
+  <button class="add-sessions-btn">+ Add Sessions</button>
+  <button class="more-actions-btn">More actions ▾</button>
+</div>
+
+<!-- Calendar body -->
+<div class="calendar-wrapper">
+
+  <!-- Time labels -->
+  <div class="time-col">
+    <div class="time-slot">7 AM</div>
+    <div class="time-slot">8 AM</div>
+    <div class="time-slot">9 AM</div>
+    <div class="time-slot">10 AM</div>
+    <div class="time-slot">11 AM</div>
+    <div class="time-slot">12 PM</div>
+    <div class="time-slot">1 PM</div>
+    <div class="time-slot">2 PM</div>
+    <div class="time-slot">3 PM</div>
+    <div class="time-slot">4 PM</div>
+    <div class="time-slot">5 PM</div>
+    <div class="time-slot">6 PM</div>
+  </div>
+
+  <!-- Days grid -->
+  <div class="days-area">
+    <div class="days-header">
+      <div class="day-header-cell"><div class="day-name-label">Sun</div><div class="day-num-label">27</div></div>
+      <div class="day-header-cell"><div class="day-name-label">Mon</div><div class="day-num-label">28</div></div>
+      <div class="day-header-cell today"><div class="day-name-label">Tue</div><div class="day-num-label">29</div></div>
+      <div class="day-header-cell"><div class="day-name-label">Wed</div><div class="day-num-label">30</div></div>
+      <div class="day-header-cell"><div class="day-name-label">Thu</div><div class="day-num-label">1</div></div>
+      <div class="day-header-cell"><div class="day-name-label">Fri</div><div class="day-num-label">2</div></div>
+      <div class="day-header-cell"><div class="day-name-label">Sat</div><div class="day-num-label">3</div></div>
+    </div>
+
+    <div class="days-body" id="daysBody">
+      <!-- Sun 27 -->
+      <div class="day-col">
+        <div class="hour-line"></div><div class="hour-line"></div>
+        <div class="hour-line">
+          <div class="event" style="top:20px; height:52px" onclick="showPopover(event,'Aromatherapy Session','9:20–10:20 AM')">
+            <span class="event-name">Aromatherapy Session</span>
+            <span class="event-time">9:20 AM</span>
+            <span class="event-staff">Sarah K.</span>
+          </div>
+        </div>
+        <div class="hour-line"></div>
+        <div class="hour-line">
+          <div class="event" style="top:10px; height:55px" onclick="showPopover(event,'Scalp Treatment','11:10 AM–12:10 PM')">
+            <span class="event-name">Scalp Treatment</span>
+            <span class="event-time">11:10 AM</span>
+            <span class="event-staff">Orly M.</span>
+          </div>
+        </div>
+        <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+      </div>
+
+      <!-- Mon 28 -->
+      <div class="day-col">
+        <div class="hour-line"></div>
+        <div class="hour-line">
+          <div class="event" style="top:20px; height:55px" onclick="showPopover(event,'Deep Tissue Massage','8:20–9:20 AM')">
+            <span class="event-name">Deep Tissue Massage</span>
+            <span class="event-time">8:20 AM</span>
+            <span class="event-staff">David C.</span>
+          </div>
+        </div>
+        <div class="hour-line"></div>
+        <div class="hour-line">
+          <div class="event" style="top:5px; height:55px" onclick="showPopover(event,'Couples Massage','10:05–11:05 AM')">
+            <span class="event-name">Couples Massage</span>
+            <span class="event-time">10:05 AM</span>
+            <span class="event-staff">Orly M.</span>
+          </div>
+        </div>
+        <div class="hour-line"></div>
+        <div class="hour-line">
+          <div class="event" style="top:0; height:52px" onclick="showPopover(event,'Facial Treatment','12:00–1:00 PM')">
+            <span class="event-name">Facial Treatment</span>
+            <span class="event-time">12:00 PM</span>
+            <span class="event-staff">Sarah K.</span>
+          </div>
+        </div>
+        <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+      </div>
+
+      <!-- Tue 29 (today) — group booking: 2 entries at same slot -->
+      <div class="day-col">
+        <div class="hour-line"></div><div class="hour-line"></div>
+        <div class="hour-line">
+          <div class="event" style="top:30px; height:60px; left:3px; right:50%;" onclick="showPopover(event,'Weekly Group Sessions — Carlos Lampel','9:30–10:30 AM')">
+            <span class="event-name">Group Sessions</span>
+            <span class="event-time">Carlos L.</span>
+            <span class="event-staff">9:30 AM</span>
+          </div>
+          <div class="event" style="top:30px; height:60px; left:50%; right:3px; background:#e5e7eb; border-left-color:#9ca3af;" onclick="showPopover(event,'Weekly Group Sessions — Ana Silva','9:30–10:30 AM')">
+            <span class="event-name">Group Sessions</span>
+            <span class="event-time">Ana S.</span>
+            <span class="event-staff">9:30 AM</span>
+          </div>
+        </div>
+        <div class="hour-line"></div>
+        <div class="hour-line">
+          <div class="event" style="top:10px; height:52px" onclick="showPopover(event,'Facial Treatment','11:10 AM–12:10 PM')">
+            <span class="event-name">Facial Treatment</span>
+            <span class="event-time">11:10 AM</span>
+            <span class="event-staff">David C.</span>
+          </div>
+        </div>
+        <div class="hour-line"></div>
+        <div class="hour-line">
+          <div class="event" style="top:0; height:56px" onclick="showPopover(event,'Hot Stone Massage','1:00–2:00 PM')">
+            <span class="event-name">Hot Stone Massage</span>
+            <span class="event-time">1:00 PM</span>
+            <span class="event-staff">Orly M.</span>
+          </div>
+        </div>
+        <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+      </div>
+
+      <!-- Wed 30 -->
+      <div class="day-col">
+        <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+        <div class="hour-line">
+          <div class="event" style="top:5px; height:55px" onclick="showPopover(event,'Swedish Massage','10:05 AM')">
+            <span class="event-name">Swedish Massage</span>
+            <span class="event-time">10:05 AM</span>
+            <span class="event-staff">Sarah K.</span>
+          </div>
+        </div>
+        <div class="hour-line"></div>
+        <div class="hour-line">
+          <div class="event" style="top:20px; height:52px" onclick="showPopover(event,'Couples Massage','11:20 AM–12:20 PM')">
+            <span class="event-name">Couples Massage</span>
+            <span class="event-time">11:20 AM</span>
+            <span class="event-staff">Orly M.</span>
+          </div>
+        </div>
+        <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+      </div>
+
+      <!-- Thu 1 -->
+      <div class="day-col">
+        <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+        <div class="hour-line">
+          <div class="event" style="top:15px; height:50px" onclick="showPopover(event,'Aromatherapy Session','11:15 AM')">
+            <span class="event-name">Aromatherapy Session</span>
+            <span class="event-time">11:15 AM</span>
+            <span class="event-staff">David C.</span>
+          </div>
+        </div>
+        <div class="hour-line"></div>
+        <div class="hour-line">
+          <div class="event" style="top:30px; height:55px" onclick="showPopover(event,'Deep Tissue Massage','1:30 PM')">
+            <span class="event-name">Deep Tissue Massage</span>
+            <span class="event-time">1:30 PM</span>
+            <span class="event-staff">Orly M.</span>
+          </div>
+        </div>
+        <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+      </div>
+
+      <!-- Fri 2 -->
+      <div class="day-col">
+        <div class="hour-line"></div>
+        <div class="hour-line">
+          <div class="event" style="top:30px; height:55px" onclick="showPopover(event,'Facial Treatment','8:30 AM')">
+            <span class="event-name">Facial Treatment</span>
+            <span class="event-time">8:30 AM</span>
+            <span class="event-staff">Sarah K.</span>
+          </div>
+        </div>
+        <div class="hour-line">
+          <div class="event" style="top:10px; height:55px" onclick="showPopover(event,'Hot Stone Massage','9:10 AM')">
+            <span class="event-name">Hot Stone Massage</span>
+            <span class="event-time">9:10 AM</span>
+            <span class="event-staff">Orly M.</span>
+          </div>
+        </div>
+        <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+        <div class="hour-line">
+          <div class="event" style="top:0; height:52px" onclick="showPopover(event,'Swedish Massage','12:00 PM')">
+            <span class="event-name">Swedish Massage</span>
+            <span class="event-time">12:00 PM</span>
+            <span class="event-staff">David C.</span>
+          </div>
+        </div>
+        <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+      </div>
+
+      <!-- Sat 3 -->
+      <div class="day-col">
+        <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+        <div class="hour-line">
+          <div class="event" style="top:0; height:50px" onclick="showPopover(event,'Scalp Treatment','11:00 AM')">
+            <span class="event-name">Scalp Treatment</span>
+            <span class="event-time">11:00 AM</span>
+            <span class="event-staff">Sarah K.</span>
+          </div>
+        </div>
+        <div class="hour-line"></div>
+        <div class="hour-line">
+          <div class="event" style="top:20px; height:55px" onclick="showPopover(event,'Aromatherapy Session','1:20 PM')">
+            <span class="event-name">Aromatherapy Session</span>
+            <span class="event-time">1:20 PM</span>
+            <span class="event-staff">Orly M.</span>
+          </div>
+        </div>
+        <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Popover -->
+<div class="event-popover" id="eventPopover">
+  <button class="popover-close" onclick="closePopover()">✕</button>
+  <div class="popover-title" id="popoverTitle">Event Name</div>
+  <div class="popover-time" id="popoverTime">Time</div>
+  <div class="popover-actions">
+    <button class="popover-btn" onclick="closePopover()">Edit</button>
+    <button class="popover-btn primary" onclick="openDetails()">View details</button>
+  </div>
+</div>
+
+<script>
+  function showPopover(e, name, time) {
+    e.stopPropagation();
+    const p = document.getElementById('eventPopover');
+    document.getElementById('popoverTitle').textContent = name;
+    document.getElementById('popoverTime').textContent = time;
+    p.style.left = (e.clientX + 10) + 'px';
+    p.style.top = (e.clientY - 10) + 'px';
+    p.classList.add('visible');
+  }
+
+  function closePopover() {
+    document.getElementById('eventPopover').classList.remove('visible');
+  }
+
+  function openDetails() {
+    closePopover();
+    window.location.href = 'booking-details.html';
+  }
+
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.event') && !e.target.closest('.event-popover')) closePopover();
+  });
+</script>
+</body>
+</html>

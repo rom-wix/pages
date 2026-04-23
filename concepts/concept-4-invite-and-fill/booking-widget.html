@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Concept 4 — Invite-and-Fill</title>
+  <style>
+    * { font-family: 'Comic Sans MS', cursive; transition: none !important; animation: none !important; box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-size: 14px; color: #000; background: #f9f8f6; min-height: 100vh; }
+    a { color: #374151; text-decoration: underline; }
+    button, input, select, textarea { border-radius: 0 !important; font-family: 'Comic Sans MS', cursive; font-size: 14px; }
+
+    .site-header { display: flex; align-items: center; justify-content: space-between; padding: 0 48px; height: 60px; border-bottom: 1px solid #e5e7eb; background: #f9f8f6; }
+    .site-logo { font-size: 16px; font-weight: bold; letter-spacing: 3px; }
+    .site-nav { display: flex; gap: 32px; }
+    .site-nav a { text-decoration: none; font-size: 12px; color: #333; letter-spacing: 1px; text-transform: uppercase; }
+    .site-header-right { display: flex; align-items: center; gap: 24px; }
+    .book-now-btn { border: 1px solid #000; background: transparent; padding: 8px 20px; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; }
+    .login-link { font-size: 12px; color: #333; text-decoration: none; display: flex; align-items: center; gap: 6px; }
+
+    .page-content { max-width: 960px; margin: 0 auto; padding: 40px 24px 80px; }
+    .back-link { font-size: 13px; color: #555; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; margin-bottom: 20px; }
+    .page-title { font-size: 28px; font-weight: bold; margin-bottom: 10px; }
+    .page-sub { font-size: 13px; color: #555; margin-bottom: 28px; }
+
+    .concept-banner { background: #fff; border: 1px solid #000; padding: 10px 14px; font-size: 12px; margin-bottom: 24px; }
+    .concept-banner .tag { background: #000; color: #fff; padding: 2px 8px; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; margin-right: 8px; }
+
+    .form-layout { display: flex; gap: 40px; align-items: flex-start; }
+    .form-main { flex: 1; min-width: 0; }
+    .section-heading { font-size: 16px; font-weight: bold; margin-bottom: 16px; margin-top: 8px; }
+
+    /* CONCEPT 4: 3-step progress */
+    .step-progress {
+      display: flex; gap: 0; margin-bottom: 28px; border: 1px solid #000; background: #fff;
+    }
+    .step-pill {
+      flex: 1; padding: 12px 14px; border-right: 1px solid #000; font-size: 12px; color: #666;
+    }
+    .step-pill:last-child { border-right: none; }
+    .step-pill.active { background: #000; color: #fff; }
+    .step-pill.done { background: #f4f3f0; color: #000; }
+    .step-num { font-weight: bold; margin-right: 6px; }
+
+    /* Step 1 — seats + payer */
+    .card { background: #fff; border: 1px solid #d1d5db; padding: 20px; margin-bottom: 18px; }
+    .card-title { font-size: 15px; font-weight: bold; margin-bottom: 4px; }
+    .card-sub { font-size: 12px; color: #666; margin-bottom: 14px; }
+
+    .seat-picker { display: flex; gap: 8px; flex-wrap: wrap; }
+    .seat-btn {
+      width: 50px; height: 50px; border: 1px solid #d1d5db; background: #fff; cursor: pointer;
+      font-size: 16px; font-weight: bold; font-family: 'Comic Sans MS', cursive;
+    }
+    .seat-btn:hover { border-color: #000; }
+    .seat-btn.selected { border: 2px solid #000; background: #f4f3f0; }
+
+    .form-field { margin-bottom: 12px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .form-label { font-size: 12px; color: #333; margin-bottom: 4px; display: block; }
+    .form-input { width: 100%; padding: 9px 11px; border: 1px solid #d1d5db; background: #fff; font-family: 'Comic Sans MS', cursive; font-size: 13px; color: #000; }
+    .form-input.pre-filled { background: #f9f8f6; color: #444; }
+
+    /* Invite rows */
+    .invite-row {
+      display: grid; grid-template-columns: auto 1fr 1fr auto; gap: 10px; align-items: center;
+      padding: 12px; border: 1px solid #e5e7eb; background: #fff; margin-bottom: 8px;
+    }
+    .invite-num { width: 28px; height: 28px; border: 1px solid #000; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 13px; }
+    .invite-btn-remove { border: none; background: transparent; cursor: pointer; font-size: 16px; color: #666; padding: 4px 8px; }
+    .invite-hint { font-size: 12px; color: #666; margin-top: 4px; margin-bottom: 14px; }
+
+    .me-attending {
+      padding: 12px 14px; border: 1px solid #e5e7eb; background: #f9f8f6; margin-bottom: 10px;
+      display: flex; align-items: center; gap: 10px; font-size: 13px;
+    }
+    .me-check { width: 16px; height: 16px; accent-color: #000; }
+
+    .explanation {
+      background: #f4f3f0; border: 1px dashed #000; padding: 14px; margin-bottom: 20px;
+      font-size: 13px;
+    }
+    .explanation-title { font-weight: bold; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+
+    /* Sidebar */
+    .booking-sidebar { width: 260px; flex-shrink: 0; }
+    .sidebar-card { border: 1px solid #e5e7eb; background: #fff; padding: 16px; }
+    .sidebar-section-title { font-size: 14px; font-weight: bold; margin-bottom: 12px; }
+    .booking-service-name { font-size: 13px; font-weight: bold; margin-bottom: 2px; }
+    .booking-datetime { font-size: 12px; color: #555; margin-bottom: 12px; }
+    .seats-row { font-size: 12px; color: #555; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #e5e7eb; }
+    .payment-row { display: flex; justify-content: space-between; font-size: 12px; color: #555; margin-bottom: 4px; }
+    .payment-breakdown { font-size: 11px; color: #888; padding-left: 12px; margin-bottom: 2px; }
+    .payment-total { display: flex; justify-content: space-between; font-size: 14px; font-weight: bold; margin-top: 8px; padding-top: 8px; border-top: 1px solid #e5e7eb; }
+    .btn-primary { width: 100%; padding: 12px; border: none; background: #000; font-family: 'Comic Sans MS', cursive; font-size: 13px; cursor: pointer; color: #fff; margin-top: 16px; }
+    .btn-secondary { width: 100%; padding: 10px; border: 1px solid #000; background: #fff; font-family: 'Comic Sans MS', cursive; font-size: 13px; cursor: pointer; color: #000; margin-top: 8px; }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="site-nav">
+    <a href="#">Treatments</a>
+    <a href="#">Events</a>
+    <a href="#">Membership</a>
+    <a href="#">Contact</a>
+  </nav>
+  <div class="site-logo">PARKYSPA</div>
+  <div class="site-header-right">
+    <button class="book-now-btn">Book now →</button>
+    <a href="#" class="login-link">👤 Log In</a>
+  </div>
+</header>
+
+<div class="page-content">
+  <a href="#" class="back-link">‹ Back</a>
+
+  <div class="concept-banner">
+    <span class="tag">Concept 4</span>
+    <strong>Invite-and-Fill</strong> — book seats, pay, then let each attendee fill their own intake form via a secure link. Perfect for medical intake, consent forms, or when you don't have everyone's info.
+  </div>
+
+  <h1 class="page-title">Book and invite</h1>
+  <p class="page-sub">Reserve seats now. Each attendee fills in their own details before the session.</p>
+
+  <!-- CONCEPT 4 CHANGE: 3-step progress -->
+  <div class="step-progress">
+    <div class="step-pill active"><span class="step-num">1.</span>Reserve seats</div>
+    <div class="step-pill"><span class="step-num">2.</span>Pay</div>
+    <div class="step-pill"><span class="step-num">3.</span>Invite attendees</div>
+  </div>
+
+  <div class="form-layout">
+    <div class="form-main">
+
+      <!-- Seat picker card -->
+      <div class="card">
+        <div class="card-title">How many seats?</div>
+        <div class="card-sub">Up to 8 attendees per booking.</div>
+
+        <div class="seat-picker" id="seatPicker">
+          <button class="seat-btn" onclick="setSeats(1)">1</button>
+          <button class="seat-btn selected" onclick="setSeats(2)">2</button>
+          <button class="seat-btn" onclick="setSeats(3)">3</button>
+          <button class="seat-btn" onclick="setSeats(4)">4</button>
+          <button class="seat-btn" onclick="setSeats(5)">5</button>
+          <button class="seat-btn" onclick="setSeats(6)">6</button>
+        </div>
+      </div>
+
+      <!-- Payer card -->
+      <div class="card">
+        <div class="card-title">Who's paying?</div>
+        <div class="card-sub">You'll get the receipt and can manage the booking for everyone.</div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label class="form-label">Full name</label>
+            <input class="form-input pre-filled" value="Carlos Lampel" />
+          </div>
+          <div class="form-field">
+            <label class="form-label">Email</label>
+            <input class="form-input pre-filled" value="carloslempel@gmail.com" />
+          </div>
+        </div>
+
+        <div class="me-attending">
+          <input type="checkbox" id="meCheck" checked class="me-check" onchange="render()" />
+          <label for="meCheck"><strong>I'm one of the attendees</strong> — use my details for seat #1</label>
+        </div>
+      </div>
+
+      <!-- Invite block -->
+      <div class="card">
+        <div class="card-title">Invite the other attendees</div>
+        <div class="card-sub">Add just name + email. They'll get a link to fill in their own details (health info, preferences, consent forms).</div>
+
+        <div id="inviteList"></div>
+
+        <div class="invite-hint" id="inviteHint">
+          Each person will receive a personalized link. They must fill it out 24 hours before the session.
+        </div>
+      </div>
+
+      <!-- Explanation card -->
+      <div class="explanation">
+        <div class="explanation-title">◆ How this works</div>
+        After you pay, we'll email each person above a link to fill in their details (consent form, health notes, preferences). You'll see their status in your account — filled, pending, or reminder sent.
+      </div>
+
+    </div>
+
+    <!-- Sidebar -->
+    <div class="booking-sidebar">
+      <div class="sidebar-card">
+        <div class="sidebar-section-title">Booking Details</div>
+        <div class="booking-service-name">Weekly Group Sessions</div>
+        <div class="booking-datetime">April 29, 2026 at 9:30 am</div>
+
+        <div class="seats-row">
+          <strong id="sbSeats">2 seats reserved</strong><br>
+          <span id="sbFilled" style="color: #666; font-size: 11px;">1 details filled · 1 invite pending</span>
+        </div>
+
+        <div class="payment-row"><span>Subtotal</span><span id="sbSubtotal">$160</span></div>
+        <div class="payment-breakdown" id="sbBreakdown">2 × $80</div>
+        <div class="payment-total"><span>Total</span><span id="sbTotal">$160</span></div>
+
+        <button class="btn-primary">Reserve & continue to payment</button>
+        <button class="btn-secondary">Save for later</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  let seats = 2;
+  let meAttending = true;
+  const PRICE = 80;
+  let invites = [{ name: '', email: '' }];
+
+  function setSeats(n) {
+    seats = n;
+    document.querySelectorAll('.seat-btn').forEach((b, i) => {
+      b.classList.toggle('selected', (i + 1) === n);
+    });
+    const inviteCount = meAttending ? (seats - 1) : seats;
+    while (invites.length < inviteCount) invites.push({ name: '', email: '' });
+    while (invites.length > inviteCount) invites.pop();
+    render();
+  }
+
+  function render() {
+    meAttending = document.getElementById('meCheck').checked;
+    const inviteCount = meAttending ? Math.max(0, seats - 1) : seats;
+    while (invites.length < inviteCount) invites.push({ name: '', email: '' });
+    while (invites.length > inviteCount) invites.pop();
+
+    const list = document.getElementById('inviteList');
+    list.innerHTML = '';
+    if (invites.length === 0) {
+      list.innerHTML = '<div style="padding: 16px; color: #666; font-size: 13px; border: 1px dashed #d1d5db;">No invites needed — you\'re the only attendee.</div>';
+    } else {
+      invites.forEach((inv, i) => {
+        const seatNum = meAttending ? (i + 2) : (i + 1);
+        const row = document.createElement('div');
+        row.className = 'invite-row';
+        row.innerHTML = `
+          <div class="invite-num">${seatNum}</div>
+          <input class="form-input" placeholder="Name" value="${inv.name}" oninput="invites[${i}].name = this.value" />
+          <input class="form-input" placeholder="Email (for the intake link)" value="${inv.email}" oninput="invites[${i}].email = this.value" />
+          <button class="invite-btn-remove" onclick="removeInvite(${i})" title="Remove">×</button>
+        `;
+        list.appendChild(row);
+      });
+    }
+
+    document.getElementById('sbSeats').textContent = `${seats} ${seats === 1 ? 'seat' : 'seats'} reserved`;
+    const filled = meAttending ? 1 : 0;
+    const pending = seats - filled;
+    document.getElementById('sbFilled').textContent = `${filled} details filled · ${pending} invite${pending === 1 ? '' : 's'} pending`;
+    document.getElementById('sbSubtotal').textContent = `$${seats * PRICE}`;
+    document.getElementById('sbBreakdown').textContent = `${seats} × $${PRICE}`;
+    document.getElementById('sbTotal').textContent = `$${seats * PRICE}`;
+  }
+
+  function removeInvite(i) {
+    invites.splice(i, 1);
+    seats = Math.max(1, seats - 1);
+    document.querySelectorAll('.seat-btn').forEach((b, idx) => b.classList.toggle('selected', (idx + 1) === seats));
+    render();
+  }
+
+  setSeats(2);
+</script>
+</body>
+</html>

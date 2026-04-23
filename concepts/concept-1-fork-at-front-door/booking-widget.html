@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Concept 1 — Fork at the Front Door</title>
+  <style>
+    * { font-family: 'Comic Sans MS', cursive; transition: none !important; animation: none !important; box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-size: 14px; color: #000; background: #f9f8f6; min-height: 100vh; }
+    a { color: #374151; text-decoration: underline; }
+    button, input, select, textarea { border-radius: 0 !important; font-family: 'Comic Sans MS', cursive; font-size: 14px; }
+
+    .site-header { display: flex; align-items: center; justify-content: space-between; padding: 0 48px; height: 60px; border-bottom: 1px solid #e5e7eb; background: #f9f8f6; }
+    .site-logo { font-size: 16px; font-weight: bold; letter-spacing: 3px; }
+    .site-nav { display: flex; gap: 32px; }
+    .site-nav a { text-decoration: none; font-size: 12px; color: #333; letter-spacing: 1px; text-transform: uppercase; }
+    .site-header-right { display: flex; align-items: center; gap: 24px; }
+    .book-now-btn { border: 1px solid #000; background: transparent; padding: 8px 20px; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; }
+    .login-link { font-size: 12px; color: #333; text-decoration: none; display: flex; align-items: center; gap: 6px; }
+
+    .page-content { max-width: 960px; margin: 0 auto; padding: 40px 24px 80px; }
+    .back-link { font-size: 13px; color: #555; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; margin-bottom: 20px; }
+    .page-title { font-size: 28px; font-weight: bold; margin-bottom: 6px; }
+    .page-subtitle { font-size: 14px; color: #666; margin-bottom: 32px; }
+
+    .concept-banner { background: #fff; border: 1px solid #000; padding: 10px 14px; font-size: 12px; color: #000; margin-bottom: 24px; display: flex; gap: 10px; align-items: center; }
+    .concept-banner .tag { background: #000; color: #fff; padding: 2px 8px; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; }
+
+    /* Step indicator */
+    .step-indicator { display: flex; gap: 8px; margin-bottom: 24px; font-size: 12px; color: #888; }
+    .step { padding: 4px 10px; border: 1px solid #d1d5db; background: #fff; }
+    .step.current { background: #000; color: #fff; border-color: #000; }
+    .step.done { background: #fff; color: #000; }
+
+    /* CONCEPT 1 CHANGE: Big binary fork card */
+    .fork-card { background: #fff; border: 1px solid #000; padding: 32px 40px; margin-bottom: 32px; }
+    .fork-heading { font-size: 22px; font-weight: bold; margin-bottom: 8px; }
+    .fork-sub { font-size: 13px; color: #555; margin-bottom: 24px; }
+    .fork-options { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .fork-option {
+      border: 2px solid #d1d5db; background: #fff; padding: 24px 20px; cursor: pointer; text-align: left;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .fork-option:hover { border-color: #555; }
+    .fork-option.selected { border-color: #000; background: #f4f3f0; }
+    .fork-icon { width: 40px; height: 40px; border: 1px solid #000; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 6px; }
+    .fork-option-title { font-size: 16px; font-weight: bold; }
+    .fork-option-sub { font-size: 12px; color: #555; line-height: 1.5; }
+    .fork-radio { width: 16px; height: 16px; border: 1px solid #888; border-radius: 50% !important; display: inline-block; vertical-align: middle; margin-right: 6px; position: relative; }
+    .fork-option.selected .fork-radio { border-color: #000; }
+    .fork-option.selected .fork-radio::after { content: ''; position: absolute; top: 3px; left: 3px; width: 8px; height: 8px; background: #000; border-radius: 50% !important; }
+
+    /* Participant form after fork */
+    .participant-block { background: #fff; border: 1px solid #e5e7eb; padding: 24px; margin-bottom: 24px; }
+    .participant-title { font-size: 16px; font-weight: bold; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+    .participant-meta-tag { font-size: 11px; background: #000; color: #fff; padding: 3px 8px; letter-spacing: 1px; text-transform: uppercase; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .form-field { margin-bottom: 12px; }
+    .form-label { font-size: 12px; color: #333; margin-bottom: 4px; display: block; font-weight: bold; }
+    .form-label .required { color: #000; }
+    .form-label .hint { color: #888; font-weight: normal; font-size: 11px; }
+    .form-input { width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; background: #fff; font-family: 'Comic Sans MS', cursive; font-size: 13px; color: #000; }
+    .form-input:focus { outline: 2px solid #000; border-color: #000; }
+    .payer-note {
+      background: #f4f3f0; border-left: 3px solid #000; padding: 10px 14px; font-size: 12px; color: #333; margin-top: 12px;
+    }
+
+    /* Summary sidebar */
+    .booking-layout { display: flex; gap: 40px; align-items: flex-start; }
+    .main { flex: 1; min-width: 0; }
+    .booking-sidebar { width: 260px; flex-shrink: 0; }
+    .sidebar-card { border: 1px solid #e5e7eb; background: #fff; padding: 16px; }
+    .sidebar-section-title { font-size: 14px; font-weight: bold; margin-bottom: 12px; }
+    .detail-row { font-size: 12px; color: #555; margin-bottom: 6px; display: flex; justify-content: space-between; gap: 8px; }
+    .detail-row strong { color: #000; font-weight: bold; }
+    .divider { border: none; border-top: 1px solid #e5e7eb; margin: 12px 0; }
+    .payment-total { display: flex; justify-content: space-between; font-size: 13px; font-weight: bold; margin-top: 8px; padding-top: 8px; border-top: 1px solid #e5e7eb; }
+    .btn-primary { width: 100%; padding: 12px; border: none; background: #000; font-family: 'Comic Sans MS', cursive; font-size: 13px; cursor: pointer; color: #fff; margin-top: 16px; }
+    .btn-primary.disabled { background: #e5e7eb; color: #888; cursor: not-allowed; }
+    .btn-primary:not(.disabled):hover { background: #333; }
+    .btn-secondary { width: 100%; padding: 10px; border: 1px solid #000; background: #fff; font-family: 'Comic Sans MS', cursive; font-size: 13px; cursor: pointer; color: #000; margin-top: 8px; }
+
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="site-nav">
+    <a href="#">Treatments</a>
+    <a href="#">Events</a>
+    <a href="#">Membership</a>
+    <a href="#">Contact</a>
+  </nav>
+  <div class="site-logo">PARKYSPA</div>
+  <div class="site-header-right">
+    <button class="book-now-btn">Book now →</button>
+    <a href="#" class="login-link">👤 Log In</a>
+  </div>
+</header>
+
+<div class="page-content">
+  <a href="#" class="back-link">‹ Back</a>
+
+  <div class="concept-banner">
+    <span class="tag">Concept 1</span>
+    <span>Fork at the Front Door — the first question the booking widget asks is <strong>"who is this appointment for?"</strong></span>
+  </div>
+
+  <h1 class="page-title">Let's get you booked</h1>
+  <p class="page-subtitle">Before we show you available times, who is this appointment for?</p>
+
+  <!-- Step indicator -->
+  <div class="step-indicator">
+    <div class="step current">1. Who</div>
+    <div class="step">2. When</div>
+    <div class="step">3. Details</div>
+    <div class="step">4. Payment</div>
+  </div>
+
+  <div class="booking-layout">
+    <div class="main">
+
+      <!-- CONCEPT 1 CHANGE: Binary fork as the first booking step -->
+      <div class="fork-card">
+        <div class="fork-heading">Who is this appointment for?</div>
+        <div class="fork-sub">This helps us send the right details to the right person.</div>
+
+        <div class="fork-options">
+          <div class="fork-option selected" id="forkMe" onclick="selectFork('me')">
+            <div class="fork-icon">👤</div>
+            <div class="fork-option-title"><span class="fork-radio"></span>For me</div>
+            <div class="fork-option-sub">I'm the one attending. Use my account details.</div>
+          </div>
+          <div class="fork-option" id="forkElse" onclick="selectFork('else')">
+            <div class="fork-icon">👥</div>
+            <div class="fork-option-title"><span class="fork-radio"></span>For someone else</div>
+            <div class="fork-option-sub">I'm booking on behalf of a child, patient, friend, or group.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Participant block (shown only if "For someone else" is selected) -->
+      <div id="participantSection" class="hidden">
+        <div class="participant-block">
+          <div class="participant-title">
+            Participant details
+            <span class="participant-meta-tag">Primary contact</span>
+          </div>
+
+          <div class="form-row">
+            <div class="form-field">
+              <label class="form-label">First name <span class="required">*</span></label>
+              <input class="form-input" type="text" placeholder="e.g. Maya" />
+            </div>
+            <div class="form-field">
+              <label class="form-label">Last name <span class="required">*</span></label>
+              <input class="form-input" type="text" placeholder="e.g. Cohen" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-field">
+              <label class="form-label">Email <span class="required">*</span> <span class="hint">confirmations go here</span></label>
+              <input class="form-input" type="email" placeholder="maya@example.com" />
+            </div>
+            <div class="form-field">
+              <label class="form-label">Phone <span class="hint">optional</span></label>
+              <input class="form-input" type="tel" placeholder="+972 54 ..." />
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label">Relationship to you <span class="hint">optional</span></label>
+            <select class="form-input">
+              <option>Choose a relationship…</option>
+              <option>Child</option>
+              <option>Partner</option>
+              <option>Patient</option>
+              <option>Friend</option>
+              <option>Employee</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="payer-note">
+            <strong>You're the payer.</strong> Carlos Lampel · carloslempel@gmail.com — you'll receive the receipt. The participant above will receive appointment confirmations and reminders.
+          </div>
+        </div>
+
+        <!-- Add another participant -->
+        <button class="btn-secondary" style="margin-top: 0;">+ Add another participant</button>
+      </div>
+
+    </div>
+
+    <!-- Right sidebar -->
+    <div class="booking-sidebar">
+      <div class="sidebar-card">
+        <div class="sidebar-section-title">Your booking so far</div>
+        <div class="detail-row"><span>Service</span><strong>Weekly Session</strong></div>
+        <div class="detail-row"><span>Staff</span><strong>Any available</strong></div>
+        <div class="detail-row" id="forSummary"><span>For</span><strong>Me</strong></div>
+        <div class="divider"></div>
+        <div class="detail-row"><span>Date</span><span>—</span></div>
+        <div class="detail-row"><span>Time</span><span>—</span></div>
+        <div class="divider"></div>
+        <div class="payment-total"><span>Total</span><span>$80</span></div>
+        <button class="btn-primary" onclick="next()">Next: choose a time →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function selectFork(type) {
+    document.getElementById('forkMe').classList.toggle('selected', type === 'me');
+    document.getElementById('forkElse').classList.toggle('selected', type === 'else');
+    document.getElementById('participantSection').classList.toggle('hidden', type !== 'else');
+    document.getElementById('forSummary').querySelector('strong').textContent = type === 'me' ? 'Me' : 'Someone else';
+  }
+  function next() { alert('Concept 1: proceed to date/time selection, pre-filled with participant context.'); }
+</script>
+</body>
+</html>

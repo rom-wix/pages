@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Concept 2 — Smart Attendee Stepper</title>
+  <style>
+    * { font-family: 'Comic Sans MS', cursive; transition: none !important; animation: none !important; box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-size: 14px; color: #000; background: #f9f8f6; min-height: 100vh; }
+    a { color: #374151; text-decoration: underline; }
+    button, input, select, textarea { border-radius: 0 !important; font-family: 'Comic Sans MS', cursive; font-size: 14px; }
+
+    .site-header { display: flex; align-items: center; justify-content: space-between; padding: 0 48px; height: 60px; border-bottom: 1px solid #e5e7eb; background: #f9f8f6; }
+    .site-logo { font-size: 16px; font-weight: bold; letter-spacing: 3px; }
+    .site-nav { display: flex; gap: 32px; }
+    .site-nav a { text-decoration: none; font-size: 12px; color: #333; letter-spacing: 1px; text-transform: uppercase; }
+    .site-header-right { display: flex; align-items: center; gap: 24px; }
+    .book-now-btn { border: 1px solid #000; background: transparent; padding: 8px 20px; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; }
+    .login-link { font-size: 12px; color: #333; text-decoration: none; display: flex; align-items: center; gap: 6px; }
+
+    .page-content { max-width: 960px; margin: 0 auto; padding: 40px 24px 80px; }
+    .back-link { font-size: 13px; color: #555; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; margin-bottom: 20px; }
+    .page-title { font-size: 28px; font-weight: bold; margin-bottom: 6px; }
+    .page-subtitle { font-size: 14px; color: #666; margin-bottom: 32px; }
+
+    .concept-banner { background: #fff; border: 1px solid #000; padding: 10px 14px; font-size: 12px; margin-bottom: 24px; }
+    .concept-banner .tag { background: #000; color: #fff; padding: 2px 8px; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; margin-right: 8px; }
+
+    .booking-layout { display: flex; gap: 40px; align-items: flex-start; }
+    .main { flex: 1; min-width: 0; }
+
+    /* CONCEPT 2 CHANGE: stepper as a first-class control */
+    .stepper-card {
+      background: #fff; border: 1px solid #000; padding: 20px 24px; margin-bottom: 24px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .stepper-label { }
+    .stepper-title { font-size: 16px; font-weight: bold; margin-bottom: 2px; }
+    .stepper-sub { font-size: 12px; color: #666; }
+    .stepper-control {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .stepper-btn {
+      width: 40px; height: 40px; border: 1px solid #000; background: #fff; cursor: pointer;
+      font-size: 20px; font-weight: bold; display: flex; align-items: center; justify-content: center;
+    }
+    .stepper-btn:hover { background: #f3f4f6; }
+    .stepper-btn.disabled { border-color: #d1d5db; color: #d1d5db; cursor: not-allowed; }
+    .stepper-value { font-size: 20px; font-weight: bold; min-width: 30px; text-align: center; }
+
+    .capacity-hint { font-size: 11px; color: #888; margin-top: 4px; }
+
+    /* Calendar area */
+    .section-heading { font-size: 16px; font-weight: bold; margin-bottom: 16px; }
+    .calendar { border: 1px solid #e5e7eb; background: #fff; padding: 16px; margin-bottom: 24px; }
+    .calendar-nav { display: flex; align-items: center; justify-content: center; gap: 20px; margin-bottom: 12px; }
+    .cal-nav-btn { background: none; border: none; cursor: pointer; font-size: 16px; color: #555; padding: 4px 8px; }
+    .cal-month { font-size: 14px; font-weight: bold; }
+    .cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); margin-bottom: 4px; }
+    .cal-weekday { text-align: center; font-size: 12px; color: #888; padding: 4px 0; }
+    .cal-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+    .cal-day { text-align: center; padding: 6px 2px; font-size: 13px; cursor: pointer; color: #333; }
+    .cal-day:hover { background: #f3f4f6; }
+    .cal-day.other-month { color: #ccc; }
+    .cal-day.selected { background: #000; color: #fff; font-weight: bold; }
+    .cal-day.unavailable { color: #ddd; cursor: default; }
+
+    .timeslots-list { display: flex; flex-wrap: wrap; gap: 8px; }
+    .timeslot { border: 1px solid #000; padding: 8px 16px; font-size: 13px; cursor: pointer; background: #fff; color: #000; }
+    .timeslot:hover { background: #f3f4f6; }
+    .timeslot.selected { background: #000; color: #fff; }
+
+    /* Participant cards — reveal inline when count > 1 OR when "for someone else" */
+    .participants-area { margin-top: 32px; }
+    .participants-heading { font-size: 16px; font-weight: bold; margin-bottom: 4px; }
+    .participants-sub { font-size: 12px; color: #666; margin-bottom: 16px; }
+
+    .participant-card {
+      background: #fff; border: 1px solid #e5e7eb; padding: 20px; margin-bottom: 12px;
+    }
+    .participant-card.me-card { border-left: 3px solid #000; }
+    .participant-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+    .participant-label { font-size: 13px; font-weight: bold; }
+    .participant-label .num { display: inline-block; width: 22px; height: 22px; background: #000; color: #fff; text-align: center; margin-right: 8px; font-size: 12px; line-height: 22px; }
+    .participant-tag { font-size: 10px; background: #000; color: #fff; padding: 2px 8px; letter-spacing: 1px; text-transform: uppercase; }
+    .participant-tag.payer { background: #fff; color: #000; border: 1px solid #000; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .form-field { margin-bottom: 0; }
+    .form-label { font-size: 12px; color: #333; margin-bottom: 4px; display: block; }
+    .form-input { width: 100%; padding: 9px 11px; border: 1px solid #d1d5db; background: #fff; font-family: 'Comic Sans MS', cursive; font-size: 13px; color: #000; }
+    .form-input:focus { outline: 2px solid #000; border-color: #000; }
+    .form-input.pre-filled { background: #f9f8f6; color: #666; }
+
+    .remove-link { font-size: 11px; color: #666; text-decoration: underline; background: none; border: none; cursor: pointer; font-family: inherit; }
+    .link-btn { background: none; border: none; color: #000; font-family: inherit; font-size: 12px; cursor: pointer; text-decoration: underline; }
+    .me-toggle-row { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #333; margin-bottom: 8px; }
+    .me-toggle-row input[type=checkbox] { margin: 0; }
+
+    /* Sidebar */
+    .booking-sidebar { width: 260px; flex-shrink: 0; }
+    .sidebar-card { border: 1px solid #e5e7eb; background: #fff; padding: 16px; position: sticky; top: 20px; }
+    .sidebar-section-title { font-size: 14px; font-weight: bold; margin-bottom: 12px; }
+    .detail-row { font-size: 12px; color: #555; margin-bottom: 6px; display: flex; justify-content: space-between; gap: 8px; }
+    .detail-row strong { color: #000; font-weight: bold; }
+    .divider { border: none; border-top: 1px solid #e5e7eb; margin: 12px 0; }
+    .payment-row { display: flex; justify-content: space-between; font-size: 12px; color: #555; margin-bottom: 4px; }
+    .payment-total { display: flex; justify-content: space-between; font-size: 14px; font-weight: bold; margin-top: 8px; padding-top: 8px; border-top: 1px solid #e5e7eb; }
+    .btn-primary { width: 100%; padding: 12px; border: none; background: #000; font-family: 'Comic Sans MS', cursive; font-size: 13px; cursor: pointer; color: #fff; margin-top: 14px; }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="site-nav">
+    <a href="#">Treatments</a>
+    <a href="#">Events</a>
+    <a href="#">Membership</a>
+    <a href="#">Contact</a>
+  </nav>
+  <div class="site-logo">PARKYSPA</div>
+  <div class="site-header-right">
+    <button class="book-now-btn">Book now →</button>
+    <a href="#" class="login-link">👤 Log In</a>
+  </div>
+</header>
+
+<div class="page-content">
+  <a href="#" class="back-link">‹ Back</a>
+
+  <div class="concept-banner">
+    <span class="tag">Concept 2</span>
+    A single <strong>"How many are coming?"</strong> stepper merges proxy booking and group booking into one unified control. 1 = solo, &gt;1 = group, and any attendee can be "not me."
+  </div>
+
+  <h1 class="page-title">Schedule your session</h1>
+  <p class="page-subtitle">Weekly Group Sessions · 60 min · $80 per person</p>
+
+  <div class="booking-layout">
+    <div class="main">
+
+      <!-- CONCEPT 2 CHANGE: Attendee stepper as first control -->
+      <div class="stepper-card">
+        <div class="stepper-label">
+          <div class="stepper-title">How many are coming?</div>
+          <div class="stepper-sub">Include yourself if you're attending. Up to 4 per slot.</div>
+        </div>
+        <div class="stepper-control">
+          <button class="stepper-btn" id="btnMinus" onclick="stepCount(-1)">−</button>
+          <span class="stepper-value" id="attendeeCount">1</span>
+          <button class="stepper-btn" id="btnPlus" onclick="stepCount(1)">+</button>
+        </div>
+      </div>
+
+      <!-- Calendar -->
+      <div class="section-heading">Pick a date and time</div>
+      <div class="calendar">
+        <div class="calendar-nav">
+          <button class="cal-nav-btn">‹</button>
+          <span class="cal-month">April 2026</span>
+          <button class="cal-nav-btn">›</button>
+        </div>
+        <div class="cal-weekdays">
+          <div class="cal-weekday">Sun</div><div class="cal-weekday">Mon</div><div class="cal-weekday">Tue</div><div class="cal-weekday">Wed</div><div class="cal-weekday">Thu</div><div class="cal-weekday">Fri</div><div class="cal-weekday">Sat</div>
+        </div>
+        <div class="cal-days">
+          <div class="cal-day other-month"></div><div class="cal-day other-month"></div><div class="cal-day other-month"></div>
+          <div class="cal-day">1</div><div class="cal-day">2</div><div class="cal-day">3</div><div class="cal-day">4</div>
+          <div class="cal-day">5</div><div class="cal-day">6</div><div class="cal-day">7</div><div class="cal-day">8</div>
+          <div class="cal-day">9</div><div class="cal-day">10</div><div class="cal-day">11</div><div class="cal-day">12</div>
+          <div class="cal-day">13</div><div class="cal-day">14</div><div class="cal-day">15</div><div class="cal-day">16</div>
+          <div class="cal-day">17</div><div class="cal-day">18</div><div class="cal-day">19</div><div class="cal-day">20</div>
+          <div class="cal-day">21</div><div class="cal-day">22</div><div class="cal-day">23</div><div class="cal-day">24</div>
+          <div class="cal-day">25</div><div class="cal-day">26</div><div class="cal-day">27</div><div class="cal-day">28</div>
+          <div class="cal-day selected">29</div><div class="cal-day">30</div><div class="cal-day other-month"></div><div class="cal-day other-month"></div>
+        </div>
+      </div>
+
+      <div style="font-size: 13px; font-weight: bold; margin-bottom: 10px;">Availability for Wednesday, April 29</div>
+      <div class="timeslots-list">
+        <div class="timeslot selected">9:30 am</div>
+        <div class="timeslot">11:00 am</div>
+        <div class="timeslot">2:00 pm</div>
+        <div class="timeslot">4:30 pm</div>
+      </div>
+
+      <!-- CONCEPT 2 CHANGE: Participant cards appear inline based on stepper count -->
+      <div class="participants-area" id="participantsArea">
+        <div class="participants-heading">Who's coming? <span id="countBadge" style="font-weight: normal; color: #666; font-size: 13px;">(1 person)</span></div>
+        <div class="participants-sub">Each person gets their own appointment record and confirmation email.</div>
+
+        <div id="participantsList">
+          <!-- JS-rendered -->
+        </div>
+
+        <button class="link-btn" onclick="stepCount(1)">+ Add another attendee</button>
+      </div>
+
+    </div>
+
+    <!-- Sidebar -->
+    <div class="booking-sidebar">
+      <div class="sidebar-card">
+        <div class="sidebar-section-title">Your booking</div>
+        <div class="detail-row"><span>Service</span><strong>Weekly Session</strong></div>
+        <div class="detail-row"><span>Date</span><strong>Apr 29, 2026</strong></div>
+        <div class="detail-row"><span>Time</span><strong>9:30 am</strong></div>
+        <div class="detail-row"><span>Attendees</span><strong id="sidebarCount">1</strong></div>
+        <div class="divider"></div>
+        <div class="payment-row"><span id="sidebarMath">1 × $80</span><span id="sidebarSubtotal">$80</span></div>
+        <div class="payment-total"><span>Total</span><span id="sidebarTotal">$80</span></div>
+        <button class="btn-primary" onclick="alert('Concept 2: one transaction, N booking records, dual confirmations routed per attendee.')">Continue to payment →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let count = 1;
+  const MAX = 4;
+  const PRICE = 80;
+  const CURRENT_USER = { first: 'Carlos', last: 'Lampel', email: 'carloslempel@gmail.com', phone: '+972 54922…' };
+
+  function renderParticipants() {
+    const list = document.getElementById('participantsList');
+    list.innerHTML = '';
+    for (let i = 0; i < count; i++) {
+      const isFirst = i === 0;
+      const card = document.createElement('div');
+      card.className = 'participant-card' + (isFirst ? ' me-card' : '');
+      card.innerHTML = `
+        <div class="participant-header">
+          <div class="participant-label"><span class="num">${i + 1}</span>${isFirst ? 'Attendee 1' : 'Attendee ' + (i + 1)}</div>
+          <div>
+            ${isFirst ? '<span class="participant-tag payer">Payer · You</span>' : '<span class="participant-tag">Appointment goes to them</span>'}
+            ${i > 0 ? ` <button class="remove-link" onclick="removeParticipant(${i})">remove</button>` : ''}
+          </div>
+        </div>
+        ${isFirst ? `
+          <div class="me-toggle-row">
+            <input type="checkbox" id="meToggle${i}" checked onchange="toggleMe(${i}, this.checked)"> <label for="meToggle${i}">I'm attending too (use my account details)</label>
+          </div>
+        ` : ''}
+        <div class="form-row">
+          <div class="form-field">
+            <label class="form-label">First name *</label>
+            <input class="form-input ${isFirst ? 'pre-filled' : ''}" type="text" value="${isFirst ? CURRENT_USER.first : ''}" placeholder="${isFirst ? '' : 'e.g. Maya'}" />
+          </div>
+          <div class="form-field">
+            <label class="form-label">Last name *</label>
+            <input class="form-input ${isFirst ? 'pre-filled' : ''}" type="text" value="${isFirst ? CURRENT_USER.last : ''}" placeholder="${isFirst ? '' : 'e.g. Cohen'}" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label class="form-label">Email *</label>
+            <input class="form-input ${isFirst ? 'pre-filled' : ''}" type="email" value="${isFirst ? CURRENT_USER.email : ''}" placeholder="${isFirst ? '' : 'maya@example.com'}" />
+          </div>
+          <div class="form-field">
+            <label class="form-label">Phone</label>
+            <input class="form-input ${isFirst ? 'pre-filled' : ''}" type="tel" value="${isFirst ? CURRENT_USER.phone : ''}" placeholder="${isFirst ? '' : '+972 ...'}" />
+          </div>
+        </div>
+      `;
+      list.appendChild(card);
+    }
+    document.getElementById('attendeeCount').textContent = count;
+    document.getElementById('countBadge').textContent = `(${count} ${count === 1 ? 'person' : 'people'})`;
+    document.getElementById('sidebarCount').textContent = count;
+    document.getElementById('sidebarMath').textContent = `${count} × $${PRICE}`;
+    document.getElementById('sidebarSubtotal').textContent = `$${count * PRICE}`;
+    document.getElementById('sidebarTotal').textContent = `$${count * PRICE}`;
+    document.getElementById('btnMinus').classList.toggle('disabled', count <= 1);
+    document.getElementById('btnPlus').classList.toggle('disabled', count >= MAX);
+  }
+  function stepCount(delta) {
+    const next = count + delta;
+    if (next < 1 || next > MAX) return;
+    count = next;
+    renderParticipants();
+  }
+  function removeParticipant(idx) {
+    count = Math.max(1, count - 1);
+    renderParticipants();
+  }
+  function toggleMe(idx, checked) {
+    // When unchecked, the "first" card becomes a proxy slot (first name cleared, no pre-fill).
+    const card = document.getElementById('participantsList').children[idx];
+    const inputs = card.querySelectorAll('.form-input');
+    if (!checked) {
+      inputs.forEach(i => { i.classList.remove('pre-filled'); i.value = ''; i.placeholder = 'Their details'; });
+      card.querySelector('.participant-tag').textContent = 'Appointment goes to them';
+      card.querySelector('.participant-tag').classList.remove('payer');
+    } else {
+      const values = [CURRENT_USER.first, CURRENT_USER.last, CURRENT_USER.email, CURRENT_USER.phone];
+      inputs.forEach((i, n) => { i.classList.add('pre-filled'); i.value = values[n] || ''; });
+      card.querySelector('.participant-tag').textContent = 'Payer · You';
+      card.querySelector('.participant-tag').classList.add('payer');
+    }
+  }
+  renderParticipants();
+</script>
+</body>
+</html>

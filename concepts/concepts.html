@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UX Concepts</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400;500;600;700&family=Wix+Madefor+Text:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Wix Madefor Text', -apple-system, BlinkMacSystemFont, sans-serif;
+      height: 100vh;
+      display: flex;
+      overflow: hidden;
+      background: #e5e5e5;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: 260px;
+      min-width: 260px;
+      height: 100vh;
+      background: #f5f5f5;
+      color: #333;
+      font-family: 'Wix Madefor Text', 'Wix Madefor Display', -apple-system, BlinkMacSystemFont, sans-serif;
+      display: flex;
+      flex-direction: column;
+      transition: width 0.2s ease, min-width 0.2s ease;
+      position: relative;
+      z-index: 10;
+      border-right: 1px solid #e0e0e0;
+    }
+
+    .sidebar.collapsed {
+      width: 44px;
+      min-width: 44px;
+      overflow-x: hidden;
+    }
+
+    /* ── Header ── */
+    .sidebar-header {
+      padding: 12px 12px 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sidebar.collapsed .sidebar-header {
+      padding: 10px 8px;
+      justify-content: center;
+    }
+
+    .sidebar-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: #b3b3b3;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      line-height: 1.3;
+    }
+
+    .sidebar.collapsed .sidebar-title { display: none; }
+
+    .toggle-btn {
+      width: 26px;
+      height: 26px;
+      border: none;
+      background: transparent;
+      color: #999;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+      transition: background 0.1s, color 0.1s;
+    }
+
+    .toggle-btn:hover {
+      background: rgba(0,0,0,0.05);
+      color: #333;
+    }
+
+    .sidebar.collapsed .toggle-btn { transform: none; }
+
+    /* ── Nav list ── */
+    .nav-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 4px 8px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(0,0,0,0.10) transparent;
+    }
+
+    .nav-list::-webkit-scrollbar { width: 4px; }
+    .nav-list::-webkit-scrollbar-track { background: transparent; }
+    .nav-list::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.10); border-radius: 4px; }
+    .nav-list::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.18); }
+
+    .sidebar.collapsed .nav-list { padding: 4px; }
+
+    /* ── Nav item ── */
+    .nav-item {
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.08s;
+      margin-bottom: 1px;
+      position: relative;
+    }
+
+    .nav-item:hover { background: rgba(0,0,0,0.04); }
+    .sidebar.collapsed .nav-item:hover { background: transparent; }
+    .sidebar.collapsed .nav-item:hover .nav-number {
+      transform: scale(1.08);
+    }
+
+    .nav-item.active { background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04); }
+    .sidebar.collapsed .nav-item.active { background: transparent; box-shadow: none; }
+    .sidebar.collapsed .nav-item.active .nav-number {
+      box-shadow: 0 0 0 2px #0c8ce9;
+    }
+
+    .nav-item-header {
+      padding: 6px 8px;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .sidebar.collapsed .nav-item-header {
+      padding: 6px 0;
+      justify-content: center;
+    }
+
+    .sidebar.collapsed .nav-number {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+    }
+
+    .nav-number {
+      width: 22px;
+      height: 22px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+      flex-shrink: 0;
+      color: #333;
+      margin-top: 1px;
+      transition: transform 0.1s, background 0.15s, color 0.15s, box-shadow 0.15s;
+    }
+
+    .nav-item.active .nav-number {
+      color: #fff;
+    }
+
+    .nav-text {
+      overflow: hidden;
+      min-width: 0;
+    }
+
+    .sidebar.collapsed .nav-text { display: none; }
+
+    .nav-name {
+      font-size: 12px;
+      font-weight: 500;
+      color: #333;
+      line-height: 1.35;
+    }
+
+    .nav-item.active .nav-name { color: #1f1f1f; font-weight: 600; }
+
+    .nav-desc {
+      font-size: 11px;
+      color: #999;
+      line-height: 1.45;
+      margin-top: 2px;
+      white-space: normal;
+    }
+
+    .nav-item.active .nav-desc { color: #777; }
+
+    .nav-badge {
+      margin-top: 4px;
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 500;
+      padding: 1px 6px;
+      border-radius: 3px;
+      background: rgba(12,140,233,0.08);
+      color: #0c8ce9;
+    }
+
+    .nav-areas {
+      margin-top: 6px;
+      padding-top: 6px;
+      border-top: 1px solid #e9e9e9;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .nav-area-item {
+      border: none;
+      background: transparent;
+      width: 100%;
+      text-align: left;
+      font-family: inherit;
+      font-size: 11px;
+      color: #6f6f6f;
+      line-height: 1.35;
+      border-radius: 4px;
+      padding: 3px 6px;
+      cursor: pointer;
+      transition: background 0.08s, color 0.08s;
+    }
+
+    .nav-area-item::before {
+      content: '•';
+      margin-right: 6px;
+      color: #b6b6b6;
+    }
+
+    .nav-area-item:hover {
+      background: rgba(0,0,0,0.05);
+      color: #3f3f3f;
+    }
+
+    .nav-area-item.active {
+      background: #e7eaee;
+      color: #2f2f2f;
+      font-weight: 500;
+    }
+
+    .nav-area-item.active::before {
+      color: #7b7b7b;
+    }
+
+    .sidebar.collapsed .nav-badge { display: none; }
+    .sidebar.collapsed .nav-areas { display: none; }
+
+    .nav-separator {
+      height: 1px;
+      background: #e5e5e5;
+      margin: 6px 8px;
+    }
+
+    .sidebar.collapsed .nav-separator { margin: 6px 4px; }
+
+    /* ── Footer ── */
+    .sidebar-footer {
+      padding: 8px 12px;
+      border-top: 1px solid #e5e5e5;
+      font-size: 10px;
+      color: #b3b3b3;
+      text-align: center;
+    }
+
+    .sidebar.collapsed .sidebar-footer { display: none; }
+
+    /* ── Content ── */
+    .content {
+      flex: 1;
+      min-width: 0;
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .content iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: #fff;
+    }
+
+    .kbd-hint {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      justify-content: center;
+      margin-top: 2px;
+    }
+
+    kbd {
+      background: rgba(0,0,0,0.05);
+      padding: 1px 4px;
+      border-radius: 3px;
+      font-family: 'Wix Madefor Text', sans-serif;
+      font-size: 10px;
+      color: #b3b3b3;
+    }
+
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: #999;
+      font-size: 13px;
+    }
+
+    /* ── Tooltip ── */
+    .nav-tooltip {
+      position: fixed;
+      background: #333;
+      color: #fff;
+      padding: 4px 8px;
+      border-radius: 5px;
+      font-family: 'Wix Madefor Text', -apple-system, sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      white-space: nowrap;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      z-index: 9999;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.12s;
+    }
+    .nav-tooltip.visible { opacity: 1; }
+  </style>
+  <script src="concepts-data.js"></script>
+</head>
+<body>
+<div class="nav-tooltip" id="navTooltip"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <button class="toggle-btn" id="toggleBtn" title="Toggle sidebar">‹</button>
+    <span class="sidebar-title" id="sidebarTitle">UX Concepts</span>
+  </div>
+
+  <div class="nav-list" id="navList">
+    <div class="loading">Loading…</div>
+  </div>
+
+  <div class="sidebar-footer">
+    <div class="kbd-hint"><kbd>↑</kbd> <kbd>↓</kbd> navigate · <kbd>[</kbd> toggle sidebar</div>
+  </div>
+</nav>
+
+<main class="content">
+  <iframe id="conceptFrame" src="about:blank"></iframe>
+</main>
+
+<script>
+  const EXISTING_COLORS = { light: '#d4d4d4', rich: '#888' };
+
+  function getConceptColors(index) {
+    const palette = [
+      { light: '#c8ddf5', rich: '#3b82f6' },
+      { light: '#d0d4f4', rich: '#6366f1' },
+      { light: '#b8e8d0', rich: '#10b981' },
+      { light: '#f4c8dd', rich: '#ec4899' },
+      { light: '#f4e0a8', rich: '#eab308' },
+      { light: '#d8ccf0', rich: '#8b5cf6' },
+      { light: '#b0e0da', rich: '#14b8a6' },
+      { light: '#f4c8c8', rich: '#ef4444' },
+      { light: '#b8ddf4', rich: '#0ea5e9' },
+      { light: '#e0ccf4', rich: '#a855f7' },
+      { light: '#b8e4c0', rich: '#22c55e' },
+      { light: '#f4d4b0', rich: '#f97316' },
+    ];
+    return palette[index % palette.length];
+  }
+
+  let entries = [];
+  let activeIndex = 0;
+  const activeAreaByEntry = new Map();
+
+  const navList = document.getElementById('navList');
+  const frame = document.getElementById('conceptFrame');
+  const sidebar = document.getElementById('sidebar');
+  const toggleBtn = document.getElementById('toggleBtn');
+  const sidebarTitle = document.getElementById('sidebarTitle');
+  const urlParams = new URLSearchParams(window.location.search);
+
+  function getEntryKey(entry, index) {
+    return entry.id || `entry-${index}`;
+  }
+
+  function getEntryAreas(entry) {
+    if (!Array.isArray(entry.areas)) return [];
+    return entry.areas.filter((area) => area && area.src);
+  }
+
+  function getActiveAreaIndex(entry, index) {
+    const areas = getEntryAreas(entry);
+    if (!areas.length) return -1;
+    const saved = activeAreaByEntry.get(getEntryKey(entry, index));
+    if (typeof saved === 'number' && saved >= 0 && saved < areas.length) return saved;
+    const bySrc = areas.findIndex((area) => area.src === entry.src);
+    if (bySrc !== -1) return bySrc;
+    return 0;
+  }
+
+  function setActiveAreaIndex(entry, index, areaIndex) {
+    const areas = getEntryAreas(entry);
+    if (!areas.length) return;
+    const safeIndex = Math.max(0, Math.min(areaIndex, areas.length - 1));
+    activeAreaByEntry.set(getEntryKey(entry, index), safeIndex);
+  }
+
+  function getActiveSource(entry, index) {
+    const areas = getEntryAreas(entry);
+    if (!areas.length) return entry.src;
+    const areaIndex = getActiveAreaIndex(entry, index);
+    return areas[areaIndex].src;
+  }
+
+  function render() {
+    navList.innerHTML = '';
+    entries.forEach((entry, i) => {
+      if (entry._separator) {
+        const sep = document.createElement('div');
+        sep.className = 'nav-separator';
+        navList.appendChild(sep);
+        return;
+      }
+
+      const item = document.createElement('div');
+      item.className = 'nav-item' + (i === activeIndex ? ' active' : '');
+      item.setAttribute('data-tooltip', entry.name);
+
+      const isActive = i === activeIndex;
+      const numBg = isActive ? entry._colorRich : entry._colorLight;
+      const numberEl = `<div class="nav-number" style="background:${numBg}">${entry._label}</div>`;
+      const badgeEl = entry.badge ? `<span class="nav-badge">${entry.badge}</span>` : '';
+      const areas = getEntryAreas(entry);
+      const activeAreaIndex = isActive ? getActiveAreaIndex(entry, i) : -1;
+      const areasEl = isActive && areas.length
+        ? `<div class="nav-areas">${areas.map((area, areaIndex) => (
+            `<button class="nav-area-item${areaIndex === activeAreaIndex ? ' active' : ''}" data-area-index="${areaIndex}" type="button">${area.name}</button>`
+          )).join('')}</div>`
+        : '';
+
+      item.innerHTML = `
+        <div class="nav-item-header">
+          ${numberEl}
+          <div class="nav-text">
+            <div class="nav-name">${entry.name}</div>
+            <div class="nav-desc">${entry.desc}</div>
+            ${badgeEl}
+            ${areasEl}
+          </div>
+        </div>
+      `;
+      item.addEventListener('click', () => navigate(i));
+      item.querySelectorAll('.nav-area-item').forEach((areaButton) => {
+        areaButton.addEventListener('click', (event) => {
+          event.stopPropagation();
+          const areaIndex = Number(areaButton.getAttribute('data-area-index'));
+          if (Number.isNaN(areaIndex)) return;
+          navigate(i, areaIndex);
+        });
+      });
+      navList.appendChild(item);
+    });
+  }
+
+  frame.addEventListener('load', function() {
+    try {
+      frame.contentDocument.documentElement.style.overflowX = 'hidden';
+      frame.contentDocument.body.style.overflowX = 'hidden';
+      let viewerStyle = frame.contentDocument.getElementById('conceptViewerInjectedStyle');
+      if (!viewerStyle) {
+        viewerStyle = frame.contentDocument.createElement('style');
+        viewerStyle.id = 'conceptViewerInjectedStyle';
+        frame.contentDocument.head.appendChild(viewerStyle);
+      }
+      viewerStyle.textContent = '.page-nav { display: none !important; }';
+    } catch(e) {}
+  });
+
+  function navigate(index, areaIndex = undefined) {
+    if (entries[index] && entries[index]._separator) return;
+    activeIndex = index;
+    const activeEntry = entries[index];
+    if (typeof areaIndex === 'number') {
+      setActiveAreaIndex(activeEntry, index, areaIndex);
+    }
+    frame.src = getActiveSource(activeEntry, index);
+    if (entries[index] && entries[index].id) {
+      const nextUrl = new URL(window.location.href);
+      nextUrl.searchParams.set('concept', entries[index].id);
+      const areas = getEntryAreas(activeEntry);
+      if (areas.length) {
+        const nextArea = areas[getActiveAreaIndex(activeEntry, index)];
+        if (nextArea && nextArea.id) {
+          nextUrl.searchParams.set('area', nextArea.id);
+        } else {
+          nextUrl.searchParams.delete('area');
+        }
+      } else {
+        nextUrl.searchParams.delete('area');
+      }
+      window.history.replaceState({}, '', nextUrl.toString());
+    }
+    render();
+  }
+
+  function getInitialSelection() {
+    const conceptParam = urlParams.get('concept');
+    const areaParam = urlParams.get('area');
+    let conceptIndex = 0;
+
+    if (conceptParam) {
+      const byId = entries.findIndex((entry) => !entry._separator && entry.id === conceptParam);
+      if (byId !== -1) {
+        conceptIndex = byId;
+      } else if (/^\d+$/.test(conceptParam)) {
+        const numericIndex = Number(conceptParam) - 1;
+        if (entries[numericIndex] && !entries[numericIndex]._separator) {
+          conceptIndex = numericIndex;
+        }
+      }
+    }
+
+    const conceptEntry = entries[conceptIndex];
+    const areas = getEntryAreas(conceptEntry);
+    if (!areas.length) {
+      return { conceptIndex };
+    }
+
+    let areaIndex;
+    if (areaParam) {
+      const byAreaId = areas.findIndex((area) => area.id === areaParam);
+      if (byAreaId !== -1) {
+        areaIndex = byAreaId;
+      } else if (/^\d+$/.test(areaParam)) {
+        const numericAreaIndex = Number(areaParam) - 1;
+        if (areas[numericAreaIndex]) areaIndex = numericAreaIndex;
+      }
+    }
+
+    if (typeof areaIndex !== 'number') {
+      areaIndex = getActiveAreaIndex(conceptEntry, conceptIndex);
+    }
+
+    return { conceptIndex, areaIndex };
+  }
+
+  function findNextNavigable(from, direction) {
+    let i = from + direction;
+    while (i >= 0 && i < entries.length) {
+      if (!entries[i]._separator) return i;
+      i += direction;
+    }
+    return from;
+  }
+
+  toggleBtn.addEventListener('click', () => {
+    sidebar.classList.toggle('collapsed');
+    toggleBtn.textContent = sidebar.classList.contains('collapsed') ? '›' : '‹';
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      navigate(findNextNavigable(activeIndex, 1));
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      navigate(findNextNavigable(activeIndex, -1));
+    } else if (e.key === '[') {
+      sidebar.classList.toggle('collapsed');
+    }
+  });
+
+  /*
+   * CONCEPTS DATA — loaded from concepts-data.js via <script src>.
+   * The agent writes/updates concepts-data.js only; this HTML file is static after initial copy.
+   * concepts-data.js declares: var CONCEPTS_DATA = { title: "...", concepts: [...], existing: ... };
+   */
+  if (typeof CONCEPTS_DATA === 'undefined') var CONCEPTS_DATA = { title: "UX Concepts", concepts: [], existing: null };
+
+  (function loadConcepts(data) {
+    if (data.title) {
+      document.title = 'UX Concepts — ' + data.title;
+      sidebarTitle.textContent = data.title;
+    }
+
+    data.concepts.forEach((c, i) => {
+      const colors = getConceptColors(i);
+      entries.push({
+        ...c,
+        _colorLight: colors.light,
+        _colorRich: colors.rich,
+        _label: String(i + 1)
+      });
+    });
+
+    if (data.existing) {
+      entries.push({ _separator: true });
+      entries.push({
+        ...data.existing,
+        id: data.existing.id || 'existing-product',
+        _colorLight: EXISTING_COLORS.light,
+        _colorRich: EXISTING_COLORS.rich,
+        _label: '◎'
+      });
+    }
+
+    render();
+    if (entries.length > 0) {
+      const initial = getInitialSelection();
+      navigate(initial.conceptIndex, initial.areaIndex);
+    }
+  })(CONCEPTS_DATA);
+
+  const navTooltip = document.getElementById('navTooltip');
+  navList.addEventListener('mouseover', function(e) {
+    const item = e.target.closest('.nav-item');
+    if (!item || !sidebar.classList.contains('collapsed')) { navTooltip.classList.remove('visible'); return; }
+    const tip = item.getAttribute('data-tooltip');
+    if (!tip) return;
+    navTooltip.textContent = tip;
+    const rect = item.getBoundingClientRect();
+    navTooltip.style.left = rect.left + 'px';
+    navTooltip.style.top = (rect.top - 6) + 'px';
+    navTooltip.style.transform = 'translateY(-100%)';
+    navTooltip.classList.add('visible');
+  });
+  navList.addEventListener('mouseout', function(e) {
+    if (!e.target.closest('.nav-item')) navTooltip.classList.remove('visible');
+  });
+</script>
+
+</body>
+</html>

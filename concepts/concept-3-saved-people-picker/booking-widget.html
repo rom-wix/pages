@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Concept 3 — Saved People Picker</title>
+  <style>
+    * { font-family: 'Comic Sans MS', cursive; transition: none !important; animation: none !important; box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-size: 14px; color: #000; background: #f9f8f6; min-height: 100vh; }
+    a { color: #374151; text-decoration: underline; }
+    button, input, select, textarea { border-radius: 0 !important; font-family: 'Comic Sans MS', cursive; font-size: 14px; }
+
+    .site-header { display: flex; align-items: center; justify-content: space-between; padding: 0 48px; height: 60px; border-bottom: 1px solid #e5e7eb; background: #f9f8f6; }
+    .site-logo { font-size: 16px; font-weight: bold; letter-spacing: 3px; }
+    .site-nav { display: flex; gap: 32px; }
+    .site-nav a { text-decoration: none; font-size: 12px; color: #333; letter-spacing: 1px; text-transform: uppercase; }
+    .site-header-right { display: flex; align-items: center; gap: 24px; }
+    .book-now-btn { border: 1px solid #000; background: transparent; padding: 8px 20px; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; }
+    .login-link { font-size: 12px; color: #333; text-decoration: none; display: flex; align-items: center; gap: 6px; }
+
+    .page-content { max-width: 960px; margin: 0 auto; padding: 40px 24px 80px; }
+    .back-link { font-size: 13px; color: #555; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; margin-bottom: 20px; }
+    .page-title { font-size: 28px; font-weight: bold; margin-bottom: 28px; }
+
+    .concept-banner { background: #fff; border: 1px solid #000; padding: 10px 14px; font-size: 12px; margin-bottom: 24px; }
+    .concept-banner .tag { background: #000; color: #fff; padding: 2px 8px; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; margin-right: 8px; }
+
+    .form-layout { display: flex; gap: 40px; align-items: flex-start; }
+    .form-main { flex: 1; min-width: 0; }
+    .section-heading { font-size: 16px; font-weight: bold; margin-bottom: 16px; }
+
+    .login-prompt { border: 1px solid #e5e7eb; padding: 10px 14px; font-size: 13px; color: #555; margin-bottom: 20px; background: #fff; }
+
+    /* CONCEPT 3 CHANGE: Saved people picker */
+    .people-picker { background: #fff; border: 2px solid #000; padding: 20px; margin-bottom: 24px; }
+    .picker-label { font-size: 15px; font-weight: bold; margin-bottom: 4px; }
+    .picker-sub { font-size: 12px; color: #666; margin-bottom: 14px; }
+
+    .people-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 12px; }
+    .person-chip {
+      border: 1px solid #d1d5db; background: #fff; padding: 12px; cursor: pointer; text-align: left;
+      display: flex; gap: 10px; align-items: center;
+    }
+    .person-chip:hover { border-color: #000; background: #f9f8f6; }
+    .person-chip.selected { border-color: #000; background: #f4f3f0; border-width: 2px; padding: 11px; }
+    .person-avatar { width: 36px; height: 36px; border: 1px solid #000; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px; flex-shrink: 0; background: #fff; }
+    .person-info { min-width: 0; }
+    .person-name { font-size: 13px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .person-rel { font-size: 11px; color: #666; margin-top: 1px; }
+    .person-chip.add-new { border-style: dashed; color: #666; justify-content: center; text-align: center; }
+    .person-chip.add-new:hover { border-color: #000; color: #000; background: #fff; }
+    .person-chip.add-new .person-info { text-align: center; }
+
+    .book-more-row {
+      display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid #e5e7eb;
+    }
+    .book-more-link { font-size: 13px; color: #000; text-decoration: underline; cursor: pointer; }
+
+    /* Selected attendees list */
+    .attendees-list { margin-bottom: 24px; }
+    .selected-pill {
+      display: inline-flex; gap: 6px; align-items: center; padding: 4px 10px;
+      border: 1px solid #000; background: #000; color: #fff; font-size: 12px; margin-right: 6px; margin-bottom: 6px;
+    }
+    .selected-pill.me { background: #fff; color: #000; }
+    .pill-remove { cursor: pointer; margin-left: 4px; font-weight: bold; }
+
+    /* Standard form */
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .form-field { margin-bottom: 12px; }
+    .form-label { font-size: 12px; color: #333; margin-bottom: 4px; display: block; }
+    .form-input { width: 100%; padding: 9px 11px; border: 1px solid #d1d5db; background: #fff; font-family: 'Comic Sans MS', cursive; font-size: 13px; color: #000; }
+    .form-input:focus { outline: 2px solid #000; border-color: #000; }
+    .form-input.pre-filled { background: #f9f8f6; color: #444; }
+
+    /* Sidebar */
+    .booking-sidebar { width: 260px; flex-shrink: 0; }
+    .sidebar-card { border: 1px solid #e5e7eb; background: #fff; padding: 16px; }
+    .sidebar-section-title { font-size: 14px; font-weight: bold; margin-bottom: 12px; }
+    .booking-service-name { font-size: 13px; font-weight: bold; margin-bottom: 2px; }
+    .booking-datetime { font-size: 12px; color: #555; margin-bottom: 12px; }
+    .attendees-row { font-size: 12px; color: #555; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #e5e7eb; }
+    .payment-row { display: flex; justify-content: space-between; font-size: 12px; color: #555; margin-bottom: 4px; }
+    .payment-breakdown { font-size: 11px; color: #888; padding-left: 12px; margin-bottom: 2px; }
+    .payment-total { display: flex; justify-content: space-between; font-size: 14px; font-weight: bold; margin-top: 8px; padding-top: 8px; border-top: 1px solid #e5e7eb; }
+    .btn-primary { width: 100%; padding: 12px; border: none; background: #000; font-family: 'Comic Sans MS', cursive; font-size: 13px; cursor: pointer; color: #fff; margin-top: 16px; }
+    .btn-secondary { width: 100%; padding: 10px; border: 1px solid #000; background: #fff; font-family: 'Comic Sans MS', cursive; font-size: 13px; cursor: pointer; color: #000; margin-top: 8px; }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="site-nav">
+    <a href="#">Treatments</a>
+    <a href="#">Events</a>
+    <a href="#">Membership</a>
+    <a href="#">Contact</a>
+  </nav>
+  <div class="site-logo">PARKYSPA</div>
+  <div class="site-header-right">
+    <button class="book-now-btn">Book now →</button>
+    <a href="#" class="login-link">👤 Log In</a>
+  </div>
+</header>
+
+<div class="page-content">
+  <a href="#" class="back-link">‹ Back</a>
+
+  <div class="concept-banner">
+    <span class="tag">Concept 3</span>
+    <strong>Saved People Picker</strong> — you're already logged in, so we show you people you've booked for before as avatar chips. Pick who's coming, skip re-typing details.
+  </div>
+
+  <h1 class="page-title">Who's coming today?</h1>
+
+  <div class="form-layout">
+    <div class="form-main">
+
+      <!-- CONCEPT 3 CHANGE: Saved people picker card -->
+      <div class="people-picker">
+        <div class="picker-label">Select from your people</div>
+        <div class="picker-sub">People you've booked for before. Details are saved for next time.</div>
+
+        <div class="people-grid">
+          <div class="person-chip selected" onclick="togglePerson(this, 'carlos')">
+            <div class="person-avatar">CL</div>
+            <div class="person-info">
+              <div class="person-name">Carlos Lampel</div>
+              <div class="person-rel">You · Payer</div>
+            </div>
+          </div>
+          <div class="person-chip selected" onclick="togglePerson(this, 'maya')">
+            <div class="person-avatar">M</div>
+            <div class="person-info">
+              <div class="person-name">Maya Lampel</div>
+              <div class="person-rel">Daughter · age 8</div>
+            </div>
+          </div>
+          <div class="person-chip" onclick="togglePerson(this, 'leo')">
+            <div class="person-avatar">L</div>
+            <div class="person-info">
+              <div class="person-name">Leo Lampel</div>
+              <div class="person-rel">Son · age 11</div>
+            </div>
+          </div>
+          <div class="person-chip" onclick="togglePerson(this, 'dana')">
+            <div class="person-avatar">D</div>
+            <div class="person-info">
+              <div class="person-name">Dana Cohen</div>
+              <div class="person-rel">Partner</div>
+            </div>
+          </div>
+          <div class="person-chip" onclick="togglePerson(this, 'sara')">
+            <div class="person-avatar">S</div>
+            <div class="person-info">
+              <div class="person-name">Sara Levi</div>
+              <div class="person-rel">Mother</div>
+            </div>
+          </div>
+          <div class="person-chip add-new" onclick="alert('Concept 3: opens quick-add form to create a new saved person.')">
+            <div class="person-info">
+              <div class="person-name">+ Add someone new</div>
+              <div class="person-rel">Save them for next time</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="book-more-row">
+          <div style="font-size: 12px; color: #666;">
+            <strong id="selectedCount">2 selected</strong> · one booking, separate confirmations
+          </div>
+          <a class="book-more-link" href="#">Book different times for each? →</a>
+        </div>
+      </div>
+
+      <!-- Review selected -->
+      <div class="section-heading">Confirm attendee details</div>
+
+      <div class="attendees-list" id="attendeesList">
+        <!-- pills -->
+      </div>
+
+      <!-- Payer confirm -->
+      <div class="login-prompt">
+        <strong>Carlos Lampel</strong> is paying. carloslempel@gmail.com will receive the receipt.
+        <a href="#">Use a different payment method →</a>
+      </div>
+
+      <!-- Per-attendee summary (collapsed) -->
+      <div id="attendeeDetails">
+        <!-- JS-rendered mini forms if details are missing -->
+      </div>
+
+    </div>
+
+    <!-- Sidebar -->
+    <div class="booking-sidebar">
+      <div class="sidebar-card">
+        <div class="sidebar-section-title">Booking Details</div>
+        <div class="booking-service-name">Weekly Group Sessions</div>
+        <div class="booking-datetime">April 29, 2026 at 9:30 am</div>
+
+        <div class="attendees-row">
+          <strong id="sidebarAttendeesCount">2 attendees:</strong><br>
+          <span id="sidebarAttendeesList">Carlos, Maya</span>
+        </div>
+
+        <div class="payment-row"><span>Subtotal</span><span id="sidebarSubtotal">$160</span></div>
+        <div class="payment-breakdown" id="sidebarBreakdown">2 × $80</div>
+        <div class="payment-total"><span>Total</span><span id="sidebarTotal">$160</span></div>
+
+        <button class="btn-primary">Book Now</button>
+        <button class="btn-secondary">Save for later</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const PEOPLE = {
+    carlos: { name: 'Carlos Lampel', email: 'carloslempel@gmail.com', rel: 'You · Payer', saved: true, me: true },
+    maya: { name: 'Maya Lampel', email: 'maya.l@kids-mail.com', rel: 'Daughter · age 8', saved: true },
+    leo: { name: 'Leo Lampel', email: 'leo.l@kids-mail.com', rel: 'Son · age 11', saved: true },
+    dana: { name: 'Dana Cohen', email: 'dana.c@gmail.com', rel: 'Partner', saved: true },
+    sara: { name: 'Sara Levi', email: 'sara.levi@gmail.com', rel: 'Mother', saved: true },
+  };
+  let selected = new Set(['carlos', 'maya']);
+  const PRICE = 80;
+
+  function togglePerson(el, key) {
+    if (selected.has(key)) selected.delete(key);
+    else selected.add(key);
+    el.classList.toggle('selected');
+    render();
+  }
+
+  function render() {
+    const list = document.getElementById('attendeesList');
+    list.innerHTML = '';
+    selected.forEach(key => {
+      const p = PEOPLE[key];
+      const pill = document.createElement('span');
+      pill.className = 'selected-pill' + (p.me ? ' me' : '');
+      pill.innerHTML = `${p.name} <span class="pill-remove" onclick="removePerson('${key}')">×</span>`;
+      list.appendChild(pill);
+    });
+
+    const count = selected.size;
+    document.getElementById('selectedCount').textContent = `${count} selected`;
+    document.getElementById('sidebarAttendeesCount').textContent = `${count} ${count === 1 ? 'attendee' : 'attendees'}:`;
+    document.getElementById('sidebarAttendeesList').textContent = Array.from(selected).map(k => PEOPLE[k].name.split(' ')[0]).join(', ');
+    document.getElementById('sidebarSubtotal').textContent = `$${count * PRICE}`;
+    document.getElementById('sidebarBreakdown').textContent = `${count} × $${PRICE}`;
+    document.getElementById('sidebarTotal').textContent = `$${count * PRICE}`;
+  }
+
+  function removePerson(key) {
+    selected.delete(key);
+    document.querySelectorAll('.person-chip').forEach(c => {
+      if (c.getAttribute('onclick') && c.getAttribute('onclick').includes(`'${key}'`)) c.classList.remove('selected');
+    });
+    render();
+  }
+  render();
+</script>
+</body>
+</html>

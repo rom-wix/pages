@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Concept 1 — Service Settings</title>
+  <style>
+    * { font-family: 'Comic Sans MS', cursive; transition: none !important; animation: none !important; box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-size: 13px; color: #000; background: #f3f4f6; min-height: 100vh; }
+    button, input, select { border-radius: 0 !important; font-family: 'Comic Sans MS', cursive; font-size: 13px; }
+
+    .dashboard-header { height: 56px; background: #fff; border-bottom: 1px solid #e5e7eb; padding: 0 24px; display: flex; align-items: center; gap: 16px; }
+    .dash-logo { font-weight: bold; font-size: 14px; letter-spacing: 2px; }
+    .dash-crumbs { font-size: 12px; color: #666; }
+    .dash-crumbs a { color: #374151; text-decoration: none; }
+
+    .page { max-width: 900px; margin: 24px auto; padding: 0 24px 80px; }
+    .page-title { font-size: 22px; font-weight: bold; margin-bottom: 4px; }
+    .page-sub { font-size: 13px; color: #666; margin-bottom: 24px; }
+
+    .concept-banner { background: #fff; border: 1px solid #000; padding: 10px 14px; font-size: 12px; margin-bottom: 20px; }
+    .concept-banner .tag { background: #000; color: #fff; padding: 2px 8px; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; margin-right: 8px; }
+
+    .section { background: #fff; border: 1px solid #e5e7eb; padding: 24px; margin-bottom: 16px; }
+    .section-title { font-size: 16px; font-weight: bold; margin-bottom: 4px; }
+    .section-sub { font-size: 12px; color: #666; margin-bottom: 16px; }
+
+    .setting-row { padding: 16px 0; border-bottom: 1px solid #f3f4f6; display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; }
+    .setting-row:last-child { border-bottom: none; }
+    .setting-label { font-size: 13px; font-weight: bold; margin-bottom: 4px; }
+    .setting-desc { font-size: 12px; color: #666; line-height: 1.5; max-width: 440px; }
+
+    .toggle { width: 44px; height: 24px; background: #e5e7eb; border: 1px solid #d1d5db; cursor: pointer; position: relative; flex-shrink: 0; }
+    .toggle.on { background: #000; border-color: #000; }
+    .toggle::after { content: ''; position: absolute; top: 1px; left: 1px; width: 20px; height: 20px; background: #fff; }
+    .toggle.on::after { left: 21px; }
+
+    .new-badge { background: #000; color: #fff; padding: 1px 6px; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; margin-left: 6px; vertical-align: middle; }
+
+    .capacity-row { display: flex; gap: 10px; align-items: center; margin-top: 8px; }
+    .capacity-input { width: 80px; padding: 8px 10px; border: 1px solid #d1d5db; background: #fff; }
+    .muted { color: #888; font-size: 12px; }
+  </style>
+</head>
+<body>
+
+<div class="dashboard-header">
+  <div class="dash-logo">wix</div>
+  <div class="dash-crumbs"><a href="#">Bookings</a> / <a href="#">Services</a> / Weekly Session</div>
+</div>
+
+<div class="page">
+  <div class="concept-banner">
+    <span class="tag">Concept 1</span>
+    Service settings — turning on "For someone else" exposes the fork at the front of the booking widget.
+  </div>
+
+  <div class="page-title">Weekly Session</div>
+  <div class="page-sub">Configure how this service is booked by customers.</div>
+
+  <!-- Booking preferences section -->
+  <div class="section">
+    <div class="section-title">Booking preferences</div>
+    <div class="section-sub">Control how this service appears in the booking widget.</div>
+
+    <div class="setting-row">
+      <div>
+        <div class="setting-label">Allow online bookings</div>
+        <div class="setting-desc">Customers can book this service from your site.</div>
+      </div>
+      <div class="toggle on"></div>
+    </div>
+
+    <!-- CONCEPT 1 CHANGE: new toggle for proxy booking -->
+    <div class="setting-row">
+      <div>
+        <div class="setting-label">Allow booking for someone else <span class="new-badge">New</span></div>
+        <div class="setting-desc">Shows a "Who is this appointment for?" fork at the start of the booking widget. Lets customers book for a child, patient, friend, or colleague.</div>
+      </div>
+      <div class="toggle on"></div>
+    </div>
+
+    <!-- CONCEPT 1 CHANGE: capacity for appointments -->
+    <div class="setting-row">
+      <div>
+        <div class="setting-label">Group booking capacity <span class="new-badge">New</span></div>
+        <div class="setting-desc">Maximum number of participants who can share a single appointment slot. Set to 1 to keep this a solo service.</div>
+        <div class="capacity-row">
+          <input type="number" class="capacity-input" value="1" min="1" max="20" />
+          <span class="muted">participants per slot</span>
+        </div>
+      </div>
+      <div></div>
+    </div>
+
+    <div class="setting-row">
+      <div>
+        <div class="setting-label">Require confirmation</div>
+        <div class="setting-desc">Review and approve requests before they're confirmed.</div>
+      </div>
+      <div class="toggle"></div>
+    </div>
+  </div>
+
+  <!-- Participant fields section -->
+  <div class="section">
+    <div class="section-title">Participant details to collect <span class="new-badge">New</span></div>
+    <div class="section-sub">When "For someone else" is selected, ask for these details about the participant (not the payer).</div>
+
+    <div class="setting-row">
+      <div>
+        <div class="setting-label">Name</div>
+        <div class="setting-desc">Required — used on the appointment record.</div>
+      </div>
+      <div class="toggle on" style="opacity: .4;"></div>
+    </div>
+
+    <div class="setting-row">
+      <div>
+        <div class="setting-label">Email</div>
+        <div class="setting-desc">Required — confirmations and reminders are sent here.</div>
+      </div>
+      <div class="toggle on" style="opacity: .4;"></div>
+    </div>
+
+    <div class="setting-row">
+      <div>
+        <div class="setting-label">Phone number</div>
+        <div class="setting-desc">Optional — SMS reminders (if enabled).</div>
+      </div>
+      <div class="toggle on"></div>
+    </div>
+
+    <div class="setting-row">
+      <div>
+        <div class="setting-label">Date of birth</div>
+        <div class="setting-desc">Useful for health and education services.</div>
+      </div>
+      <div class="toggle"></div>
+    </div>
+
+    <div class="setting-row">
+      <div>
+        <div class="setting-label">Relationship to payer</div>
+        <div class="setting-desc">Captures whether it's a child, patient, friend, employee, etc.</div>
+      </div>
+      <div class="toggle on"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  document.querySelectorAll('.toggle').forEach(t => t.addEventListener('click', () => t.classList.toggle('on')));
+</script>
+</body>
+</html>

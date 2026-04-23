@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking Form — Wix Bookings</title>
+  <style>
+    * { font-family: 'Comic Sans MS', cursive; transition: none !important; animation: none !important; box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-size: 14px; color: #000; background: #f9f8f6; min-height: 100vh; }
+    a { color: #374151; text-decoration: underline; }
+    button, input, select, textarea { border-radius: 0 !important; font-family: 'Comic Sans MS', cursive; font-size: 14px; }
+
+    /* Site header */
+    .site-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px; height: 60px;
+      border-bottom: 1px solid #e5e7eb; background: #f9f8f6;
+    }
+    .site-logo { font-size: 16px; font-weight: bold; letter-spacing: 3px; }
+    .site-nav { display: flex; gap: 32px; }
+    .site-nav a { text-decoration: none; font-size: 12px; color: #333; letter-spacing: 1px; text-transform: uppercase; }
+    .site-header-right { display: flex; align-items: center; gap: 24px; }
+    .book-now-btn { border: 1px solid #000; background: transparent; padding: 8px 20px; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; }
+    .login-link { font-size: 12px; color: #333; text-decoration: none; display: flex; align-items: center; gap: 6px; }
+    .login-icon { width: 18px; height: 18px; border: 1px solid #ccc; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; }
+
+    /* Page content */
+    .page-content { max-width: 960px; margin: 0 auto; padding: 40px 24px 80px; }
+    .back-link { font-size: 13px; color: #555; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; margin-bottom: 20px; }
+    .page-title { font-size: 28px; font-weight: bold; margin-bottom: 28px; }
+
+    /* Main layout */
+    .form-layout { display: flex; gap: 48px; align-items: flex-start; }
+
+    /* Left: form */
+    .form-main { flex: 1; min-width: 0; }
+    .section-heading { font-size: 16px; font-weight: bold; margin-bottom: 16px; }
+
+    .login-prompt {
+      border: 1px solid #e5e7eb; padding: 10px 14px;
+      font-size: 13px; color: #555; margin-bottom: 20px; background: #fff;
+    }
+    .login-prompt a { color: #374151; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .form-field { margin-bottom: 12px; }
+    .form-label { font-size: 12px; color: #333; margin-bottom: 4px; display: block; }
+    .form-label .required { color: #000; }
+    .form-input {
+      width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; background: #fff;
+      font-family: 'Comic Sans MS', cursive; font-size: 13px; color: #000;
+    }
+    .form-input:focus { outline: 2px solid #374151; border-color: #374151; }
+    .form-input.pre-filled { color: #333; }
+
+    .phone-field { display: flex; border: 1px solid #d1d5db; background: #fff; }
+    .phone-flag { padding: 10px 10px; font-size: 13px; border-right: 1px solid #e5e7eb; color: #555; white-space: nowrap; display: flex; align-items: center; gap: 4px; }
+    .phone-flag .flag { font-size: 16px; }
+    .phone-input { flex: 1; padding: 10px 12px; border: none; background: transparent; font-family: 'Comic Sans MS', cursive; font-size: 13px; }
+    .phone-input:focus { outline: none; }
+
+    .email-field { position: relative; }
+    .email-verified-icon { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #6b7280; font-size: 14px; }
+
+    .textarea-field { width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; background: #fff; min-height: 72px; resize: vertical; font-family: 'Comic Sans MS', cursive; font-size: 13px; }
+    .textarea-placeholder { color: #9ca3af; }
+
+    .form-divider { border: none; border-top: 1px solid #e5e7eb; margin: 20px 0; }
+
+    /* Right: booking details sidebar */
+    .booking-sidebar { width: 240px; flex-shrink: 0; }
+    .sidebar-card { border: 1px solid #e5e7eb; background: #fff; padding: 16px; }
+    .sidebar-section-title { font-size: 14px; font-weight: bold; margin-bottom: 12px; }
+    .booking-service-name { font-size: 13px; font-weight: bold; margin-bottom: 2px; }
+    .booking-datetime { font-size: 12px; color: #555; margin-bottom: 8px; }
+    .more-details { font-size: 12px; color: #374151; text-decoration: underline; cursor: pointer; display: flex; align-items: center; gap: 4px; margin-bottom: 16px; }
+    .check-icon { font-size: 10px; color: #666; }
+
+    .divider { border: none; border-top: 1px solid #e5e7eb; margin: 12px 0; }
+
+    .payment-section-title { font-size: 13px; font-weight: bold; margin-bottom: 10px; }
+    .payment-row { display: flex; justify-content: space-between; font-size: 12px; color: #555; margin-bottom: 4px; }
+    .payment-total { display: flex; justify-content: space-between; font-size: 13px; font-weight: bold; margin-top: 8px; padding-top: 8px; border-top: 1px solid #e5e7eb; }
+    .payment-breakdown { font-size: 11px; color: #777; margin-bottom: 2px; padding-left: 12px; }
+
+    .consent-text { font-size: 11px; color: #666; margin-top: 12px; line-height: 1.5; }
+    .consent-text a { font-size: 11px; }
+
+    .sidebar-actions { margin-top: 16px; display: flex; flex-direction: column; gap: 8px; }
+    .btn-secondary {
+      width: 100%; padding: 10px; border: 1px solid #374151; background: #fff;
+      font-family: 'Comic Sans MS', cursive; font-size: 13px; cursor: pointer; color: #374151;
+    }
+    .btn-secondary:hover { background: #f3f4f6; }
+    .btn-primary {
+      width: 100%; padding: 10px; border: none; background: #374151;
+      font-family: 'Comic Sans MS', cursive; font-size: 13px; cursor: pointer; color: #fff;
+    }
+    .btn-primary:hover { background: #1f2937; }
+  </style>
+</head>
+<body>
+
+<!-- Site header -->
+<header class="site-header">
+  <nav class="site-nav">
+    <a href="#">Treatments</a>
+    <a href="#">Events</a>
+    <a href="#">Membership</a>
+    <a href="#">Contact</a>
+  </nav>
+  <div class="site-logo">PARKYSPA</div>
+  <div class="site-header-right">
+    <button class="book-now-btn">Book now →</button>
+    <a href="#" class="login-link"><span class="login-icon">👤</span> Log In</a>
+  </div>
+</header>
+
+<!-- Page content -->
+<div class="page-content">
+  <a href="booking-widget-schedule.html" class="back-link">‹ Back</a>
+  <h1 class="page-title">Booking Form</h1>
+
+  <div class="form-layout">
+
+    <!-- Left: Client Details form -->
+    <div class="form-main">
+      <div class="section-heading">Client Details</div>
+
+      <div class="login-prompt">
+        Have an account? <a href="#">Log in</a>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label class="form-label">First name <span class="required">*</span></label>
+          <input class="form-input pre-filled" type="text" value="Carlos" />
+        </div>
+        <div class="form-field">
+          <label class="form-label">Last name <span class="required">*</span></label>
+          <input class="form-input pre-filled" type="text" value="Lampel" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field email-field">
+          <label class="form-label">Email <span class="required">*</span></label>
+          <input class="form-input pre-filled" type="email" value="carloslempel@gmail.com" />
+          <span class="email-verified-icon">✉</span>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Phone</label>
+          <div class="phone-field">
+            <div class="phone-flag"><span class="flag">🇮🇱</span> +972</div>
+            <input class="phone-input" type="tel" value="54922…" />
+          </div>
+        </div>
+      </div>
+
+      <div class="form-field">
+        <textarea class="textarea-field" placeholder="Add your message"></textarea>
+      </div>
+
+    </div>
+
+    <!-- Right: Booking Details sidebar -->
+    <div class="booking-sidebar">
+      <div class="sidebar-card">
+        <div class="sidebar-section-title">Booking Details</div>
+
+        <div class="booking-service-name">Weekly Group Sessions</div>
+        <div class="booking-datetime">April 29, 2026 at 9:30 am</div>
+        <div class="more-details">More details <span class="check-icon">✓</span></div>
+
+        <div class="divider"></div>
+
+        <div class="payment-section-title">Payment Details</div>
+        <div class="payment-row">
+          <span>Subtotal</span>
+          <span>$240</span>
+        </div>
+        <div class="payment-breakdown">2 × $80 Adult</div>
+        <div class="payment-breakdown">3 × $60 Child</div>
+        <div class="payment-total">
+          <span>Total</span>
+          <span>$240</span>
+        </div>
+
+        <div class="consent-text">
+          By completing your booking, you agree to receive related phone notifications.
+        </div>
+
+        <div class="sidebar-actions">
+          <button class="btn-secondary">Add to Cart</button>
+          <button class="btn-primary">Book Now</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

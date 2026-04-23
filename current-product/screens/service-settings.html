@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Service Settings — Wix Bookings</title>
+  <style>
+    * { font-family: 'Comic Sans MS', cursive; transition: none !important; animation: none !important; box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-size: 14px; color: #000; background: #f3f4f6; min-height: 100vh; }
+    a { color: #374151; text-decoration: underline; }
+    button, input, select, textarea { border-radius: 0 !important; font-family: 'Comic Sans MS', cursive; font-size: 14px; }
+
+    /* BM Shell */
+    .bm-shell { display: flex; min-height: 100vh; }
+
+    /* Left nav */
+    .bm-leftnav {
+      width: 56px; background: #1f2937; display: flex; flex-direction: column; align-items: center;
+      padding: 12px 0; gap: 8px; flex-shrink: 0;
+    }
+    .bm-nav-icon { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; color: #9ca3af; font-size: 18px; cursor: pointer; }
+    .bm-nav-icon:hover { color: #fff; background: rgba(255,255,255,0.1); }
+    .bm-nav-icon.active { color: #fff; }
+    .bm-nav-spacer { flex: 1; }
+
+    /* Main page */
+    .bm-page { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+
+    /* Top bar */
+    .bm-topbar {
+      height: 52px; background: #fff; border-bottom: 1px solid #e5e7eb;
+      display: flex; align-items: center; padding: 0 24px; gap: 16px; flex-shrink: 0;
+    }
+    .bm-topbar-title { font-size: 13px; color: #555; }
+    .bm-topbar-sep { color: #ccc; }
+
+    /* Page content area */
+    .page-content { flex: 1; overflow-y: auto; }
+
+    /* Page header */
+    .page-header {
+      background: #fff; border-bottom: 1px solid #e5e7eb;
+      padding: 0 32px;
+    }
+    .page-header-top { display: flex; align-items: center; justify-content: space-between; padding: 14px 0 10px; }
+    .breadcrumb { font-size: 12px; color: #6b7280; display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
+    .breadcrumb a { color: #6b7280; text-decoration: none; }
+    .breadcrumb-sep { color: #ccc; }
+    .page-title { font-size: 22px; font-weight: bold; }
+    .action-bar { display: flex; gap: 8px; }
+    .btn { padding: 8px 16px; border: 1px solid #d1d5db; background: #fff; cursor: pointer; font-family: 'Comic Sans MS', cursive; font-size: 13px; }
+    .btn:hover { background: #f3f4f6; }
+    .btn-primary { background: #374151; color: #fff; border-color: #374151; }
+    .btn-primary:hover { background: #1f2937; }
+
+    /* Page body layout */
+    .page-body { display: flex; gap: 24px; padding: 24px 32px; align-items: flex-start; }
+    .main-col { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
+    .side-col { width: 280px; flex-shrink: 0; display: flex; flex-direction: column; gap: 16px; }
+
+    /* Service type switcher */
+    .type-switcher { display: flex; border: 1px solid #d1d5db; background: #fff; overflow: hidden; }
+    .type-option { flex: 1; padding: 8px 12px; text-align: center; cursor: pointer; font-size: 13px; border-right: 1px solid #d1d5db; }
+    .type-option:last-child { border-right: none; }
+    .type-option.active { background: #1f2937; color: #fff; }
+    .type-option:hover:not(.active) { background: #f3f4f6; }
+
+    /* Cards */
+    .card { background: #fff; border: 1px solid #e5e7eb; overflow: hidden; }
+    .card-header {
+      padding: 16px 20px; display: flex; align-items: center; justify-content: space-between;
+      cursor: pointer; border-bottom: 1px solid #e5e7eb;
+    }
+    .card-header-left { }
+    .card-header-title { font-size: 15px; font-weight: bold; }
+    .card-header-subtitle { font-size: 12px; color: #6b7280; margin-top: 2px; }
+    .card-chevron { font-size: 16px; color: #9ca3af; }
+    .card-content { padding: 20px; display: none; }
+    .card-content.expanded { display: block; }
+
+    /* Form elements */
+    .form-section { margin-bottom: 20px; }
+    .form-section:last-child { margin-bottom: 0; }
+    .form-group { margin-bottom: 14px; }
+    .form-label { font-size: 12px; color: #374151; margin-bottom: 5px; display: block; font-weight: bold; }
+    .form-sublabel { font-size: 11px; color: #6b7280; margin-bottom: 5px; display: block; }
+    .form-input {
+      width: 100%; padding: 9px 12px; border: 1px solid #d1d5db; background: #fff;
+      font-family: 'Comic Sans MS', cursive; font-size: 13px;
+    }
+    .form-input:focus { outline: 2px solid #374151; }
+    .form-textarea { width: 100%; padding: 9px 12px; border: 1px solid #d1d5db; min-height: 80px; resize: vertical; font-family: 'Comic Sans MS', cursive; font-size: 13px; }
+    .form-select {
+      width: 100%; padding: 9px 12px; border: 1px solid #d1d5db; background: #fff;
+      font-family: 'Comic Sans MS', cursive; font-size: 13px; appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23555' d='M0 0l6 8 6-8z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 10px center; padding-right: 28px;
+    }
+
+    /* Location row */
+    .location-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-top: 1px solid #f3f4f6; }
+    .location-name { font-size: 13px; }
+    .location-badge { font-size: 11px; background: #e5e7eb; padding: 2px 8px; color: #555; }
+    .add-location-link { font-size: 12px; color: #374151; text-decoration: underline; cursor: pointer; }
+
+    /* Duration */
+    .duration-row { display: flex; align-items: center; gap: 12px; }
+    .duration-select { width: 120px; padding: 9px 12px; border: 1px solid #d1d5db; font-family: 'Comic Sans MS', cursive; font-size: 13px; }
+
+    /* Divider */
+    .section-divider { border: none; border-top: 1px solid #e5e7eb; margin: 16px 0; }
+
+    /* Toggle switch */
+    .toggle-row { display: flex; align-items: center; gap: 14px; }
+    .toggle-switch { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; position: absolute; }
+    .toggle-track {
+      position: absolute; inset: 0; background: #d1d5db; cursor: pointer;
+    }
+    .toggle-track.on { background: #374151; }
+    .toggle-knob {
+      position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; background: #fff;
+    }
+    .toggle-track.on .toggle-knob { left: calc(100% - 21px); }
+    .toggle-label-text { }
+    .toggle-title { font-size: 14px; font-weight: bold; margin-bottom: 2px; }
+    .toggle-subtitle { font-size: 12px; color: #6b7280; }
+
+    /* Booking form row */
+    .booking-form-row { display: flex; align-items: center; gap: 10px; }
+    .booking-form-row .form-input { flex: 1; }
+    .edit-btn { padding: 8px 14px; border: 1px solid #d1d5db; background: #fff; cursor: pointer; font-family: 'Comic Sans MS', cursive; font-size: 12px; white-space: nowrap; }
+    .edit-btn:hover { background: #f3f4f6; }
+
+    .forms-link-text { font-size: 12px; color: #374151; margin-top: 6px; text-decoration: underline; cursor: pointer; }
+
+    /* Policy tag */
+    .policy-tag { display: inline-flex; align-items: center; gap: 8px; border: 1px solid #d1d5db; padding: 6px 12px; background: #fff; font-size: 12px; margin-right: 8px; margin-bottom: 8px; }
+    .policy-tag .remove { color: #9ca3af; cursor: pointer; font-size: 14px; }
+    .add-policy-link { font-size: 12px; color: #374151; text-decoration: underline; cursor: pointer; }
+
+    /* Booking requests toggle */
+    .requests-info { font-size: 12px; color: #6b7280; margin-top: 4px; }
+
+    /* Summary card */
+    .summary-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f3f4f6; font-size: 13px; }
+    .summary-item:last-child { border-bottom: none; }
+    .summary-label { color: #6b7280; }
+    .summary-value { font-weight: bold; text-align: right; }
+    .summary-value a { font-size: 12px; color: #374151; font-weight: normal; }
+
+    /* Display settings */
+    .display-toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f3f4f6; font-size: 13px; }
+    .display-toggle-row:last-child { border-bottom: none; }
+
+    .small-toggle { position: relative; width: 36px; height: 20px; }
+    .small-toggle-track { position: absolute; inset: 0; background: #374151; }
+    .small-toggle-knob { position: absolute; top: 2px; left: calc(100% - 18px); width: 16px; height: 16px; background: #fff; }
+
+    /* Marketing card */
+    .marketing-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid #f3f4f6; }
+    .marketing-item:last-child { border-bottom: none; }
+    .marketing-icon { width: 32px; height: 32px; background: #e5e7eb; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+    .marketing-text-title { font-size: 12px; font-weight: bold; }
+    .marketing-text-sub { font-size: 11px; color: #6b7280; }
+  </style>
+</head>
+<body>
+<div class="bm-shell">
+
+  <!-- Left nav bar -->
+  <div class="bm-leftnav">
+    <div class="bm-nav-icon">⊞</div>
+    <div class="bm-nav-icon active">📅</div>
+    <div class="bm-nav-icon">💰</div>
+    <div class="bm-nav-icon">📊</div>
+    <div class="bm-nav-spacer"></div>
+    <div class="bm-nav-icon">⚙</div>
+    <div class="bm-nav-icon">?</div>
+  </div>
+
+  <!-- Main page area -->
+  <div class="bm-page">
+
+    <!-- Breadcrumb topbar -->
+    <div class="bm-topbar">
+      <span class="bm-topbar-title">Bookings</span>
+      <span class="bm-topbar-sep">›</span>
+      <span class="bm-topbar-title">Services</span>
+      <span class="bm-topbar-sep">›</span>
+      <span class="bm-topbar-title" style="color:#000; font-weight:bold;">Weekly Group Sessions</span>
+    </div>
+
+    <div class="page-content">
+
+      <!-- Page header -->
+      <div class="page-header">
+        <div class="page-header-top">
+          <div class="page-title">Weekly Group Sessions</div>
+          <div class="action-bar">
+            <button class="btn" onclick="alert('More actions')">More actions ▾</button>
+            <button class="btn">Cancel</button>
+            <button class="btn btn-primary">Save</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Page body: 2-col layout -->
+      <div class="page-body">
+
+        <!-- Main column -->
+        <div class="main-col">
+
+          <!-- Service type switcher -->
+          <div class="type-switcher">
+            <div class="type-option active" onclick="switchType(this)">Appointment</div>
+            <div class="type-option" onclick="switchType(this)">Class</div>
+            <div class="type-option" onclick="switchType(this)">Course</div>
+          </div>
+
+          <!-- Service Details card -->
+          <div class="card">
+            <div class="card-header" onclick="toggleCard(this)">
+              <div class="card-header-left">
+                <div class="card-header-title">Service details</div>
+                <div class="card-header-subtitle">Name your service, give it a tagline and add a description.</div>
+              </div>
+              <span class="card-chevron" id="detailsChevron">▲</span>
+            </div>
+            <div class="card-content expanded" id="detailsContent">
+              <div class="form-group">
+                <label class="form-label">Name</label>
+                <input class="form-input" type="text" value="Weekly Group Sessions" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Tagline</label>
+                <input class="form-input" type="text" placeholder="e.g., Relax and recharge with our expert team" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Description</label>
+                <textarea class="form-textarea" placeholder="Describe your service…"></textarea>
+              </div>
+
+              <hr class="section-divider" />
+
+              <div class="form-group">
+                <label class="form-label">Session duration</label>
+                <div class="duration-row">
+                  <select class="form-select duration-select">
+                    <option>1 hr</option>
+                    <option>30 min</option>
+                    <option>1 hr 30 min</option>
+                    <option>2 hr</option>
+                    <option>Custom</option>
+                  </select>
+                </div>
+              </div>
+
+              <hr class="section-divider" />
+
+              <div class="form-group">
+                <label class="form-label">Type of Location</label>
+                <select class="form-select">
+                  <option>Business address</option>
+                  <option>Custom location</option>
+                  <option>Online (video call)</option>
+                  <option>Client location</option>
+                </select>
+              </div>
+              <div class="location-row">
+                <span class="location-name">Spa Main Studio</span>
+                <span class="location-badge">Default</span>
+              </div>
+              <span class="add-location-link">+ Add another location</span>
+            </div>
+          </div>
+
+          <!-- Pricing card -->
+          <div class="card">
+            <div class="card-header" onclick="toggleCard(this)">
+              <div class="card-header-left">
+                <div class="card-header-title">Pricing</div>
+                <div class="card-header-subtitle">Set pricing and payment options for this service.</div>
+              </div>
+              <span class="card-chevron" id="pricingChevron">▼</span>
+            </div>
+            <div class="card-content" id="pricingContent">
+              <div class="form-group">
+                <label class="form-label">Get paid for this service</label>
+                <select class="form-select">
+                  <option>Fixed price</option>
+                  <option>Free</option>
+                  <option>Custom</option>
+                  <option>Varies</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Price</label>
+                <input class="form-input" type="text" value="$80.00" style="width:180px" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Booking Preferences card -->
+          <div class="card">
+            <div class="card-header" onclick="toggleCard(this)">
+              <div class="card-header-left">
+                <div class="card-header-title">Booking preferences</div>
+                <div class="card-header-subtitle">Add a booking form, set a policy and accept online bookings.</div>
+              </div>
+              <span class="card-chevron" id="prefsChevron">▲</span>
+            </div>
+            <div class="card-content expanded" id="prefsContent">
+
+              <!-- Booking policy -->
+              <div class="form-section">
+                <label class="form-label">Booking policy</label>
+                <div style="margin-bottom:8px">
+                  <div class="policy-tag">No Policy <span class="remove" onclick="this.parentElement.remove()">×</span></div>
+                </div>
+                <span class="add-policy-link">+ Add New Policy</span>
+              </div>
+
+              <hr class="section-divider" />
+
+              <!-- Online bookings toggle -->
+              <div class="form-section">
+                <div class="toggle-row">
+                  <div class="toggle-switch" onclick="toggleSwitch(this.querySelector('.toggle-track'))">
+                    <div class="toggle-track on">
+                      <div class="toggle-knob"></div>
+                    </div>
+                  </div>
+                  <div class="toggle-label-text">
+                    <div class="toggle-title">Online bookings</div>
+                    <div class="toggle-subtitle">Give clients the ability to book on your site.</div>
+                  </div>
+                </div>
+              </div>
+
+              <hr class="section-divider" />
+
+              <!-- Booking form -->
+              <div class="form-section">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px">
+                  <label class="form-label" style="margin:0">Booking form</label>
+                  <span style="font-size:12px; color:#6b7280; cursor:pointer" title="Select the form clients fill out when booking">ⓘ</span>
+                </div>
+                <div class="form-sublabel">Select the form that clients fill out when booking this service.</div>
+                <div class="booking-form-row">
+                  <input class="form-input" type="text" value="Default booking form" />
+                  <button class="edit-btn">✏ Edit form</button>
+                </div>
+                <div class="forms-link-text">Manage your forms in Forms & Submissions</div>
+              </div>
+
+              <hr class="section-divider" />
+
+              <!-- Booking requests (appointment-only) -->
+              <div class="form-section">
+                <div class="toggle-row">
+                  <div class="toggle-switch" onclick="toggleSwitch(this.querySelector('.toggle-track'))">
+                    <div class="toggle-track">
+                      <div class="toggle-knob"></div>
+                    </div>
+                  </div>
+                  <div class="toggle-label-text">
+                    <div class="toggle-title">Booking requests</div>
+                    <div class="toggle-subtitle">Manually approve or decline every booking request.</div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Bottom action bar -->
+          <div style="display:flex; justify-content:flex-end; gap:8px; padding: 4px 0 24px;">
+            <button class="btn">Cancel</button>
+            <button class="btn btn-primary">Save</button>
+          </div>
+
+        </div>
+
+        <!-- Sidebar column -->
+        <div class="side-col">
+
+          <!-- Summary card -->
+          <div class="card">
+            <div class="card-header" style="cursor:default; border-bottom:1px solid #e5e7eb">
+              <div class="card-header-title">Summary</div>
+            </div>
+            <div class="card-content expanded">
+              <div class="summary-item">
+                <span class="summary-label">Service type</span>
+                <span class="summary-value">Appointment</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">Price</span>
+                <span class="summary-value">$80.00</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">Duration</span>
+                <span class="summary-value">1 hr</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">Location</span>
+                <span class="summary-value">Spa Main Studio</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">Schedule</span>
+                <span class="summary-value"><a href="#">Set up schedule</a></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Display Settings card -->
+          <div class="card">
+            <div class="card-header" onclick="toggleCard(this)">
+              <div class="card-header-title">Display settings</div>
+              <span class="card-chevron">▼</span>
+            </div>
+            <div class="card-content">
+              <div class="display-toggle-row">
+                <span>Show in Services widget</span>
+                <div class="small-toggle"><div class="small-toggle-track"><div class="small-toggle-knob"></div></div></div>
+              </div>
+              <div class="display-toggle-row">
+                <span>Show in site menu</span>
+                <div class="small-toggle"><div class="small-toggle-track"><div class="small-toggle-knob"></div></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Marketing card -->
+          <div class="card">
+            <div class="card-header" onclick="toggleCard(this)">
+              <div class="card-header-title">Marketing tools</div>
+              <span class="card-chevron">▼</span>
+            </div>
+            <div class="card-content">
+              <div class="marketing-item">
+                <div class="marketing-icon">📣</div>
+                <div><div class="marketing-text-title">Automated emails</div><div class="marketing-text-sub">Send reminders and follow-ups</div></div>
+              </div>
+              <div class="marketing-item">
+                <div class="marketing-icon">🎟</div>
+                <div><div class="marketing-text-title">Coupons</div><div class="marketing-text-sub">Offer discounts to attract clients</div></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function toggleCard(header) {
+    const content = header.nextElementSibling;
+    const chevron = header.querySelector('.card-chevron');
+    const isExpanded = content.classList.contains('expanded');
+    content.classList.toggle('expanded', !isExpanded);
+    chevron.textContent = isExpanded ? '▼' : '▲';
+  }
+
+  function switchType(el) {
+    document.querySelectorAll('.type-option').forEach(o => o.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  function toggleSwitch(track) {
+    track.classList.toggle('on');
+    const knob = track.querySelector('.toggle-knob');
+    if (track.classList.contains('on')) {
+      knob.style.left = 'calc(100% - 21px)';
+    } else {
+      knob.style.left = '3px';
+    }
+  }
+</script>
+</body>
+</html>
