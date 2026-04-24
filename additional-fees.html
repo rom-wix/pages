@@ -4,6 +4,131 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Additional fees — Service form wireframe</title>
+<style>
+/* Phase switcher */
+.phase-switcher-bar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  background: var(--D10);
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 20px;
+  font-family: var(--font-ui);
+}
+.phase-switcher-bar .ps-label {
+  font-size: 12px;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 0.3px;
+  margin-right: 4px;
+}
+.phase-btn {
+  height: 26px;
+  padding: 0 14px;
+  border-radius: var(--radius-18);
+  border: 1px solid rgba(255,255,255,0.25);
+  background: transparent;
+  color: rgba(255,255,255,0.65);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background .12s, color .12s, border-color .12s;
+}
+.phase-btn:hover { background: rgba(255,255,255,0.08); color: #fff; }
+.phase-btn.active {
+  background: var(--B20);
+  border-color: var(--B20);
+  color: #fff;
+  font-weight: 600;
+}
+.phase-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: var(--radius-18);
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+.phase-tag.p1 { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.7); margin-left: 16px; }
+.phase-tag.p2 { background: var(--B20); color: #fff; margin-left: 16px; }
+
+/* push page down so switcher bar doesn't overlap */
+body { padding-top: 38px; }
+
+/* Phase 2 only — fee condition row */
+.fee-condition-row {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--D55);
+}
+.fee-condition-gate {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 0;
+}
+.fee-condition-gate .t-label {
+  font-size: 13px;
+  color: var(--D20);
+}
+.fee-condition-fields {
+  display: flex;
+  gap: 14px;
+  margin-top: 12px;
+  align-items: flex-end;
+}
+.fee-condition-fields .cond-field-col {
+  flex: 1;
+}
+.fee-condition-fields .cond-value-col {
+  flex: 1;
+}
+.cond-label {
+  font-size: 13px;
+  color: var(--D20);
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+/* read-mode condition badge */
+.cond-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: #FFF3D0;
+  color: #8A5700;
+  white-space: nowrap;
+}
+
+/* Hide P2-only elements when in phase-1 mode */
+body.phase-1 .p2-only { display: none !important; }
+
+/* in read-mode row, extend columns when condition badge present */
+.fee-row-read.has-cond {
+  grid-template-columns: 1fr 120px 180px minmax(0,180px) auto;
+}
+
+/* Condition dropdown options */
+.cond-option {
+  padding: 8px 14px;
+  font-size: 13px;
+  color: var(--D10);
+  cursor: pointer;
+}
+.cond-option:hover { background: var(--D80); }
+
+/* Condition field dropdown wrapper needs relative for the abs menu */
+.cond-field-col { position: relative; }
+</style>
 <link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400;500;600;700&family=Wix+Madefor+Text:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 /* =========================================================
@@ -794,7 +919,15 @@ body {
 /* Scope dropdown uses same style as wds-dropdown */
 </style>
 </head>
-<body>
+<body class="phase-1">
+
+<!-- =========== PHASE SWITCHER =========== -->
+<div class="phase-switcher-bar">
+  <span class="ps-label">Prototype phase:</span>
+  <button class="phase-btn active" id="btn-phase-1" onclick="setPhase(1)">Phase 1</button>
+  <button class="phase-btn" id="btn-phase-2" onclick="setPhase(2)">Phase 2</button>
+  <span class="phase-tag p1" id="phase-desc">Fee name, amount, per-participant</span>
+</div>
 
 <!-- =========== TOP BAR =========== -->
 <div class="wix-top-bar">
@@ -999,6 +1132,34 @@ body {
                     <span class="t-label">Charge per participant <span class="info-ico" title="When this is on, the fee is charged for each participant in the booking. When it's off, the fee is charged once per booking.">i</span></span>
                   </div>
                 </div>
+
+                <!-- Phase 2: condition row -->
+                <div class="fee-condition-row p2-only">
+                  <div class="fee-condition-gate">
+                    <div class="toggle-sm f-condition-toggle" onclick="toggleCondition(this)"></div>
+                    <span class="t-label">Apply only when a condition is met <span class="info-ico" title="When on, this fee is only added if the selected booking attribute matches the value you set.">i</span></span>
+                  </div>
+                  <div class="fee-condition-fields" style="display:none;">
+                    <div class="cond-field-col">
+                      <div class="cond-label">Condition field</div>
+                      <button class="wds-dropdown f-cond-field" type="button">
+                        <span class="cond-field-val">Select field…</span>
+                        <span class="caret">▾</span>
+                      </button>
+                      <div class="cond-field-menu" style="display:none; position:absolute; background:#fff; border:1px solid var(--D55); border-radius:6px; box-shadow:var(--shadow-2); z-index:100; min-width:200px; padding:4px 0; margin-top:2px;">
+                        <div class="cond-option" onclick="selectCondField(this, 'Price variation')">Price variation</div>
+                        <div class="cond-option" onclick="selectCondField(this, 'Location')">Location</div>
+                        <div class="cond-option" onclick="selectCondField(this, 'Number of participants')">Number of participants</div>
+                        <div class="cond-option" onclick="selectCondField(this, 'Payment preference')">Payment preference</div>
+                      </div>
+                    </div>
+                    <div class="cond-value-col">
+                      <div class="cond-label">Value</div>
+                      <input class="wds-input f-cond-value" type="text" placeholder="Enter value…" />
+                    </div>
+                  </div>
+                </div>
+
                 <div class="fee-edit-actions">
                   <button class="btn btn-secondary btn-sm" onclick="collapseSection()">Cancel</button>
                   <button class="btn btn-primary btn-sm" onclick="saveFirstFee()">Save</button>
@@ -1054,19 +1215,30 @@ body {
     document.querySelectorAll('#af-first-form .unit-toggle .u').forEach((u, i) => {
       u.classList.toggle('active', i === 0);
     });
+    // Reset condition row
+    const condToggle = document.querySelector('#af-first-form .f-condition-toggle');
+    if (condToggle) condToggle.classList.remove('on');
+    const condFields = document.querySelector('#af-first-form .fee-condition-fields');
+    if (condFields) condFields.style.display = 'none';
+    const condFieldVal = document.querySelector('#af-first-form .cond-field-val');
+    if (condFieldVal) condFieldVal.textContent = 'Select field…';
+    const condValue = document.querySelector('#af-first-form .f-cond-value');
+    if (condValue) condValue.value = '';
   }
 
   // Save from the first-open blank form
   function saveFirstFee() {
-    const nameEl = document.getElementById('af-first-name');
-    const amountEl = document.getElementById('af-first-amount');
-    const name = nameEl.value.trim() || 'Untitled fee';
-    const amount = parseFloat(amountEl.value) || 0;
-    const unit = document.querySelector('#af-first-form .unit-toggle .u.active').textContent.trim();
-    const perP = document.querySelector('#af-first-form .f-scope').classList.contains('on');
+    const form = document.getElementById('af-first-form');
+    const name = (document.getElementById('af-first-name').value.trim()) || 'Untitled fee';
+    const amount = parseFloat(document.getElementById('af-first-amount').value) || 0;
+    const unit = form.querySelector('.unit-toggle .u.active').textContent.trim();
+    const perP = form.querySelector('.f-scope').classList.contains('on');
+    const condOn = form.querySelector('.f-condition-toggle') && form.querySelector('.f-condition-toggle').classList.contains('on');
+    const condField = condOn ? (form.querySelector('.cond-field-val') ? form.querySelector('.cond-field-val').textContent.trim() : '') : '';
+    const condValue = condOn ? (form.querySelector('.f-cond-value') ? form.querySelector('.f-cond-value').value.trim() : '') : '';
 
     const list = document.getElementById('fee-list');
-    const item = buildFeeItem(name, amount, unit, perP);
+    const item = buildFeeItem(name, amount, unit, perP, condOn, condField, condValue);
     list.appendChild(item);
     syncFeeListVisibility();
 
@@ -1109,6 +1281,31 @@ body {
             <span class="t-label">Charge per participant <span class="info-ico" title="When this is on, the fee is charged for each participant in the booking. When it's off, the fee is charged once per booking.">i</span></span>
           </div>
         </div>
+        <div class="fee-condition-row p2-only">
+          <div class="fee-condition-gate">
+            <div class="toggle-sm f-condition-toggle" onclick="toggleCondition(this)"></div>
+            <span class="t-label">Apply only when a condition is met <span class="info-ico" title="When on, this fee is only added if the selected booking attribute matches the value you set.">i</span></span>
+          </div>
+          <div class="fee-condition-fields" style="display:none;">
+            <div class="cond-field-col">
+              <div class="cond-label">Condition field</div>
+              <button class="wds-dropdown f-cond-field" type="button">
+                <span class="cond-field-val">Select field…</span>
+                <span class="caret">▾</span>
+              </button>
+              <div class="cond-field-menu" style="display:none; position:absolute; background:#fff; border:1px solid var(--D55); border-radius:6px; box-shadow:var(--shadow-2); z-index:100; min-width:200px; padding:4px 0; margin-top:2px;">
+                <div class="cond-option" onclick="selectCondField(this, 'Price variation')">Price variation</div>
+                <div class="cond-option" onclick="selectCondField(this, 'Location')">Location</div>
+                <div class="cond-option" onclick="selectCondField(this, 'Number of participants')">Number of participants</div>
+                <div class="cond-option" onclick="selectCondField(this, 'Payment preference')">Payment preference</div>
+              </div>
+            </div>
+            <div class="cond-value-col">
+              <div class="cond-label">Value</div>
+              <input class="wds-input f-cond-value" type="text" placeholder="Enter value…" />
+            </div>
+          </div>
+        </div>
         <div class="fee-edit-actions">
           <button class="btn btn-secondary btn-sm" onclick="cancelEdit(this)">Cancel</button>
           <button class="btn btn-primary btn-sm" onclick="saveFee(this)">Save</button>
@@ -1123,23 +1320,32 @@ body {
   }
 
   // Build a saved fee-item in read mode (used by saveFirstFee and saveFee)
-  function buildFeeItem(name, amount, unit, perP) {
+  function buildFeeItem(name, amount, unit, perP, condOn, condField, condValue) {
     const amountDisplay = unit === '$' ? `$${parseFloat(amount).toFixed(2)}` : `${amount}%`;
     const scopeLabel = perP ? 'Per participant' : 'Per booking';
+    const hasCond = condOn && condField && condField !== 'Select field…';
     const item = document.createElement('div');
     item.className = 'fee-item mode-read';
     item.dataset.name = name;
     item.dataset.amount = amount;
     item.dataset.unit = unit;
     item.dataset.perP = perP ? 'true' : 'false';
+    item.dataset.condOn = hasCond ? 'true' : 'false';
+    item.dataset.condField = condField || '';
+    item.dataset.condValue = condValue || '';
     item.dataset.new = 'false';
+    const condBadgeHtml = hasCond
+      ? `<span class="cond-badge p2-only">If ${escapeHtml(condField)}: ${escapeHtml(condValue || '—')}</span>`
+      : `<span class="p2-only"></span>`;
+    const readRowClass = hasCond ? 'fee-row-read has-cond read-only' : 'fee-row-read read-only';
     item.innerHTML = `
-      <div class="fee-row-read read-only">
+      <div class="${readRowClass}">
         <div class="col-name">${escapeHtml(name)}</div>
         <div class="col-amount">${amountDisplay}</div>
         <div class="col-scope">
           <span class="scope-badge ${perP ? 'per-p' : ''}">${scopeLabel}</span>
         </div>
+        ${hasCond ? `<div class="col-scope">${condBadgeHtml}</div>` : ''}
         <div class="col-actions">
           <button class="btn btn-icon small" title="Edit fee" onclick="enterEdit(this)">✏️</button>
           <button class="btn btn-icon small" title="Remove fee" onclick="removeFee(this)">🗑</button>
@@ -1195,6 +1401,14 @@ body {
     const amount = parseFloat(item.querySelector('.f-amount').value) || 0;
     const unit = item.querySelector('.unit-toggle .u.active').textContent.trim();
     const perP = item.querySelector('.f-scope').classList.contains('on');
+    const condToggle = item.querySelector('.f-condition-toggle');
+    const condOn = condToggle && condToggle.classList.contains('on');
+    const condFieldEl = item.querySelector('.cond-field-val');
+    const condField = condOn && condFieldEl ? condFieldEl.textContent.trim() : '';
+    const condValueEl = item.querySelector('.f-cond-value');
+    const condValue = condOn && condValueEl ? condValueEl.value.trim() : '';
+    const hasCond = condOn && condField && condField !== 'Select field…';
+
     const amountDisplay = unit === '$' ? `$${amount.toFixed(2)}` : `${amount}%`;
     const scopeLabel = perP ? 'Per participant' : 'Per booking';
 
@@ -1202,14 +1416,20 @@ body {
     item.dataset.amount = amount;
     item.dataset.unit = unit;
     item.dataset.perP = perP ? 'true' : 'false';
+    item.dataset.condOn = hasCond ? 'true' : 'false';
+    item.dataset.condField = condField || '';
+    item.dataset.condValue = condValue || '';
     item.dataset.new = 'false';
 
-    item.querySelector('.fee-row-read').innerHTML = `
+    const readRow = item.querySelector('.fee-row-read');
+    readRow.className = hasCond ? 'fee-row-read has-cond read-only' : 'fee-row-read read-only';
+    readRow.innerHTML = `
       <div class="col-name">${escapeHtml(name)}</div>
       <div class="col-amount">${amountDisplay}</div>
       <div class="col-scope">
         <span class="scope-badge ${perP ? 'per-p' : ''}">${scopeLabel}</span>
       </div>
+      ${hasCond ? `<div class="col-scope"><span class="cond-badge p2-only">If ${escapeHtml(condField)}: ${escapeHtml(condValue || '—')}</span></div>` : ''}
       <div class="col-actions">
         <button class="btn btn-icon small" title="Edit fee" onclick="enterEdit(this)">✏️</button>
         <button class="btn btn-icon small" title="Remove fee" onclick="removeFee(this)">🗑</button>
@@ -1224,6 +1444,9 @@ body {
     const amount = item.dataset.amount || '';
     const unit = item.dataset.unit || '$';
     const perP = item.dataset.perP === 'true';
+    const condOn = item.dataset.condOn === 'true';
+    const condField = item.dataset.condField || '';
+    const condValue = item.dataset.condValue || '';
     if (item.querySelector('.f-name')) item.querySelector('.f-name').value = name;
     if (item.querySelector('.f-amount')) item.querySelector('.f-amount').value = amount;
     item.querySelectorAll('.unit-toggle .u').forEach(u => {
@@ -1231,6 +1454,16 @@ body {
     });
     const scope = item.querySelector('.f-scope');
     if (scope) scope.classList.toggle('on', perP);
+    const condToggle = item.querySelector('.f-condition-toggle');
+    if (condToggle) {
+      condToggle.classList.toggle('on', condOn);
+      const fields = item.querySelector('.fee-condition-fields');
+      if (fields) fields.style.display = condOn ? 'flex' : 'none';
+    }
+    const condFieldEl = item.querySelector('.cond-field-val');
+    if (condFieldEl) condFieldEl.textContent = condField || 'Select field…';
+    const condValueEl = item.querySelector('.f-cond-value');
+    if (condValueEl) condValueEl.value = condValue;
   }
 
   function addFee() {
@@ -1249,6 +1482,56 @@ body {
 
   function toggleScope(el) {
     el.classList.toggle('on');
+  }
+
+  function toggleCondition(el) {
+    el.classList.toggle('on');
+    const row = el.closest('.fee-condition-row');
+    if (row) {
+      const fields = row.querySelector('.fee-condition-fields');
+      if (fields) fields.style.display = el.classList.contains('on') ? 'flex' : 'none';
+    }
+  }
+
+  function selectCondField(optionEl, value) {
+    const menu = optionEl.closest('.cond-field-menu');
+    const btn = menu.previousElementSibling; // .f-cond-field button
+    if (btn) btn.querySelector('.cond-field-val').textContent = value;
+    menu.style.display = 'none';
+  }
+
+  // Toggle the condition field dropdown open/close
+  document.addEventListener('click', function(e) {
+    const btn = e.target.closest('.f-cond-field');
+    if (btn) {
+      e.stopPropagation();
+      const menu = btn.nextElementSibling;
+      const isOpen = menu.style.display === 'block';
+      // close all open menus first
+      document.querySelectorAll('.cond-field-menu').forEach(m => m.style.display = 'none');
+      if (!isOpen) menu.style.display = 'block';
+      return;
+    }
+    // click outside — close all menus
+    document.querySelectorAll('.cond-field-menu').forEach(m => m.style.display = 'none');
+  });
+
+  // =======================================================
+  //  Phase switcher
+  // =======================================================
+  const PHASE_DESCS = {
+    1: 'Fee name, amount, per-participant',
+    2: '+ Conditional fee rules'
+  };
+
+  function setPhase(n) {
+    document.body.classList.toggle('phase-1', n === 1);
+    document.body.classList.toggle('phase-2', n === 2);
+    document.getElementById('btn-phase-1').classList.toggle('active', n === 1);
+    document.getElementById('btn-phase-2').classList.toggle('active', n === 2);
+    const tag = document.getElementById('phase-desc');
+    tag.textContent = PHASE_DESCS[n];
+    tag.className = `phase-tag p${n}`;
   }
 
   function escapeHtml(s) {
