@@ -1411,8 +1411,11 @@ body {
       const valueMenu = item.querySelector('.cond-value-menu');
       if (valueMenu) {
         valueMenu.innerHTML = COND_VALUES[condField].map(o =>
-          `<div class="cond-option" onclick="selectCondValue(this, '${o.replace(/'/g, "&#39;")}')">${o}</div>`
+          `<div class="cond-option" data-value="${o.replace(/"/g, '&quot;')}">${o}</div>`
         ).join('');
+        valueMenu.querySelectorAll('.cond-option').forEach(opt => {
+          opt.addEventListener('click', () => selectCondValue(opt, opt.dataset.value));
+        });
       }
     } else if (valueBtnEl) {
       valueBtnEl.setAttribute('disabled', '');
@@ -1465,8 +1468,11 @@ body {
     const valueMenu = row.querySelector('.cond-value-menu');
     const options = COND_VALUES[value] || [];
     valueMenu.innerHTML = options.map(o =>
-      `<div class="cond-option" onclick="selectCondValue(this, '${o.replace(/'/g, "&#39;")}')">${o}</div>`
+      `<div class="cond-option" data-value="${o.replace(/"/g, '&quot;')}">${o}</div>`
     ).join('');
+    valueMenu.querySelectorAll('.cond-option').forEach(opt => {
+      opt.addEventListener('click', () => selectCondValue(opt, opt.dataset.value));
+    });
     valueBtn.querySelector('.cond-value-val').textContent = 'Select value…';
     valueBtn.removeAttribute('disabled');
     valueBtn.style.opacity = '1';
