@@ -67,7 +67,7 @@
 }
 .cond-option:hover { background: var(--D80); }
 
-/* Condition field/value dropdown wrappers need relative for the abs menu */
+/* Condition type/value dropdown wrappers need relative for the abs menu */
 .cond-field-col { position: relative; }
 .cond-value-col { position: relative; }
 </style>
@@ -1021,14 +1021,13 @@ body {
           <div class="af-gate-row">
             <div class="af-gate-label">
               <span>Additional fees</span>
-              <span class="info-ico" title="Add fees that are automatically applied at checkout, like a travel or cleaning fee. Each fee appears as a separate line item in your clients' booking total.">i</span>
             </div>
             <div class="toggle-sm" id="af-gate-toggle" onclick="toggleFeesSection()"></div>
           </div>
 
           <!-- Subtitle — always visible -->
           <div class="af-subtitle" style="margin-top:6px;">
-            Add fees that are automatically applied at checkout, like a travel or cleaning fee. Each fee appears as a separate line item in your clients' booking total.
+            Add fees that are automatically applied at checkout, like a travel or cleaning fee. Each fee appears as a separate line in the order.
           </div>
 
           <!-- Expandable body — hidden by default -->
@@ -1043,7 +1042,7 @@ body {
                 <div class="fee-top">
                   <div class="fee-name-field">
                     <div class="field-label">Fee name</div>
-                    <input class="wds-input f-name" id="af-first-name" type="text" placeholder="e.g. Travel fee" />
+                    <input class="wds-input f-name" id="af-first-name" type="text" placeholder="e.g., Travel fee" />
                   </div>
                   <div class="fee-actions" style="padding-top:22px;">
                     <button class="btn btn-icon small" title="Remove" onclick="collapseSection()">🗑</button>
@@ -1071,11 +1070,11 @@ body {
                 <div class="fee-condition-row">
                   <div class="fee-condition-gate">
                     <div class="toggle-sm f-condition-toggle" onclick="toggleCondition(this)"></div>
-                    <span class="t-label">Apply only when a condition is met <span class="info-ico" title="When on, this fee is only added if the selected booking attribute matches the value you set.">i</span></span>
+                    <span class="t-label">Apply only when this condition is met <span class="info-ico" title="When on, this fee is only added if the selected booking attribute matches the value you set.">i</span></span>
                   </div>
                   <div class="fee-condition-fields" style="display:none;">
                     <div class="cond-field-col">
-                      <div class="cond-label">Condition field</div>
+                      <div class="cond-label">Condition type</div>
                       <button class="wds-dropdown f-cond-field" type="button">
                         <span class="cond-field-val">Select field…</span>
                         <span class="caret">▾</span>
@@ -1086,7 +1085,7 @@ body {
                       </div>
                     </div>
                     <div class="cond-value-col">
-                      <div class="cond-label">Value</div>
+                      <div class="cond-label">Condition value</div>
                       <button class="wds-dropdown f-cond-value-btn" type="button" disabled style="opacity:0.5; cursor:default;">
                         <span class="cond-value-val">Select value…</span>
                         <span class="caret">▾</span>
@@ -1196,7 +1195,7 @@ body {
         <div class="fee-top">
           <div class="fee-name-field">
             <div class="field-label">Fee name</div>
-            <input class="wds-input f-name" type="text" placeholder="e.g. Travel fee" />
+            <input class="wds-input f-name" type="text" placeholder="e.g., Travel fee" />
           </div>
           <div class="fee-actions" style="padding-top:22px;">
             <button class="btn btn-icon small" title="Remove fee" onclick="removeFee(this)">🗑</button>
@@ -1222,11 +1221,11 @@ body {
         <div class="fee-condition-row">
           <div class="fee-condition-gate">
             <div class="toggle-sm f-condition-toggle" onclick="toggleCondition(this)"></div>
-            <span class="t-label">Apply only when a condition is met <span class="info-ico" title="When on, this fee is only added if the selected booking attribute matches the value you set.">i</span></span>
+            <span class="t-label">Apply only when this condition is met <span class="info-ico" title="When on, this fee is only added if the selected booking attribute matches the value you set.">i</span></span>
           </div>
           <div class="fee-condition-fields" style="display:none;">
             <div class="cond-field-col">
-              <div class="cond-label">Condition field</div>
+              <div class="cond-label">Condition type</div>
               <button class="wds-dropdown f-cond-field" type="button">
                 <span class="cond-field-val">Select field…</span>
                 <span class="caret">▾</span>
@@ -1237,7 +1236,7 @@ body {
               </div>
             </div>
             <div class="cond-value-col">
-              <div class="cond-label">Value</div>
+              <div class="cond-label">Condition value</div>
               <button class="wds-dropdown f-cond-value-btn" type="button" disabled style="opacity:0.5; cursor:default;">
                 <span class="cond-value-val">Select value…</span>
                 <span class="caret">▾</span>
