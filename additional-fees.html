@@ -3,100 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Additional fees — Service form wireframe</title>
-<style>
-/* Fee condition row */
-.fee-condition-row {
-  margin-top: 14px;
-  padding-top: 12px;
-  border-top: 1px solid var(--D55);
-}
-.fee-condition-gate {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 0;
-}
-.fee-condition-gate .t-label {
-  font-size: 13px;
-  color: var(--D20);
-}
-.fee-condition-fields {
-  display: flex;
-  gap: 14px;
-  margin-top: 12px;
-  align-items: flex-end;
-}
-.fee-condition-fields .cond-field-col {
-  flex: 1;
-}
-.fee-condition-fields .cond-value-col {
-  flex: 1;
-}
-.cond-label {
-  font-size: 13px;
-  color: var(--D20);
-  margin-bottom: 5px;
-  font-weight: 500;
-}
-
-/* read-mode condition badge */
-.cond-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 12px;
-  padding: 2px 8px;
-  border-radius: 10px;
-  background: #FFF3D0;
-  color: #8A5700;
-  white-space: nowrap;
-}
-
-/* in read-mode row, extend columns when condition badge present */
-.fee-row-read.has-cond {
-  grid-template-columns: 1fr 120px 180px minmax(0,180px) auto;
-}
-
-/* Condition dropdown options */
-.cond-option {
-  padding: 8px 14px;
-  font-size: 13px;
-  color: var(--D10);
-  cursor: pointer;
-}
-.cond-option:hover { background: var(--D80); }
-
-/* Condition type/value dropdown wrappers need relative for the abs menu */
-.cond-field-col { position: relative; }
-.cond-value-col { position: relative; }
-</style>
+<title>Additional fees (inline editing) — Service form wireframe</title>
 <link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400;500;600;700&family=Wix+Madefor+Text:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 /* =========================================================
    Wix Design System-inspired styles (HTML/CSS replica)
-   Tokens sourced from WDS where known; approximations noted.
    ========================================================= */
 
 :root {
-  --D10: #162D3D;        /* primary text */
+  --D10: #162D3D;
   --D20: #32536A;
   --D30: #5A7A8C;
   --D40: #868AA5;
-  --D50: #C1E0FB;        /* not used; keep for ref */
-  --D55: #DFE5EB;        /* subtle divider */
+  --D50: #C1E0FB;
+  --D55: #DFE5EB;
   --D60: #EAF7FF;
   --D70: #F0F4F7;
-  --D80: #F7F8F8;        /* app bg / hover */
+  --D80: #F7F8F8;
 
-  --B10: #0D3D5C;        /* brand dark */
-  --B20: #116DFF;        /* brand primary */
+  --B10: #0D3D5C;
+  --B20: #116DFF;
   --B30: #3899EC;
   --B40: #4EB7F5;
-  --B50: #DFEDF9;        /* brand subtle bg */
-  --B60: #EAF7FF;        /* brand subtle bg lighter */
+  --B50: #DFEDF9;
+  --B60: #EAF7FF;
 
-  --R10: #BE2E2E;        /* destructive */
+  --R10: #BE2E2E;
   --R20: #E62214;
 
   --G10: #1F664C;
@@ -111,6 +43,7 @@
   --shadow-1: 0 1px 1px rgba(22,45,61,.06), 0 0 1px rgba(22,45,61,.10);
   --shadow-2: 0 2px 8px rgba(22,45,61,.08), 0 0 1px rgba(22,45,61,.14);
   --shadow-3: 0 6px 16px rgba(22,45,61,.10), 0 0 1px rgba(22,45,61,.14);
+  --shadow-modal: 0 20px 40px rgba(22,45,61,.18), 0 0 1px rgba(22,45,61,.20);
 
   --font-ui: "Wix Madefor Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-display: "Wix Madefor Display", var(--font-ui);
@@ -130,7 +63,7 @@ body {
 }
 
 /* ------------------------------------------------------------
-   Top bar (matches Wix Studio dashboard header)
+   Top bar
    ------------------------------------------------------------ */
 .wix-top-bar {
   height: 48px;
@@ -293,7 +226,6 @@ body {
   display: flex; align-items: center; gap: 12px;
 }
 
-/* WDS Dropdown (button-like) */
 .pill-dropdown {
   display: inline-flex;
   align-items: center;
@@ -308,7 +240,6 @@ body {
 }
 .pill-dropdown .caret { font-size: 10px; opacity: 0.7; }
 
-/* WDS Buttons */
 .btn {
   display: inline-flex; align-items: center; justify-content: center;
   height: 36px;
@@ -350,7 +281,7 @@ body {
 .btn-sm { height: 30px; font-size: 13px; padding: 0 14px; }
 
 /* ------------------------------------------------------------
-   Service form: two-column (sidebar nav + main card)
+   Service form layout
    ------------------------------------------------------------ */
 .service-form {
   display: grid;
@@ -359,7 +290,6 @@ body {
   align-items: start;
 }
 
-/* Left sidebar card (section nav) */
 .section-nav {
   background: #fff;
   border-radius: 8px;
@@ -389,7 +319,6 @@ body {
   font-size: 14px;
   color: var(--D10);
 }
-/* WDS ToggleSwitch */
 .toggle {
   position: relative;
   width: 36px; height: 20px;
@@ -411,7 +340,6 @@ body {
 .toggle.off { background: var(--D40); }
 .toggle.off::after { left: 2px; }
 
-/* Main card (right column) */
 .main-card {
   background: #fff;
   border-radius: 8px;
@@ -447,7 +375,7 @@ body {
   cursor: help;
 }
 
-/* Payment option tiles (WDS Cards that behave like radios) */
+/* Payment option tiles */
 .payment-tiles {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -484,9 +412,6 @@ body {
 .p-tile .t-title { font-weight: 600; font-size: 15px; margin-bottom: 8px; color: var(--D10); }
 .p-tile .t-body { font-size: 13px; color: var(--D30); line-height: 1.45; }
 
-/* ------------------------------------------------------------
-   Price per session block
-   ------------------------------------------------------------ */
 .subsection { margin-bottom: 28px; }
 
 .form-row {
@@ -496,7 +421,6 @@ body {
   margin-bottom: 18px;
 }
 
-/* WDS FormField label */
 .field-label {
   display: flex; align-items: center; gap: 6px;
   font-size: 14px;
@@ -504,7 +428,6 @@ body {
   margin-bottom: 6px;
 }
 
-/* WDS Dropdown / Input */
 .wds-input, .wds-dropdown {
   width: 100%;
   height: 36px;
@@ -533,7 +456,6 @@ body {
 }
 .wds-input::placeholder { color: var(--D40); }
 
-/* WDS NumberInput (amount with currency prefix) */
 .number-input {
   display: inline-flex;
   align-items: center;
@@ -584,13 +506,10 @@ body {
 .number-input .steppers .step:hover { background: var(--D80); }
 .number-input .steppers .step:first-child { border-bottom: 1px solid var(--D55); }
 
-/* ------------------------------------------------------------
-   DIVIDER between Price per session and Additional fees
-   ------------------------------------------------------------ */
 .divider { border-top: 1px solid var(--D55); margin: 8px 0 24px; }
 
 /* ------------------------------------------------------------
-   Additional fees (NEW — added at the bottom of the section)
+   Additional fees — INLINE EDITING variation
    ------------------------------------------------------------ */
 .af-head {
   display: flex; justify-content: space-between; align-items: flex-start;
@@ -604,58 +523,7 @@ body {
   margin-bottom: 16px;
 }
 
-/* Fee list — one fee = one card row */
-.fee-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
-
-.fee-card {
-  border: 1px solid var(--D55);
-  border-radius: 8px;
-  padding: 16px 18px 18px;
-  background: #fff;
-  position: relative;
-}
-
-/* Row: fee name + delete */
-.fee-top {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 14px;
-  align-items: start;
-  margin-bottom: 12px;
-}
-.fee-name-field { min-width: 0; }
-
-.fee-actions { display: flex; gap: 4px; align-items: center; }
-
-/* Row: amount + per-participant toggle */
-.fee-fields {
-  display: flex;
-  align-items: flex-start;
-  gap: 20px;
-}
-.fee-fields .fee-amount-col {
-  flex: 0 0 260px;
-}
-.fee-fields .fee-toggle-col {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  /* label height (~20px) + half input height (36px/2=18px) - half toggle height (18px/2=9px) = 29px */
-  padding-top: 29px;
-}
-
-/* Per-participant toggle row (WDS ToggleSwitch + label) */
-.toggle-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.toggle-row .t-label {
-  font-size: 14px;
-  color: var(--D10);
-  display: flex; align-items: center; gap: 6px;
-}
+/* Toggle small */
 .toggle-sm {
   position: relative;
   width: 32px; height: 18px;
@@ -678,7 +546,78 @@ body {
 }
 .toggle-sm.on::after { left: 16px; }
 
-/* WDS SegmentedToggle (Fixed / Percentage inside the amount input) */
+/* Fee list — every fee is always inline-editable */
+.fee-list { display: flex; flex-direction: column; gap: 10px; }
+.fee-list:not(:empty) { margin-bottom: 16px; }
+
+.fee-card {
+  border: 1px solid var(--D55);
+  border-radius: 8px;
+  padding: 14px 16px 14px 18px;
+  background: #fff;
+  position: relative;
+  transition: border-color .12s, box-shadow .12s;
+}
+.fee-card:hover {
+  border-color: var(--D40);
+}
+
+/* Top row inside card: WDS FormField columns + IconButton */
+.fee-top-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 220px auto;
+  gap: 14px;
+  align-items: end;
+}
+.fee-top-row .field-label { margin-bottom: 6px; }
+.fee-top-row .fee-menu-wrap { margin-bottom: 1px; }
+
+/* WDS PopoverMenu — three-dot menu attached to each fee card */
+.fee-menu-wrap {
+  position: relative;
+  display: inline-flex;
+}
+.fee-menu-btn {
+  font-size: 18px;
+  line-height: 1;
+  letter-spacing: 1px;
+}
+.fee-menu-popover {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 160px;
+  background: #fff;
+  border: 1px solid var(--D55);
+  border-radius: 8px;
+  box-shadow: var(--shadow-3);
+  padding: 6px 0;
+  z-index: 50;
+}
+.fee-menu-popover.open { display: block; }
+.fee-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  font-size: 14px;
+  color: var(--D10);
+  cursor: pointer;
+  user-select: none;
+}
+.fee-menu-item:hover { background: var(--D80); }
+.fee-menu-item.destructive { color: var(--R10); }
+.fee-menu-item.destructive:hover { background: #FDF1F1; }
+.fee-menu-item .mi-icon {
+  font-size: 14px;
+  line-height: 1;
+  width: 16px;
+  display: inline-flex;
+  justify-content: center;
+}
+
+/* Inline amount input — compact, uses the existing amount-with-toggle look */
 .amount-with-toggle {
   display: inline-flex;
   align-items: stretch;
@@ -693,6 +632,7 @@ body {
   border-color: var(--B20);
   box-shadow: 0 0 0 3px rgba(17,109,255,0.15);
 }
+.amount-with-toggle:hover { border-color: var(--D30); }
 .amount-with-toggle input {
   flex: 1;
   min-width: 0;
@@ -728,137 +668,225 @@ body {
   font-weight: 600;
 }
 
-/* Empty state */
-.af-empty {
-  border: 1px dashed var(--D55);
-  border-radius: 8px;
-  padding: 24px 20px;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 12px;
-  text-align: center;
-  background: #fff;
-  margin-bottom: 10px;
-}
-.af-empty .txt {
-  font-size: 14px;
-  color: var(--D30);
-}
-
-/* Add fee link button */
-.add-fee-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 14px;
-  color: var(--B20);
-  font-weight: 500;
-  background: transparent;
-  border: 0;
-  cursor: pointer;
-  padding: 6px 0;
-}
-.add-fee-btn:hover { color: #0f63e6; }
-.add-fee-btn .plus {
-  width: 20px; height: 20px;
-  display: inline-flex; align-items: center; justify-content: center;
-  border-radius: 50%;
-  background: var(--B20);
-  color: #fff;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-/* =========================================
-   Additional fees gate (toggle row)
-   ========================================= */
-.af-gate-row {
+/* Bottom row: per-participant toggle | condition chip area */
+.fee-bottom-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--D55);
 }
-.af-gate-label {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 16px;
-  font-weight: 600;
+.fee-bottom-left {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 13px;
   color: var(--D10);
+}
+.fee-bottom-left .t-label {
+  display: flex; align-items: center; gap: 6px;
+}
+.fee-bottom-right {
+  display: flex; align-items: center; gap: 6px;
 }
 
-/* =========================================
-   Fee — READ MODE (table row)
-   ========================================= */
-.fee-row-read {
-  display: grid;
-  grid-template-columns: 1fr 120px 180px auto;
-  gap: 16px;
+/* WDS TextButton — link-style action with optional prefix icon */
+.wds-text-btn {
+  display: inline-flex;
   align-items: center;
-  padding: 14px 18px;
-  border: 1px solid var(--D55);
-  border-radius: 8px;
-  background: #fff;
-}
-.fee-row-read .col-name {
+  gap: 4px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--B20);
+  font-family: var(--font-ui);
   font-size: 14px;
-  font-weight: 600;
-  color: var(--D10);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  font-weight: 500;
+  cursor: pointer;
+  line-height: 1.2;
 }
-.fee-row-read .col-amount {
-  font-size: 14px;
-  color: var(--D10);
+.wds-text-btn:hover { color: #0f63e6; text-decoration: underline; }
+.wds-text-btn:focus-visible {
+  outline: 2px solid var(--B20);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+.wds-text-btn .prefix-icon {
+  font-size: 16px;
+  line-height: 1;
   font-weight: 500;
 }
-.fee-row-read .col-scope {
+
+/* WDS Tag — rounded chip used for the active condition. Removable variant. */
+.wds-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 4px 0 10px;
+  height: 24px;
+  background: var(--D70);
+  color: var(--D10);
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid transparent;
+  max-width: 360px;
+  cursor: pointer;
+  transition: background .12s, border-color .12s;
+}
+.wds-tag:hover {
+  background: #E5EAEF;
+  border-color: var(--D55);
+}
+.wds-tag:focus-visible {
+  outline: 2px solid var(--B20);
+  outline-offset: 1px;
+}
+.wds-tag .tag-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--D10);
+}
+.wds-tag .tag-text strong {
+  font-weight: 600;
+  color: var(--D10);
+}
+.wds-tag .tag-remove {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--D20);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 12px;
+  cursor: pointer;
+  flex-shrink: 0;
+  border: 0;
+  padding: 0;
+  margin-left: 2px;
+}
+.wds-tag .tag-remove:hover { background: rgba(22,45,61,0.08); color: var(--D10); }
+
+/* Add fee — uses the WDS .btn .btn-secondary base
+   with a softer outline to match the lightweight pill style. */
+.add-fee-btn {
+  border-color: #C2D6FF;
+}
+.add-fee-btn:hover {
+  background: var(--B60);
+  border-color: var(--B20);
+}
+
+/* Empty state when section is on but no fees yet */
+.af-empty-hint {
   font-size: 13px;
   color: var(--D30);
-  display: flex; align-items: center; gap: 8px;
-}
-.scope-badge {
-  display: inline-block;
-  font-size: 12px;
-  padding: 2px 10px;
-  border-radius: 10px;
-  background: var(--D80);
-  color: var(--D20);
-}
-.scope-badge.per-p {
-  background: var(--B60);
-  color: var(--B20);
-}
-.fee-row-read .col-actions {
-  display: flex; gap: 2px;
+  padding: 10px 0 4px;
 }
 
-/* Save / cancel row for edit mode */
-.fee-edit-actions {
-  display: flex; gap: 8px; justify-content: flex-end;
-  margin-top: 14px;
-  padding-top: 14px;
-  border-top: 1px solid var(--D55);
-}
-
-/* Hide / show helpers for edit vs read */
-.mode-read > .edit-only { display: none; }
-.mode-edit > .read-only { display: none; }
-
-/* Tiny helper texts */
 .field-help {
   font-size: 12px;
   color: var(--D30);
   margin-top: 4px;
 }
 
-/* Focus styles */
+/* =========================================
+   Modal overlay (for setting condition)
+   ========================================= */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(22,45,61,0.55);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  width: 520px;
+  max-width: calc(100% - 32px);
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: var(--shadow-modal);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.modal-header {
+  padding: 22px 28px 6px;
+}
+.modal-title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--D10);
+}
+.modal-subtitle {
+  font-size: 13px;
+  color: var(--D30);
+  margin-top: 4px;
+}
+.modal-body {
+  padding: 18px 28px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.modal-body .field {
+  display: flex;
+  flex-direction: column;
+}
+.modal-footer {
+  padding: 14px 20px;
+  background: var(--D80);
+  border-top: 1px solid var(--D55);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.modal-footer .footer-left { display: flex; gap: 8px; }
+.modal-footer .footer-right { display: flex; gap: 8px; }
+.modal-remove-link {
+  background: transparent;
+  border: 0;
+  color: var(--R10);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 6px 8px;
+}
+.modal-remove-link:hover { color: #99201F; text-decoration: underline; }
+
+/* Condition dropdown menus inside modal */
+.cond-field-col, .cond-value-col { position: relative; }
+.cond-option {
+  padding: 8px 14px;
+  font-size: 13px;
+  color: var(--D10);
+  cursor: pointer;
+}
+.cond-option:hover { background: var(--D80); }
+.cond-menu {
+  display: none;
+  position: absolute;
+  left: 0; right: 0;
+  background: #fff;
+  border: 1px solid var(--D55);
+  border-radius: 6px;
+  box-shadow: var(--shadow-2);
+  z-index: 100;
+  padding: 4px 0;
+  margin-top: 4px;
+}
+.cond-menu.open { display: block; }
+
+/* Hover */
 .wds-input:hover, .wds-dropdown:hover,
-.number-input:hover, .amount-with-toggle:hover {
+.number-input:hover {
   border-color: var(--D30);
 }
-
-/* Scope dropdown uses same style as wds-dropdown */
 </style>
 </head>
 <body>
@@ -949,7 +977,7 @@ body {
         </div>
       </div>
 
-      <!-- Right: main card (Pricing & payment) -->
+      <!-- Right: main card -->
       <div class="main-card">
         <div class="section-title-row">
           <div class="section-title">Price &amp; payment</div>
@@ -1009,105 +1037,25 @@ body {
           </div>
         </div>
 
-        <!-- Divider -->
         <div class="divider"></div>
 
         <!-- =========================================
-             ADDITIONAL FEES (NEW)
+             ADDITIONAL FEES (INLINE EDITING)
              ========================================= -->
         <div class="subsection" id="additional-fees">
 
-          <!-- Gate toggle row — always visible -->
-          <div class="af-gate-row">
-            <div class="af-gate-label">
-              <span>Additional fees</span>
-            </div>
-            <div class="toggle-sm" id="af-gate-toggle" onclick="toggleFeesSection()"></div>
-          </div>
-
-          <!-- Subtitle — always visible -->
-          <div class="af-subtitle" style="margin-top:6px;">
+          <div class="sub-heading">Additional fees</div>
+          <div class="af-subtitle">
             Add fees that are automatically applied at checkout, like a travel or cleaning fee. Each fee appears as a separate line in the order.
           </div>
 
-          <!-- Expandable body — hidden by default -->
-          <div id="af-body" style="display:none; margin-top:14px;">
+          <!-- Editable list of fee cards -->
+          <div class="fee-list" id="fee-list"></div>
 
-            <!-- Saved fee list (empty on first open) -->
-            <div class="fee-list" id="fee-list" style="margin-bottom:0;"></div>
-
-            <!-- First-open blank form (shown when no fees saved yet) -->
-            <div id="af-first-form">
-              <div class="fee-card">
-                <div class="fee-top">
-                  <div class="fee-name-field">
-                    <div class="field-label">Fee name</div>
-                    <input class="wds-input f-name" id="af-first-name" type="text" placeholder="e.g., Travel fee" />
-                  </div>
-                  <div class="fee-actions" style="padding-top:22px;">
-                    <button class="btn btn-icon small" title="Remove" onclick="collapseSection()">🗑</button>
-                  </div>
-                </div>
-                <div class="fee-fields">
-                  <div class="fee-amount-col">
-                    <div class="field-label">Fee</div>
-                    <div class="amount-with-toggle" style="margin-bottom:4px;">
-                      <input type="text" class="f-amount" id="af-first-amount" placeholder="0" />
-                      <div class="unit-toggle">
-                        <div class="u active" onclick="toggleUnit(this)">$</div>
-                        <div class="u" onclick="toggleUnit(this)">%</div>
-                      </div>
-                    </div>
-                    <div class="field-help">Set a fixed amount or charge a percentage of the booking price.</div>
-                  </div>
-                  <div class="fee-toggle-col">
-                    <div class="toggle-sm f-scope" onclick="toggleScope(this)"></div>
-                    <span class="t-label">Charge per participant <span class="info-ico" title="When this is on, the fee is charged for each participant in the booking. When it's off, the fee is charged once per booking.">i</span></span>
-                  </div>
-                </div>
-
-                <!-- Condition row -->
-                <div class="fee-condition-row">
-                  <div class="fee-condition-gate">
-                    <div class="toggle-sm f-condition-toggle" onclick="toggleCondition(this)"></div>
-                    <span class="t-label">Apply only when this condition is met <span class="info-ico" title="When on, this fee is only added if the selected booking attribute matches the value you set.">i</span></span>
-                  </div>
-                  <div class="fee-condition-fields" style="display:none;">
-                    <div class="cond-field-col">
-                      <div class="cond-label">Condition type</div>
-                      <button class="wds-dropdown f-cond-field" type="button">
-                        <span class="cond-field-val">Select field…</span>
-                        <span class="caret">▾</span>
-                      </button>
-                      <div class="cond-field-menu" style="display:none; position:absolute; background:#fff; border:1px solid var(--D55); border-radius:6px; box-shadow:var(--shadow-2); z-index:100; min-width:220px; padding:4px 0; margin-top:2px;">
-                        <div class="cond-option" onclick="selectCondField(this, 'Location')">Location</div>
-                        <div class="cond-option" onclick="selectCondField(this, 'Payment preference')">Payment preference</div>
-                      </div>
-                    </div>
-                    <div class="cond-value-col">
-                      <div class="cond-label">Condition value</div>
-                      <button class="wds-dropdown f-cond-value-btn" type="button" disabled style="opacity:0.5; cursor:default;">
-                        <span class="cond-value-val">Select value…</span>
-                        <span class="caret">▾</span>
-                      </button>
-                      <div class="cond-value-menu" style="display:none; position:absolute; background:#fff; border:1px solid var(--D55); border-radius:6px; box-shadow:var(--shadow-2); z-index:100; min-width:220px; padding:4px 0; margin-top:2px;"></div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="fee-edit-actions">
-                  <button class="btn btn-secondary btn-sm" onclick="collapseSection()">Cancel</button>
-                  <button class="btn btn-primary btn-sm" onclick="saveFirstFee()">Save</button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Add fee link — hidden while first-form is showing, visible after first fee saved -->
-            <button class="add-fee-btn" id="section-add-btn" onclick="addFee()" style="display:none;">
-              <span class="plus">+</span>
-              Add fee
-            </button>
-          </div>
+          <!-- Add fee — WDS secondary button -->
+          <button class="btn btn-secondary add-fee-btn" id="section-add-btn" type="button" onclick="addFee()">
+            Add fee
+          </button>
 
         </div>
 
@@ -1116,321 +1064,115 @@ body {
   </main>
 </div>
 
+<!-- =========================================
+     CONDITION MODAL
+     ========================================= -->
+<div class="modal-overlay" id="cond-modal" onclick="onModalOverlayClick(event)">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="cond-modal-title">
+    <div class="modal-header">
+      <div class="modal-title" id="cond-modal-title">Set a condition</div>
+      <div class="modal-subtitle">This fee will only apply when the booking matches the condition you set.</div>
+    </div>
+    <div class="modal-body">
+      <div class="field cond-field-col">
+        <div class="field-label">Condition type</div>
+        <button class="wds-dropdown" id="m-cond-field-btn" type="button" onclick="toggleMenu('m-cond-field-menu', event)">
+          <span id="m-cond-field-val">Select field…</span>
+          <span class="caret">▾</span>
+        </button>
+        <div class="cond-menu" id="m-cond-field-menu">
+          <div class="cond-option" onclick="selectModalField('Location')">Location</div>
+          <div class="cond-option" onclick="selectModalField('Payment preference')">Payment preference</div>
+        </div>
+      </div>
+      <div class="field cond-value-col">
+        <div class="field-label">Condition value</div>
+        <button class="wds-dropdown" id="m-cond-value-btn" type="button" disabled style="opacity:0.5; cursor:default;" onclick="toggleMenu('m-cond-value-menu', event)">
+          <span id="m-cond-value-val">Select value…</span>
+          <span class="caret">▾</span>
+        </button>
+        <div class="cond-menu" id="m-cond-value-menu"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="footer-left">
+        <button class="modal-remove-link" id="m-remove-btn" onclick="removeConditionFromModal()" style="display:none;">Remove condition</button>
+      </div>
+      <div class="footer-right">
+        <button class="btn btn-secondary btn-sm" onclick="closeCondModal()">Cancel</button>
+        <button class="btn btn-primary btn-sm" id="m-save-btn" onclick="saveConditionFromModal()" disabled style="opacity:0.5; cursor:default;">Apply</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
-  // =======================================================
-  //  Section gate toggle
-  // =======================================================
-  function toggleFeesSection() {
-    const toggle = document.getElementById('af-gate-toggle');
-    const body = document.getElementById('af-body');
-    const isOn = toggle.classList.toggle('on');
-    if (isOn) {
-      body.style.display = 'block';
-      // If no fees saved yet, show blank first form
-      const hasFees = document.getElementById('fee-list').querySelectorAll('.fee-item').length > 0;
-      document.getElementById('af-first-form').style.display = hasFees ? 'none' : 'block';
-      document.getElementById('section-add-btn').style.display = hasFees ? '' : 'none';
-      if (!hasFees) {
-        document.getElementById('af-first-name').focus();
-      }
-    } else {
-      body.style.display = 'none';
-    }
-  }
-
-  // Collapse the whole section and reset toggle to off
-  function collapseSection() {
-    document.getElementById('af-body').style.display = 'none';
-    document.getElementById('af-gate-toggle').classList.remove('on');
-    // Reset first form inputs
-    document.getElementById('af-first-name').value = '';
-    document.getElementById('af-first-amount').value = '';
-    const scope = document.querySelector('#af-first-form .f-scope');
-    if (scope) scope.classList.remove('on');
-    document.querySelectorAll('#af-first-form .unit-toggle .u').forEach((u, i) => {
-      u.classList.toggle('active', i === 0);
-    });
-    // Reset condition row
-    const condToggle = document.querySelector('#af-first-form .f-condition-toggle');
-    if (condToggle) condToggle.classList.remove('on');
-    const condFields = document.querySelector('#af-first-form .fee-condition-fields');
-    if (condFields) condFields.style.display = 'none';
-    const condFieldVal = document.querySelector('#af-first-form .cond-field-val');
-    if (condFieldVal) condFieldVal.textContent = 'Select field…';
-    const condValueVal = document.querySelector('#af-first-form .cond-value-val');
-    if (condValueVal) condValueVal.textContent = 'Select value…';
-    const condValueBtn = document.querySelector('#af-first-form .f-cond-value-btn');
-    if (condValueBtn) { condValueBtn.setAttribute('disabled', ''); condValueBtn.style.opacity = '0.5'; condValueBtn.style.cursor = 'default'; }
-  }
-
-  // Save from the first-open blank form
-  function saveFirstFee() {
-    const form = document.getElementById('af-first-form');
-    const name = (document.getElementById('af-first-name').value.trim()) || 'Untitled fee';
-    const amount = parseFloat(document.getElementById('af-first-amount').value) || 0;
-    const unit = form.querySelector('.unit-toggle .u.active').textContent.trim();
-    const perP = form.querySelector('.f-scope').classList.contains('on');
-    const condOn = form.querySelector('.f-condition-toggle') && form.querySelector('.f-condition-toggle').classList.contains('on');
-    const condField = condOn ? (form.querySelector('.cond-field-val') ? form.querySelector('.cond-field-val').textContent.trim() : '') : '';
-    const condValue = condOn ? (form.querySelector('.cond-value-val') ? form.querySelector('.cond-value-val').textContent.trim() : '') : '';
-
-    const list = document.getElementById('fee-list');
-    const item = buildFeeItem(name, amount, unit, perP, condOn, condField, condValue);
-    list.appendChild(item);
-    syncFeeListVisibility();
-
-    document.getElementById('af-first-form').style.display = 'none';
-    document.getElementById('section-add-btn').style.display = '';
-  }
-
-  // =======================================================
-  //  Additional fees: read-mode / edit-mode interactions
-  // =======================================================
-
-  // Build the HTML for a new-edit fee card (used by addFee)
-  function feeEditCardHTML(includeReadSlot = true) {
-    return `
-      ${includeReadSlot ? '<div class="fee-row-read read-only"></div>' : ''}
-      <div class="fee-card edit-only">
-        <div class="fee-top">
-          <div class="fee-name-field">
-            <div class="field-label">Fee name</div>
-            <input class="wds-input f-name" type="text" placeholder="e.g., Travel fee" />
-          </div>
-          <div class="fee-actions" style="padding-top:22px;">
-            <button class="btn btn-icon small" title="Remove fee" onclick="removeFee(this)">🗑</button>
-          </div>
+  // =========================================================
+  //  Fee card creation (always inline-editable)
+  // =========================================================
+  function addFee() {
+    const card = document.createElement('div');
+    card.className = 'fee-card';
+    card.dataset.condField = '';
+    card.dataset.condValue = '';
+    card.innerHTML = `
+      <div class="fee-top-row">
+        <div class="fee-field">
+          <div class="field-label">Fee name</div>
+          <input class="wds-input f-name" type="text" placeholder="e.g., Travel fee" />
         </div>
-        <div class="fee-fields">
-          <div class="fee-amount-col">
-            <div class="field-label">Fee</div>
-            <div class="amount-with-toggle" style="margin-bottom:4px;">
-              <input type="text" class="f-amount" placeholder="0" />
-              <div class="unit-toggle">
-                <div class="u active" onclick="toggleUnit(this)">$</div>
-                <div class="u" onclick="toggleUnit(this)">%</div>
-              </div>
-            </div>
-            <div class="field-help">Set a fixed amount or charge a percentage of the booking price.</div>
-          </div>
-          <div class="fee-toggle-col">
-            <div class="toggle-sm f-scope" onclick="toggleScope(this)"></div>
-            <span class="t-label">Charge per participant <span class="info-ico" title="When this is on, the fee is charged for each participant in the booking. When it's off, the fee is charged once per booking.">i</span></span>
-          </div>
-        </div>
-        <div class="fee-condition-row">
-          <div class="fee-condition-gate">
-            <div class="toggle-sm f-condition-toggle" onclick="toggleCondition(this)"></div>
-            <span class="t-label">Apply only when this condition is met <span class="info-ico" title="When on, this fee is only added if the selected booking attribute matches the value you set.">i</span></span>
-          </div>
-          <div class="fee-condition-fields" style="display:none;">
-            <div class="cond-field-col">
-              <div class="cond-label">Condition type</div>
-              <button class="wds-dropdown f-cond-field" type="button">
-                <span class="cond-field-val">Select field…</span>
-                <span class="caret">▾</span>
-              </button>
-              <div class="cond-field-menu" style="display:none; position:absolute; background:#fff; border:1px solid var(--D55); border-radius:6px; box-shadow:var(--shadow-2); z-index:100; min-width:220px; padding:4px 0; margin-top:2px;">
-                <div class="cond-option" onclick="selectCondField(this, 'Location')">Location</div>
-                <div class="cond-option" onclick="selectCondField(this, 'Payment preference')">Payment preference</div>
-              </div>
-            </div>
-            <div class="cond-value-col">
-              <div class="cond-label">Condition value</div>
-              <button class="wds-dropdown f-cond-value-btn" type="button" disabled style="opacity:0.5; cursor:default;">
-                <span class="cond-value-val">Select value…</span>
-                <span class="caret">▾</span>
-              </button>
-              <div class="cond-value-menu" style="display:none; position:absolute; background:#fff; border:1px solid var(--D55); border-radius:6px; box-shadow:var(--shadow-2); z-index:100; min-width:220px; padding:4px 0; margin-top:2px;"></div>
+        <div class="fee-field">
+          <div class="field-label">Amount</div>
+          <div class="amount-with-toggle">
+            <input type="text" class="f-amount" placeholder="0" />
+            <div class="unit-toggle">
+              <div class="u active" onclick="toggleUnit(this)">$</div>
+              <div class="u" onclick="toggleUnit(this)">%</div>
             </div>
           </div>
         </div>
-        <div class="fee-edit-actions">
-          <button class="btn btn-secondary btn-sm" onclick="cancelEdit(this)">Cancel</button>
-          <button class="btn btn-primary btn-sm" onclick="saveFee(this)">Save</button>
+        <div class="fee-menu-wrap">
+          <button class="btn btn-icon small fee-menu-btn" title="More actions" onclick="toggleFeeMenu(this, event)">⋯</button>
+          <div class="fee-menu-popover" role="menu">
+            <div class="fee-menu-item destructive" role="menuitem" onclick="removeFee(this)">
+              <span class="mi-icon" aria-hidden="true">🗑</span>
+              Delete
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="fee-bottom-row">
+        <div class="fee-bottom-left">
+          <div class="toggle-sm f-scope" onclick="toggleScope(this)"></div>
+          <span class="t-label">Charge per participant
+            <span class="info-ico" title="When this is on, the fee is charged for each participant. When it's off, the fee is charged once per booking.">i</span>
+          </span>
+        </div>
+        <div class="fee-bottom-right">
+          <button class="wds-text-btn f-cond-add" type="button" onclick="openCondModalFor(this)">
+            <span class="prefix-icon" aria-hidden="true">+</span>
+            Add condition
+          </button>
         </div>
       </div>
     `;
-  }
-
-  function syncFeeListVisibility() {
-    const list = document.getElementById('fee-list');
-    list.style.display = list.querySelectorAll('.fee-item').length > 0 ? 'flex' : 'none';
-  }
-
-  // Build a saved fee-item in read mode (used by saveFirstFee and saveFee)
-  function buildFeeItem(name, amount, unit, perP, condOn, condField, condValue) {
-    const amountDisplay = unit === '$' ? `$${parseFloat(amount).toFixed(2)}` : `${amount}%`;
-    const scopeLabel = perP ? 'Per participant' : 'Per booking';
-    const hasCond = condOn && condField && condField !== 'Select field…';
-    const item = document.createElement('div');
-    item.className = 'fee-item mode-read';
-    item.dataset.name = name;
-    item.dataset.amount = amount;
-    item.dataset.unit = unit;
-    item.dataset.perP = perP ? 'true' : 'false';
-    item.dataset.condOn = hasCond ? 'true' : 'false';
-    item.dataset.condField = condField || '';
-    item.dataset.condValue = condValue || '';
-    item.dataset.new = 'false';
-    const condBadgeHtml = hasCond
-      ? `<span class="cond-badge">If ${escapeHtml(condField)}: ${escapeHtml(condValue || '—')}</span>`
-      : ``;
-    const readRowClass = hasCond ? 'fee-row-read has-cond read-only' : 'fee-row-read read-only';
-    item.innerHTML = `
-      <div class="${readRowClass}">
-        <div class="col-name">${escapeHtml(name)}</div>
-        <div class="col-amount">${amountDisplay}</div>
-        <div class="col-scope">
-          <span class="scope-badge ${perP ? 'per-p' : ''}">${scopeLabel}</span>
-        </div>
-        ${hasCond ? `<div class="col-scope">${condBadgeHtml}</div>` : ''}
-        <div class="col-actions">
-          <button class="btn btn-icon small" title="Edit fee" onclick="enterEdit(this)">✏️</button>
-          <button class="btn btn-icon small" title="Remove fee" onclick="removeFee(this)">🗑</button>
-        </div>
-      </div>
-      ${feeEditCardHTML(false)}
-    `;
-    return item;
+    document.getElementById('fee-list').appendChild(card);
+    card.querySelector('.f-name').focus();
   }
 
   function removeFee(btn) {
-    const item = btn.closest('.fee-item');
-    if (!item) return;
-    item.remove();
-    syncFeeListVisibility();
-    const list = document.getElementById('fee-list');
-    if (list.querySelectorAll('.fee-item').length === 0) {
-      document.getElementById('af-first-form').style.display = 'block';
-      document.getElementById('section-add-btn').style.display = 'none';
-      document.getElementById('af-first-name').focus();
-    }
+    const card = btn.closest('.fee-card');
+    if (!card) return;
+    card.remove();
   }
 
-  function enterEdit(btn) {
-    const item = btn.closest('.fee-item');
-    item.classList.remove('mode-read');
-    item.classList.add('mode-edit');
-    const nameInput = item.querySelector('.f-name');
-    if (nameInput) { nameInput.focus(); nameInput.select(); }
-  }
-
-  function cancelEdit(btn) {
-    const item = btn.closest('.fee-item');
-    if (item.dataset.new === 'true') {
-      item.remove();
-      syncFeeListVisibility();
-      const list = document.getElementById('fee-list');
-      if (list.querySelectorAll('.fee-item').length === 0) {
-        document.getElementById('af-first-form').style.display = 'block';
-        document.getElementById('section-add-btn').style.display = 'none';
-      }
-      return;
-    }
-    // Existing fee — restore and flip back to read mode
-    restoreInputs(item);
-    item.classList.remove('mode-edit');
-    item.classList.add('mode-read');
-  }
-
-  function saveFee(btn) {
-    const item = btn.closest('.fee-item');
-    const name = (item.querySelector('.f-name').value || 'Untitled fee').trim();
-    const amount = parseFloat(item.querySelector('.f-amount').value) || 0;
-    const unit = item.querySelector('.unit-toggle .u.active').textContent.trim();
-    const perP = item.querySelector('.f-scope').classList.contains('on');
-    const condToggle = item.querySelector('.f-condition-toggle');
-    const condOn = condToggle && condToggle.classList.contains('on');
-    const condFieldEl = item.querySelector('.cond-field-val');
-    const condField = condOn && condFieldEl ? condFieldEl.textContent.trim() : '';
-    const condValueEl = item.querySelector('.cond-value-val');
-    const condValue = condOn && condValueEl ? condValueEl.textContent.trim() : '';
-    const hasCond = condOn && condField && condField !== 'Select field…';
-
-    const amountDisplay = unit === '$' ? `$${amount.toFixed(2)}` : `${amount}%`;
-    const scopeLabel = perP ? 'Per participant' : 'Per booking';
-
-    item.dataset.name = name;
-    item.dataset.amount = amount;
-    item.dataset.unit = unit;
-    item.dataset.perP = perP ? 'true' : 'false';
-    item.dataset.condOn = hasCond ? 'true' : 'false';
-    item.dataset.condField = condField || '';
-    item.dataset.condValue = condValue || '';
-    item.dataset.new = 'false';
-
-    const readRow = item.querySelector('.fee-row-read');
-    readRow.className = hasCond ? 'fee-row-read has-cond read-only' : 'fee-row-read read-only';
-    readRow.innerHTML = `
-      <div class="col-name">${escapeHtml(name)}</div>
-      <div class="col-amount">${amountDisplay}</div>
-      <div class="col-scope">
-        <span class="scope-badge ${perP ? 'per-p' : ''}">${scopeLabel}</span>
-      </div>
-      ${hasCond ? `<div class="col-scope"><span class="cond-badge">If ${escapeHtml(condField)}: ${escapeHtml(condValue || '—')}</span></div>` : ''}
-      <div class="col-actions">
-        <button class="btn btn-icon small" title="Edit fee" onclick="enterEdit(this)">✏️</button>
-        <button class="btn btn-icon small" title="Remove fee" onclick="removeFee(this)">🗑</button>
-      </div>
-    `;
-    item.classList.remove('mode-edit');
-    item.classList.add('mode-read');
-  }
-
-  function restoreInputs(item) {
-    const name = item.dataset.name || '';
-    const amount = item.dataset.amount || '';
-    const unit = item.dataset.unit || '$';
-    const perP = item.dataset.perP === 'true';
-    const condOn = item.dataset.condOn === 'true';
-    const condField = item.dataset.condField || '';
-    const condValue = item.dataset.condValue || '';
-    if (item.querySelector('.f-name')) item.querySelector('.f-name').value = name;
-    if (item.querySelector('.f-amount')) item.querySelector('.f-amount').value = amount;
-    item.querySelectorAll('.unit-toggle .u').forEach(u => {
-      u.classList.toggle('active', u.textContent.trim() === unit);
-    });
-    const scope = item.querySelector('.f-scope');
-    if (scope) scope.classList.toggle('on', perP);
-    const condToggle = item.querySelector('.f-condition-toggle');
-    if (condToggle) {
-      condToggle.classList.toggle('on', condOn);
-      const fields = item.querySelector('.fee-condition-fields');
-      if (fields) fields.style.display = condOn ? 'flex' : 'none';
-    }
-    const condFieldEl = item.querySelector('.cond-field-val');
-    if (condFieldEl) condFieldEl.textContent = condField || 'Select field…';
-    const condValueValEl = item.querySelector('.cond-value-val');
-    if (condValueValEl) condValueValEl.textContent = condValue || 'Select value…';
-    const valueBtnEl = item.querySelector('.f-cond-value-btn');
-    if (valueBtnEl && condField && COND_VALUES[condField]) {
-      valueBtnEl.removeAttribute('disabled');
-      valueBtnEl.style.opacity = '1';
-      valueBtnEl.style.cursor = 'pointer';
-      const valueMenu = item.querySelector('.cond-value-menu');
-      if (valueMenu) {
-        valueMenu.innerHTML = COND_VALUES[condField].map(o =>
-          `<div class="cond-option" data-value="${o.replace(/"/g, '&quot;')}">${o}</div>`
-        ).join('');
-        valueMenu.querySelectorAll('.cond-option').forEach(opt => {
-          opt.addEventListener('click', () => selectCondValue(opt, opt.dataset.value));
-        });
-      }
-    } else if (valueBtnEl) {
-      valueBtnEl.setAttribute('disabled', '');
-      valueBtnEl.style.opacity = '0.5';
-      valueBtnEl.style.cursor = 'default';
-    }
-  }
-
-  function addFee() {
-    const item = document.createElement('div');
-    item.className = 'fee-item mode-edit';
-    item.dataset.new = 'true';
-    item.innerHTML = feeEditCardHTML();
-    document.getElementById('fee-list').appendChild(item);
-    item.querySelector('.f-name').focus();
+  function toggleFeeMenu(btn, e) {
+    if (e) e.stopPropagation();
+    const wrap = btn.closest('.fee-menu-wrap');
+    const popover = wrap.querySelector('.fee-menu-popover');
+    const wasOpen = popover.classList.contains('open');
+    document.querySelectorAll('.fee-menu-popover').forEach(p => p.classList.remove('open'));
+    if (!wasOpen) popover.classList.add('open');
   }
 
   function toggleUnit(el) {
@@ -1442,85 +1184,155 @@ body {
     el.classList.toggle('on');
   }
 
-  function toggleCondition(el) {
-    el.classList.toggle('on');
-    const row = el.closest('.fee-condition-row');
-    if (row) {
-      const fields = row.querySelector('.fee-condition-fields');
-      if (fields) fields.style.display = el.classList.contains('on') ? 'flex' : 'none';
-    }
-  }
-
+  // =========================================================
+  //  Condition modal
+  // =========================================================
   const COND_VALUES = {
     'Location': ['Business location 1', 'Business location 2', 'Custom location', "Client's place"],
     'Payment preference': ['Online', 'In person']
   };
 
-  function selectCondField(optionEl, value) {
-    const menu = optionEl.closest('.cond-field-menu');
-    const row = menu.closest('.fee-condition-fields');
-    const fieldBtn = row.querySelector('.f-cond-field');
-    fieldBtn.querySelector('.cond-field-val').textContent = value;
-    menu.style.display = 'none';
+  let activeCardForModal = null;
+  let modalField = '';
+  let modalValue = '';
 
-    // Populate and enable the value dropdown
-    const valueBtn = row.querySelector('.f-cond-value-btn');
-    const valueMenu = row.querySelector('.cond-value-menu');
-    const options = COND_VALUES[value] || [];
-    valueMenu.innerHTML = options.map(o =>
-      `<div class="cond-option" data-value="${o.replace(/"/g, '&quot;')}">${o}</div>`
-    ).join('');
-    valueMenu.querySelectorAll('.cond-option').forEach(opt => {
-      opt.addEventListener('click', () => selectCondValue(opt, opt.dataset.value));
-    });
-    valueBtn.querySelector('.cond-value-val').textContent = 'Select value…';
-    valueBtn.removeAttribute('disabled');
-    valueBtn.style.opacity = '1';
-    valueBtn.style.cursor = 'pointer';
+  function openCondModalFor(btn) {
+    const card = btn.closest('.fee-card');
+    activeCardForModal = card;
+    // If there's already a condition on this card, prefill the modal with it
+    modalField = card.dataset.condField || '';
+    modalValue = card.dataset.condValue || '';
+    document.getElementById('cond-modal-title').textContent = (modalField && modalValue) ? 'Edit condition' : 'Set a condition';
+    document.getElementById('m-remove-btn').style.display = (modalField && modalValue) ? 'inline-flex' : 'none';
+    syncModalUIFromState();
+    document.getElementById('cond-modal').classList.add('open');
   }
 
-  function selectCondValue(optionEl, value) {
-    const menu = optionEl.closest('.cond-value-menu');
-    const btn = menu.previousElementSibling; // .f-cond-value-btn
-    btn.querySelector('.cond-value-val').textContent = value;
-    menu.style.display = 'none';
+  function closeCondModal() {
+    document.getElementById('cond-modal').classList.remove('open');
+    document.querySelectorAll('.cond-menu').forEach(m => m.classList.remove('open'));
+    activeCardForModal = null;
+    modalField = '';
+    modalValue = '';
   }
 
-  // Toggle field and value dropdowns open/close
+  function onModalOverlayClick(e) {
+    if (e.target.id === 'cond-modal') closeCondModal();
+  }
+
+  function selectModalField(value) {
+    if (modalField !== value) {
+      modalField = value;
+      modalValue = '';
+    }
+    syncModalUIFromState();
+    document.getElementById('m-cond-field-menu').classList.remove('open');
+  }
+
+  function selectModalValue(value) {
+    modalValue = value;
+    syncModalUIFromState();
+    document.getElementById('m-cond-value-menu').classList.remove('open');
+  }
+
+  function syncModalUIFromState() {
+    document.getElementById('m-cond-field-val').textContent = modalField || 'Select field…';
+    const valBtn = document.getElementById('m-cond-value-btn');
+    const valMenu = document.getElementById('m-cond-value-menu');
+    if (modalField && COND_VALUES[modalField]) {
+      valBtn.removeAttribute('disabled');
+      valBtn.style.opacity = '1';
+      valBtn.style.cursor = 'pointer';
+      valMenu.innerHTML = COND_VALUES[modalField].map(v =>
+        `<div class="cond-option" onclick="selectModalValue('${v.replace(/'/g, "\\'")}')">${escapeHtml(v)}</div>`
+      ).join('');
+    } else {
+      valBtn.setAttribute('disabled', '');
+      valBtn.style.opacity = '0.5';
+      valBtn.style.cursor = 'default';
+      valMenu.innerHTML = '';
+    }
+    document.getElementById('m-cond-value-val').textContent = modalValue || 'Select value…';
+
+    const saveBtn = document.getElementById('m-save-btn');
+    const valid = !!(modalField && modalValue);
+    if (valid) {
+      saveBtn.removeAttribute('disabled');
+      saveBtn.style.opacity = '1';
+      saveBtn.style.cursor = 'pointer';
+    } else {
+      saveBtn.setAttribute('disabled', '');
+      saveBtn.style.opacity = '0.5';
+      saveBtn.style.cursor = 'default';
+    }
+  }
+
+  function saveConditionFromModal() {
+    if (!activeCardForModal || !modalField || !modalValue) return;
+    activeCardForModal.dataset.condField = modalField;
+    activeCardForModal.dataset.condValue = modalValue;
+    renderConditionUI(activeCardForModal);
+    closeCondModal();
+  }
+
+  function removeConditionFromModal() {
+    if (!activeCardForModal) return;
+    activeCardForModal.dataset.condField = '';
+    activeCardForModal.dataset.condValue = '';
+    renderConditionUI(activeCardForModal);
+    closeCondModal();
+  }
+
+  function removeConditionFromCard(btn) {
+    const card = btn.closest('.fee-card');
+    if (!card) return;
+    card.dataset.condField = '';
+    card.dataset.condValue = '';
+    renderConditionUI(card);
+  }
+
+  function renderConditionUI(card) {
+    const right = card.querySelector('.fee-bottom-right');
+    const field = card.dataset.condField || '';
+    const value = card.dataset.condValue || '';
+    if (field && value) {
+      right.innerHTML = `
+        <div class="wds-tag" role="button" tabindex="0" title="Edit condition" onclick="openCondModalFor(this)">
+          <span class="tag-text">If <strong>${escapeHtml(field)}</strong>: ${escapeHtml(value)}</span>
+          <button type="button" class="tag-remove" title="Remove condition" onclick="event.stopPropagation(); removeConditionFromCard(this)">×</button>
+        </div>
+      `;
+    } else {
+      right.innerHTML = `
+        <button class="wds-text-btn f-cond-add" type="button" onclick="openCondModalFor(this)">
+          <span class="prefix-icon" aria-hidden="true">+</span>
+          Add condition
+        </button>
+      `;
+    }
+  }
+
+  // Open/close dropdown menus inside the modal
+  function toggleMenu(menuId, e) {
+    if (e) e.stopPropagation();
+    const menu = document.getElementById(menuId);
+    const isOpen = menu.classList.contains('open');
+    document.querySelectorAll('.cond-menu').forEach(m => m.classList.remove('open'));
+    if (!isOpen) menu.classList.add('open');
+  }
+
   document.addEventListener('click', function(e) {
-    const fieldBtn = e.target.closest('.f-cond-field');
-    if (fieldBtn) {
-      e.stopPropagation();
-      const menu = fieldBtn.nextElementSibling;
-      const isOpen = menu.style.display === 'block';
-      document.querySelectorAll('.cond-field-menu, .cond-value-menu').forEach(m => m.style.display = 'none');
-      if (!isOpen) menu.style.display = 'block';
-      return;
+    if (!e.target.closest('.wds-dropdown') && !e.target.closest('.cond-menu')) {
+      document.querySelectorAll('.cond-menu').forEach(m => m.classList.remove('open'));
     }
-    const valueBtn = e.target.closest('.f-cond-value-btn');
-    if (valueBtn && !valueBtn.disabled) {
-      e.stopPropagation();
-      const menu = valueBtn.nextElementSibling;
-      const isOpen = menu.style.display === 'block';
-      document.querySelectorAll('.cond-field-menu, .cond-value-menu').forEach(m => m.style.display = 'none');
-      if (!isOpen) menu.style.display = 'block';
-      return;
+    if (!e.target.closest('.fee-menu-wrap')) {
+      document.querySelectorAll('.fee-menu-popover').forEach(p => p.classList.remove('open'));
     }
-    // click outside — close all menus
-    document.querySelectorAll('.cond-field-menu, .cond-value-menu').forEach(m => m.style.display = 'none');
   });
 
   function escapeHtml(s) {
-    return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   }
-
-  // Hide fee-list on load (it starts empty)
-  syncFeeListVisibility();
-
-  // Wire up the initial unit toggles
-  document.querySelectorAll('.unit-toggle .u').forEach(u => {
-    u.addEventListener('click', () => toggleUnit(u));
-  });
 
   // Wire payment tile selection
   document.querySelectorAll('.p-tile').forEach(t => {
