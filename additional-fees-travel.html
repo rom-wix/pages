@@ -1,0 +1,1869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Additional fees (inline editing) — Service form wireframe</title>
+<link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400;500;600;700&family=Wix+Madefor+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   Wix Design System-inspired styles (HTML/CSS replica)
+   ========================================================= */
+
+:root {
+  --D10: #162D3D;
+  --D20: #32536A;
+  --D30: #5A7A8C;
+  --D40: #868AA5;
+  --D50: #C1E0FB;
+  --D55: #DFE5EB;
+  --D60: #EAF7FF;
+  --D70: #F0F4F7;
+  --D80: #F7F8F8;
+
+  --B10: #0D3D5C;
+  --B20: #116DFF;
+  --B30: #3899EC;
+  --B40: #4EB7F5;
+  --B50: #DFEDF9;
+  --B60: #EAF7FF;
+
+  --R10: #BE2E2E;
+  --R20: #E62214;
+
+  --G10: #1F664C;
+  --G20: #3B8251;
+
+  --Y10: #D2A008;
+
+  --radius-6: 6px;
+  --radius-8: 8px;
+  --radius-18: 18px;
+
+  --shadow-1: 0 1px 1px rgba(22,45,61,.06), 0 0 1px rgba(22,45,61,.10);
+  --shadow-2: 0 2px 8px rgba(22,45,61,.08), 0 0 1px rgba(22,45,61,.14);
+  --shadow-3: 0 6px 16px rgba(22,45,61,.10), 0 0 1px rgba(22,45,61,.14);
+  --shadow-modal: 0 20px 40px rgba(22,45,61,.18), 0 0 1px rgba(22,45,61,.20);
+
+  --font-ui: "Wix Madefor Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Wix Madefor Display", var(--font-ui);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { height: 100%; }
+body {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  color: var(--D10);
+  background: var(--D80);
+  line-height: 1.43;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ------------------------------------------------------------
+   Top bar
+   ------------------------------------------------------------ */
+.wix-top-bar {
+  height: 48px;
+  background: #FFFFFF;
+  border-bottom: 1px solid var(--D55);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 20px;
+  font-family: var(--font-display);
+}
+.wix-brand { font-weight: 700; letter-spacing: 0.4px; font-size: 13px; }
+.wix-top-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border: 1px solid var(--D55);
+  border-radius: var(--radius-18);
+  font-size: 12px;
+  color: var(--D10);
+  background: #fff;
+}
+.wix-top-chip .av {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--B20); color: #fff;
+  font-size: 10px; font-weight: 700;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.wix-nav-item {
+  font-size: 13px;
+  color: var(--D10);
+  padding: 6px 10px;
+  cursor: pointer;
+}
+.wix-nav-item:hover { color: var(--B20); }
+.wix-upgrade-pill {
+  margin-left: 6px;
+  padding: 6px 14px;
+  border: 1px solid var(--D10);
+  border-radius: var(--radius-18);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  background: #fff;
+}
+.wix-top-spacer { flex: 1; }
+.wix-search {
+  width: 420px;
+  background: var(--D80);
+  border: 1px solid var(--D55);
+  border-radius: var(--radius-18);
+  padding: 6px 12px;
+  font-size: 13px;
+  color: var(--D30);
+  display: flex; align-items: center; gap: 8px;
+}
+.wix-top-icons { display: flex; align-items: center; gap: 14px; }
+.wix-top-icons .ic {
+  width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center;
+  color: var(--D20); cursor: pointer; position: relative;
+}
+.wix-top-icons .badge {
+  position: absolute; top: -4px; right: -8px;
+  background: var(--R20); color: #fff;
+  font-size: 9px; font-weight: 700;
+  padding: 1px 4px; border-radius: 8px; line-height: 1.2;
+}
+.wix-ai-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 12px;
+  background: var(--D10); color: #fff;
+  border-radius: var(--radius-18);
+  font-size: 12px; font-weight: 600;
+  cursor: pointer;
+}
+
+/* ------------------------------------------------------------
+   App layout
+   ------------------------------------------------------------ */
+.app {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: calc(100vh - 48px);
+}
+.side-nav {
+  background: var(--D10);
+  color: #fff;
+  padding: 12px 0 20px;
+  font-size: 13px;
+}
+.side-nav .quick-actions {
+  margin: 8px 12px 14px;
+  padding: 7px 12px;
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: var(--radius-18);
+  color: #fff;
+  display: flex; justify-content: space-between; align-items: center;
+  font-weight: 600;
+  cursor: pointer;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 20px;
+  color: rgba(255,255,255,0.85);
+  cursor: pointer;
+  position: relative;
+}
+.nav-item:hover { background: rgba(255,255,255,0.05); color: #fff; }
+.nav-item.active {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  font-weight: 600;
+}
+.nav-item .chev { margin-left: auto; font-size: 10px; opacity: 0.6; }
+.nav-sub {
+  padding-left: 44px;
+  color: rgba(255,255,255,0.7);
+  font-size: 13px;
+  padding-top: 4px; padding-bottom: 4px;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 6px;
+}
+.nav-sub:hover { color: #fff; }
+.nav-sub.active { color: #fff; font-weight: 600; background: rgba(255,255,255,0.08); }
+.nav-sub .star { margin-left: auto; opacity: .6; }
+
+/* ------------------------------------------------------------
+   Main page
+   ------------------------------------------------------------ */
+.main {
+  padding: 24px 32px 60px;
+  max-width: 1280px;
+  width: 100%;
+}
+
+.breadcrumbs {
+  font-size: 14px;
+  color: var(--B20);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.breadcrumbs .sep { color: var(--D30); }
+.breadcrumbs .current { color: var(--D10); }
+
+.page-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+.page-title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--D10);
+  display: flex; align-items: center; gap: 12px;
+}
+
+.pill-dropdown {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px 4px 12px;
+  background: var(--B60);
+  color: var(--D10);
+  border-radius: var(--radius-18);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.pill-dropdown .caret { font-size: 10px; opacity: 0.7; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 36px;
+  padding: 0 18px;
+  border-radius: var(--radius-18);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--B20);
+  white-space: nowrap;
+}
+.btn-primary {
+  background: var(--B20);
+  color: #fff;
+  border-color: var(--B20);
+}
+.btn-primary:hover { background: #0f63e6; }
+.btn-secondary {
+  background: #fff;
+  border-color: var(--B20);
+  color: var(--B20);
+}
+.btn-secondary:hover { background: var(--B60); }
+.btn-tertiary {
+  background: transparent;
+  color: var(--B20);
+  padding: 0 12px;
+}
+.btn-tertiary:hover { color: #0f63e6; }
+.btn-icon {
+  width: 36px; height: 36px; padding: 0; border-radius: 50%;
+  color: var(--D20); background: transparent;
+}
+.btn-icon:hover { background: var(--D80); }
+.btn-icon.small { width: 30px; height: 30px; }
+.btn-sm { height: 30px; font-size: 13px; padding: 0 14px; }
+
+/* ------------------------------------------------------------
+   Service form layout
+   ------------------------------------------------------------ */
+.service-form {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.section-nav {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: var(--shadow-1);
+  padding: 10px 0 14px;
+  position: sticky;
+  top: 16px;
+}
+.section-nav-item {
+  padding: 12px 20px;
+  font-size: 14px;
+  color: var(--D10);
+  cursor: pointer;
+}
+.section-nav-item:hover { background: var(--D80); }
+.section-nav-item.active {
+  background: var(--B60);
+  font-weight: 600;
+  border-left: 3px solid var(--B20);
+  padding-left: 17px;
+}
+.visibility-row {
+  padding: 14px 20px 2px;
+  border-top: 1px solid var(--D55);
+  margin-top: 10px;
+  display: flex; align-items: center; gap: 10px;
+  font-size: 14px;
+  color: var(--D10);
+}
+.toggle {
+  position: relative;
+  width: 36px; height: 20px;
+  border-radius: 20px;
+  background: var(--B20);
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.toggle::after {
+  content: "";
+  position: absolute;
+  top: 2px; left: 18px;
+  width: 16px; height: 16px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  transition: left 0.18s;
+}
+.toggle.off { background: var(--D40); }
+.toggle.off::after { left: 2px; }
+
+.main-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: var(--shadow-2);
+  padding: 28px 32px 32px;
+}
+
+.section-title-row { margin-bottom: 4px; }
+.section-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--D10);
+}
+.section-subtitle {
+  font-size: 14px;
+  color: var(--D30);
+  margin-bottom: 26px;
+}
+
+.sub-heading {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--D10);
+  margin-bottom: 14px;
+}
+.info-ico {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 16px; height: 16px; border-radius: 50%;
+  border: 1px solid var(--D30); color: var(--D30);
+  font-size: 10px; font-weight: 700;
+  cursor: help;
+}
+
+/* Payment option tiles */
+.payment-tiles {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.p-tile {
+  border: 1px solid var(--D55);
+  border-radius: 8px;
+  padding: 18px 18px 20px;
+  cursor: pointer;
+  position: relative;
+  background: #fff;
+  min-height: 112px;
+  transition: border-color .1s, box-shadow .1s;
+}
+.p-tile:hover { border-color: var(--B20); }
+.p-tile.selected {
+  border-color: var(--B20);
+  box-shadow: 0 0 0 1px var(--B20) inset;
+}
+.p-tile .check {
+  position: absolute;
+  top: 10px; right: 10px;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--B20);
+  color: #fff;
+  display: none;
+  align-items: center; justify-content: center;
+  font-size: 10px;
+}
+.p-tile.selected .check { display: inline-flex; }
+.p-tile .t-title { font-weight: 600; font-size: 15px; margin-bottom: 8px; color: var(--D10); }
+.p-tile .t-body { font-size: 13px; color: var(--D30); line-height: 1.45; }
+
+.subsection { margin-bottom: 28px; }
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 18px;
+}
+
+.field-label {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 14px;
+  color: var(--D10);
+  margin-bottom: 6px;
+}
+
+.wds-input, .wds-dropdown {
+  width: 100%;
+  height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--D55);
+  border-radius: var(--radius-6);
+  background: #fff;
+  font-family: var(--font-ui);
+  font-size: 14px;
+  color: var(--D10);
+  display: inline-flex; align-items: center;
+  outline: none;
+  transition: border-color .1s, box-shadow .1s;
+}
+.wds-input:focus, .wds-dropdown:focus {
+  border-color: var(--B20);
+  box-shadow: 0 0 0 3px rgba(17,109,255,0.15);
+}
+.wds-dropdown {
+  cursor: pointer;
+  justify-content: space-between;
+  padding-right: 8px;
+}
+.wds-dropdown .caret {
+  font-size: 10px; color: var(--D30);
+}
+.wds-input::placeholder { color: var(--D40); }
+
+.number-input {
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+  height: 36px;
+  border: 1px solid var(--D55);
+  border-radius: var(--radius-6);
+  background: #fff;
+  overflow: hidden;
+}
+.number-input:focus-within {
+  border-color: var(--B20);
+  box-shadow: 0 0 0 3px rgba(17,109,255,0.15);
+}
+.number-input .prefix {
+  padding: 0 10px;
+  height: 100%;
+  display: inline-flex; align-items: center;
+  color: var(--D30);
+  font-size: 14px;
+  border-right: 1px solid var(--D55);
+  background: #fff;
+}
+.number-input input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  outline: none;
+  padding: 0 10px;
+  font-family: var(--font-ui);
+  font-size: 14px;
+  color: var(--D10);
+  background: transparent;
+}
+.number-input .steppers {
+  display: flex; flex-direction: column;
+  border-left: 1px solid var(--D55);
+}
+.number-input .steppers .step {
+  width: 22px; height: 17px;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--D20);
+  cursor: pointer;
+  font-size: 9px;
+  background: #fff;
+}
+.number-input .steppers .step:hover { background: var(--D80); }
+.number-input .steppers .step:first-child { border-bottom: 1px solid var(--D55); }
+
+.divider { border-top: 1px solid var(--D55); margin: 8px 0 24px; }
+
+/* ------------------------------------------------------------
+   Additional fees — INLINE EDITING variation
+   ------------------------------------------------------------ */
+.af-head {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 4px;
+}
+.af-title-block .sub-heading { margin-bottom: 2px; }
+.af-subtitle {
+  font-size: 13px;
+  color: var(--D30);
+  line-height: 1.4;
+  margin-bottom: 16px;
+}
+
+/* Toggle small */
+.toggle-sm {
+  position: relative;
+  width: 32px; height: 18px;
+  border-radius: 18px;
+  background: var(--D40);
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: background .15s;
+}
+.toggle-sm.on { background: var(--B20); }
+.toggle-sm::after {
+  content: "";
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 14px; height: 14px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  transition: left .15s;
+}
+.toggle-sm.on::after { left: 16px; }
+
+/* Fee list — every fee is always inline-editable */
+.fee-list { display: flex; flex-direction: column; gap: 10px; }
+.fee-list:not(:empty) { margin-bottom: 16px; }
+
+.fee-card {
+  border: 1px solid var(--D55);
+  border-radius: 8px;
+  padding: 14px 16px 14px 18px;
+  background: #fff;
+  position: relative;
+  transition: border-color .12s, box-shadow .12s;
+}
+.fee-card:hover {
+  border-color: var(--D40);
+}
+
+/* Top row inside card: WDS FormField columns + IconButton */
+.fee-top-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 220px auto;
+  gap: 14px;
+  align-items: end;
+}
+.fee-top-row .field-label { margin-bottom: 6px; }
+.fee-top-row .fee-menu-wrap { margin-bottom: 1px; }
+
+/* WDS PopoverMenu — three-dot menu attached to each fee card */
+.fee-menu-wrap {
+  position: relative;
+  display: inline-flex;
+}
+.fee-menu-btn {
+  font-size: 18px;
+  line-height: 1;
+  letter-spacing: 1px;
+}
+.fee-menu-popover {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 160px;
+  background: #fff;
+  border: 1px solid var(--D55);
+  border-radius: 8px;
+  box-shadow: var(--shadow-3);
+  padding: 6px 0;
+  z-index: 50;
+}
+.fee-menu-popover.open { display: block; }
+.fee-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  font-size: 14px;
+  color: var(--D10);
+  cursor: pointer;
+  user-select: none;
+}
+.fee-menu-item:hover { background: var(--D80); }
+.fee-menu-item.destructive { color: var(--R10); }
+.fee-menu-item.destructive:hover { background: #FDF1F1; }
+.fee-menu-item .mi-icon {
+  font-size: 14px;
+  line-height: 1;
+  width: 16px;
+  display: inline-flex;
+  justify-content: center;
+}
+
+/* Inline amount input — compact, uses the existing amount-with-toggle look */
+.amount-with-toggle {
+  display: inline-flex;
+  align-items: stretch;
+  width: 100%;
+  height: 36px;
+  border: 1px solid var(--D55);
+  border-radius: var(--radius-6);
+  background: #fff;
+  overflow: hidden;
+}
+.amount-with-toggle:focus-within {
+  border-color: var(--B20);
+  box-shadow: 0 0 0 3px rgba(17,109,255,0.15);
+}
+.amount-with-toggle:hover { border-color: var(--D30); }
+.amount-with-toggle input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  padding: 0 10px;
+  font-family: var(--font-ui);
+  font-size: 14px;
+  color: var(--D10);
+  background: transparent;
+}
+.unit-toggle {
+  display: inline-flex;
+  padding: 3px;
+  gap: 2px;
+  background: #F0F4F7;
+  align-self: center;
+  margin-right: 5px;
+  border-radius: 6px;
+}
+.unit-toggle .u {
+  width: 30px; height: 26px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  color: var(--D10);
+  border-radius: 4px;
+  cursor: pointer;
+  user-select: none;
+}
+.unit-toggle .u.active {
+  background: var(--B20);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Bottom row: per-participant toggle | condition chip area */
+.fee-bottom-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--D55);
+}
+.fee-bottom-left {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 13px;
+  color: var(--D10);
+}
+.fee-bottom-left .t-label {
+  display: flex; align-items: center; gap: 6px;
+}
+.fee-bottom-right {
+  display: flex; align-items: center; gap: 6px;
+}
+
+/* WDS TextButton — link-style action with optional prefix icon */
+.wds-text-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--B20);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  line-height: 1.2;
+}
+.wds-text-btn:hover { color: #0f63e6; text-decoration: underline; }
+.wds-text-btn:focus-visible {
+  outline: 2px solid var(--B20);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+.wds-text-btn .prefix-icon {
+  font-size: 16px;
+  line-height: 1;
+  font-weight: 500;
+}
+
+/* WDS Tag — rounded chip used for the active condition. Removable variant. */
+.wds-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 4px 0 10px;
+  height: 24px;
+  background: var(--D70);
+  color: var(--D10);
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid transparent;
+  max-width: 360px;
+  cursor: pointer;
+  transition: background .12s, border-color .12s;
+}
+.wds-tag:hover {
+  background: #E5EAEF;
+  border-color: var(--D55);
+}
+.wds-tag:focus-visible {
+  outline: 2px solid var(--B20);
+  outline-offset: 1px;
+}
+.wds-tag .tag-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--D10);
+}
+.wds-tag .tag-text strong {
+  font-weight: 600;
+  color: var(--D10);
+}
+.wds-tag .tag-remove {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--D20);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 12px;
+  cursor: pointer;
+  flex-shrink: 0;
+  border: 0;
+  padding: 0;
+  margin-left: 2px;
+}
+.wds-tag .tag-remove:hover { background: rgba(22,45,61,0.08); color: var(--D10); }
+
+/* Add fee — uses the WDS .btn .btn-secondary base
+   with a softer outline to match the lightweight pill style. */
+.add-fee-btn {
+  border-color: #C2D6FF;
+}
+.add-fee-btn:hover {
+  background: var(--B60);
+  border-color: var(--B20);
+}
+
+/* =========================================
+   Inline tier summary (shown on the card
+   when distance-based pricing is configured)
+   ========================================= */
+/* When tiers are active on a card:
+   - hide the flat Amount field (price varies by tier)
+   - collapse top row to: Fee name | … menu */
+.fee-card.has-tiers .fee-top-row {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+.fee-card.has-tiers .fee-amount-col {
+  display: none;
+}
+
+.fee-tiers-summary {
+  margin-top: 14px;
+  padding: 12px 14px 10px;
+  background: var(--D80);
+  border: 1px solid var(--D55);
+  border-radius: var(--radius-6);
+}
+.tiers-summary-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.tiers-summary-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--D10);
+}
+.tiers-summary-title .ts-pin {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--B20);
+  color: #fff;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.tiers-summary-title .ts-pin svg { width: 13px; height: 13px; }
+.tiers-summary-title .ts-loc-name { font-weight: 600; color: var(--D10); }
+.tiers-summary-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+.tiers-summary-actions .ts-remove {
+  width: 26px; height: 26px;
+  border: 0;
+  background: transparent;
+  color: var(--D30);
+  font-size: 16px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.tiers-summary-actions .ts-remove:hover { background: rgba(22,45,61,0.06); color: var(--D10); }
+
+.tiers-summary-list {
+  display: flex;
+  flex-direction: column;
+}
+.ts-row {
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  font-size: 13px;
+  color: var(--D10);
+  border-top: 1px solid rgba(50,83,106,0.10);
+}
+.ts-row:first-child { border-top: 0; }
+.ts-row .ts-marker {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: rgba(17,109,255,0.30);
+  border: 2px solid var(--B20);
+}
+.ts-row.t-2 .ts-marker { background: rgba(17,109,255,0.20); }
+.ts-row.t-3 .ts-marker { background: rgba(17,109,255,0.12); }
+.ts-row.t-rest .ts-marker {
+  background: transparent;
+  border-style: dashed;
+  border-color: var(--D40);
+}
+.ts-row .ts-range {
+  color: var(--D10);
+}
+.ts-row.t-rest .ts-range { color: var(--D20); font-style: italic; }
+.ts-row .ts-amount {
+  font-weight: 600;
+  color: var(--D10);
+}
+
+/* Empty state when section is on but no fees yet */
+.af-empty-hint {
+  font-size: 13px;
+  color: var(--D30);
+  padding: 10px 0 4px;
+}
+
+.field-help {
+  font-size: 12px;
+  color: var(--D30);
+  margin-top: 4px;
+}
+
+/* =========================================
+   Modal overlay (for setting condition)
+   ========================================= */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(22,45,61,0.55);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  width: 520px;
+  max-width: calc(100% - 32px);
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: var(--shadow-modal);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.modal-header {
+  padding: 22px 28px 6px;
+}
+.modal-title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--D10);
+}
+.modal-subtitle {
+  font-size: 13px;
+  color: var(--D30);
+  margin-top: 4px;
+}
+.modal-body {
+  padding: 18px 28px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.modal-body .field {
+  display: flex;
+  flex-direction: column;
+}
+.modal-footer {
+  padding: 14px 20px;
+  background: var(--D80);
+  border-top: 1px solid var(--D55);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.modal-footer .footer-left { display: flex; gap: 8px; }
+.modal-footer .footer-right { display: flex; gap: 8px; }
+.modal-remove-link {
+  background: transparent;
+  border: 0;
+  color: var(--R10);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 6px 8px;
+}
+.modal-remove-link:hover { color: #99201F; text-decoration: underline; }
+
+/* =========================================
+   Distance-based pricing modal
+   ========================================= */
+.modal.modal-wide { width: 640px; }
+
+/* Business location single-select dropdown (name + full address) */
+.location-select {
+  position: relative;
+}
+.location-select-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 56px;
+  padding: 8px 12px;
+  background: #fff;
+  border: 1px solid var(--D55);
+  border-radius: var(--radius-6);
+  font-family: var(--font-ui);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color .1s, box-shadow .1s;
+}
+.location-select-btn:hover { border-color: var(--D30); }
+.location-select-btn:focus-visible {
+  outline: none;
+  border-color: var(--B20);
+  box-shadow: 0 0 0 3px rgba(17,109,255,0.15);
+}
+.location-select.open .location-select-btn {
+  border-color: var(--B20);
+  box-shadow: 0 0 0 3px rgba(17,109,255,0.15);
+}
+.location-select-btn .loc-pin {
+  width: 18px; height: 18px;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--D20);
+  flex-shrink: 0;
+}
+.location-select-btn .loc-pin svg { width: 100%; height: 100%; }
+.location-select-btn .loc-meta {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  line-height: 1.3;
+}
+.location-select-btn .loc-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--D10);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.location-select-btn .loc-addr {
+  font-size: 12px;
+  color: var(--D30);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.location-select-btn .loc-caret {
+  font-size: 10px;
+  color: var(--D30);
+  flex-shrink: 0;
+  margin-left: 4px;
+}
+
+.location-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0; right: 0;
+  background: #fff;
+  border: 1px solid var(--D55);
+  border-radius: var(--radius-6);
+  box-shadow: var(--shadow-2);
+  z-index: 100;
+  padding: 4px 0;
+  max-height: 280px;
+  overflow-y: auto;
+}
+.location-select.open .location-menu { display: block; }
+.location-option {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 14px;
+  cursor: pointer;
+  line-height: 1.3;
+}
+.location-option:hover { background: var(--D80); }
+.location-option.selected { background: var(--B60); }
+.location-option .opt-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--D10);
+}
+.location-option .opt-addr {
+  font-size: 12px;
+  color: var(--D30);
+}
+
+.dist-map {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  border-radius: var(--radius-6);
+  border: 1px solid var(--D55);
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, #EAF1F5 0%, #DDE7EF 100%);
+}
+.dist-map .map-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(50,83,106,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(50,83,106,0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.dist-map svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.dist-map .map-legend {
+  position: absolute;
+  top: 8px; left: 8px;
+  background: rgba(255,255,255,0.92);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 11px;
+  color: var(--D30);
+}
+
+/* Tier list inside the modal */
+.tier-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.tier-row {
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr) 110px 110px 24px;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 4px;
+}
+.tier-row .tier-marker {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--B20);
+  background: rgba(17,109,255,0.18);
+  flex-shrink: 0;
+}
+.tier-row.t-1 .tier-marker { background: rgba(17,109,255,0.35); }
+.tier-row.t-2 .tier-marker { background: rgba(17,109,255,0.22); }
+.tier-row.t-3 .tier-marker { background: rgba(17,109,255,0.12); }
+.tier-row.t-rest .tier-marker {
+  background: transparent;
+  border-style: dashed;
+  border-color: var(--D40);
+}
+.tier-row .tier-label {
+  font-size: 13px;
+  color: var(--D10);
+}
+.tier-row .tier-distance {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  border: 1px solid var(--D55);
+  border-radius: var(--radius-6);
+  background: #fff;
+  overflow: hidden;
+}
+.tier-row .tier-distance:focus-within {
+  border-color: var(--B20);
+  box-shadow: 0 0 0 3px rgba(17,109,255,0.15);
+}
+.tier-row .tier-distance input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  padding: 0 8px;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  color: var(--D10);
+  background: transparent;
+}
+.tier-row .tier-distance .unit {
+  padding: 0 8px;
+  font-size: 12px;
+  color: var(--D30);
+  border-left: 1px solid var(--D55);
+  height: 100%;
+  display: inline-flex; align-items: center;
+}
+.tier-row .tier-rest-text {
+  font-size: 13px;
+  color: var(--D30);
+  font-style: italic;
+}
+.tier-row .tier-price {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  border: 1px solid var(--D55);
+  border-radius: var(--radius-6);
+  background: #fff;
+  overflow: hidden;
+}
+.tier-row .tier-price:focus-within {
+  border-color: var(--B20);
+  box-shadow: 0 0 0 3px rgba(17,109,255,0.15);
+}
+.tier-row .tier-price .currency {
+  padding: 0 8px;
+  font-size: 12px;
+  color: var(--D30);
+  border-right: 1px solid var(--D55);
+  height: 100%;
+  display: inline-flex; align-items: center;
+}
+.tier-row .tier-price input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  padding: 0 8px;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  color: var(--D10);
+  background: transparent;
+}
+.tier-row .tier-remove {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--D30);
+  border: 0;
+  cursor: pointer;
+  font-size: 14px;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.tier-row .tier-remove:hover { background: var(--D80); color: var(--D10); }
+.tier-row.t-rest .tier-remove { visibility: hidden; }
+
+.tier-add-row { padding-top: 4px; }
+
+/* Hover */
+.wds-input:hover, .wds-dropdown:hover,
+.number-input:hover {
+  border-color: var(--D30);
+}
+</style>
+</head>
+<body>
+
+<!-- =========== TOP BAR =========== -->
+<div class="wix-top-bar">
+  <div class="wix-brand">WIX STUDIO</div>
+  <div class="wix-top-chip">
+    <span class="av">RL</span>
+    <span style="font-weight:600;">A La Cart</span>
+    <span style="font-size:10px; color: var(--D30);">▾</span>
+  </div>
+  <div class="wix-nav-item">Resources ▾</div>
+  <div class="wix-nav-item">Community ▾</div>
+  <div class="wix-nav-item">Help ▾</div>
+  <button class="wix-upgrade-pill">Upgrade</button>
+  <div class="wix-top-spacer"></div>
+  <div class="wix-search">🔍 Search for tools, apps, help &amp; more…</div>
+  <div class="wix-top-icons">
+    <div class="ic">💬<span class="badge">50</span></div>
+    <div class="ic">🔔<span class="badge">99+</span></div>
+    <div class="ic">✉<span class="badge">11</span></div>
+    <div class="ic">👤</div>
+    <button class="wix-ai-btn">✦ AI</button>
+  </div>
+</div>
+
+<!-- =========== APP =========== -->
+<div class="app">
+  <!-- LEFT SIDE NAV -->
+  <aside class="side-nav">
+    <div class="quick-actions">Quick Actions <span style="font-size:10px; opacity:.6;">▾</span></div>
+    <div class="nav-item">🏠 Home</div>
+    <div class="nav-item">✦ AI Agents <span style="margin-left:auto; font-size:10px; background:#FFC233; color:#162D3D; padding:1px 6px; border-radius:4px; font-weight:700;">NEW</span><span class="chev">›</span></div>
+    <div class="nav-item">📅 Booking Calendar <span class="chev">›</span></div>
+    <div class="nav-item">💰 Getting Paid <span class="chev">›</span></div>
+    <div class="nav-item">🏷 Sales <span class="chev">›</span></div>
+    <div class="nav-item active">📦 Catalog <span class="chev">›</span></div>
+      <div class="nav-sub">Store Products</div>
+      <div class="nav-sub active">Booking Services <span class="star">★</span></div>
+      <div class="nav-sub">Pricing Plans</div>
+      <div class="nav-sub">Donations</div>
+      <div class="nav-sub">Gift Cards</div>
+      <div class="nav-sub">Discounts</div>
+      <div class="nav-sub">Sales Channels</div>
+      <div class="nav-sub">Booking Channels</div>
+    <div class="nav-item">🖼 Portfolio <span class="chev">›</span></div>
+    <div class="nav-item">👥 Groups</div>
+    <div class="nav-item">📱 Apps <span style="margin-left:auto; font-size:11px; color:rgba(255,255,255,0.6);">4</span></div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="breadcrumbs">
+      <a href="#" style="color: var(--B20); text-decoration: none;">Booking Services</a>
+      <span class="sep">›</span>
+      <span class="current">Online Skincare Consultation</span>
+    </div>
+
+    <div class="page-title-row">
+      <div class="page-title">
+        Online Skincare Consultation
+        <span class="pill-dropdown">Appointment <span class="caret">▾</span></span>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <button class="btn btn-icon" title="More actions">⋯</button>
+        <button class="btn btn-secondary">Cancel</button>
+        <button class="btn btn-primary">Save</button>
+      </div>
+    </div>
+
+    <!-- SERVICE FORM LAYOUT -->
+    <div class="service-form">
+      <!-- Left: section nav -->
+      <div class="section-nav">
+        <div class="section-nav-item">Service details</div>
+        <div class="section-nav-item active">Pricing &amp; payment</div>
+        <div class="section-nav-item">Add-ons</div>
+        <div class="section-nav-item">Staff</div>
+        <div class="section-nav-item">Resources &amp; rooms</div>
+        <div class="section-nav-item">Locations</div>
+        <div class="section-nav-item">Images</div>
+        <div class="section-nav-item">Booking preferences</div>
+        <div class="section-nav-item">Custom fields</div>
+        <div class="visibility-row">
+          <div class="toggle"></div>
+          <span>Visible on your site and app</span>
+        </div>
+      </div>
+
+      <!-- Right: main card -->
+      <div class="main-card">
+        <div class="section-title-row">
+          <div class="section-title">Price &amp; payment</div>
+        </div>
+        <div class="section-subtitle">Set a price and choose your payment preference.</div>
+
+        <!-- How clients can pay -->
+        <div class="sub-heading">Choose how clients can pay for this service <span class="info-ico">i</span></div>
+
+        <div class="payment-tiles">
+          <div class="p-tile selected">
+            <div class="check">✓</div>
+            <div class="t-title">Per session</div>
+            <div class="t-body">Clients pay for sessions based on the price you set</div>
+          </div>
+          <div class="p-tile">
+            <div class="check">✓</div>
+            <div class="t-title">With a plan</div>
+            <div class="t-body">Clients buy a membership or package to book sessions with</div>
+          </div>
+          <div class="p-tile">
+            <div class="check">✓</div>
+            <div class="t-title">Per session or with a plan</div>
+            <div class="t-body">Clients pay either per session or with a membership or package</div>
+          </div>
+        </div>
+
+        <!-- Price per session -->
+        <div class="subsection">
+          <div class="sub-heading">Price per session</div>
+          <div class="form-row">
+            <div>
+              <div class="field-label">Price type</div>
+              <button class="wds-dropdown" type="button">
+                <span>Fixed price</span>
+                <span class="caret">▾</span>
+              </button>
+            </div>
+            <div>
+              <div class="field-label">Amount <span class="info-ico">i</span></div>
+              <div class="number-input">
+                <span class="prefix">$</span>
+                <input type="text" value="25" />
+                <div class="steppers">
+                  <div class="step">▲</div>
+                  <div class="step">▼</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="field-label">Payment preferences <span class="info-ico">i</span></div>
+            <button class="wds-dropdown" type="button" style="max-width: 50%;">
+              <span>Entire amount online</span>
+              <span class="caret">▾</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- =========================================
+             ADDITIONAL FEES (INLINE EDITING)
+             ========================================= -->
+        <div class="subsection" id="additional-fees">
+
+          <div class="sub-heading">Additional fees</div>
+          <div class="af-subtitle">
+            Add fees that are automatically applied at checkout, like a travel or cleaning fee. Each fee appears as a separate line in the order.
+          </div>
+
+          <!-- Editable list of fee cards -->
+          <div class="fee-list" id="fee-list"></div>
+
+          <!-- Add fee — WDS secondary button -->
+          <button class="btn btn-secondary add-fee-btn" id="section-add-btn" type="button" onclick="addFee()">
+            Add fee
+          </button>
+
+        </div>
+
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- =========================================
+     DISTANCE-BASED PRICING MODAL
+     ========================================= -->
+<div class="modal-overlay" id="dist-modal" onclick="onDistOverlayClick(event)">
+  <div class="modal modal-wide" role="dialog" aria-modal="true" aria-labelledby="dist-modal-title">
+    <div class="modal-header">
+      <div class="modal-title" id="dist-modal-title">Charge by distance to client's place</div>
+      <div class="modal-subtitle">When the service is at the client's place, charge a different fee based on how far they are from your business location. Adjust the radius for each tier.</div>
+    </div>
+    <div class="modal-body">
+      <!-- Business location single-select -->
+      <div class="field">
+        <div class="field-label">Business location <span class="info-ico" title="Distance is measured from the client's place to the business location you choose here.">i</span></div>
+        <div class="location-select" id="loc-select">
+          <button class="location-select-btn" type="button" onclick="toggleLocationMenu(event)" aria-haspopup="listbox" aria-expanded="false">
+            <span class="loc-pin" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 21s7-7.5 7-12a7 7 0 1 0-14 0c0 4.5 7 12 7 12z"/>
+                <circle cx="12" cy="9" r="2.5"/>
+              </svg>
+            </span>
+            <span class="loc-meta">
+              <span class="loc-name" id="loc-name">Main Studio</span>
+              <span class="loc-addr" id="loc-addr">123 Main Street, Springfield</span>
+            </span>
+            <span class="loc-caret" aria-hidden="true">▾</span>
+          </button>
+          <div class="location-menu" role="listbox" id="loc-menu"></div>
+        </div>
+      </div>
+
+      <!-- Map preview with concentric tier rings -->
+      <div class="dist-map" id="dist-map">
+        <div class="map-grid"></div>
+        <svg id="dist-map-svg" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
+        <div class="map-legend">Radius preview</div>
+      </div>
+
+      <!-- Tier rows -->
+      <div class="tier-list" id="tier-list"></div>
+      <div class="tier-add-row">
+        <button class="wds-text-btn" type="button" onclick="addTier()">
+          <span class="prefix-icon" aria-hidden="true">+</span>
+          Add tier
+        </button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="footer-left">
+        <button class="modal-remove-link" id="m-remove-btn" onclick="removeDistFromModal()" style="display:none;">Turn off distance pricing</button>
+      </div>
+      <div class="footer-right">
+        <button class="btn btn-secondary btn-sm" onclick="closeDistModal()">Cancel</button>
+        <button class="btn btn-primary btn-sm" onclick="saveDistFromModal()">Apply</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // =========================================================
+  //  Fee card creation (always inline-editable)
+  // =========================================================
+  function addFee() {
+    const card = document.createElement('div');
+    card.className = 'fee-card';
+    card.dataset.tiers = '';
+    card.innerHTML = `
+      <div class="fee-top-row">
+        <div class="fee-field">
+          <div class="field-label">Fee name</div>
+          <input class="wds-input f-name" type="text" placeholder="e.g., Travel fee" />
+        </div>
+        <div class="fee-field fee-amount-col">
+          <div class="field-label">Amount</div>
+          <div class="amount-with-toggle">
+            <input type="text" class="f-amount" placeholder="0" />
+            <div class="unit-toggle">
+              <div class="u active" onclick="toggleUnit(this)">$</div>
+              <div class="u" onclick="toggleUnit(this)">%</div>
+            </div>
+          </div>
+        </div>
+        <div class="fee-menu-wrap">
+          <button class="btn btn-icon small fee-menu-btn" title="More actions" onclick="toggleFeeMenu(this, event)">⋯</button>
+          <div class="fee-menu-popover" role="menu">
+            <div class="fee-menu-item destructive" role="menuitem" onclick="removeFee(this)">
+              <span class="mi-icon" aria-hidden="true">🗑</span>
+              Delete
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="fee-bottom-row">
+        <div class="fee-bottom-left">
+          <div class="toggle-sm f-scope" onclick="toggleScope(this)"></div>
+          <span class="t-label">Charge per participant
+            <span class="info-ico" title="When this is on, the fee is charged for each participant. When it's off, the fee is charged once per booking.">i</span>
+          </span>
+        </div>
+        <div class="fee-bottom-right">
+          <button class="wds-text-btn f-dist-add" type="button" onclick="openDistModalFor(this)">
+            <span class="prefix-icon" aria-hidden="true">+</span>
+            Charge by distance
+          </button>
+        </div>
+      </div>
+    `;
+    document.getElementById('fee-list').appendChild(card);
+    card.querySelector('.f-name').focus();
+  }
+
+  function removeFee(btn) {
+    const card = btn.closest('.fee-card');
+    if (!card) return;
+    card.remove();
+  }
+
+  function toggleFeeMenu(btn, e) {
+    if (e) e.stopPropagation();
+    const wrap = btn.closest('.fee-menu-wrap');
+    const popover = wrap.querySelector('.fee-menu-popover');
+    const wasOpen = popover.classList.contains('open');
+    document.querySelectorAll('.fee-menu-popover').forEach(p => p.classList.remove('open'));
+    if (!wasOpen) popover.classList.add('open');
+  }
+
+  function toggleUnit(el) {
+    el.parentElement.querySelectorAll('.u').forEach(u => u.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  function toggleScope(el) {
+    el.classList.toggle('on');
+  }
+
+  // =========================================================
+  //  Business location single-select (mock data for the wireframe)
+  // =========================================================
+  const BUSINESS_LOCATIONS = [
+    { id: 'loc-1', name: 'Main Studio',     address: '123 Main Street, Springfield' },
+    { id: 'loc-2', name: 'Downtown Office', address: '456 Oak Avenue, Springfield'  },
+    { id: 'loc-3', name: 'Westside Branch', address: '789 Pine Road, Riverside'     }
+  ];
+  let selectedLocationId = BUSINESS_LOCATIONS[0].id;
+
+  function renderLocationMenu() {
+    const menu = document.getElementById('loc-menu');
+    if (!menu) return;
+    menu.innerHTML = BUSINESS_LOCATIONS.map(loc => `
+      <div class="location-option ${loc.id === selectedLocationId ? 'selected' : ''}" role="option" aria-selected="${loc.id === selectedLocationId}" onclick="selectLocation('${loc.id}')">
+        <span class="opt-name">${escapeHtml(loc.name)}</span>
+        <span class="opt-addr">${escapeHtml(loc.address)}</span>
+      </div>
+    `).join('');
+  }
+
+  function syncLocationButton() {
+    const loc = BUSINESS_LOCATIONS.find(l => l.id === selectedLocationId) || BUSINESS_LOCATIONS[0];
+    const nameEl = document.getElementById('loc-name');
+    const addrEl = document.getElementById('loc-addr');
+    if (nameEl) nameEl.textContent = loc.name;
+    if (addrEl) addrEl.textContent = loc.address;
+  }
+
+  function toggleLocationMenu(e) {
+    if (e) e.stopPropagation();
+    const wrap = document.getElementById('loc-select');
+    if (!wrap) return;
+    const isOpen = wrap.classList.toggle('open');
+    const btn = wrap.querySelector('.location-select-btn');
+    if (btn) btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  }
+
+  function closeLocationMenu() {
+    const wrap = document.getElementById('loc-select');
+    if (!wrap) return;
+    wrap.classList.remove('open');
+    const btn = wrap.querySelector('.location-select-btn');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+  }
+
+  function selectLocation(id) {
+    selectedLocationId = id;
+    syncLocationButton();
+    renderLocationMenu();
+    closeLocationMenu();
+  }
+
+  // =========================================================
+  //  Distance-based pricing modal
+  //  Tiers represent concentric radius rings around the
+  //  selected business location; the last "rest" tier covers
+  //  anything beyond the final ring.
+  // =========================================================
+  const DEFAULT_TIERS = [
+    { distance: 5,  price: 5  },
+    { distance: 10, price: 10 },
+    { distance: 20, price: 20 },
+    { rest: true,   price: 30 }
+  ];
+
+  let activeDistCard = null;
+  let workingTiers = [];
+
+  function openDistModalFor(btn) {
+    const card = btn.closest('.fee-card');
+    activeDistCard = card;
+    const existing = card.dataset.tiers ? safeParse(card.dataset.tiers) : null;
+    workingTiers = existing && existing.length ? cloneTiers(existing) : cloneTiers(DEFAULT_TIERS);
+    // Restore the previously-chosen location for this fee, or default to the first one
+    const savedLocId = card.dataset.locationId;
+    selectedLocationId = (savedLocId && BUSINESS_LOCATIONS.find(l => l.id === savedLocId))
+      ? savedLocId
+      : BUSINESS_LOCATIONS[0].id;
+    document.getElementById('m-remove-btn').style.display = existing ? 'inline-flex' : 'none';
+    document.getElementById('dist-modal-title').textContent = existing ? 'Edit distance pricing' : 'Charge by distance to client\u2019s place';
+    syncLocationButton();
+    renderLocationMenu();
+    renderTierList();
+    renderMap();
+    document.getElementById('dist-modal').classList.add('open');
+  }
+
+  function closeDistModal() {
+    document.getElementById('dist-modal').classList.remove('open');
+    closeLocationMenu();
+    activeDistCard = null;
+    workingTiers = [];
+  }
+
+  function onDistOverlayClick(e) {
+    if (e.target.id === 'dist-modal') closeDistModal();
+  }
+
+  function addTier() {
+    // Insert a new ring before the "rest" tier, with a sensible default distance
+    const ringTiers = workingTiers.filter(t => !t.rest);
+    const lastRing = ringTiers[ringTiers.length - 1];
+    const nextDist = lastRing ? Math.round(lastRing.distance * 1.5) : 5;
+    const restIdx = workingTiers.findIndex(t => t.rest);
+    const newTier = { distance: nextDist, price: (lastRing ? lastRing.price : 5) + 5 };
+    if (restIdx === -1) workingTiers.push(newTier);
+    else workingTiers.splice(restIdx, 0, newTier);
+    renderTierList();
+    renderMap();
+  }
+
+  function removeTier(idx) {
+    if (workingTiers[idx] && workingTiers[idx].rest) return;
+    workingTiers.splice(idx, 1);
+    renderTierList();
+    renderMap();
+  }
+
+  function updateTierField(idx, field, value) {
+    if (!workingTiers[idx]) return;
+    const num = parseFloat(value);
+    workingTiers[idx][field] = isNaN(num) ? 0 : num;
+    if (field === 'distance') renderMap();
+  }
+
+  function renderTierList() {
+    const list = document.getElementById('tier-list');
+    const ringCount = workingTiers.filter(t => !t.rest).length;
+    list.innerHTML = workingTiers.map((tier, i) => {
+      if (tier.rest) {
+        return `
+          <div class="tier-row t-rest">
+            <span class="tier-marker"></span>
+            <span class="tier-label">Anywhere further</span>
+            <span class="tier-rest-text">No radius</span>
+            <div class="tier-price">
+              <span class="currency">$</span>
+              <input type="number" min="0" step="1" value="${tier.price}" oninput="updateTierField(${i}, 'price', this.value)" />
+            </div>
+            <button class="tier-remove" tabindex="-1" aria-hidden="true">×</button>
+          </div>
+        `;
+      }
+      const ringIdx = workingTiers.slice(0, i).filter(t => !t.rest).length; // 0-based ring index
+      const cls = `t-${Math.min(ringIdx + 1, 3)}`;
+      return `
+        <div class="tier-row ${cls}">
+          <span class="tier-marker"></span>
+          <span class="tier-label">Within</span>
+          <div class="tier-distance">
+            <input type="number" min="0" step="1" value="${tier.distance}" oninput="updateTierField(${i}, 'distance', this.value)" />
+            <span class="unit">mi</span>
+          </div>
+          <div class="tier-price">
+            <span class="currency">$</span>
+            <input type="number" min="0" step="1" value="${tier.price}" oninput="updateTierField(${i}, 'price', this.value)" />
+          </div>
+          <button class="tier-remove" type="button" title="Remove tier" ${ringCount <= 1 ? 'disabled style="opacity:.3; cursor:default;"' : `onclick="removeTier(${i})"`}>×</button>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function renderMap() {
+    const svg = document.getElementById('dist-map-svg');
+    if (!svg) return;
+    const w = 320, h = 200;
+    const cx = w / 2, cy = h / 2;
+    const maxR = Math.min(w, h) / 2 - 8;
+    const ringTiers = workingTiers.filter(t => !t.rest);
+    const maxDist = Math.max(1, ...ringTiers.map(t => t.distance || 0));
+    // Render outermost ring first so inner rings layer correctly
+    const sortedDesc = [...ringTiers].sort((a, b) => b.distance - a.distance);
+    const opacityFor = (rank) => {
+      // rank 0 = innermost
+      if (rank === 0) return 0.30;
+      if (rank === 1) return 0.20;
+      if (rank === 2) return 0.12;
+      return 0.08;
+    };
+    let svgInner = '';
+    sortedDesc.forEach(t => {
+      const rank = ringTiers.findIndex(x => x === t); // smaller rank = inner
+      const r = Math.max(6, (t.distance / maxDist) * maxR);
+      svgInner += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="rgba(17,109,255,${opacityFor(rank)})" stroke="#116DFF" stroke-opacity="0.5" stroke-dasharray="4 4" />`;
+    });
+    // Center pin
+    svgInner += `
+      <circle cx="${cx}" cy="${cy}" r="11" fill="#116DFF" fill-opacity="0.20" />
+      <circle cx="${cx}" cy="${cy}" r="6" fill="#116DFF" />
+      <circle cx="${cx}" cy="${cy}" r="2" fill="#fff" />
+    `;
+    // Distance labels along the right side of each ring
+    sortedDesc.forEach(t => {
+      const r = Math.max(6, (t.distance / maxDist) * maxR);
+      svgInner += `<text x="${cx + r + 4}" y="${cy + 4}" font-size="10" fill="#32536A" font-family="Wix Madefor Text, sans-serif">${t.distance} mi</text>`;
+    });
+    svg.innerHTML = svgInner;
+  }
+
+  function saveDistFromModal() {
+    if (!activeDistCard) return;
+    const cleaned = workingTiers.map(t => t.rest ? { rest: true, price: t.price } : { distance: t.distance, price: t.price });
+    activeDistCard.dataset.tiers = JSON.stringify(cleaned);
+    activeDistCard.dataset.locationId = selectedLocationId;
+    renderDistUI(activeDistCard);
+    closeDistModal();
+  }
+
+  function removeDistFromModal() {
+    if (!activeDistCard) return;
+    activeDistCard.dataset.tiers = '';
+    activeDistCard.dataset.locationId = '';
+    renderDistUI(activeDistCard);
+    closeDistModal();
+  }
+
+  function removeDistFromCard(btn) {
+    const card = btn.closest('.fee-card');
+    if (!card) return;
+    card.dataset.tiers = '';
+    card.dataset.locationId = '';
+    renderDistUI(card);
+  }
+
+  function renderDistUI(card) {
+    const right = card.querySelector('.fee-bottom-right');
+    const tiers = card.dataset.tiers ? safeParse(card.dataset.tiers) : null;
+    const locationId = card.dataset.locationId || '';
+    const location = BUSINESS_LOCATIONS.find(l => l.id === locationId) || BUSINESS_LOCATIONS[0];
+    // Remove any existing inline summary so we always rebuild from state
+    const existingSummary = card.querySelector('.fee-tiers-summary');
+    if (existingSummary) existingSummary.remove();
+
+    if (tiers && tiers.length) {
+      card.classList.add('has-tiers');
+      // Build the inline summary block and insert it between top and bottom rows
+      const topRow = card.querySelector('.fee-top-row');
+      const summary = document.createElement('div');
+      summary.className = 'fee-tiers-summary';
+      summary.innerHTML = renderTierSummaryHTML(tiers, location);
+      topRow.insertAdjacentElement('afterend', summary);
+      // Bottom-right action collapses (Edit / × already live in the summary header)
+      right.innerHTML = '';
+    } else {
+      card.classList.remove('has-tiers');
+      right.innerHTML = `
+        <button class="wds-text-btn f-dist-add" type="button" onclick="openDistModalFor(this)">
+          <span class="prefix-icon" aria-hidden="true">+</span>
+          Charge by distance
+        </button>
+      `;
+    }
+  }
+
+  function renderTierSummaryHTML(tiers, location) {
+    // Convert the stored tier list into non-overlapping ranges:
+    //   Within 5 mi    -> "0–5 mi"
+    //   Within 10 mi   -> "5–10 mi"
+    //   Anywhere       -> "More than 20 mi"
+    let prev = 0;
+    const rows = tiers.map((tier, i) => {
+      const ringIdx = tiers.slice(0, i).filter(t => !t.rest).length;
+      if (tier.rest) {
+        return `
+          <div class="ts-row t-rest">
+            <span class="ts-marker"></span>
+            <span class="ts-range">More than ${prev} mi</span>
+            <span class="ts-amount">$${formatPrice(tier.price)}</span>
+          </div>
+        `;
+      }
+      const cls = `t-${Math.min(ringIdx + 1, 3)}`;
+      const range = `${prev}\u2013${tier.distance} mi`;
+      prev = tier.distance;
+      return `
+        <div class="ts-row ${cls}">
+          <span class="ts-marker"></span>
+          <span class="ts-range">${range}</span>
+          <span class="ts-amount">$${formatPrice(tier.price)}</span>
+        </div>
+      `;
+    }).join('');
+
+    const locName = location ? escapeHtml(location.name) : 'your business';
+
+    return `
+      <div class="tiers-summary-header">
+        <div class="tiers-summary-title">
+          <span class="ts-pin" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 21s7-7.5 7-12a7 7 0 1 0-14 0c0 4.5 7 12 7 12z"/>
+              <circle cx="12" cy="9" r="2.5"/>
+            </svg>
+          </span>
+          <span>Distance from <strong class="ts-loc-name">${locName}</strong></span>
+        </div>
+        <div class="tiers-summary-actions">
+          <button class="wds-text-btn" type="button" onclick="openDistModalFor(this)">Edit</button>
+          <button class="ts-remove" type="button" title="Turn off distance pricing" onclick="removeDistFromCard(this)" aria-label="Turn off distance pricing">\u00D7</button>
+        </div>
+      </div>
+      <div class="tiers-summary-list">
+        ${rows}
+      </div>
+    `;
+  }
+
+  function formatPrice(n) {
+    const v = Number(n) || 0;
+    return Number.isInteger(v) ? String(v) : v.toFixed(2);
+  }
+
+  function cloneTiers(arr) { return arr.map(t => Object.assign({}, t)); }
+  function safeParse(s) { try { return JSON.parse(s); } catch (e) { return null; } }
+
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.fee-menu-wrap')) {
+      document.querySelectorAll('.fee-menu-popover').forEach(p => p.classList.remove('open'));
+    }
+    if (!e.target.closest('#loc-select')) {
+      closeLocationMenu();
+    }
+  });
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  // Wire payment tile selection
+  document.querySelectorAll('.p-tile').forEach(t => {
+    t.addEventListener('click', () => {
+      document.querySelectorAll('.p-tile').forEach(x => x.classList.remove('selected'));
+      t.classList.add('selected');
+    });
+  });
+</script>
+</body>
+</html>
