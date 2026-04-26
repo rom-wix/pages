@@ -1209,6 +1209,22 @@ body {
 
 .tier-add-row { padding-top: 4px; }
 
+/* Header sitting above the tier list with the global $/% unit toggle.
+   One unit applies to all tiers (mirrors single-amount-field UX). */
+.tier-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 4px;
+  margin-bottom: 4px;
+}
+.tier-list-header .tier-list-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--D10);
+}
+
 /* Hover */
 .wds-input:hover, .wds-dropdown:hover,
 .number-input:hover {
@@ -1429,6 +1445,15 @@ body {
         <div class="map-legend">Radius preview</div>
       </div>
 
+      <!-- Tier list header with global $/% unit toggle -->
+      <div class="tier-list-header">
+        <span class="tier-list-title">Tier prices</span>
+        <div class="unit-toggle" id="tier-unit-toggle">
+          <div class="u active" data-unit="$" onclick="setTierUnit('$')">$</div>
+          <div class="u" data-unit="%" onclick="setTierUnit('%')">%</div>
+        </div>
+      </div>
+
       <!-- Tier rows -->
       <div class="tier-list" id="tier-list"></div>
       <div class="tier-add-row">
@@ -1595,12 +1620,14 @@ body {
 
   let activeDistCard = null;
   let workingTiers = [];
+  let workingUnit = '$'; // '$' (fixed) or '%' (percentage), single unit applied to all tiers
 
   function openDistModalFor(btn) {
     const card = btn.closest('.fee-card');
     activeDistCard = card;
     const existing = card.dataset.tiers ? safeParse(card.dataset.tiers) : null;
     workingTiers = existing && existing.length ? cloneTiers(existing) : cloneTiers(DEFAULT_TIERS);
+    workingUnit = (card.dataset.unit === '%') ? '%' : '$';
     // Restore the previously-chosen location for this fee, or default to the first one
     const savedLocId = card.dataset.locationId;
     selectedLocationId = (savedLocId && BUSINESS_LOCATIONS.find(l => l.id === savedLocId))
@@ -1610,9 +1637,25 @@ body {
     document.getElementById('dist-modal-title').textContent = existing ? 'Edit distance pricing' : 'Charge by distance to client\u2019s place';
     syncLocationButton();
     renderLocationMenu();
+    syncUnitToggle();
     renderTierList();
     renderMap();
     document.getElementById('dist-modal').classList.add('open');
+  }
+
+  function setTierUnit(unit) {
+    if (unit !== '$' && unit !== '%') return;
+    workingUnit = unit;
+    syncUnitToggle();
+    renderTierList();
+  }
+
+  function syncUnitToggle() {
+    const toggle = document.getElementById('tier-unit-toggle');
+    if (!toggle) return;
+    toggle.querySelectorAll('.u').forEach(u => {
+      u.classList.toggle('active', u.dataset.unit === workingUnit);
+    });
   }
 
   function closeDistModal() {
@@ -1656,6 +1699,7 @@ body {
   function renderTierList() {
     const list = document.getElementById('tier-list');
     const ringCount = workingTiers.filter(t => !t.rest).length;
+    const unitGlyph = workingUnit; // '$' or '%'
     list.innerHTML = workingTiers.map((tier, i) => {
       if (tier.rest) {
         return `
@@ -1664,7 +1708,7 @@ body {
             <span class="tier-label">Anywhere further</span>
             <span class="tier-rest-text">No radius</span>
             <div class="tier-price">
-              <span class="currency">$</span>
+              <span class="currency">${unitGlyph}</span>
               <input type="number" min="0" step="1" value="${tier.price}" oninput="updateTierField(${i}, 'price', this.value)" />
             </div>
             <button class="tier-remove" tabindex="-1" aria-hidden="true">×</button>
@@ -1682,7 +1726,7 @@ body {
             <span class="unit">mi</span>
           </div>
           <div class="tier-price">
-            <span class="currency">$</span>
+            <span class="currency">${unitGlyph}</span>
             <input type="number" min="0" step="1" value="${tier.price}" oninput="updateTierField(${i}, 'price', this.value)" />
           </div>
           <button class="tier-remove" type="button" title="Remove tier" ${ringCount <= 1 ? 'disabled style="opacity:.3; cursor:default;"' : `onclick="removeTier(${i})"`}>×</button>
@@ -1733,6 +1777,7 @@ body {
     const cleaned = workingTiers.map(t => t.rest ? { rest: true, price: t.price } : { distance: t.distance, price: t.price });
     activeDistCard.dataset.tiers = JSON.stringify(cleaned);
     activeDistCard.dataset.locationId = selectedLocationId;
+    activeDistCard.dataset.unit = workingUnit;
     renderDistUI(activeDistCard);
     closeDistModal();
   }
@@ -1741,6 +1786,7 @@ body {
     if (!activeDistCard) return;
     activeDistCard.dataset.tiers = '';
     activeDistCard.dataset.locationId = '';
+    activeDistCard.dataset.unit = '';
     renderDistUI(activeDistCard);
     closeDistModal();
   }
@@ -1750,6 +1796,7 @@ body {
     if (!card) return;
     card.dataset.tiers = '';
     card.dataset.locationId = '';
+    card.dataset.unit = '';
     renderDistUI(card);
   }
 
@@ -1758,6 +1805,7 @@ body {
     const tiers = card.dataset.tiers ? safeParse(card.dataset.tiers) : null;
     const locationId = card.dataset.locationId || '';
     const location = BUSINESS_LOCATIONS.find(l => l.id === locationId) || BUSINESS_LOCATIONS[0];
+    const unit = (card.dataset.unit === '%') ? '%' : '$';
     // Remove any existing inline summary so we always rebuild from state
     const existingSummary = card.querySelector('.fee-tiers-summary');
     if (existingSummary) existingSummary.remove();
@@ -1768,7 +1816,7 @@ body {
       const topRow = card.querySelector('.fee-top-row');
       const summary = document.createElement('div');
       summary.className = 'fee-tiers-summary';
-      summary.innerHTML = renderTierSummaryHTML(tiers, location);
+      summary.innerHTML = renderTierSummaryHTML(tiers, location, unit);
       topRow.insertAdjacentElement('afterend', summary);
       // Bottom-right action collapses (Edit / × already live in the summary header)
       right.innerHTML = '';
@@ -1783,11 +1831,12 @@ body {
     }
   }
 
-  function renderTierSummaryHTML(tiers, location) {
+  function renderTierSummaryHTML(tiers, location, unit) {
     // Convert the stored tier list into non-overlapping ranges:
     //   Within 5 mi    -> "0–5 mi"
     //   Within 10 mi   -> "5–10 mi"
     //   Anywhere       -> "More than 20 mi"
+    const fmt = (n) => unit === '%' ? `${formatPrice(n)}%` : `$${formatPrice(n)}`;
     let prev = 0;
     const rows = tiers.map((tier, i) => {
       const ringIdx = tiers.slice(0, i).filter(t => !t.rest).length;
@@ -1796,7 +1845,7 @@ body {
           <div class="ts-row t-rest">
             <span class="ts-marker"></span>
             <span class="ts-range">More than ${prev} mi</span>
-            <span class="ts-amount">$${formatPrice(tier.price)}</span>
+            <span class="ts-amount">${fmt(tier.price)}</span>
           </div>
         `;
       }
@@ -1807,7 +1856,7 @@ body {
         <div class="ts-row ${cls}">
           <span class="ts-marker"></span>
           <span class="ts-range">${range}</span>
-          <span class="ts-amount">$${formatPrice(tier.price)}</span>
+          <span class="ts-amount">${fmt(tier.price)}</span>
         </div>
       `;
     }).join('');
