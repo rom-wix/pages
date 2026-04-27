@@ -1,0 +1,1848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Booking policy — Payment &amp; fees + Service area</title>
+<link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400;500;600;700&family=Wix+Madefor+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   Wix Design System-inspired styles (HTML/CSS replica)
+   ========================================================= */
+:root {
+  --D10: #162D3D;
+  --D20: #32536A;
+  --D30: #5A7A8C;
+  --D40: #868AA5;
+  --D50: #C1E0FB;
+  --D55: #DFE5EB;
+  --D60: #EAF7FF;
+  --D70: #F0F4F7;
+  --D80: #F7F8F8;
+
+  --B10: #0D3D5C;
+  --B20: #116DFF;
+  --B30: #3899EC;
+  --B40: #4EB7F5;
+  --B50: #DFEDF9;
+  --B60: #EAF7FF;
+
+  --R10: #BE2E2E;
+  --R20: #E62214;
+
+  --G10: #1F664C;
+  --G20: #3B8251;
+
+  --Y10: #D2A008;
+  --Y20: #FDF4D6;
+
+  --radius-6: 6px;
+  --radius-8: 8px;
+  --radius-18: 18px;
+
+  --shadow-1: 0 1px 1px rgba(22,45,61,.06), 0 0 1px rgba(22,45,61,.10);
+  --shadow-2: 0 2px 8px rgba(22,45,61,.08), 0 0 1px rgba(22,45,61,.14);
+  --shadow-3: 0 6px 16px rgba(22,45,61,.10), 0 0 1px rgba(22,45,61,.14);
+  --shadow-modal: 0 20px 40px rgba(22,45,61,.18), 0 0 1px rgba(22,45,61,.20);
+
+  --font-ui: "Wix Madefor Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Wix Madefor Display", var(--font-ui);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { height: 100%; }
+body {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  color: var(--D10);
+  background: var(--D80);
+  line-height: 1.43;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ------------------------------------------------------------
+   Top bar
+   ------------------------------------------------------------ */
+.wix-top-bar {
+  height: 48px;
+  background: #FFFFFF;
+  border-bottom: 1px solid var(--D55);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 20px;
+  font-family: var(--font-display);
+}
+.wix-brand { font-weight: 700; letter-spacing: 0.4px; font-size: 13px; }
+.wix-top-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px;
+  border: 1px solid var(--D55);
+  border-radius: var(--radius-18);
+  font-size: 12px; color: var(--D10); background: #fff;
+}
+.wix-top-chip .av {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--B20); color: #fff;
+  font-size: 10px; font-weight: 700;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.wix-nav-item { font-size: 13px; color: var(--D10); padding: 6px 10px; cursor: pointer; }
+.wix-nav-item:hover { color: var(--B20); }
+.wix-top-spacer { flex: 1; }
+.wix-search {
+  width: 420px;
+  background: var(--D80);
+  border: 1px solid var(--D55);
+  border-radius: var(--radius-18);
+  padding: 6px 12px;
+  font-size: 13px; color: var(--D30);
+  display: flex; align-items: center; gap: 8px;
+}
+.wix-top-icons { display: flex; align-items: center; gap: 14px; }
+.wix-top-icons .ic {
+  width: 22px; height: 22px;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--D20); cursor: pointer; position: relative;
+}
+.wix-top-icons .badge {
+  position: absolute; top: -4px; right: -8px;
+  background: var(--R20); color: #fff;
+  font-size: 9px; font-weight: 700;
+  padding: 1px 4px; border-radius: 8px; line-height: 1.2;
+}
+.wix-ai-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 12px;
+  background: var(--D10); color: #fff;
+  border-radius: var(--radius-18);
+  font-size: 12px; font-weight: 600; cursor: pointer; border: 0;
+}
+
+/* ------------------------------------------------------------
+   App layout
+   ------------------------------------------------------------ */
+.app {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: calc(100vh - 48px);
+}
+.side-nav {
+  background: var(--D10); color: #fff;
+  padding: 12px 0 20px; font-size: 13px;
+}
+.side-nav .quick-actions {
+  margin: 8px 12px 14px;
+  padding: 7px 12px;
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: var(--radius-18); color: #fff;
+  display: flex; justify-content: space-between; align-items: center;
+  font-weight: 600; cursor: pointer;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 20px;
+  color: rgba(255,255,255,0.85);
+  cursor: pointer; position: relative;
+}
+.nav-item:hover { background: rgba(255,255,255,0.05); color: #fff; }
+.nav-item.active {
+  background: rgba(255,255,255,0.08); color: #fff; font-weight: 600;
+}
+.nav-item .chev { margin-left: auto; font-size: 10px; opacity: 0.6; }
+
+/* ------------------------------------------------------------
+   Main page
+   ------------------------------------------------------------ */
+.main {
+  padding: 24px 32px 60px;
+  max-width: 1100px;
+  width: 100%;
+}
+.breadcrumbs {
+  font-size: 14px;
+  color: var(--B20);
+  margin-bottom: 8px;
+  display: flex; align-items: center; gap: 6px;
+}
+.breadcrumbs a { color: var(--B20); text-decoration: none; }
+.breadcrumbs .sep { color: var(--D30); }
+.breadcrumbs .current { color: var(--D10); }
+
+.page-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+.page-title-block { display: flex; flex-direction: column; gap: 4px; }
+.page-title {
+  font-family: var(--font-display);
+  font-size: 28px; font-weight: 600;
+  color: var(--D10);
+  display: flex; align-items: center; gap: 12px;
+}
+.page-subtitle { font-size: 14px; color: var(--D30); }
+
+.default-tag {
+  display: inline-flex; align-items: center;
+  height: 22px; padding: 0 10px;
+  background: var(--D70); color: var(--D20);
+  border-radius: var(--radius-18);
+  font-size: 11px; font-weight: 600; letter-spacing: 0.6px;
+}
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 36px; padding: 0 18px;
+  border-radius: var(--radius-18);
+  font-family: var(--font-ui);
+  font-size: 14px; font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--B20);
+  white-space: nowrap;
+}
+.btn-primary { background: var(--B20); color: #fff; border-color: var(--B20); }
+.btn-primary:hover { background: #0f63e6; }
+.btn-secondary { background: #fff; border-color: var(--B20); color: var(--B20); }
+.btn-secondary:hover { background: var(--B60); }
+.btn-icon {
+  width: 36px; height: 36px; padding: 0; border-radius: 50%;
+  color: var(--D20); background: transparent;
+}
+.btn-icon:hover { background: var(--D80); }
+.btn-icon.small { width: 30px; height: 30px; }
+
+/* ------------------------------------------------------------
+   Cards (one per policy section)
+   ------------------------------------------------------------ */
+.policy-cards { display: flex; flex-direction: column; gap: 16px; }
+.policy-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: var(--shadow-1);
+  border: 1px solid var(--D55);
+  padding: 22px 28px;
+}
+.policy-card-header {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+.policy-card-title {
+  font-family: var(--font-display);
+  font-size: 18px; font-weight: 600;
+  color: var(--D10);
+}
+.scope-chip {
+  display: inline-flex; align-items: center;
+  height: 18px; padding: 0 8px;
+  background: var(--D70); color: var(--D20);
+  border-radius: var(--radius-18);
+  font-size: 10px; font-weight: 600; letter-spacing: 0.6px;
+}
+.scope-chip.new { background: #FFE9C2; color: #7A4A00; }
+
+.section-divider { border-top: 1px solid var(--D55); margin: 18px 0; }
+
+/* ------------------------------------------------------------
+   Form basics
+   ------------------------------------------------------------ */
+.field-label {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 14px; color: var(--D10); margin-bottom: 6px;
+}
+.field-help { font-size: 12px; color: var(--D30); margin-top: 4px; }
+.info-ico {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--D30); color: #fff;
+  font-size: 10px; font-weight: 700;
+  font-family: var(--font-display);
+  cursor: help; line-height: 1;
+}
+.info-ico:hover { background: var(--D20); }
+
+.wds-input, .wds-dropdown, .wds-textarea {
+  width: 100%;
+  height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--D55);
+  border-radius: var(--radius-6);
+  background: #fff;
+  font-family: var(--font-ui);
+  font-size: 14px; color: var(--D10);
+  display: inline-flex; align-items: center;
+  outline: none;
+  transition: border-color .1s, box-shadow .1s;
+}
+.wds-textarea {
+  height: auto; min-height: 80px;
+  padding: 10px 12px; display: block; resize: vertical;
+}
+.wds-input:focus, .wds-dropdown:focus, .wds-textarea:focus {
+  border-color: var(--B20);
+  box-shadow: 0 0 0 3px rgba(17,109,255,0.15);
+}
+.wds-dropdown { cursor: pointer; justify-content: space-between; padding-right: 8px; }
+.wds-dropdown .caret { font-size: 10px; color: var(--D30); }
+.wds-input:hover, .wds-dropdown:hover, .wds-textarea:hover { border-color: var(--D30); }
+
+.dropdown-md { max-width: 320px; }
+
+.input-with-counter { position: relative; }
+.input-with-counter .counter {
+  position: absolute;
+  top: 0; right: 0;
+  font-size: 12px;
+  color: var(--D30);
+}
+
+/* Checkbox */
+.wds-check {
+  display: inline-flex; align-items: center; gap: 10px;
+  cursor: pointer; user-select: none;
+}
+.wds-check .box {
+  width: 18px; height: 18px;
+  border-radius: 4px;
+  border: 1.5px solid var(--D40);
+  background: #fff;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: all .1s;
+}
+.wds-check.on .box { background: var(--B20); border-color: var(--B20); }
+.wds-check .box svg { width: 12px; height: 12px; color: #fff; opacity: 0; }
+.wds-check.on .box svg { opacity: 1; }
+.wds-check .ck-label { font-size: 14px; color: var(--D10); }
+
+/* Radio */
+.wds-radio {
+  display: inline-flex; align-items: flex-start; gap: 10px;
+  cursor: pointer; user-select: none; padding: 4px 0;
+}
+.wds-radio .dot {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid var(--D40);
+  background: #fff; flex-shrink: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  margin-top: 2px; transition: border-color .1s;
+}
+.wds-radio.on .dot { border-color: var(--B20); border-width: 5px; }
+.wds-radio .rd-text { display: flex; flex-direction: column; gap: 2px; }
+.wds-radio .rd-title { font-size: 14px; color: var(--D10); }
+.wds-radio .rd-desc  { font-size: 13px; color: var(--D30); }
+
+/* Toggle (large) */
+.toggle {
+  position: relative;
+  width: 36px; height: 20px;
+  border-radius: 20px;
+  background: var(--D40);
+  flex-shrink: 0; cursor: pointer;
+  transition: background .15s;
+}
+.toggle.on { background: var(--B20); }
+.toggle::after {
+  content: ""; position: absolute;
+  top: 2px; left: 2px;
+  width: 16px; height: 16px;
+  background: #fff; border-radius: 50%;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  transition: left 0.18s;
+}
+.toggle.on::after { left: 18px; }
+
+/* Toggle small (for fee card "per participant") */
+.toggle-sm {
+  position: relative;
+  width: 28px; height: 16px;
+  border-radius: 16px;
+  background: var(--D40);
+  flex-shrink: 0; cursor: pointer;
+  transition: background .15s;
+}
+.toggle-sm.on { background: var(--B20); }
+.toggle-sm::after {
+  content: ""; position: absolute;
+  top: 2px; left: 2px;
+  width: 12px; height: 12px;
+  background: #fff; border-radius: 50%;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  transition: left .15s;
+}
+.toggle-sm.on::after { left: 14px; }
+
+/* Number input with prefix/suffix affix */
+.affix-input {
+  display: inline-flex; align-items: center;
+  height: 36px;
+  border: 1px solid var(--D55);
+  border-radius: var(--radius-6);
+  background: #fff;
+  overflow: hidden; width: 100%;
+}
+.affix-input:hover { border-color: var(--D30); }
+.affix-input:focus-within {
+  border-color: var(--B20);
+  box-shadow: 0 0 0 3px rgba(17,109,255,0.15);
+}
+.affix-input input {
+  flex: 1; min-width: 0;
+  border: 0; outline: none;
+  padding: 0 4px 0 12px;
+  font-family: var(--font-ui);
+  font-size: 14px; color: var(--D10);
+  background: transparent;
+}
+.affix-input .suffix {
+  padding: 0 12px;
+  height: 100%;
+  display: inline-flex; align-items: center;
+  font-size: 14px;
+  color: var(--D30);
+  border-left: 1px solid var(--D55);
+  background: #fff;
+}
+.affix-input .suffix-dropdown {
+  display: inline-flex; align-items: center; gap: 4px;
+  cursor: pointer; user-select: none;
+}
+.affix-input .suffix-dropdown .caret { font-size: 9px; color: var(--D30); }
+
+/* ------------------------------------------------------------
+   Connected services chips
+   ------------------------------------------------------------ */
+.chips-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.svc-chip {
+  display: inline-flex; align-items: center;
+  height: 24px; padding: 0 10px;
+  background: var(--B60); color: var(--D10);
+  border-radius: var(--radius-18);
+  font-size: 12px; font-weight: 500;
+}
+.svc-chip-more {
+  background: transparent; color: var(--B20);
+  cursor: pointer; font-weight: 500;
+}
+.svc-chip-more:hover { color: #0f63e6; }
+
+.policy-help { font-size: 13px; color: var(--D30); margin-top: 12px; }
+.policy-help a { color: var(--B20); text-decoration: none; }
+
+/* Sub-section */
+.subsection { margin-bottom: 18px; }
+.subsection:last-child { margin-bottom: 0; }
+.subsection-title {
+  font-size: 14px; font-weight: 600; color: var(--D10);
+  margin-bottom: 10px;
+  display: flex; align-items: center; gap: 6px;
+}
+.subsection-desc { font-size: 13px; color: var(--D30); margin-bottom: 14px; }
+
+/* Notice — info banner */
+.notice {
+  display: flex; align-items: flex-start; gap: 10px;
+  background: var(--Y20);
+  border: 1px solid #F2D88E;
+  border-radius: var(--radius-6);
+  padding: 10px 12px;
+  font-size: 13px;
+  color: #6E5400;
+  margin-bottom: 14px;
+}
+.notice .ic {
+  flex-shrink: 0;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--Y10); color: #fff;
+  font-size: 11px; font-weight: 700;
+  display: inline-flex; align-items: center; justify-content: center;
+  margin-top: 1px;
+}
+.notice a { color: #6E5400; font-weight: 600; }
+
+/* ------------------------------------------------------------
+   Service area card — specifics
+   ------------------------------------------------------------ */
+.sa-toggle-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+.sa-toggle-row .toggle { margin-top: 1px; }
+.sa-toggle-text { display: flex; flex-direction: column; gap: 2px; }
+.sa-toggle-title { font-size: 14px; color: var(--D10); font-weight: 600; }
+.sa-toggle-desc  { font-size: 13px; color: var(--D30); }
+
+.sa-config {
+  margin-top: 16px;
+  padding: 18px 20px 20px;
+  background: var(--D80);
+  border-radius: var(--radius-6);
+  border: 1px solid var(--D55);
+}
+#service-area-card.sa-collapsed [data-sa-dependent] { display: none; }
+
+.sa-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 20px;
+  margin-bottom: 0;
+}
+.sa-grid > .span-2 { grid-column: 1 / -1; }
+
+/* Map preview */
+.sa-map {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  border-radius: var(--radius-6);
+  border: 1px solid var(--D55);
+  overflow: hidden;
+  background: linear-gradient(180deg, #EAF1F5 0%, #DDE7EF 100%);
+}
+.sa-map .map-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(50,83,106,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(50,83,106,0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.sa-map svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.sa-map .map-legend {
+  position: absolute;
+  top: 8px; left: 8px;
+  background: rgba(255,255,255,0.92);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 11px;
+  color: var(--D30);
+}
+.sa-map .map-legend strong { color: var(--D10); font-weight: 600; }
+
+/* Block-outside behavior radios */
+.block-options { display: flex; flex-direction: column; gap: 6px; margin-top: 4px; }
+
+/* ------------------------------------------------------------
+   Additional fees inside Payment & fees card
+   (inline-editing fee cards with optional distance-based pricing)
+   ------------------------------------------------------------ */
+.fee-list { display: flex; flex-direction: column; gap: 10px; }
+.fee-list:not(:empty) { margin-bottom: 12px; }
+
+.fee-card {
+  border: 1px solid var(--D55);
+  border-radius: 8px;
+  padding: 16px 18px;
+  background: #fff;
+  position: relative;
+  transition: border-color .12s, box-shadow .12s;
+}
+.fee-card:hover { border-color: var(--D40); }
+
+/* Top row inside card: Name | Amount | menu */
+.fee-top-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 220px auto;
+  gap: 14px;
+  align-items: end;
+}
+
+.fee-menu-wrap { position: relative; display: inline-flex; }
+.fee-menu-btn { font-size: 18px; line-height: 1; letter-spacing: 1px; }
+.fee-menu-popover {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 160px;
+  background: #fff;
+  border: 1px solid var(--D55);
+  border-radius: 8px;
+  box-shadow: var(--shadow-3);
+  padding: 6px 0;
+  z-index: 50;
+}
+.fee-menu-popover.open { display: block; }
+.fee-menu-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 16px; font-size: 14px;
+  color: var(--D10); cursor: pointer; user-select: none;
+}
+.fee-menu-item:hover { background: var(--D80); }
+.fee-menu-item.destructive { color: var(--R10); }
+.fee-menu-item.destructive:hover { background: #FDF1F1; }
+.fee-menu-item .mi-icon {
+  font-size: 14px; line-height: 1;
+  width: 16px;
+  display: inline-flex; justify-content: center;
+}
+
+/* Inline amount input with $/% toggle */
+.amount-with-toggle {
+  display: inline-flex;
+  align-items: stretch;
+  width: 100%;
+  height: 36px;
+  border: 1px solid var(--D55);
+  border-radius: var(--radius-6);
+  background: #fff;
+  overflow: hidden;
+}
+.amount-with-toggle:focus-within {
+  border-color: var(--B20);
+  box-shadow: 0 0 0 3px rgba(17,109,255,0.15);
+}
+.amount-with-toggle:hover { border-color: var(--D30); }
+.amount-with-toggle input {
+  flex: 1; min-width: 0;
+  border: 0; outline: none;
+  padding: 0 10px;
+  font-family: var(--font-ui);
+  font-size: 14px; color: var(--D10);
+  background: transparent;
+}
+.unit-toggle {
+  display: inline-flex;
+  padding: 3px;
+  gap: 2px;
+  background: #F0F4F7;
+  align-self: center;
+  margin-right: 5px;
+  border-radius: 6px;
+}
+.unit-toggle .u {
+  width: 30px; height: 26px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 13px; color: var(--D10);
+  border-radius: 4px; cursor: pointer; user-select: none;
+}
+.unit-toggle .u.active { background: var(--B20); color: #fff; font-weight: 600; }
+
+/* Bottom row: per-participant toggle | distance action */
+.fee-bottom-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--D55);
+}
+.fee-bottom-left {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 13px; color: var(--D10);
+}
+.fee-bottom-left .t-label {
+  display: flex; align-items: center; gap: 6px;
+}
+.fee-bottom-right { display: flex; align-items: center; gap: 6px; }
+
+.wds-text-btn {
+  display: inline-flex; align-items: center;
+  gap: 4px; padding: 0; border: 0;
+  background: transparent; color: var(--B20);
+  font-family: var(--font-ui);
+  font-size: 14px; font-weight: 500;
+  cursor: pointer; line-height: 1.2;
+}
+.wds-text-btn:hover { color: #0f63e6; text-decoration: underline; }
+.wds-text-btn .prefix-icon {
+  font-size: 16px; line-height: 1; font-weight: 500;
+}
+
+.add-fee-btn {
+  display: inline-flex; align-items: center;
+  gap: 6px; padding: 4px 0; border: 0;
+  background: transparent; color: var(--B20);
+  font-family: var(--font-ui);
+  font-size: 14px; font-weight: 500;
+  line-height: 1.2;
+  border-radius: 2px; cursor: pointer;
+}
+.add-fee-btn:hover { color: #0f63e6; text-decoration: underline; }
+.add-fee-btn .prefix-icon {
+  font-size: 16px; line-height: 1; font-weight: 500;
+}
+
+/* Distance-pricing summary (when the fee uses distance tiers) */
+.fee-card.has-tiers .fee-top-row { grid-template-columns: minmax(0, 1fr) auto; }
+.fee-card.has-tiers .fee-amount-col { display: none; }
+.fee-tiers-summary {
+  margin-top: 14px;
+  padding: 12px 14px 10px;
+  background: var(--D80);
+  border: 1px solid var(--D55);
+  border-radius: var(--radius-6);
+}
+.tiers-summary-header {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; margin-bottom: 10px;
+}
+.tiers-summary-title {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 600; color: var(--D10);
+}
+.tiers-summary-title .ts-pin {
+  width: 22px; height: 22px;
+  border-radius: 50%; background: var(--B20); color: #fff;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.tiers-summary-title .ts-pin svg { width: 13px; height: 13px; }
+.tiers-summary-actions {
+  display: inline-flex; align-items: center; gap: 2px;
+}
+.tiers-summary-actions .ts-remove {
+  width: 26px; height: 26px;
+  border: 0; background: transparent;
+  color: var(--D30); font-size: 16px;
+  border-radius: 50%; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.tiers-summary-actions .ts-remove:hover {
+  background: rgba(22,45,61,0.06); color: var(--D10);
+}
+.tiers-summary-list { display: flex; flex-direction: column; }
+.ts-row {
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  font-size: 13px;
+  color: var(--D10);
+  border-top: 1px solid rgba(50,83,106,0.10);
+}
+.ts-row:first-child { border-top: 0; }
+.ts-row .ts-marker {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: rgba(17,109,255,0.30);
+  border: 2px solid var(--B20);
+}
+.ts-row.t-2 .ts-marker { background: rgba(17,109,255,0.20); }
+.ts-row.t-3 .ts-marker { background: rgba(17,109,255,0.12); }
+.ts-row.t-rest .ts-marker {
+  background: transparent;
+  border-style: dashed;
+  border-color: var(--D40);
+}
+.ts-row .ts-amount { font-weight: 600; color: var(--D10); }
+
+/* ------------------------------------------------------------
+   Modal (distance-based pricing)
+   ------------------------------------------------------------ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(22,45,61,0.55);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  width: 520px;
+  max-width: calc(100% - 32px);
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: var(--shadow-modal);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.modal.modal-wide { width: 640px; }
+.modal-header { padding: 22px 28px 6px; }
+.modal-title {
+  font-family: var(--font-display);
+  font-size: 20px; font-weight: 600; color: var(--D10);
+}
+.modal-subtitle { font-size: 13px; color: var(--D30); margin-top: 4px; }
+.modal-body {
+  padding: 18px 28px 22px;
+  display: flex; flex-direction: column; gap: 16px;
+}
+.modal-body .field { display: flex; flex-direction: column; }
+.modal-footer {
+  padding: 18px 24px 22px;
+  background: #fff;
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+}
+.modal-footer .footer-left  { display: flex; gap: 8px; }
+.modal-footer .footer-right { display: flex; gap: 8px; }
+.modal-remove-link {
+  background: transparent; border: 0;
+  color: var(--R10);
+  font-family: var(--font-ui);
+  font-size: 14px; font-weight: 500; line-height: 1.2;
+  cursor: pointer; padding: 4px 0; border-radius: 2px;
+}
+.modal-remove-link:hover { color: #99201F; text-decoration: underline; }
+
+/* Business location single-select dropdown */
+.location-select { position: relative; }
+.location-select-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 56px;
+  padding: 8px 12px;
+  background: #fff;
+  border: 1px solid var(--D55);
+  border-radius: var(--radius-6);
+  font-family: var(--font-ui);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color .1s, box-shadow .1s;
+}
+.location-select-btn:hover { border-color: var(--D30); }
+.location-select.open .location-select-btn {
+  border-color: var(--B20);
+  box-shadow: 0 0 0 3px rgba(17,109,255,0.15);
+}
+.location-select-btn .loc-pin {
+  width: 18px; height: 18px;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--D20); flex-shrink: 0;
+}
+.location-select-btn .loc-pin svg { width: 100%; height: 100%; }
+.location-select-btn .loc-meta {
+  display: flex; flex-direction: column;
+  flex: 1; min-width: 0; line-height: 1.3;
+}
+.location-select-btn .loc-name {
+  font-size: 14px; font-weight: 500;
+  color: var(--D10);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.location-select-btn .loc-addr {
+  font-size: 12px; color: var(--D30);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.location-select-btn .loc-caret {
+  width: 12px; height: 12px;
+  color: var(--D30); flex-shrink: 0; margin-left: 4px;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.location-select-btn .loc-caret svg { width: 100%; height: 100%; }
+.location-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0; right: 0;
+  background: #fff;
+  border: 1px solid var(--D55);
+  border-radius: var(--radius-6);
+  box-shadow: var(--shadow-2);
+  z-index: 100;
+  padding: 4px 0;
+  max-height: 280px;
+  overflow-y: auto;
+}
+.location-select.open .location-menu { display: block; }
+.location-option {
+  display: flex; flex-direction: column;
+  padding: 8px 14px; cursor: pointer; line-height: 1.3;
+}
+.location-option:hover { background: var(--D80); }
+.location-option.selected { background: var(--B60); }
+.location-option .opt-name { font-size: 14px; font-weight: 500; color: var(--D10); }
+.location-option .opt-addr { font-size: 12px; color: var(--D30); }
+
+/* Modal map */
+.dist-map {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  border-radius: var(--radius-6);
+  border: 1px solid var(--D55);
+  overflow: hidden;
+  background: linear-gradient(180deg, #EAF1F5 0%, #DDE7EF 100%);
+}
+.dist-map .map-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(50,83,106,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(50,83,106,0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.dist-map svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.dist-map .map-legend {
+  position: absolute;
+  top: 8px; left: 8px;
+  background: rgba(255,255,255,0.92);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 11px;
+  color: var(--D30);
+}
+
+/* Tier list inside modal */
+.tier-list { display: flex; flex-direction: column; gap: 8px; }
+.tier-row {
+  display: grid;
+  grid-template-columns: 12px minmax(0, 1fr) 110px 110px 24px;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 4px;
+}
+.tier-row .tier-marker {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: rgba(17,109,255,0.30);
+  border: 1.5px solid var(--B20);
+  flex-shrink: 0;
+}
+.tier-row.t-2 .tier-marker { background: rgba(17,109,255,0.20); }
+.tier-row.t-3 .tier-marker { background: rgba(17,109,255,0.12); }
+.tier-row.t-rest .tier-marker {
+  background: transparent; border-style: dashed; border-color: var(--D40);
+}
+.tier-row .tier-label { font-size: 14px; color: var(--D10); }
+.tier-row .tier-distance,
+.tier-row .tier-price {
+  display: inline-flex; align-items: center;
+  height: 32px;
+  border: 1px solid var(--D55);
+  border-radius: var(--radius-6);
+  background: #fff;
+  overflow: hidden;
+}
+.tier-row .tier-distance:hover,
+.tier-row .tier-price:hover { border-color: var(--D30); }
+.tier-row .tier-distance:focus-within,
+.tier-row .tier-price:focus-within {
+  border-color: var(--B20);
+  box-shadow: 0 0 0 3px rgba(17,109,255,0.15);
+}
+.tier-row .tier-distance input,
+.tier-row .tier-price input {
+  flex: 1; min-width: 0;
+  border: 0; outline: none;
+  font-family: var(--font-ui);
+  font-size: 14px; color: var(--D10);
+  background: transparent;
+}
+.tier-row .tier-distance input { padding: 0 4px 0 10px; }
+.tier-row .tier-price input    { padding: 0 10px 0 4px; }
+.tier-row .tier-distance .unit,
+.tier-row .tier-price .currency {
+  font-size: 14px; color: var(--D30);
+  height: 100%;
+  display: inline-flex; align-items: center;
+}
+.tier-row .tier-distance .unit { padding: 0 10px 0 2px; }
+.tier-row .tier-price .currency { padding: 0 2px 0 10px; }
+.tier-row .tier-rest-text { font-size: 14px; color: var(--D30); }
+.tier-row .tier-remove {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--D20);
+  border: 0; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0;
+  transition: background .12s, color .12s;
+}
+.tier-row .tier-remove svg { width: 12px; height: 12px; }
+.tier-row .tier-remove:hover { background: var(--D70); color: var(--D10); }
+.tier-row .tier-remove:disabled { opacity: 0.3; cursor: default; }
+.tier-row.t-rest .tier-remove { visibility: hidden; }
+.tier-list-header {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; padding: 0 4px; margin-bottom: 8px;
+}
+.tier-list-header .tier-list-title {
+  font-size: 14px; font-weight: 600; color: var(--D10);
+}
+
+/* Section footer */
+.section-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  gap: 8px;
+}
+</style>
+</head>
+<body>
+
+<!-- =========== TOP BAR =========== -->
+<div class="wix-top-bar">
+  <div class="wix-brand">WIX STUDIO</div>
+  <div class="wix-top-chip">
+    <span class="av">RL</span>
+    <span style="font-weight:600;">A La Cart</span>
+    <span style="font-size:10px; color: var(--D30);">▾</span>
+  </div>
+  <div class="wix-nav-item">Resources ▾</div>
+  <div class="wix-nav-item">Community ▾</div>
+  <div class="wix-nav-item">Help ▾</div>
+  <button class="btn" style="border:1px solid var(--D10); color:var(--D10); height:30px; padding:0 14px;">Upgrade</button>
+  <div class="wix-top-spacer"></div>
+  <div class="wix-search">🔍 Search for tools, apps, help &amp; more…</div>
+  <div class="wix-top-icons">
+    <div class="ic">💬<span class="badge">50</span></div>
+    <div class="ic">🔔<span class="badge">99+</span></div>
+    <div class="ic">✉<span class="badge">11</span></div>
+    <div class="ic">👤</div>
+    <button class="wix-ai-btn">✦ AI</button>
+  </div>
+</div>
+
+<!-- =========== APP =========== -->
+<div class="app">
+  <!-- LEFT SIDE NAV -->
+  <aside class="side-nav">
+    <div class="quick-actions">Quick Actions <span style="font-size:10px; opacity:.6;">▾</span></div>
+    <div class="nav-item">🏠 Home</div>
+    <div class="nav-item">✦ AI Agents <span style="margin-left:auto; font-size:10px; background:#FFC233; color:#162D3D; padding:1px 6px; border-radius:4px; font-weight:700;">NEW</span><span class="chev">›</span></div>
+    <div class="nav-item">📅 Booking Calendar <span class="chev">›</span></div>
+    <div class="nav-item">💰 Getting Paid <span class="chev">›</span></div>
+    <div class="nav-item">🏷 Sales <span class="chev">›</span></div>
+    <div class="nav-item">📦 Catalog <span class="chev">›</span></div>
+    <div class="nav-item">🖼 Portfolio <span class="chev">›</span></div>
+    <div class="nav-item">👥 Groups</div>
+    <div class="nav-item">📱 Apps <span style="margin-left:auto; font-size:11px; color:rgba(255,255,255,0.6);">4</span></div>
+    <div class="nav-item">📱 Site &amp; Mobile App <span class="chev">›</span></div>
+    <div class="nav-item">📣 Marketing <span class="chev">›</span></div>
+    <div class="nav-item">📥 Inbox</div>
+    <div class="nav-item">👥 Customers &amp; Leads <span class="chev">›</span></div>
+    <div class="nav-item">📊 Analytics <span class="chev">›</span></div>
+    <div class="nav-item">⚙ Automations <span class="chev">›</span></div>
+    <div class="nav-item active">⚙ Settings <span style="margin-left:auto; opacity:.6;">★</span></div>
+    <div class="nav-item">🌐 Website Content <span class="chev">›</span></div>
+    <div class="nav-item">🛠 Developer Tools <span class="chev">›</span></div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="breadcrumbs">
+      <a href="#">Settings</a>
+      <span class="sep">›</span>
+      <a href="#">Bookings Settings</a>
+      <span class="sep">›</span>
+      <a href="#">Booking Policies</a>
+      <span class="sep">›</span>
+      <span class="current">Default policy</span>
+    </div>
+
+    <div class="page-title-row">
+      <div class="page-title-block">
+        <div class="page-title">
+          Default policy
+          <span class="default-tag">DEFAULT</span>
+        </div>
+        <div class="page-subtitle">Set the booking, cancelation and waitlist policies for the connected services.</div>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <button class="btn btn-secondary">Cancel</button>
+        <button class="btn btn-primary">Save</button>
+      </div>
+    </div>
+
+    <!-- POLICY SECTIONS -->
+    <div class="policy-cards">
+
+      <!-- ============ POLICY DETAILS ============ -->
+      <div class="policy-card">
+        <div class="policy-card-header">
+          <div class="policy-card-title">Policy details</div>
+        </div>
+
+        <div class="subsection">
+          <div class="input-with-counter">
+            <div class="field-label">Policy name <span class="info-ico">i</span></div>
+            <span class="counter">22</span>
+            <input class="wds-input" type="text" value="Default policy" />
+          </div>
+        </div>
+
+        <div class="subsection">
+          <div class="input-with-counter">
+            <div class="field-label">Policy description <span class="info-ico">i</span></div>
+            <span class="counter">0/2500</span>
+            <textarea class="wds-textarea" placeholder="e.g., To cancel or reschedule, please contact us at least 24 hours in advance."></textarea>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <div class="field-label">Connected services</div>
+          <div class="chips-row">
+            <span class="svc-chip">Gel Pedicure</span>
+            <span class="svc-chip">football</span>
+            <span class="svc-chip">Service 122</span>
+            <span class="svc-chip">Appointment pp</span>
+            <span class="svc-chip svc-chip-more">+ 43 more</span>
+          </div>
+          <div class="policy-help">
+            ⓘ To connect this policy to a service, go to the policies list or the service page. <a href="#">Learn more</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ CLIENT BOOKING RULES (truncated) ============ -->
+      <div class="policy-card">
+        <div class="policy-card-header">
+          <div class="policy-card-title">Client booking rules</div>
+          <span class="scope-chip">APPOINTMENT</span>
+          <span class="scope-chip">CLASS</span>
+          <span class="scope-chip">COURSE</span>
+        </div>
+
+        <div class="subsection">
+          <label class="wds-check on" onclick="toggleCheck(this)">
+            <span class="box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            <span class="ck-label">Allow clients to cancel their own bookings online</span>
+          </label>
+          <div style="margin-top: 12px;">
+            <div class="field-label">Who can cancel</div>
+            <button class="wds-dropdown dropdown-md" type="button">
+              <span>Only site members</span>
+              <span class="caret">▾</span>
+            </button>
+          </div>
+          <div style="margin-top: 12px;">
+            <div class="field-label">How late can they cancel</div>
+            <button class="wds-dropdown dropdown-md" type="button">
+              <span>Anytime</span>
+              <span class="caret">▾</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ PAYMENT AND FEES (with NEW Additional fees) ============ -->
+      <div class="policy-card">
+        <div class="policy-card-header">
+          <div class="policy-card-title">Payment and fees</div>
+          <span class="scope-chip">APPOINTMENT</span>
+          <span class="scope-chip">CLASS</span>
+          <span class="scope-chip">COURSE</span>
+        </div>
+
+        <div class="subsection">
+          <label class="wds-check" onclick="toggleCheck(this)">
+            <span class="box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            <span class="ck-label">Require card on file for online booking</span>
+          </label>
+          <div class="field-help" style="margin-left: 28px;">Secure any necessary charges for sessions that are free, paid with a plan, or offline. <a href="#" style="color: var(--B20); text-decoration: none;">Learn more</a></div>
+        </div>
+
+        <div class="subsection">
+          <label class="wds-check" onclick="toggleCheck(this)">
+            <span class="box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            <span class="ck-label">Charge cancellation and no-show fees</span>
+          </label>
+          <div class="field-help" style="margin-left: 28px;">Apply fees to cancelled sessions and no-shows. <a href="#" style="color: var(--B20); text-decoration: none;">Learn more</a></div>
+        </div>
+
+        <!-- ============ NEW: ADDITIONAL FEES ============ -->
+        <div class="subsection" id="additional-fees">
+          <label class="wds-check on" id="af-check" onclick="toggleAdditionalFees(this)">
+            <span class="box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            <span class="ck-label">Charge additional fees <span class="scope-chip new" style="margin-left: 4px;">NEW</span></span>
+          </label>
+          <div class="field-help" style="margin-left: 28px;">Add fees that are automatically applied at checkout, like a travel fee. Each fee appears as a separate line in the order. <a href="#" style="color: var(--B20); text-decoration: none;">Learn more</a></div>
+
+          <div id="af-body" style="margin-left: 28px; margin-top: 14px;">
+            <div class="fee-list" id="fee-list"></div>
+
+            <button class="add-fee-btn" type="button" onclick="addFee()">
+              <span class="prefix-icon" aria-hidden="true">+</span>
+              Add fee
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ NEW: SERVICE AREA ============ -->
+      <div class="policy-card" id="service-area-card">
+        <div class="policy-card-header">
+          <div class="policy-card-title">Service area</div>
+          <span class="scope-chip">APPOINTMENT</span>
+          <span class="scope-chip new">NEW</span>
+        </div>
+        <div class="subsection-desc">
+          Limit bookings for services offered at the client's place to clients within a defined radius from your business.
+        </div>
+
+        <label class="wds-check on" id="sa-toggle" onclick="toggleServiceArea(this)" style="align-items: flex-start;">
+          <span class="box" style="margin-top: 2px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+          <span class="sa-toggle-text">
+            <span class="sa-toggle-title">Limit bookings to a service area</span>
+            <span class="sa-toggle-desc">When a client picks "Client's place" as the location, their address must be inside this radius to book.</span>
+          </span>
+        </label>
+
+        <div class="sa-config" id="sa-config" data-sa-dependent>
+
+          <div class="notice">
+            <span class="ic">i</span>
+            <div>
+              Only applies to services where <strong>"Client's place"</strong> is offered as a location. Other locations (your business, online, etc.) are unaffected.
+              <a href="#">Manage service locations</a>
+            </div>
+          </div>
+
+          <div class="sa-grid">
+            <!-- Business location (full width) -->
+            <div class="span-2">
+              <div class="field-label">Measure distance from <span class="info-ico" title="Distance is measured from this business location to the client's address.">i</span></div>
+              <button class="wds-dropdown" type="button">
+                <span>📍 Main Studio — 123 Main Street, Springfield</span>
+                <span class="caret">▾</span>
+              </button>
+            </div>
+
+            <!-- Block behavior + Message (left) -->
+            <div style="display: flex; flex-direction: column; gap: 18px;">
+              <div>
+                <div class="field-label">If a client tries to book from outside this area</div>
+                <div class="block-options">
+                  <div class="wds-radio on" onclick="setBlockMode(this, 'block')">
+                    <span class="dot"></span>
+                    <span class="rd-text">
+                      <span class="rd-title">Block the booking and show a message</span>
+                      <span class="rd-desc">The client sees an explanation at checkout and can't complete the booking.</span>
+                    </span>
+                  </div>
+                  <div class="wds-radio" onclick="setBlockMode(this, 'contact')">
+                    <span class="dot"></span>
+                    <span class="rd-text">
+                      <span class="rd-title">Block, but invite the client to contact you</span>
+                      <span class="rd-desc">Useful when you may make exceptions for special cases.</span>
+                    </span>
+                  </div>
+                  <div class="wds-radio" onclick="setBlockMode(this, 'warn')">
+                    <span class="dot"></span>
+                    <span class="rd-text">
+                      <span class="rd-title">Allow the booking and warn the client</span>
+                      <span class="rd-desc">The client can book anyway after seeing a warning.</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div id="block-message-row">
+                <div class="field-label" id="block-message-label">Message clients see when they're outside the area</div>
+                <textarea class="wds-textarea" id="block-message">Sorry, we don't currently travel to your area. Our service area is within 25 miles of our studio.</textarea>
+                <div class="field-help" id="block-message-help">Shown at checkout when the client's address is outside your service area.</div>
+              </div>
+            </div>
+
+            <!-- Radius + Map preview (right) -->
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+              <div>
+                <div class="field-label">Service area radius</div>
+                <div class="affix-input">
+                  <input type="number" id="radius-input" value="25" min="1" max="500" oninput="onRadiusChange(this.value)" />
+                  <span class="suffix suffix-dropdown" onclick="toggleUnit()">
+                    <span id="unit-label">miles</span>
+                    <span class="caret">▾</span>
+                  </span>
+                </div>
+                <div class="field-help">Clients more than <span id="radius-echo">25 miles</span> away won't be able to book.</div>
+              </div>
+              <div>
+                <div class="sa-map" id="sa-map">
+                  <div class="map-grid"></div>
+                  <svg id="sa-map-svg" viewBox="0 0 360 220" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
+                  <div class="map-legend">Radius: <strong id="map-legend-text">25 miles</strong> from Main Studio</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="section-footer">
+      <button class="btn btn-secondary">Cancel</button>
+      <button class="btn btn-primary">Save</button>
+    </div>
+  </main>
+</div>
+
+<!-- =========================================
+     DISTANCE-BASED PRICING MODAL
+     ========================================= -->
+<div class="modal-overlay" id="dist-modal" onclick="onDistOverlayClick(event)">
+  <div class="modal modal-wide" role="dialog" aria-modal="true" aria-labelledby="dist-modal-title">
+    <div class="modal-header">
+      <div class="modal-title" id="dist-modal-title">Charge by distance to client's place</div>
+      <div class="modal-subtitle">When the service is at the client's place, charge a different fee based on how far they are from your business location.</div>
+    </div>
+    <div class="modal-body">
+      <!-- Business location single-select -->
+      <div class="field">
+        <div class="field-label">Business location <span class="info-ico" title="Distance is measured from the client's place to the business location you choose here.">i</span></div>
+        <div class="location-select" id="loc-select">
+          <button class="location-select-btn" type="button" onclick="toggleLocationMenu(event)" aria-haspopup="listbox" aria-expanded="false">
+            <span class="loc-pin" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 21s7-7.5 7-12a7 7 0 1 0-14 0c0 4.5 7 12 7 12z"/>
+                <circle cx="12" cy="9" r="2.5"/>
+              </svg>
+            </span>
+            <span class="loc-meta">
+              <span class="loc-name" id="loc-name">Main Studio</span>
+              <span class="loc-addr" id="loc-addr">123 Main Street, Springfield</span>
+            </span>
+            <span class="loc-caret" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            </span>
+          </button>
+          <div class="location-menu" role="listbox" id="loc-menu"></div>
+        </div>
+      </div>
+
+      <!-- Map preview with concentric tier rings -->
+      <div class="dist-map" id="dist-map">
+        <div class="map-grid"></div>
+        <svg id="dist-map-svg" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
+        <div class="map-legend">Radius preview</div>
+      </div>
+
+      <!-- Tier list header -->
+      <div class="tier-list-header">
+        <span class="tier-list-title">Tier prices</span>
+        <div class="unit-toggle" id="tier-unit-toggle">
+          <div class="u active" data-unit="$" onclick="setTierUnit('$')">$</div>
+          <div class="u" data-unit="%" onclick="setTierUnit('%')">%</div>
+        </div>
+      </div>
+
+      <!-- Tier rows -->
+      <div class="tier-list" id="tier-list"></div>
+      <div>
+        <button class="wds-text-btn" type="button" onclick="addTier()">
+          <span class="prefix-icon" aria-hidden="true">+</span>
+          Add tier
+        </button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="footer-left">
+        <button class="modal-remove-link" id="m-remove-btn" onclick="removeDistFromModal()" style="display:none;">Turn off distance pricing</button>
+      </div>
+      <div class="footer-right">
+        <button class="btn btn-secondary" onclick="closeDistModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveDistFromModal()">Apply</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // =========================================================
+  //  Service Area
+  // =========================================================
+  let saEnabled = true;
+  let radiusUnit = 'miles';
+
+  function toggleServiceArea(el) {
+    saEnabled = !saEnabled;
+    el.classList.toggle('on', saEnabled);
+    document.getElementById('service-area-card').classList.toggle('sa-collapsed', !saEnabled);
+  }
+  function toggleUnit() {
+    radiusUnit = radiusUnit === 'miles' ? 'km' : 'miles';
+    document.getElementById('unit-label').textContent = radiusUnit;
+    syncRadiusEcho();
+    renderSaMap();
+  }
+  function onRadiusChange() { syncRadiusEcho(); renderSaMap(); }
+  function syncRadiusEcho() {
+    const r = parseFloat(document.getElementById('radius-input').value) || 0;
+    const txt = `${r} ${radiusUnit}`;
+    document.getElementById('radius-echo').textContent = txt;
+    document.getElementById('map-legend-text').textContent = txt;
+  }
+  const BLOCK_MODE_COPY = {
+    block: {
+      label: "Message clients see when they're outside the area",
+      help: "Shown at checkout when the client's address is outside your service area.",
+      defaultMsg: "Sorry, we don't currently travel to your area. Our service area is within 25 miles of our studio."
+    },
+    contact: {
+      label: "Message clients see when they're outside the area",
+      help: "Shown at checkout, with a way for the client to reach out for an exception.",
+      defaultMsg: "We don't usually travel this far, but get in touch — we may be able to make it work. Email us at hello@example.com."
+    },
+    warn: {
+      label: "Warning clients see before they book",
+      help: "Shown at checkout. The client can still complete the booking after acknowledging this.",
+      defaultMsg: "Heads up — your address is outside our usual service area. A travel surcharge may apply, and we may take longer to arrive."
+    }
+  };
+  let currentBlockMode = 'block';
+  let blockMessages = {
+    block: BLOCK_MODE_COPY.block.defaultMsg,
+    contact: BLOCK_MODE_COPY.contact.defaultMsg,
+    warn: BLOCK_MODE_COPY.warn.defaultMsg
+  };
+
+  function setBlockMode(el, mode) {
+    document.querySelectorAll('.block-options .wds-radio').forEach(r => r.classList.remove('on'));
+    el.classList.add('on');
+    const msgEl = document.getElementById('block-message');
+    blockMessages[currentBlockMode] = msgEl.value;
+    currentBlockMode = mode;
+    const copy = BLOCK_MODE_COPY[mode];
+    document.getElementById('block-message-label').textContent = copy.label;
+    document.getElementById('block-message-help').textContent = copy.help;
+    msgEl.value = blockMessages[mode];
+  }
+
+  document.getElementById('block-message').addEventListener('input', function() {
+    blockMessages[currentBlockMode] = this.value;
+  });
+  function toggleCheck(el) { el.classList.toggle('on'); }
+
+  function renderSaMap() {
+    const svg = document.getElementById('sa-map-svg');
+    if (!svg) return;
+    const w = 360, h = 220;
+    const cx = w / 2, cy = h / 2;
+    const r = 78;
+    svg.innerHTML = `
+      <defs>
+        <radialGradient id="ringGrad" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#116DFF" stop-opacity="0.22"/>
+          <stop offset="100%" stop-color="#116DFF" stop-opacity="0.05"/>
+        </radialGradient>
+      </defs>
+      <circle cx="${cx}" cy="${cy}" r="${r}" fill="url(#ringGrad)" stroke="#116DFF" stroke-opacity="0.7" stroke-width="1.5" stroke-dasharray="6 6"/>
+      <circle cx="${cx}" cy="${cy}" r="11" fill="#116DFF" fill-opacity="0.20"/>
+      <circle cx="${cx}" cy="${cy}" r="6" fill="#116DFF"/>
+      <circle cx="${cx}" cy="${cy}" r="2" fill="#fff"/>
+      <text x="${cx}" y="${cy - 18}" text-anchor="middle" font-size="10" fill="#162D3D" font-weight="600" font-family="Wix Madefor Text, sans-serif">Main Studio</text>
+    `;
+  }
+
+  // =========================================================
+  //  Additional fees (inline-editable cards)
+  // =========================================================
+  function addFee() {
+    const card = document.createElement('div');
+    card.className = 'fee-card';
+    card.dataset.tiers = '';
+    card.innerHTML = `
+      <div class="fee-top-row">
+        <div class="fee-field">
+          <div class="field-label">Fee name</div>
+          <input class="wds-input f-name" type="text" placeholder="e.g., Travel fee" />
+        </div>
+        <div class="fee-field fee-amount-col">
+          <div class="field-label">Amount</div>
+          <div class="amount-with-toggle">
+            <input type="text" class="f-amount" placeholder="0" />
+            <div class="unit-toggle">
+              <div class="u active" onclick="toggleAmountUnit(this)">$</div>
+              <div class="u" onclick="toggleAmountUnit(this)">%</div>
+            </div>
+          </div>
+        </div>
+        <div class="fee-menu-wrap">
+          <button class="btn btn-icon small fee-menu-btn" title="More actions" onclick="toggleFeeMenu(this, event)">⋯</button>
+          <div class="fee-menu-popover" role="menu">
+            <div class="fee-menu-item destructive" role="menuitem" onclick="removeFee(this)">
+              <span class="mi-icon" aria-hidden="true">🗑</span>
+              Delete
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="fee-bottom-row">
+        <div class="fee-bottom-left">
+          <div class="toggle-sm f-scope" onclick="toggleScope(this)"></div>
+          <span class="t-label">Charge per participant
+            <span class="info-ico" title="When this is on, the fee is charged for each participant. When it's off, the fee is charged once per booking.">i</span>
+          </span>
+        </div>
+        <div class="fee-bottom-right">
+          <button class="wds-text-btn f-dist-add" type="button" onclick="openDistModalFor(this)">
+            <span class="prefix-icon" aria-hidden="true">+</span>
+            Charge by distance
+          </button>
+        </div>
+      </div>
+    `;
+    document.getElementById('fee-list').appendChild(card);
+    card.querySelector('.f-name').focus();
+  }
+  function removeFee(btn) {
+    const card = btn.closest('.fee-card');
+    if (card) card.remove();
+  }
+  function toggleFeeMenu(btn, e) {
+    if (e) e.stopPropagation();
+    const wrap = btn.closest('.fee-menu-wrap');
+    const popover = wrap.querySelector('.fee-menu-popover');
+    const wasOpen = popover.classList.contains('open');
+    document.querySelectorAll('.fee-menu-popover').forEach(p => p.classList.remove('open'));
+    if (!wasOpen) popover.classList.add('open');
+  }
+  function toggleAmountUnit(el) {
+    el.parentElement.querySelectorAll('.u').forEach(u => u.classList.remove('active'));
+    el.classList.add('active');
+  }
+  function toggleScope(el) { el.classList.toggle('on'); }
+
+  // =========================================================
+  //  Business location single-select
+  // =========================================================
+  const BUSINESS_LOCATIONS = [
+    { id: 'loc-1', name: 'Main Studio',     address: '123 Main Street, Springfield' },
+    { id: 'loc-2', name: 'Downtown Office', address: '456 Oak Avenue, Springfield'  },
+    { id: 'loc-3', name: 'Westside Branch', address: '789 Pine Road, Riverside'     }
+  ];
+  let selectedLocationId = BUSINESS_LOCATIONS[0].id;
+  function renderLocationMenu() {
+    const menu = document.getElementById('loc-menu');
+    if (!menu) return;
+    menu.innerHTML = BUSINESS_LOCATIONS.map(loc => `
+      <div class="location-option ${loc.id === selectedLocationId ? 'selected' : ''}" role="option" aria-selected="${loc.id === selectedLocationId}" onclick="selectLocation('${loc.id}')">
+        <span class="opt-name">${escapeHtml(loc.name)}</span>
+        <span class="opt-addr">${escapeHtml(loc.address)}</span>
+      </div>
+    `).join('');
+  }
+  function syncLocationButton() {
+    const loc = BUSINESS_LOCATIONS.find(l => l.id === selectedLocationId) || BUSINESS_LOCATIONS[0];
+    document.getElementById('loc-name').textContent = loc.name;
+    document.getElementById('loc-addr').textContent = loc.address;
+  }
+  function toggleLocationMenu(e) {
+    if (e) e.stopPropagation();
+    const wrap = document.getElementById('loc-select');
+    const isOpen = wrap.classList.toggle('open');
+    wrap.querySelector('.location-select-btn').setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  }
+  function closeLocationMenu() {
+    const wrap = document.getElementById('loc-select');
+    if (!wrap) return;
+    wrap.classList.remove('open');
+    wrap.querySelector('.location-select-btn').setAttribute('aria-expanded', 'false');
+  }
+  function selectLocation(id) {
+    selectedLocationId = id;
+    syncLocationButton();
+    renderLocationMenu();
+    closeLocationMenu();
+  }
+
+  // =========================================================
+  //  Distance-based pricing modal
+  // =========================================================
+  const DEFAULT_TIERS = [
+    { distance: 5,  price: 5  },
+    { distance: 10, price: 10 },
+    { distance: 20, price: 20 },
+    { rest: true,   price: 30 }
+  ];
+  let activeDistCard = null;
+  let workingTiers = [];
+  let workingUnit = '$';
+
+  function openDistModalFor(btn) {
+    const card = btn.closest('.fee-card');
+    activeDistCard = card;
+    const existing = card.dataset.tiers ? safeParse(card.dataset.tiers) : null;
+    workingTiers = existing && existing.length ? cloneTiers(existing) : cloneTiers(DEFAULT_TIERS);
+    workingUnit = (card.dataset.unit === '%') ? '%' : '$';
+    const savedLocId = card.dataset.locationId;
+    selectedLocationId = (savedLocId && BUSINESS_LOCATIONS.find(l => l.id === savedLocId))
+      ? savedLocId
+      : BUSINESS_LOCATIONS[0].id;
+    document.getElementById('m-remove-btn').style.display = existing ? 'inline-flex' : 'none';
+    document.getElementById('dist-modal-title').textContent = existing ? 'Edit distance pricing' : 'Charge by distance to client\u2019s place';
+    syncLocationButton();
+    renderLocationMenu();
+    syncUnitToggle();
+    renderTierList();
+    renderDistMap();
+    document.getElementById('dist-modal').classList.add('open');
+  }
+  function setTierUnit(unit) {
+    if (unit !== '$' && unit !== '%') return;
+    workingUnit = unit;
+    syncUnitToggle();
+    renderTierList();
+  }
+  function syncUnitToggle() {
+    const toggle = document.getElementById('tier-unit-toggle');
+    if (!toggle) return;
+    toggle.querySelectorAll('.u').forEach(u => {
+      u.classList.toggle('active', u.dataset.unit === workingUnit);
+    });
+  }
+  function closeDistModal() {
+    document.getElementById('dist-modal').classList.remove('open');
+    closeLocationMenu();
+    activeDistCard = null;
+    workingTiers = [];
+  }
+  function onDistOverlayClick(e) {
+    if (e.target.id === 'dist-modal') closeDistModal();
+  }
+  function addTier() {
+    const ringTiers = workingTiers.filter(t => !t.rest);
+    const lastRing = ringTiers[ringTiers.length - 1];
+    const nextDist = lastRing ? Math.round(lastRing.distance * 1.5) : 5;
+    const restIdx = workingTiers.findIndex(t => t.rest);
+    const newTier = { distance: nextDist, price: (lastRing ? lastRing.price : 5) + 5 };
+    if (restIdx === -1) workingTiers.push(newTier);
+    else workingTiers.splice(restIdx, 0, newTier);
+    renderTierList();
+    renderDistMap();
+  }
+  function removeTier(idx) {
+    if (workingTiers[idx] && workingTiers[idx].rest) return;
+    workingTiers.splice(idx, 1);
+    renderTierList();
+    renderDistMap();
+  }
+  function updateTierField(idx, field, value) {
+    if (!workingTiers[idx]) return;
+    const num = parseFloat(value);
+    workingTiers[idx][field] = isNaN(num) ? 0 : num;
+    if (field === 'distance') renderDistMap();
+  }
+  function renderTierList() {
+    const list = document.getElementById('tier-list');
+    const ringCount = workingTiers.filter(t => !t.rest).length;
+    const unitGlyph = workingUnit;
+    list.innerHTML = workingTiers.map((tier, i) => {
+      const xIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>`;
+      if (tier.rest) {
+        return `
+          <div class="tier-row t-rest">
+            <span class="tier-marker"></span>
+            <span class="tier-label">Anywhere further</span>
+            <span class="tier-rest-text">No radius</span>
+            <div class="tier-price">
+              <span class="currency">${unitGlyph}</span>
+              <input type="number" min="0" step="1" value="${tier.price}" oninput="updateTierField(${i}, 'price', this.value)" />
+            </div>
+            <button class="tier-remove" tabindex="-1" aria-hidden="true">${xIcon}</button>
+          </div>
+        `;
+      }
+      const ringIdx = workingTiers.slice(0, i).filter(t => !t.rest).length;
+      const cls = `t-${Math.min(ringIdx + 1, 3)}`;
+      return `
+        <div class="tier-row ${cls}">
+          <span class="tier-marker"></span>
+          <span class="tier-label">Within</span>
+          <div class="tier-distance">
+            <input type="number" min="0" step="1" value="${tier.distance}" oninput="updateTierField(${i}, 'distance', this.value)" />
+            <span class="unit">mi</span>
+          </div>
+          <div class="tier-price">
+            <span class="currency">${unitGlyph}</span>
+            <input type="number" min="0" step="1" value="${tier.price}" oninput="updateTierField(${i}, 'price', this.value)" />
+          </div>
+          <button class="tier-remove" type="button" title="Remove tier" aria-label="Remove tier" ${ringCount <= 1 ? 'disabled' : `onclick="removeTier(${i})"`}>${xIcon}</button>
+        </div>
+      `;
+    }).join('');
+  }
+  function renderDistMap() {
+    const svg = document.getElementById('dist-map-svg');
+    if (!svg) return;
+    const w = 320, h = 200;
+    const cx = w / 2, cy = h / 2;
+    const maxR = Math.min(w, h) / 2 - 8;
+    const ringTiers = workingTiers.filter(t => !t.rest);
+    const maxDist = Math.max(1, ...ringTiers.map(t => t.distance || 0));
+    const sortedDesc = [...ringTiers].sort((a, b) => b.distance - a.distance);
+    const opacityFor = (rank) => {
+      if (rank === 0) return 0.30;
+      if (rank === 1) return 0.20;
+      if (rank === 2) return 0.12;
+      return 0.08;
+    };
+    let svgInner = '';
+    sortedDesc.forEach(t => {
+      const rank = ringTiers.findIndex(x => x === t);
+      const r = Math.max(6, (t.distance / maxDist) * maxR);
+      svgInner += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="rgba(17,109,255,${opacityFor(rank)})" stroke="#116DFF" stroke-opacity="0.5" stroke-dasharray="4 4" />`;
+    });
+    svgInner += `
+      <circle cx="${cx}" cy="${cy}" r="11" fill="#116DFF" fill-opacity="0.20" />
+      <circle cx="${cx}" cy="${cy}" r="6" fill="#116DFF" />
+      <circle cx="${cx}" cy="${cy}" r="2" fill="#fff" />
+    `;
+    sortedDesc.forEach(t => {
+      const r = Math.max(6, (t.distance / maxDist) * maxR);
+      svgInner += `<text x="${cx + r + 4}" y="${cy + 4}" font-size="10" fill="#32536A" font-family="Wix Madefor Text, sans-serif">${t.distance} mi</text>`;
+    });
+    svg.innerHTML = svgInner;
+  }
+  function saveDistFromModal() {
+    if (!activeDistCard) return;
+    const cleaned = workingTiers.map(t => t.rest ? { rest: true, price: t.price } : { distance: t.distance, price: t.price });
+    activeDistCard.dataset.tiers = JSON.stringify(cleaned);
+    activeDistCard.dataset.locationId = selectedLocationId;
+    activeDistCard.dataset.unit = workingUnit;
+    renderDistUI(activeDistCard);
+    closeDistModal();
+  }
+  function removeDistFromModal() {
+    if (!activeDistCard) return;
+    activeDistCard.dataset.tiers = '';
+    activeDistCard.dataset.locationId = '';
+    activeDistCard.dataset.unit = '';
+    renderDistUI(activeDistCard);
+    closeDistModal();
+  }
+  function removeDistFromCard(btn) {
+    const card = btn.closest('.fee-card');
+    if (!card) return;
+    card.dataset.tiers = '';
+    card.dataset.locationId = '';
+    card.dataset.unit = '';
+    renderDistUI(card);
+  }
+  function renderDistUI(card) {
+    const right = card.querySelector('.fee-bottom-right');
+    const tiers = card.dataset.tiers ? safeParse(card.dataset.tiers) : null;
+    const locationId = card.dataset.locationId || '';
+    const location = BUSINESS_LOCATIONS.find(l => l.id === locationId) || BUSINESS_LOCATIONS[0];
+    const unit = (card.dataset.unit === '%') ? '%' : '$';
+    const existingSummary = card.querySelector('.fee-tiers-summary');
+    if (existingSummary) existingSummary.remove();
+
+    if (tiers && tiers.length) {
+      card.classList.add('has-tiers');
+      const topRow = card.querySelector('.fee-top-row');
+      const summary = document.createElement('div');
+      summary.className = 'fee-tiers-summary';
+      summary.innerHTML = renderTierSummaryHTML(tiers, location, unit);
+      topRow.insertAdjacentElement('afterend', summary);
+      right.innerHTML = '';
+    } else {
+      card.classList.remove('has-tiers');
+      right.innerHTML = `
+        <button class="wds-text-btn f-dist-add" type="button" onclick="openDistModalFor(this)">
+          <span class="prefix-icon" aria-hidden="true">+</span>
+          Charge by distance
+        </button>
+      `;
+    }
+  }
+  function renderTierSummaryHTML(tiers, location, unit) {
+    const fmt = (n) => unit === '%' ? `${formatPrice(n)}%` : `$${formatPrice(n)}`;
+    let prev = 0;
+    const rows = tiers.map((tier, i) => {
+      const ringIdx = tiers.slice(0, i).filter(t => !t.rest).length;
+      if (tier.rest) {
+        return `
+          <div class="ts-row t-rest">
+            <span class="ts-marker"></span>
+            <span class="ts-range">More than ${prev} mi</span>
+            <span class="ts-amount">${fmt(tier.price)}</span>
+          </div>
+        `;
+      }
+      const cls = `t-${Math.min(ringIdx + 1, 3)}`;
+      const range = `${prev}\u2013${tier.distance} mi`;
+      prev = tier.distance;
+      return `
+        <div class="ts-row ${cls}">
+          <span class="ts-marker"></span>
+          <span class="ts-range">${range}</span>
+          <span class="ts-amount">${fmt(tier.price)}</span>
+        </div>
+      `;
+    }).join('');
+    const locName = location ? escapeHtml(location.name) : 'your business';
+    return `
+      <div class="tiers-summary-header">
+        <div class="tiers-summary-title">
+          <span class="ts-pin" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 21s7-7.5 7-12a7 7 0 1 0-14 0c0 4.5 7 12 7 12z"/>
+              <circle cx="12" cy="9" r="2.5"/>
+            </svg>
+          </span>
+          <span>Distance from <strong class="ts-loc-name">${locName}</strong></span>
+        </div>
+        <div class="tiers-summary-actions">
+          <button class="wds-text-btn" type="button" onclick="openDistModalFor(this)">Edit</button>
+          <button class="ts-remove" type="button" title="Turn off distance pricing" onclick="removeDistFromCard(this)" aria-label="Turn off distance pricing">\u00D7</button>
+        </div>
+      </div>
+      <div class="tiers-summary-list">
+        ${rows}
+      </div>
+    `;
+  }
+  function formatPrice(n) {
+    const v = Number(n) || 0;
+    return Number.isInteger(v) ? String(v) : v.toFixed(2);
+  }
+  function cloneTiers(arr) { return arr.map(t => Object.assign({}, t)); }
+  function safeParse(s) { try { return JSON.parse(s); } catch (e) { return null; } }
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.fee-menu-wrap')) {
+      document.querySelectorAll('.fee-menu-popover').forEach(p => p.classList.remove('open'));
+    }
+    if (!e.target.closest('#loc-select')) {
+      closeLocationMenu();
+    }
+  });
+
+  // Initial render
+  syncRadiusEcho();
+  renderSaMap();
+
+  // Toggle the "Charge additional fees" checkbox: reveal/hide the fee inputs.
+  // First time the user turns it on, seed an empty fee row so they have a place to type.
+  function toggleAdditionalFees(el) {
+    el.classList.toggle('on');
+    const isOn = el.classList.contains('on');
+    const body = document.getElementById('af-body');
+    body.style.display = isOn ? '' : 'none';
+    if (isOn && document.querySelectorAll('#fee-list .fee-card').length === 0) {
+      addFee();
+    }
+  }
+
+  // Default-on: seed one empty fee row to match the checked state.
+  if (document.querySelectorAll('#fee-list .fee-card').length === 0) {
+    addFee();
+  }
+</script>
+</body>
+</html>
