@@ -268,6 +268,63 @@ body {
 }
 .info-ico:hover { background: var(--D20); }
 
+/* WDS Tooltip — dark popover that appears on hover/focus of its trigger.
+   Markup:
+     <span class="wds-tooltip" tabindex="0">
+       <span class="info-ico">i</span>
+       <span class="wds-tooltip-content">…</span>
+     </span> */
+.wds-tooltip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  outline: none;
+}
+.wds-tooltip-content {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: var(--D10);
+  color: #fff;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.4;
+  padding: 8px 12px;
+  border-radius: var(--radius-6);
+  box-shadow: 0 6px 16px rgba(22,45,61,.18), 0 0 1px rgba(22,45,61,.20);
+  width: max-content;
+  max-width: 260px;
+  text-align: center;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .12s ease, transform .12s ease, visibility .12s;
+  z-index: 200;
+  white-space: normal;
+}
+.wds-tooltip-content::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--D10);
+}
+.wds-tooltip:hover .wds-tooltip-content,
+.wds-tooltip:focus-visible .wds-tooltip-content,
+.wds-tooltip:focus-within .wds-tooltip-content {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+.wds-tooltip:focus-visible .info-ico {
+  outline: 2px solid var(--B20);
+  outline-offset: 2px;
+}
+
 .wds-input, .wds-dropdown, .wds-textarea {
   width: 100%;
   height: 36px;
@@ -320,24 +377,6 @@ body {
 .wds-check .box svg { width: 12px; height: 12px; color: #fff; opacity: 0; }
 .wds-check.on .box svg { opacity: 1; }
 .wds-check .ck-label { font-size: 14px; color: var(--D10); }
-
-/* Radio */
-.wds-radio {
-  display: inline-flex; align-items: flex-start; gap: 10px;
-  cursor: pointer; user-select: none; padding: 4px 0;
-}
-.wds-radio .dot {
-  width: 18px; height: 18px;
-  border-radius: 50%;
-  border: 1.5px solid var(--D40);
-  background: #fff; flex-shrink: 0;
-  display: inline-flex; align-items: center; justify-content: center;
-  margin-top: 2px; transition: border-color .1s;
-}
-.wds-radio.on .dot { border-color: var(--B20); border-width: 5px; }
-.wds-radio .rd-text { display: flex; flex-direction: column; gap: 2px; }
-.wds-radio .rd-title { font-size: 14px; color: var(--D10); }
-.wds-radio .rd-desc  { font-size: 13px; color: var(--D30); }
 
 /* Toggle (large) */
 .toggle {
@@ -503,7 +542,8 @@ body {
 .sa-map {
   position: relative;
   width: 100%;
-  height: 220px;
+  height: 100%;
+  min-height: 300px;
   border-radius: var(--radius-6);
   border: 1px solid var(--D55);
   overflow: hidden;
@@ -528,8 +568,85 @@ body {
 }
 .sa-map .map-legend strong { color: var(--D10); font-weight: 600; }
 
-/* Block-outside behavior radios */
-.block-options { display: flex; flex-direction: column; gap: 6px; margin-top: 4px; }
+/* Option B: per-location list rows */
+.sa-loc-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+.sa-loc-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 12px;
+  background: #fff;
+  border: 1px solid var(--D55);
+  border-radius: var(--radius-6);
+  transition: border-color .1s;
+}
+.sa-loc-row:hover { border-color: var(--D30); }
+.sa-loc-row .row-pin {
+  width: 16px; height: 20px; flex-shrink: 0;
+}
+.sa-loc-row .row-pin svg { width: 100%; height: 100%; }
+.sa-loc-row .row-meta {
+  flex: 1; min-width: 0;
+  display: flex; flex-direction: column; gap: 1px;
+}
+.sa-loc-row .row-name { font-size: 14px; font-weight: 500; color: var(--D10); }
+.sa-loc-row .row-addr { font-size: 12px; color: var(--D30); }
+.sa-loc-row .row-radius { width: 150px; flex-shrink: 0; }
+
+/* Add-location dropdown */
+.sa-add-loc-wrap { position: relative; display: inline-block; }
+.sa-add-loc-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 280px;
+  background: #fff;
+  border: 1px solid var(--D55);
+  border-radius: var(--radius-6);
+  box-shadow: var(--shadow-2);
+  padding: 4px 0;
+  z-index: 40;
+}
+.sa-add-loc-wrap.open .sa-add-loc-menu { display: block; }
+.sa-add-opt {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; cursor: pointer;
+}
+.sa-add-opt:hover { background: var(--D80); }
+.sa-add-opt.disabled { color: var(--D40); cursor: default; }
+.sa-add-opt.disabled:hover { background: transparent; }
+.sa-add-opt-pin { width: 12px; height: 16px; flex-shrink: 0; }
+.sa-add-opt-pin svg { width: 100%; height: 100%; }
+.sa-add-opt-meta .n { font-size: 13px; font-weight: 500; color: var(--D10); display: block; }
+.sa-add-opt-meta .a { font-size: 11px; color: var(--D30); display: block; }
+.sa-add-opt.disabled .n,
+.sa-add-opt.disabled .a { color: var(--D40); }
+
+/* Map dot legend */
+.sa-map-dot-legend {
+  position: absolute;
+  bottom: 8px; left: 8px;
+  display: flex; flex-direction: column; gap: 4px;
+  background: rgba(255,255,255,0.92);
+  border-radius: 4px;
+  padding: 5px 8px;
+  font-size: 11px;
+  color: var(--D20);
+}
+.sa-map-dot-legend .dl-row { display: flex; align-items: center; gap: 5px; }
+.sa-map-dot-legend .dl-dot {
+  width: 9px; height: 9px; border-radius: 50%;
+  border: 1.5px solid #fff;
+  box-shadow: 0 0 0 1px rgba(22,45,61,.2);
+  flex-shrink: 0;
+}
+
+/* Section header row above loc list */
+.sa-list-header {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: 10px;
+}
+.sa-list-header .lbl { font-size: 13px; font-weight: 600; color: var(--D10); }
+.sa-list-header .hint { font-size: 12px; color: var(--D30); }
 
 /* ------------------------------------------------------------
    Additional fees inside Payment & fees card
@@ -1183,7 +1300,7 @@ body {
           <span class="scope-chip new">NEW</span>
         </div>
         <div class="subsection-desc">
-          Limit bookings for services offered at the client's place to clients within a defined radius from your business.
+          Add the business locations you travel from, and set a radius for each.
         </div>
 
         <label class="wds-check on" id="sa-toggle" onclick="toggleServiceArea(this)" style="align-items: flex-start;">
@@ -1191,8 +1308,8 @@ body {
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
           </span>
           <span class="sa-toggle-text">
-            <span class="sa-toggle-title">Limit bookings to a service area</span>
-            <span class="sa-toggle-desc">When a client picks "Client's place" as the location, their address must be inside this radius to book.</span>
+            <span class="sa-toggle-title">Limit bookings to your service area</span>
+            <span class="sa-toggle-desc">When a client chooses "Client's place", their address must fall within the radius of one of your locations to book.</span>
           </span>
         </label>
 
@@ -1201,76 +1318,41 @@ body {
           <div class="notice">
             <span class="ic">i</span>
             <div>
-              Only applies to services where <strong>"Client's place"</strong> is offered as a location. Other locations (your business, online, etc.) are unaffected.
-              <a href="#">Manage service locations</a>
+              Only applies to services where <strong>"Client's place"</strong> is offered. <a href="#">Manage service locations</a>
             </div>
           </div>
 
           <div class="sa-grid">
-            <!-- Business location (full width) -->
-            <div class="span-2">
-              <div class="field-label">Measure distance from <span class="info-ico" title="Distance is measured from this business location to the client's address.">i</span></div>
-              <button class="wds-dropdown" type="button">
-                <span>📍 Main Studio — 123 Main Street, Springfield</span>
-                <span class="caret">▾</span>
-              </button>
-            </div>
-
-            <!-- Block behavior + Message (left) -->
+            <!-- Left: per-location list + block message -->
             <div style="display: flex; flex-direction: column; gap: 18px;">
               <div>
-                <div class="field-label">If a client tries to book from outside this area</div>
-                <div class="block-options">
-                  <div class="wds-radio on" onclick="setBlockMode(this, 'block')">
-                    <span class="dot"></span>
-                    <span class="rd-text">
-                      <span class="rd-title">Block the booking and show a message</span>
-                      <span class="rd-desc">The client sees an explanation at checkout and can't complete the booking.</span>
-                    </span>
-                  </div>
-                  <div class="wds-radio" onclick="setBlockMode(this, 'contact')">
-                    <span class="dot"></span>
-                    <span class="rd-text">
-                      <span class="rd-title">Block, but invite the client to contact you</span>
-                      <span class="rd-desc">Useful when you may make exceptions for special cases.</span>
-                    </span>
-                  </div>
-                  <div class="wds-radio" onclick="setBlockMode(this, 'warn')">
-                    <span class="dot"></span>
-                    <span class="rd-text">
-                      <span class="rd-title">Allow the booking and warn the client</span>
-                      <span class="rd-desc">The client can book anyway after seeing a warning.</span>
-                    </span>
-                  </div>
+                <div class="sa-list-header">
+                  <span class="lbl">Locations in your service area</span>
+                  <span class="hint">Each can have its own radius</span>
+                </div>
+                <div class="sa-loc-list" id="sa-loc-list"></div>
+                <div class="sa-add-loc-wrap" id="sa-add-wrap">
+                  <button class="wds-text-btn" type="button" onclick="toggleSaAddMenu(event)" aria-haspopup="listbox">
+                    <span class="prefix-icon" aria-hidden="true">+</span>
+                    Add location
+                  </button>
+                  <div class="sa-add-loc-menu" id="sa-add-menu" role="listbox"></div>
                 </div>
               </div>
-
-              <div id="block-message-row">
-                <div class="field-label" id="block-message-label">Message clients see when they're outside the area</div>
-                <textarea class="wds-textarea" id="block-message">Sorry, we don't currently travel to your area. Our service area is within 25 miles of our studio.</textarea>
-                <div class="field-help" id="block-message-help">Shown at checkout when the client's address is outside your service area.</div>
+              <div>
+                <div class="field-label">Message clients see when they're outside your service area</div>
+                <textarea class="wds-textarea" id="block-message">This address is outside our service area. We travel within {radius} {unit} of {locationName}.</textarea>
+                <div class="field-help">Shown on the booking form when the client's address is outside your service area.</div>
               </div>
             </div>
 
-            <!-- Radius + Map preview (right) -->
-            <div style="display: flex; flex-direction: column; gap: 14px;">
-              <div>
-                <div class="field-label">Service area radius</div>
-                <div class="affix-input">
-                  <input type="number" id="radius-input" value="25" min="1" max="500" oninput="onRadiusChange(this.value)" />
-                  <span class="suffix suffix-dropdown" onclick="toggleUnit()">
-                    <span id="unit-label">miles</span>
-                    <span class="caret">▾</span>
-                  </span>
-                </div>
-                <div class="field-help">Clients more than <span id="radius-echo">25 miles</span> away won't be able to book.</div>
-              </div>
-              <div>
-                <div class="sa-map" id="sa-map">
-                  <div class="map-grid"></div>
-                  <svg id="sa-map-svg" viewBox="0 0 360 220" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
-                  <div class="map-legend">Radius: <strong id="map-legend-text">25 miles</strong> from Main Studio</div>
-                </div>
+            <!-- Right: combined map -->
+            <div style="display:flex; flex-direction:column;">
+              <div class="sa-map" id="sa-map" style="flex:1;">
+                <div class="map-grid"></div>
+                <svg id="sa-map-svg" viewBox="0 0 360 220" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
+                <div class="map-legend"><strong id="map-legend-text">2 locations</strong> in your service area</div>
+                <div class="sa-map-dot-legend" id="sa-map-dot-legend"></div>
               </div>
             </div>
           </div>
@@ -1360,89 +1442,165 @@ body {
 
 <script>
   // =========================================================
-  //  Service Area
+  //  Service Area — Option B (per-location list)
   // =========================================================
   let saEnabled = true;
-  let radiusUnit = 'miles';
+
+  const SA_COLORS = ['#116DFF', '#3B8251', '#D2A008', '#BE2E2E'];
+  // Spread positions so multiple circles don't stack on top of each other.
+  const SA_MAP_POSITIONS = [
+    { x: 130, y: 112 },
+    { x: 245, y: 95  },
+    { x: 195, y: 162 }
+  ];
+
+  let saRows = [
+    { locId: 'loc-1', radius: 25, unit: 'miles' }
+  ];
 
   function toggleServiceArea(el) {
     saEnabled = !saEnabled;
     el.classList.toggle('on', saEnabled);
     document.getElementById('service-area-card').classList.toggle('sa-collapsed', !saEnabled);
   }
-  function toggleUnit() {
-    radiusUnit = radiusUnit === 'miles' ? 'km' : 'miles';
-    document.getElementById('unit-label').textContent = radiusUnit;
-    syncRadiusEcho();
-    renderSaMap();
-  }
-  function onRadiusChange() { syncRadiusEcho(); renderSaMap(); }
-  function syncRadiusEcho() {
-    const r = parseFloat(document.getElementById('radius-input').value) || 0;
-    const txt = `${r} ${radiusUnit}`;
-    document.getElementById('radius-echo').textContent = txt;
-    document.getElementById('map-legend-text').textContent = txt;
-  }
-  const BLOCK_MODE_COPY = {
-    block: {
-      label: "Message clients see when they're outside the area",
-      help: "Shown at checkout when the client's address is outside your service area.",
-      defaultMsg: "Sorry, we don't currently travel to your area. Our service area is within 25 miles of our studio."
-    },
-    contact: {
-      label: "Message clients see when they're outside the area",
-      help: "Shown at checkout, with a way for the client to reach out for an exception.",
-      defaultMsg: "We don't usually travel this far, but get in touch — we may be able to make it work. Email us at hello@example.com."
-    },
-    warn: {
-      label: "Warning clients see before they book",
-      help: "Shown at checkout. The client can still complete the booking after acknowledging this.",
-      defaultMsg: "Heads up — your address is outside our usual service area. A travel surcharge may apply, and we may take longer to arrive."
-    }
-  };
-  let currentBlockMode = 'block';
-  let blockMessages = {
-    block: BLOCK_MODE_COPY.block.defaultMsg,
-    contact: BLOCK_MODE_COPY.contact.defaultMsg,
-    warn: BLOCK_MODE_COPY.warn.defaultMsg
-  };
-
-  function setBlockMode(el, mode) {
-    document.querySelectorAll('.block-options .wds-radio').forEach(r => r.classList.remove('on'));
-    el.classList.add('on');
-    const msgEl = document.getElementById('block-message');
-    blockMessages[currentBlockMode] = msgEl.value;
-    currentBlockMode = mode;
-    const copy = BLOCK_MODE_COPY[mode];
-    document.getElementById('block-message-label').textContent = copy.label;
-    document.getElementById('block-message-help').textContent = copy.help;
-    msgEl.value = blockMessages[mode];
-  }
-
-  document.getElementById('block-message').addEventListener('input', function() {
-    blockMessages[currentBlockMode] = this.value;
-  });
   function toggleCheck(el) { el.classList.toggle('on'); }
 
-  function renderSaMap() {
+  function saRenderList() {
+    const list = document.getElementById('sa-loc-list');
+    if (!list) return;
+    list.innerHTML = saRows.map((row, i) => {
+      const loc = BUSINESS_LOCATIONS.find(l => l.id === row.locId);
+      const color = SA_COLORS[i % SA_COLORS.length];
+      return `
+        <div class="sa-loc-row">
+          <span class="row-pin" style="color:${color};" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 21s7-7.5 7-12a7 7 0 1 0-14 0c0 4.5 7 12 7 12z"/>
+              <circle cx="12" cy="9" r="2.5"/>
+            </svg>
+          </span>
+          <span class="row-meta">
+            <span class="row-name">${escapeHtml(loc.name)}</span>
+            <span class="row-addr">${escapeHtml(loc.address)}</span>
+          </span>
+          <div class="row-radius">
+            <div class="affix-input">
+              <input type="number" value="${row.radius}" min="1" max="500"
+                oninput="saUpdateRadius(${i}, this.value)" />
+              <span class="suffix suffix-dropdown" onclick="saToggleUnit(${i})">
+                <span>${row.unit}</span>
+                <span class="caret">▾</span>
+              </span>
+            </div>
+          </div>
+          <button class="btn btn-icon small" type="button" title="Remove from service area"
+            onclick="saRemoveRow(${i})" aria-label="Remove ${escapeHtml(loc.name)} from service area">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+      `;
+    }).join('');
+    saRenderAddMenu();
+    saRenderMap();
+  }
+
+  function saRenderAddMenu() {
+    const menu = document.getElementById('sa-add-menu');
+    if (!menu) return;
+    const used = new Set(saRows.map(r => r.locId));
+    const available = BUSINESS_LOCATIONS.filter(l => !used.has(l.id));
+    if (!available.length) {
+      menu.innerHTML = `
+        <div class="sa-add-opt disabled" role="option" aria-disabled="true">
+          <span class="sa-add-opt-meta"><span class="n">All locations added</span></span>
+        </div>`;
+      return;
+    }
+    menu.innerHTML = available.map(loc => `
+      <div class="sa-add-opt" role="option" onclick="saAddLocation('${loc.id}')">
+        <span class="sa-add-opt-pin" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 21s7-7.5 7-12a7 7 0 1 0-14 0c0 4.5 7 12 7 12z"/>
+            <circle cx="12" cy="9" r="2.5"/>
+          </svg>
+        </span>
+        <span class="sa-add-opt-meta">
+          <span class="n">${escapeHtml(loc.name)}</span>
+          <span class="a">${escapeHtml(loc.address)}</span>
+        </span>
+      </div>
+    `).join('');
+  }
+
+  function saUpdateRadius(idx, v) {
+    saRows[idx].radius = parseFloat(v) || 0;
+    saRenderMap();
+  }
+  function saToggleUnit(idx) {
+    saRows[idx].unit = saRows[idx].unit === 'miles' ? 'km' : 'miles';
+    saRenderList();
+  }
+  function saRemoveRow(idx) {
+    saRows.splice(idx, 1);
+    saRenderList();
+  }
+  function saAddLocation(id) {
+    saRows.push({ locId: id, radius: 25, unit: 'miles' });
+    closeSaAddMenu();
+    saRenderList();
+  }
+  function toggleSaAddMenu(e) {
+    if (e) e.stopPropagation();
+    document.getElementById('sa-add-wrap').classList.toggle('open');
+  }
+  function closeSaAddMenu() {
+    const wrap = document.getElementById('sa-add-wrap');
+    if (wrap) wrap.classList.remove('open');
+  }
+
+  function saRenderMap() {
     const svg = document.getElementById('sa-map-svg');
     if (!svg) return;
     const w = 360, h = 220;
-    const cx = w / 2, cy = h / 2;
-    const r = 78;
-    svg.innerHTML = `
-      <defs>
-        <radialGradient id="ringGrad" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stop-color="#116DFF" stop-opacity="0.22"/>
-          <stop offset="100%" stop-color="#116DFF" stop-opacity="0.05"/>
-        </radialGradient>
-      </defs>
-      <circle cx="${cx}" cy="${cy}" r="${r}" fill="url(#ringGrad)" stroke="#116DFF" stroke-opacity="0.7" stroke-width="1.5" stroke-dasharray="6 6"/>
-      <circle cx="${cx}" cy="${cy}" r="11" fill="#116DFF" fill-opacity="0.20"/>
-      <circle cx="${cx}" cy="${cy}" r="6" fill="#116DFF"/>
-      <circle cx="${cx}" cy="${cy}" r="2" fill="#fff"/>
-      <text x="${cx}" y="${cy - 18}" text-anchor="middle" font-size="10" fill="#162D3D" font-weight="600" font-family="Wix Madefor Text, sans-serif">Main Studio</text>
-    `;
+
+    const defs = saRows.map((row, i) => `
+      <radialGradient id="saGrad${i}" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="${SA_COLORS[i % SA_COLORS.length]}" stop-opacity="0.22"/>
+        <stop offset="100%" stop-color="${SA_COLORS[i % SA_COLORS.length]}" stop-opacity="0.05"/>
+      </radialGradient>
+    `).join('');
+
+    const circles = saRows.map((row, i) => {
+      const pos = SA_MAP_POSITIONS[i % SA_MAP_POSITIONS.length];
+      const color = SA_COLORS[i % SA_COLORS.length];
+      const r = Math.max(22, Math.min(88, row.radius * 2.6));
+      return `
+        <circle cx="${pos.x}" cy="${pos.y}" r="${r}" fill="url(#saGrad${i})"
+          stroke="${color}" stroke-opacity="0.7" stroke-width="1.5" stroke-dasharray="6 6"/>
+        <circle cx="${pos.x}" cy="${pos.y}" r="6" fill="${color}"/>
+        <circle cx="${pos.x}" cy="${pos.y}" r="2" fill="#fff"/>
+      `;
+    }).join('');
+
+    svg.innerHTML = `<defs>${defs}</defs>${circles}`;
+
+    // Legend count
+    const legendEl = document.getElementById('map-legend-text');
+    if (legendEl) legendEl.textContent = `${saRows.length} ${saRows.length === 1 ? 'location' : 'locations'}`;
+
+    // Dot legend
+    const dotLegend = document.getElementById('sa-map-dot-legend');
+    if (dotLegend) {
+      dotLegend.innerHTML = saRows.map((row, i) => {
+        const loc = BUSINESS_LOCATIONS.find(l => l.id === row.locId);
+        return `<div class="dl-row">
+          <span class="dl-dot" style="background:${SA_COLORS[i % SA_COLORS.length]};"></span>
+          ${escapeHtml(loc.name)} · ${row.radius} ${row.unit}
+        </div>`;
+      }).join('');
+    }
   }
 
   // =========================================================
@@ -1482,13 +1640,15 @@ body {
         <div class="fee-bottom-left">
           <div class="toggle-sm f-scope" onclick="toggleScope(this)"></div>
           <span class="t-label">Charge per participant
-            <span class="info-ico" title="When this is on, the fee is charged for each participant. When it's off, the fee is charged once per booking.">i</span>
+            <span class="wds-tooltip" tabindex="0" role="button" aria-label="More info">
+              <span class="info-ico" aria-hidden="true">i</span>
+              <span class="wds-tooltip-content" role="tooltip">Charge this fee once per booking, no matter how many participants. Turn this on to charge the fee for each participant instead.</span>
+            </span>
           </span>
         </div>
         <div class="fee-bottom-right">
           <button class="wds-text-btn f-dist-add" type="button" onclick="openDistModalFor(this)">
-            <span class="prefix-icon" aria-hidden="true">+</span>
-            Charge by distance
+            Add distance-based fee
           </button>
         </div>
       </div>
@@ -1522,39 +1682,55 @@ body {
     { id: 'loc-2', name: 'Downtown Office', address: '456 Oak Avenue, Springfield'  },
     { id: 'loc-3', name: 'Westside Branch', address: '789 Pine Road, Riverside'     }
   ];
-  let selectedLocationId = BUSINESS_LOCATIONS[0].id;
-  function renderLocationMenu() {
+  // 'loc-select' is the picker inside the distance-pricing modal.
+  const selectedLocationByPicker = {
+    'loc-select': BUSINESS_LOCATIONS[0].id
+  };
+
+  function renderLocationMenu(selectId = 'loc-select') {
     const menu = document.getElementById('loc-menu');
     if (!menu) return;
+    const selectedId = selectedLocationByPicker[selectId];
     menu.innerHTML = BUSINESS_LOCATIONS.map(loc => `
-      <div class="location-option ${loc.id === selectedLocationId ? 'selected' : ''}" role="option" aria-selected="${loc.id === selectedLocationId}" onclick="selectLocation('${loc.id}')">
+      <div class="location-option ${loc.id === selectedId ? 'selected' : ''}" role="option" aria-selected="${loc.id === selectedId}" onclick="selectLocation('${loc.id}', '${selectId}')">
         <span class="opt-name">${escapeHtml(loc.name)}</span>
         <span class="opt-addr">${escapeHtml(loc.address)}</span>
       </div>
     `).join('');
   }
-  function syncLocationButton() {
-    const loc = BUSINESS_LOCATIONS.find(l => l.id === selectedLocationId) || BUSINESS_LOCATIONS[0];
-    document.getElementById('loc-name').textContent = loc.name;
-    document.getElementById('loc-addr').textContent = loc.address;
+  function syncLocationButton(selectId = 'loc-select') {
+    const loc = BUSINESS_LOCATIONS.find(l => l.id === selectedLocationByPicker[selectId]) || BUSINESS_LOCATIONS[0];
+    const nameEl = document.getElementById('loc-name');
+    const addrEl = document.getElementById('loc-addr');
+    if (nameEl) nameEl.textContent = loc.name;
+    if (addrEl) addrEl.textContent = loc.address;
   }
-  function toggleLocationMenu(e) {
+  function toggleLocationMenu(e, selectId = 'loc-select') {
     if (e) e.stopPropagation();
-    const wrap = document.getElementById('loc-select');
+    const wrap = document.getElementById(selectId);
+    if (!wrap) return;
     const isOpen = wrap.classList.toggle('open');
     wrap.querySelector('.location-select-btn').setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    document.querySelectorAll('.location-select.open').forEach(el => {
+      if (el.id !== selectId) {
+        el.classList.remove('open');
+        el.querySelector('.location-select-btn').setAttribute('aria-expanded', 'false');
+      }
+    });
   }
-  function closeLocationMenu() {
-    const wrap = document.getElementById('loc-select');
+  function closeLocationMenu(selectId) {
+    const id = selectId || 'loc-select';
+    const wrap = document.getElementById(id);
     if (!wrap) return;
     wrap.classList.remove('open');
-    wrap.querySelector('.location-select-btn').setAttribute('aria-expanded', 'false');
+    const btn = wrap.querySelector('.location-select-btn');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
   }
-  function selectLocation(id) {
-    selectedLocationId = id;
-    syncLocationButton();
-    renderLocationMenu();
-    closeLocationMenu();
+  function selectLocation(id, selectId = 'loc-select') {
+    selectedLocationByPicker[selectId] = id;
+    syncLocationButton(selectId);
+    renderLocationMenu(selectId);
+    closeLocationMenu(selectId);
   }
 
   // =========================================================
@@ -1577,7 +1753,7 @@ body {
     workingTiers = existing && existing.length ? cloneTiers(existing) : cloneTiers(DEFAULT_TIERS);
     workingUnit = (card.dataset.unit === '%') ? '%' : '$';
     const savedLocId = card.dataset.locationId;
-    selectedLocationId = (savedLocId && BUSINESS_LOCATIONS.find(l => l.id === savedLocId))
+    selectedLocationByPicker['loc-select'] = (savedLocId && BUSINESS_LOCATIONS.find(l => l.id === savedLocId))
       ? savedLocId
       : BUSINESS_LOCATIONS[0].id;
     document.getElementById('m-remove-btn').style.display = existing ? 'inline-flex' : 'none';
@@ -1709,7 +1885,7 @@ body {
     if (!activeDistCard) return;
     const cleaned = workingTiers.map(t => t.rest ? { rest: true, price: t.price } : { distance: t.distance, price: t.price });
     activeDistCard.dataset.tiers = JSON.stringify(cleaned);
-    activeDistCard.dataset.locationId = selectedLocationId;
+    activeDistCard.dataset.locationId = selectedLocationByPicker['loc-select'];
     activeDistCard.dataset.unit = workingUnit;
     renderDistUI(activeDistCard);
     closeDistModal();
@@ -1751,8 +1927,7 @@ body {
       card.classList.remove('has-tiers');
       right.innerHTML = `
         <button class="wds-text-btn f-dist-add" type="button" onclick="openDistModalFor(this)">
-          <span class="prefix-icon" aria-hidden="true">+</span>
-          Charge by distance
+          Add distance-based fee
         </button>
       `;
     }
@@ -1818,14 +1993,16 @@ body {
     if (!e.target.closest('.fee-menu-wrap')) {
       document.querySelectorAll('.fee-menu-popover').forEach(p => p.classList.remove('open'));
     }
-    if (!e.target.closest('#loc-select')) {
+    if (!e.target.closest('.location-select')) {
       closeLocationMenu();
+    }
+    if (!e.target.closest('.sa-add-loc-wrap')) {
+      closeSaAddMenu();
     }
   });
 
-  // Initial render
-  syncRadiusEcho();
-  renderSaMap();
+  // Initial render — service area
+  saRenderList();
 
   // Toggle the "Charge additional fees" checkbox: reveal/hide the fee inputs.
   // First time the user turns it on, seed an empty fee row so they have a place to type.
