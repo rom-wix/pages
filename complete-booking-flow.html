@@ -803,7 +803,12 @@ body {
 <div class="modal-overlay" id="addons-modal">
   <div class="modal-content">
     <div class="modal-header">
-      <div class="modal-title" id="addons-title">Select add-ons</div>
+      <div>
+        <div class="modal-title" id="addons-service-name">Hydrotherapy</div>
+        <div style="font-size: 13px; color: var(--D30); margin-top: 4px;">
+          <span id="addons-service-price">From $65</span> • <span id="addons-service-duration">1 hr+</span>
+        </div>
+      </div>
       <button class="modal-close" onclick="closeAddonsModal()">×</button>
     </div>
 
@@ -811,6 +816,9 @@ body {
       <div id="address-success-alert" class="alert alert-success" style="display: none; margin-bottom: 20px;">
         ✓ Great! We service your area. Your address will be used for this booking.
       </div>
+
+      <h2 style="font-size: 18px; font-weight: 600; margin-bottom: 20px; color: var(--D10);">Select add-ons</h2>
+
       <div class="addons-section">
         <div class="addons-group">
           <div class="addons-group-title">Add-on group</div>
@@ -1366,6 +1374,13 @@ function resetAddons() {
     item.classList.remove('selected');
     item.querySelector('.addon-checkbox').classList.remove('selected');
   });
+
+  // Update service info in modal header
+  if (bookingState.service) {
+    document.getElementById('addons-service-name').textContent = bookingState.service.name;
+    document.getElementById('addons-service-price').textContent = `From $${bookingState.service.price}`;
+    document.getElementById('addons-service-duration').textContent = bookingState.service.duration + '+';
+  }
 }
 
 function toggleAddon(el, id, price) {
