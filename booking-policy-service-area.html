@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Booking policy — Service area &amp; travel fees</title>
+<link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400;500;600;700&family=Wix+Madefor+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   Wix Design System-inspired styles (HTML/CSS replica)
+   ========================================================= */
+:root {
+  --D10: #162D3D;
+  --D20: #32536A;
+  --D30: #5A7A8C;
+  --D40: #868AA5;
+  --D50: #C1E0FB;
+  --D55: #DFE5EB;
+  --D60: #EAF7FF;
+  --D70: #F0F4F7;
+  --D80: #F7F8F8;
+
+  --B10: #0D3D5C;
+  --B20: #116DFF;
+  --B30: #3899EC;
+  --B40: #4EB7F5;
+  --B50: #DFEDF9;
+  --B60: #EAF7FF;
+
+  --R10: #BE2E2E;
+  --R20: #E62214;
+
+  --G10: #1F664C;
+  --G20: #3B8251;
+
+  --Y10: #D2A008;
+  --Y20: #FDF4D6;
+
+  --radius-6: 6px;
+  --radius-8: 8px;
+  --radius-18: 18px;
+
+  --shadow-1: 0 1px 1px rgba(22,45,61,.06), 0 0 1px rgba(22,45,61,.10);
+  --shadow-2: 0 2px 8px rgba(22,45,61,.08), 0 0 1px rgba(22,45,61,.14);
+  --shadow-3: 0 6px 16px rgba(22,45,61,.10), 0 0 1px rgba(22,45,61,.14);
+
+  --font-ui: "Wix Madefor Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Wix Madefor Display", var(--font-ui);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { height: 100%; }
+body {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  color: var(--D10);
+  background: var(--D80);
+  line-height: 1.43;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ------------------------------------------------------------
+   Top bar
+   ------------------------------------------------------------ */
+.wix-top-bar {
+  height: 48px;
+  background: #FFFFFF;
+  border-bottom: 1px solid var(--D55);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 20px;
+  font-family: var(--font-display);
+}
+.wix-brand { font-weight: 700; letter-spacing: 0.4px; font-size: 13px; }
+.wix-top-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px;
+  border: 1px solid var(--D55);
+  border-radius: var(--radius-18);
+  font-size: 12px; color: var(--D10); background: #fff;
+}
+.wix-top-chip .av {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--B20); color: #fff;
+  font-size: 10px; font-weight: 700;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.wix-nav-item {
+  font-size: 13px; color: var(--D10);
+  padding: 6px 10px; cursor: pointer;
+}
+.wix-nav-item:hover { color: var(--B20); }
+.wix-upgrade-pill {
+  margin-left: 6px;
+  padding: 6px 14px;
+  border: 1px solid var(--D10);
+  border-radius: var(--radius-18);
+  font-size: 13px; font-weight: 600; cursor: pointer; background: #fff;
+}
+.wix-top-spacer { flex: 1; }
+.wix-search {
+  width: 420px;
+  background: var(--D80);
+  border: 1px solid var(--D55);
+  border-radius: var(--radius-18);
+  padding: 6px 12px;
+  font-size: 13px; color: var(--D30);
+  display: flex; align-items: center; gap: 8px;
+}
+.wix-top-icons { display: flex; align-items: center; gap: 14px; }
+.wix-top-icons .ic {
+  width: 22px; height: 22px;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--D20); cursor: pointer; position: relative;
+}
+.wix-top-icons .badge {
+  position: absolute; top: -4px; right: -8px;
+  background: var(--R20); color: #fff;
+  font-size: 9px; font-weight: 700;
+  padding: 1px 4px; border-radius: 8px; line-height: 1.2;
+}
+.wix-ai-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 12px;
+  background: var(--D10); color: #fff;
+  border-radius: var(--radius-18);
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  border: 0;
+}
+
+/* ------------------------------------------------------------
+   App layout
+   ------------------------------------------------------------ */
+.app {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: calc(100vh - 48px);
+}
+.side-nav {
+  background: var(--D10);
+  color: #fff;
+  padding: 12px 0 20px;
+  font-size: 13px;
+}
+.side-nav .quick-actions {
+  margin: 8px 12px 14px;
+  padding: 7px 12px;
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: var(--radius-18);
+  color: #fff;
+  display: flex; justify-content: space-between; align-items: center;
+  font-weight: 600; cursor: pointer;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 20px;
+  color: rgba(255,255,255,0.85);
+  cursor: pointer; position: relative;
+}
+.nav-item:hover { background: rgba(255,255,255,0.05); color: #fff; }
+.nav-item.active {
+  background: rgba(255,255,255,0.08);
+  color: #fff; font-weight: 600;
+}
+.nav-item .chev { margin-left: auto; font-size: 10px; opacity: 0.6; }
+
+/* ------------------------------------------------------------
+   Main page
+   ------------------------------------------------------------ */
+.main {
+  padding: 24px 32px 60px;
+  max-width: 1100px;
+  width: 100%;
+}
+.breadcrumbs {
+  font-size: 14px;
+  color: var(--B20);
+  margin-bottom: 8px;
+  display: flex; align-items: center; gap: 6px;
+}
+.breadcrumbs a { color: var(--B20); text-decoration: none; }
+.breadcrumbs .sep { color: var(--D30); }
+.breadcrumbs .current { color: var(--D10); }
+
+.page-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+.page-title-block { display: flex; flex-direction: column; gap: 4px; }
+.page-title {
+  font-family: var(--font-display);
+  font-size: 28px; font-weight: 600;
+  color: var(--D10);
+  display: flex; align-items: center; gap: 12px;
+}
+.page-subtitle { font-size: 14px; color: var(--D30); }
+
+.default-tag {
+  display: inline-flex; align-items: center;
+  height: 22px;
+  padding: 0 10px;
+  background: var(--D70);
+  color: var(--D20);
+  border-radius: var(--radius-18);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+}
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 36px;
+  padding: 0 18px;
+  border-radius: var(--radius-18);
+  font-family: var(--font-ui);
+  font-size: 14px; font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--B20);
+  white-space: nowrap;
+}
+.btn-primary { background: var(--B20); color: #fff; border-color: var(--B20); }
+.btn-primary:hover { background: #0f63e6; }
+.btn-secondary { background: #fff; border-color: var(--B20); color: var(--B20); }
+.btn-secondary:hover { background: var(--B60); }
+.btn-tertiary { background: transparent; color: var(--B20); padding: 0 12px; }
+.btn-tertiary:hover { color: #0f63e6; }
+.btn-icon {
+  width: 36px; height: 36px; padding: 0; border-radius: 50%;
+  color: var(--D20); background: transparent;
+}
+.btn-icon:hover { background: var(--D80); }
+.btn-icon.small { width: 30px; height: 30px; }
+.btn-sm { height: 30px; font-size: 13px; padding: 0 14px; }
+
+/* ------------------------------------------------------------
+   Cards (one per policy section)
+   ------------------------------------------------------------ */
+.policy-cards { display: flex; flex-direction: column; gap: 16px; }
+.policy-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: var(--shadow-1);
+  border: 1px solid var(--D55);
+  padding: 22px 28px;
+}
+.policy-card-header {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+.policy-card-title {
+  font-family: var(--font-display);
+  font-size: 18px; font-weight: 600;
+  color: var(--D10);
+}
+.scope-chip {
+  display: inline-flex; align-items: center;
+  height: 18px;
+  padding: 0 8px;
+  background: var(--D70);
+  color: var(--D20);
+  border-radius: var(--radius-18);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+}
+.scope-chip.new {
+  background: #FFE9C2;
+  color: #7A4A00;
+}
+
+/* ------------------------------------------------------------
+   Form basics
+   ------------------------------------------------------------ */
+.field-label {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 14px; color: var(--D10); margin-bottom: 6px;
+}
+.field-help {
+  font-size: 12px; color: var(--D30); margin-top: 4px;
+}
+.info-ico {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--D30); color: #fff;
+  font-size: 10px; font-weight: 700;
+  font-family: var(--font-display);
+  cursor: help; line-height: 1;
+}
+.info-ico:hover { background: var(--D20); }
+
+.wds-input, .wds-dropdown, .wds-textarea {
+  width: 100%;
+  height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--D55);
+  border-radius: var(--radius-6);
+  background: #fff;
+  font-family: var(--font-ui);
+  font-size: 14px; color: var(--D10);
+  display: inline-flex; align-items: center;
+  outline: none;
+  transition: border-color .1s, box-shadow .1s;
+}
+.wds-textarea {
+  height: auto;
+  min-height: 80px;
+  padding: 10px 12px;
+  display: block;
+  resize: vertical;
+}
+.wds-input:focus, .wds-dropdown:focus, .wds-textarea:focus {
+  border-color: var(--B20);
+  box-shadow: 0 0 0 3px rgba(17,109,255,0.15);
+}
+.wds-dropdown {
+  cursor: pointer;
+  justify-content: space-between;
+  padding-right: 8px;
+}
+.wds-dropdown .caret { font-size: 10px; color: var(--D30); }
+.wds-input:hover, .wds-dropdown:hover, .wds-textarea:hover { border-color: var(--D30); }
+
+.input-with-counter {
+  position: relative;
+}
+.input-with-counter .counter {
+  position: absolute;
+  top: -20px; right: 0;
+  font-size: 12px;
+  color: var(--D30);
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Dropdown with caret, fixed width variants */
+.dropdown-md { max-width: 320px; }
+.dropdown-sm { max-width: 200px; }
+
+/* Checkbox */
+.wds-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+.wds-check .box {
+  width: 18px; height: 18px;
+  border-radius: 4px;
+  border: 1.5px solid var(--D40);
+  background: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all .1s;
+}
+.wds-check.on .box {
+  background: var(--B20);
+  border-color: var(--B20);
+}
+.wds-check .box svg {
+  width: 12px; height: 12px; color: #fff; opacity: 0;
+}
+.wds-check.on .box svg { opacity: 1; }
+.wds-check .ck-label { font-size: 14px; color: var(--D10); }
+
+/* Radio */
+.wds-radio {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+  padding: 4px 0;
+}
+.wds-radio .dot {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid var(--D40);
+  background: #fff;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+  transition: border-color .1s;
+}
+.wds-radio.on .dot { border-color: var(--B20); border-width: 5px; }
+.wds-radio .rd-text {
+  display: flex; flex-direction: column; gap: 2px;
+}
+.wds-radio .rd-title { font-size: 14px; color: var(--D10); }
+.wds-radio .rd-desc  { font-size: 13px; color: var(--D30); }
+
+/* Toggle (large) */
+.toggle {
+  position: relative;
+  width: 36px; height: 20px;
+  border-radius: 20px;
+  background: var(--D40);
+  flex-shrink: 0; cursor: pointer;
+  transition: background .15s;
+}
+.toggle.on { background: var(--B20); }
+.toggle::after {
+  content: ""; position: absolute;
+  top: 2px; left: 2px;
+  width: 16px; height: 16px;
+  background: #fff; border-radius: 50%;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  transition: left 0.18s;
+}
+.toggle.on::after { left: 18px; }
+
+/* Number input with prefix/suffix affix */
+.affix-input {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  border: 1px solid var(--D55);
+  border-radius: var(--radius-6);
+  background: #fff;
+  overflow: hidden;
+  width: 100%;
+}
+.affix-input:hover { border-color: var(--D30); }
+.affix-input:focus-within {
+  border-color: var(--B20);
+  box-shadow: 0 0 0 3px rgba(17,109,255,0.15);
+}
+.affix-input input {
+  flex: 1; min-width: 0;
+  border: 0; outline: none;
+  padding: 0 4px 0 12px;
+  font-family: var(--font-ui);
+  font-size: 14px; color: var(--D10);
+  background: transparent;
+}
+.affix-input .suffix {
+  padding: 0 12px;
+  height: 100%;
+  display: inline-flex; align-items: center;
+  font-size: 14px;
+  color: var(--D30);
+  border-left: 1px solid var(--D55);
+  background: #fff;
+}
+.affix-input .suffix-dropdown {
+  display: inline-flex; align-items: center; gap: 4px;
+  cursor: pointer;
+  user-select: none;
+}
+.affix-input .suffix-dropdown .caret { font-size: 9px; color: var(--D30); }
+
+/* ------------------------------------------------------------
+   Connected services chips
+   ------------------------------------------------------------ */
+.chips-row {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin-top: 10px;
+}
+.svc-chip {
+  display: inline-flex; align-items: center;
+  height: 24px;
+  padding: 0 10px;
+  background: var(--B60);
+  color: var(--D10);
+  border-radius: var(--radius-18);
+  font-size: 12px;
+  font-weight: 500;
+}
+.svc-chip-more {
+  background: transparent;
+  color: var(--B20);
+  cursor: pointer;
+  font-weight: 500;
+}
+.svc-chip-more:hover { color: #0f63e6; }
+.svc-chip.location-only {
+  background: var(--Y20);
+  color: #6E5400;
+}
+
+.policy-help {
+  font-size: 13px;
+  color: var(--D30);
+  margin-top: 12px;
+}
+.policy-help a { color: var(--B20); text-decoration: none; }
+
+/* ------------------------------------------------------------
+   Sub-section spacing
+   ------------------------------------------------------------ */
+.subsection { margin-bottom: 18px; }
+.subsection:last-child { margin-bottom: 0; }
+.subsection-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--D10);
+  margin-bottom: 10px;
+  display: flex; align-items: center; gap: 6px;
+}
+.section-divider {
+  border-top: 1px solid var(--D55);
+  margin: 18px 0;
+}
+
+/* ------------------------------------------------------------
+   Service area card — specifics
+   ------------------------------------------------------------ */
+.sa-toggle-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+.sa-toggle-row .toggle { margin-top: 1px; }
+.sa-toggle-text { display: flex; flex-direction: column; gap: 2px; }
+.sa-toggle-title {
+  font-size: 14px;
+  color: var(--D10);
+  font-weight: 600;
+}
+.sa-toggle-desc {
+  font-size: 13px;
+  color: var(--D30);
+}
+
+.sa-config {
+  margin-top: 16px;
+  padding: 18px 20px 20px;
+  background: var(--D80);
+  border-radius: var(--radius-6);
+  border: 1px solid var(--D55);
+}
+#service-area-card.sa-collapsed [data-sa-dependent] { display: none; }
+
+.sa-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 20px;
+  margin-bottom: 16px;
+}
+.sa-grid > .span-2 { grid-column: 1 / -1; }
+
+/* Map preview */
+.sa-map {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  border-radius: var(--radius-6);
+  border: 1px solid var(--D55);
+  overflow: hidden;
+  background: linear-gradient(180deg, #EAF1F5 0%, #DDE7EF 100%);
+}
+.sa-map .map-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(50,83,106,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(50,83,106,0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.sa-map svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.sa-map .map-legend {
+  position: absolute;
+  top: 8px; left: 8px;
+  background: rgba(255,255,255,0.92);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 11px;
+  color: var(--D30);
+}
+.sa-map .map-legend strong { color: var(--D10); font-weight: 600; }
+
+/* Block-outside behavior radios */
+.block-options {
+  display: flex; flex-direction: column;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+/* Notice — info banner inside the card */
+.notice {
+  display: flex; align-items: flex-start; gap: 10px;
+  background: var(--Y20);
+  border: 1px solid #F2D88E;
+  border-radius: var(--radius-6);
+  padding: 10px 12px;
+  font-size: 13px;
+  color: #6E5400;
+  margin-bottom: 14px;
+}
+.notice .ic {
+  flex-shrink: 0;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--Y10);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+}
+.notice a { color: #6E5400; font-weight: 600; }
+
+/* ------------------------------------------------------------
+   Travel fees within the service area card
+   ------------------------------------------------------------ */
+.fee-list { display: flex; flex-direction: column; gap: 10px; }
+.fee-list:not(:empty) { margin-bottom: 12px; }
+
+.fee-card {
+  border: 1px solid var(--D55);
+  border-radius: 8px;
+  padding: 14px 16px;
+  background: #fff;
+  position: relative;
+}
+.fee-card:hover { border-color: var(--D40); }
+
+.fee-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 200px auto;
+  gap: 14px;
+  align-items: end;
+}
+.amount-with-toggle {
+  display: inline-flex;
+  align-items: stretch;
+  width: 100%;
+  height: 36px;
+  border: 1px solid var(--D55);
+  border-radius: var(--radius-6);
+  background: #fff;
+  overflow: hidden;
+}
+.amount-with-toggle:focus-within {
+  border-color: var(--B20);
+  box-shadow: 0 0 0 3px rgba(17,109,255,0.15);
+}
+.amount-with-toggle:hover { border-color: var(--D30); }
+.amount-with-toggle input {
+  flex: 1; min-width: 0;
+  border: 0; outline: none;
+  padding: 0 10px;
+  font-family: var(--font-ui);
+  font-size: 14px; color: var(--D10);
+  background: transparent;
+}
+.unit-toggle {
+  display: inline-flex;
+  padding: 3px;
+  gap: 2px;
+  background: #F0F4F7;
+  align-self: center;
+  margin-right: 5px;
+  border-radius: 6px;
+}
+.unit-toggle .u {
+  width: 30px; height: 26px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  color: var(--D10);
+  border-radius: 4px;
+  cursor: pointer;
+  user-select: none;
+}
+.unit-toggle .u.active {
+  background: var(--B20);
+  color: #fff;
+  font-weight: 600;
+}
+
+.add-fee-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: auto;
+  padding: 4px 0;
+  border: 0;
+  background: transparent;
+  color: var(--B20);
+  font-family: var(--font-ui);
+  font-size: 14px; font-weight: 500;
+  cursor: pointer;
+}
+.add-fee-btn:hover { color: #0f63e6; text-decoration: underline; }
+.add-fee-btn .prefix-icon { font-size: 16px; line-height: 1; font-weight: 500; }
+
+.fee-remove {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: transparent;
+  border: 0;
+  color: var(--D30);
+  cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.fee-remove:hover { background: var(--D70); color: var(--D10); }
+
+/* Client-side preview (mini illustration) */
+.preview-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 16px;
+}
+.preview-pane {
+  border: 1px solid var(--D55);
+  border-radius: var(--radius-6);
+  background: #fff;
+  padding: 14px;
+}
+.preview-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--D30);
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.preview-msg-ok {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 13px;
+  color: var(--D10);
+  background: #E9F4EE;
+  border: 1px solid #B7DCC4;
+  border-radius: 6px;
+  padding: 10px 12px;
+}
+.preview-msg-ok .ic {
+  flex-shrink: 0;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--G20);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+}
+.preview-msg-block {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 13px;
+  color: var(--D10);
+  background: #FDEAEA;
+  border: 1px solid #F2BFBF;
+  border-radius: 6px;
+  padding: 10px 12px;
+}
+.preview-msg-block .ic {
+  flex-shrink: 0;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--R10);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+}
+.preview-msg-block strong { display: block; margin-bottom: 2px; }
+
+/* ------------------------------------------------------------
+   Bottom action bar
+   ------------------------------------------------------------ */
+.section-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  gap: 8px;
+}
+
+</style>
+</head>
+<body>
+
+<!-- =========== TOP BAR =========== -->
+<div class="wix-top-bar">
+  <div class="wix-brand">WIX STUDIO</div>
+  <div class="wix-top-chip">
+    <span class="av">RL</span>
+    <span style="font-weight:600;">A La Cart</span>
+    <span style="font-size:10px; color: var(--D30);">▾</span>
+  </div>
+  <div class="wix-nav-item">Resources ▾</div>
+  <div class="wix-nav-item">Community ▾</div>
+  <div class="wix-nav-item">Help ▾</div>
+  <button class="btn" style="border:1px solid var(--D10); color:var(--D10); height:30px; padding:0 14px;">Upgrade</button>
+  <div class="wix-top-spacer"></div>
+  <div class="wix-search">🔍 Search for tools, apps, help &amp; more…</div>
+  <div class="wix-top-icons">
+    <div class="ic">💬<span class="badge">50</span></div>
+    <div class="ic">🔔<span class="badge">99+</span></div>
+    <div class="ic">✉<span class="badge">11</span></div>
+    <div class="ic">👤</div>
+    <button class="wix-ai-btn">✦ AI</button>
+  </div>
+</div>
+
+<!-- =========== APP =========== -->
+<div class="app">
+  <!-- LEFT SIDE NAV -->
+  <aside class="side-nav">
+    <div class="quick-actions">Quick Actions <span style="font-size:10px; opacity:.6;">▾</span></div>
+    <div class="nav-item">🏠 Home</div>
+    <div class="nav-item">✦ AI Agents <span style="margin-left:auto; font-size:10px; background:#FFC233; color:#162D3D; padding:1px 6px; border-radius:4px; font-weight:700;">NEW</span><span class="chev">›</span></div>
+    <div class="nav-item">📅 Booking Calendar <span class="chev">›</span></div>
+    <div class="nav-item">💰 Getting Paid <span class="chev">›</span></div>
+    <div class="nav-item">🏷 Sales <span class="chev">›</span></div>
+    <div class="nav-item">📦 Catalog <span class="chev">›</span></div>
+    <div class="nav-item">🖼 Portfolio <span class="chev">›</span></div>
+    <div class="nav-item">👥 Groups</div>
+    <div class="nav-item">📱 Apps <span style="margin-left:auto; font-size:11px; color:rgba(255,255,255,0.6);">4</span></div>
+    <div class="nav-item">📱 Site &amp; Mobile App <span class="chev">›</span></div>
+    <div class="nav-item">📣 Marketing <span class="chev">›</span></div>
+    <div class="nav-item">📥 Inbox</div>
+    <div class="nav-item">👥 Customers &amp; Leads <span class="chev">›</span></div>
+    <div class="nav-item">📊 Analytics <span class="chev">›</span></div>
+    <div class="nav-item">⚙ Automations <span class="chev">›</span></div>
+    <div class="nav-item active">⚙ Settings <span style="margin-left:auto; opacity:.6;">★</span></div>
+    <div class="nav-item">🌐 Website Content <span class="chev">›</span></div>
+    <div class="nav-item">🛠 Developer Tools <span class="chev">›</span></div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="breadcrumbs">
+      <a href="#">Settings</a>
+      <span class="sep">›</span>
+      <a href="#">Bookings Settings</a>
+      <span class="sep">›</span>
+      <a href="#">Booking Policies</a>
+      <span class="sep">›</span>
+      <span class="current">Default policy</span>
+    </div>
+
+    <div class="page-title-row">
+      <div class="page-title-block">
+        <div class="page-title">
+          Default policy
+          <span class="default-tag">DEFAULT</span>
+        </div>
+        <div class="page-subtitle">Set the booking, cancelation and waitlist policies for the connected services.</div>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <button class="btn btn-secondary">Cancel</button>
+        <button class="btn btn-primary">Save</button>
+      </div>
+    </div>
+
+    <!-- POLICY SECTIONS -->
+    <div class="policy-cards">
+
+      <!-- ============ POLICY DETAILS ============ -->
+      <div class="policy-card">
+        <div class="policy-card-header">
+          <div class="policy-card-title">Policy details</div>
+        </div>
+
+        <div class="subsection">
+          <div class="input-with-counter" style="position:relative;">
+            <div class="field-label">Policy name <span class="info-ico">i</span></div>
+            <span class="counter" style="top:0;">22</span>
+            <input class="wds-input" type="text" value="Default policy" />
+          </div>
+        </div>
+
+        <div class="subsection">
+          <div class="input-with-counter" style="position:relative;">
+            <div class="field-label">Policy description <span class="info-ico">i</span></div>
+            <span class="counter" style="top:0;">0/2500</span>
+            <textarea class="wds-textarea" placeholder="e.g., To cancel or reschedule, please contact us at least 24 hours in advance."></textarea>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <div class="field-label">Connected services</div>
+          <div class="chips-row">
+            <span class="svc-chip">Gel Pedicure</span>
+            <span class="svc-chip">football</span>
+            <span class="svc-chip">Service 122</span>
+            <span class="svc-chip">Appointment pp</span>
+            <span class="svc-chip svc-chip-more">+ 43 more</span>
+          </div>
+          <div class="policy-help">
+            ⓘ To connect this policy to a service, go to the policies list or the service page. <a href="#">Learn more</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ NEW: SERVICE AREA & TRAVEL FEES ============ -->
+      <div class="policy-card" id="service-area-card">
+        <div class="policy-card-header">
+          <div class="policy-card-title">Service area &amp; travel fees</div>
+          <span class="scope-chip">APPOINTMENT</span>
+          <span class="scope-chip new">NEW</span>
+        </div>
+        <div style="font-size:13px; color: var(--D30); margin-bottom: 18px;">
+          Define how far you'll travel for services booked at the client's place. Block bookings from outside your service area, and add travel fees for distance.
+        </div>
+
+        <!-- ============ SUB-SECTION: SERVICE AREA ============ -->
+        <div class="subsection">
+
+          <div class="sa-toggle-row">
+            <div class="toggle on" id="sa-toggle" onclick="toggleServiceArea(this)"></div>
+            <div class="sa-toggle-text">
+              <span class="sa-toggle-title">Limit bookings to a service area</span>
+              <span class="sa-toggle-desc">When a client picks "Client's place" as the location, their address must be inside this radius to book.</span>
+            </div>
+          </div>
+
+          <div class="sa-config" id="sa-config" data-sa-dependent>
+
+            <div class="notice">
+              <span class="ic">i</span>
+              <div>
+                Only applies to services where <strong>"Client's place"</strong> is offered as a location. Other locations (your business, online, etc.) are unaffected.
+                <a href="#">Manage service locations</a>
+              </div>
+            </div>
+
+            <div class="sa-grid">
+              <!-- Business location -->
+              <div>
+                <div class="field-label">Measure distance from <span class="info-ico" title="Distance is measured from this business location to the client's address.">i</span></div>
+                <button class="wds-dropdown" type="button">
+                  <span>📍 Main Studio — 123 Main Street, Springfield</span>
+                  <span class="caret">▾</span>
+                </button>
+              </div>
+
+              <!-- Radius -->
+              <div>
+                <div class="field-label">Service area radius</div>
+                <div class="affix-input">
+                  <input type="number" id="radius-input" value="25" min="1" max="500" oninput="onRadiusChange(this.value)" />
+                  <span class="suffix suffix-dropdown" onclick="toggleUnit()">
+                    <span id="unit-label">miles</span>
+                    <span class="caret">▾</span>
+                  </span>
+                </div>
+                <div class="field-help">Clients more than <span id="radius-echo">25 miles</span> away won't be able to book.</div>
+              </div>
+
+              <!-- Map preview -->
+              <div class="span-2">
+                <div class="field-label">Service area preview</div>
+                <div class="sa-map" id="sa-map">
+                  <div class="map-grid"></div>
+                  <svg id="sa-map-svg" viewBox="0 0 720 200" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
+                  <div class="map-legend">Radius: <strong id="map-legend-text">25 miles</strong> from Main Studio</div>
+                </div>
+              </div>
+
+              <!-- Block behavior -->
+              <div class="span-2">
+                <div class="field-label">If a client tries to book from outside this area</div>
+                <div class="block-options">
+                  <div class="wds-radio on" onclick="setBlockMode(this, 'block')">
+                    <span class="dot"></span>
+                    <span class="rd-text">
+                      <span class="rd-title">Block the booking and show a message</span>
+                      <span class="rd-desc">Recommended. The client sees an explanation at checkout and can't complete the booking.</span>
+                    </span>
+                  </div>
+                  <div class="wds-radio" onclick="setBlockMode(this, 'contact')">
+                    <span class="dot"></span>
+                    <span class="rd-text">
+                      <span class="rd-title">Block, but invite the client to contact you</span>
+                      <span class="rd-desc">Useful when you may make exceptions for special cases.</span>
+                    </span>
+                  </div>
+                  <div class="wds-radio" onclick="setBlockMode(this, 'warn')">
+                    <span class="dot"></span>
+                    <span class="rd-text">
+                      <span class="rd-title">Allow the booking and warn the client</span>
+                      <span class="rd-desc">The client can book anyway after seeing a warning.</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Block message -->
+              <div class="span-2" id="block-message-row">
+                <div class="field-label">Message clients see when they're outside the area</div>
+                <textarea class="wds-textarea" id="block-message" placeholder="">Sorry, we don't currently travel to your area. Our service area is within 25 miles of our studio.</textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-divider" data-sa-dependent></div>
+
+        <!-- ============ SUB-SECTION: TRAVEL FEES ============ -->
+        <div class="subsection" data-sa-dependent>
+          <div class="subsection-title">
+            Additional fees within the service area
+            <span class="info-ico" title="Fees are added to the order total at checkout when a client books at their place inside the service area.">i</span>
+          </div>
+          <div style="font-size:13px; color: var(--D30); margin-bottom: 14px;">
+            Charge an extra fee when a client books at their place. Each fee appears as a separate line in the order.
+          </div>
+
+          <div class="fee-list" id="fee-list">
+
+            <!-- Pre-populated example fee -->
+            <div class="fee-card">
+              <div class="fee-row">
+                <div>
+                  <div class="field-label">Fee name</div>
+                  <input class="wds-input" type="text" value="Travel fee" />
+                </div>
+                <div>
+                  <div class="field-label">Amount</div>
+                  <div class="amount-with-toggle">
+                    <input type="text" value="15" />
+                    <div class="unit-toggle">
+                      <div class="u active" onclick="toggleAmountUnit(this)">$</div>
+                      <div class="u" onclick="toggleAmountUnit(this)">%</div>
+                    </div>
+                  </div>
+                </div>
+                <button class="fee-remove" type="button" title="Remove fee" onclick="removeFee(this)">✕</button>
+              </div>
+            </div>
+
+          </div>
+
+          <button class="add-fee-btn" type="button" onclick="addFee()">
+            <span class="prefix-icon">+</span>
+            Add fee
+          </button>
+
+          <div class="policy-help" style="margin-top: 14px;">
+            Want to charge different rates by distance? <a href="#">Set distance-based pricing on individual services</a>.
+          </div>
+        </div>
+
+        <div class="section-divider" data-sa-dependent></div>
+
+        <!-- ============ SUB-SECTION: PREVIEW ============ -->
+        <div class="subsection" data-sa-dependent>
+          <div class="subsection-title">What clients will see</div>
+          <div class="preview-card">
+            <div class="preview-pane">
+              <div class="preview-title">Inside the service area</div>
+              <div class="preview-msg-ok">
+                <span class="ic">✓</span>
+                <div>
+                  <strong style="display:block; margin-bottom:2px;">You're in our service area</strong>
+                  Travel fee: <strong>$15</strong> will be added at checkout.
+                </div>
+              </div>
+            </div>
+            <div class="preview-pane">
+              <div class="preview-title">Outside the service area</div>
+              <div class="preview-msg-block">
+                <span class="ic">!</span>
+                <div>
+                  <strong>Outside our service area</strong>
+                  Sorry, we don't currently travel to your area. Our service area is within 25 miles of our studio.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ============ CLIENT BOOKING RULES (truncated) ============ -->
+      <div class="policy-card">
+        <div class="policy-card-header">
+          <div class="policy-card-title">Client booking rules</div>
+          <span class="scope-chip">APPOINTMENT</span>
+          <span class="scope-chip">CLASS</span>
+          <span class="scope-chip">COURSE</span>
+        </div>
+
+        <div class="subsection">
+          <label class="wds-check on" onclick="toggleCheck(this)">
+            <span class="box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            <span class="ck-label">Allow clients to cancel their own bookings online</span>
+          </label>
+          <div style="margin-top: 12px;">
+            <div class="field-label">Who can cancel</div>
+            <button class="wds-dropdown dropdown-md" type="button">
+              <span>Only site members</span>
+              <span class="caret">▾</span>
+            </button>
+          </div>
+          <div style="margin-top: 12px;">
+            <div class="field-label">How late can they cancel</div>
+            <button class="wds-dropdown dropdown-md" type="button">
+              <span>Anytime</span>
+              <span class="caret">▾</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ PAYMENT AND FEES (truncated) ============ -->
+      <div class="policy-card">
+        <div class="policy-card-header">
+          <div class="policy-card-title">Payment and fees</div>
+          <span class="scope-chip">APPOINTMENT</span>
+          <span class="scope-chip">CLASS</span>
+          <span class="scope-chip">COURSE</span>
+        </div>
+
+        <div class="subsection">
+          <label class="wds-check" onclick="toggleCheck(this)">
+            <span class="box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            <span class="ck-label">Require card on file for online booking</span>
+          </label>
+          <div class="field-help" style="margin-left: 28px;">Secure any necessary charges for sessions that are free, paid with a plan, or offline. <a href="#" style="color: var(--B20); text-decoration: none;">Learn more</a></div>
+        </div>
+
+        <div class="subsection">
+          <label class="wds-check" onclick="toggleCheck(this)">
+            <span class="box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            <span class="ck-label">Charge cancellation and no-show fees</span>
+          </label>
+          <div class="field-help" style="margin-left: 28px;">Apply fees to cancelled sessions and no-shows. <a href="#" style="color: var(--B20); text-decoration: none;">Learn more</a></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="section-footer">
+      <button class="btn btn-secondary">Cancel</button>
+      <button class="btn btn-primary">Save</button>
+    </div>
+  </main>
+</div>
+
+<script>
+  // =========================================================
+  //  Service Area
+  // =========================================================
+  let saEnabled = true;
+  let radiusUnit = 'miles'; // 'miles' or 'km'
+
+  function toggleServiceArea(el) {
+    saEnabled = !saEnabled;
+    el.classList.toggle('on', saEnabled);
+    document.getElementById('service-area-card').classList.toggle('sa-collapsed', !saEnabled);
+  }
+
+  function toggleUnit() {
+    radiusUnit = radiusUnit === 'miles' ? 'km' : 'miles';
+    document.getElementById('unit-label').textContent = radiusUnit;
+    syncRadiusEcho();
+    renderMap();
+  }
+
+  function onRadiusChange(v) {
+    syncRadiusEcho();
+    renderMap();
+  }
+
+  function syncRadiusEcho() {
+    const r = parseFloat(document.getElementById('radius-input').value) || 0;
+    const txt = `${r} ${radiusUnit}`;
+    document.getElementById('radius-echo').textContent = txt;
+    document.getElementById('map-legend-text').textContent = txt;
+  }
+
+  function setBlockMode(el, mode) {
+    document.querySelectorAll('.block-options .wds-radio').forEach(r => r.classList.remove('on'));
+    el.classList.add('on');
+    const msgRow = document.getElementById('block-message-row');
+    msgRow.style.display = (mode === 'warn') ? 'none' : '';
+  }
+
+  function toggleCheck(el) {
+    el.classList.toggle('on');
+  }
+
+  function renderMap() {
+    const svg = document.getElementById('sa-map-svg');
+    if (!svg) return;
+    const w = 720, h = 200;
+    const cx = w / 2, cy = h / 2;
+    const r = 80; // visual radius is fixed for the preview; the legend conveys actual distance
+    const inner = `
+      <defs>
+        <radialGradient id="ringGrad" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#116DFF" stop-opacity="0.22"/>
+          <stop offset="100%" stop-color="#116DFF" stop-opacity="0.05"/>
+        </radialGradient>
+      </defs>
+      <circle cx="${cx}" cy="${cy}" r="${r}" fill="url(#ringGrad)" stroke="#116DFF" stroke-opacity="0.7" stroke-width="1.5" stroke-dasharray="6 6"/>
+      <circle cx="${cx}" cy="${cy}" r="11" fill="#116DFF" fill-opacity="0.20"/>
+      <circle cx="${cx}" cy="${cy}" r="6" fill="#116DFF"/>
+      <circle cx="${cx}" cy="${cy}" r="2" fill="#fff"/>
+
+      <!-- Sample clients: 2 inside (green), 2 outside (gray with strikethrough icon) -->
+      <g font-family="Wix Madefor Text, sans-serif" font-size="10">
+        <!-- Inside -->
+        <g transform="translate(${cx - 50}, ${cy - 25})">
+          <circle r="6" fill="#3B8251"/>
+          <text x="10" y="3" fill="#1F664C" font-weight="600">Anna · in</text>
+        </g>
+        <g transform="translate(${cx + 30}, ${cy + 35})">
+          <circle r="6" fill="#3B8251"/>
+          <text x="10" y="3" fill="#1F664C" font-weight="600">Mark · in</text>
+        </g>
+        <!-- Outside -->
+        <g transform="translate(${cx - 200}, ${cy - 60})">
+          <circle r="6" fill="#BE2E2E"/>
+          <text x="10" y="3" fill="#BE2E2E" font-weight="600">Eli · blocked</text>
+        </g>
+        <g transform="translate(${cx + 180}, ${cy + 50})">
+          <circle r="6" fill="#BE2E2E"/>
+          <text x="10" y="3" fill="#BE2E2E" font-weight="600">Sarah · blocked</text>
+        </g>
+      </g>
+
+      <!-- Center label -->
+      <text x="${cx}" y="${cy - 18}" text-anchor="middle" font-size="10" fill="#162D3D" font-weight="600" font-family="Wix Madefor Text, sans-serif">Main Studio</text>
+    `;
+    svg.innerHTML = inner;
+  }
+
+  // =========================================================
+  //  Travel fees
+  // =========================================================
+  function addFee() {
+    const card = document.createElement('div');
+    card.className = 'fee-card';
+    card.innerHTML = `
+      <div class="fee-row">
+        <div>
+          <div class="field-label">Fee name</div>
+          <input class="wds-input" type="text" placeholder="e.g., Travel fee" />
+        </div>
+        <div>
+          <div class="field-label">Amount</div>
+          <div class="amount-with-toggle">
+            <input type="text" placeholder="0" />
+            <div class="unit-toggle">
+              <div class="u active" onclick="toggleAmountUnit(this)">$</div>
+              <div class="u" onclick="toggleAmountUnit(this)">%</div>
+            </div>
+          </div>
+        </div>
+        <button class="fee-remove" type="button" title="Remove fee" onclick="removeFee(this)">✕</button>
+      </div>
+    `;
+    document.getElementById('fee-list').appendChild(card);
+    card.querySelector('input').focus();
+  }
+  function removeFee(btn) {
+    const card = btn.closest('.fee-card');
+    if (card) card.remove();
+  }
+  function toggleAmountUnit(el) {
+    el.parentElement.querySelectorAll('.u').forEach(u => u.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // Initial render
+  syncRadiusEcho();
+  renderMap();
+</script>
+</body>
+</html>
