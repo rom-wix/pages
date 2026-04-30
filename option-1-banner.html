@@ -5,6 +5,7 @@
 <title>Option 1 — Top banner alert</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400;500;600;700&family=Wix+Madefor+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@wix/design-system@1.247.1/styles-default.global.css">
 <link rel="stylesheet" href="base.css">
 </head>
 <body>
@@ -69,19 +70,59 @@
       <button class="btn btn-secondary">More Actions ▾</button>
     </div>
 
-    <!-- ===== OPTION 1: TOP BANNER ALERT ===== -->
-    <div class="notice notice-warn">
-      <div class="notice-icon">!</div>
-      <div class="notice-body">
-        <div class="notice-title">47 contacts won't receive SMS or WhatsApp messages</div>
-        <div class="notice-desc">
-          Their phone numbers are missing a country code, so they can't be validated.
-          Add a code to update them in bulk.
+    <!-- ===== OPTION 1: Real WDS SectionHelper (skin="warning") + WDS Button ===== -->
+    <!--
+      Class names are the exact Stylable-generated names from @wix/design-system@1.247.1:
+        root:    wds_1_247_1_SectionHelper__root
+        skin:    wds_1_247_1_SectionHelper---skin-7-warning
+        border:  wds_1_247_1_SectionHelper---border-8-standard  (rounded corners)
+        size:    wds_1_247_1_SectionHelper---size-6-medium
+        prefix:  wds_1_247_1_SectionHelper--hasPrefix
+        close:   wds_1_247_1_SectionHelper--withCloseBtn
+      Icon:      StatusWarning from @wix/wix-ui-icons-common (24px, fills currentColor)
+      Button:    wds_1_247_1_Button__root + wds_1_247_1_Button---size-5-small (primary = default)
+      CloseBtn:  wds_1_247_1_CloseButton__root (positioned absolute top-right)
+    -->
+    <div
+      class="wds_1_247_1_SectionHelper__root wds_1_247_1_SectionHelper---skin-7-warning wds_1_247_1_SectionHelper---border-8-standard wds_1_247_1_SectionHelper---size-6-medium wds_1_247_1_SectionHelper--withCloseBtn"
+      data-skin="warning"
+      role="alert"
+      style="margin-bottom:16px;"
+    >
+      <!-- Content slot -->
+      <div class="wds_1_247_1_SectionHelper__content wds_1_247_1_SectionHelper---layout-10-horizontal wds_1_247_1_SectionHelper---size-6-medium">
+        <div class="wds_1_247_1_SectionHelper__textContainer" style="max-width:none;">
+          <div class="wds_1_247_1_SectionHelper__title">
+            <span class="wds_1_247_1_SectionHelper__text wds_1_247_1_Text---size-5-small wds_1_247_1_Text---weight-7-bold" data-hook="sectionhelper-title">47 contacts won't receive SMS or WhatsApp messages</span>
+          </div>
+          <span class="wds_1_247_1_SectionHelper__text wds_1_247_1_Text---size-5-small wds_1_247_1_Text---weight-4-thin" data-hook="sectionhelper-content" style="white-space:nowrap;">Their phone numbers are missing a country code, so they can't be validated. Add a code to update them in bulk.</span>
+        </div>
+        <!-- Action button -->
+        <div class="wds_1_247_1_SectionHelper__action">
+          <button
+            class="wds_1_247_1_ButtonCore__root wds_1_247_1_Button__root wds_1_247_1_Button---size-5-small"
+            data-hook="sectionhelper-action-btn"
+            onclick="openModal()"
+            style="background:#fff0d1;outline-color:#000624;color:#000624;"
+          >
+            <span class="wds_1_247_1_ButtonCore__content">Set country code</span>
+          </button>
         </div>
       </div>
-      <div class="notice-actions">
-        <button class="btn btn-primary btn-small" onclick="openModal()">Set country code</button>
-        <button class="notice-close" title="Dismiss">×</button>
+
+      <!-- Close button (absolute positioned) -->
+      <div class="wds_1_247_1_SectionHelper__close wds_1_247_1_SectionHelper---size-6-medium">
+        <button
+          class="wds_1_247_1_CloseButton__root wds_1_247_1_CloseButton---size-5-medium wds_1_247_1_CloseButton---skin-3-dark"
+          data-hook="sectionhelper-close-btn"
+          aria-label="Dismiss"
+          title="Dismiss"
+          style="background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:4px;color:#577083;"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="currentColor">
+            <path d="M10.41 9l4.3-4.29a1 1 0 1 0-1.42-1.42L9 7.59l-4.29-4.3A1 1 0 0 0 3.29 4.7L7.59 9l-4.3 4.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0L9 10.41l4.29 4.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z"/>
+          </svg>
+        </button>
       </div>
     </div>
 
