@@ -181,46 +181,6 @@ body {
   font-size: 13px; font-weight: 500; cursor: pointer; font-family: inherit;
 }
 
-/* Notice / Banner */
-.notice {
-  display: flex; gap: 12px; padding: 14px 16px;
-  border-radius: var(--radius-card);
-  align-items: flex-start;
-  margin-bottom: 16px;
-}
-.notice-icon {
-  width: 20px; height: 20px; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 700; border-radius: 50%; font-size: 13px;
-  margin-top: 1px;
-}
-.notice-warn { background: #fff8e1; border: 1px solid #fde7a3; }
-.notice-warn .notice-icon { background: var(--Y20); color: #fff; }
-.notice-info { background: #e7f0fd; border: 1px solid #cfe0fc; }
-.notice-info .notice-icon { background: var(--P30); color: #fff; }
-
-.notice-body { flex: 1; min-width: 0; }
-.notice-title { font-size: 14px; font-weight: 600; color: var(--D10); margin-bottom: 2px; }
-.notice-desc { font-size: 13px; color: var(--D20); }
-.notice-desc a { color: var(--P30); cursor: pointer; }
-
-.notice-actions { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
-.notice-close { background: transparent; border: none; color: var(--D30); cursor: pointer; font-size: 18px; line-height: 1; padding: 0 4px; }
-
-/* Tip line inside quota card */
-.tip-strip {
-  display: flex; align-items: center; gap: 12px;
-  padding: 12px 24px; background: #f0f7fd;
-  border-top: 1px solid #cfe0fc;
-}
-.tip-strip-icon {
-  width: 22px; height: 22px; border-radius: 50%; background: var(--P30); color: #fff;
-  display: flex; align-items: center; justify-content: center; font-weight: 700;
-  flex-shrink: 0; font-size: 13px;
-}
-.tip-strip-body { flex: 1; font-size: 13px; color: var(--D10); }
-.tip-strip-body strong { color: var(--D10); font-weight: 600; }
-.tip-strip-body .muted { color: var(--D30); }
 
 /* More Actions dropdown */
 .more-wrap { position: relative; }

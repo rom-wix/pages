@@ -5,6 +5,7 @@
 <title>Option 2 — Tip strip in quota card</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400;500;600;700&family=Wix+Madefor+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@wix/design-system@1.247.1/styles-default.global.css">
 <link rel="stylesheet" href="base.css">
 </head>
 <body>
@@ -88,15 +89,36 @@
         </div>
       </div>
 
-      <!-- ===== OPTION 2: TIP STRIP ===== -->
-      <div class="tip-strip">
-        <div class="tip-strip-icon">ⓘ</div>
-        <div class="tip-strip-body">
-          <strong>Reach more contacts:</strong>
-          <span class="muted">Numbers without a country code can't receive SMS or WhatsApp.
-          Add one to validate them in bulk.</span>
+      <!-- ===== OPTION 2: Real WDS SectionHelper (skin="standard") flush with card edges ===== -->
+      <div
+        class="wds_1_247_1_SectionHelper__root wds_1_247_1_SectionHelper---skin-8-standard wds_1_247_1_SectionHelper---size-6-medium wds_1_247_1_SectionHelper--hasPrefix"
+        data-skin="standard"
+        style="margin:0;border-radius:0;border-left:none;border-right:none;"
+      >
+        <!-- Prefix icon slot -->
+        <span class="wds_1_247_1_SectionHelper__prefix" data-hook="sectionhelper-prefix" aria-hidden="true" style="color:#116dff;display:flex;align-items:center;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2Zm0 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2Zm-1 4a1 1 0 0 1 2 0v5a1 1 0 0 1-2 0v-5Z"/>
+          </svg>
+        </span>
+        <!-- Content slot -->
+        <div class="wds_1_247_1_SectionHelper__content wds_1_247_1_SectionHelper---layout-10-horizontal wds_1_247_1_SectionHelper---size-6-medium">
+          <div class="wds_1_247_1_SectionHelper__textContainer" style="max-width:none;">
+            <div class="wds_1_247_1_SectionHelper__title">
+              <span class="wds_1_247_1_SectionHelper__text wds_1_247_1_Text---size-5-small wds_1_247_1_Text---weight-7-bold" data-hook="sectionhelper-title">Reach more contacts</span>
+            </div>
+            <span class="wds_1_247_1_SectionHelper__text wds_1_247_1_Text---size-5-small wds_1_247_1_Text---weight-4-thin" data-hook="sectionhelper-content" style="white-space:nowrap;">Numbers without a country code can't receive SMS or WhatsApp. Add one to validate them in bulk.</span>
+          </div>
+          <div class="wds_1_247_1_SectionHelper__action">
+            <button
+              class="wds_1_247_1_ButtonCore__root wds_1_247_1_Button__root wds_1_247_1_Button---size-5-small wds_1_247_1_Button---skin-8-inverted"
+              data-hook="sectionhelper-action-btn"
+              onclick="openModal()"
+            >
+              <span class="wds_1_247_1_ButtonCore__content">Set country code</span>
+            </button>
+          </div>
         </div>
-        <button class="btn btn-secondary btn-small" onclick="openModal()">Set country code</button>
       </div>
 
       <div class="note-line">
