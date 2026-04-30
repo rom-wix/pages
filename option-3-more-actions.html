@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Option 1 — Top banner alert</title>
+<title>Option 3 — More Actions menu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400;500;600;700&family=Wix+Madefor+Text:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="base.css">
@@ -66,22 +66,38 @@
         <h1 class="page-title">Notifications you send</h1>
         <div class="page-subtitle">Manage notifications that are automatically sent to clients. <a>Learn more</a></div>
       </div>
-      <button class="btn btn-secondary">More Actions ▾</button>
-    </div>
 
-    <!-- ===== OPTION 1: TOP BANNER ALERT ===== -->
-    <div class="notice notice-warn">
-      <div class="notice-icon">!</div>
-      <div class="notice-body">
-        <div class="notice-title">47 contacts won't receive SMS or WhatsApp messages</div>
-        <div class="notice-desc">
-          Their phone numbers are missing a country code, so they can't be validated.
-          Add a code to update them in bulk.
+      <!-- ===== OPTION 3: MORE ACTIONS DROPDOWN (open by default to show entry point) ===== -->
+      <div class="more-wrap">
+        <button class="btn btn-secondary" onclick="toggleDropdown()">More Actions ▴</button>
+        <div class="dropdown" id="dropdown">
+          <div class="dropdown-item highlight" onclick="openModal()">
+            <span class="di-icon">🌐</span>
+            <div class="di-text">
+              <div class="di-title">Set country code</div>
+              <div class="di-sub">Validate phone numbers in bulk so contacts can receive SMS & WhatsApp.</div>
+            </div>
+          </div>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-item">
+            <span class="di-icon">↻</span>
+            <div class="di-text">
+              <div class="di-title">Reset all to default</div>
+            </div>
+          </div>
+          <div class="dropdown-item">
+            <span class="di-icon">📋</span>
+            <div class="di-text">
+              <div class="di-title">View message log</div>
+            </div>
+          </div>
+          <div class="dropdown-item">
+            <span class="di-icon">⚙️</span>
+            <div class="di-text">
+              <div class="di-title">Sender settings</div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="notice-actions">
-        <button class="btn btn-primary btn-small" onclick="openModal()">Set country code</button>
-        <button class="notice-close" title="Dismiss">×</button>
       </div>
     </div>
 
@@ -215,8 +231,12 @@
 </div>
 
 <script>
-function openModal(){ document.getElementById('ccModal').classList.add('open'); }
+function openModal(){ document.getElementById('ccModal').classList.add('open'); document.getElementById('dropdown').style.display='none'; }
 function closeModal(){ document.getElementById('ccModal').classList.remove('open'); }
+function toggleDropdown(){
+  var d = document.getElementById('dropdown');
+  d.style.display = (d.style.display==='none' ? 'block' : 'none');
+}
 </script>
 
 </body>

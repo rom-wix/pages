@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Fix contacts missing a country code — Options</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400;500;600;700&family=Wix+Madefor+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Wix Madefor Text', sans-serif;
+    background: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background: #fff;
+    border-bottom: 1px solid #e0e0e0;
+    flex-shrink: 0;
+  }
+
+  nav .label {
+    font-family: 'Wix Madefor Display', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: #3b3b3b;
+    margin-right: 12px;
+  }
+
+  nav button {
+    font-family: 'Wix Madefor Text', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 7px 16px;
+    border-radius: 6px;
+    border: 1.5px solid #d0d0d0;
+    background: #fff;
+    color: #3b3b3b;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+  }
+
+  nav button:hover {
+    background: #f0f0f0;
+    border-color: #b0b0b0;
+  }
+
+  nav button.active {
+    background: #116dff;
+    border-color: #116dff;
+    color: #fff;
+  }
+
+  iframe {
+    flex: 1;
+    width: 100%;
+    border: none;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="label">Entry point option:</span>
+  <button class="active" onclick="show('option-1-banner.html', this)">Option 1 — Top banner</button>
+  <button onclick="show('option-2-quota-tip.html', this)">Option 2 — Quota tip</button>
+  <button onclick="show('option-3-more-actions.html', this)">Option 3 — More actions</button>
+</nav>
+
+<iframe id="frame" src="option-1-banner.html"></iframe>
+
+<script>
+  function show(src, btn) {
+    document.getElementById('frame').src = src;
+    document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+</script>
+
+</body>
+</html>
