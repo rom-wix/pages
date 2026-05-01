@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Client · Concept 1 — First-time visitor (empty state)</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<style>
+  :root {
+    --D10:#000624; --D20:#162D3D; --D30:#32536A; --D40:#86A2B2; --D50:#BAC9D1;
+    --D55:#DFE5EB; --D60:#EAF7FF; --D70:#F0F4F7; --D80:#FFFFFF;
+    --B10:#3899EC; --B20:#1976D2; --B40:#E7F0FF; --B50:#F4F7FB;
+    --G10:#0EAA00; --G40:#E6F4EA; --R10:#E81515; --Y10:#FDB10C; --Y40:#FFF4D6;
+    --shadow-1: 0 1px 1px rgba(22,45,61,0.18), 0 1px 3px rgba(22,45,61,0.06);
+    --shadow-2: 0 4px 14px rgba(22,45,61,0.10);
+    --font:"Madefor Text",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    --font-display:"Madefor Display","Madefor Text",-apple-system,sans-serif;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{font-family:var(--font);color:var(--D10);background:var(--D70);font-size:14px;line-height:1.5}
+  .site-header{background:#fff;padding:14px 32px;display:flex;align-items:center;border-bottom:1px solid var(--D55)}
+  .site-logo{font-family:var(--font-display);font-weight:700;letter-spacing:.04em;font-size:14px}
+  .site-nav{margin-left:auto;display:flex;gap:24px;font-size:13px;color:var(--D20)}
+  .site-nav a{color:var(--D20);text-decoration:none}
+  .preview-tag{font-size:11px;font-weight:600;color:var(--B10);background:var(--B40);padding:2px 8px;border-radius:10px;margin-left:8px;letter-spacing:.04em}
+  .es-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;background:var(--Y40);padding:3px 10px;border-radius:10px;margin-left:8px;color:#A66800;letter-spacing:.04em}
+  .page{max-width:880px;margin:0 auto;padding:32px 24px 80px}
+  .breadcrumb{font-size:12px;color:var(--D30);margin-bottom:12px}
+  h1{font-family:var(--font-display);font-size:28px;font-weight:600;margin:0 0 4px;letter-spacing:-0.01em}
+  .meta{color:var(--D30);font-size:14px;margin:0 0 24px}
+  .card{background:#fff;border:1px solid var(--D55);border-radius:10px;box-shadow:var(--shadow-1);margin-bottom:16px}
+  .card-head{padding:18px 22px 4px}
+  .card-title{font-family:var(--font-display);font-size:16px;font-weight:600;margin:0}
+  .card-help{color:var(--D30);font-size:13px;margin:2px 0 0}
+  .card-body{padding:14px 22px 22px}
+  /* Stepper */
+  .stepper{display:flex;align-items:center;gap:12px;margin-top:8px}
+  .stepper-control{display:inline-flex;align-items:center;border:1px solid var(--D55);border-radius:6px;background:#fff;height:40px}
+  .stepper-control button{width:38px;height:38px;border:none;background:transparent;color:var(--B10);font-size:20px;cursor:pointer}
+  .stepper-control button:disabled{color:var(--D50);cursor:not-allowed}
+  .stepper-control input{width:42px;text-align:center;border:none;font-size:16px;font-weight:600;background:transparent;outline:none}
+  .stepper-cap{font-size:12px;color:var(--D30)}
+  .stepper-hint{display:flex;align-items:flex-start;gap:8px;margin-top:14px;padding:10px 14px;background:var(--B50);border:1px solid #C9DEF4;border-radius:6px;font-size:12px;color:var(--D20)}
+  .stepper-hint svg{color:var(--B10);flex-shrink:0;margin-top:1px}
+  /* Rows */
+  .row-list{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+  .pr-row{border:1px solid var(--D55);border-radius:8px;background:#fff;overflow:hidden;transition:all .25s ease}
+  .pr-row.empty{border-style:dashed;background:var(--D70)}
+  .pr-row.expanded{box-shadow:var(--shadow-1);border-style:solid;background:#fff}
+  .pr-row.flash{animation:flash 1.2s ease-out}
+  @keyframes flash{0%{box-shadow:0 0 0 4px rgba(56,153,236,.35)}100%{box-shadow:var(--shadow-1)}}
+  .pr-head{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer}
+  .pr-row.expanded .pr-head{border-bottom:1px solid var(--D55);background:var(--D70)}
+  .pr-num{width:30px;height:30px;border-radius:50%;background:var(--D55);color:var(--D30);display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;border:2px dashed var(--D40)}
+  .pr-row:not(.empty) .pr-num{background:var(--B40);color:var(--B10);border:none}
+  .pr-row.complete .pr-num{background:var(--G40);color:var(--G10)}
+  .pr-row.is-me .pr-num{background:#5B7FFF;color:#fff;border:none}
+  .pr-row.is-me.complete .pr-num{background:var(--G10)}
+  .pr-title{font-weight:600;font-size:14px;margin:0;color:var(--D20)}
+  .pr-row.empty .pr-title{color:var(--D30);font-weight:500}
+  .pr-summary{color:var(--D30);font-size:12px;margin:1px 0 0}
+  .pr-row.empty .pr-summary{color:var(--D40);font-style:italic}
+  .pr-status{margin-left:auto;font-size:11px;font-weight:600;padding:3px 10px;border-radius:10px}
+  .status-empty{background:var(--D55);color:var(--D30)}
+  .status-incomplete{background:var(--Y40);color:#A66800}
+  .status-ok{background:var(--G40);color:var(--G10)}
+  .pr-remove{background:transparent;border:none;color:var(--D40);cursor:pointer;padding:4px 8px;border-radius:4px;font-size:13px;margin-left:6px}
+  .pr-remove:hover{background:#FCE9E9;color:var(--R10)}
+  .pr-body{padding:16px 18px;display:none;background:#fff}
+  .pr-row.expanded .pr-body{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .pr-field{display:flex;flex-direction:column;gap:4px}
+  .pr-field label{font-size:12px;font-weight:600;color:var(--D20)}
+  .pr-field input,.pr-field select{height:36px;border:1px solid var(--D55);border-radius:6px;padding:0 10px;font-size:13px;font-family:inherit;outline:none;background:#fff}
+  .pr-field input:focus,.pr-field select:focus{border-color:var(--B10);box-shadow:0 0 0 3px rgba(56,153,236,.18)}
+  .pr-field.full{grid-column:1 / -1}
+  /* Identity segment */
+  .id-segment{display:inline-flex;background:var(--D70);border-radius:18px;padding:2px;font-size:12px}
+  .id-segment span{padding:6px 14px;border-radius:14px;cursor:pointer;font-weight:500}
+  .id-segment span.on{background:#fff;font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+  .id-segment.me span.on{background:#5B7FFF;color:#fff}
+  /* Add-another */
+  .add-row{padding:14px 16px;border:1px dashed var(--D40);border-radius:8px;display:flex;align-items:center;gap:12px;background:var(--D70);cursor:pointer}
+  .add-row:hover{border-color:var(--B10);background:var(--B50)}
+  .add-row .ic{width:28px;height:28px;border-radius:50%;background:var(--D55);color:var(--D30);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:600;flex-shrink:0}
+  .add-row:hover .ic{background:var(--B40);color:var(--B10)}
+  .add-row .lbl{font-weight:600;font-size:14px;color:var(--D20)}
+  .add-row:hover .lbl{color:var(--B10)}
+  .add-row small{display:block;color:var(--D30);font-size:12px;font-weight:400;margin-top:1px}
+  /* Summary */
+  .summary{position:sticky;bottom:0;background:#fff;border:1px solid var(--D55);border-radius:10px;box-shadow:var(--shadow-2);padding:14px 18px;display:flex;align-items:center;gap:14px;margin-top:24px}
+  .summary-prices{flex:1}
+  .summary-total{font-family:var(--font-display);font-size:18px;font-weight:600}
+  .summary-total.muted{color:var(--D40)}
+  .summary-detail{color:var(--D30);font-size:12px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;height:40px;padding:0 22px;border-radius:20px;border:1px solid transparent;font:600 14px var(--font);cursor:pointer}
+  .btn-primary{background:var(--B10);color:#fff}.btn-primary:hover{background:var(--B20)}
+  .btn-primary:disabled{background:var(--D55);color:var(--D40);cursor:not-allowed}
+  .btn-secondary{background:transparent;color:var(--B10);border-color:var(--B10)}
+  .info-banner{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;background:var(--B50);border:1px solid #C9DEF4;border-radius:6px;font-size:12px;color:var(--D20);margin-top:12px}
+  .info-banner svg{color:var(--B10);flex-shrink:0}
+  .me-pill{display:inline-flex;align-items:center;gap:4px;background:#E0EBFF;color:#3F5BC2;font-size:10px;font-weight:700;padding:1px 7px;border-radius:8px;margin-left:6px;letter-spacing:.04em}
+</style>
+</head>
+<body>
+
+<div class="site-header">
+  <span class="site-logo">CALMA · WELLNESS</span>
+  <nav class="site-nav"><a>Services</a><a>About</a><a>Book</a></nav>
+</div>
+
+<div class="page">
+  <div class="breadcrumb">Services / Therapy / <b>Couples Therapy</b><span class="preview-tag">CONCEPT 1</span><span class="es-badge">EMPTY · FIRST-TIME VISITOR</span></div>
+  <h1>Couples Therapy</h1>
+  <p class="meta">60 min · with Dr. Hila Rosenberg · $150 / person</p>
+
+  <!-- Rows -->
+  <div class="card">
+    <div class="card-head">
+      <h2 class="card-title" id="rowsHeader">Tell us about you</h2>
+      <p class="card-help" id="rowsHelp">We'll send appointment details to the email or phone you give us. <span style="color:var(--D40)">·</span> <span style="color:var(--D30)">Up to 4 people on this service.</span></p>
+    </div>
+    <div class="card-body">
+      <div class="row-list" id="rows"></div>
+      <div class="add-row" id="addRow" style="margin-top:10px">
+        <div class="ic">+</div>
+        <div>
+          <span class="lbl">Add another person</span>
+          <small>Book for a partner, child, friend — in the same checkout</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Summary -->
+  <div class="summary">
+    <div class="summary-prices">
+      <div class="summary-total muted" id="total">$150.00</div>
+      <div class="summary-detail" id="totalDetail">1 person · pick a time below</div>
+    </div>
+    <button class="btn btn-secondary">Save</button>
+    <button class="btn btn-primary" id="continue" disabled>Add details to continue</button>
+  </div>
+
+  <div class="info-banner">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+    <span>First time booking with Calma. Your details will be saved for next time.</span>
+  </div>
+</div>
+
+<script>
+  /*
+   * First-time visitor empty state.
+   * Row 1 defaults to "For me". Adding more rows defaults each new row to
+   * "For someone else". Both are editable per row.
+   */
+
+  const rowsEl = document.getElementById('rows');
+  const total = document.getElementById('total');
+  const totalDetail = document.getElementById('totalDetail');
+  const continueBtn = document.getElementById('continue');
+  const addRow = document.getElementById('addRow');
+  const rowsHeader = document.getElementById('rowsHeader');
+  const rowsHelp = document.getElementById('rowsHelp');
+
+  let participants = [
+    { id:1, name:'', identity:'me', email:'', phone:'', time:'', expanded:true }
+  ];
+
+  function setStateLabel(p){
+    const hasContact = !!p.email || !!p.phone;
+    p.complete = !!p.name && hasContact && !!p.time;
+    p.empty = !p.name && !hasContact && !p.time;
+  }
+
+  function display(p, i){
+    if (p.empty){
+      if (p.identity === 'me') return { title: 'You', sub: 'Add your name and contact' };
+      return { title: i === 0 ? 'Tap to add this person' : 'Tap to add this person', sub: 'Add their name and contact' };
+    }
+    if (p.identity === 'me' && !p.name){
+      return { title: 'You', sub: 'Add your name and contact' };
+    }
+    if (p.identity === 'else' && !p.name){
+      return { title: 'Someone else', sub: 'Add their name and contact' };
+    }
+    const fallback = p.identity === 'me' ? 'You' : 'Participant ' + (i+1);
+    return { title: p.name || fallback, sub: (p.email || p.phone || 'Add an email or phone') + ' · ' + (p.time || 'pick a time') };
+  }
+
+  function statusPill(p){
+    if (p.empty) return { cls:'status-empty', label:'Not started' };
+    if (!p.complete) return { cls:'status-incomplete', label:'Missing details' };
+    return { cls:'status-ok', label:'Ready' };
+  }
+
+  function render(flashIndex){
+    participants.forEach(setStateLabel);
+
+    if (participants.length === 1){
+      rowsHeader.textContent = participants[0].identity === 'me' ? 'Your details' : (participants[0].identity === 'else' ? 'Their details' : 'Tell us about you');
+      rowsHelp.innerHTML = "We'll send appointment details to the email or phone you give us. <span style=\"color:var(--D40)\">·</span> <span style=\"color:var(--D30)\">Up to 4 people on this service.</span>";
+    } else {
+      rowsHeader.textContent = 'Participants';
+      rowsHelp.innerHTML = 'Each person needs a name and a contact channel. Each gets their own confirmation; you get a receipt. <span style="color:var(--D40)">·</span> <span style="color:var(--D30)">Up to 4 people.</span>';
+    }
+
+    rowsEl.innerHTML = participants.map((p, i) => {
+      const idx = i + 1;
+      const d = display(p, i);
+      const s = statusPill(p);
+      const stateClass = p.empty ? 'empty' : (p.complete ? 'complete' : '');
+      const meClass = p.identity === 'me' ? 'is-me' : '';
+      const isMe = p.identity === 'me';
+      const isElse = p.identity === 'else';
+      const flashClass = (i === flashIndex) ? 'flash' : '';
+
+      return `
+        <div class="pr-row ${stateClass} ${meClass} ${p.expanded ? 'expanded' : ''} ${flashClass}" data-i="${i}">
+          <div class="pr-head" data-toggle="${i}">
+            <div class="pr-num">${p.complete ? '✓' : (isMe ? 'Me' : idx)}</div>
+            <div>
+              <p class="pr-title">${d.title}${isMe ? '<span class="me-pill">YOU</span>' : ''}</p>
+              <p class="pr-summary">${d.sub}</p>
+            </div>
+            <span class="pr-status ${s.cls}">${s.label}</span>
+            ${i > 0 ? `<button class="pr-remove" data-remove="${i}" title="Remove">✕</button>` : ''}
+          </div>
+          <div class="pr-body">
+            <div class="pr-field full">
+              <label>Who is this booking for?</label>
+              <div class="id-segment ${isMe ? 'me':''}" data-i="${i}">
+                <span class="${isMe ? 'on':''}" data-id="me">For me</span>
+                <span class="${isElse ? 'on':''}" data-id="else">For someone else</span>
+              </div>
+            </div>
+            <div class="pr-field">
+              <label>Full name</label>
+              <input value="${p.name}" placeholder="${isMe ? 'e.g. Rom Lvov' : 'e.g. Maya'}" data-field="name" data-i="${i}"/>
+            </div>
+            <div class="pr-field">
+              <label>Email</label>
+              <input value="${p.email}" placeholder="email@example.com" data-field="email" data-i="${i}"/>
+            </div>
+            <div class="pr-field">
+              <label>Phone (optional)</label>
+              <input value="${p.phone}" placeholder="+972 50 ..." data-field="phone" data-i="${i}"/>
+            </div>
+            <div class="pr-field">
+              <label>Time slot</label>
+              <select data-field="time" data-i="${i}">
+                <option value="">Pick a time</option>
+                <option ${p.time === 'Sat May 17, 10:00 AM' ? 'selected':''}>Sat May 17, 10:00 AM</option>
+                <option ${p.time === 'Sat May 17, 11:00 AM' ? 'selected':''}>Sat May 17, 11:00 AM</option>
+                <option ${p.time === 'Sat May 17, 12:00 PM' ? 'selected':''}>Sat May 17, 12:00 PM</option>
+              </select>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+
+    const ready = participants.every(p => p.complete);
+    const incomplete = participants.filter(p => !p.complete).length;
+    const allEmpty = participants.every(p => p.empty);
+
+    if (allEmpty) continueBtn.textContent = 'Add details to continue';
+    else if (ready) continueBtn.textContent = 'Continue to payment';
+    else continueBtn.textContent = `Continue · ${incomplete} missing detail${incomplete>1?'s':''}`;
+    continueBtn.disabled = !ready;
+
+    total.textContent = '$' + (participants.length * 150) + '.00';
+    total.classList.toggle('muted', allEmpty);
+    totalDetail.textContent = participants.length + ' person' + (participants.length>1?'s':'') + ' · 60 min · ' + (ready ? 'Saturday, May 17' : 'pick a time below');
+
+    addRow.style.display = participants.length >= 4 ? 'none' : 'flex';
+
+    if (flashIndex !== undefined){
+      requestAnimationFrame(() => {
+        const node = rowsEl.querySelector(`[data-i="${flashIndex}"]`);
+        if (node) node.scrollIntoView({behavior:'smooth', block:'center'});
+      });
+    }
+  }
+
+  rowsEl.addEventListener('click', e => {
+    const t = e.target;
+    if (t.dataset.remove !== undefined){
+      e.stopPropagation();
+      participants.splice(+t.dataset.remove, 1);
+      render(); return;
+    }
+    const head = t.closest('[data-toggle]');
+    if (head && !t.dataset.id && !t.dataset.field){
+      const i = +head.dataset.toggle;
+      participants[i].expanded = !participants[i].expanded;
+      render(); return;
+    }
+    if (t.dataset.id !== undefined){
+      const i = +t.parentElement.dataset.i;
+      participants[i].identity = t.dataset.id;
+      render();
+    }
+  });
+
+  rowsEl.addEventListener('input', e => {
+    const t = e.target;
+    if (t.dataset.field){
+      const i = +t.dataset.i;
+      participants[i][t.dataset.field] = t.value;
+      render();
+      const sel = `[data-i="${i}"][data-field="${t.dataset.field}"]`;
+      const next = rowsEl.querySelector(sel);
+      if (next && next.tagName === 'INPUT'){ next.focus(); next.setSelectionRange(t.value.length, t.value.length); }
+    }
+  });
+
+  rowsEl.addEventListener('change', e => {
+    const t = e.target;
+    if (t.dataset.field === 'time' && t.tagName === 'SELECT'){
+      participants[+t.dataset.i].time = t.value;
+      render();
+    }
+  });
+
+  function addParticipant(){
+    if (participants.length >= 4) return;
+    participants.forEach(p => p.expanded = false);
+    const newIdx = participants.length;
+    participants.push({ id: newIdx + 1, name:'', identity:'else', email:'', phone:'', time:'', expanded:true });
+    render(newIdx);
+  }
+
+  addRow.addEventListener('click', addParticipant);
+
+  render();
+</script>
+
+</body>
+</html>
