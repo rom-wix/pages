@@ -1,0 +1,2905 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BM — Booking Policy (WDS)</title>
+<link rel="stylesheet" href="styles.css" />
+<style>
+  /* =======================================================================
+     WDS DESIGN TOKENS (excerpt from @wix/design-system-tokens/tokens/all.css)
+     Only tokens actually used in this mockup are inlined. Full token names
+     are kept so readers can grep them against the real package.
+     ======================================================================= */
+  :root, .wds-tokens {
+    /* spacing */
+    --wds-space-50: 3px;
+    --wds-space-100: 6px;
+    --wds-space-150: 9px;
+    --wds-space-175: 10px;
+    --wds-space-200: 12px;
+    --wds-space-250: 15px;
+    --wds-space-300: 18px;
+    --wds-space-350: 21px;
+    --wds-space-400: 24px;
+    --wds-space-475: 28px;
+    --wds-space-500: 30px;
+    --wds-space-600: 36px;
+    --wds-space-700: 42px;
+    --wds-space-800: 48px;
+
+    /* radius */
+    --wds-border-radius-100: 2px;
+    --wds-border-radius-200: 4px;
+    --wds-border-radius-300: 6px;
+    --wds-border-radius-400: 8px;
+    --wds-border-radius-500: 10px;
+    --wds-border-radius-600: 12px;
+    --wds-border-radius-full: 1000px;
+    --wds-border-radius-surface-raised: var(--wds-border-radius-400);
+
+    /* font */
+    --wds-font-family-default: Madefor, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --wds-font-size-100: 10px;
+    --wds-font-size-200: 12px;
+    --wds-font-size-300: 14px;
+    --wds-font-size-400: 15px;
+    --wds-font-size-500: 16px;
+    --wds-font-size-600: 18px;
+    --wds-font-size-700: 20px;
+    --wds-font-size-800: 21px;
+    --wds-font-size-900: 28px;
+    --wds-font-weight-regular: 400;
+    --wds-font-weight-medium: 500;
+    --wds-font-weight-semi-bold: 600;
+    --wds-font-weight-bold: 700;
+
+    /* core color palette (from Foundation/stylable/colors.st.css → tokens) */
+    --wds-color-blue-100: #116dff;            /* B10 — primary */
+    --wds-color-blue-50:  #0f62e6;            /* primary hover */
+    --wds-color-blue-150: #116DFF;
+    --wds-color-blue-200: #5999ff;
+    --wds-color-blue-300: #a8caff;
+    --wds-color-blue-400: #d6e6fe;            /* B40 */
+    --wds-color-blue-500: #e7f0ff;            /* B50 — section helper bg */
+    --wds-color-blue-600: #f4f7ff;
+
+    --wds-color-black-100: #000624;           /* D10 — body text */
+    --wds-color-black-200: #44485f;
+    --wds-color-black-300: #595d70;
+    --wds-color-black-400: #868aa5;           /* secondary text */
+    --wds-color-black-500: #acafc4;
+    --wds-color-black-550: #cfd1dc;           /* input border */
+    --wds-color-black-600: #dfe5eb;           /* divider */
+    --wds-color-black-700: #eceff3;           /* surface sunken light */
+    --wds-color-black-750: #f6f7f9;
+    --wds-color-white: #ffffff;
+
+    --wds-color-yellow-100: #ffb700;
+    --wds-color-yellow-300: #ffd16e;
+    --wds-color-yellow-500: #fff0d1;          /* warning bg */
+
+    --wds-color-red-100:  #e62214;
+
+    /* semantic */
+    --wds-color-fill-surface-raised: var(--wds-color-white);
+    --wds-color-fill-surface-sunken: var(--wds-color-black-700);
+    --wds-color-text-primary: var(--wds-color-black-100);
+    --wds-color-text-standard-primary: var(--wds-color-black-100);
+    --wds-color-text-secondary: var(--wds-color-black-400);
+    --wds-color-text-link: var(--wds-color-blue-100);
+    --wds-color-border-standard-primary: var(--wds-color-blue-300);
+    --wds-color-border-dark-secondary: var(--wds-color-black-600);
+
+    /* shadows */
+    --wds-shadow-200: 0 0 6px rgba(0, 6, 36, 0.10), 0 2px 4px rgba(0, 6, 36, 0.10);
+    --wds-shadow-surface-raised: 0 0 0 1px var(--wds-color-black-600);
+
+    /* focus ring */
+    --wds-shadow-focus-standard: 0 0 0 3px var(--wds-color-blue-300);
+  }
+
+  /* ====================== Reset to WDS-ish defaults ====================== */
+  body, html {
+    margin: 0;
+    padding: 0;
+    font-family: var(--wds-font-family-default);
+    color: var(--wds-color-text-primary);
+    background: var(--wds-color-fill-surface-sunken);
+    font-size: var(--wds-font-size-300);
+    line-height: 1.4;
+  }
+
+  a { color: var(--wds-color-text-link); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ============== Top bar (BM chrome — preserved from original) ============== */
+  .bm-topbar {
+    background: #1a2937;
+    height: 56px;
+    padding: 0 16px;
+    gap: 16px;
+  }
+  .bm-topbar__left { gap: 12px; }
+  .bm-topbar__site-block {
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.06);
+    padding: 4px 10px 4px 6px;
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .bm-topbar__site-avatar {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: #fff;
+    color: var(--wds-color-blue-100);
+    display: grid; place-items: center;
+    font-size: 11px; font-weight: 700;
+  }
+  .bm-topbar__site-name-only { font-size: 13px; font-weight: 500; color: #fff; }
+  .bm-topbar__site-caret { color: #cbd3db; font-size: 10px; }
+  .bm-topbar__center { flex: 1; display: flex; justify-content: center; }
+  .bm-search {
+    width: 100%;
+    max-width: 460px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 6px;
+    padding: 7px 12px;
+    color: #cbd3db;
+    font-size: 13px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .bm-topbar__nav-item { font-size: 13px; padding: 6px 10px; display: flex; align-items: center; gap: 4px; }
+  .bm-topbar__nav-caret { font-size: 9px; opacity: 0.7; }
+  .bm-upgrade {
+    background: transparent; color: #fff;
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 18px; padding: 6px 16px;
+    font-size: 13px; font-weight: 500;
+  }
+  .bm-ai-btn {
+    background: linear-gradient(135deg, #4a7eff 0%, #8a4fff 100%);
+    color: #fff; border: none; border-radius: 6px;
+    padding: 7px 12px; font-size: 12px; font-weight: 600;
+    display: flex; align-items: center; gap: 6px; margin-left: 4px;
+  }
+  .bm-icon-btn { display: inline-grid; place-items: center; }
+  .bm-icon-btn svg { width: 18px; height: 18px; }
+  .bm-search__icon svg { width: 14px; height: 14px; display: block; }
+  .bm-ai-btn svg { width: 12px; height: 12px; }
+  .bm-icon-btn--badge { position: relative; }
+  .bm-icon-btn--badge::after {
+    content: attr(data-count);
+    position: absolute; top: 2px; right: 2px;
+    background: #ff3b30; color: #fff;
+    font-size: 9px; font-weight: 600;
+    border-radius: 8px; padding: 1px 4px;
+    min-width: 14px; text-align: center; line-height: 1.2;
+  }
+
+  /* ============== Sidenav (BM chrome — preserved from original) ============== */
+  .bm-sidenav-wrap .bm-sidenav,
+  .bm-sidenav-wrap .bm-sidenav__item,
+  .bm-sidenav-wrap .bm-sidenav__item-icon,
+  .bm-sidenav-wrap .bm-sidenav__item-chevron,
+  .bm-sidenav-wrap .bm-sidenav__edit-site { color: #fff; }
+  .bm-sidenav { padding: 0; background: transparent; border-right: none; }
+  .bm-sidenav__header {
+    padding: 16px 16px 8px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .bm-sidenav__quickactions {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 18px;
+    padding: 5px 12px;
+    font-size: 12px;
+    color: #fff;
+    display: flex; align-items: center; gap: 6px; cursor: pointer;
+  }
+  .bm-sidenav__list { padding: 4px 0; }
+  .bm-sidenav__item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 9px 16px; border-left: none;
+    color: #fff; font-size: 14px; position: relative;
+  }
+  .bm-sidenav__item-icon {
+    width: 18px; height: 18px;
+    color: #fff;
+    display: inline-flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .bm-sidenav__item-icon svg { width: 100%; height: 100%; display: block; }
+  .bm-sidenav__item-chevron { margin-left: auto; color: #fff; font-size: 11px; }
+  .bm-sidenav__item-badge {
+    margin-left: auto;
+    background: var(--wds-color-blue-100); color: #fff;
+    font-size: 11px; font-weight: 600;
+    border-radius: 10px; padding: 1px 7px; line-height: 1.4;
+  }
+  .bm-sidenav__item-new {
+    background: #ffc14d; color: #4a3300;
+    font-size: 9px; font-weight: 700;
+    padding: 2px 5px; border-radius: 3px; letter-spacing: 0.5px;
+  }
+  .bm-sidenav__item--active {
+    background: rgba(255,255,255,0.10); color: #fff; border-left: none; font-weight: 500;
+  }
+  .bm-sidenav__item--active .bm-sidenav__item-icon,
+  .bm-sidenav__item--active .bm-sidenav__item-chevron { color: #fff; }
+  .bm-sidenav__item-star { color: #ffc14d; margin-left: 6px; display: inline-flex; }
+  .bm-sidenav__item-star svg { width: 14px; height: 14px; display: block; }
+  .bm-sidenav__divider { height: 1px; background: rgba(255,255,255,0.10); margin: 6px 16px; }
+  .bm-sidenav__edit-site {
+    margin-top: auto; padding: 14px 16px;
+    border-top: 1px solid rgba(255,255,255,0.10);
+    display: flex; align-items: center; gap: 10px;
+    font-size: 13px; color: #fff; cursor: pointer;
+  }
+  .bm-sidenav__edit-site-dot {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ffc14d 0%, #ff7a00 100%);
+  }
+  .bm-sidenav-wrap {
+    background: #1a2937;
+    border-right: none;
+    display: flex; flex-direction: column;
+    min-height: calc(100vh - 56px);
+  }
+
+  /* =======================================================================
+     WDS PAGE  (mirrors @wix/design-system <Page>)
+     ======================================================================= */
+  .wds-page {
+    background: var(--wds-color-fill-surface-sunken);
+    min-height: calc(100vh - 56px);
+    padding-bottom: var(--wds-space-800);
+  }
+  .wds-page__container {
+    max-width: 1248px;
+    min-width: 864px;
+    margin: 0 auto;
+    padding: 0 var(--wds-space-800);
+  }
+
+  /* Page.Header */
+  .wds-page-header {
+    padding-top: var(--wds-space-400);
+    padding-bottom: var(--wds-space-400);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--wds-space-400);
+  }
+  .wds-page-header__title-col { min-width: 0; flex: 1; }
+
+  .wds-breadcrumbs {
+    display: flex; align-items: center;
+    gap: var(--wds-space-100);
+    color: var(--wds-color-text-secondary);
+    font-size: var(--wds-font-size-300);
+    margin-bottom: var(--wds-space-100);
+    margin-left: -10px;
+  }
+  .wds-breadcrumbs__item {
+    color: var(--wds-color-text-secondary);
+    text-decoration: none;
+    padding: 4px 8px;
+    border-radius: var(--wds-border-radius-200);
+    cursor: pointer;
+  }
+  .wds-breadcrumbs__item:hover { background: var(--wds-color-black-700); color: var(--wds-color-text-primary); text-decoration: none; }
+  .wds-breadcrumbs__item--current { color: var(--wds-color-text-primary); cursor: default; }
+  .wds-breadcrumbs__sep { color: var(--wds-color-black-500); font-size: 11px; }
+
+  /* WDS Heading H1 */
+  .wds-heading-h1 {
+    font-size: var(--wds-font-size-900);  /* 28px */
+    font-weight: var(--wds-font-weight-bold);
+    line-height: 1.2;
+    margin: 0 0 var(--wds-space-100);
+    color: var(--wds-color-text-primary);
+    display: flex;
+    align-items: center;
+    gap: var(--wds-space-200);
+  }
+  .wds-heading-h3 {
+    font-size: var(--wds-font-size-600); /* 18px */
+    font-weight: var(--wds-font-weight-bold);
+    margin: 0;
+    color: var(--wds-color-text-primary);
+  }
+  .wds-heading-h5 {
+    font-size: var(--wds-font-size-400); /* 15px */
+    font-weight: var(--wds-font-weight-medium);
+    margin: 0;
+    color: var(--wds-color-text-primary);
+  }
+
+  .wds-text {
+    font-size: var(--wds-font-size-300); /* 14px */
+    color: var(--wds-color-text-primary);
+  }
+  .wds-text--secondary { color: var(--wds-color-text-secondary); }
+  .wds-text--small { font-size: var(--wds-font-size-200); /* 12px */ }
+  .wds-text--medium { font-size: var(--wds-font-size-400); /* 15px */ }
+
+  /* WDS Badge (small pill) */
+  .wds-badge {
+    display: inline-flex; align-items: center;
+    background: var(--wds-color-black-700);
+    color: var(--wds-color-text-secondary);
+    font-size: 11px;
+    font-weight: var(--wds-font-weight-medium);
+    padding: 2px 8px;
+    border-radius: var(--wds-border-radius-200);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    line-height: 1.4;
+  }
+
+  /* =======================================================================
+     WDS BUTTON
+     ======================================================================= */
+  .wds-btn {
+    border: none;
+    height: 36px; /* button-size-medium */
+    padding: 0 var(--wds-space-300);
+    border-radius: var(--wds-border-radius-full);
+    font-family: inherit;
+    font-size: var(--wds-font-size-300);
+    font-weight: var(--wds-font-weight-medium);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--wds-space-100);
+    transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+    line-height: 1;
+  }
+  .wds-btn:focus-visible { box-shadow: var(--wds-shadow-focus-standard); outline: none; }
+
+  /* skin: standard, priority: primary */
+  .wds-btn--primary {
+    background: var(--wds-color-blue-100);
+    color: var(--wds-color-white);
+  }
+  .wds-btn--primary:hover { background: var(--wds-color-blue-50); }
+
+  /* skin: standard, priority: secondary */
+  .wds-btn--secondary {
+    background: var(--wds-color-white);
+    color: var(--wds-color-blue-100);
+    box-shadow: 0 0 0 1px var(--wds-color-blue-100) inset;
+  }
+  .wds-btn--secondary:hover { background: var(--wds-color-blue-500); }
+
+  /* TextButton (link-like) */
+  .wds-text-btn {
+    background: transparent;
+    border: none;
+    color: var(--wds-color-blue-100);
+    font: inherit;
+    font-weight: var(--wds-font-weight-medium);
+    padding: 0;
+    cursor: pointer;
+  }
+  .wds-text-btn:hover { text-decoration: underline; }
+
+  /* =======================================================================
+     WDS TABS  (mirrors @wix/design-system <Tabs>)
+     ======================================================================= */
+  .wds-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--wds-color-border-dark-secondary);
+    margin-bottom: var(--wds-space-400);
+  }
+  .wds-tabs__list {
+    display: flex;
+    list-style: none;
+    margin: 0; padding: 0;
+    gap: 0;
+    flex-grow: 1;
+  }
+  .wds-tab {
+    position: relative;
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -1px; /* overlap divider */
+    padding: 18px 18px 15px;  /* matches WDS medium */
+    font-family: inherit;
+    font-size: var(--wds-font-size-300);
+    font-weight: var(--wds-font-weight-regular);
+    color: var(--wds-color-text-primary);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+  }
+  .wds-tab:hover { background: var(--wds-color-black-700); }
+  .wds-tab--active {
+    border-bottom-color: var(--wds-color-blue-100);
+    color: var(--wds-color-blue-100);
+    font-weight: var(--wds-font-weight-medium);
+  }
+  .wds-tab__count {
+    background: var(--wds-color-black-700);
+    color: var(--wds-color-text-secondary);
+    border-radius: var(--wds-border-radius-full);
+    padding: 1px 8px;
+    font-size: 11px;
+    line-height: 1.5;
+    font-weight: var(--wds-font-weight-regular);
+  }
+  .wds-tab--active .wds-tab__count {
+    background: var(--wds-color-blue-500);
+    color: var(--wds-color-blue-100);
+  }
+
+  /* =======================================================================
+     WDS CARD  (mirrors @wix/design-system <Card>)
+     ======================================================================= */
+  .wds-card {
+    position: relative;
+    background: var(--wds-color-fill-surface-raised);
+    border-radius: var(--wds-border-radius-surface-raised);
+    box-shadow: var(--wds-shadow-surface-raised);
+    overflow: hidden;
+  }
+  .wds-card + .wds-card { margin-top: var(--wds-space-400); }
+  .wds-card__header {
+    padding: var(--wds-space-400) var(--wds-space-400) 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--wds-space-400);
+  }
+  .wds-card__header-text {
+    flex: 1; min-width: 0;
+  }
+  .wds-card__subtitle {
+    margin-top: var(--wds-space-100);
+    color: var(--wds-color-text-secondary);
+    font-size: var(--wds-font-size-300);
+  }
+  .wds-card__content {
+    padding: var(--wds-space-400);
+  }
+  .wds-card__divider {
+    border: 0;
+    border-top: 1px solid var(--wds-color-border-dark-secondary);
+    margin: var(--wds-space-400) 0;
+  }
+
+  /* =======================================================================
+     WDS LAYOUT / CELL
+     ======================================================================= */
+  .wds-layout {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--wds-space-400);
+    align-items: start;
+  }
+  .wds-cell-12 { grid-column: span 12; }
+  .wds-cell-6  { grid-column: span 6; }
+  .wds-cell-4  { grid-column: span 4; }
+  .wds-cell-8  { grid-column: span 8; }
+
+  /* =======================================================================
+     WDS FORMFIELD
+     ======================================================================= */
+  .wds-form-field { display: flex; flex-direction: column; }
+  .wds-form-field__label {
+    display: flex;
+    align-items: center;
+    gap: var(--wds-space-100);
+    font-size: var(--wds-font-size-300);
+    color: var(--wds-color-text-primary);
+    margin-bottom: var(--wds-space-100);
+    font-weight: var(--wds-font-weight-regular);
+  }
+  .wds-form-field__counter {
+    margin-left: auto;
+    color: var(--wds-color-text-secondary);
+    font-size: var(--wds-font-size-200);
+  }
+  .wds-form-field__info-icon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    border: 1px solid var(--wds-color-black-500);
+    color: var(--wds-color-black-400);
+    font-size: 11px;
+    font-style: italic;
+    cursor: help;
+  }
+
+  /* =======================================================================
+     WDS INPUT / DROPDOWN / NUMBERINPUT / INPUTAREA
+     ======================================================================= */
+  .wds-input, .wds-input-area, .wds-dropdown {
+    width: 100%;
+    height: 36px;
+    box-sizing: border-box;
+    padding: 0 var(--wds-space-200);
+    border: 1px solid var(--wds-color-black-550);
+    border-radius: var(--wds-border-radius-300);
+    background: var(--wds-color-white);
+    font-family: inherit;
+    font-size: var(--wds-font-size-300);
+    color: var(--wds-color-text-primary);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .wds-input:hover, .wds-dropdown:hover { border-color: var(--wds-color-blue-100); }
+  .wds-input:focus, .wds-input-area:focus, .wds-dropdown:focus {
+    border-color: var(--wds-color-blue-100);
+    box-shadow: 0 0 0 3px var(--wds-color-blue-300);
+  }
+  .wds-input-area {
+    height: auto;
+    min-height: 96px;
+    padding: var(--wds-space-150) var(--wds-space-200);
+    resize: vertical;
+    line-height: 1.45;
+  }
+  .wds-dropdown {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M3 4.5L6 7.5L9 4.5' stroke='%23000624' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 32px;
+    cursor: pointer;
+  }
+  .wds-dropdown--auto { width: auto; min-width: 220px; }
+
+  .wds-number-input {
+    position: relative; display: inline-block; width: 220px;
+  }
+  .wds-number-input__input {
+    width: 100%;
+    height: 36px;
+    box-sizing: border-box;
+    padding: 0 60px 0 var(--wds-space-200);
+    border: 1px solid var(--wds-color-black-550);
+    border-radius: var(--wds-border-radius-300);
+    background: var(--wds-color-white);
+    font-family: inherit;
+    font-size: var(--wds-font-size-300);
+    outline: none;
+  }
+  .wds-number-input__input:focus { border-color: var(--wds-color-blue-100); box-shadow: 0 0 0 3px var(--wds-color-blue-300); }
+  .wds-number-input__suffix {
+    position: absolute; right: 32px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--wds-color-text-secondary);
+    pointer-events: none;
+    font-size: var(--wds-font-size-300);
+  }
+  .wds-number-input__steppers {
+    position: absolute; right: 4px; top: 4px; bottom: 4px;
+    display: flex; flex-direction: column;
+    border-left: 1px solid var(--wds-color-black-600);
+  }
+  .wds-number-input__steppers button {
+    flex: 1; width: 24px;
+    border: none; background: transparent;
+    color: var(--wds-color-text-secondary);
+    padding: 0; cursor: pointer;
+    display: grid; place-items: center;
+  }
+  .wds-number-input__steppers button svg { display: block; }
+  .wds-number-input__steppers button:hover { color: var(--wds-color-blue-100); background: var(--wds-color-blue-500); }
+
+  /* =======================================================================
+     WDS TOGGLESWITCH (size: large, skin: standard)
+     ======================================================================= */
+  .wds-toggle {
+    position: relative;
+    display: inline-block;
+    width: 46px;
+    height: 22px;
+    background: var(--wds-color-black-500);
+    border-radius: var(--wds-border-radius-full);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.2s;
+    border: none;
+    outline: none;
+  }
+  .wds-toggle::after {
+    content: '';
+    position: absolute;
+    width: 18px; height: 18px;
+    background: #fff;
+    border-radius: 50%;
+    top: 2px; left: 2px;
+    transition: left 0.2s;
+    box-shadow: 0 2px 1px 0 rgba(0,0,0,0.42), 0 0 3px 0 rgba(0,0,0,0.12);
+  }
+  .wds-toggle--on { background: var(--wds-color-blue-100); }
+  .wds-toggle--on::after { left: 26px; }
+  .wds-toggle:focus-visible { box-shadow: var(--wds-shadow-focus-standard); }
+  .wds-toggle:hover { background: var(--wds-color-black-400); }
+  .wds-toggle--on:hover { background: var(--wds-color-blue-50); }
+
+  /* =======================================================================
+     WDS RADIOGROUP (vertical)
+     ======================================================================= */
+  .wds-radio-group {
+    display: flex; flex-direction: column;
+    gap: var(--wds-space-200);
+  }
+  .wds-radio-row {
+    display: flex; align-items: flex-start;
+    gap: var(--wds-space-200);
+    cursor: pointer;
+  }
+  .wds-radio {
+    appearance: none;
+    width: 16px; height: 16px;
+    border: 1.5px solid var(--wds-color-black-500);
+    border-radius: 50%;
+    background: var(--wds-color-white);
+    cursor: pointer;
+    flex-shrink: 0;
+    margin: 2px 0 0;
+    position: relative;
+    transition: all 0.15s;
+  }
+  .wds-radio:checked {
+    border-color: var(--wds-color-blue-100);
+    border-width: 5px;
+  }
+  .wds-radio:focus-visible { box-shadow: var(--wds-shadow-focus-standard); outline: none; }
+  .wds-radio-row__title {
+    font-size: var(--wds-font-size-300);
+    color: var(--wds-color-text-primary);
+    font-weight: var(--wds-font-weight-regular);
+  }
+  .wds-radio-row__sub {
+    font-size: var(--wds-font-size-200);
+    color: var(--wds-color-text-secondary);
+    margin-top: var(--wds-space-50);
+    line-height: 1.45;
+  }
+
+  /* =======================================================================
+     WDS SECTIONHELPER
+     ======================================================================= */
+  .wds-section-helper {
+    border-radius: var(--wds-border-radius-300);
+    padding: var(--wds-space-300) var(--wds-space-400);
+    border: 1px solid var(--wds-color-border-standard-primary);
+    background: var(--wds-color-blue-500);
+    display: flex;
+    gap: var(--wds-space-200);
+    align-items: flex-start;
+  }
+  .wds-section-helper--standard {
+    background: var(--wds-color-blue-500);
+    border-color: var(--wds-color-blue-300);
+  }
+  .wds-section-helper--warning {
+    background: var(--wds-color-yellow-500);
+    border-color: var(--wds-color-yellow-300);
+  }
+  .wds-section-helper__title {
+    font-size: var(--wds-font-size-300);
+    font-weight: var(--wds-font-weight-medium);
+    margin: 0 0 var(--wds-space-50);
+    color: var(--wds-color-text-primary);
+  }
+  .wds-section-helper__body {
+    font-size: var(--wds-font-size-300);
+    color: var(--wds-color-text-primary);
+    line-height: 1.5;
+    flex: 1;
+  }
+  .wds-section-helper__icon {
+    flex-shrink: 0;
+    color: var(--wds-color-blue-100);
+    width: 18px; height: 18px;
+    margin-top: 1px;
+  }
+  .wds-section-helper--warning .wds-section-helper__icon { color: #8a6d1c; }
+  .wds-section-helper__icon svg { width: 100%; height: 100%; display: block; }
+
+  /* =======================================================================
+     WDS TAG (chip)
+     ======================================================================= */
+  .wds-tag {
+    display: inline-flex; align-items: center;
+    background: var(--wds-color-black-700);
+    color: var(--wds-color-text-primary);
+    font-size: var(--wds-font-size-200);
+    padding: 4px 10px;
+    border-radius: var(--wds-border-radius-200);
+    line-height: 1.4;
+  }
+  .wds-tag-list {
+    display: flex; flex-wrap: wrap;
+    gap: var(--wds-space-100);
+  }
+
+  /* =======================================================================
+     WDS DIVIDER
+     ======================================================================= */
+  .wds-divider {
+    height: 1px;
+    background: var(--wds-color-border-dark-secondary);
+    border: 0;
+    margin: 0;
+  }
+
+  /* =======================================================================
+     WDS MARKETING LAYOUT (small variant for the intake-forms promo)
+     ======================================================================= */
+  .wds-marketing-layout {
+    display: flex; align-items: center;
+    gap: var(--wds-space-400);
+    justify-content: space-between;
+  }
+  .wds-marketing-layout__copy { flex: 1; }
+  .wds-marketing-layout__actions { margin-top: var(--wds-space-200); }
+  .wds-marketing-layout__art {
+    width: 92px; height: 80px;
+    border-radius: var(--wds-border-radius-400);
+    background: linear-gradient(135deg, var(--wds-color-blue-500) 0%, var(--wds-color-blue-400) 100%);
+    display: grid; place-items: center;
+    font-size: 36px;
+    flex-shrink: 0;
+  }
+
+  /* =======================================================================
+     Helpers
+     ======================================================================= */
+  .wds-toggle-row {
+    display: flex; align-items: flex-start;
+    gap: var(--wds-space-300);
+    padding: 0;
+  }
+  .wds-toggle-row__main { flex: 1; min-width: 0; }
+  .wds-toggle-row__title {
+    font-size: var(--wds-font-size-400);
+    color: var(--wds-color-text-primary);
+    font-weight: var(--wds-font-weight-medium);
+    line-height: 1.4;
+  }
+  .wds-toggle-row__sub {
+    font-size: var(--wds-font-size-300);
+    color: var(--wds-color-text-secondary);
+    margin-top: var(--wds-space-50);
+    line-height: 1.45;
+  }
+  .wds-nested-card {
+    margin-top: var(--wds-space-300);
+    padding: var(--wds-space-300);
+    background: var(--wds-color-black-750);
+    border-radius: var(--wds-border-radius-300);
+    border: 1px solid var(--wds-color-border-dark-secondary);
+  }
+  .wds-nested-card--hidden { display: none; }
+
+  .wds-inline-form {
+    display: flex; align-items: center; flex-wrap: wrap;
+    gap: var(--wds-space-200);
+    color: var(--wds-color-text-primary);
+    font-size: var(--wds-font-size-300);
+  }
+
+  /* =======================================================================
+     WDS ICONBUTTON (small)
+     ======================================================================= */
+  .wds-icon-btn {
+    width: 30px; height: 30px;
+    border-radius: var(--wds-border-radius-300);
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--wds-color-text-secondary);
+    cursor: pointer;
+    display: inline-grid; place-items: center;
+    flex-shrink: 0;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+  .wds-icon-btn:hover {
+    background: var(--wds-color-blue-500);
+    color: var(--wds-color-blue-100);
+  }
+  .wds-icon-btn svg { width: 16px; height: 16px; display: block; }
+
+  /* =======================================================================
+     WDS SEGMENTEDTOGGLE (small, two options — used for $ / %)
+     ======================================================================= */
+  .wds-segmented {
+    display: inline-flex;
+    border: 1px solid var(--wds-color-black-550);
+    border-radius: var(--wds-border-radius-300);
+    overflow: hidden;
+    background: var(--wds-color-white);
+    height: 36px;
+  }
+  .wds-segmented__option {
+    padding: 0 var(--wds-space-200);
+    min-width: 36px;
+    background: transparent;
+    border: none;
+    color: var(--wds-color-text-secondary);
+    font-family: inherit;
+    font-size: var(--wds-font-size-300);
+    cursor: pointer;
+  }
+  .wds-segmented__option + .wds-segmented__option {
+    border-left: 1px solid var(--wds-color-black-550);
+  }
+  .wds-segmented__option--active {
+    background: var(--wds-color-blue-500);
+    color: var(--wds-color-blue-100);
+    font-weight: var(--wds-font-weight-medium);
+  }
+
+  /* =======================================================================
+     WDS TOGGLESWITCH (size: small) — used inline with text labels
+     ======================================================================= */
+  .wds-toggle--small {
+    width: 28px; height: 14px;
+  }
+  .wds-toggle--small::after {
+    width: 10px; height: 10px;
+    top: 2px; left: 2px;
+  }
+  .wds-toggle--small.wds-toggle--on::after { left: 16px; }
+
+  /* =======================================================================
+     ADDITIONAL FEES — fee card list
+     ======================================================================= */
+  .wds-fee-list {
+    display: flex; flex-direction: column;
+    gap: var(--wds-space-200);
+    margin-bottom: var(--wds-space-200);
+  }
+  .wds-fee-list:empty { display: none; }
+  .wds-fee-card {
+    background: var(--wds-color-white);
+    border: 1px solid var(--wds-color-border-dark-secondary);
+    border-radius: var(--wds-border-radius-300);
+    padding: var(--wds-space-300);
+    transition: border-color 0.15s;
+  }
+  .wds-fee-card:hover { border-color: var(--wds-color-black-500); }
+
+  .wds-fee-card__top {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 280px) auto;
+    gap: var(--wds-space-200);
+    align-items: end;
+  }
+  .wds-fee-card__amount-wrap {
+    display: flex; gap: var(--wds-space-100);
+  }
+  .wds-fee-card__amount-wrap .wds-input { flex: 1; min-width: 0; }
+  .wds-fee-card__menu-wrap { position: relative; }
+  .wds-fee-card__menu-wrap .wds-icon-btn { margin-bottom: 3px; /* align with input baseline */ }
+
+  .wds-popover {
+    display: none;
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    background: var(--wds-color-white);
+    border: 1px solid var(--wds-color-border-dark-secondary);
+    border-radius: var(--wds-border-radius-300);
+    box-shadow: var(--wds-shadow-200);
+    padding: var(--wds-space-50) 0;
+    min-width: 160px;
+    z-index: 30;
+  }
+  .wds-popover.open { display: block; }
+  .wds-popover__item {
+    display: flex; align-items: center;
+    gap: var(--wds-space-200);
+    padding: var(--wds-space-150) var(--wds-space-300);
+    font-size: var(--wds-font-size-300);
+    color: var(--wds-color-text-primary);
+    cursor: pointer;
+    background: transparent; border: none;
+    width: 100%; text-align: left;
+    font-family: inherit;
+  }
+  .wds-popover__item:hover { background: var(--wds-color-black-750); }
+  .wds-popover__item--destructive { color: var(--wds-color-red-100); }
+  .wds-popover__item--destructive:hover { background: #fdeceb; }
+  .wds-popover__item svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  .wds-fee-card__bottom {
+    display: flex; align-items: center;
+    justify-content: space-between;
+    gap: var(--wds-space-200);
+    margin-top: var(--wds-space-300);
+    padding-top: var(--wds-space-200);
+    border-top: 1px dashed var(--wds-color-border-dark-secondary);
+  }
+  .wds-fee-card__per-row {
+    display: inline-flex; align-items: center;
+    gap: var(--wds-space-200);
+    font-size: var(--wds-font-size-300);
+    color: var(--wds-color-text-primary);
+    cursor: pointer;
+  }
+
+  /* =======================================================================
+     SERVICE AREA — locations + map preview
+     ======================================================================= */
+  .wds-sa-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--wds-space-400);
+  }
+  .wds-sa-list { display: flex; flex-direction: column; gap: var(--wds-space-150); }
+  .wds-sa-row {
+    display: flex; align-items: center;
+    gap: var(--wds-space-200);
+    padding: var(--wds-space-200) var(--wds-space-250);
+    background: var(--wds-color-white);
+    border: 1px solid var(--wds-color-border-dark-secondary);
+    border-radius: var(--wds-border-radius-300);
+  }
+  .wds-sa-row:hover { border-color: var(--wds-color-black-500); }
+  .wds-sa-row__pin {
+    width: 18px; height: 18px;
+    flex-shrink: 0;
+  }
+  .wds-sa-row__pin svg { width: 100%; height: 100%; display: block; }
+  .wds-sa-row__meta { flex: 1; min-width: 0; }
+  .wds-sa-row__name {
+    font-size: var(--wds-font-size-300);
+    font-weight: var(--wds-font-weight-medium);
+    color: var(--wds-color-text-primary);
+  }
+  .wds-sa-row__addr {
+    font-size: var(--wds-font-size-200);
+    color: var(--wds-color-text-secondary);
+    margin-top: 1px;
+  }
+  .wds-sa-row__radius {
+    display: flex; align-items: center;
+    gap: var(--wds-space-100);
+    flex-shrink: 0;
+  }
+  .wds-sa-row__radius .wds-input,
+  .wds-sa-row__radius .wds-dropdown {
+    height: 32px; font-size: var(--wds-font-size-300);
+  }
+  .wds-sa-row__radius .wds-input { width: 64px; padding-right: 8px; }
+  .wds-sa-row__radius .wds-dropdown { width: 70px; padding: 0 22px 0 8px; background-position: right 6px center; }
+
+  .wds-sa-add-wrap {
+    position: relative;
+    margin-top: var(--wds-space-200);
+  }
+  .wds-sa-add-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    min-width: 280px;
+    background: var(--wds-color-white);
+    border: 1px solid var(--wds-color-border-dark-secondary);
+    border-radius: var(--wds-border-radius-300);
+    box-shadow: var(--wds-shadow-200);
+    padding: var(--wds-space-50) 0;
+    z-index: 30;
+  }
+  .wds-sa-add-menu.open { display: block; }
+  .wds-sa-add-opt {
+    display: flex; align-items: center;
+    gap: var(--wds-space-200);
+    padding: var(--wds-space-200) var(--wds-space-250);
+    cursor: pointer;
+  }
+  .wds-sa-add-opt:hover { background: var(--wds-color-black-750); }
+  .wds-sa-add-opt.disabled { color: var(--wds-color-text-secondary); cursor: default; }
+  .wds-sa-add-opt.disabled:hover { background: transparent; }
+  .wds-sa-add-opt__pin { width: 14px; height: 14px; flex-shrink: 0; }
+  .wds-sa-add-opt__pin svg { width: 100%; height: 100%; }
+  .wds-sa-add-opt__meta__n { font-size: var(--wds-font-size-300); font-weight: var(--wds-font-weight-medium); display: block; }
+  .wds-sa-add-opt__meta__a { font-size: var(--wds-font-size-200); color: var(--wds-color-text-secondary); display: block; margin-top: 1px; }
+  .wds-sa-add-opt.disabled .wds-sa-add-opt__meta__n { color: var(--wds-color-text-secondary); }
+
+  .wds-sa-map {
+    position: relative;
+    width: 100%;
+    min-height: 280px;
+    border-radius: var(--wds-border-radius-300);
+    border: 1px solid var(--wds-color-border-dark-secondary);
+    overflow: hidden;
+    background: linear-gradient(180deg, #eaf1f5 0%, #dde7ef 100%);
+  }
+  .wds-sa-map__grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(50,83,106,0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(50,83,106,0.08) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  .wds-sa-map > svg {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+  }
+  .wds-sa-map__legend {
+    position: absolute;
+    top: 8px; left: 8px;
+    background: rgba(255,255,255,0.92);
+    border-radius: var(--wds-border-radius-200);
+    padding: 4px 8px;
+    font-size: var(--wds-font-size-200);
+    color: var(--wds-color-text-secondary);
+  }
+  .wds-sa-map__legend strong { color: var(--wds-color-text-primary); font-weight: var(--wds-font-weight-medium); }
+  .wds-sa-map__dots {
+    position: absolute;
+    bottom: 8px; left: 8px;
+    background: rgba(255,255,255,0.92);
+    border-radius: var(--wds-border-radius-200);
+    padding: 4px 8px;
+    font-size: var(--wds-font-size-200);
+    color: var(--wds-color-text-secondary);
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .wds-sa-map__dot-row { display: flex; align-items: center; gap: 5px; }
+  .wds-sa-map__dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* "NEW" badge that styles like a Wix design system Tag / scope chip */
+  .wds-badge--new {
+    background: var(--wds-color-yellow-500);
+    color: #8a5a00;
+    font-size: 9px;
+  }
+
+  /* =======================================================================
+     DISTANCE-BASED FEE — tier summary inside the fee card
+     (rendered when the fee has tiers; replaces the Amount column)
+     ======================================================================= */
+  .wds-fee-card--has-tiers .wds-fee-card__top {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .wds-fee-card--has-tiers .wds-fee-card__amount-col { display: none; }
+
+  .wds-tiers-summary {
+    margin-top: var(--wds-space-300);
+    padding: var(--wds-space-200) var(--wds-space-250);
+    background: var(--wds-color-black-750);
+    border: 1px solid var(--wds-color-border-dark-secondary);
+    border-radius: var(--wds-border-radius-300);
+  }
+  .wds-tiers-summary__head {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: var(--wds-space-200);
+    margin-bottom: var(--wds-space-150);
+  }
+  .wds-tiers-summary__title {
+    display: inline-flex; align-items: center; gap: var(--wds-space-150);
+    font-size: var(--wds-font-size-300);
+    font-weight: var(--wds-font-weight-medium);
+    color: var(--wds-color-text-primary);
+  }
+  .wds-tiers-summary__pin {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--wds-color-blue-100);
+    color: #fff;
+    display: inline-grid; place-items: center;
+    flex-shrink: 0;
+  }
+  .wds-tiers-summary__pin svg { width: 13px; height: 13px; }
+  .wds-tiers-summary__loc {
+    font-size: var(--wds-font-size-200);
+    color: var(--wds-color-text-secondary);
+    font-weight: var(--wds-font-weight-regular);
+  }
+  .wds-tiers-summary__list { display: flex; flex-direction: column; }
+  .wds-ts-row {
+    display: grid;
+    grid-template-columns: 14px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--wds-space-150);
+    padding: 6px 0;
+    font-size: var(--wds-font-size-300);
+    color: var(--wds-color-text-primary);
+    border-top: 1px solid var(--wds-color-border-dark-secondary);
+  }
+  .wds-ts-row:first-child { border-top: 0; }
+  .wds-ts-row__marker {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: rgba(17,109,255,0.30);
+    border: 2px solid var(--wds-color-blue-100);
+  }
+  .wds-ts-row--t2 .wds-ts-row__marker { background: rgba(17,109,255,0.20); }
+  .wds-ts-row--t3 .wds-ts-row__marker { background: rgba(17,109,255,0.12); }
+  .wds-ts-row--rest .wds-ts-row__marker {
+    background: transparent;
+    border-style: dashed;
+    border-color: var(--wds-color-black-500);
+  }
+  .wds-ts-row__amount {
+    font-weight: var(--wds-font-weight-semi-bold);
+  }
+
+  /* =======================================================================
+     WDS CUSTOMMODALLAYOUT  (mirrors @wix/design-system <CustomModalLayout>)
+     ======================================================================= */
+  .wds-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 6, 36, 0.55);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+  }
+  .wds-modal-overlay.open { display: flex; }
+  .wds-modal {
+    width: 640px;
+    max-width: calc(100% - 32px);
+    max-height: calc(100vh - 64px);
+    background: var(--wds-color-fill-surface-raised);
+    border-radius: var(--wds-border-radius-surface-raised);
+    box-shadow: 0 0 24px rgba(0, 6, 36, 0.20), 0 8px 8px rgba(0, 6, 36, 0.10);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .wds-modal__header {
+    padding: var(--wds-space-400) var(--wds-space-475) var(--wds-space-100);
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: var(--wds-space-300);
+  }
+  .wds-modal__title-col { flex: 1; min-width: 0; }
+  .wds-modal__title {
+    font-size: var(--wds-font-size-700);
+    font-weight: var(--wds-font-weight-bold);
+    color: var(--wds-color-text-primary);
+    margin: 0;
+    line-height: 1.3;
+  }
+  .wds-modal__subtitle {
+    font-size: var(--wds-font-size-300);
+    color: var(--wds-color-text-secondary);
+    margin: var(--wds-space-50) 0 0;
+    line-height: 1.5;
+  }
+  .wds-modal__close {
+    background: transparent; border: none;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    color: var(--wds-color-text-secondary);
+    display: inline-grid; place-items: center;
+    flex-shrink: 0;
+  }
+  .wds-modal__close:hover { background: var(--wds-color-black-700); color: var(--wds-color-text-primary); }
+  .wds-modal__close svg { width: 16px; height: 16px; }
+  .wds-modal__body {
+    padding: var(--wds-space-300) var(--wds-space-475) var(--wds-space-400);
+    display: flex; flex-direction: column;
+    gap: var(--wds-space-300);
+    overflow-y: auto;
+    flex: 1;
+  }
+  .wds-modal__footer {
+    padding: var(--wds-space-300) var(--wds-space-475);
+    border-top: 1px solid var(--wds-color-border-dark-secondary);
+    display: flex; align-items: center;
+    justify-content: space-between;
+    gap: var(--wds-space-200);
+  }
+  .wds-modal__footer-right { display: flex; gap: var(--wds-space-200); }
+
+  /* Location single-select dropdown (used inside the modal) */
+  .wds-loc-select {
+    position: relative;
+    width: 100%;
+  }
+  .wds-loc-select__btn {
+    width: 100%;
+    display: flex; align-items: center;
+    gap: var(--wds-space-200);
+    padding: var(--wds-space-150) var(--wds-space-250);
+    background: var(--wds-color-white);
+    border: 1px solid var(--wds-color-black-550);
+    border-radius: var(--wds-border-radius-300);
+    font-family: inherit;
+    cursor: pointer;
+    text-align: left;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .wds-loc-select__btn:hover { border-color: var(--wds-color-blue-100); }
+  .wds-loc-select.open .wds-loc-select__btn {
+    border-color: var(--wds-color-blue-100);
+    box-shadow: 0 0 0 3px var(--wds-color-blue-300);
+  }
+  .wds-loc-select__pin { width: 16px; height: 18px; flex-shrink: 0; color: var(--wds-color-blue-100); }
+  .wds-loc-select__pin svg { width: 100%; height: 100%; }
+  .wds-loc-select__meta { flex: 1; min-width: 0; }
+  .wds-loc-select__name { font-size: var(--wds-font-size-300); font-weight: var(--wds-font-weight-medium); color: var(--wds-color-text-primary); display: block; }
+  .wds-loc-select__addr { font-size: var(--wds-font-size-200); color: var(--wds-color-text-secondary); display: block; margin-top: 1px; }
+  .wds-loc-select__caret { color: var(--wds-color-text-secondary); flex-shrink: 0; }
+  .wds-loc-select__menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0; right: 0;
+    background: var(--wds-color-white);
+    border: 1px solid var(--wds-color-border-dark-secondary);
+    border-radius: var(--wds-border-radius-300);
+    box-shadow: var(--wds-shadow-200);
+    padding: var(--wds-space-50) 0;
+    z-index: 10;
+    max-height: 240px;
+    overflow-y: auto;
+  }
+  .wds-loc-select.open .wds-loc-select__menu { display: block; }
+  .wds-loc-option {
+    display: flex; flex-direction: column;
+    padding: var(--wds-space-200) var(--wds-space-250);
+    cursor: pointer;
+  }
+  .wds-loc-option:hover { background: var(--wds-color-black-750); }
+  .wds-loc-option.selected { background: var(--wds-color-blue-500); }
+  .wds-loc-option__name { font-size: var(--wds-font-size-300); font-weight: var(--wds-font-weight-medium); color: var(--wds-color-text-primary); }
+  .wds-loc-option__addr { font-size: var(--wds-font-size-200); color: var(--wds-color-text-secondary); margin-top: 1px; }
+
+  /* Distance preview map (inside modal) */
+  .wds-dist-map {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    border-radius: var(--wds-border-radius-300);
+    border: 1px solid var(--wds-color-border-dark-secondary);
+    overflow: hidden;
+    background: linear-gradient(180deg, #eaf1f5 0%, #dde7ef 100%);
+  }
+  .wds-dist-map__grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(50,83,106,0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(50,83,106,0.08) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  .wds-dist-map > svg {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+  }
+  .wds-dist-map__legend {
+    position: absolute; top: 8px; left: 8px;
+    background: rgba(255,255,255,0.92);
+    border-radius: var(--wds-border-radius-200);
+    padding: 4px 8px;
+    font-size: var(--wds-font-size-200);
+    color: var(--wds-color-text-secondary);
+  }
+
+  /* Tier list header + rows (inside modal) */
+  .wds-tier-header {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: var(--wds-space-200);
+  }
+  .wds-tier-header__title {
+    font-size: var(--wds-font-size-400);
+    font-weight: var(--wds-font-weight-medium);
+    color: var(--wds-color-text-primary);
+  }
+  .wds-tier-list { display: flex; flex-direction: column; }
+  .wds-tier-row {
+    display: grid;
+    grid-template-columns: 14px auto minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: var(--wds-space-200);
+    padding: var(--wds-space-200) 0;
+    border-top: 1px solid var(--wds-color-border-dark-secondary);
+  }
+  .wds-tier-row:first-child { border-top: 0; }
+  .wds-tier-row__marker {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: rgba(17,109,255,0.30);
+    border: 2px solid var(--wds-color-blue-100);
+  }
+  .wds-tier-row--t2 .wds-tier-row__marker { background: rgba(17,109,255,0.20); }
+  .wds-tier-row--t3 .wds-tier-row__marker { background: rgba(17,109,255,0.12); }
+  .wds-tier-row--rest .wds-tier-row__marker {
+    background: transparent;
+    border-style: dashed;
+    border-color: var(--wds-color-black-500);
+  }
+  .wds-tier-row__label {
+    font-size: var(--wds-font-size-300);
+    color: var(--wds-color-text-primary);
+    white-space: nowrap;
+  }
+  .wds-tier-row__rest-text {
+    font-size: var(--wds-font-size-300);
+    color: var(--wds-color-text-secondary);
+    font-style: italic;
+  }
+  .wds-tier-row__distance {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--wds-color-white);
+    border: 1px solid var(--wds-color-black-550);
+    border-radius: var(--wds-border-radius-300);
+    padding: 0 var(--wds-space-200);
+    height: 32px;
+  }
+  .wds-tier-row__distance input {
+    width: 56px; border: none; outline: none;
+    font-family: inherit; font-size: var(--wds-font-size-300);
+    background: transparent;
+    text-align: right;
+  }
+  .wds-tier-row__distance .unit {
+    color: var(--wds-color-text-secondary);
+    font-size: var(--wds-font-size-300);
+  }
+  .wds-tier-row__price {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: var(--wds-color-white);
+    border: 1px solid var(--wds-color-black-550);
+    border-radius: var(--wds-border-radius-300);
+    padding: 0 var(--wds-space-200);
+    height: 32px;
+  }
+  .wds-tier-row__price .currency {
+    color: var(--wds-color-text-secondary);
+    font-size: var(--wds-font-size-300);
+  }
+  .wds-tier-row__price input {
+    width: 64px; border: none; outline: none;
+    font-family: inherit; font-size: var(--wds-font-size-300);
+    background: transparent;
+    text-align: right;
+  }
+  .wds-tier-row__remove {
+    width: 28px; height: 28px;
+    border: none; background: transparent;
+    color: var(--wds-color-text-secondary);
+    border-radius: 50%; cursor: pointer;
+    display: inline-grid; place-items: center;
+  }
+  .wds-tier-row__remove:hover { background: var(--wds-color-black-700); color: var(--wds-color-red-100); }
+  .wds-tier-row__remove[disabled] { opacity: 0.4; cursor: not-allowed; }
+  .wds-tier-row__remove[disabled]:hover { background: transparent; color: var(--wds-color-text-secondary); }
+  .wds-tier-row__remove svg { width: 14px; height: 14px; }
+
+  /* WDS Page.FixedFooter (sticky save bar) */
+  .wds-fixed-footer {
+    position: sticky;
+    bottom: 0;
+    z-index: 1100;
+    margin: var(--wds-space-400) 0 0;
+    display: none;
+  }
+  .wds-fixed-footer.show { display: block; }
+  .wds-fixed-footer__inner {
+    background: var(--wds-color-fill-surface-raised);
+    border-top: 1px solid var(--wds-color-border-dark-secondary);
+    box-shadow: 0 -4px 12px rgba(0,6,36,0.08);
+    padding: var(--wds-space-200) var(--wds-space-400);
+    display: flex; align-items: center; gap: var(--wds-space-200);
+    border-radius: var(--wds-border-radius-300) var(--wds-border-radius-300) 0 0;
+  }
+  .wds-fixed-footer__msg {
+    flex: 1;
+    color: var(--wds-color-text-primary);
+    font-size: var(--wds-font-size-300);
+    font-weight: var(--wds-font-weight-medium);
+  }
+</style>
+</head>
+<body>
+
+<!-- =====================================================================
+     Inline SVG icon library. Single-stroke, monochrome, currentColor —
+     matches the visual style of @wix/wix-ui-icons-common. Reference these
+     via <svg><use href="#icon-name"/></svg>.
+     ===================================================================== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- Generic UI -->
+    <symbol id="i-search" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M11.5 11.5L15 15M2.5 8a5.5 5.5 0 1 1 11 0 5.5 5.5 0 0 1-11 0z"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M9 2v1M5 7a4 4 0 1 1 8 0c0 4 1.5 5 1.5 6h-11C3.5 12 5 11 5 7zM7.5 14.5a1.5 1.5 0 0 0 3 0"/></symbol>
+    <symbol id="i-message" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d="M2.5 4.5h13v8h-9l-3 2.5v-2.5h-1z"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d="M2 4h14v10H2zM2 4l7 5 7-5"/></symbol>
+    <symbol id="i-sparkle" viewBox="0 0 18 18"><path fill="currentColor" d="M9 1.5l1.6 4.4L15 7.5l-4.4 1.6L9 13.5l-1.6-4.4L3 7.5l4.4-1.6z"/></symbol>
+    <symbol id="i-pencil" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d="M3 15h3l9-9-3-3-9 9zM12 4l3 3"/></symbol>
+
+    <!-- Sidenav -->
+    <symbol id="i-home" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d="M2.5 8.5L9 3l6.5 5.5V15h-4v-4h-5v4h-4z"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d="M2.5 4.5h13v11h-13zM2.5 7.5h13M5.5 2.5v3M12.5 2.5v3"/></symbol>
+    <symbol id="i-dollar" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M9 2v14M12 5.5C12 4 10.7 3 9 3S6 4 6 5.5 7 7.5 9 8s3 1 3 2.5S10.7 13 9 13 6 12 6 10.5"/></symbol>
+    <symbol id="i-cart" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M2 3h2l2 8.5h9L17 6H5"/><circle cx="7" cy="14.5" r="1.2" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="14" cy="14.5" r="1.2" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
+    <symbol id="i-box" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d="M9 2L2.5 5.5v7L9 16l6.5-3.5v-7zM2.5 5.5L9 9l6.5-3.5M9 9v7"/></symbol>
+    <symbol id="i-image" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d="M2.5 3.5h13v11h-13zM2.5 12L7 8l3 3 2-2 3 3"/><circle cx="6" cy="6.5" r="1" fill="currentColor"/></symbol>
+    <symbol id="i-people" viewBox="0 0 18 18"><circle cx="6.5" cy="6" r="2.2" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12.5" cy="7" r="1.8" fill="none" stroke="currentColor" stroke-width="1.5"/><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" d="M2 14.5c0-2.2 2-4 4.5-4s4.5 1.8 4.5 4M11 14.5c0-1.7 1.5-3 3-3s2.5.6 2.5 1.5"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" d="M3 3h4v4H3zM11 3h4v4h-4zM3 11h4v4H3zM11 11h4v4h-4z"/></symbol>
+    <symbol id="i-mobile" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d="M5 2h8v14H5zM7.5 14h3"/></symbol>
+    <symbol id="i-megaphone" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" d="M3 7v4l9 4V3zM3 7H2.5a1.5 1.5 0 0 0 0 4H3M5 11.5l1 3.5"/></symbol>
+    <symbol id="i-inbox" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d="M2.5 3.5h13v11h-13zM2.5 10h3l1 2h5l1-2h3"/></symbol>
+    <symbol id="i-user" viewBox="0 0 18 18"><circle cx="9" cy="6" r="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M3.5 15.5c0-2.8 2.5-5 5.5-5s5.5 2.2 5.5 5"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" d="M2.5 14.5h13M4 12V8M8 12V5M12 12V9M16 12V6"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d="M10 2L4 10h4l-1 6 6-8h-4z"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 18 18"><circle cx="9" cy="9" r="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d="M9 1.5v2M9 14.5v2M2.5 9h-1M16.5 9h-1M4.4 4.4l1.4 1.4M12.2 12.2l1.4 1.4M4.4 13.6l1.4-1.4M12.2 5.8l1.4-1.4"/></symbol>
+    <symbol id="i-document" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d="M4 2h6l4 4v10H4zM10 2v4h4M6 9h6M6 12h6"/></symbol>
+    <symbol id="i-code" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" d="M6 5L2 9l4 4M12 5l4 4-4 4"/></symbol>
+
+    <!-- SectionHelper -->
+    <symbol id="i-info" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M9 8.25v4.5"/><circle cx="9" cy="5.5" r="0.9" fill="currentColor"/></symbol>
+    <symbol id="i-warning" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d="M9 1.75L17 15.5H1z"/><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M9 7v4"/><circle cx="9" cy="13" r="0.9" fill="currentColor"/></symbol>
+    <symbol id="i-clipboard" viewBox="0 0 36 36"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M11 7h14v24H11zM14 7v-2h8v2zM14 14h8M14 19h8M14 24h6"/></symbol>
+    <symbol id="i-star" viewBox="0 0 18 18"><path fill="currentColor" d="M9 1.5l2.3 4.7 5.2.7-3.8 3.6.9 5.1L9 13.2l-4.6 2.4.9-5.1L1.5 7l5.2-.8z"/></symbol>
+    <symbol id="i-chevron-down" viewBox="0 0 12 12"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M3 4.5L6 7.5L9 4.5"/></symbol>
+    <symbol id="i-chevron-up" viewBox="0 0 12 12"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M3 7.5L6 4.5L9 7.5"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M3.5 5h11M7 5V3.5h4V5M5 5l.7 10.5h6.6L13 5M8 8v5M10 8v5"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M9 3v12M3 9h12"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 18 18"><path fill="currentColor" d="M9 1.5c-3 0-5.25 2.25-5.25 5.1 0 3.7 4.3 8.7 5 9.4.13.13.37.13.5 0 .7-.7 5-5.7 5-9.4 0-2.85-2.25-5.1-5.25-5.1z"/><circle cx="9" cy="6.6" r="1.7" fill="#fff"/></symbol>
+    <symbol id="i-more-vert" viewBox="0 0 18 18"><circle cx="9" cy="4" r="1.4" fill="currentColor"/><circle cx="9" cy="9" r="1.4" fill="currentColor"/><circle cx="9" cy="14" r="1.4" fill="currentColor"/></symbol>
+    <symbol id="i-x" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M5 5L13 13M13 5L5 13"/></symbol>
+  </defs>
+</svg>
+
+<!-- ====================================================================
+     BM Top bar (preserved from original — outside the WDS form scope)
+     ==================================================================== -->
+<header class="bm-topbar">
+  <div class="bm-topbar__left">
+    <div class="bm-logo">Wix STUDIO</div>
+    <div class="bm-topbar__site-block">
+      <div class="bm-topbar__site-avatar">RL</div>
+      <span class="bm-topbar__site-caret"><svg width="10" height="10"><use href="#i-chevron-down"/></svg></span>
+    </div>
+    <div class="bm-topbar__site-name-only">A La Cart</div>
+    <span class="bm-topbar__site-caret"><svg width="10" height="10"><use href="#i-chevron-down"/></svg></span>
+  </div>
+  <nav class="bm-topbar__nav">
+    <a href="#" class="bm-topbar__nav-item">Resources <span class="bm-topbar__nav-caret"><svg width="9" height="9"><use href="#i-chevron-down"/></svg></span></a>
+    <a href="#" class="bm-topbar__nav-item">Community <span class="bm-topbar__nav-caret"><svg width="9" height="9"><use href="#i-chevron-down"/></svg></span></a>
+    <a href="#" class="bm-topbar__nav-item">Help <span class="bm-topbar__nav-caret"><svg width="9" height="9"><use href="#i-chevron-down"/></svg></span></a>
+    <button class="bm-upgrade">Upgrade</button>
+  </nav>
+  <div class="bm-topbar__center">
+    <div class="bm-search">
+      <span class="bm-search__icon"><svg><use href="#i-search"/></svg></span>
+      <span>Search for tools, apps, help &amp; more...</span>
+    </div>
+  </div>
+  <div class="bm-topbar__right">
+    <button class="bm-icon-btn bm-icon-btn--badge" aria-label="Messages" data-count="50"><svg><use href="#i-message"/></svg></button>
+    <button class="bm-icon-btn bm-icon-btn--badge" aria-label="Notifications" data-count="99+"><svg><use href="#i-bell"/></svg></button>
+    <button class="bm-icon-btn bm-icon-btn--badge" aria-label="Mail" data-count="11"><svg><use href="#i-mail"/></svg></button>
+    <div class="bm-avatar">RL</div>
+    <button class="bm-ai-btn"><svg><use href="#i-sparkle"/></svg> AI</button>
+  </div>
+</header>
+
+<div class="bm-shell">
+
+  <!-- BM left side nav (preserved) -->
+  <div class="bm-sidenav-wrap">
+    <aside class="bm-sidenav">
+      <div class="bm-sidenav__header">
+        <button class="bm-sidenav__quickactions">Quick Actions <svg width="9" height="9"><use href="#i-chevron-down"/></svg></button>
+        <span style="color: var(--wds-color-text-secondary); cursor: pointer;">‹</span>
+      </div>
+      <nav class="bm-sidenav__list">
+        <a href="#" class="bm-sidenav__item"><span class="bm-sidenav__item-icon"><svg><use href="#i-home"/></svg></span>Home</a>
+        <a href="#" class="bm-sidenav__item"><span class="bm-sidenav__item-icon"><svg><use href="#i-sparkle"/></svg></span>AI Agents<span class="bm-sidenav__item-new">NEW</span><span class="bm-sidenav__item-chevron">›</span></a>
+        <a href="#" class="bm-sidenav__item"><span class="bm-sidenav__item-icon"><svg><use href="#i-calendar"/></svg></span>Booking Calendar<span class="bm-sidenav__item-chevron">›</span></a>
+        <a href="#" class="bm-sidenav__item"><span class="bm-sidenav__item-icon"><svg><use href="#i-dollar"/></svg></span>Getting Paid<span class="bm-sidenav__item-chevron">›</span></a>
+        <a href="#" class="bm-sidenav__item"><span class="bm-sidenav__item-icon"><svg><use href="#i-cart"/></svg></span>Sales<span class="bm-sidenav__item-chevron">›</span></a>
+        <a href="#" class="bm-sidenav__item"><span class="bm-sidenav__item-icon"><svg><use href="#i-box"/></svg></span>Catalog<span class="bm-sidenav__item-chevron">›</span></a>
+        <a href="#" class="bm-sidenav__item"><span class="bm-sidenav__item-icon"><svg><use href="#i-image"/></svg></span>Portfolio<span class="bm-sidenav__item-chevron">›</span></a>
+        <a href="#" class="bm-sidenav__item"><span class="bm-sidenav__item-icon"><svg><use href="#i-people"/></svg></span>Groups</a>
+        <a href="#" class="bm-sidenav__item"><span class="bm-sidenav__item-icon"><svg><use href="#i-grid"/></svg></span>Apps<span class="bm-sidenav__item-badge">4</span><span class="bm-sidenav__item-chevron">›</span></a>
+        <div class="bm-sidenav__divider"></div>
+        <a href="#" class="bm-sidenav__item"><span class="bm-sidenav__item-icon"><svg><use href="#i-mobile"/></svg></span>Site &amp; Mobile App<span class="bm-sidenav__item-chevron">›</span></a>
+        <a href="#" class="bm-sidenav__item"><span class="bm-sidenav__item-icon"><svg><use href="#i-megaphone"/></svg></span>Marketing<span class="bm-sidenav__item-chevron">›</span></a>
+        <a href="#" class="bm-sidenav__item"><span class="bm-sidenav__item-icon"><svg><use href="#i-inbox"/></svg></span>Inbox</a>
+        <a href="#" class="bm-sidenav__item"><span class="bm-sidenav__item-icon"><svg><use href="#i-user"/></svg></span>Customers &amp; Leads<span class="bm-sidenav__item-chevron">›</span></a>
+        <a href="#" class="bm-sidenav__item"><span class="bm-sidenav__item-icon"><svg><use href="#i-chart"/></svg></span>Analytics<span class="bm-sidenav__item-chevron">›</span></a>
+        <a href="#" class="bm-sidenav__item"><span class="bm-sidenav__item-icon"><svg><use href="#i-bolt"/></svg></span>Automations<span class="bm-sidenav__item-chevron">›</span></a>
+        <a href="#" class="bm-sidenav__item bm-sidenav__item--active"><span class="bm-sidenav__item-icon"><svg><use href="#i-gear"/></svg></span>Settings<span class="bm-sidenav__item-star"><svg><use href="#i-star"/></svg></span></a>
+        <a href="#" class="bm-sidenav__item"><span class="bm-sidenav__item-icon"><svg><use href="#i-document"/></svg></span>Website Content<span class="bm-sidenav__item-chevron">›</span></a>
+        <a href="#" class="bm-sidenav__item"><span class="bm-sidenav__item-icon"><svg><use href="#i-code"/></svg></span>Developer Tools<span class="bm-sidenav__item-chevron">›</span></a>
+      </nav>
+      <div class="bm-sidenav__edit-site">
+        <span class="bm-sidenav__edit-site-dot"></span>
+        <svg width="14" height="14" style="color: var(--wds-color-text-primary);"><use href="#i-pencil"/></svg>
+        Edit Site
+      </div>
+    </aside>
+  </div>
+
+  <!-- ====================================================================
+       <Page>
+       ==================================================================== -->
+  <main class="wds-page">
+    <div class="wds-page__container">
+
+      <!-- <Page.Header> -->
+      <header class="wds-page-header">
+        <div class="wds-page-header__title-col">
+          <nav class="wds-breadcrumbs" aria-label="Breadcrumb">
+            <a href="#" class="wds-breadcrumbs__item">Settings</a>
+            <span class="wds-breadcrumbs__sep">›</span>
+            <a href="#" class="wds-breadcrumbs__item">Bookings Settings</a>
+            <span class="wds-breadcrumbs__sep">›</span>
+            <a href="#" class="wds-breadcrumbs__item">Booking Policies</a>
+            <span class="wds-breadcrumbs__sep">›</span>
+            <span class="wds-breadcrumbs__item wds-breadcrumbs__item--current">Default policy</span>
+          </nav>
+          <h1 class="wds-heading-h1">
+            Default policy
+            <span class="wds-badge">Default</span>
+          </h1>
+          <p class="wds-text wds-text--secondary" style="margin: 0;">Set the booking, cancellation and waitlist policies for the connected services.</p>
+        </div>
+        <div style="display: flex; gap: var(--wds-space-200); flex-shrink: 0;">
+          <button class="wds-btn wds-btn--secondary">Cancel</button>
+          <button class="wds-btn wds-btn--primary">Save</button>
+        </div>
+      </header>
+
+      <!-- <Tabs> -->
+      <nav class="wds-tabs" role="tablist">
+        <ul class="wds-tabs__list">
+          <li><button class="wds-tab wds-tab--active" data-tab="general" role="tab">General</button></li>
+          <li><button class="wds-tab" data-tab="shared" role="tab">
+            Shared rules <span class="wds-tab__count">7</span>
+          </button></li>
+          <li><button class="wds-tab" data-tab="appointment" role="tab">
+            Appointments <span class="wds-tab__count">3</span>
+          </button></li>
+          <li><button class="wds-tab" data-tab="class" role="tab">
+            Classes <span class="wds-tab__count">2</span>
+          </button></li>
+          <li><button class="wds-tab" data-tab="course" role="tab">
+            Courses <span class="wds-tab__count">1</span>
+          </button></li>
+        </ul>
+      </nav>
+
+      <!-- ====================================================================
+           Tab: GENERAL
+           ==================================================================== -->
+      <div class="tab-pane" data-pane="general">
+
+        <!-- Card: Policy details -->
+        <section class="wds-card">
+          <div class="wds-card__header">
+            <div class="wds-card__header-text">
+              <h2 class="wds-heading-h3">Policy details</h2>
+              <p class="wds-card__subtitle">Identify this policy. The name and description are shown to clients on the booking page.</p>
+            </div>
+          </div>
+          <div class="wds-card__content">
+            <div class="wds-layout">
+              <div class="wds-cell-12">
+                <div class="wds-form-field">
+                  <label class="wds-form-field__label" for="policy-name">
+                    Policy name
+                    <span class="wds-form-field__info-icon" title="The name shown to clients">i</span>
+                    <span class="wds-form-field__counter"><span id="name-count">14</span>/40</span>
+                  </label>
+                  <input type="text" id="policy-name" class="wds-input" maxlength="40" value="Default policy" />
+                </div>
+              </div>
+
+              <div class="wds-cell-12">
+                <div class="wds-form-field">
+                  <label class="wds-form-field__label" for="policy-desc">
+                    Policy description
+                    <span class="wds-form-field__info-icon" title="Description shown to clients">i</span>
+                    <span class="wds-form-field__counter"><span id="desc-count">0</span>/2500</span>
+                  </label>
+                  <textarea id="policy-desc" class="wds-input-area" maxlength="2500"
+                    placeholder="e.g., To cancel or reschedule, please contact us at least 24 hours in advance"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Card: Connected services -->
+        <section class="wds-card">
+          <div class="wds-card__header">
+            <div class="wds-card__header-text">
+              <h2 class="wds-heading-h3">Connected services</h2>
+              <p class="wds-card__subtitle">47 services use this policy.</p>
+            </div>
+          </div>
+          <div class="wds-card__content">
+            <div class="wds-tag-list">
+              <span class="wds-tag">Gel Pedicure</span>
+              <span class="wds-tag">football</span>
+              <span class="wds-tag">Service 122</span>
+              <span class="wds-tag">Appointment pp</span>
+              <span class="wds-tag" style="background: var(--wds-color-black-750); color: var(--wds-color-text-secondary); cursor: pointer;">+ 43 more</span>
+            </div>
+            <div style="margin-top: var(--wds-space-300); display: flex; align-items: flex-start; gap: var(--wds-space-100);">
+              <span class="wds-form-field__info-icon" style="margin-top: 1px;">i</span>
+              <span class="wds-text wds-text--secondary">To connect this policy to a service, go to the policies list or the service page. <button class="wds-text-btn">Learn more</button></span>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- ====================================================================
+           Tab: SHARED
+           ==================================================================== -->
+      <div class="tab-pane" data-pane="shared" hidden>
+
+        <!-- SectionHelper banner -->
+        <div class="wds-section-helper wds-section-helper--standard" style="margin-bottom: var(--wds-space-400);">
+          <span class="wds-section-helper__icon"><svg><use href="#i-info"/></svg></span>
+          <div class="wds-section-helper__body">
+            <strong style="font-weight: var(--wds-font-weight-medium);">Shared rules</strong> apply to every service type connected to this policy — appointments, classes and courses.
+          </div>
+        </div>
+
+        <!-- Card: Cancel & reschedule (combined since they share the same UI shape) -->
+        <section class="wds-card">
+          <div class="wds-card__header">
+            <div class="wds-card__header-text">
+              <h2 class="wds-heading-h3">Cancel &amp; reschedule</h2>
+              <p class="wds-card__subtitle">Decide whether clients can cancel or reschedule their own bookings online and how close to the session they can do it.</p>
+            </div>
+          </div>
+          <div class="wds-card__content">
+
+            <!-- Cancel toggle -->
+            <div class="wds-toggle-row">
+              <button class="wds-toggle wds-toggle--on" data-target="cancel-nested" role="switch" aria-checked="true"></button>
+              <div class="wds-toggle-row__main">
+                <div class="wds-toggle-row__title">Allow clients to cancel their own bookings online</div>
+                <div class="wds-toggle-row__sub">Clients can cancel from their account or the confirmation email. You'll be notified when they do.</div>
+              </div>
+            </div>
+            <div class="wds-nested-card" id="cancel-nested">
+              <div class="wds-layout">
+                <div class="wds-cell-6">
+                  <div class="wds-form-field">
+                    <label class="wds-form-field__label">Who can cancel</label>
+                    <select class="wds-dropdown">
+                      <option>Only site members</option>
+                      <option>All clients</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="wds-cell-6">
+                  <div class="wds-form-field">
+                    <label class="wds-form-field__label">How late can they cancel</label>
+                    <select class="wds-dropdown">
+                      <option>Up to 24 hours before</option>
+                      <option>Anytime</option>
+                      <option>Up to 1 hour before</option>
+                      <option>Up to 2 hours before</option>
+                      <option>Up to 12 hours before</option>
+                      <option>Up to 48 hours before</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <hr class="wds-card__divider" />
+
+            <!-- Reschedule toggle -->
+            <div class="wds-toggle-row">
+              <button class="wds-toggle wds-toggle--on" data-target="resched-nested" role="switch" aria-checked="true"></button>
+              <div class="wds-toggle-row__main">
+                <div class="wds-toggle-row__title">Allow clients to reschedule their own bookings online</div>
+                <div class="wds-toggle-row__sub">Clients can move their booking to another available time without contacting you.</div>
+              </div>
+            </div>
+            <div class="wds-nested-card" id="resched-nested">
+              <div class="wds-layout">
+                <div class="wds-cell-6">
+                  <div class="wds-form-field">
+                    <label class="wds-form-field__label">Who can reschedule</label>
+                    <select class="wds-dropdown">
+                      <option>Only site members</option>
+                      <option>All clients</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="wds-cell-6">
+                  <div class="wds-form-field">
+                    <label class="wds-form-field__label">How late can they reschedule</label>
+                    <select class="wds-dropdown">
+                      <option>Up to 24 hours before</option>
+                      <option>Anytime</option>
+                      <option>Up to 1 hour before</option>
+                      <option>Up to 2 hours before</option>
+                      <option>Up to 12 hours before</option>
+                      <option>Up to 48 hours before</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Card: Booking on behalf -->
+        <section class="wds-card">
+          <div class="wds-card__header">
+            <div class="wds-card__header-text">
+              <h2 class="wds-heading-h3">
+                Booking on behalf
+                <span class="wds-badge wds-badge--new">NEW</span>
+              </h2>
+              <p class="wds-card__subtitle">Let a client book a session for someone else &mdash; e.g. a parent for a child, a partner, or a friend. Applies to solo bookings and to each person in a group booking.</p>
+            </div>
+          </div>
+          <div class="wds-card__content">
+            <div class="wds-toggle-row">
+              <button class="wds-toggle" role="switch" aria-checked="false"></button>
+              <div class="wds-toggle-row__main">
+                <div class="wds-toggle-row__title">Allow clients to book for someone else</div>
+                <div class="wds-toggle-row__sub">When on, the booking widget asks "Who is this booking for?" so clients can enter another person's details. The payer gets the receipt; the participant gets the appointment confirmation.</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Card: Booking window -->
+        <section class="wds-card">
+          <div class="wds-card__header">
+            <div class="wds-card__header-text">
+              <h2 class="wds-heading-h3">
+                Booking window
+                <span class="wds-form-field__info-icon" title="When clients can book">i</span>
+              </h2>
+              <p class="wds-card__subtitle">Control how far in advance and how close to the start time clients can book.</p>
+            </div>
+          </div>
+          <div class="wds-card__content">
+            <div class="wds-inline-form" style="margin-bottom: var(--wds-space-200);">
+              <span class="wds-text">Clients can start booking from</span>
+              <select class="wds-dropdown wds-dropdown--auto">
+                <option>Anytime (no limit)</option>
+                <option>Up to 30 days in advance</option>
+                <option>Up to 60 days in advance</option>
+                <option>Up to 90 days in advance</option>
+                <option>Up to 180 days in advance</option>
+              </select>
+            </div>
+            <div class="wds-inline-form">
+              <span class="wds-text">until</span>
+              <select class="wds-dropdown wds-dropdown--auto">
+                <option>0 minutes (no cutoff)</option>
+                <option>15 minutes before</option>
+                <option>30 minutes before</option>
+                <option>1 hour before</option>
+                <option>24 hours before</option>
+              </select>
+              <span class="wds-text">before a session starts.</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Card: Payment & fees -->
+        <section class="wds-card">
+          <div class="wds-card__header">
+            <div class="wds-card__header-text">
+              <h2 class="wds-heading-h3">Payment &amp; fees</h2>
+              <p class="wds-card__subtitle">Decide what payment guarantees you require before clients confirm a booking.</p>
+            </div>
+          </div>
+          <div class="wds-card__content">
+            <!-- Card on file -->
+            <div class="wds-toggle-row">
+              <button class="wds-toggle" role="switch" aria-checked="false"></button>
+              <div class="wds-toggle-row__main">
+                <div class="wds-toggle-row__title">Require card on file for online booking</div>
+                <div class="wds-toggle-row__sub">Secure any necessary charges for sessions that are free, paid with a plan, or offline. <button class="wds-text-btn">Learn more</button></div>
+              </div>
+            </div>
+
+            <div class="wds-section-helper wds-section-helper--warning" style="margin-top: var(--wds-space-300);">
+              <span class="wds-section-helper__icon"><svg><use href="#i-warning"/></svg></span>
+              <div class="wds-section-helper__body">
+                One or more of your payment methods do not allow storing a card on file, and can't be used during checkout for the services covered by this policy. <button class="wds-text-btn">Learn more</button>
+              </div>
+            </div>
+
+            <hr class="wds-card__divider" />
+
+            <!-- Cancellation fees -->
+            <div class="wds-toggle-row">
+              <button class="wds-toggle" data-target="fees-nested" role="switch" aria-checked="false"></button>
+              <div class="wds-toggle-row__main">
+                <div class="wds-toggle-row__title">Charge cancellation and no-show fees</div>
+                <div class="wds-toggle-row__sub">Apply fees to cancelled sessions and no-shows. <button class="wds-text-btn">Learn more</button></div>
+              </div>
+            </div>
+            <div class="wds-nested-card wds-nested-card--hidden" id="fees-nested">
+              <div class="wds-layout">
+                <div class="wds-cell-6">
+                  <div class="wds-form-field">
+                    <label class="wds-form-field__label">Cancellation fee</label>
+                    <select class="wds-dropdown">
+                      <option>None</option>
+                      <option>25% of session price</option>
+                      <option>50% of session price</option>
+                      <option>100% of session price</option>
+                      <option>Fixed amount</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="wds-cell-6">
+                  <div class="wds-form-field">
+                    <label class="wds-form-field__label">No-show fee</label>
+                    <select class="wds-dropdown">
+                      <option>100% of session price</option>
+                      <option>None</option>
+                      <option>50% of session price</option>
+                      <option>Fixed amount</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <hr class="wds-card__divider" />
+
+            <!-- Charge additional fees -->
+            <div class="wds-toggle-row">
+              <button class="wds-toggle wds-toggle--on" data-target="addfees-nested" role="switch" aria-checked="true"></button>
+              <div class="wds-toggle-row__main">
+                <div class="wds-toggle-row__title">
+                  Charge additional fees
+                  <span class="wds-badge wds-badge--new">NEW</span>
+                </div>
+                <div class="wds-toggle-row__sub">Add fees that are automatically applied at checkout, like a travel fee. Each fee appears as a separate line in the order. <button class="wds-text-btn">Learn more</button></div>
+              </div>
+            </div>
+            <div class="wds-nested-card" id="addfees-nested">
+              <div class="wds-fee-list" id="wds-fee-list"></div>
+              <button class="wds-text-btn" type="button" id="wds-add-fee-btn">
+                <svg width="14" height="14" style="vertical-align: -2px; margin-right: 4px;"><use href="#i-plus"/></svg>Add fee
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Card: Intake forms -->
+        <section class="wds-card">
+          <div class="wds-card__header">
+            <div class="wds-card__header-text">
+              <h2 class="wds-heading-h3">Intake forms</h2>
+              <p class="wds-card__subtitle">Collect waivers, health info, and personal details before sessions.</p>
+            </div>
+          </div>
+          <div class="wds-card__content">
+            <div class="wds-marketing-layout">
+              <div class="wds-marketing-layout__copy">
+                <h3 class="wds-heading-h5">Collect the info you need with intake forms</h3>
+                <p class="wds-text wds-text--secondary" style="margin: 4px 0 0;">Start building forms to collect important info, such as waivers and personal details to keep on file.</p>
+                <div class="wds-marketing-layout__actions">
+                  <button class="wds-btn wds-btn--secondary">Install App</button>
+                </div>
+              </div>
+              <div class="wds-marketing-layout__art"><svg width="40" height="40" style="color: var(--wds-color-blue-100);"><use href="#i-clipboard"/></svg></div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- ====================================================================
+           Tab: APPOINTMENT
+           ==================================================================== -->
+      <div class="tab-pane" data-pane="appointment" hidden>
+        <div class="wds-section-helper wds-section-helper--standard" style="margin-bottom: var(--wds-space-400);">
+          <span class="wds-section-helper__icon"><svg><use href="#i-info"/></svg></span>
+          <div class="wds-section-helper__body">
+            Rules below apply only to <strong style="font-weight: var(--wds-font-weight-medium);">appointment</strong> services in this policy.
+          </div>
+        </div>
+
+        <section class="wds-card">
+          <div class="wds-card__header">
+            <div class="wds-card__header-text">
+              <h2 class="wds-heading-h3">Automatic staff assignment</h2>
+              <p class="wds-card__subtitle">Set how staff are chosen for appointments when clients don't select a specific staff member. To manage how staff are selected for bookings, go to <button class="wds-text-btn">Client Booking Flow</button>.</p>
+            </div>
+          </div>
+          <div class="wds-card__content">
+            <div class="wds-radio-group">
+              <label class="wds-radio-row">
+                <input type="radio" class="wds-radio" name="staff-assign" checked />
+                <div>
+                  <div class="wds-radio-row__title">Assign staff randomly</div>
+                  <div class="wds-radio-row__sub">Assign any available staff without a specific order.</div>
+                </div>
+              </label>
+              <label class="wds-radio-row">
+                <input type="radio" class="wds-radio" name="staff-assign" />
+                <div>
+                  <div class="wds-radio-row__title">Assign staff by priority</div>
+                  <div class="wds-radio-row__sub">Assign staff based on the priority you set for each staff member to get booked.</div>
+                </div>
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <!-- Card: Group booking -->
+        <section class="wds-card">
+          <div class="wds-card__header">
+            <div class="wds-card__header-text">
+              <h2 class="wds-heading-h3">
+                Group booking
+                <span class="wds-badge wds-badge--new">NEW</span>
+              </h2>
+              <p class="wds-card__subtitle">Let one client book this service for several people in a single checkout &mdash; for couples, families, or small groups. Solo bookings are unchanged.</p>
+            </div>
+          </div>
+          <div class="wds-card__content">
+            <div class="wds-toggle-row">
+              <button class="wds-toggle" data-target="group-booking-nested" role="switch" aria-checked="false"></button>
+              <div class="wds-toggle-row__main">
+                <div class="wds-toggle-row__title">Allow group booking for appointments</div>
+                <div class="wds-toggle-row__sub">When on, the booking widget shows a "How many people?" control. Each person gets their own appointment record and confirmation.</div>
+              </div>
+            </div>
+
+            <div class="wds-nested-card wds-nested-card--hidden" id="group-booking-nested">
+              <div class="wds-layout">
+                <div class="wds-cell-6">
+                  <div class="wds-form-field">
+                    <label class="wds-form-field__label">Maximum people per group</label>
+                    <select class="wds-dropdown">
+                      <option>2 people</option>
+                      <option>3 people</option>
+                      <option selected>4 people</option>
+                      <option>5 people</option>
+                      <option>6 people</option>
+                      <option>7 people</option>
+                      <option>8 people</option>
+                    </select>
+                    <p class="wds-text wds-text--secondary" style="margin: 6px 0 0; font-size: 13px;">The most a single client can book in one checkout.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Card: Service area -->
+        <section class="wds-card">
+          <div class="wds-card__header">
+            <div class="wds-card__header-text">
+              <h2 class="wds-heading-h3">
+                Service area
+                <span class="wds-badge wds-badge--new">NEW</span>
+              </h2>
+              <p class="wds-card__subtitle">Add the business locations you travel from, and set a radius for each. Clients can only book if their address falls inside one of the radii.</p>
+            </div>
+          </div>
+          <div class="wds-card__content">
+            <div class="wds-toggle-row">
+              <button class="wds-toggle wds-toggle--on" data-target="sa-nested" role="switch" aria-checked="true"></button>
+              <div class="wds-toggle-row__main">
+                <div class="wds-toggle-row__title">Limit bookings to your service area</div>
+                <div class="wds-toggle-row__sub">When a client chooses "Client's place", their address must fall within the radius of one of your locations to book.</div>
+              </div>
+            </div>
+
+            <div class="wds-nested-card" id="sa-nested">
+              <div class="wds-section-helper wds-section-helper--standard" style="margin-bottom: var(--wds-space-300);">
+                <span class="wds-section-helper__icon"><svg><use href="#i-info"/></svg></span>
+                <div class="wds-section-helper__body">
+                  Only applies to services where <strong style="font-weight: var(--wds-font-weight-medium);">"Client's place"</strong> is offered. <button class="wds-text-btn">Manage service locations</button>
+                </div>
+              </div>
+
+              <div class="wds-sa-grid">
+                <!-- Left: location list + block message -->
+                <div style="display: flex; flex-direction: column; gap: var(--wds-space-300); min-width: 0;">
+                  <div>
+                    <div class="wds-form-field__label" style="margin-bottom: var(--wds-space-150);">
+                      Locations in your service area
+                    </div>
+                    <div class="wds-sa-list" id="wds-sa-list"></div>
+                    <div class="wds-sa-add-wrap">
+                      <button class="wds-text-btn" type="button" id="wds-sa-add-btn">
+                        <svg width="14" height="14" style="vertical-align: -2px; margin-right: 4px;"><use href="#i-plus"/></svg>Add location
+                      </button>
+                      <div class="wds-sa-add-menu" id="wds-sa-add-menu" role="listbox"></div>
+                    </div>
+                  </div>
+
+                  <div class="wds-form-field">
+                    <label class="wds-form-field__label" for="wds-sa-msg">Message clients see when they're outside your service area</label>
+                    <textarea id="wds-sa-msg" class="wds-input-area" style="min-height: 72px;">This address is outside our service area. We travel within {radius} {unit} of {locationName}.</textarea>
+                  </div>
+                </div>
+
+                <!-- Right: static map preview -->
+                <div>
+                  <div class="wds-sa-map">
+                    <div class="wds-sa-map__grid"></div>
+                    <svg id="wds-sa-map-svg" viewBox="0 0 360 280" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
+                    <div class="wds-sa-map__legend"><strong id="wds-sa-map-legend-text">2 locations</strong> in your service area</div>
+                    <div class="wds-sa-map__dots" id="wds-sa-map-dots"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- ====================================================================
+           Tab: CLASS
+           ==================================================================== -->
+      <div class="tab-pane" data-pane="class" hidden>
+        <div class="wds-section-helper wds-section-helper--standard" style="margin-bottom: var(--wds-space-400);">
+          <span class="wds-section-helper__icon"><svg><use href="#i-info"/></svg></span>
+          <div class="wds-section-helper__body">
+            Rules below apply only to <strong style="font-weight: var(--wds-font-weight-medium);">class</strong> services in this policy.
+          </div>
+        </div>
+
+        <!-- Card: Group bookings -->
+        <section class="wds-card">
+          <div class="wds-card__header">
+            <div class="wds-card__header-text">
+              <h2 class="wds-heading-h3">Group bookings</h2>
+              <p class="wds-card__subtitle">Let clients book multiple participants on a single class booking.</p>
+            </div>
+          </div>
+          <div class="wds-card__content">
+            <div class="wds-form-field">
+              <label class="wds-form-field__label">Maximum number of participants allowed per booking</label>
+              <div class="wds-number-input">
+                <input type="number" class="wds-number-input__input" value="3" min="1" />
+                <span class="wds-number-input__suffix">Participants</span>
+                <div class="wds-number-input__steppers">
+                  <button aria-label="Increment"><svg width="9" height="9"><use href="#i-chevron-up"/></svg></button>
+                  <button aria-label="Decrement"><svg width="9" height="9"><use href="#i-chevron-down"/></svg></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Card: Waitlist -->
+        <section class="wds-card">
+          <div class="wds-card__header">
+            <div class="wds-card__header-text">
+              <h2 class="wds-heading-h3">Waitlist</h2>
+              <p class="wds-card__subtitle">Let clients hold a spot when a class is full.</p>
+            </div>
+          </div>
+          <div class="wds-card__content">
+            <div class="wds-toggle-row">
+              <button class="wds-toggle" data-target="waitlist-nested" role="switch" aria-checked="false"></button>
+              <div class="wds-toggle-row__main">
+                <div class="wds-toggle-row__title">Allow clients to join a waitlist for fully booked classes</div>
+                <div class="wds-toggle-row__sub">Clients are notified when a spot opens up.</div>
+              </div>
+            </div>
+            <div class="wds-nested-card wds-nested-card--hidden" id="waitlist-nested">
+              <div class="wds-layout">
+                <div class="wds-cell-6">
+                  <div class="wds-form-field">
+                    <label class="wds-form-field__label">Maximum waitlist size</label>
+                    <select class="wds-dropdown">
+                      <option>10 clients</option>
+                      <option>5 clients</option>
+                      <option>20 clients</option>
+                      <option>Unlimited</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="wds-cell-6">
+                  <div class="wds-form-field">
+                    <label class="wds-form-field__label">Time to claim a freed spot</label>
+                    <select class="wds-dropdown">
+                      <option>30 minutes</option>
+                      <option>1 hour</option>
+                      <option>2 hours</option>
+                      <option>24 hours</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- ====================================================================
+           Tab: COURSE
+           ==================================================================== -->
+      <div class="tab-pane" data-pane="course" hidden>
+        <div class="wds-section-helper wds-section-helper--standard" style="margin-bottom: var(--wds-space-400);">
+          <span class="wds-section-helper__icon"><svg><use href="#i-info"/></svg></span>
+          <div class="wds-section-helper__body">
+            Rules below apply only to <strong style="font-weight: var(--wds-font-weight-medium);">course</strong> services in this policy.
+          </div>
+        </div>
+
+        <section class="wds-card">
+          <div class="wds-card__header">
+            <div class="wds-card__header-text">
+              <h2 class="wds-heading-h3">Late join</h2>
+              <p class="wds-card__subtitle">Allow clients to book a course after it has already started.</p>
+            </div>
+          </div>
+          <div class="wds-card__content">
+            <div class="wds-toggle-row">
+              <button class="wds-toggle" data-target="course-late-nested" role="switch" aria-checked="false"></button>
+              <div class="wds-toggle-row__main">
+                <div class="wds-toggle-row__title">Allow clients to book a course after it's already started</div>
+                <div class="wds-toggle-row__sub">Late joiners pay full price by default. The first sessions they missed won't be rescheduled.</div>
+              </div>
+            </div>
+            <div class="wds-nested-card wds-nested-card--hidden" id="course-late-nested">
+              <div class="wds-form-field" style="max-width: 360px;">
+                <label class="wds-form-field__label">Latest a client can join</label>
+                <select class="wds-dropdown">
+                  <option>Up to 1 session after start</option>
+                  <option>Anytime during the course</option>
+                  <option>Up to 2 sessions after start</option>
+                  <option>Up to 50% of the course completed</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- WDS Page.FixedFooter (sticky save bar) -->
+      <div class="wds-fixed-footer" id="save-bar">
+        <div class="wds-fixed-footer__inner">
+          <span class="wds-fixed-footer__msg">You have unsaved changes</span>
+          <button class="wds-btn wds-btn--secondary" id="discard-btn">Discard</button>
+          <button class="wds-btn wds-btn--primary" id="save-btn">Save changes</button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- =====================================================================
+     <CustomModalLayout> — Distance-based fee
+     ===================================================================== -->
+<div class="wds-modal-overlay" id="dist-modal" aria-hidden="true">
+  <div class="wds-modal" role="dialog" aria-modal="true" aria-labelledby="dist-modal-title">
+    <div class="wds-modal__header">
+      <div class="wds-modal__title-col">
+        <h2 class="wds-modal__title" id="dist-modal-title">Charge by distance to client's place</h2>
+        <p class="wds-modal__subtitle">When the service is at the client's place, charge a different fee based on how far they are from your business location.</p>
+      </div>
+      <button class="wds-modal__close" id="dist-modal-close" aria-label="Close">
+        <svg><use href="#i-x"/></svg>
+      </button>
+    </div>
+
+    <div class="wds-modal__body">
+      <!-- Business location single-select -->
+      <div class="wds-form-field">
+        <label class="wds-form-field__label">
+          Business location
+          <span class="wds-form-field__info-icon" title="Distance is measured from the client's place to the business location you choose here.">i</span>
+        </label>
+        <div class="wds-loc-select" id="dist-loc-select">
+          <button type="button" class="wds-loc-select__btn" id="dist-loc-btn" aria-haspopup="listbox" aria-expanded="false">
+            <span class="wds-loc-select__pin"><svg><use href="#i-pin"/></svg></span>
+            <span class="wds-loc-select__meta">
+              <span class="wds-loc-select__name" id="dist-loc-name">Main Studio</span>
+              <span class="wds-loc-select__addr" id="dist-loc-addr">123 Main Street, Springfield</span>
+            </span>
+            <span class="wds-loc-select__caret"><svg width="12" height="12"><use href="#i-chevron-down"/></svg></span>
+          </button>
+          <div class="wds-loc-select__menu" id="dist-loc-menu" role="listbox"></div>
+        </div>
+      </div>
+
+      <!-- Map preview -->
+      <div class="wds-dist-map">
+        <div class="wds-dist-map__grid"></div>
+        <svg id="dist-map-svg" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
+        <div class="wds-dist-map__legend">Radius preview</div>
+      </div>
+
+      <!-- Tier list header -->
+      <div class="wds-tier-header">
+        <span class="wds-tier-header__title">Tier prices</span>
+        <div class="wds-segmented" id="dist-unit-toggle" role="group" aria-label="Tier price unit">
+          <button type="button" class="wds-segmented__option wds-segmented__option--active" data-unit="$">$</button>
+          <button type="button" class="wds-segmented__option" data-unit="%">%</button>
+        </div>
+      </div>
+
+      <!-- Tier rows -->
+      <div class="wds-tier-list" id="dist-tier-list"></div>
+      <div>
+        <button class="wds-text-btn" type="button" id="dist-add-tier">
+          <svg width="14" height="14" style="vertical-align: -2px; margin-right: 4px;"><use href="#i-plus"/></svg>Add tier
+        </button>
+      </div>
+    </div>
+
+    <div class="wds-modal__footer">
+      <div>
+        <button class="wds-text-btn" id="dist-remove-btn" style="display:none; color: var(--wds-color-red-100);">Turn off distance pricing</button>
+      </div>
+      <div class="wds-modal__footer-right">
+        <button class="wds-btn wds-btn--secondary" id="dist-cancel-btn">Cancel</button>
+        <button class="wds-btn wds-btn--primary" id="dist-apply-btn">Apply</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ---- Tabs ----
+  const tabs = document.querySelectorAll('.wds-tab');
+  const panes = document.querySelectorAll('.tab-pane');
+
+  function activateTab(name) {
+    tabs.forEach(t => t.classList.toggle('wds-tab--active', t.dataset.tab === name));
+    panes.forEach(p => {
+      const on = p.dataset.pane === name;
+      if (on) p.removeAttribute('hidden');
+      else p.setAttribute('hidden', '');
+    });
+    try { history.replaceState(null, '', '#' + name); } catch (e) {}
+  }
+  tabs.forEach(t => t.addEventListener('click', () => activateTab(t.dataset.tab)));
+  const initial = (location.hash || '').replace('#', '');
+  if (initial && document.querySelector('.wds-tab[data-tab="' + initial + '"]')) activateTab(initial);
+
+  // ---- Toggle switches ----
+  document.querySelectorAll('.wds-toggle').forEach(sw => {
+    sw.addEventListener('click', () => {
+      const isOn = sw.classList.toggle('wds-toggle--on');
+      sw.setAttribute('aria-checked', isOn ? 'true' : 'false');
+      const targetId = sw.dataset.target;
+      if (targetId) {
+        const nested = document.getElementById(targetId);
+        if (nested) nested.classList.toggle('wds-nested-card--hidden', !isOn);
+      }
+      markDirty();
+    });
+  });
+
+  // ---- Char counters ----
+  const nameInput = document.getElementById('policy-name');
+  const nameCount = document.getElementById('name-count');
+  if (nameInput && nameCount) {
+    nameCount.textContent = nameInput.value.length;
+    nameInput.addEventListener('input', () => {
+      nameCount.textContent = nameInput.value.length;
+      markDirty();
+    });
+  }
+  const descInput = document.getElementById('policy-desc');
+  const descCount = document.getElementById('desc-count');
+  if (descInput && descCount) {
+    descInput.addEventListener('input', () => {
+      descCount.textContent = descInput.value.length;
+      markDirty();
+    });
+  }
+
+  // ---- Dirty save bar ----
+  const saveBar = document.getElementById('save-bar');
+  let dirty = false;
+  function markDirty() {
+    if (!dirty) { dirty = true; saveBar.classList.add('show'); }
+  }
+  function clearDirty() { dirty = false; saveBar.classList.remove('show'); }
+  document.querySelectorAll('select, input[type="number"], input[type="checkbox"], input[type="radio"]').forEach(el => {
+    el.addEventListener('change', markDirty);
+  });
+  document.getElementById('save-btn')?.addEventListener('click', clearDirty);
+  document.getElementById('discard-btn')?.addEventListener('click', clearDirty);
+
+  // =========================================================
+  //  Additional fees (inline-editable cards)
+  // =========================================================
+  const feeList = document.getElementById('wds-fee-list');
+  const addFeeBtn = document.getElementById('wds-add-fee-btn');
+
+  function escHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function makeFeeCard({ name = '', amount = '', unit = '$', perParticipant = false } = {}) {
+    const card = document.createElement('div');
+    card.className = 'wds-fee-card';
+    card.innerHTML = `
+      <div class="wds-fee-card__top">
+        <div class="wds-form-field">
+          <label class="wds-form-field__label">Fee name</label>
+          <input type="text" class="wds-input wds-fee-card__name" placeholder="e.g., Travel fee" value="${escHtml(name)}" />
+        </div>
+        <div class="wds-form-field wds-fee-card__amount-col">
+          <label class="wds-form-field__label">Amount</label>
+          <div class="wds-fee-card__amount-wrap">
+            <input type="text" inputmode="decimal" class="wds-input wds-fee-card__amount" placeholder="0" value="${escHtml(amount)}" />
+            <div class="wds-segmented" role="group" aria-label="Amount type">
+              <button type="button" class="wds-segmented__option ${unit === '$' ? 'wds-segmented__option--active' : ''}" data-unit="$">$</button>
+              <button type="button" class="wds-segmented__option ${unit === '%' ? 'wds-segmented__option--active' : ''}" data-unit="%">%</button>
+            </div>
+          </div>
+        </div>
+        <div class="wds-fee-card__menu-wrap">
+          <button class="wds-icon-btn wds-fee-card__menu-btn" type="button" aria-label="More actions">
+            <svg><use href="#i-more-vert"/></svg>
+          </button>
+          <div class="wds-popover" role="menu">
+            <button type="button" class="wds-popover__item wds-popover__item--destructive wds-fee-card__delete" role="menuitem">
+              <svg><use href="#i-trash"/></svg>Delete
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="wds-fee-card__tiers-slot"></div>
+      <div class="wds-fee-card__bottom">
+        <label class="wds-fee-card__per-row">
+          <button type="button" class="wds-toggle wds-toggle--small ${perParticipant ? 'wds-toggle--on' : ''}" role="switch" aria-checked="${perParticipant}"></button>
+          <span>Charge per participant</span>
+          <span class="wds-form-field__info-icon" title="Charge this fee once per booking, no matter how many participants. Turn this on to charge the fee for each participant instead.">i</span>
+        </label>
+        <button class="wds-text-btn wds-fee-card__dist-add" type="button">Add distance-based fee</button>
+      </div>
+    `;
+
+    // Wire interactions
+    card.querySelectorAll('.wds-segmented__option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        opt.parentElement.querySelectorAll('.wds-segmented__option')
+          .forEach(o => o.classList.remove('wds-segmented__option--active'));
+        opt.classList.add('wds-segmented__option--active');
+        markDirty();
+      });
+    });
+
+    const menuBtn = card.querySelector('.wds-fee-card__menu-btn');
+    const popover = card.querySelector('.wds-popover');
+    menuBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const wasOpen = popover.classList.contains('open');
+      document.querySelectorAll('.wds-popover.open').forEach(p => p.classList.remove('open'));
+      if (!wasOpen) popover.classList.add('open');
+    });
+    card.querySelector('.wds-fee-card__delete').addEventListener('click', () => {
+      card.remove();
+      markDirty();
+    });
+
+    const perToggle = card.querySelector('.wds-toggle--small');
+    perToggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      const isOn = perToggle.classList.toggle('wds-toggle--on');
+      perToggle.setAttribute('aria-checked', isOn ? 'true' : 'false');
+      markDirty();
+    });
+
+    card.querySelectorAll('input').forEach(i => i.addEventListener('input', markDirty));
+
+    // Wire "Add distance-based fee" / Edit
+    card.querySelector('.wds-fee-card__dist-add').addEventListener('click', () => openDistModalFor(card));
+
+    return card;
+  }
+
+  if (feeList) {
+    // Seed with one example fee so the section is visually substantial on load
+    feeList.appendChild(makeFeeCard({ name: 'Travel fee', amount: '15', unit: '$' }));
+  }
+  addFeeBtn?.addEventListener('click', () => {
+    const card = makeFeeCard();
+    feeList.appendChild(card);
+    card.querySelector('.wds-fee-card__name').focus();
+    markDirty();
+  });
+
+  // close popovers on outside click
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.wds-popover.open').forEach(p => p.classList.remove('open'));
+    document.querySelectorAll('.wds-sa-add-menu.open').forEach(m => m.classList.remove('open'));
+  });
+
+  // =========================================================
+  //  Service Area
+  // =========================================================
+  const BUSINESS_LOCATIONS = [
+    { id: 'loc-1', name: 'Main Studio',     address: '123 Main Street, Springfield', x: 110, y: 110, color: '#116dff' },
+    { id: 'loc-2', name: 'Downtown Office', address: '456 Oak Avenue, Springfield',  x: 240, y: 90,  color: '#9a27d5' },
+    { id: 'loc-3', name: 'Westside Branch', address: '789 Pine Road, Riverside',     x: 180, y: 200, color: '#25a55a' }
+  ];
+
+  // Mockup state: which locations are in the service area + their radii (in miles)
+  let saAreas = [
+    { id: 'loc-1', radius: 10, unit: 'mi' },
+    { id: 'loc-2', radius: 5,  unit: 'mi' }
+  ];
+
+  const saList = document.getElementById('wds-sa-list');
+  const saAddBtn = document.getElementById('wds-sa-add-btn');
+  const saAddMenu = document.getElementById('wds-sa-add-menu');
+  const saMapSvg = document.getElementById('wds-sa-map-svg');
+  const saMapLegendText = document.getElementById('wds-sa-map-legend-text');
+  const saMapDots = document.getElementById('wds-sa-map-dots');
+
+  function getLoc(id) { return BUSINESS_LOCATIONS.find(l => l.id === id); }
+
+  function renderSaList() {
+    if (!saList) return;
+    saList.innerHTML = '';
+    saAreas.forEach((area, idx) => {
+      const loc = getLoc(area.id);
+      if (!loc) return;
+      const row = document.createElement('div');
+      row.className = 'wds-sa-row';
+      row.innerHTML = `
+        <span class="wds-sa-row__pin" style="color: ${loc.color};"><svg><use href="#i-pin"/></svg></span>
+        <div class="wds-sa-row__meta">
+          <div class="wds-sa-row__name">${escHtml(loc.name)}</div>
+          <div class="wds-sa-row__addr">${escHtml(loc.address)}</div>
+        </div>
+        <div class="wds-sa-row__radius">
+          <input type="number" class="wds-input" min="1" value="${area.radius}" aria-label="Radius value" />
+          <select class="wds-dropdown" aria-label="Radius unit">
+            <option ${area.unit === 'mi' ? 'selected' : ''}>mi</option>
+            <option ${area.unit === 'km' ? 'selected' : ''}>km</option>
+          </select>
+        </div>
+        <button class="wds-icon-btn" type="button" aria-label="Remove from service area" title="Remove from service area">
+          <svg><use href="#i-trash"/></svg>
+        </button>
+      `;
+      const [radiusInput, unitSelect] = row.querySelectorAll('input, select');
+      radiusInput.addEventListener('input', () => {
+        const v = parseFloat(radiusInput.value);
+        if (!isNaN(v) && v > 0) { saAreas[idx].radius = v; renderSaMap(); }
+        markDirty();
+      });
+      unitSelect.addEventListener('change', () => {
+        saAreas[idx].unit = unitSelect.value;
+        markDirty();
+      });
+      row.querySelector('.wds-icon-btn').addEventListener('click', () => {
+        saAreas.splice(idx, 1);
+        renderSaList();
+        renderSaMap();
+        markDirty();
+      });
+      saList.appendChild(row);
+    });
+  }
+
+  function renderSaAddMenu() {
+    if (!saAddMenu) return;
+    const used = new Set(saAreas.map(a => a.id));
+    const options = BUSINESS_LOCATIONS.filter(l => !used.has(l.id));
+    if (options.length === 0) {
+      saAddMenu.innerHTML = `<div class="wds-sa-add-opt disabled"><span class="wds-sa-add-opt__meta"><span class="wds-sa-add-opt__meta__n">All locations are added</span></span></div>`;
+      return;
+    }
+    saAddMenu.innerHTML = options.map(loc => `
+      <div class="wds-sa-add-opt" role="option" data-loc="${loc.id}">
+        <span class="wds-sa-add-opt__pin" style="color: ${loc.color};"><svg><use href="#i-pin"/></svg></span>
+        <span class="wds-sa-add-opt__meta">
+          <span class="wds-sa-add-opt__meta__n">${escHtml(loc.name)}</span>
+          <span class="wds-sa-add-opt__meta__a">${escHtml(loc.address)}</span>
+        </span>
+      </div>
+    `).join('');
+    saAddMenu.querySelectorAll('.wds-sa-add-opt[data-loc]').forEach(opt => {
+      opt.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const id = opt.dataset.loc;
+        if (saAreas.some(a => a.id === id)) return;
+        saAreas.push({ id, radius: 5, unit: 'mi' });
+        saAddMenu.classList.remove('open');
+        renderSaList();
+        renderSaAddMenu();
+        renderSaMap();
+        markDirty();
+      });
+    });
+  }
+
+  saAddBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    renderSaAddMenu();
+    saAddMenu.classList.toggle('open');
+  });
+
+  function renderSaMap() {
+    if (!saMapSvg) return;
+    // Build circles + pins
+    const parts = [];
+    saAreas.forEach(area => {
+      const loc = getLoc(area.id);
+      if (!loc) return;
+      // Map mile/km radius to map units (visual only): 1 mi = 4 svg units; clamp 16..80
+      const mult = area.unit === 'km' ? 2.5 : 4;
+      const r = Math.max(16, Math.min(80, area.radius * mult));
+      parts.push(`<circle cx="${loc.x}" cy="${loc.y}" r="${r}" fill="${loc.color}" fill-opacity="0.15" stroke="${loc.color}" stroke-opacity="0.6" stroke-width="1.5"/>`);
+    });
+    saAreas.forEach(area => {
+      const loc = getLoc(area.id);
+      if (!loc) return;
+      parts.push(`<circle cx="${loc.x}" cy="${loc.y}" r="6" fill="${loc.color}" stroke="#fff" stroke-width="2"/>`);
+    });
+    saMapSvg.innerHTML = parts.join('');
+
+    // Legend
+    saMapLegendText.textContent = `${saAreas.length} location${saAreas.length === 1 ? '' : 's'}`;
+
+    // Dot legend
+    saMapDots.innerHTML = saAreas.map(area => {
+      const loc = getLoc(area.id);
+      if (!loc) return '';
+      return `<div class="wds-sa-map__dot-row"><span class="wds-sa-map__dot" style="background:${loc.color};"></span>${escHtml(loc.name)}</div>`;
+    }).join('');
+  }
+
+  if (saList) {
+    renderSaList();
+    renderSaAddMenu();
+    renderSaMap();
+  }
+
+  // =========================================================
+  //  Distance-based fee modal
+  //  - Opens when clicking "Add distance-based fee" on a fee card
+  //  - State (tiers, locationId, unit) is stored on the fee card
+  //    via dataset (JSON) so it persists across re-renders.
+  // =========================================================
+  const DEFAULT_TIERS = [
+    { distance: 5,  price: 5  },
+    { distance: 10, price: 10 },
+    { distance: 20, price: 20 },
+    { rest: true,   price: 30 }
+  ];
+
+  const distModal      = document.getElementById('dist-modal');
+  const distModalTitle = document.getElementById('dist-modal-title');
+  const distModalClose = document.getElementById('dist-modal-close');
+  const distCancelBtn  = document.getElementById('dist-cancel-btn');
+  const distApplyBtn   = document.getElementById('dist-apply-btn');
+  const distRemoveBtn  = document.getElementById('dist-remove-btn');
+  const distAddTier    = document.getElementById('dist-add-tier');
+  const distTierList   = document.getElementById('dist-tier-list');
+  const distUnitToggle = document.getElementById('dist-unit-toggle');
+  const distMapSvg     = document.getElementById('dist-map-svg');
+
+  // Location dropdown (inside modal)
+  const distLocSelect = document.getElementById('dist-loc-select');
+  const distLocBtn    = document.getElementById('dist-loc-btn');
+  const distLocMenu   = document.getElementById('dist-loc-menu');
+  const distLocName   = document.getElementById('dist-loc-name');
+  const distLocAddr   = document.getElementById('dist-loc-addr');
+
+  let activeFeeCard = null;
+  let workingTiers = [];
+  let workingUnit = '$';
+  let workingLocId = (typeof BUSINESS_LOCATIONS !== 'undefined' && BUSINESS_LOCATIONS[0]) ? BUSINESS_LOCATIONS[0].id : 'loc-1';
+
+  function safeParse(s) { try { return JSON.parse(s); } catch (e) { return null; } }
+  function cloneTiers(arr) { return arr.map(t => ({ ...t })); }
+  function getBizLoc(id) { return BUSINESS_LOCATIONS.find(l => l.id === id); }
+
+  function openDistModalFor(card) {
+    activeFeeCard = card;
+    const existing = card.dataset.tiers ? safeParse(card.dataset.tiers) : null;
+    workingTiers = (existing && existing.length) ? cloneTiers(existing) : cloneTiers(DEFAULT_TIERS);
+    workingUnit  = card.dataset.unit === '%' ? '%' : '$';
+    workingLocId = (card.dataset.locationId && getBizLoc(card.dataset.locationId)) ? card.dataset.locationId : BUSINESS_LOCATIONS[0].id;
+
+    distModalTitle.textContent = existing ? 'Edit distance pricing' : "Charge by distance to client's place";
+    distRemoveBtn.style.display = existing ? 'inline-flex' : 'none';
+
+    syncDistUnitToggle();
+    syncDistLocationButton();
+    renderDistLocationMenu();
+    renderDistTierList();
+    renderDistMap();
+
+    distModal.classList.add('open');
+    distModal.setAttribute('aria-hidden', 'false');
+  }
+  function closeDistModal() {
+    distModal.classList.remove('open');
+    distModal.setAttribute('aria-hidden', 'true');
+    distLocSelect.classList.remove('open');
+    distLocBtn.setAttribute('aria-expanded', 'false');
+    activeFeeCard = null;
+  }
+  distModalClose.addEventListener('click', closeDistModal);
+  distCancelBtn.addEventListener('click', closeDistModal);
+  distModal.addEventListener('click', (e) => {
+    if (e.target === distModal) closeDistModal();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && distModal.classList.contains('open')) closeDistModal();
+  });
+
+  // ---- Location single-select ----
+  function syncDistLocationButton() {
+    const loc = getBizLoc(workingLocId) || BUSINESS_LOCATIONS[0];
+    distLocName.textContent = loc.name;
+    distLocAddr.textContent = loc.address;
+  }
+  function renderDistLocationMenu() {
+    distLocMenu.innerHTML = BUSINESS_LOCATIONS.map(loc => `
+      <div class="wds-loc-option ${loc.id === workingLocId ? 'selected' : ''}" role="option" aria-selected="${loc.id === workingLocId}" data-loc="${loc.id}">
+        <span class="wds-loc-option__name">${escHtml(loc.name)}</span>
+        <span class="wds-loc-option__addr">${escHtml(loc.address)}</span>
+      </div>
+    `).join('');
+    distLocMenu.querySelectorAll('.wds-loc-option').forEach(opt => {
+      opt.addEventListener('click', (e) => {
+        e.stopPropagation();
+        workingLocId = opt.dataset.loc;
+        distLocSelect.classList.remove('open');
+        distLocBtn.setAttribute('aria-expanded', 'false');
+        syncDistLocationButton();
+        renderDistLocationMenu();
+      });
+    });
+  }
+  distLocBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = distLocSelect.classList.toggle('open');
+    distLocBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+  document.addEventListener('click', (e) => {
+    if (!distLocSelect.contains(e.target)) {
+      distLocSelect.classList.remove('open');
+      distLocBtn.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  // ---- Unit toggle ----
+  function syncDistUnitToggle() {
+    distUnitToggle.querySelectorAll('.wds-segmented__option').forEach(o => {
+      o.classList.toggle('wds-segmented__option--active', o.dataset.unit === workingUnit);
+    });
+  }
+  distUnitToggle.querySelectorAll('.wds-segmented__option').forEach(opt => {
+    opt.addEventListener('click', () => {
+      workingUnit = opt.dataset.unit;
+      syncDistUnitToggle();
+      renderDistTierList();
+    });
+  });
+
+  // ---- Tier list ----
+  distAddTier.addEventListener('click', () => {
+    const ringTiers = workingTiers.filter(t => !t.rest);
+    const lastRing = ringTiers[ringTiers.length - 1];
+    const nextDist = lastRing ? Math.round(lastRing.distance * 1.5) : 5;
+    const restIdx = workingTiers.findIndex(t => t.rest);
+    const newTier = { distance: nextDist, price: (lastRing ? lastRing.price : 5) + 5 };
+    if (restIdx === -1) workingTiers.push(newTier);
+    else workingTiers.splice(restIdx, 0, newTier);
+    renderDistTierList();
+    renderDistMap();
+  });
+
+  function renderDistTierList() {
+    const ringCount = workingTiers.filter(t => !t.rest).length;
+    distTierList.innerHTML = '';
+    workingTiers.forEach((tier, i) => {
+      const row = document.createElement('div');
+      row.className = 'wds-tier-row';
+      if (tier.rest) {
+        row.classList.add('wds-tier-row--rest');
+        row.innerHTML = `
+          <span class="wds-tier-row__marker"></span>
+          <span class="wds-tier-row__label">Anywhere further</span>
+          <span class="wds-tier-row__rest-text">No radius</span>
+          <span class="wds-tier-row__price">
+            <span class="currency">${workingUnit}</span>
+            <input type="number" min="0" step="1" value="${tier.price}" data-field="price" />
+          </span>
+          <button class="wds-tier-row__remove" disabled aria-label="Remove tier">
+            <svg><use href="#i-x"/></svg>
+          </button>
+        `;
+      } else {
+        const ringIdx = workingTiers.slice(0, i).filter(t => !t.rest).length;
+        row.classList.add(`wds-tier-row--t${Math.min(ringIdx + 1, 3)}`);
+        row.innerHTML = `
+          <span class="wds-tier-row__marker"></span>
+          <span class="wds-tier-row__label">Within</span>
+          <span class="wds-tier-row__distance">
+            <input type="number" min="0" step="1" value="${tier.distance}" data-field="distance" />
+            <span class="unit">mi</span>
+          </span>
+          <span class="wds-tier-row__price">
+            <span class="currency">${workingUnit}</span>
+            <input type="number" min="0" step="1" value="${tier.price}" data-field="price" />
+          </span>
+          <button class="wds-tier-row__remove" type="button" title="Remove tier" aria-label="Remove tier" ${ringCount <= 1 ? 'disabled' : ''}>
+            <svg><use href="#i-x"/></svg>
+          </button>
+        `;
+      }
+      // Wire input handlers
+      row.querySelectorAll('input').forEach(inp => {
+        inp.addEventListener('input', () => {
+          const v = parseFloat(inp.value);
+          const field = inp.dataset.field;
+          workingTiers[i][field] = isNaN(v) ? 0 : v;
+          if (field === 'distance') renderDistMap();
+        });
+      });
+      // Wire remove
+      const removeBtn = row.querySelector('.wds-tier-row__remove');
+      if (!removeBtn.hasAttribute('disabled')) {
+        removeBtn.addEventListener('click', () => {
+          if (workingTiers[i].rest) return;
+          workingTiers.splice(i, 1);
+          renderDistTierList();
+          renderDistMap();
+        });
+      }
+      distTierList.appendChild(row);
+    });
+  }
+
+  // ---- Modal map preview ----
+  function renderDistMap() {
+    if (!distMapSvg) return;
+    const w = 320, h = 200;
+    const cx = w / 2, cy = h / 2;
+    const maxR = Math.min(w, h) / 2 - 8;
+    const ringTiers = workingTiers.filter(t => !t.rest);
+    const maxDist = Math.max(1, ...ringTiers.map(t => t.distance || 0));
+    const sortedDesc = [...ringTiers].sort((a, b) => b.distance - a.distance);
+    const opacityFor = (rank) => {
+      if (rank === 0) return 0.30;
+      if (rank === 1) return 0.20;
+      if (rank === 2) return 0.12;
+      return 0.08;
+    };
+    let inner = '';
+    sortedDesc.forEach(t => {
+      const rank = ringTiers.findIndex(x => x === t);
+      const r = Math.max(6, (t.distance / maxDist) * maxR);
+      inner += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="rgba(17,109,255,${opacityFor(rank)})" stroke="#116DFF" stroke-opacity="0.5" stroke-dasharray="4 4" />`;
+    });
+    inner += `
+      <circle cx="${cx}" cy="${cy}" r="11" fill="#116DFF" fill-opacity="0.20" />
+      <circle cx="${cx}" cy="${cy}" r="6" fill="#116DFF" />
+      <circle cx="${cx}" cy="${cy}" r="2" fill="#fff" />
+    `;
+    sortedDesc.forEach(t => {
+      const r = Math.max(6, (t.distance / maxDist) * maxR);
+      inner += `<text x="${cx + r + 4}" y="${cy + 4}" font-size="10" fill="#5a6a78" font-family="Madefor, sans-serif">${t.distance} mi</text>`;
+    });
+    distMapSvg.innerHTML = inner;
+  }
+
+  // ---- Apply / Remove ----
+  distApplyBtn.addEventListener('click', () => {
+    if (!activeFeeCard) return;
+    const cleaned = workingTiers.map(t => t.rest
+      ? { rest: true, price: t.price }
+      : { distance: t.distance, price: t.price });
+    activeFeeCard.dataset.tiers      = JSON.stringify(cleaned);
+    activeFeeCard.dataset.locationId = workingLocId;
+    activeFeeCard.dataset.unit       = workingUnit;
+    renderFeeCardDistUI(activeFeeCard);
+    closeDistModal();
+    markDirty();
+  });
+  distRemoveBtn.addEventListener('click', () => {
+    if (!activeFeeCard) return;
+    activeFeeCard.dataset.tiers      = '';
+    activeFeeCard.dataset.locationId = '';
+    activeFeeCard.dataset.unit       = '';
+    renderFeeCardDistUI(activeFeeCard);
+    closeDistModal();
+    markDirty();
+  });
+
+  // ---- Render the fee-card after Apply: swap UI between
+  //      "simple amount" and "tiered" representation.
+  function renderFeeCardDistUI(card) {
+    const slot = card.querySelector('.wds-fee-card__tiers-slot');
+    const distAddBtn = card.querySelector('.wds-fee-card__dist-add');
+    const tiers = card.dataset.tiers ? safeParse(card.dataset.tiers) : null;
+
+    if (tiers && tiers.length) {
+      card.classList.add('wds-fee-card--has-tiers');
+      const loc = getBizLoc(card.dataset.locationId) || BUSINESS_LOCATIONS[0];
+      const unit = card.dataset.unit === '%' ? '%' : '$';
+      slot.innerHTML = renderTiersSummaryHTML(tiers, loc, unit);
+      // Wire summary header actions
+      slot.querySelector('.wds-tiers-summary__edit')?.addEventListener('click', () => openDistModalFor(card));
+      slot.querySelector('.wds-tiers-summary__remove')?.addEventListener('click', () => {
+        card.dataset.tiers = '';
+        card.dataset.locationId = '';
+        card.dataset.unit = '';
+        renderFeeCardDistUI(card);
+        markDirty();
+      });
+      // Hide the bottom-right text button — actions live in the summary header now
+      if (distAddBtn) distAddBtn.style.display = 'none';
+    } else {
+      card.classList.remove('wds-fee-card--has-tiers');
+      slot.innerHTML = '';
+      if (distAddBtn) distAddBtn.style.display = '';
+    }
+  }
+
+  function renderTiersSummaryHTML(tiers, loc, unit) {
+    const fmt = (n) => unit === '%' ? `${n}%` : `$${n}`;
+    let prev = 0;
+    const rows = tiers.map((tier, i) => {
+      if (tier.rest) {
+        return `
+          <div class="wds-ts-row wds-ts-row--rest">
+            <span class="wds-ts-row__marker"></span>
+            <span>More than ${prev} mi</span>
+            <span class="wds-ts-row__amount">${fmt(tier.price)}</span>
+          </div>
+        `;
+      }
+      const ringIdx = tiers.slice(0, i).filter(t => !t.rest).length;
+      const cls = `wds-ts-row--t${Math.min(ringIdx + 1, 3)}`;
+      const range = `${prev}–${tier.distance} mi`;
+      prev = tier.distance;
+      return `
+        <div class="wds-ts-row ${cls}">
+          <span class="wds-ts-row__marker"></span>
+          <span>${range}</span>
+          <span class="wds-ts-row__amount">${fmt(tier.price)}</span>
+        </div>
+      `;
+    }).join('');
+
+    return `
+      <div class="wds-tiers-summary">
+        <div class="wds-tiers-summary__head">
+          <span class="wds-tiers-summary__title">
+            <span class="wds-tiers-summary__pin"><svg><use href="#i-pin"/></svg></span>
+            From ${escHtml(loc.name)}
+            <span class="wds-tiers-summary__loc">${escHtml(loc.address)}</span>
+          </span>
+          <span style="display: inline-flex; gap: 4px;">
+            <button class="wds-text-btn wds-tiers-summary__edit" type="button">Edit</button>
+            <button class="wds-icon-btn wds-tiers-summary__remove" type="button" aria-label="Turn off distance pricing" title="Turn off distance pricing">
+              <svg><use href="#i-trash"/></svg>
+            </button>
+          </span>
+        </div>
+        <div class="wds-tiers-summary__list">${rows}</div>
+      </div>
+    `;
+  }
+</script>
+
+</body>
+</html>
