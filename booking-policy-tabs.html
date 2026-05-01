@@ -1665,13 +1665,13 @@
 
             <!-- Cancel toggle -->
             <div class="wds-toggle-row">
-              <button class="wds-toggle wds-toggle--on" data-target="cancel-nested" role="switch" aria-checked="true"></button>
+              <button class="wds-toggle" data-target="cancel-nested" role="switch" aria-checked="false"></button>
               <div class="wds-toggle-row__main">
                 <div class="wds-toggle-row__title">Allow clients to cancel their own bookings online</div>
                 <div class="wds-toggle-row__sub">Clients can cancel from their account or the confirmation email. You'll be notified when they do.</div>
               </div>
             </div>
-            <div class="wds-nested-card" id="cancel-nested">
+            <div class="wds-nested-card wds-nested-card--hidden" id="cancel-nested">
               <div class="wds-layout">
                 <div class="wds-cell-6">
                   <div class="wds-form-field">
@@ -1702,13 +1702,13 @@
 
             <!-- Reschedule toggle -->
             <div class="wds-toggle-row">
-              <button class="wds-toggle wds-toggle--on" data-target="resched-nested" role="switch" aria-checked="true"></button>
+              <button class="wds-toggle" data-target="resched-nested" role="switch" aria-checked="false"></button>
               <div class="wds-toggle-row__main">
                 <div class="wds-toggle-row__title">Allow clients to reschedule their own bookings online</div>
                 <div class="wds-toggle-row__sub">Clients can move their booking to another available time without contacting you.</div>
               </div>
             </div>
-            <div class="wds-nested-card" id="resched-nested">
+            <div class="wds-nested-card wds-nested-card--hidden" id="resched-nested">
               <div class="wds-layout">
                 <div class="wds-cell-6">
                   <div class="wds-form-field">
@@ -1862,7 +1862,7 @@
 
             <!-- Charge additional fees -->
             <div class="wds-toggle-row">
-              <button class="wds-toggle wds-toggle--on" data-target="addfees-nested" role="switch" aria-checked="true"></button>
+              <button class="wds-toggle" data-target="addfees-nested" role="switch" aria-checked="false"></button>
               <div class="wds-toggle-row__main">
                 <div class="wds-toggle-row__title">
                   Charge additional fees
@@ -1871,7 +1871,7 @@
                 <div class="wds-toggle-row__sub">Add fees that are automatically applied at checkout, like a travel fee. Each fee appears as a separate line in the order. <button class="wds-text-btn">Learn more</button></div>
               </div>
             </div>
-            <div class="wds-nested-card" id="addfees-nested">
+            <div class="wds-nested-card wds-nested-card--hidden" id="addfees-nested">
               <div class="wds-fee-list" id="wds-fee-list"></div>
               <button class="wds-text-btn" type="button" id="wds-add-fee-btn">
                 <svg width="14" height="14" style="vertical-align: -2px; margin-right: 4px;"><use href="#i-plus"/></svg>Add fee
@@ -1996,14 +1996,14 @@
           </div>
           <div class="wds-card__content">
             <div class="wds-toggle-row">
-              <button class="wds-toggle wds-toggle--on" data-target="sa-nested" role="switch" aria-checked="true"></button>
+              <button class="wds-toggle" data-target="sa-nested" role="switch" aria-checked="false"></button>
               <div class="wds-toggle-row__main">
                 <div class="wds-toggle-row__title">Limit bookings to your service area</div>
                 <div class="wds-toggle-row__sub">When a client chooses "Client's place", their address must fall within the radius of one of your locations to book.</div>
               </div>
             </div>
 
-            <div class="wds-nested-card" id="sa-nested">
+            <div class="wds-nested-card wds-nested-card--hidden" id="sa-nested">
               <div class="wds-section-helper wds-section-helper--standard" style="margin-bottom: var(--wds-space-300);">
                 <span class="wds-section-helper__icon"><svg><use href="#i-info"/></svg></span>
                 <div class="wds-section-helper__body">
