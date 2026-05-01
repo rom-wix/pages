@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Client · Concept 1 — First-time visitor (TPA · Booking Form)</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<style>
+  /*
+   * Wix TPA Booking Form layout — neutral default theme with a sample site palette
+   * derived from the Parky Spa screenshot (cream background, dark olive headings,
+   * sand-colour secondary CTA, dark olive primary CTA).
+   *
+   * Structure:
+   *   - Site header (centered logo, top nav, Book now, Log in)
+   *   - "Booking Form" heading + ← Back
+   *   - Two-column body: Client/Participant sections (left) + Booking Details (right sticky)
+   */
+  :root {
+    /* Sample site palette (Parky Spa-ish) */
+    --site-bg:#FAF6EE;
+    --site-surface:#FFFFFF;
+    --site-line:#E2DDD0;
+    --site-text:#1F1F1F;
+    --site-text-2:#3F3F3F;
+    --site-text-3:#7A7A7A;
+    --site-text-4:#B0AFA8;
+    --site-heading:#3E4232;
+    --site-primary:#4D4F3D;        /* primary CTA (dark olive) */
+    --site-primary-hover:#3A3C2D;
+    --site-secondary:#E9DEC7;      /* secondary CTA (sand) */
+    --site-secondary-hover:#DBCCAB;
+    --site-accent-tint:#F4EDDC;
+    --site-success:#3B7E1B;
+    --site-warn:#A66800;
+    --site-error:#9B2530;
+    --site-error-tint:#F1D9D9;
+    --radius:0;
+    --font:"Helvetica Neue", Helvetica, Arial, sans-serif;
+    --font-display:"Helvetica Neue", "Cormorant Garamond", Georgia, serif;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{font-family:var(--font);color:var(--site-text);background:var(--site-bg);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  /* Site header */
+  .site-header{padding:28px 32px 0;text-align:center}
+  .site-logo{font-family:var(--font-display);font-weight:300;letter-spacing:.45em;font-size:24px;color:var(--site-text);text-transform:uppercase}
+  .site-nav-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;border-top:1px solid var(--site-line);border-bottom:1px solid var(--site-line);margin-top:20px;padding:18px 0;gap:24px}
+  .site-nav{display:flex;gap:34px;font-size:11px;letter-spacing:.18em}
+  .site-nav a{color:var(--site-text);text-decoration:none;text-transform:uppercase}
+  .site-nav a:hover{color:var(--site-text-3)}
+  .site-spacer{}
+  .site-actions{display:flex;align-items:center;gap:24px;justify-content:flex-end}
+  .booknow{display:inline-flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--site-text);text-decoration:none;border-left:1px solid var(--site-line);padding-left:24px}
+  .booknow .arrow{display:inline-block;width:16px;height:1px;background:var(--site-text);position:relative}
+  .booknow .arrow::after{content:"";position:absolute;right:0;top:-3px;border-top:1px solid var(--site-text);border-right:1px solid var(--site-text);width:7px;height:7px;transform:rotate(45deg)}
+  .login{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--site-text);text-decoration:none;border-left:1px solid var(--site-line);padding-left:24px;height:36px}
+  .login .av{width:22px;height:22px;border-radius:50%;background:#000;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:600}
+  /* Page wrap */
+  .page{max-width:1180px;margin:0 auto;padding:36px 48px 100px;display:grid;grid-template-columns:1fr 360px;gap:48px;align-items:start}
+  .page-back{grid-column:1 / -1;font-size:14px;color:var(--site-text-2);text-decoration:none;display:inline-flex;align-items:center;gap:6px;margin-bottom:8px}
+  .page-back:hover{color:var(--site-text)}
+  .page-title{grid-column:1 / -1;font-family:var(--font-display);font-size:42px;font-weight:300;letter-spacing:0;margin:0 0 16px;color:var(--site-heading)}
+  /* Tag (top-right of title) */
+  .es-tag{display:inline-block;font-size:10px;font-weight:700;background:#FFF4D6;color:var(--site-warn);padding:3px 10px;border-radius:2px;margin-left:14px;letter-spacing:.06em;vertical-align:middle}
+  /* Left column */
+  .col-left{min-width:0}
+  /* Section: Client Details */
+  .section{margin-bottom:36px}
+  .section + .section{padding-top:32px;border-top:1px solid var(--site-line)}
+  .section-title{font-family:var(--font-display);font-size:28px;font-weight:300;color:var(--site-heading);margin:0 0 18px;letter-spacing:0;display:flex;align-items:center;gap:14px}
+  .section-title .num{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:var(--site-secondary);color:var(--site-heading);font-family:var(--font);font-size:14px;font-weight:600;letter-spacing:0}
+  .section-title small{font-family:var(--font);font-size:12px;color:var(--site-text-3);font-weight:400;letter-spacing:.04em;text-transform:uppercase;margin-left:6px}
+  .section-remove{margin-left:auto;background:transparent;border:none;color:var(--site-text-3);cursor:pointer;font-size:13px;padding:6px 10px;font-family:var(--font);text-decoration:underline;text-underline-offset:3px}
+  .section-remove:hover{color:var(--site-error)}
+  /* Have-account banner */
+  .acct-banner{background:var(--site-accent-tint);padding:14px 18px;font-size:14px;margin-bottom:22px;color:var(--site-text-2)}
+  .acct-banner a{color:var(--site-text);text-decoration:underline;text-underline-offset:2px;font-weight:500}
+  /* Identity radio row (TPA RadioButtonGroup, inline) */
+  .identity-row{display:flex;gap:32px;align-items:center;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--site-line)}
+  .identity-label{font-size:13px;color:var(--site-text-2);letter-spacing:.04em}
+  .tpa-radio{display:inline-flex;align-items:center;gap:10px;cursor:pointer;font-size:14px;color:var(--site-text);padding:4px 0}
+  .tpa-radio input{appearance:none;-webkit-appearance:none;width:16px;height:16px;border:1.5px solid var(--site-text-3);border-radius:50%;background:transparent;cursor:pointer;position:relative;margin:0;flex-shrink:0;transition:border-color .15s ease}
+  .tpa-radio input:hover{border-color:var(--site-text)}
+  .tpa-radio input:checked{border-color:var(--site-text);border-width:2px}
+  .tpa-radio input:checked::after{content:"";position:absolute;inset:2px;background:var(--site-text);border-radius:50%}
+  /* Field grid */
+  .field-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px 28px}
+  .field{display:flex;flex-direction:column;gap:6px}
+  .field.full{grid-column:1 / -1}
+  .field label{font-size:13px;color:var(--site-text-2);letter-spacing:.02em}
+  .field label .req{color:var(--site-text-3)}
+  .tpa-input,.tpa-select,.tpa-textarea{background:transparent;border:none;border-bottom:1px solid var(--site-line);padding:10px 0 11px;font:14px var(--font);color:var(--site-text);outline:none;width:100%;border-radius:0}
+  .tpa-input::placeholder,.tpa-textarea::placeholder{color:var(--site-text-4)}
+  .tpa-input:hover,.tpa-select:hover{border-bottom-color:var(--site-text-3)}
+  .tpa-input:focus,.tpa-select:focus,.tpa-textarea:focus{border-bottom-color:var(--site-text);border-bottom-width:2px;padding-bottom:10px}
+  .tpa-textarea{resize:vertical;min-height:88px;padding-top:10px;padding-bottom:14px}
+  .tpa-select{padding-right:24px;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='%231F1F1F' d='M5 6L0 0h10z'/></svg>");background-repeat:no-repeat;background-position:right 2px center}
+  /* Phone with flag */
+  .phone-row{display:flex;gap:10px;align-items:flex-end}
+  .phone-flag{height:22px;display:inline-flex;align-items:center;gap:6px;color:var(--site-text-2);font-size:12px;padding-bottom:11px;border-bottom:1px solid var(--site-line)}
+  .phone-flag .fl{width:18px;height:13px;background:linear-gradient(#0038B8 33%,#fff 33% 66%,#0038B8 66%);position:relative;display:inline-block}
+  .phone-row .tpa-input{flex:1}
+  /* Add another section */
+  .add-section{display:flex;align-items:center;gap:14px;padding:22px 24px;border:1px dashed var(--site-line);background:transparent;cursor:pointer;margin-top:12px;color:var(--site-text-2)}
+  .add-section:hover{border-color:var(--site-text);color:var(--site-text);background:rgba(255,255,255,.4)}
+  .add-section .ic{width:30px;height:30px;border-radius:50%;background:var(--site-secondary);color:var(--site-heading);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:600;flex-shrink:0}
+  .add-section .lbl{font-weight:500;font-size:14px;color:var(--site-text)}
+  .add-section .lbl small{display:block;color:var(--site-text-3);font-size:13px;font-weight:400;margin-top:2px}
+  /* Right column: Booking Details */
+  .col-right{position:sticky;top:24px}
+  .booking-details{padding:0}
+  .booking-details h3{font-family:var(--font-display);font-size:22px;font-weight:300;color:var(--site-heading);margin:0 0 18px;letter-spacing:0}
+  .bd-service{font-size:15px;color:var(--site-text);margin:0 0 4px;font-weight:500}
+  .bd-time{font-size:14px;color:var(--site-text-2);margin:0}
+  .bd-more{font-size:13px;color:var(--site-text-2);text-decoration:none;margin-top:10px;display:inline-flex;align-items:center;gap:6px;cursor:pointer;padding:10px 0;border-bottom:1px solid var(--site-line);width:100%;justify-content:space-between}
+  .bd-more::after{content:"⌄";font-size:14px;line-height:1;color:var(--site-text-2);transition:transform .2s ease}
+  .bd-more.open::after{transform:rotate(180deg)}
+  .bd-section{padding-top:22px;margin-top:18px;border-top:1px solid var(--site-line)}
+  .bd-section h4{font-family:var(--font-display);font-size:18px;font-weight:300;color:var(--site-heading);margin:0 0 14px}
+  .bd-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:14px;color:var(--site-text)}
+  .bd-row.total{font-weight:600}
+  .bd-row .lbl-muted{color:var(--site-text-3);font-size:13px}
+  .bd-fine{font-size:12px;color:var(--site-text-3);line-height:1.55;margin:18px 0 22px}
+  /* CTAs */
+  .cta-stack{display:flex;flex-direction:column;gap:12px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;height:48px;padding:0 22px;border:1px solid transparent;font:500 14px var(--font);cursor:pointer;text-decoration:none;letter-spacing:.04em;transition:background .15s ease, border-color .15s ease;width:100%;border-radius:0}
+  .btn-secondary{background:var(--site-secondary);color:var(--site-text);border-color:var(--site-secondary)}
+  .btn-secondary:hover{background:var(--site-secondary-hover);border-color:var(--site-secondary-hover)}
+  .btn-primary{background:var(--site-primary);color:#fff;border-color:var(--site-primary)}
+  .btn-primary:hover{background:var(--site-primary-hover);border-color:var(--site-primary-hover)}
+  .btn-primary:disabled{background:var(--site-text-4);border-color:var(--site-text-4);color:#fff;cursor:not-allowed;opacity:.7}
+  /* Responsive */
+  @media (max-width: 960px){
+    .page{grid-template-columns:1fr;padding:24px}
+    .col-right{position:static}
+  }
+</style>
+</head>
+<body>
+
+<!-- Site header -->
+<header class="site-header">
+  <div class="site-logo">PARKYSPA</div>
+  <div class="site-nav-row">
+    <nav class="site-nav">
+      <a>TREATMENTS</a>
+      <a>EVENTS</a>
+      <a>MEMBERSHIP</a>
+      <a>CONTACT</a>
+    </nav>
+    <div class="site-spacer"></div>
+    <div class="site-actions">
+      <a class="booknow">BOOK NOW <span class="arrow"></span></a>
+      <a class="login"><span class="av">·</span> Log In</a>
+    </div>
+  </div>
+</header>
+
+<div class="page">
+  <a class="page-back" href="#">‹ Back</a>
+  <h1 class="page-title">Booking Form</h1>
+
+  <!-- LEFT: participant sections -->
+  <div class="col-left" id="sections"></div>
+
+  <!-- RIGHT: booking details -->
+  <aside class="col-right">
+    <div class="booking-details">
+      <h3>Booking Details</h3>
+      <p class="bd-service">Hydrotherapy</p>
+      <p class="bd-time">May 1, 2026 at 3:30 pm</p>
+      <a class="bd-more">More details</a>
+
+      <div class="bd-section">
+        <h4>Payment Details</h4>
+        <div class="bd-row" id="bd-rows-host"></div>
+        <div class="bd-row total"><span>Total</span><span id="bdTotal">$80</span></div>
+      </div>
+
+      <p class="bd-fine">By completing your booking, you agree to receive related phone notifications.</p>
+
+      <div class="cta-stack">
+        <button class="btn btn-secondary">Add to Cart</button>
+        <button class="btn btn-primary" id="bookNow" disabled>Book Now</button>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<script>
+  /*
+   * First-time visitor empty state — TPA Booking Form layout.
+   * Row 1 = Client Details (the booker, "For me" by default).
+   * "+ Add another person" appends a "Participant 2 Details" section, defaulted to "For someone else".
+   * No avatar circle, no status badge.
+   */
+
+  const sectionsEl = document.getElementById('sections');
+  const bookNow = document.getElementById('bookNow');
+  const bdTotal = document.getElementById('bdTotal');
+  const bdRowsHost = document.getElementById('bd-rows-host');
+
+  const PRICE = 80;
+  const MAX = 4;
+
+  let participants = [
+    { id:1, identity:'me', firstName:'', lastName:'', email:'', phone:'', message:'' }
+  ];
+
+  function isComplete(p){
+    return !!p.firstName && !!p.lastName && !!p.email;
+  }
+
+  function sectionTitle(p, i){
+    if (i === 0) return 'Client Details';
+    return `Participant ${i+1} Details`;
+  }
+
+  function sectionSubtitle(p){
+    return '';
+  }
+
+  function render(){
+    sectionsEl.innerHTML = participants.map((p, i) => {
+      const isMe = p.identity === 'me';
+      const isElse = p.identity === 'else';
+      const showLogin = i === 0;
+
+      const acctBanner = showLogin
+        ? `<div class="acct-banner">Have an account? <a>Log in</a></div>`
+        : '';
+
+      return `
+        <section class="section" data-i="${i}">
+          <h2 class="section-title">
+            <span class="num">${i+1}</span>
+            ${sectionTitle(p, i)}
+            <small>${sectionSubtitle(p)}</small>
+            ${i > 0 ? `<button class="section-remove" data-remove="${i}">Remove</button>` : ''}
+          </h2>
+
+          ${acctBanner}
+
+          <div class="identity-row">
+            <span class="identity-label">This booking is for:</span>
+            <label class="tpa-radio">
+              <input type="radio" name="id-${i}" data-id="me" ${isMe ? 'checked' : ''}/>
+              ${i === 0 ? 'Me' : 'Me'}
+            </label>
+            <label class="tpa-radio">
+              <input type="radio" name="id-${i}" data-id="else" ${isElse ? 'checked' : ''}/>
+              Someone else
+            </label>
+          </div>
+
+          <div class="field-grid">
+            <div class="field">
+              <label>First name <span class="req">*</span></label>
+              <input class="tpa-input" placeholder="${isMe ? 'Your first name' : 'Their first name'}" value="${p.firstName}" data-field="firstName" data-i="${i}"/>
+            </div>
+            <div class="field">
+              <label>Last name <span class="req">*</span></label>
+              <input class="tpa-input" placeholder="${isMe ? 'Your last name' : 'Their last name'}" value="${p.lastName}" data-field="lastName" data-i="${i}"/>
+            </div>
+            <div class="field">
+              <label>Email <span class="req">*</span></label>
+              <input class="tpa-input" placeholder="email@example.com" value="${p.email}" data-field="email" data-i="${i}"/>
+            </div>
+            <div class="field">
+              <label>Phone</label>
+              <div class="phone-row">
+                <span class="phone-flag"><span class="fl"></span> +972 ⌄</span>
+                <input class="tpa-input" placeholder="50 123 4567" value="${p.phone}" data-field="phone" data-i="${i}"/>
+              </div>
+            </div>
+            <div class="field full">
+              <label>Add your message</label>
+              <textarea class="tpa-textarea" placeholder="${isMe ? 'Anything we should know?' : 'Anything we should know about this participant?'}" data-field="message" data-i="${i}">${p.message}</textarea>
+            </div>
+          </div>
+        </section>`;
+    }).join('') + (participants.length < MAX ? `
+      <div class="add-section" id="addSection">
+        <div class="ic">+</div>
+        <div>
+          <span class="lbl">Add another person<small>Book for a partner, child, friend — in the same checkout</small></span>
+        </div>
+      </div>` : '');
+
+    // Wire up the add-section button if present
+    const addEl = document.getElementById('addSection');
+    if (addEl) addEl.addEventListener('click', addParticipant);
+
+    // Booking details right column
+    bdRowsHost.outerHTML = participants.map((p, i) => `
+      <div class="bd-row">
+        <span class="lbl-muted">${i === 0 ? 'Client' : 'Participant ' + (i+1)}</span>
+        <span>$${PRICE}.00</span>
+      </div>
+    `).join('') + '<div id="bd-rows-host" style="display:none"></div>';
+
+    const totalAmt = participants.length * PRICE;
+    bdTotal.textContent = '$' + totalAmt;
+
+    const allReady = participants.every(isComplete);
+    bookNow.disabled = !allReady;
+  }
+
+  // Field input
+  sectionsEl.addEventListener('input', e => {
+    const t = e.target;
+    if (t.dataset.field){
+      const i = +t.dataset.i;
+      participants[i][t.dataset.field] = t.value;
+      // Don't full-render on every keystroke (would lose focus); just update CTA + total
+      const allReady = participants.every(isComplete);
+      bookNow.disabled = !allReady;
+    }
+  });
+
+  // Identity change
+  sectionsEl.addEventListener('change', e => {
+    const t = e.target;
+    if (t.tagName === 'INPUT' && t.type === 'radio' && t.dataset.id){
+      const i = +t.name.split('-')[1];
+      participants[i].identity = t.dataset.id;
+      // Re-render to update placeholders + section subtitle
+      // Preserve focus by storing values from DOM first
+      participants.forEach((p, idx) => {
+        ['firstName','lastName','email','phone','message'].forEach(f => {
+          const el = sectionsEl.querySelector(`[data-i="${idx}"][data-field="${f}"]`);
+          if (el) p[f] = el.value;
+        });
+      });
+      render();
+    }
+  });
+
+  // Remove section
+  sectionsEl.addEventListener('click', e => {
+    const t = e.target;
+    if (t.dataset.remove !== undefined){
+      e.preventDefault();
+      // capture form state first
+      participants.forEach((p, idx) => {
+        ['firstName','lastName','email','phone','message'].forEach(f => {
+          const el = sectionsEl.querySelector(`[data-i="${idx}"][data-field="${f}"]`);
+          if (el) p[f] = el.value;
+        });
+      });
+      participants.splice(+t.dataset.remove, 1);
+      render();
+    }
+  });
+
+  // Add participant
+  function addParticipant(){
+    if (participants.length >= MAX) return;
+    // capture form state first
+    participants.forEach((p, idx) => {
+      ['firstName','lastName','email','phone','message'].forEach(f => {
+        const el = sectionsEl.querySelector(`[data-i="${idx}"][data-field="${f}"]`);
+        if (el) p[f] = el.value;
+      });
+    });
+    const newIdx = participants.length;
+    participants.push({ id: newIdx + 1, identity:'else', firstName:'', lastName:'', email:'', phone:'', message:'' });
+    render();
+    requestAnimationFrame(() => {
+      const newSection = sectionsEl.querySelector(`[data-i="${newIdx}"]`);
+      if (newSection) newSection.scrollIntoView({behavior:'smooth', block:'start'});
+      const firstField = sectionsEl.querySelector(`[data-i="${newIdx}"][data-field="firstName"]`);
+      if (firstField) firstField.focus();
+    });
+  }
+
+  render();
+</script>
+
+</body>
+</html>
