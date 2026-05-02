@@ -1,0 +1,2235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking Calendar — Wix Bookings · Multi-Participant Bookings</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400;500;600;700&family=Wix+Madefor+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --wix-blue: #116dff;
+      --wix-blue-hover: #0a55d4;
+      --ink: #162d3d;
+      --ink-soft: #3b4c63;
+      --ink-mute: #868aa5;
+      --ink-faint: #b6becc;
+      --line: #dfe5eb;
+      --line-soft: #edeff3;
+      --bg: #f7f8f8;
+      --bg-hover: #f0f3f5;
+      --paper: #ffffff;
+
+      /* Event palette */
+      --evt-blue-bg: #e7eef9;
+      --evt-blue-border: #b6c5e0;
+      --evt-blue-ink: #2a3b5a;
+      --evt-gray-bg: #ebeef3;
+      --evt-gray-border: #c9d0db;
+      --evt-gray-ink: #2a3b5a;
+      --evt-dark-bg: #1f2c3d;
+      --evt-dark-ink: #ffffff;
+      --evt-orange-bg: #fbe9d9;
+      --evt-orange-border: #e7b986;
+      --evt-orange-ink: #6f3b0d;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      font-family: 'Wix Madefor Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: var(--ink);
+      font-size: 13px;
+      background: var(--bg);
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .app {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    /* ================================================================ */
+    /* TOP BAR (Wix Studio black) */
+    /* ================================================================ */
+    .top-bar {
+      height: 26px;
+      background: #1d2030;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+      gap: 4px;
+      font-size: 11px;
+      color: #a7adc4;
+      border-bottom: 1px solid #0c0e18;
+    }
+    .tab-strip {
+      display: flex;
+      gap: 1px;
+      flex: 1;
+      overflow: hidden;
+    }
+    .browser-tab {
+      height: 22px;
+      padding: 0 10px;
+      background: #2a2e44;
+      color: #a7adc4;
+      border-radius: 4px 4px 0 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+      max-width: 110px;
+      flex-shrink: 0;
+    }
+    .browser-tab.active { background: #f7f8f8; color: var(--ink); }
+    .browser-tab .tab-fav {
+      width: 10px; height: 10px;
+      background: #6b7290;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+    .browser-tab.active .tab-fav { background: var(--wix-blue); }
+    .browser-tab .tab-label {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1;
+    }
+
+    /* ================================================================ */
+    /* HEADER ROW (URL bar) */
+    /* ================================================================ */
+    .url-bar {
+      height: 36px;
+      background: #f7f8f8;
+      flex-shrink: 0;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      gap: 10px;
+    }
+    .url-controls {
+      display: flex;
+      gap: 4px;
+      color: var(--ink-mute);
+    }
+    .url-controls span {
+      width: 22px;
+      height: 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    .url-controls span:hover { background: var(--bg-hover); }
+    .url-input {
+      flex: 1;
+      height: 24px;
+      background: var(--paper);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      font-size: 11px;
+      color: var(--ink-mute);
+      gap: 6px;
+      border: 1px solid var(--line);
+    }
+    .url-icon { color: var(--ink-faint); font-size: 11px; }
+    .url-extras { display: flex; gap: 6px; color: var(--ink-mute); font-size: 14px; }
+    .url-extras span {
+      width: 22px; height: 22px;
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 4px;
+    }
+
+    /* ================================================================ */
+    /* WIX STUDIO HEADER */
+    /* ================================================================ */
+    .studio-header {
+      height: 50px;
+      flex-shrink: 0;
+      background: var(--paper);
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      gap: 12px;
+    }
+    .studio-logo {
+      font-family: 'Wix Madefor Display', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: 0.4px;
+      color: var(--ink);
+    }
+    .nl-badge {
+      width: 26px; height: 26px;
+      background: var(--wix-blue);
+      color: #fff;
+      font-weight: 700;
+      font-size: 11px;
+      border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .studio-nav {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 13px;
+      color: var(--ink);
+    }
+    .studio-nav-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      cursor: default;
+      padding: 4px 2px;
+    }
+    .studio-nav-item.has-caret::after {
+      content: '▾';
+      color: var(--ink-mute);
+      font-size: 9px;
+      margin-left: 2px;
+    }
+    .upgrade-btn {
+      padding: 5px 12px;
+      border: 1px solid var(--ink);
+      border-radius: 16px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink);
+      background: transparent;
+    }
+    .studio-search {
+      flex: 1;
+      max-width: 460px;
+      height: 32px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      padding: 0 14px;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--ink-mute);
+      background: var(--paper);
+    }
+    .studio-search-icon {
+      color: var(--ink-faint);
+      font-size: 14px;
+    }
+    .header-spacer { flex: 1; }
+    .studio-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .icon-circle {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--ink-soft);
+      font-size: 14px;
+      position: relative;
+    }
+    .icon-circle .badge {
+      position: absolute;
+      top: -2px; right: -2px;
+      background: #f43f5e;
+      color: #fff;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 1px 5px;
+      border-radius: 8px;
+      min-width: 16px;
+      text-align: center;
+    }
+    .ai-btn {
+      padding: 6px 14px 6px 12px;
+      background: var(--wix-blue);
+      color: #fff;
+      border-radius: 16px;
+      font-size: 12px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .ai-btn::before {
+      content: '✦';
+      font-size: 12px;
+    }
+    .work-pill {
+      padding: 5px 10px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      font-size: 11px;
+      color: var(--ink-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ================================================================ */
+    /* MAIN AREA */
+    /* ================================================================ */
+    .main {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+      background: var(--paper);
+    }
+
+    /* ============================================ */
+    /* ICON RAIL (vertical nav far left) */
+    /* ============================================ */
+    .icon-rail {
+      width: 56px;
+      flex-shrink: 0;
+      background: var(--paper);
+      border-right: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      padding: 8px 0;
+      gap: 2px;
+    }
+    .rail-item {
+      width: 40px; height: 40px;
+      margin: 0 auto;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-soft);
+      font-size: 18px;
+      cursor: default;
+    }
+    .rail-item.active {
+      background: var(--bg);
+      color: var(--wix-blue);
+    }
+    .rail-item:hover { background: var(--bg); }
+    .rail-spacer { flex: 1; }
+    .rail-divider { height: 1px; background: var(--line); margin: 6px 12px; }
+
+    /* ============================================ */
+    /* CALENDAR SIDEBAR */
+    /* ============================================ */
+    .cal-sidebar {
+      width: 240px;
+      flex-shrink: 0;
+      background: var(--paper);
+      border-right: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .cal-sidebar-header {
+      padding: 14px 16px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--line-soft);
+    }
+    .cal-sidebar-title {
+      font-family: 'Wix Madefor Display', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .sidebar-toggle {
+      width: 24px; height: 24px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--ink-mute);
+      font-size: 14px;
+    }
+
+    .cal-sidebar-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 0 16px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(0,0,0,0.1) transparent;
+    }
+
+    .cal-sidebar-scroll::-webkit-scrollbar { width: 4px; }
+    .cal-sidebar-scroll::-webkit-scrollbar-track { background: transparent; }
+    .cal-sidebar-scroll::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 4px; }
+
+    /* Mini calendar */
+    .mini-cal {
+      padding: 0 16px 12px;
+    }
+    .mini-cal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      padding: 4px 0;
+    }
+    .mini-cal-month {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .mini-cal-nav {
+      display: flex;
+      gap: 2px;
+    }
+    .mini-cal-nav span {
+      width: 22px; height: 22px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--ink-mute);
+      font-size: 14px;
+      border-radius: 4px;
+    }
+    .mini-cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+      font-size: 11px;
+    }
+    .mini-cal-dow {
+      text-align: center;
+      color: var(--ink-mute);
+      font-weight: 600;
+      padding: 4px 0;
+      font-size: 10px;
+    }
+    .mini-cal-day {
+      text-align: center;
+      padding: 5px 0;
+      color: var(--ink);
+      cursor: default;
+      border-radius: 50%;
+      font-size: 11px;
+    }
+    .mini-cal-day.muted { color: var(--ink-faint); }
+    .mini-cal-day.today {
+      background: #00474f;
+      color: #fff;
+      font-weight: 600;
+    }
+    .mini-cal-day:hover:not(.today):not(.muted) { background: var(--bg); }
+
+    /* Sync section */
+    .sync-section {
+      padding: 12px 16px;
+      border-top: 1px solid var(--line-soft);
+      border-bottom: 1px solid var(--line-soft);
+    }
+    .sync-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .sync-title::after {
+      content: '⌃';
+      color: var(--ink-mute);
+      font-size: 12px;
+    }
+    .sync-desc {
+      font-size: 11px;
+      color: var(--ink-mute);
+      margin: 6px 0 8px;
+      line-height: 1.4;
+    }
+    .sync-link {
+      font-size: 12px;
+      color: var(--wix-blue);
+      font-weight: 600;
+    }
+
+    /* Activity */
+    .activity-section { padding: 12px 0 0; }
+    .activity-header {
+      padding: 4px 16px 8px;
+      font-family: 'Wix Madefor Display', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .activity-item {
+      padding: 10px 16px;
+      border-top: 1px solid var(--line-soft);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .activity-item.expanded {
+      background: var(--bg);
+    }
+    .activity-label {
+      font-size: 12px;
+      color: var(--ink);
+      font-weight: 500;
+    }
+    .activity-toggle {
+      color: var(--ink-mute);
+      font-size: 12px;
+    }
+    .activity-content {
+      padding: 0 16px 12px;
+      font-size: 11px;
+      color: var(--ink-soft);
+    }
+    .upcoming-event {
+      padding: 8px 12px;
+      background: var(--paper);
+      border: 1px solid var(--line-soft);
+      border-radius: 6px;
+      margin-top: 4px;
+    }
+    .upcoming-event-name { font-size: 12px; font-weight: 600; color: var(--ink); }
+    .upcoming-event-meta { font-size: 11px; color: var(--ink-mute); margin-top: 2px; line-height: 1.3; }
+
+    /* ============================================ */
+    /* CALENDAR MAIN AREA */
+    /* ============================================ */
+    .cal-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: var(--paper);
+    }
+
+    /* Toolbar */
+    .cal-toolbar {
+      height: 56px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      gap: 12px;
+      border-bottom: 1px solid var(--line);
+      background: var(--paper);
+    }
+    .today-btn {
+      padding: 6px 16px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink);
+      background: var(--paper);
+    }
+    .month-nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: 8px;
+    }
+    .month-label {
+      font-family: 'Wix Madefor Display', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .month-nav-btn {
+      width: 28px; height: 28px;
+      display: inline-flex; align-items: center; justify-content: center;
+      color: var(--ink-soft);
+      font-size: 16px;
+      border-radius: 50%;
+      cursor: default;
+    }
+    .month-nav-btn:hover { background: var(--bg); }
+
+    .toolbar-spacer { flex: 1; }
+
+    .view-select {
+      padding: 6px 14px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      font-size: 13px;
+      color: var(--ink);
+      background: var(--paper);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 108px;
+    }
+    .view-select::after {
+      content: '▾';
+      font-size: 9px;
+      color: var(--ink-mute);
+      margin-left: auto;
+    }
+
+    .toolbar-icon-btn {
+      width: 32px; height: 32px;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-soft);
+      font-size: 14px;
+      background: var(--paper);
+      position: relative;
+    }
+    .toolbar-icon-btn .badge {
+      position: absolute;
+      top: -3px; right: -3px;
+      background: var(--wix-blue);
+      color: #fff;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 1px 5px;
+      border-radius: 8px;
+      min-width: 14px;
+      text-align: center;
+    }
+    .manage-btn {
+      padding: 6px 16px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink);
+      background: var(--paper);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .manage-btn::after {
+      content: '▾';
+      font-size: 9px;
+      color: var(--ink-mute);
+    }
+    .add-btn {
+      padding: 7px 18px;
+      background: var(--wix-blue);
+      color: #fff;
+      border-radius: 18px;
+      font-size: 13px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: none;
+    }
+    .add-btn::after {
+      content: '▾';
+      font-size: 9px;
+    }
+
+    /* ============================================ */
+    /* CALENDAR GRID */
+    /* ============================================ */
+    .cal-grid-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .day-headers {
+      display: grid;
+      grid-template-columns: 60px repeat(7, 1fr);
+      border-bottom: 1px solid var(--line);
+      background: var(--paper);
+      flex-shrink: 0;
+    }
+    .day-headers .corner { border-right: 1px solid var(--line-soft); }
+    .day-header-cell {
+      padding: 12px 0;
+      text-align: center;
+      border-right: 1px solid var(--line-soft);
+      font-size: 13px;
+      color: var(--ink-soft);
+      font-weight: 500;
+    }
+    .day-header-cell:last-child { border-right: none; }
+    .day-header-cell .dow { font-size: 12px; color: var(--ink-mute); margin-right: 4px; }
+    .day-header-cell .num { font-weight: 600; color: var(--ink); }
+    .day-header-cell.today .num {
+      display: inline-flex;
+      width: 22px; height: 22px;
+      background: var(--wix-blue);
+      color: #fff;
+      border-radius: 50%;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      margin-left: 4px;
+    }
+
+    .cal-body {
+      flex: 1;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(0,0,0,0.1) transparent;
+    }
+    .cal-body::-webkit-scrollbar { width: 6px; }
+    .cal-body::-webkit-scrollbar-track { background: transparent; }
+    .cal-body::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 4px; }
+
+    .cal-grid {
+      display: grid;
+      grid-template-columns: 60px repeat(7, 1fr);
+      position: relative;
+    }
+
+    .time-col {
+      grid-column: 1;
+      grid-row: 1 / span 100;
+      border-right: 1px solid var(--line-soft);
+    }
+    .time-slot {
+      height: 60px;
+      padding: 4px 8px 0 0;
+      text-align: right;
+      font-size: 11px;
+      color: var(--ink-mute);
+      border-bottom: 1px solid transparent;
+    }
+
+    .day-col {
+      border-right: 1px solid var(--line-soft);
+      position: relative;
+      min-height: 540px;
+    }
+    .day-col:last-child { border-right: none; }
+    .hour-line {
+      height: 60px;
+      border-bottom: 1px dashed var(--line-soft);
+    }
+
+    /* Events */
+    .event {
+      position: absolute;
+      left: 2px;
+      right: 2px;
+      padding: 4px 6px;
+      background: var(--evt-blue-bg);
+      border-left: 3px solid var(--evt-blue-border);
+      border-radius: 3px;
+      font-size: 10px;
+      line-height: 1.25;
+      color: var(--evt-blue-ink);
+      overflow: hidden;
+      cursor: default;
+      z-index: 2;
+    }
+    .event.ev-blue { background: var(--evt-blue-bg); border-color: var(--evt-blue-border); color: var(--evt-blue-ink); }
+    .event.ev-gray { background: var(--evt-gray-bg); border-color: var(--evt-gray-border); color: var(--evt-gray-ink); }
+    .event.ev-dark { background: var(--evt-dark-bg); border-color: #4a5b73; color: var(--evt-dark-ink); }
+    .event.ev-orange { background: var(--evt-orange-bg); border-color: var(--evt-orange-border); color: var(--evt-orange-ink); }
+    .event.ev-striped {
+      background: repeating-linear-gradient(
+        135deg,
+        var(--evt-gray-bg),
+        var(--evt-gray-bg) 6px,
+        rgba(0,0,0,0.04) 6px,
+        rgba(0,0,0,0.04) 12px
+      );
+      border-color: var(--evt-gray-border);
+    }
+    .ev-title {
+      font-weight: 600;
+      font-size: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .ev-meta {
+      font-size: 9px;
+      color: inherit;
+      opacity: 0.8;
+      margin-top: 1px;
+      line-height: 1.2;
+    }
+    .event.ev-dark .ev-meta { opacity: 0.85; }
+
+    /* Two-column day (overlapping events) */
+    .event.col-left { right: 50%; }
+    .event.col-right { left: 50%; }
+
+    /* ============================================ */
+    /* ADD MENU DROPDOWN (shown on hover/active) */
+    /* ============================================ */
+    .add-menu-wrap { position: relative; }
+    .add-menu-dropdown {
+      position: absolute;
+      top: calc(100% + 6px);
+      right: 0;
+      width: 220px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 10px 28px rgba(22,45,61,0.12);
+      padding: 4px 0;
+      z-index: 100;
+      display: none;
+    }
+    .add-menu-wrap:hover .add-menu-dropdown,
+    .add-menu-wrap.open .add-menu-dropdown { display: block; }
+    .add-menu-row {
+      padding: 9px 16px;
+      font-size: 13px;
+      color: var(--ink);
+      cursor: default;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .add-menu-row:hover { background: var(--bg); }
+    .add-menu-row.highlight { color: var(--wix-blue); }
+    .add-menu-divider {
+      height: 1px;
+      background: var(--line-soft);
+      margin: 4px 0;
+    }
+    .add-menu-row.with-icon::before {
+      content: '';
+      width: 16px;
+      height: 16px;
+      border: 1.5px solid currentColor;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
+    /* Dim toggle so it always shows on the page */
+    body.menu-open .add-menu-wrap .add-menu-dropdown { display: block; }
+
+    /* ================================================================ */
+    /* SIDE PANEL */
+    /* ================================================================ */
+    .side-panel {
+      width: 0;
+      flex-shrink: 0;
+      background: var(--paper);
+      border-left: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: width 0.18s ease;
+    }
+    .side-panel.open { width: 408px; }
+
+    .sp-header {
+      height: 56px;
+      flex-shrink: 0;
+      border-bottom: 1px solid var(--line-soft);
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      gap: 10px;
+    }
+    .sp-back {
+      width: 24px; height: 24px;
+      display: inline-flex; align-items: center; justify-content: center;
+      color: var(--wix-blue);
+      font-size: 18px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .sp-back:hover { background: var(--bg); border-radius: 4px; }
+    .sp-back.hidden { display: none; }
+    .sp-title {
+      font-family: 'Wix Madefor Display', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--ink);
+      flex: 1;
+    }
+    .sp-close {
+      width: 28px; height: 28px;
+      display: inline-flex; align-items: center; justify-content: center;
+      color: var(--ink-soft);
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 50%;
+    }
+    .sp-close:hover { background: var(--bg); }
+
+    .sp-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 24px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(0,0,0,0.1) transparent;
+    }
+    .sp-content::-webkit-scrollbar { width: 4px; }
+    .sp-content::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 4px; }
+    .sp-content.no-pad { padding: 0; }
+
+    .sp-footer {
+      flex-shrink: 0;
+      padding: 14px 24px;
+      border-top: 1px solid var(--line-soft);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .sp-footer.right { justify-content: flex-end; }
+
+    /* Side-panel buttons */
+    .sp-btn {
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 7px 18px;
+      border-radius: 18px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      background: transparent;
+      color: var(--ink);
+    }
+    .sp-btn.text { color: var(--wix-blue); border-color: transparent; padding: 7px 4px; }
+    .sp-btn.secondary { border-color: var(--line); background: var(--paper); }
+    .sp-btn.secondary:hover { background: var(--bg); }
+    .sp-btn.primary { background: var(--wix-blue); color: #fff; border-color: var(--wix-blue); }
+    .sp-btn.primary:hover { background: var(--wix-blue-hover); }
+    .sp-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* Add new contact link */
+    .sp-add-new {
+      font-size: 13px;
+      color: var(--wix-blue);
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+    .sp-add-new::before {
+      content: '+';
+      width: 16px; height: 16px;
+      border: 1.5px solid var(--wix-blue);
+      border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 12px; line-height: 1;
+    }
+
+    /* Search */
+    .sp-search {
+      height: 36px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--ink-faint);
+      font-size: 13px;
+      background: var(--paper);
+    }
+    .sp-search input {
+      border: none;
+      outline: none;
+      flex: 1;
+      font-family: inherit;
+      font-size: 13px;
+      color: var(--ink);
+      background: transparent;
+    }
+    .sp-search-icon { color: var(--ink-faint); font-size: 14px; }
+
+    /* Contact list */
+    .sp-list { display: flex; flex-direction: column; }
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 24px;
+      cursor: pointer;
+      border-radius: 0;
+      transition: background 0.1s;
+    }
+    .contact-row:hover { background: var(--bg); }
+    .contact-row.disabled { opacity: 0.45; cursor: not-allowed; }
+    .contact-row.disabled:hover { background: transparent; }
+    .contact-row .avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: #2196f3;
+      color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 600;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    .contact-row .avatar.color-a { background: #4f9af5; }
+    .contact-row .avatar.color-b { background: #4cb7c5; }
+    .contact-row .avatar.color-c { background: #c98d4f; }
+    .contact-row .avatar.color-d { background: #9c6dd9; }
+    .contact-row .avatar.color-e { background: #2196f3; }
+    .contact-row .avatar.color-f { background: #6b8aaa; }
+    .contact-row .meta { flex: 1; min-width: 0; }
+    .contact-row .name { font-size: 13px; font-weight: 500; color: var(--ink); }
+    .contact-row .sub { font-size: 11px; color: var(--ink-mute); margin-top: 1px; }
+    .contact-row .dim-tag {
+      font-size: 10px;
+      color: var(--ink-mute);
+      font-weight: 500;
+      margin-left: 6px;
+    }
+
+    /* Banner / help bar */
+    .sp-banner {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 12px;
+      color: #1e3a8a;
+      line-height: 1.45;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .sp-banner.warning {
+      background: #fef3c7;
+      border-color: #fcd34d;
+      color: #78350f;
+    }
+
+    /* Section label */
+    .sp-section-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--ink-mute);
+    }
+
+    /* Participant card */
+    .participant-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--paper);
+      position: relative;
+    }
+    .participant-card.is-primary {
+      border-color: var(--wix-blue);
+      background: #eff6ff;
+    }
+    .participant-card .avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--wix-blue);
+      color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 600;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    .participant-card .meta { flex: 1; min-width: 0; }
+    .participant-card .name { font-size: 14px; font-weight: 600; color: var(--ink); }
+    .participant-card .sub { font-size: 11px; color: var(--ink-mute); margin-top: 2px; }
+    .participant-card .tag {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 3px;
+      background: var(--wix-blue);
+      color: #fff;
+      position: absolute;
+      top: -8px;
+      left: 14px;
+    }
+    .participant-card .tag.muted {
+      background: var(--ink-mute);
+    }
+    .participant-actions {
+      display: flex;
+      gap: 4px;
+    }
+    .icon-btn-sm {
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      color: var(--ink-soft);
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .icon-btn-sm:hover { background: rgba(255,255,255,0.6); }
+    .participant-card:not(.is-primary) .icon-btn-sm:hover { background: var(--bg); }
+
+    /* Add another tile */
+    .add-tile {
+      border: 1.5px dashed var(--wix-blue);
+      border-radius: 8px;
+      padding: 14px;
+      background: transparent;
+      color: var(--wix-blue);
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+    .add-tile:hover { background: #eff6ff; }
+    .add-tile-icon {
+      width: 22px; height: 22px;
+      border: 1.5px solid var(--wix-blue);
+      border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    /* Toggle pills */
+    .toggle-row {
+      display: flex; gap: 6px; flex-wrap: wrap; align-items: center;
+    }
+    .toggle-row-label { font-size: 12px; color: var(--ink-soft); margin-right: 4px; }
+    .toggle-pill {
+      font-size: 12px;
+      padding: 5px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--ink-mute);
+      background: var(--paper);
+      cursor: pointer;
+      user-select: none;
+    }
+    .toggle-pill.on {
+      background: var(--ink);
+      color: #fff;
+      border-color: var(--ink);
+    }
+
+    /* Service row */
+    .service-row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      cursor: pointer;
+      background: var(--paper);
+    }
+    .service-row:hover { border-color: var(--wix-blue); background: #f8fbff; }
+    .service-row.disabled { opacity: 0.5; cursor: not-allowed; }
+    .service-row.disabled:hover { border-color: var(--line); background: var(--paper); }
+    .service-thumb {
+      width: 40px; height: 40px;
+      background: var(--bg);
+      border-radius: 6px;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--ink-mute);
+      font-size: 16px;
+    }
+    .service-info { flex: 1; min-width: 0; }
+    .service-name { font-size: 13px; font-weight: 600; color: var(--ink); }
+    .service-meta { font-size: 11px; color: var(--ink-mute); margin-top: 2px; }
+    .service-price { font-size: 13px; font-weight: 600; color: var(--ink-soft); }
+
+    /* Main form rows */
+    .form-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--line-soft);
+    }
+    .form-row:last-child { border-bottom: none; }
+    .form-row .form-icon {
+      width: 18px; height: 18px;
+      color: var(--ink-mute);
+      font-size: 14px;
+      flex-shrink: 0;
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+    .form-row .form-label {
+      flex: 1;
+      font-size: 13px;
+      color: var(--ink);
+    }
+    .form-row .form-label .form-label-sub {
+      font-size: 11px;
+      color: var(--ink-mute);
+      margin-top: 2px;
+      font-weight: 400;
+    }
+    .form-row .form-link {
+      font-size: 12px;
+      color: var(--wix-blue);
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .total-due {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+    }
+    .total-due-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .total-due-sub {
+      font-size: 11px;
+      color: var(--ink-mute);
+      margin-top: 2px;
+    }
+    .total-due-amount {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    /* View transitions */
+    .view { display: none; flex: 1; flex-direction: column; min-height: 0; overflow: hidden; }
+    .view.active { display: flex; }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--ink);
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(-4px);
+    }
+
+    /* Hide overlapping events when panel is open (calendar gets narrower) */
+    .side-panel.open ~ * .event,
+    .main:has(.side-panel.open) .event .ev-meta {
+      /* keep readable - just rely on flex shrinking naturally */
+    }
+
+    /* ───────── SVG icon utility ───────── */
+    .icn { display: inline-block; width: 1em; height: 1em; vertical-align: -0.15em; fill: none; stroke: currentColor; flex-shrink: 0; }
+    .icn--sm { width: 14px; height: 14px; }
+    .icn--md { width: 16px; height: 16px; }
+    .icn--lg { width: 18px; height: 18px; }
+    .icn--xl { width: 20px; height: 20px; }
+    .icn--filled { fill: currentColor; stroke: none; }
+    /* Reset for spans that previously held glyph text but now host an SVG */
+    .url-icon .icn, .studio-search-icon .icn, .sp-search-icon .icn { display: block; }
+  </style>
+</head>
+<body>
+
+  <!-- ===================== SVG icon sprite (hidden) ===================== -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-search" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M11.5 11.5L15 15M2.5 8a5.5 5.5 0 1 1 11 0 5.5 5.5 0 0 1-11 0z"/></symbol>
+      <symbol id="i-bell" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M9 2v1M5 7a4 4 0 1 1 8 0c0 4 1.5 5 1.5 6h-11C3.5 12 5 11 5 7zM7.5 14.5a1.5 1.5 0 0 0 3 0"/></symbol>
+      <symbol id="i-message" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d="M2.5 4.5h13v8h-9l-3 2.5v-2.5h-1z"/></symbol>
+      <symbol id="i-mail" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d="M2 4h14v10H2zM2 4l7 5 7-5"/></symbol>
+      <symbol id="i-sparkle" viewBox="0 0 18 18"><path fill="currentColor" d="M9 1.5l1.6 4.4L15 7.5l-4.4 1.6L9 13.5l-1.6-4.4L3 7.5l4.4-1.6z"/></symbol>
+      <symbol id="i-pencil" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d="M3 15h3l9-9-3-3-9 9zM12 4l3 3"/></symbol>
+      <symbol id="i-home" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d="M2.5 8.5L9 3l6.5 5.5V15h-4v-4h-5v4h-4z"/></symbol>
+      <symbol id="i-calendar" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d="M2.5 4.5h13v11h-13zM2.5 7.5h13M5.5 2.5v3M12.5 2.5v3"/></symbol>
+      <symbol id="i-dollar" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M9 2v14M12 5.5C12 4 10.7 3 9 3S6 4 6 5.5 7 7.5 9 8s3 1 3 2.5S10.7 13 9 13 6 12 6 10.5"/></symbol>
+      <symbol id="i-cart" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M2 3h2l2 8.5h9L17 6H5"/><circle cx="7" cy="14.5" r="1.2" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="14" cy="14.5" r="1.2" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
+      <symbol id="i-box" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d="M9 2L2.5 5.5v7L9 16l6.5-3.5v-7zM2.5 5.5L9 9l6.5-3.5M9 9v7"/></symbol>
+      <symbol id="i-image" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d="M2.5 3.5h13v11h-13zM2.5 12L7 8l3 3 2-2 3 3"/><circle cx="6" cy="6.5" r="1" fill="currentColor"/></symbol>
+      <symbol id="i-people" viewBox="0 0 18 18"><circle cx="6.5" cy="6" r="2.2" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12.5" cy="7" r="1.8" fill="none" stroke="currentColor" stroke-width="1.5"/><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" d="M2 14.5c0-2.2 2-4 4.5-4s4.5 1.8 4.5 4M11 14.5c0-1.7 1.5-3 3-3s2.5.6 2.5 1.5"/></symbol>
+      <symbol id="i-grid" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" d="M3 3h4v4H3zM11 3h4v4h-4zM3 11h4v4H3zM11 11h4v4h-4z"/></symbol>
+      <symbol id="i-mobile" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d="M5 2h8v14H5zM7.5 14h3"/></symbol>
+      <symbol id="i-megaphone" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" d="M3 7v4l9 4V3zM3 7H2.5a1.5 1.5 0 0 0 0 4H3M5 11.5l1 3.5"/></symbol>
+      <symbol id="i-inbox" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d="M2.5 3.5h13v11h-13zM2.5 10h3l1 2h5l1-2h3"/></symbol>
+      <symbol id="i-user" viewBox="0 0 18 18"><circle cx="9" cy="6" r="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M3.5 15.5c0-2.8 2.5-5 5.5-5s5.5 2.2 5.5 5"/></symbol>
+      <symbol id="i-chart" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" d="M2.5 14.5h13M4 12V8M8 12V5M12 12V9M16 12V6"/></symbol>
+      <symbol id="i-bolt" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d="M10 2L4 10h4l-1 6 6-8h-4z"/></symbol>
+      <symbol id="i-gear" viewBox="0 0 18 18"><circle cx="9" cy="9" r="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d="M9 1.5v2M9 14.5v2M2.5 9h-1M16.5 9h-1M4.4 4.4l1.4 1.4M12.2 12.2l1.4 1.4M4.4 13.6l1.4-1.4M12.2 5.8l1.4-1.4"/></symbol>
+      <symbol id="i-document" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d="M4 2h6l4 4v10H4zM10 2v4h4M6 9h6M6 12h6"/></symbol>
+      <symbol id="i-code" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" d="M6 5L2 9l4 4M12 5l4 4-4 4"/></symbol>
+      <symbol id="i-info" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M9 8.25v4.5"/><circle cx="9" cy="5.5" r="0.9" fill="currentColor"/></symbol>
+      <symbol id="i-warning" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d="M9 1.75L17 15.5H1z"/><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M9 7v4"/><circle cx="9" cy="13" r="0.9" fill="currentColor"/></symbol>
+      <symbol id="i-clipboard" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d="M5.5 3.5h7v12h-7zM7 3.5v-1h4v1M7 7h4M7 9.5h4M7 12h3"/></symbol>
+      <symbol id="i-star" viewBox="0 0 18 18"><path fill="currentColor" d="M9 1.5l2.3 4.7 5.2.7-3.8 3.6.9 5.1L9 13.2l-4.6 2.4.9-5.1L1.5 7l5.2-.8z"/></symbol>
+      <symbol id="i-chevron-down" viewBox="0 0 12 12"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M3 4.5L6 7.5L9 4.5"/></symbol>
+      <symbol id="i-chevron-up" viewBox="0 0 12 12"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M3 7.5L6 4.5L9 7.5"/></symbol>
+      <symbol id="i-chevron-left" viewBox="0 0 12 12"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M7.5 3L4.5 6L7.5 9"/></symbol>
+      <symbol id="i-chevron-right" viewBox="0 0 12 12"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M4.5 3L7.5 6L4.5 9"/></symbol>
+      <symbol id="i-trash" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M3.5 5h11M7 5V3.5h4V5M5 5l.7 10.5h6.6L13 5M8 8v5M10 8v5"/></symbol>
+      <symbol id="i-plus" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M9 3v12M3 9h12"/></symbol>
+      <symbol id="i-pin" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d="M9 1.5c-3 0-5.25 2.25-5.25 5.1 0 3.7 4.3 8.7 5 9.4.13.13.37.13.5 0 .7-.7 5-5.7 5-9.4 0-2.85-2.25-5.1-5.25-5.1z"/><circle cx="9" cy="6.6" r="1.7" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
+      <symbol id="i-x" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M5 5L13 13M13 5L5 13"/></symbol>
+      <symbol id="i-lock" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d="M5 8.5h8v6.5H5zM6.5 8.5V6a2.5 2.5 0 0 1 5 0v2.5"/></symbol>
+      <symbol id="i-refresh" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M3 9a6 6 0 0 1 10.5-4M15 9a6 6 0 0 1-10.5 4M13.5 2.5V5h-2.5M4.5 15.5V13H7"/></symbol>
+      <symbol id="i-arrow-down" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M9 3v11M4 9.5l5 5 5-5"/></symbol>
+      <symbol id="i-swap" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M3 6h11M11 3l3 3-3 3M15 12H4M7 9l-3 3 3 3"/></symbol>
+      <symbol id="i-chevron-up-tiny" viewBox="0 0 12 12"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M3 7.5L6 4.5L9 7.5"/></symbol>
+      <symbol id="i-scissors" viewBox="0 0 18 18"><circle cx="5" cy="13" r="2.2" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="13" cy="13" r="2.2" fill="none" stroke="currentColor" stroke-width="1.5"/><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M6.5 11.5l9-9M11.5 11.5l-4-4M6.5 6.5l-4-4"/></symbol>
+      <symbol id="i-flower" viewBox="0 0 18 18"><circle cx="9" cy="9" r="1.6" fill="currentColor"/><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d="M9 7.4V3M9 10.6V15M7.4 9H3M10.6 9H15M7.7 7.7L4.7 4.7M10.3 10.3l3 3M10.3 7.7l3-3M7.7 10.3l-3 3"/></symbol>
+      <symbol id="i-flag" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" d="M4 2v14M4 3h9l-2 3 2 3H4"/></symbol>
+      <symbol id="i-store-grid" viewBox="0 0 18 18"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d="M2.5 4.5h13v11h-13zM2.5 8h13M6 8v7.5M12 8v7.5"/></symbol>
+      <symbol id="i-fav-tab" viewBox="0 0 12 12"><circle cx="6" cy="6" r="3" fill="none" stroke="currentColor" stroke-width="1.2"/></symbol>
+    </defs>
+  </svg>
+
+  <div class="app">
+
+
+    <!-- ================ Wix Studio header ================ -->
+    <div class="studio-header">
+      <div class="studio-logo">WIX STUDIO</div>
+      <div class="nl-badge">NL</div>
+      <div class="studio-nav">
+        <span class="studio-nav-item">À La Cart</span>
+        <span class="studio-nav-item has-caret">Resources</span>
+        <span class="studio-nav-item has-caret">Community</span>
+        <span class="studio-nav-item has-caret">Help</span>
+        <span class="upgrade-btn">Upgrade</span>
+      </div>
+      <div class="studio-search">
+        <span class="studio-search-icon"><svg class="icn icn--md"><use href="#i-search"/></svg></span>
+        <span>Search for tools, apps, help &amp; more…</span>
+      </div>
+      <div class="header-spacer"></div>
+      <div class="studio-actions">
+        <span class="icon-circle"><svg class="icn icn--md"><use href="#i-bell"/></svg><span class="badge">50</span></span>
+        <span class="icon-circle"><svg class="icn icn--md"><use href="#i-mail"/></svg><span class="badge">2</span></span>
+        <span class="icon-circle"><svg class="icn icn--md"><use href="#i-message"/></svg><span class="badge">99+</span></span>
+        <span class="icon-circle"><svg class="icn icn--md"><use href="#i-user"/></svg></span>
+        <span class="work-pill"><svg class="icn icn--sm" style="margin-right:6px"><use href="#i-gear"/></svg>Work</span>
+        <span class="work-pill" style="background: var(--bg);">Relaunch to update <svg class="icn icn--sm" style="margin-left:4px"><use href="#i-chevron-down"/></svg></span>
+        <span class="ai-btn"><svg class="icn icn--sm icn--filled" style="margin-right:4px"><use href="#i-sparkle"/></svg>AI</span>
+      </div>
+    </div>
+
+    <!-- ================ MAIN ================ -->
+    <div class="main">
+
+      <!-- ============ Icon rail ============ -->
+      <div class="icon-rail">
+        <div class="rail-item"><svg class="icn icn--lg"><use href="#i-grid"/></svg></div>
+        <div class="rail-item"><svg class="icn icn--lg"><use href="#i-clipboard"/></svg></div>
+        <div class="rail-divider"></div>
+        <div class="rail-item"><svg class="icn icn--lg"><use href="#i-home"/></svg></div>
+        <div class="rail-item active"><svg class="icn icn--lg"><use href="#i-calendar"/></svg></div>
+        <div class="rail-item"><svg class="icn icn--lg"><use href="#i-document"/></svg></div>
+        <div class="rail-item"><svg class="icn icn--lg"><use href="#i-people"/></svg></div>
+        <div class="rail-item"><svg class="icn icn--lg"><use href="#i-chart"/></svg></div>
+        <div class="rail-item"><svg class="icn icn--lg"><use href="#i-box"/></svg></div>
+        <div class="rail-item"><svg class="icn icn--lg"><use href="#i-store-grid"/></svg></div>
+        <div class="rail-item"><svg class="icn icn--lg"><use href="#i-bolt"/></svg></div>
+        <div class="rail-item"><svg class="icn icn--lg"><use href="#i-megaphone"/></svg></div>
+        <div class="rail-spacer"></div>
+        <div class="rail-item"><svg class="icn icn--lg"><use href="#i-plus"/></svg></div>
+        <div class="rail-item"><svg class="icn icn--lg"><use href="#i-gear"/></svg></div>
+      </div>
+
+      <!-- ============ Calendar sidebar ============ -->
+      <div class="cal-sidebar">
+        <div class="cal-sidebar-header">
+          <div class="cal-sidebar-title">Booking Calendar</div>
+          <div class="sidebar-toggle"><svg class="icn icn--md"><use href="#i-clipboard"/></svg></div>
+        </div>
+
+        <div class="cal-sidebar-scroll">
+
+          <!-- Mini calendar -->
+          <div class="mini-cal">
+            <div class="mini-cal-header">
+              <div class="mini-cal-month">March 2026</div>
+              <div class="mini-cal-nav"><span><svg class="icn icn--sm"><use href="#i-chevron-left"/></svg></span><span><svg class="icn icn--sm"><use href="#i-chevron-right"/></svg></span></div>
+            </div>
+            <div class="mini-cal-grid">
+              <div class="mini-cal-dow">Sun</div>
+              <div class="mini-cal-dow">Mon</div>
+              <div class="mini-cal-dow">Tue</div>
+              <div class="mini-cal-dow">Wed</div>
+              <div class="mini-cal-dow">Thu</div>
+              <div class="mini-cal-dow">Fri</div>
+              <div class="mini-cal-dow">Sat</div>
+
+              <div class="mini-cal-day muted">22</div>
+              <div class="mini-cal-day muted">23</div>
+              <div class="mini-cal-day muted">24</div>
+              <div class="mini-cal-day muted">25</div>
+              <div class="mini-cal-day muted">26</div>
+              <div class="mini-cal-day muted">27</div>
+              <div class="mini-cal-day muted">28</div>
+
+              <div class="mini-cal-day">1</div>
+              <div class="mini-cal-day">2</div>
+              <div class="mini-cal-day">3</div>
+              <div class="mini-cal-day">4</div>
+              <div class="mini-cal-day">5</div>
+              <div class="mini-cal-day">6</div>
+              <div class="mini-cal-day">7</div>
+
+              <div class="mini-cal-day">8</div>
+              <div class="mini-cal-day">9</div>
+              <div class="mini-cal-day">10</div>
+              <div class="mini-cal-day">11</div>
+              <div class="mini-cal-day">12</div>
+              <div class="mini-cal-day">13</div>
+              <div class="mini-cal-day">14</div>
+
+              <div class="mini-cal-day">15</div>
+              <div class="mini-cal-day">16</div>
+              <div class="mini-cal-day">17</div>
+              <div class="mini-cal-day">18</div>
+              <div class="mini-cal-day">19</div>
+              <div class="mini-cal-day">20</div>
+              <div class="mini-cal-day">21</div>
+
+              <div class="mini-cal-day">22</div>
+              <div class="mini-cal-day today">23</div>
+              <div class="mini-cal-day">24</div>
+              <div class="mini-cal-day">25</div>
+              <div class="mini-cal-day">26</div>
+              <div class="mini-cal-day">27</div>
+              <div class="mini-cal-day">28</div>
+
+              <div class="mini-cal-day">29</div>
+              <div class="mini-cal-day">30</div>
+              <div class="mini-cal-day">31</div>
+              <div class="mini-cal-day muted">1</div>
+              <div class="mini-cal-day muted">2</div>
+              <div class="mini-cal-day muted">3</div>
+              <div class="mini-cal-day muted">4</div>
+            </div>
+          </div>
+
+          <!-- Sync section -->
+          <div class="sync-section">
+            <div class="sync-title">Sync your personal calendar</div>
+            <div class="sync-desc">View personal and business eve…</div>
+            <div class="sync-link">Sync Calendars</div>
+          </div>
+
+          <!-- Activity -->
+          <div class="activity-section">
+            <div class="activity-header">Activity</div>
+
+            <div class="activity-item expanded">
+              <div class="activity-label">Upcoming session</div>
+              <span class="activity-toggle">⌃</span>
+            </div>
+            <div class="activity-content">
+              <div class="upcoming-event">
+                <div class="upcoming-event-name">Dance Class - Test</div>
+                <div class="upcoming-event-meta">Apr 27 at 12:30 PM<br>with Weekday · Room 1<br>0/50 participants</div>
+              </div>
+            </div>
+
+            <div class="activity-item">
+              <div class="activity-label">Appointment waitlist</div>
+              <span class="activity-toggle">⌄</span>
+            </div>
+            <div class="activity-item">
+              <div class="activity-label">Booking requests</div>
+              <span class="activity-toggle">⌄</span>
+            </div>
+            <div class="activity-item">
+              <div class="activity-label">Class waitlists</div>
+              <span class="activity-toggle">⌄</span>
+            </div>
+            <div class="activity-item">
+              <div class="activity-label">Recent activity</div>
+              <span class="activity-toggle">⌄</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ Calendar main ============ -->
+      <div class="cal-main">
+
+        <!-- Toolbar -->
+        <div class="cal-toolbar">
+          <span class="today-btn">Today</span>
+          <div class="month-nav">
+            <span class="month-label">March 2026</span>
+            <span class="month-nav-btn"><svg class="icn icn--md"><use href="#i-chevron-left"/></svg></span>
+            <span class="month-nav-btn"><svg class="icn icn--md"><use href="#i-chevron-right"/></svg></span>
+          </div>
+
+          <div class="toolbar-spacer"></div>
+
+          <span class="view-select">Weekly</span>
+          <span class="toolbar-icon-btn"><svg class="icn icn--md"><use href="#i-search"/></svg></span>
+          <span class="toolbar-icon-btn"><svg class="icn icn--md"><use href="#i-gear"/></svg><span class="badge">2</span></span>
+          <span class="manage-btn">Manage</span>
+          <div class="add-menu-wrap">
+            <span class="add-btn">Add</span>
+            <div class="add-menu-dropdown">
+              <div class="add-menu-row">Quick Sale</div>
+              <div class="add-menu-row highlight" id="addAppointmentRow" style="background: #f4f9ff;">Appointment</div>
+              <div class="add-menu-row">Blocked time</div>
+              <div class="add-menu-row">Class session</div>
+              <div class="add-menu-row">Course session</div>
+              <div class="add-menu-divider"></div>
+              <div class="add-menu-row with-icon">Create New Service</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Day headers -->
+        <div class="day-headers">
+          <div class="corner"></div>
+          <div class="day-header-cell"><span class="dow">Sun</span><span class="num">22</span></div>
+          <div class="day-header-cell"><span class="dow">Mon</span><span class="num">23</span></div>
+          <div class="day-header-cell"><span class="dow">Tue</span><span class="num">24</span></div>
+          <div class="day-header-cell"><span class="dow">Wed</span><span class="num">25</span></div>
+          <div class="day-header-cell"><span class="dow">Thu</span><span class="num">26</span></div>
+          <div class="day-header-cell"><span class="dow">Fri</span><span class="num">27</span></div>
+          <div class="day-header-cell"><span class="dow">Sat</span><span class="num">28</span></div>
+        </div>
+
+        <!-- Calendar body -->
+        <div class="cal-body">
+          <div class="cal-grid">
+
+            <!-- Time column -->
+            <div class="time-col">
+              <div class="time-slot">8 AM</div>
+              <div class="time-slot">9 AM</div>
+              <div class="time-slot">10 AM</div>
+              <div class="time-slot">11 AM</div>
+              <div class="time-slot">12 PM</div>
+              <div class="time-slot">1 PM</div>
+              <div class="time-slot">2 PM</div>
+              <div class="time-slot">3 PM</div>
+              <div class="time-slot">4 PM</div>
+            </div>
+
+            <!-- Sun 22 -->
+            <div class="day-col">
+              <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+              <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+              <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+
+              <div class="event ev-blue" style="top: 60px; height: 70px;">
+                <div class="ev-title">Course 49</div>
+                <div class="ev-meta">3/50 participants<br>Broadway</div>
+              </div>
+              <div class="event ev-blue" style="top: 130px; height: 60px;">
+                <div class="ev-title">Class | Per session or with a plan</div>
+                <div class="ev-meta">0/50 · with Carlos Lampel</div>
+              </div>
+              <div class="event ev-blue" style="top: 240px; height: 50px;">
+                <div class="ev-title">Class | Per session or</div>
+                <div class="ev-meta">Broadway</div>
+              </div>
+              <div class="event ev-blue" style="top: 310px; height: 90px;">
+                <div class="ev-title">Class skip form</div>
+                <div class="ev-meta">0/50 · with Carlos Lampel<br>Broadway</div>
+              </div>
+              <div class="event ev-blue" style="top: 410px; height: 70px;">
+                <div class="ev-title">Class with form</div>
+                <div class="ev-meta">0/50 · Broadway</div>
+              </div>
+            </div>
+
+            <!-- Mon 23 -->
+            <div class="day-col">
+              <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+              <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+              <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+
+              <div class="event ev-blue" style="top: 60px; height: 75px;">
+                <div class="ev-title">Class with form</div>
+                <div class="ev-meta">0/50 · with Weekday<br>Broadway</div>
+              </div>
+              <div class="event ev-blue" style="top: 130px; height: 65px;">
+                <div class="ev-title">Class | Per session or with a plan</div>
+                <div class="ev-meta">1/50 · with Carlos Lampel</div>
+              </div>
+              <div class="event ev-blue" style="top: 220px; height: 80px;">
+                <div class="ev-title">Dance Class - Test</div>
+                <div class="ev-meta">0/50 · with Weekday<br>Broadway</div>
+              </div>
+              <div class="event ev-striped" style="top: 300px; height: 80px;">
+                <div class="ev-title">Cooking master</div>
+                <div class="ev-meta">with Weekday<br>Broadway</div>
+              </div>
+              <div class="event ev-blue" style="top: 380px; height: 60px;">
+                <div class="ev-title">Advanced Nail D 20 dec</div>
+                <div class="ev-meta">Carlos Lampel · Gym Location</div>
+              </div>
+              <div class="event ev-blue" style="top: 450px; height: 50px;">
+                <div class="ev-title">Dynamic pricing - duration</div>
+                <div class="ev-meta">Broadway</div>
+              </div>
+            </div>
+
+            <!-- Tue 24 -->
+            <div class="day-col">
+              <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+              <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+              <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+
+              <div class="event ev-blue" style="top: 130px; height: 60px;">
+                <div class="ev-title">Class | Per session or with a plan</div>
+                <div class="ev-meta">1/50 participants<br>AU</div>
+              </div>
+              <div class="event ev-blue" style="top: 240px; height: 60px;">
+                <div class="ev-title">Class | Per session or with a plan</div>
+                <div class="ev-meta"></div>
+              </div>
+              <div class="event ev-blue" style="top: 410px; height: 60px;">
+                <div class="ev-title">Pilates</div>
+                <div class="ev-meta">0/10 participants</div>
+              </div>
+            </div>
+
+            <!-- Wed 25 -->
+            <div class="day-col">
+              <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+              <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+              <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+
+              <div class="event ev-blue" style="top: 0; height: 65px;">
+                <div class="ev-title">0/50 participants</div>
+                <div class="ev-meta">with Weekday<br>AU</div>
+              </div>
+              <div class="event ev-blue" style="top: 70px; height: 65px;">
+                <div class="ev-title">Class with form</div>
+                <div class="ev-meta">with Weekday<br>AU</div>
+              </div>
+              <div class="event ev-blue" style="top: 140px; height: 65px;">
+                <div class="ev-title">Basketball - Group B</div>
+                <div class="ev-meta">0/50 participants<br>AU</div>
+              </div>
+              <div class="event ev-blue" style="top: 240px; height: 50px;">
+                <div class="ev-title">Pilates</div>
+                <div class="ev-meta">0/10 participants</div>
+              </div>
+              <div class="event ev-gray col-left" style="top: 310px; height: 60px;">
+                <div class="ev-title">test</div>
+                <div class="ev-meta">Rom Lampel</div>
+              </div>
+              <div class="event ev-blue col-right" style="top: 310px; height: 80px;">
+                <div class="ev-title">Class | Per session or with a plan</div>
+                <div class="ev-meta">with Carlos Lampel</div>
+              </div>
+              <div class="event ev-blue" style="top: 410px; height: 60px;">
+                <div class="ev-title">Class - PP only</div>
+                <div class="ev-meta">Service 65 - Yoga class</div>
+              </div>
+            </div>
+
+            <!-- Thu 26 -->
+            <div class="day-col">
+              <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+              <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+              <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+
+              <div class="event ev-blue col-left" style="top: 60px; height: 70px;">
+                <div class="ev-title">Class | form</div>
+                <div class="ev-meta">0/50<br>Broadway</div>
+              </div>
+              <div class="event ev-blue col-right" style="top: 60px; height: 70px;">
+                <div class="ev-title">Class | Sw</div>
+                <div class="ev-meta">0/50<br>AU</div>
+              </div>
+              <div class="event ev-blue col-left" style="top: 130px; height: 75px;">
+                <div class="ev-title">Class | Per session</div>
+                <div class="ev-meta">with Carlos Lampel</div>
+              </div>
+              <div class="event ev-blue col-right" style="top: 130px; height: 75px;">
+                <div class="ev-title">Class | Per session or a plan</div>
+                <div class="ev-meta">with Carlos · Lampel</div>
+              </div>
+              <div class="event ev-striped" style="top: 220px; height: 80px;">
+                <div class="ev-title">Waitlist/full service</div>
+                <div class="ev-meta">0/1 participants<br>with Carlos Lampel<br>Broadway</div>
+              </div>
+              <div class="event ev-blue" style="top: 310px; height: 60px;">
+                <div class="ev-title">Basic Makeup for Rom Lampel</div>
+                <div class="ev-meta">Broadway</div>
+              </div>
+              <div class="event ev-blue" style="top: 370px; height: 70px;">
+                <div class="ev-title">Online Meeting | Course</div>
+                <div class="ev-meta">9725492226155+<br>Rom Lampel</div>
+              </div>
+              <div class="event ev-blue" style="top: 440px; height: 60px;">
+                <div class="ev-title">Class | Per session or</div>
+                <div class="ev-meta">Service 65 - Yoga class</div>
+              </div>
+            </div>
+
+            <!-- Fri 27 (today) -->
+            <div class="day-col">
+              <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+              <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+              <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+
+              <div class="event ev-dark" style="top: 30px; height: 90px;">
+                <div class="ev-title">Request appointment +972549226155+</div>
+                <div class="ev-meta">Rom Lampel</div>
+              </div>
+              <div class="event ev-blue col-left" style="top: 130px; height: 70px;">
+                <div class="ev-title">Class - cust 0/999 partic</div>
+                <div class="ev-meta">with Jane Bordo</div>
+              </div>
+              <div class="event ev-blue col-right" style="top: 130px; height: 70px;">
+                <div class="ev-title">Pilates 0/10 partic</div>
+                <div class="ev-meta">with Jane Bordo</div>
+              </div>
+              <div class="event ev-blue" style="top: 220px; height: 80px;">
+                <div class="ev-title">Class | Per session or with a plan</div>
+                <div class="ev-meta">with Jane Bordo</div>
+              </div>
+              <div class="event ev-blue" style="top: 310px; height: 70px;">
+                <div class="ev-title">Online Meeting | Course +972549226155+</div>
+                <div class="ev-meta">Rom Lampel</div>
+              </div>
+              <div class="event ev-blue" style="top: 380px; height: 60px;">
+                <div class="ev-title">Class - dynamic pricing</div>
+                <div class="ev-meta">with Carlos Lampel</div>
+              </div>
+              <div class="event ev-blue" style="top: 440px; height: 70px;">
+                <div class="ev-title">Eyebrow Shaping</div>
+                <div class="ev-meta">Rom Lampel Mr Bin · with Weekday</div>
+              </div>
+              <div class="event ev-blue" style="top: 510px; height: 50px;">
+                <div class="ev-title">Pilates</div>
+                <div class="ev-meta">0/10 partic</div>
+              </div>
+            </div>
+
+            <!-- Sat 28 -->
+            <div class="day-col">
+              <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+              <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+              <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+
+              <div class="event ev-blue" style="top: 60px; height: 70px;">
+                <div class="ev-title">Class | Per session or</div>
+                <div class="ev-meta">with Carlos Lampel</div>
+              </div>
+              <div class="event ev-blue" style="top: 410px; height: 50px;">
+                <div class="ev-title">Pilates</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ Side panel (Book on Behalf flow) ============ -->
+      <aside class="side-panel" id="sidePanel" aria-hidden="true">
+
+        <!-- ─── View 1: Select booking contact ─── -->
+        <div class="view" data-view="select-primary">
+          <div class="sp-header">
+            <span class="sp-back" data-back-target="close" title="Close"><svg class="icn icn--md"><use href="#i-chevron-left"/></svg></span>
+            <span class="sp-title">Select booking contact</span>
+            <span class="sp-close" data-action="close"><svg class="icn icn--md"><use href="#i-x"/></svg></span>
+          </div>
+          <div class="sp-content no-pad">
+            <div style="padding: 16px 24px 12px;">
+              <span class="sp-add-new">Create a new contact</span>
+            </div>
+            <div style="padding: 0 24px 12px;">
+              <div class="sp-search">
+                <span class="sp-search-icon"><svg class="icn icn--md"><use href="#i-search"/></svg></span>
+                <input type="text" placeholder="Search by name, email or phone" />
+              </div>
+            </div>
+            <div class="sp-list">
+              <div class="contact-row" data-pick='{"id":"a","name":"a","sub":"+972 502737777","color":"a","initials":"a"}'>
+                <div class="avatar color-a">a</div>
+                <div class="meta"><div class="name">a</div><div class="sub">+972 502737777</div></div>
+              </div>
+              <div class="contact-row" data-pick='{"id":"agne","name":"agne","sub":"agnegnz@gmail.com","color":"b","initials":"a"}'>
+                <div class="avatar color-b">a</div>
+                <div class="meta"><div class="name">agne</div><div class="sub">agnegnz@gmail.com</div></div>
+              </div>
+              <div class="contact-row" data-pick='{"id":"alexia","name":"Alexia Sad","sub":"alexsad@yahoo.com · +1 555 010 7740","color":"c","initials":"AS"}'>
+                <div class="avatar color-c">AS</div>
+                <div class="meta"><div class="name">Alexia Sad</div><div class="sub">alexsad@yahoo.com · +1 555 010 7740</div></div>
+              </div>
+              <div class="contact-row" data-pick='{"id":"amit","name":"amit shvil","sub":"amitsh@wix.com","color":"d","initials":"as"}'>
+                <div class="avatar color-d">as</div>
+                <div class="meta"><div class="name">amit shvil</div><div class="sub">amitsh@wix.com</div></div>
+              </div>
+              <div class="contact-row" data-pick='{"id":"aaron","name":"Aaron R.","sub":"aaron.r@gmail.com","color":"e","initials":"AR"}'>
+                <div class="avatar color-e">AR</div>
+                <div class="meta"><div class="name">Aaron R.</div><div class="sub">aaron.r@gmail.com</div></div>
+              </div>
+              <div class="contact-row" data-pick='{"id":"sara","name":"Sara Anderson","sub":"sara.a@example.com · +1 555 010 2034","color":"a","initials":"SA"}'>
+                <div class="avatar color-a">SA</div>
+                <div class="meta"><div class="name">Sara Anderson</div><div class="sub">sara.a@example.com · +1 555 010 2034</div></div>
+              </div>
+              <div class="contact-row" data-pick='{"id":"ben","name":"Ben Cohen","sub":"ben.c@example.com","color":"f","initials":"BC"}'>
+                <div class="avatar color-f">BC</div>
+                <div class="meta"><div class="name">Ben Cohen</div><div class="sub">ben.c@example.com</div></div>
+              </div>
+              <div class="contact-row" data-pick='{"id":"maya","name":"Maya Levi","sub":"maya.l@example.com · +1 555 010 5512","color":"d","initials":"ML"}'>
+                <div class="avatar color-d">ML</div>
+                <div class="meta"><div class="name">Maya Levi</div><div class="sub">maya.l@example.com · +1 555 010 5512</div></div>
+              </div>
+              <div class="contact-row" data-pick='{"id":"diana","name":"Diana Morrow","sub":"diana@example.com","color":"b","initials":"DM"}'>
+                <div class="avatar color-b">DM</div>
+                <div class="meta"><div class="name">Diana Morrow</div><div class="sub">diana@example.com</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="sp-footer right">
+            <button class="sp-btn secondary" data-action="close">Cancel</button>
+          </div>
+        </div>
+
+        <!-- ─── View 2: Participants list ─── -->
+        <div class="view" data-view="participants">
+          <div class="sp-header">
+            <span class="sp-back" data-action="goto" data-target="select-primary" title="Back"><svg class="icn icn--md"><use href="#i-chevron-left"/></svg></span>
+            <span class="sp-title">Participants</span>
+            <span class="sp-close" data-action="close"><svg class="icn icn--md"><use href="#i-x"/></svg></span>
+          </div>
+          <div class="sp-content">
+            <div class="sp-banner">
+              Add everyone attending this appointment. Each participant gets their own booking record and their own confirmation. The booking contact also receives a group summary.
+            </div>
+            <div class="sp-section-label" id="participantCount">In this booking · 1 person</div>
+            <div id="participantList" style="display: flex; flex-direction: column; gap: 14px;">
+              <!-- Populated by JS -->
+            </div>
+            <div class="add-tile" data-action="goto" data-target="add-participant">
+              <span class="add-tile-icon">+</span>
+              Add another participant
+            </div>
+            <div style="margin-top: 4px;">
+              <div class="toggle-row">
+                <span class="toggle-row-label">Notify everyone:</span>
+                <span class="toggle-pill on" data-toggle="email">Email</span>
+                <span class="toggle-pill" data-toggle="sms">SMS</span>
+              </div>
+            </div>
+          </div>
+          <div class="sp-footer">
+            <button class="sp-btn text" data-action="goto" data-target="select-primary">Back</button>
+            <button class="sp-btn primary" data-action="goto" data-target="select-service">Continue</button>
+          </div>
+        </div>
+
+        <!-- ─── View 3: Add participant ─── -->
+        <div class="view" data-view="add-participant">
+          <div class="sp-header">
+            <span class="sp-back" data-action="goto" data-target="participants" title="Back"><svg class="icn icn--md"><use href="#i-chevron-left"/></svg></span>
+            <span class="sp-title">Add participant</span>
+            <span class="sp-close" data-action="close"><svg class="icn icn--md"><use href="#i-x"/></svg></span>
+          </div>
+          <div class="sp-content no-pad">
+            <div style="padding: 16px 24px 12px;">
+              <div class="sp-banner">
+                Each participant must have a unique email or phone so they can manage their own booking.
+              </div>
+            </div>
+            <div style="padding: 0 24px 12px;">
+              <span class="sp-add-new">Create a new contact</span>
+            </div>
+            <div style="padding: 0 24px 12px;">
+              <div class="sp-search">
+                <span class="sp-search-icon"><svg class="icn icn--md"><use href="#i-search"/></svg></span>
+                <input type="text" placeholder="Search by name, email or phone" />
+              </div>
+            </div>
+            <div class="sp-list" id="addParticipantList">
+              <!-- Populated by JS (excludes already-picked) -->
+            </div>
+          </div>
+          <div class="sp-footer right">
+            <button class="sp-btn secondary" data-action="goto" data-target="participants">Cancel</button>
+          </div>
+        </div>
+
+        <!-- ─── View 4: Select service ─── -->
+        <div class="view" data-view="select-service">
+          <div class="sp-header">
+            <span class="sp-back" data-action="goto" data-target="participants" title="Back"><svg class="icn icn--md"><use href="#i-chevron-left"/></svg></span>
+            <span class="sp-title">Select service</span>
+            <span class="sp-close" data-action="close"><svg class="icn icn--md"><use href="#i-x"/></svg></span>
+          </div>
+          <div class="sp-content">
+            <div class="sp-banner" id="serviceCapacityBanner">
+              Showing services that can host all <span id="svcParticipantCount">1</span> participant<span id="svcPlural"></span>.
+            </div>
+            <div class="sp-search">
+              <span class="sp-search-icon"><svg class="icn icn--md"><use href="#i-search"/></svg></span>
+              <input type="text" placeholder="Search services" />
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <div class="service-row" data-service='{"name":"Hair Cut","duration":"45 min","staff":"Carlos Lampel","price":"$45","capacity":1}'>
+                <div class="service-thumb"><svg class="icn icn--lg"><use href="#i-scissors"/></svg></div>
+                <div class="service-info">
+                  <div class="service-name">Hair Cut</div>
+                  <div class="service-meta">45 min · Up to 1 client</div>
+                </div>
+                <div class="service-price">$45</div>
+              </div>
+              <div class="service-row" data-service='{"name":"Pilates","duration":"50 min","staff":"Carlos Lampel","price":"$28","capacity":10}'>
+                <div class="service-thumb"><svg class="icn icn--lg"><use href="#i-people"/></svg></div>
+                <div class="service-info">
+                  <div class="service-name">Pilates</div>
+                  <div class="service-meta">50 min · Up to 10 clients</div>
+                </div>
+                <div class="service-price">$28</div>
+              </div>
+              <div class="service-row" data-service='{"name":"Yoga session","duration":"60 min","staff":"Carlos Lampel","price":"$32","capacity":8}'>
+                <div class="service-thumb"><svg class="icn icn--lg"><use href="#i-flower"/></svg></div>
+                <div class="service-info">
+                  <div class="service-name">Yoga session</div>
+                  <div class="service-meta">60 min · Up to 8 clients</div>
+                </div>
+                <div class="service-price">$32</div>
+              </div>
+              <div class="service-row" data-service='{"name":"Hair color","duration":"90 min","staff":"Carlos Lampel","price":"$120","capacity":1}'>
+                <div class="service-thumb"><svg class="icn icn--lg"><use href="#i-image"/></svg></div>
+                <div class="service-info">
+                  <div class="service-name">Hair color</div>
+                  <div class="service-meta">90 min · Up to 1 client</div>
+                </div>
+                <div class="service-price">$120</div>
+              </div>
+              <div class="service-row" data-service='{"name":"Personal training","duration":"60 min","staff":"Carlos Lampel","price":"$60","capacity":1}'>
+                <div class="service-thumb"><svg class="icn icn--lg"><use href="#i-bolt"/></svg></div>
+                <div class="service-info">
+                  <div class="service-name">Personal training</div>
+                  <div class="service-meta">60 min · Up to 1 client</div>
+                </div>
+                <div class="service-price">$60</div>
+              </div>
+            </div>
+          </div>
+          <div class="sp-footer right">
+            <button class="sp-btn secondary" data-action="goto" data-target="participants">Cancel</button>
+          </div>
+        </div>
+
+        <!-- ─── View 5: Main form ─── -->
+        <div class="view" data-view="main-form">
+          <div class="sp-header">
+            <span class="sp-back" data-action="goto" data-target="select-service" title="Back"><svg class="icn icn--md"><use href="#i-chevron-left"/></svg></span>
+            <span class="sp-title">Create appointment</span>
+            <span class="sp-close" data-action="close"><svg class="icn icn--md"><use href="#i-x"/></svg></span>
+          </div>
+          <div class="sp-content">
+            <div>
+              <div class="sp-section-label" style="margin-bottom: 8px;">Participants</div>
+              <div id="formParticipantList" style="display: flex; flex-direction: column; gap: 8px;">
+                <!-- Populated by JS -->
+              </div>
+            </div>
+
+            <div class="sp-section-label" style="margin-top: 4px;">Appointment details</div>
+            <div>
+              <div class="form-row">
+                <span class="form-icon"><svg class="icn icn--md"><use href="#i-clipboard"/></svg></span>
+                <div class="form-label">
+                  <div id="formServiceName">Hair Cut</div>
+                  <div class="form-label-sub" id="formServiceMeta">45 min</div>
+                </div>
+                <span class="form-link" data-action="goto" data-target="select-service">Change</span>
+              </div>
+              <div class="form-row">
+                <span class="form-icon"><svg class="icn icn--md"><use href="#i-calendar"/></svg></span>
+                <div class="form-label">
+                  Wed, Apr 25 · 10:00 AM
+                  <div class="form-label-sub">Ends at <span id="formEndTime">10:45 AM</span></div>
+                </div>
+                <span class="form-link">Edit</span>
+              </div>
+              <div class="form-row">
+                <span class="form-icon"><svg class="icn icn--md"><use href="#i-user"/></svg></span>
+                <div class="form-label">Staff: <span id="formStaff">Carlos Lampel</span></div>
+                <span class="form-link">Change</span>
+              </div>
+              <div class="form-row">
+                <span class="form-icon"><svg class="icn icn--md"><use href="#i-pin"/></svg></span>
+                <div class="form-label">Business address</div>
+                <span class="form-link">Change</span>
+              </div>
+            </div>
+
+            <div>
+              <div class="sp-section-label" style="margin-bottom: 8px;">Notify participants</div>
+              <div class="toggle-row">
+                <span class="toggle-row-label">Send via:</span>
+                <span class="toggle-pill on" data-toggle="email">Email</span>
+                <span class="toggle-pill" data-toggle="sms">SMS</span>
+              </div>
+            </div>
+
+            <div class="total-due">
+              <div>
+                <div class="total-due-label">Total due</div>
+                <div class="total-due-sub" id="formPriceBreakdown">$45.00 × 1 participant</div>
+              </div>
+              <div class="total-due-amount" id="formTotalAmount">$45.00</div>
+            </div>
+          </div>
+          <div class="sp-footer">
+            <button class="sp-btn text" data-action="goto" data-target="select-service">Back</button>
+            <div style="display: flex; gap: 8px;">
+              <button class="sp-btn secondary" data-action="book">Book</button>
+              <button class="sp-btn primary" data-action="book-checkout">Book & checkout</button>
+            </div>
+          </div>
+        </div>
+
+      </aside>
+
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Booking created</div>
+
+  <script>
+    // ═════════════════════════════════════════════════════════════
+    // Add menu (dropdown toggle)
+    // ═════════════════════════════════════════════════════════════
+    const addMenu = document.querySelector('.add-menu-wrap');
+    addMenu?.addEventListener('click', (e) => {
+      addMenu.classList.toggle('open');
+      e.stopPropagation();
+    });
+    document.addEventListener('click', () => {
+      addMenu?.classList.remove('open');
+    });
+
+    // ═════════════════════════════════════════════════════════════
+    // Side panel state machine
+    // ═════════════════════════════════════════════════════════════
+    const panel = document.getElementById('sidePanel');
+    const toast = document.getElementById('toast');
+
+    const state = {
+      participants: [],   // array of contact objects, [0] is primary
+      service: null,
+      currentView: null,
+    };
+
+    const showToast = (msg) => {
+      toast.textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(showToast._t);
+      showToast._t = setTimeout(() => toast.classList.remove('show'), 2200);
+    };
+
+    const openPanel = (view) => {
+      panel.classList.add('open');
+      panel.setAttribute('aria-hidden', 'false');
+      goto(view);
+    };
+
+    const closePanel = () => {
+      panel.classList.remove('open');
+      panel.setAttribute('aria-hidden', 'true');
+      state.currentView = null;
+    };
+
+    const goto = (viewName) => {
+      panel.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      const next = panel.querySelector(`.view[data-view="${viewName}"]`);
+      if (next) next.classList.add('active');
+      state.currentView = viewName;
+
+      if (viewName === 'participants') renderParticipants();
+      if (viewName === 'add-participant') renderAddParticipantList();
+      if (viewName === 'select-service') renderServiceCapacityBanner();
+      if (viewName === 'main-form') renderMainForm();
+    };
+
+    // ─── Trigger: "Appointment" in Add menu ───
+    document.getElementById('addAppointmentRow')?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      addMenu?.classList.remove('open');
+      state.participants = [];
+      state.service = null;
+      openPanel('select-primary');
+    });
+
+    // ─── Generic close + back + goto handlers ───
+    panel.addEventListener('click', (e) => {
+      const action = e.target.closest('[data-action]');
+      if (!action) return;
+      const a = action.getAttribute('data-action');
+      const target = action.getAttribute('data-target');
+      if (a === 'close') closePanel();
+      else if (a === 'goto' && target) goto(target);
+      else if (a === 'book' || a === 'book-checkout') {
+        const n = state.participants.length;
+        const msg = a === 'book-checkout'
+          ? `Booked & sent ${n} checkout link${n > 1 ? 's' : ''}`
+          : `Booking created for ${n} participant${n > 1 ? 's' : ''}`;
+        closePanel();
+        showToast(msg);
+      }
+    });
+
+    // Pick booking contact
+    panel.querySelectorAll('.view[data-view="select-primary"] .contact-row').forEach(row => {
+      row.addEventListener('click', () => {
+        const c = JSON.parse(row.getAttribute('data-pick'));
+        state.participants = [c];
+        goto('participants');
+      });
+    });
+
+    // ─── Participants list rendering ───
+    const renderParticipants = () => {
+      const list = document.getElementById('participantList');
+      const count = document.getElementById('participantCount');
+      const n = state.participants.length;
+      count.textContent = `In this booking · ${n} ${n === 1 ? 'person' : 'people'}`;
+      list.innerHTML = state.participants.map((c, idx) => `
+        <div class="participant-card ${idx === 0 ? 'is-primary' : ''}">
+          <span class="tag ${idx === 0 ? '' : 'muted'}">${idx === 0 ? 'Booking contact' : 'Participant ' + (idx + 1)}</span>
+          <div class="avatar color-${c.color}">${c.initials}</div>
+          <div class="meta">
+            <div class="name">${c.name}</div>
+            <div class="sub">${c.sub}</div>
+          </div>
+          <div class="participant-actions">
+            <span class="icon-btn-sm" title="Edit details"><svg class="icn icn--md"><use href="#i-pencil"/></svg></span>
+            ${idx === 0
+              ? '<span class="icon-btn-sm" title="Change booking contact"><svg class="icn icn--md"><use href="#i-swap"/></svg></span>'
+              : `<span class="icon-btn-sm" title="Remove" data-remove="${idx}"><svg class="icn icn--md"><use href="#i-x"/></svg></span>`}
+          </div>
+        </div>
+      `).join('');
+
+      list.querySelectorAll('[data-remove]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const i = parseInt(btn.getAttribute('data-remove'), 10);
+          state.participants.splice(i, 1);
+          renderParticipants();
+        });
+      });
+    };
+
+    // ─── Add-participant list rendering (excludes already picked) ───
+    const allContacts = Array.from(
+      document.querySelectorAll('.view[data-view="select-primary"] .contact-row')
+    ).map(row => JSON.parse(row.getAttribute('data-pick')));
+
+    const renderAddParticipantList = () => {
+      const list = document.getElementById('addParticipantList');
+      const pickedIds = new Set(state.participants.map(p => p.id));
+      list.innerHTML = allContacts.map(c => {
+        const taken = pickedIds.has(c.id);
+        return `
+          <div class="contact-row ${taken ? 'disabled' : ''}" data-add-id="${c.id}">
+            <div class="avatar color-${c.color}">${c.initials}</div>
+            <div class="meta">
+              <div class="name">${c.name}${taken ? '<span class="dim-tag">· already added</span>' : ''}</div>
+              <div class="sub">${c.sub}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      list.querySelectorAll('.contact-row:not(.disabled)').forEach(row => {
+        row.addEventListener('click', () => {
+          const id = row.getAttribute('data-add-id');
+          const c = allContacts.find(x => x.id === id);
+          if (c) state.participants.push(c);
+          goto('participants');
+        });
+      });
+    };
+
+    // ─── Service selection rendering ───
+    const renderServiceCapacityBanner = () => {
+      const n = state.participants.length;
+      document.getElementById('svcParticipantCount').textContent = n;
+      document.getElementById('svcPlural').textContent = n > 1 ? 's' : '';
+      // Disable services whose capacity is below participant count
+      panel.querySelectorAll('.view[data-view="select-service"] .service-row').forEach(row => {
+        const data = JSON.parse(row.getAttribute('data-service'));
+        if (data.capacity < n) {
+          row.classList.add('disabled');
+        } else {
+          row.classList.remove('disabled');
+        }
+      });
+    };
+
+    panel.querySelectorAll('.view[data-view="select-service"] .service-row').forEach(row => {
+      row.addEventListener('click', () => {
+        if (row.classList.contains('disabled')) return;
+        state.service = JSON.parse(row.getAttribute('data-service'));
+        goto('main-form');
+      });
+    });
+
+    // ─── Main form rendering ───
+    const renderMainForm = () => {
+      const formList = document.getElementById('formParticipantList');
+      formList.innerHTML = state.participants.map((c, idx) => `
+        <div style="display: flex; align-items: center; gap: 10px; padding: 6px 10px; background: var(--bg); border-radius: 6px;">
+          <div class="avatar color-${c.color}" style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 600;">${c.initials}</div>
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-size: 12px; font-weight: 500; color: var(--ink);">${c.name}${idx === 0 ? ' · <span style="color: var(--wix-blue); font-weight: 600;">Booking contact</span>' : ''}</div>
+            <div style="font-size: 11px; color: var(--ink-mute);">${c.sub}</div>
+          </div>
+        </div>
+      `).join('');
+
+      const svc = state.service || { name: 'Hair Cut', duration: '45 min', staff: 'Carlos Lampel', price: '$45' };
+      document.getElementById('formServiceName').textContent = svc.name;
+      document.getElementById('formServiceMeta').textContent = svc.duration;
+      document.getElementById('formStaff').textContent = svc.staff;
+
+      const price = parseFloat(svc.price.replace(/[^0-9.]/g, '')) || 0;
+      const n = state.participants.length;
+      const total = price * n;
+      document.getElementById('formPriceBreakdown').textContent =
+        `$${price.toFixed(2)} × ${n} participant${n > 1 ? 's' : ''}`;
+      document.getElementById('formTotalAmount').textContent = `$${total.toFixed(2)}`;
+    };
+
+    // ─── Notify-toggle pills ───
+    panel.addEventListener('click', (e) => {
+      const t = e.target.closest('.toggle-pill');
+      if (t) t.classList.toggle('on');
+    });
+
+    // ─── Esc closes panel ───
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && panel.classList.contains('open')) closePanel();
+    });
+  </script>
+
+</body>
+</html>
