@@ -1,0 +1,2684 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Feature Adoption Inspiration Board · Wix Bookings</title>
+<style>
+  :root {
+    --bg: #f5f3ef;
+    --ink: #1a1a1a;
+    --ink-soft: #4a4a4a;
+    --ink-faint: #8a8a8a;
+    --line: #e7e3db;
+    --card: #ffffff;
+
+    /* Angle colors */
+    --angle-inproduct: #4f46e5;    /* indigo */
+    --angle-inproduct-bg: #eef2ff;
+    --angle-personal: #db2777;     /* pink */
+    --angle-personal-bg: #fdf2f8;
+    --angle-lifecycle: #0d9488;    /* teal */
+    --angle-lifecycle-bg: #ecfdf5;
+
+    /* Platform colors */
+    --p-notion: #111;
+    --p-figma: #a259ff;
+    --p-airtable: #fcb400;
+    --p-linear: #5e6ad2;
+    --p-slack: #4a154b;
+    --p-shopify: #96bf48;
+    --p-squarespace: #222;
+    --p-webflow: #4353ff;
+    --p-canva: #00c4cc;
+    --p-etsy: #f16521;
+    --p-salesforce: #00a1e0;
+    --p-hubspot: #ff7a59;
+    --p-atlassian: #0052cc;
+    --p-asana: #f06a6a;
+    --p-monday: #fdab3d;
+    --p-intercom: #1f8ded;
+
+    /* Experimental / niche */
+    --p-arc: #ff5e00;
+    --p-dia: #ff4fa0;
+    --p-raycast: #ff6363;
+    --p-superhuman: #6d4aff;
+    --p-lovable: #ff4d6d;
+    --p-v0: #000000;
+    --p-bolt: #111;
+    --p-cursor: #0a84ff;
+    --p-replit: #f26207;
+    --p-granola: #2bd68f;
+    --p-rewind: #0085ff;
+    --p-perplexity: #20808d;
+    --p-lindy: #ff5a8a;
+    --p-duolingo: #58cc02;
+    --p-tldraw: #111;
+    --p-framer: #0099ff;
+    --p-posthog: #f9bd2b;
+    --p-poe: #8b5cf6;
+    --p-vercel: #000000;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    padding: 72px 48px 48px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .eyebrow {
+    display: inline-block;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    background: #fff;
+    border: 1px solid var(--line);
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-weight: 600;
+  }
+  h1 {
+    font-size: 56px;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin: 20px 0 16px;
+    font-weight: 700;
+  }
+  .hero p.lede {
+    max-width: 780px;
+    font-size: 19px;
+    color: var(--ink-soft);
+    margin: 0 0 32px;
+  }
+  .hero-meta {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    color: var(--ink-faint);
+    font-size: 13px;
+  }
+  .hero-meta span strong { color: var(--ink); font-weight: 600; }
+
+  /* ---------- SECTION HEADERS ---------- */
+  .section {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 48px;
+  }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 24px;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 14px;
+  }
+  .section-header h2 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  .section-header .kicker {
+    font-size: 13px;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+  }
+
+  /* ---------- LEGEND ---------- */
+  .legend {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 28px 0 0;
+  }
+  .legend .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid var(--line);
+    background: #fff;
+  }
+  .legend .pill .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+  }
+
+  /* ---------- FILTERS ---------- */
+  .filters {
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    padding: 16px 48px;
+    border-bottom: 1px solid var(--line);
+    z-index: 50;
+    backdrop-filter: blur(8px);
+  }
+  .filters-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .filter-group { display: flex; gap: 6px; flex-wrap: wrap; }
+  .filter-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-faint);
+    font-weight: 600;
+    margin-right: 6px;
+  }
+  .chip {
+    appearance: none;
+    border: 1px solid var(--line);
+    background: #fff;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: inherit;
+  }
+  .chip:hover { border-color: var(--ink); }
+  .chip.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+  /* ---------- CARD GRID ---------- */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 20px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.18s, box-shadow 0.18s;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 36px rgba(0,0,0,0.08);
+  }
+
+  /* ---- mock UI preview ---- */
+  .preview {
+    height: 170px;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+  }
+  .preview .browser-chrome {
+    display: flex;
+    gap: 5px;
+    padding: 8px 10px;
+    background: #0000000a;
+    align-items: center;
+  }
+  .preview .browser-chrome .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #00000020;
+  }
+  .preview .browser-url {
+    margin-left: 8px;
+    flex: 1;
+    font-size: 10px;
+    color: #00000060;
+    background: #00000010;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-family: ui-monospace, Menlo, monospace;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .mockup {
+    padding: 12px;
+    height: calc(100% - 31px);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .mockup .mock-bar {
+    height: 8px; border-radius: 3px;
+    background: #00000010;
+  }
+  .mockup .mock-bar.short { width: 40%; }
+  .mockup .mock-bar.med { width: 65%; }
+  .mockup .mock-tile {
+    border-radius: 6px;
+    background: #00000008;
+    border: 1px solid #00000012;
+  }
+
+  /* ---- pills ---- */
+  .card-head {
+    padding: 14px 18px 8px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .platform-pill {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    padding: 4px 10px;
+    border-radius: 999px;
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .angle-pill {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+  .angle-inproduct { background: var(--angle-inproduct-bg); color: var(--angle-inproduct); }
+  .angle-personal { background: var(--angle-personal-bg); color: var(--angle-personal); }
+  .angle-lifecycle { background: var(--angle-lifecycle-bg); color: var(--angle-lifecycle); }
+
+  .card-body { padding: 6px 18px 18px; flex: 1; display: flex; flex-direction: column; }
+  .card h3 {
+    font-size: 18px;
+    line-height: 1.25;
+    margin: 6px 0 10px;
+    font-weight: 700;
+    letter-spacing: -0.005em;
+  }
+  .card .where {
+    font-size: 11px;
+    color: var(--ink-faint);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+  .card p { font-size: 13.5px; color: var(--ink-soft); margin: 0 0 10px; }
+  .card .why {
+    font-size: 13px;
+    color: var(--ink);
+    background: #faf8f3;
+    border-left: 3px solid var(--ink);
+    padding: 8px 12px;
+    margin: 8px 0 12px;
+    border-radius: 0 6px 6px 0;
+  }
+  .card .why::before {
+    content: "Why it works — ";
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .card .source {
+    margin-top: auto;
+    font-size: 12px;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    padding-top: 10px;
+    border-top: 1px dashed var(--line);
+  }
+  .card .source a {
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .card .source a:hover { text-decoration: underline; }
+
+  /* ---- Platform badge colors ---- */
+  .p-notion { background: var(--p-notion); }
+  .p-figma { background: var(--p-figma); }
+  .p-airtable { background: var(--p-airtable); color: #111 !important; }
+  .p-linear { background: var(--p-linear); }
+  .p-slack { background: var(--p-slack); }
+  .p-shopify { background: var(--p-shopify); color: #111 !important; }
+  .p-squarespace { background: var(--p-squarespace); }
+  .p-webflow { background: var(--p-webflow); }
+  .p-canva { background: var(--p-canva); color: #111 !important; }
+  .p-etsy { background: var(--p-etsy); }
+  .p-salesforce { background: var(--p-salesforce); }
+  .p-hubspot { background: var(--p-hubspot); }
+  .p-atlassian { background: var(--p-atlassian); }
+  .p-asana { background: var(--p-asana); }
+  .p-monday { background: var(--p-monday); color: #111 !important; }
+  .p-intercom { background: var(--p-intercom); }
+
+  /* experimental platforms */
+  .p-arc { background: linear-gradient(90deg, var(--p-arc), #ff2d8f); }
+  .p-dia { background: linear-gradient(90deg, var(--p-dia), #7b2cff); }
+  .p-raycast { background: var(--p-raycast); }
+  .p-superhuman { background: var(--p-superhuman); }
+  .p-lovable { background: var(--p-lovable); }
+  .p-v0 { background: var(--p-v0); }
+  .p-bolt { background: #fefefe; color: #111 !important; border: 1px solid #111; }
+  .p-cursor { background: var(--p-cursor); }
+  .p-replit { background: var(--p-replit); }
+  .p-granola { background: var(--p-granola); color: #003320 !important; }
+  .p-rewind { background: var(--p-rewind); }
+  .p-perplexity { background: var(--p-perplexity); }
+  .p-lindy { background: var(--p-lindy); }
+  .p-duolingo { background: var(--p-duolingo); color: #003800 !important; }
+  .p-tldraw { background: var(--p-tldraw); }
+  .p-framer { background: var(--p-framer); }
+  .p-posthog { background: var(--p-posthog); color: #111 !important; }
+  .p-poe { background: var(--p-poe); }
+  .p-vercel { background: var(--p-vercel); }
+
+  .cat-label { display: block; font-size: 11px; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; }
+
+  /* ---------- SPECIFIC MOCK STYLES ---------- */
+  .mock-checklist {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 11px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .mock-checklist .item { display: flex; align-items: center; gap: 8px; color: var(--ink-soft); }
+  .mock-checklist .item .check { width: 12px; height: 12px; border-radius: 3px; border: 1.5px solid var(--ink-faint); flex-shrink: 0; }
+  .mock-checklist .item.done .check { background: var(--angle-lifecycle); border-color: var(--angle-lifecycle); }
+  .mock-checklist .item.done { text-decoration: line-through; color: var(--ink-faint); }
+
+  .mock-tooltip {
+    position: absolute;
+    background: #111;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 10px;
+    max-width: 160px;
+    box-shadow: 0 4px 16px #00000030;
+  }
+  .mock-tooltip::after {
+    content: "";
+    position: absolute;
+    border: 5px solid transparent;
+    border-top-color: #111;
+    bottom: -10px; left: 20px;
+  }
+
+  .mock-modal {
+    background: #fff;
+    padding: 12px;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px #00000020;
+    border: 1px solid var(--line);
+    font-size: 11px;
+    text-align: center;
+  }
+  .mock-modal .badge { display: inline-block; background: #fef3c7; color: #b45309; padding: 2px 8px; border-radius: 4px; font-size: 9px; font-weight: 700; letter-spacing: 0.08em; margin-bottom: 6px; }
+  .mock-modal button { display: inline-block; background: var(--ink); color: #fff; border: 0; padding: 5px 12px; border-radius: 6px; font-size: 10px; font-weight: 600; margin-top: 8px; cursor: pointer; }
+
+  .mock-kbd { background: #111; color: #eee; padding: 10px; border-radius: 6px; font-family: ui-monospace, Menlo, monospace; font-size: 10px; }
+  .mock-kbd .key { display: inline-block; background: #00000050; padding: 2px 6px; border-radius: 3px; margin-right: 4px; border: 1px solid #ffffff20; }
+
+  .mock-templates { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+  .mock-templates .tpl { background: #fff; border: 1px solid var(--line); border-radius: 6px; padding: 8px; font-size: 9px; color: var(--ink-soft); text-align: center; min-height: 42px; display: flex; align-items: center; justify-content: center; }
+
+  .mock-notif { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; font-size: 10px; display: flex; gap: 8px; align-items: flex-start; }
+  .mock-notif .icon { width: 22px; height: 22px; border-radius: 6px; flex-shrink: 0; }
+
+  .mock-chart {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 8px;
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    height: 70px;
+  }
+  .mock-chart .bar { flex: 1; background: linear-gradient(to top, currentColor, currentColor); border-radius: 2px; }
+
+  .mock-cursor {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 9px;
+    font-weight: 600;
+    color: #fff;
+    padding: 2px 6px;
+    border-radius: 0 8px 8px 8px;
+  }
+
+  /* ---------- SYNTHESIS ---------- */
+  .synthesis {
+    background: #111;
+    color: #f5f3ef;
+    padding: 80px 48px;
+    margin-top: 60px;
+  }
+  .synthesis-inner { max-width: 1400px; margin: 0 auto; }
+  .synthesis h2 { font-size: 36px; letter-spacing: -0.02em; margin: 0 0 32px; color: #fff; }
+  .synthesis .findings { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-top: 40px; }
+  .synthesis .finding {
+    background: #1f1f1f;
+    border: 1px solid #333;
+    border-radius: 14px;
+    padding: 24px;
+  }
+  .synthesis .finding .num {
+    font-size: 40px;
+    font-weight: 700;
+    color: var(--p-canva);
+    line-height: 1;
+    margin-bottom: 12px;
+    letter-spacing: -0.03em;
+  }
+  .synthesis .finding h3 { margin: 0 0 10px; font-size: 18px; color: #fff; }
+  .synthesis .finding p { color: #c4c4c4; margin: 0; font-size: 14px; }
+
+  .wix-takeaway {
+    background: #fef9e6;
+    padding: 80px 48px;
+    border-top: 2px solid #111;
+    border-bottom: 2px solid #111;
+  }
+  .wix-takeaway h2 { font-size: 36px; letter-spacing: -0.02em; margin: 0 0 16px; }
+  .wix-takeaway .subhead { font-size: 18px; color: var(--ink-soft); margin-bottom: 40px; max-width: 720px; }
+  .wix-takeaway-inner { max-width: 1400px; margin: 0 auto; }
+  .play-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+  .play { background: #fff; border: 2px solid #111; border-radius: 14px; padding: 20px; }
+  .play .play-tag { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--angle-personal); margin-bottom: 8px; }
+  .play h4 { margin: 0 0 8px; font-size: 17px; }
+  .play p { margin: 0; font-size: 13.5px; color: var(--ink-soft); }
+  .play .inspired {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--line);
+    font-size: 11px;
+    color: var(--ink-faint);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  footer { padding: 48px; text-align: center; font-size: 13px; color: var(--ink-faint); max-width: 1400px; margin: 0 auto; }
+  footer a { color: var(--ink); font-weight: 600; }
+
+  @media (max-width: 640px) {
+    .hero { padding: 48px 24px 24px; }
+    h1 { font-size: 36px; }
+    .section { padding: 24px; }
+    .synthesis, .wix-takeaway { padding: 48px 24px; }
+    .filters { padding: 12px 24px; }
+  }
+
+  /* small viz helpers */
+  .bar-stack { display:flex; flex-direction:column; gap: 4px; width: 100%; }
+
+  /* card hides on filter */
+  .card.hidden { display: none; }
+</style>
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!-- HERO                                                         -->
+<!-- ============================================================ -->
+<section class="hero">
+  <span class="eyebrow">Inspiration Board · Wix Bookings Adoption Engine</span>
+  <h1>How 16 platforms<br/>drive feature adoption.</h1>
+  <p class="lede">
+    A swipe file of the in-product mechanics, personalization tactics, and lifecycle messaging used by the
+    best multi-persona platforms on the market. Use it to pressure-test our own adoption engine —
+    steal liberally, discard carefully.
+  </p>
+  <div class="hero-meta">
+    <span><strong>34</strong> platforms</span>
+    <span><strong>65+</strong> adoption patterns</span>
+    <span><strong>4</strong> categories · incl. <em>experimental</em></span>
+    <span>Compiled 2026-04-17 · updated with futuristics</span>
+  </div>
+  <div class="legend">
+    <span class="pill"><span class="dot" style="background:var(--angle-inproduct)"></span> In-product mechanics</span>
+    <span class="pill"><span class="dot" style="background:var(--angle-personal)"></span> Personalization & targeting</span>
+    <span class="pill"><span class="dot" style="background:var(--angle-lifecycle)"></span> Lifecycle & messaging</span>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- FILTER BAR                                                    -->
+<!-- ============================================================ -->
+<div class="filters" id="filters">
+  <div class="filters-inner">
+    <div class="filter-group">
+      <span class="filter-label">Angle</span>
+      <button class="chip active" data-angle="all">All</button>
+      <button class="chip" data-angle="inproduct">In-product</button>
+      <button class="chip" data-angle="personal">Personalization</button>
+      <button class="chip" data-angle="lifecycle">Lifecycle</button>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Category</span>
+      <button class="chip active" data-cat="all">All</button>
+      <button class="chip" data-cat="saas">SaaS suites</button>
+      <button class="chip" data-cat="commerce">Creator / commerce</button>
+      <button class="chip" data-cat="enterprise">Enterprise</button>
+      <button class="chip" data-cat="experimental">✨ Experimental / niche</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SAAS SECTION                                                  -->
+<!-- ============================================================ -->
+<section class="section" data-cat-section="saas">
+  <div class="section-header">
+    <h2>SaaS suites</h2>
+    <span class="kicker">Notion · Figma · Airtable · Linear · Slack</span>
+  </div>
+  <div class="grid">
+
+    <!-- ============ NOTION ============ -->
+
+    <article class="card" data-cat="saas" data-angle="personal">
+      <div class="preview" style="background: linear-gradient(135deg, #f6f6f4 0%, #ececea 100%);">
+        <div class="browser-chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="browser-url">notion.so/welcome</span></div>
+        <div class="mockup">
+          <div class="mock-bar short"></div>
+          <div class="mock-templates" style="flex:1;">
+            <div class="tpl">📝 Personal</div>
+            <div class="tpl" style="outline: 2px solid #111;">🎨 Team wiki</div>
+            <div class="tpl">🏢 Company</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-notion">Notion</span>
+        <span class="angle-pill angle-personal">Personalization</span>
+      </div>
+      <div class="card-body">
+        <h3>Persona-based template curation</h3>
+        <div class="where">Post-signup welcome · template carousel</div>
+        <p>A short survey about goals, team size, and use case reduces the 1000+ template library down to 5 hand-picked starters so the blank slate never appears.</p>
+        <div class="why">Reframes "what do I build?" as "which of these is most like me?" — that question is much easier, and the answer generates a working workspace in one click.</div>
+        <div class="source">↗ <a href="https://www.candu.ai/blog/how-notion-crafts-a-personalized-onboarding-experience-6-lessons-to-guide-new-users" target="_blank">Candu · Notion personalized onboarding</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="saas" data-angle="inproduct">
+      <div class="preview" style="background:#faf8f3;">
+        <div class="browser-chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="browser-url">notion.so/home</span></div>
+        <div class="mockup">
+          <div class="mock-checklist">
+            <div class="item done"><span class="check"></span> Type '/' to open commands</div>
+            <div class="item done"><span class="check"></span> Create your first page</div>
+            <div class="item"><span class="check"></span> Invite a teammate</div>
+            <div class="item"><span class="check"></span> Try a database view</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-notion">Notion</span>
+        <span class="angle-pill angle-inproduct">In-product</span>
+      </div>
+      <div class="card-body">
+        <h3>Learn-by-doing checklist</h3>
+        <div class="where">Notion home · persistent card</div>
+        <p>Checklist tasks aren't tutorials — they're the actual actions. "Type '/'" requires opening the command menu inside a real page. Users learn by building.</p>
+        <div class="why">Active discovery builds muscle memory faster than video tours. Completion dopamine + real artifact left behind = two reasons to keep going.</div>
+        <div class="source">↗ <a href="https://goodux.appcues.com/blog/notions-lightweight-onboarding" target="_blank">Appcues · Notion lightweight onboarding</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="saas" data-angle="inproduct">
+      <div class="preview" style="background:#1a1a1a; color:#fff;">
+        <div class="mockup" style="height:100%;">
+          <div style="background:#2a2a2a; padding:10px; border-radius:6px; font-family:ui-monospace, Menlo, monospace; font-size:10px; color:#aaa;">
+            <div style="color:#fff;">/_</div>
+            <div style="margin-top:6px; display:flex; gap:6px; align-items:center;"><span style="color:#facc15;">📝</span> Heading</div>
+            <div style="display:flex; gap:6px; align-items:center;"><span style="color:#60a5fa;">▣</span> Toggle list</div>
+            <div style="display:flex; gap:6px; align-items:center; background:#333; padding: 2px 4px; border-radius: 3px;"><span style="color:#f472b6;">⊞</span> Database · table</div>
+            <div style="display:flex; gap:6px; align-items:center;"><span style="color:#a3e635;">◈</span> Callout</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-notion">Notion</span>
+        <span class="angle-pill angle-inproduct">In-product</span>
+      </div>
+      <div class="card-body">
+        <h3>The "/" slash command as feature teacher</h3>
+        <div class="where">Any content block · keyboard trigger</div>
+        <p>One keystroke ("/") surfaces a filterable menu of every block type — databases, callouts, embeds — with icons and keyboard shortcuts shown inline for next time.</p>
+        <div class="why">Depth is hidden until wanted. Users never need to "know" 50 features — they stumble into them while typing. It teaches the keyboard shortcut by showing it.</div>
+        <div class="source">↗ <a href="https://www.notion.com/help/guides/using-slash-commands" target="_blank">Notion Help · Slash commands</a></div>
+      </div>
+    </article>
+
+    <!-- ============ FIGMA ============ -->
+
+    <article class="card" data-cat="saas" data-angle="inproduct">
+      <div class="preview" style="background: linear-gradient(135deg, #a259ff15 0%, #ff728715 100%);">
+        <div class="mockup" style="justify-content:center; align-items:center; height: calc(100% - 0px);">
+          <div style="width:160px; height:110px; background:#fff; border:1px solid var(--line); border-radius:8px; position:relative;">
+            <div style="position:absolute; top:12px; left:12px; width:30px; height:30px; background:#a259ff; border-radius:4px;"></div>
+            <div class="mock-cursor" style="top:-4px; left:80px; background:#0acf83;">● Anna</div>
+            <div class="mock-cursor" style="top:50px; left:10px; background:#ff7262;">● Leo</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-figma">Figma</span>
+        <span class="angle-pill angle-inproduct">In-product</span>
+      </div>
+      <div class="card-body">
+        <h3>Multiplayer cursors as the feature</h3>
+        <div class="where">Any shared file · ambient presence</div>
+        <p>Named cursors appear the moment a second person opens the file. Cursor chat lets you type ephemeral messages that float above the canvas like shouts.</p>
+        <div class="why">Collaboration isn't a "feature you turn on" — it becomes visible the instant another human shows up. FOMO and social proof ship with the product.</div>
+        <div class="source">↗ <a href="https://www.figma.com/blog/multiplayer-editing-in-figma/" target="_blank">Figma Blog · Multiplayer editing</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="saas" data-angle="inproduct">
+      <div class="preview" style="background: radial-gradient(circle at 60% 50%, #a259ff30, #fff 70%);">
+        <div class="mockup" style="justify-content:center; align-items:center;">
+          <div class="mock-modal" style="max-width:200px;">
+            <span class="badge">NEW</span>
+            <div style="font-size:13px; font-weight:700; margin-bottom:4px;">Dev Mode</div>
+            <div style="font-size:10px; color:var(--ink-soft); line-height:1.4;">Inspect specs, copy code, export assets. Built for engineers.</div>
+            <button>Try it</button>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-figma">Figma</span>
+        <span class="angle-pill angle-lifecycle">Lifecycle</span>
+      </div>
+      <div class="card-body">
+        <h3>Feature spotlight modal with "Try it"</h3>
+        <div class="where">Canvas · triggered on first session after release</div>
+        <p>Major releases open a single modal with a clean product shot, one-line pitch, and a "Try it" button that deep-links directly into the feature's actual UI.</p>
+        <div class="why">Limited to one modal per release, so attention spend stays cheap. "Try it" bypasses marketing pages — the next click is inside the product.</div>
+        <div class="source">↗ <a href="https://www.chameleon.io/inspiration/figmas-new-feature-modal" target="_blank">Chameleon · Figma feature modal</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="saas" data-angle="lifecycle">
+      <div class="preview" style="background:#fff;">
+        <div class="mockup" style="gap:6px;">
+          <div style="font-size:11px; font-weight:700;">Release notes</div>
+          <div class="mock-notif"><div class="icon" style="background:#a259ff;"></div><div><div style="font-weight:600;">Variables update</div><div style="color:var(--ink-faint);">Apr 12 · Design tokens</div></div></div>
+          <div class="mock-notif"><div class="icon" style="background:#0acf83;"></div><div><div style="font-weight:600;">Slide decks</div><div style="color:var(--ink-faint);">Apr 08 · Presentations</div></div></div>
+          <div class="mock-notif"><div class="icon" style="background:#ff7262;"></div><div><div style="font-weight:600;">AI generate</div><div style="color:var(--ink-faint);">Mar 29 · FigJam</div></div></div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-figma">Figma</span>
+        <span class="angle-pill angle-lifecycle">Lifecycle</span>
+      </div>
+      <div class="card-body">
+        <h3>A visual, searchable release-notes feed</h3>
+        <div class="where">figma.com/release-notes · linked from in-app banners</div>
+        <p>Rather than a changelog of terse bullets, each entry has an illustration, product short, and a link to dive into the relevant area of the product.</p>
+        <div class="why">Becomes a second-order marketing surface: shareable, linkable, and quotable in community & partner channels. Power users subscribe like a magazine.</div>
+        <div class="source">↗ <a href="https://www.figma.com/release-notes/" target="_blank">Figma · Release notes</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="saas" data-angle="personal">
+      <div class="preview" style="background:#f6f6f4;">
+        <div class="mockup">
+          <div class="mock-bar med"></div>
+          <div class="mock-chart" style="color:#a259ff;">
+            <div class="bar" style="height:80%;"></div>
+            <div class="bar" style="height:60%;"></div>
+            <div class="bar" style="height:90%;"></div>
+            <div class="bar" style="height:45%;"></div>
+            <div class="bar" style="height:70%;"></div>
+            <div class="bar" style="height:50%;"></div>
+          </div>
+          <div style="font-size:10px; color:var(--ink-faint);">Components · last 30 days · 6 unused</div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-figma">Figma</span>
+        <span class="angle-pill angle-personal">Personalization</span>
+      </div>
+      <div class="card-body">
+        <h3>Design system analytics</h3>
+        <div class="where">Team admin panel · usage dashboard</div>
+        <p>Shows which components are used vs. unused, where detachments happen, and which teams are off-system — turning adoption into a leaderboard for design system teams.</p>
+        <div class="why">Gives design-system owners ammunition to enforce. Also reorders the asset browser by most-used, personalizing the surface to each team's habits.</div>
+        <div class="source">↗ <a href="https://www.figma.com/blog/introducing-design-system-analytics/" target="_blank">Figma Blog · Design system analytics</a></div>
+      </div>
+    </article>
+
+    <!-- ============ AIRTABLE ============ -->
+
+    <article class="card" data-cat="saas" data-angle="inproduct">
+      <div class="preview" style="background:linear-gradient(180deg,#fcb40010 0%, #fff 100%);">
+        <div class="mockup">
+          <div class="mock-bar short"></div>
+          <div class="mock-templates" style="flex:1;">
+            <div class="tpl">🎯 CRM</div>
+            <div class="tpl">📅 Projects</div>
+            <div class="tpl">🐛 Bugs</div>
+            <div class="tpl">👥 Candidates</div>
+            <div class="tpl">📦 Orders</div>
+            <div class="tpl">📖 Content</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-airtable">Airtable</span>
+        <span class="angle-pill angle-inproduct">In-product</span>
+      </div>
+      <div class="card-body">
+        <h3>Template gallery with visual previews</h3>
+        <div class="where">Home screen · Templates & Apps section</div>
+        <p>Cards show the built base with real data inside. One click reveals the full schema preview before duplication — no blind "install template" moment.</p>
+        <div class="why">Risk reduction: users see what they'll get. It also implicitly teaches database design by showing expert-built schemas they can copy-and-edit.</div>
+        <div class="source">↗ <a href="https://support.airtable.com/docs/using-airtable-templates" target="_blank">Airtable Support · Using templates</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="saas" data-angle="personal">
+      <div class="preview" style="background:#fcb40010;">
+        <div class="mockup">
+          <div style="background:#fff; border:1px solid var(--line); border-radius:8px; padding:10px; font-size:11px;">
+            <div style="color:var(--ink-faint); font-size:10px; margin-bottom:6px;">Vibecoding · chat</div>
+            <div style="background:#fcb40020; padding:6px 10px; border-radius:12px 12px 12px 2px; margin-bottom:6px;">Build a CRM for startup leads</div>
+            <div style="color:var(--ink-faint); font-size:10px;">✨ Generating schema + views…</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-airtable">Airtable</span>
+        <span class="angle-pill angle-personal">Personalization</span>
+      </div>
+      <div class="card-body">
+        <h3>AI-first "vibecoding" onboarding</h3>
+        <div class="where">First-time user landing · chat + live prototype</div>
+        <p>Split screen: chat on the left, live base forming on the right. A sentence becomes a base, with AI auto-choosing field types, linked records, and starter automations.</p>
+        <div class="why">Removes schema anxiety — the hardest part of Airtable adoption. The prototype feels co-authored, which creates early ownership.</div>
+        <div class="source">↗ <a href="https://www.candu.ai/blog/airtable-vibecoding-onboarding" target="_blank">Candu · Airtable vibecoding teardown</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="saas" data-angle="personal">
+      <div class="preview" style="background:#fff;">
+        <div class="mockup">
+          <div style="font-size:10px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:0.08em; font-weight:700;">Universe</div>
+          <div class="mock-templates" style="flex:1; grid-template-columns:1fr 1fr;">
+            <div class="tpl" style="text-align:left; padding:8px; font-size:9px;"><div style="font-weight:700; color:var(--ink);">Podcast tracker</div><div>by @alex · ⭐ 4.2k</div></div>
+            <div class="tpl" style="text-align:left; padding:8px; font-size:9px;"><div style="font-weight:700; color:var(--ink);">Wedding planner</div><div>by @lila · ⭐ 2.1k</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-airtable">Airtable</span>
+        <span class="angle-pill angle-personal">Personalization</span>
+      </div>
+      <div class="card-body">
+        <h3>Airtable Universe · user-built gallery</h3>
+        <div class="where">airtable.com/universe · searchable community feed</div>
+        <p>A browseable feed of bases real people have published. Starred bases are ranked. "Use this base" duplicates the whole thing into your workspace.</p>
+        <div class="why">Social proof beats polished marketing — "a wedding planner made this" is more credible than "our team made this" for wedding planners considering Airtable.</div>
+        <div class="source">↗ <a href="https://www.airtable.com/universe" target="_blank">Airtable · Universe</a></div>
+      </div>
+    </article>
+
+    <!-- ============ LINEAR ============ -->
+
+    <article class="card" data-cat="saas" data-angle="inproduct">
+      <div class="preview" style="background:#0a0a0a;">
+        <div class="mockup" style="justify-content:center; align-items:center;">
+          <div style="background:#1f1f23; border:1px solid #2c2d33; border-radius:10px; padding:12px; width:220px; color:#eee;">
+            <div style="font-size:9px; color:#888; margin-bottom:6px;">⌘K</div>
+            <input style="width:100%; background:#111; border:1px solid #2c2d33; color:#fff; border-radius:5px; padding:6px; font-size:10px; margin-bottom:8px; box-sizing:border-box;" value="create issue…" readonly/>
+            <div style="font-size:10px; color:#eee; padding:5px 0; background:#2c2d33; margin:0 -4px; padding-left:8px; border-radius:3px;">➕ Create new issue  <span style="float:right; color:#888;">C</span></div>
+            <div style="font-size:10px; color:#bbb; padding:5px 8px;">📋 Change status   <span style="float:right; color:#888;">S</span></div>
+            <div style="font-size:10px; color:#bbb; padding:5px 8px;">👤 Assign to…     <span style="float:right; color:#888;">A</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-linear">Linear</span>
+        <span class="angle-pill angle-inproduct">In-product</span>
+      </div>
+      <div class="card-body">
+        <h3>⌘K command menu as feature curriculum</h3>
+        <div class="where">Anywhere in the app · single shortcut</div>
+        <p>One keystroke exposes every action in the app, filterable by name. Each row shows its shortcut next to it — so users promoted from browsers to keyboard automatically.</p>
+        <div class="why">Converts feature discovery into muscle-memory speed runs. Power users teach themselves the app's entire depth without a single tooltip.</div>
+        <div class="source">↗ <a href="https://linear.app/docs" target="_blank">Linear · Docs</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="saas" data-angle="lifecycle">
+      <div class="preview" style="background:#5e6ad208;">
+        <div class="mockup">
+          <div style="font-size:10px; color:var(--ink-faint); margin-bottom:4px;">Changelog</div>
+          <div class="mock-notif"><div class="icon" style="background:#5e6ad2;"></div><div><div style="font-weight:600;">Pulse · personal feed</div><div style="color:var(--ink-faint); margin-bottom:2px;">Apr 16</div><button style="background:#5e6ad2; color:#fff; border:0; padding:3px 8px; border-radius:4px; font-size:9px; font-weight:600; cursor:pointer;">Try it →</button></div></div>
+          <div class="mock-notif"><div class="icon" style="background:#5e6ad2;"></div><div><div style="font-weight:600;">Collapsed issue history</div><div style="color:var(--ink-faint);">Apr 03</div></div></div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-linear">Linear</span>
+        <span class="angle-pill angle-lifecycle">Lifecycle</span>
+      </div>
+      <div class="card-body">
+        <h3>Changelog with "Try it" deep links</h3>
+        <div class="where">linear.app/changelog · in-app "Now" feed</div>
+        <p>Release posts include a literal "Try it" button that routes straight to the relevant settings page or feature surface. Skimming becomes activation.</p>
+        <div class="why">Closes the gap between "I heard about it" and "I used it" — often weeks apart in SaaS. Makes the changelog work as a growth lever, not just comms.</div>
+        <div class="source">↗ <a href="https://linear.app/changelog" target="_blank">Linear · Changelog</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="saas" data-angle="personal">
+      <div class="preview" style="background:#fff;">
+        <div class="mockup">
+          <div style="font-size:10px; color:var(--ink-faint); margin-bottom:2px;">Pulse · For me</div>
+          <div class="mock-notif"><div class="icon" style="background:#a259ff;"></div><div><div style="font-weight:600;">Design system v2 shipped</div><div style="color:var(--ink-faint);">Bookings team · 2h</div></div></div>
+          <div class="mock-notif"><div class="icon" style="background:#0acf83;"></div><div><div style="font-weight:600;">Q2 goal updated</div><div style="color:var(--ink-faint);">Leadership · 1d</div></div></div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-linear">Linear</span>
+        <span class="angle-pill angle-personal">Personalization</span>
+      </div>
+      <div class="card-body">
+        <h3>Pulse · personalized activity feed</h3>
+        <div class="where">Sidebar · persistent · "For me" / "Popular" tabs</div>
+        <p>Auto-curated feed of project and initiative updates — "For me" shows items you follow; "Popular" ranks by team engagement. Users build custom feeds with filters.</p>
+        <div class="why">Re-engagement without emails. Users open the app, feel informed, and stay longer — the feed is a slot machine with real work inside.</div>
+        <div class="source">↗ <a href="https://linear.app/changelog/2025-04-16-pulse" target="_blank">Linear · Pulse launch</a></div>
+      </div>
+    </article>
+
+    <!-- ============ SLACK ============ -->
+
+    <article class="card" data-cat="saas" data-angle="inproduct">
+      <div class="preview" style="background:#fff;">
+        <div class="mockup" style="gap:6px;">
+          <div style="display:flex; gap:6px; align-items:flex-start;"><div style="width:22px; height:22px; border-radius:4px; background:#4a154b; color:#fff; display:flex; align-items:center; justify-content:center; font-size:9px;">SB</div><div style="background:#f4f4f4; padding:6px 10px; border-radius:4px; font-size:10px; max-width:200px;">Hey! I'm kinda dumb but I understand words like yes, yup, or nope. Want to try sending your first message?</div></div>
+          <div style="display:flex; gap:6px; align-items:flex-start; margin-left:28px; margin-top:4px;"><div style="background:#4a154b; color:#fff; padding:4px 10px; border-radius:4px; font-size:10px;">Yup</div></div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-slack">Slack</span>
+        <span class="angle-pill angle-inproduct">In-product</span>
+      </div>
+      <div class="card-body">
+        <h3>Slackbot conversational onboarding</h3>
+        <div class="where">#general · first session</div>
+        <p>A bot with personality walks new users through basic actions (send a message, invite a teammate, change status) via real Slack messages — using the product to teach the product.</p>
+        <div class="why">Meta-learning: every "tutorial step" is a real product action. Personality and humor lower the new-tool anxiety bar, especially in enterprise contexts.</div>
+        <div class="source">↗ <a href="https://goodux.appcues.com/blog/slacks-new-user-onboarding" target="_blank">Appcues · Slack onboarding</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="saas" data-angle="personal">
+      <div class="preview" style="background:#4a154b15;">
+        <div class="mockup" style="gap:4px;">
+          <div style="font-size:10px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:0.08em; font-weight:700;">Your onboarding</div>
+          <div class="mock-checklist" style="padding:8px;">
+            <div class="item done"><span class="check"></span> Add a profile photo</div>
+            <div class="item done"><span class="check"></span> Say hi in #introductions</div>
+            <div class="item"><span class="check"></span> Send a DM</div>
+            <div class="item"><span class="check"></span> Try a huddle</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-slack">Slack</span>
+        <span class="angle-pill angle-personal">Personalization</span>
+      </div>
+      <div class="card-body">
+        <h3>Role-aware sidebar checklist</h3>
+        <div class="where">Sidebar · persistent until completion</div>
+        <p>New members see a checklist that is aware of their role — admins see workspace configuration tasks, regular members see social + habit tasks (post, DM, react).</p>
+        <div class="why">Chunks the "where do I start?" problem into 4-6 concrete wins. Role-aware tasks prevent "why am I being shown admin settings?" confusion.</div>
+        <div class="source">↗ <a href="https://slack.com/help/articles/34211974418835-Slack-templates--Onboard-a-new-hire" target="_blank">Slack · Onboarding templates</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="saas" data-angle="personal">
+      <div class="preview" style="background:#fff;">
+        <div class="mockup" style="gap:4px;">
+          <div style="font-size:10px; color:var(--ink-faint);">Sidebar · channels</div>
+          <div style="background:#f4f4f4; padding:6px 10px; border-radius:5px; font-size:10px; color:var(--ink);">#general</div>
+          <div style="background:#f4f4f4; padding:6px 10px; border-radius:5px; font-size:10px; color:var(--ink);">#announcements</div>
+          <div style="background:#f4f4f4; padding:6px 10px; border-radius:5px; font-size:10px; color:var(--ink);">#onboarding</div>
+          <div style="background:#faf8f3; padding:6px 10px; border-radius:5px; font-size:10px; color:var(--ink-faint); border:1px dashed var(--line);">+ Suggested: #random</div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-slack">Slack</span>
+        <span class="angle-pill angle-personal">Personalization</span>
+      </div>
+      <div class="card-body">
+        <h3>Default channels + suggestions</h3>
+        <div class="where">New member joining flow · admin-configured</div>
+        <p>Admins pick 3-5 default channels every new member auto-joins. Extra suggestions surface based on workspace patterns — e.g. "most engineers here are in #eng-backend".</p>
+        <div class="why">Eliminates the blank sidebar problem. New joiners are immediately dropped into live conversation, which is the fastest path to "oh, I see the point."</div>
+        <div class="source">↗ <a href="https://slack.com/help/articles/201898998-Set-default-channels-for-new-members" target="_blank">Slack · Default channels</a></div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- CREATOR / COMMERCE SECTION                                    -->
+<!-- ============================================================ -->
+<section class="section" data-cat-section="commerce">
+  <div class="section-header">
+    <h2>Creator & commerce platforms</h2>
+    <span class="kicker">Closest peers to Wix · Shopify · Squarespace · Webflow · Canva · Etsy</span>
+  </div>
+  <div class="grid">
+
+    <!-- ============ SHOPIFY ============ -->
+
+    <article class="card" data-cat="commerce" data-angle="inproduct">
+      <div class="preview" style="background:#96bf4810;">
+        <div class="mockup">
+          <div style="background:#fff; border:1px solid var(--line); border-radius:8px; padding:10px;">
+            <div style="font-size:11px; font-weight:700; margin-bottom:6px;">Setup guide · 3 of 5 done</div>
+            <div style="height:4px; background:#eee; border-radius:2px; overflow:hidden; margin-bottom:8px;"><div style="width:60%; height:100%; background:#96bf48;"></div></div>
+            <div class="mock-checklist" style="padding:0; border:0; gap: 3px;">
+              <div class="item done"><span class="check"></span> Add your first product</div>
+              <div class="item done"><span class="check"></span> Customize theme</div>
+              <div class="item" style="background:#fafafa; padding:4px 6px; border-radius:4px; border:1px solid var(--line);"><span class="check"></span> Set up payments →</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-shopify">Shopify</span>
+        <span class="angle-pill angle-inproduct">In-product</span>
+      </div>
+      <div class="card-body">
+        <h3>The Shopify admin setup guide</h3>
+        <div class="where">Admin home · persistent, expands next step</div>
+        <p>A ranked checklist that auto-expands the next task based on survey answers. Progress bar + dismissible but re-surfaceable. Gets a store from $0 to "accepting payment" in hours.</p>
+        <div class="why">Merchants don't know what "setting up a store" actually entails. The guide encodes that tacit knowledge as a list — the list becomes the job.</div>
+        <div class="source">↗ <a href="https://shopify.dev/docs/api/app-home/patterns/compositions/setup-guide" target="_blank">Shopify Dev · Setup guide pattern</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="commerce" data-angle="personal">
+      <div class="preview" style="background:#fff;">
+        <div class="mockup" style="gap:5px;">
+          <div style="background:#96bf4815; padding:10px; border-radius:8px; border:1px solid var(--line);">
+            <div style="font-size:10px; color:var(--ink-faint); margin-bottom:4px;">Recommended for you</div>
+            <div style="font-size:11px; font-weight:700;">Try Shopify Magic →</div>
+            <div style="font-size:10px; color:var(--ink-soft);">Generate product descriptions in seconds</div>
+          </div>
+          <div style="background:#fff; padding:8px; border-radius:6px; border:1px solid var(--line); font-size:10px;"><span style="font-weight:700;">Abandoned cart recovery</span> <span style="color:var(--ink-faint);">· 4-step flow</span></div>
+          <div style="background:#fff; padding:8px; border-radius:6px; border:1px solid var(--line); font-size:10px; color:var(--ink-faint);">Dismiss · Less useful ⚪ Not relevant ⚪</div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-shopify">Shopify</span>
+        <span class="angle-pill angle-personal">Personalization</span>
+      </div>
+      <div class="card-body">
+        <h3>Dynamic home cards · dismissible with feedback</h3>
+        <div class="where">Admin home · primary feed under metrics</div>
+        <p>Cards surface feature recommendations and next-best-actions based on store stage and activity. Each card can be dismissed with a reason ("less useful", "not relevant") — feedback trains the ranker.</p>
+        <div class="why">Merchants feel in control. The system learns. Irrelevant cards don't get shown twice, so the signal-to-noise ratio improves over time.</div>
+        <div class="source">↗ <a href="https://help.shopify.com/en/manual/shopify-admin/shopify-home" target="_blank">Shopify Help · Admin home</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="commerce" data-angle="personal">
+      <div class="preview" style="background:#96bf4808;">
+        <div class="mockup" style="gap:5px;">
+          <div style="font-size:10px; color:var(--ink-faint);">What do you sell?</div>
+          <div class="mock-templates" style="grid-template-columns: 1fr 1fr;">
+            <div class="tpl" style="background:#96bf4820; outline:2px solid #96bf48;">👕 Clothing</div>
+            <div class="tpl">📱 Digital</div>
+            <div class="tpl">🍞 Food</div>
+            <div class="tpl">💅 Services</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-shopify">Shopify</span>
+        <span class="angle-pill angle-personal">Personalization</span>
+      </div>
+      <div class="card-body">
+        <h3>Industry branching at signup</h3>
+        <div class="where">Initial sign-up · cascades through admin</div>
+        <p>"What do you sell?" routes merchants into vertical-specific setup guides, app recommendations, theme suggestions, and email content — beauty brands see different starter kits than restaurants.</p>
+        <div class="why">A service business and a fashion DTC share <em>none</em> of the hard problems. Branching early removes 80% of the irrelevant UX forever.</div>
+        <div class="source">↗ <a href="https://pageflows.com/post/desktop-web/onboarding/shopify/" target="_blank">PageFlows · Shopify onboarding</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="commerce" data-angle="lifecycle">
+      <div class="preview" style="background:#fff;">
+        <div class="mockup" style="gap:5px;">
+          <div style="font-size:10px; color:var(--ink-faint); font-weight:700; letter-spacing:0.08em; text-transform:uppercase;">Changelog</div>
+          <div style="background:#fff; border:1px solid var(--line); border-radius:6px; padding:8px; font-size:10px;"><div style="font-weight:700;">Shopify Magic · image edit</div><div style="color:var(--ink-faint);">Inventory · Marketing</div></div>
+          <div style="background:#fff; border:1px solid var(--line); border-radius:6px; padding:8px; font-size:10px;"><div style="font-weight:700;">New POS staff permissions</div><div style="color:var(--ink-faint);">Payments</div></div>
+          <div style="display:flex; gap:4px; flex-wrap:wrap;"><span style="font-size:9px; background:#96bf4820; color:#2b6a0d; padding:2px 6px; border-radius:3px; font-weight:600;">#Inventory</span><span style="font-size:9px; background:#96bf4820; color:#2b6a0d; padding:2px 6px; border-radius:3px; font-weight:600;">#Marketing</span></div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-shopify">Shopify</span>
+        <span class="angle-pill angle-lifecycle">Lifecycle</span>
+      </div>
+      <div class="card-body">
+        <h3>Tag-subscribable changelog</h3>
+        <div class="where">changelog.shopify.com · RSS + email per tag</div>
+        <p>Merchants subscribe by topic (#Inventory, #Shipping, #Marketing) to get only the product updates that matter to their setup — same feed, different filters.</p>
+        <div class="why">Solves notification fatigue at the platform level: a merchant running a boutique doesn't need B2B wholesale updates, and can self-select out.</div>
+        <div class="source">↗ <a href="https://changelog.shopify.com/" target="_blank">Shopify · Changelog</a></div>
+      </div>
+    </article>
+
+    <!-- ============ SQUARESPACE ============ -->
+
+    <article class="card" data-cat="commerce" data-angle="personal">
+      <div class="preview" style="background:#22222210;">
+        <div class="mockup" style="gap:5px;">
+          <div style="background:#fff; border:1px solid var(--line); border-radius:6px; padding:10px; font-size:10px;">
+            <div style="color:var(--ink-faint);">✨ Blueprint AI</div>
+            <div style="margin-top:4px;">What kind of site?</div>
+            <div style="margin-top:4px; display:flex; gap:4px; flex-wrap:wrap;">
+              <span style="background:#f4f4f4; padding:2px 6px; border-radius:3px;">Portfolio</span>
+              <span style="background:#222; color:#fff; padding:2px 6px; border-radius:3px;">Services</span>
+              <span style="background:#f4f4f4; padding:2px 6px; border-radius:3px;">Shop</span>
+            </div>
+          </div>
+          <div style="color:var(--ink-faint); font-size:9px; text-align:center;">Generating your site…</div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-squarespace">Squarespace</span>
+        <span class="angle-pill angle-personal">Personalization</span>
+      </div>
+      <div class="card-body">
+        <h3>Blueprint AI generative setup</h3>
+        <div class="where">Pre-signup wizard · first login</div>
+        <p>A multi-step questionnaire (business type → personality → color → pages needed) generates a complete starter site in under ten minutes. The editor opens on a <em>real</em> site, not a blank canvas.</p>
+        <div class="why">Blank-canvas paralysis is the #1 killer of website-builder activation. Starting from "already a site" flips the job from creation to editing — much easier.</div>
+        <div class="source">↗ <a href="https://www.squarespace.com/websites/ai-website-builder" target="_blank">Squarespace · AI website builder</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="commerce" data-angle="inproduct">
+      <div class="preview" style="background:#fff;">
+        <div class="mockup">
+          <div class="mock-templates" style="grid-template-columns:1fr 1fr; gap:6px;">
+            <div class="tpl" style="padding:0; background:linear-gradient(135deg, #eee, #ccc); height:50px;"></div>
+            <div class="tpl" style="padding:0; background:linear-gradient(135deg, #fed7aa, #fb923c); height:50px;"></div>
+            <div class="tpl" style="padding:0; background:linear-gradient(135deg, #e0e7ff, #818cf8); height:50px;"></div>
+            <div class="tpl" style="padding:0; background:linear-gradient(135deg, #dcfce7, #22c55e); height:50px;"></div>
+          </div>
+          <div style="font-size:9px; color:var(--ink-faint); text-align:center;">Curated for your use case · Services · 24 templates</div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-squarespace">Squarespace</span>
+        <span class="angle-pill angle-inproduct">In-product</span>
+      </div>
+      <div class="card-body">
+        <h3>Template gallery as landing experience</h3>
+        <div class="where">Pre-signup · visual grid with category filters</div>
+        <p>The first thing visitors see is polished, inspirational template grids filtered by use case. No "feature tour" — the product positions itself through finished output.</p>
+        <div class="why">For design-conscious buyers (the Squarespace persona), seeing a beautiful end state is worth a thousand feature bullets. The decision becomes "which one" not "why Squarespace."</div>
+        <div class="source">↗ <a href="https://www.squarespace.com/templates" target="_blank">Squarespace · Templates</a></div>
+      </div>
+    </article>
+
+    <!-- ============ WEBFLOW ============ -->
+
+    <article class="card" data-cat="commerce" data-angle="inproduct">
+      <div class="preview" style="background:#4353ff08;">
+        <div class="mockup">
+          <div style="background:#fff; border:1px solid var(--line); border-radius:6px; padding:10px; font-size:10px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;"><span style="font-weight:700;">Flexbox</span><span style="color:#4353ff; font-weight:700; cursor:pointer;">Learn ?</span></div>
+            <div style="height:6px; background:#eee; border-radius:3px; margin-bottom:4px;"></div>
+            <div style="height:6px; background:#eee; border-radius:3px; width:70%;"></div>
+          </div>
+          <div style="background:#4353ff; color:#fff; border-radius:6px; padding:8px; font-size:10px; margin-top:4px;">▶ 2 min video · "Flex basics"</div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-webflow">Webflow</span>
+        <span class="angle-pill angle-inproduct">In-product</span>
+      </div>
+      <div class="card-body">
+        <h3>Webflow University inline "Learn" links</h3>
+        <div class="where">Designer interface · next to every advanced control</div>
+        <p>A small "Learn" link sits beside complex features (flexbox, CMS, interactions). Click opens a short video in an overlay — users never leave the editor.</p>
+        <div class="why">Webflow's power is also its steepness. Putting learning <em>inside</em> the control panel reduces context-switching, the #1 cause of "I'll figure it out later" abandonment.</div>
+        <div class="source">↗ <a href="https://university.webflow.com/" target="_blank">Webflow University</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="commerce" data-angle="personal">
+      <div class="preview" style="background:#fff;">
+        <div class="mockup" style="gap:5px;">
+          <div style="font-size:10px; color:var(--ink-faint);">I'm a…</div>
+          <div class="mock-templates" style="grid-template-columns: 1fr 1fr;">
+            <div class="tpl" style="background:#4353ff15; outline:2px solid #4353ff;">🎨 Designer</div>
+            <div class="tpl">⌨️ Developer</div>
+          </div>
+          <div style="font-size:9px; color:var(--ink-faint); text-align:center;">Next: your designer starter path →</div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-webflow">Webflow</span>
+        <span class="angle-pill angle-personal">Personalization</span>
+      </div>
+      <div class="card-body">
+        <h3>Designer vs. Developer fork at onboarding</h3>
+        <div class="where">Post-signup · one question</div>
+        <p>One choice splits the product's guidance: designers get visual-first walkthroughs; developers see the code panel, API docs, and dev resources surfaced first.</p>
+        <div class="why">Webflow has two entirely different user stories that share one UI. Self-identification lets the product choose which UI is "default" per user — without a different product.</div>
+        <div class="source">↗ <a href="https://www.appcues.com/blog/persona-based-user-onboarding" target="_blank">Appcues · Persona-based onboarding</a></div>
+      </div>
+    </article>
+
+    <!-- ============ CANVA ============ -->
+
+    <article class="card" data-cat="commerce" data-angle="inproduct">
+      <div class="preview" style="background:linear-gradient(135deg, #00c4cc10, #7d2ae810);">
+        <div class="mockup" style="gap:4px;">
+          <div style="font-size:11px; font-weight:700;">What will you design today?</div>
+          <div style="display:flex; gap:4px; flex-wrap:wrap;">
+            <span style="background:#fff; padding:3px 8px; border-radius:999px; font-size:9px; font-weight:600; border:1px solid var(--line);">Instagram</span>
+            <span style="background:#00c4cc; color:#fff; padding:3px 8px; border-radius:999px; font-size:9px; font-weight:600;">Presentation</span>
+            <span style="background:#fff; padding:3px 8px; border-radius:999px; font-size:9px; font-weight:600; border:1px solid var(--line);">Logo</span>
+            <span style="background:#fff; padding:3px 8px; border-radius:999px; font-size:9px; font-weight:600; border:1px solid var(--line);">Resume</span>
+          </div>
+          <div class="mock-templates" style="grid-template-columns: 1fr 1fr 1fr; gap:4px;">
+            <div class="tpl" style="padding:0; height:36px; background:linear-gradient(135deg, #fecaca, #ef4444);"></div>
+            <div class="tpl" style="padding:0; height:36px; background:linear-gradient(135deg, #bae6fd, #0ea5e9);"></div>
+            <div class="tpl" style="padding:0; height:36px; background:linear-gradient(135deg, #fef08a, #eab308);"></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-canva">Canva</span>
+        <span class="angle-pill angle-inproduct">In-product</span>
+      </div>
+      <div class="card-body">
+        <h3>Use-case-driven homepage</h3>
+        <div class="where">Canva home · every login</div>
+        <p>Home opens with a category bar ("Instagram, Presentation, Doc, Logo"…). Each category reveals a carousel of trending templates. The first click is always about intent, never about tools.</p>
+        <div class="why">Canva doesn't ask "which tool do you want?" — it asks "what job are you doing?" That framing perfectly matches how non-designers think, and scales to new use cases without redesigning onboarding.</div>
+        <div class="source">↗ <a href="https://www.canva.com/help/about-design-ideas/" target="_blank">Canva Help · Design ideas</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="commerce" data-angle="inproduct">
+      <div class="preview" style="background:#fff;">
+        <div class="mockup" style="justify-content:center; align-items:center;">
+          <div style="background:#0a0a0a; color:#fff; padding:12px; border-radius:10px; width:200px; font-size:10px; position:relative;">
+            <div style="background:linear-gradient(135deg, #00c4cc, #7d2ae8); padding:1px; border-radius:6px; margin-bottom:6px;">
+              <div style="background:#0a0a0a; padding:5px 8px; border-radius:5px;">✨ Try Magic Write</div>
+            </div>
+            <div style="color:#aaa;">Generate copy in seconds</div>
+            <button style="background:#00c4cc; color:#111; border:0; padding:4px 10px; border-radius:4px; font-size:10px; font-weight:700; margin-top:6px;">Try</button>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-canva">Canva</span>
+        <span class="angle-pill angle-inproduct">In-product</span>
+      </div>
+      <div class="card-body">
+        <h3>"Try" prompts at the moment of need</h3>
+        <div class="where">Canvas editor · task-triggered</div>
+        <p>Working on a heading? A small banner appears: "Try Magic Write." Click and it activates in-context with your selected text. No app switch, no tutorial, no modal.</p>
+        <div class="why">AI features die when users can't find the entry point. Canva surfaces them at the exact moment an LLM could help, with one click to value.</div>
+        <div class="source">↗ <a href="https://www.canva.com/help/use-magic-write/" target="_blank">Canva · Magic Write</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="commerce" data-angle="lifecycle">
+      <div class="preview" style="background:#00c4cc08;">
+        <div class="mockup" style="gap:4px;">
+          <div style="font-size:10px; color:var(--ink-faint);">Email · behavioral trigger</div>
+          <div style="background:#fff; border:1px solid var(--line); border-radius:8px; padding:10px; font-size:10px;">
+            <div style="font-weight:700; font-size:12px; margin-bottom:4px;">Haven't tried Dream Lab yet?</div>
+            <div style="color:var(--ink-soft); line-height:1.4;">Generate AI images from text in seconds. Here are 3 prompts other Instagram creators love →</div>
+            <div style="margin-top:6px; color:#00c4cc; font-weight:700;">Try now →</div>
+          </div>
+          <div style="font-size:9px; color:var(--ink-faint); text-align:center;">1 of 650 personalized variants</div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-canva">Canva</span>
+        <span class="angle-pill angle-lifecycle">Lifecycle</span>
+      </div>
+      <div class="card-body">
+        <h3>650-variant behavior-triggered email</h3>
+        <div class="where">Email · triggered by inactivity on feature</div>
+        <p>Using Braze catalogs, Canva runs ~650 personalized email variants tied to use case, feature usage history, and tenure. Result: 55% lift in opens, 8% lift in feature adoption.</p>
+        <div class="why">Segmentation isn't a spreadsheet — it's infrastructure. At this scale, personalization is algorithmic, not editorial.</div>
+        <div class="source">↗ <a href="https://www.braze.com/customers/canva-case-study-catalogs" target="_blank">Braze · Canva case study</a></div>
+      </div>
+    </article>
+
+    <!-- ============ ETSY ============ -->
+
+    <article class="card" data-cat="commerce" data-angle="inproduct">
+      <div class="preview" style="background:#f1652108;">
+        <div class="mockup">
+          <div style="background:#fff; border:1px solid var(--line); border-radius:8px; padding:10px;">
+            <div style="font-size:11px; font-weight:700; margin-bottom:6px;">Shop stats</div>
+            <div style="display:flex; gap:12px; margin-bottom:8px;">
+              <div><div style="font-size:14px; font-weight:700;">423</div><div style="font-size:9px; color:var(--ink-faint);">views ↑ 12%</div></div>
+              <div><div style="font-size:14px; font-weight:700;">6</div><div style="font-size:9px; color:var(--ink-faint);">orders ↑ 2</div></div>
+            </div>
+            <div style="background:#fef3c7; padding:6px 8px; border-radius:4px; font-size:9px;">💡 Your top listing is "Copper earrings". <span style="color:#f16521; font-weight:700;">List similar →</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-etsy">Etsy</span>
+        <span class="angle-pill angle-inproduct">In-product</span>
+      </div>
+      <div class="card-body">
+        <h3>Stats dashboard with actionable insights</h3>
+        <div class="where">Shop Manager · Stats tab</div>
+        <p>Beyond vanity metrics: "Your top listing is X. List similar items →" — each insight ships with a one-click next action tied to the seller's actual data.</p>
+        <div class="why">Translates data into a verb. Sellers don't need analytics skills — the dashboard does the "so what" for them, and routes them into listing creation.</div>
+        <div class="source">↗ <a href="https://help.etsy.com/hc/en-us/articles/115015774268" target="_blank">Etsy · How to use Stats</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="commerce" data-angle="lifecycle">
+      <div class="preview" style="background:#fff;">
+        <div class="mockup" style="gap:5px;">
+          <div style="font-size:9px; color:var(--ink-faint); letter-spacing:0.08em; text-transform:uppercase; font-weight:700;">Handbook · for handmade</div>
+          <div style="background:#fff; border:1px solid var(--line); border-radius:6px; padding:8px; font-size:10px;">📸 Photography for jewelers</div>
+          <div style="background:#fff; border:1px solid var(--line); border-radius:6px; padding:8px; font-size:10px;">💰 Pricing your first batch</div>
+          <div style="background:#fff; border:1px solid var(--line); border-radius:6px; padding:8px; font-size:10px;">📦 Small-parcel shipping tips</div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-etsy">Etsy</span>
+        <span class="angle-pill angle-lifecycle">Lifecycle</span>
+      </div>
+      <div class="card-body">
+        <h3>Seller Handbook · category-aware learning hub</h3>
+        <div class="where">Shop Manager sidebar · always accessible</div>
+        <p>A curated, searchable wiki of peer-written articles. Suggested content shifts by category — a vintage seller sees pricing and authenticity articles; a handmade seller sees photography and materials.</p>
+        <div class="why">Seller-written content (vs. corporate docs) feels credible to other sellers. It also offloads support costs by 10x while improving self-serve confidence.</div>
+        <div class="source">↗ <a href="https://www.etsy.com/seller-handbook" target="_blank">Etsy · Seller Handbook</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="commerce" data-angle="lifecycle">
+      <div class="preview" style="background:#f1652110;">
+        <div class="mockup" style="gap:5px;">
+          <div style="font-size:9px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:0.08em; font-weight:700;">Seller success emails</div>
+          <div style="background:#fff; border:1px solid var(--line); border-radius:6px; padding:6px 8px; font-size:10px;"><div style="font-weight:700;">🎉 First item listed</div><div style="color:var(--ink-faint);">Day 0</div></div>
+          <div style="background:#fff; border:1px solid var(--line); border-radius:6px; padding:6px 8px; font-size:10px;"><div style="font-weight:700;">Your photos could be working harder</div><div style="color:var(--ink-faint);">Day 7 if no sale</div></div>
+          <div style="background:#fff; border:1px solid var(--line); border-radius:6px; padding:6px 8px; font-size:10px;"><div style="font-weight:700;">🎊 First sale! Here's what's next</div><div style="color:var(--ink-faint);">Trigger: first order</div></div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-etsy">Etsy</span>
+        <span class="angle-pill angle-lifecycle">Lifecycle</span>
+      </div>
+      <div class="card-body">
+        <h3>Milestone-triggered seller nurture</h3>
+        <div class="where">Email · event-driven, not date-driven</div>
+        <p>Emails fire on behavior: first listing, first no-sale-after-7-days, first sale, 30 days quiet. Content is category-specific — vintage, handmade, supplies all see different playbooks.</p>
+        <div class="why">Milestones carry emotional weight — sellers open "first sale" emails at nearly 100% rates. Tying marketing content to those moments compounds the value of the moment.</div>
+        <div class="source">↗ <a href="https://userpilot.com/blog/lifecycle-email-marketing/" target="_blank">Userpilot · Lifecycle email marketing</a></div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- ENTERPRISE SECTION                                           -->
+<!-- ============================================================ -->
+<section class="section" data-cat-section="enterprise">
+  <div class="section-header">
+    <h2>Enterprise platforms</h2>
+    <span class="kicker">Multi-persona, deep-feature suites · Salesforce · HubSpot · Atlassian · Asana · Monday · Intercom</span>
+  </div>
+  <div class="grid">
+
+    <!-- ============ SALESFORCE ============ -->
+
+    <article class="card" data-cat="enterprise" data-angle="inproduct">
+      <div class="preview" style="background:linear-gradient(135deg, #00a1e010, #00396310);">
+        <div class="mockup" style="gap:5px;">
+          <div style="background:#fff; border:1px solid var(--line); border-radius:6px; padding:8px; font-size:10px; display:flex; justify-content:space-between; align-items:center;">
+            <div><div style="font-weight:700;">Sales Basics</div><div style="color:var(--ink-faint);">Module · 15 min</div></div>
+            <div style="color:#00a1e0; font-weight:700;">+150 pts</div>
+          </div>
+          <div style="display:flex; gap:4px; align-items:center; font-size:10px;">
+            <span style="background:#00a1e0; color:#fff; padding:2px 6px; border-radius:3px; font-weight:700;">Trailblazer</span>
+            <span style="color:var(--ink-faint);">Rank · Ranger</span>
+          </div>
+          <div style="display:flex; gap:4px;"><span style="font-size:16px;">🥇</span><span style="font-size:16px;">🥈</span><span style="font-size:16px;">⭐</span><span style="font-size:16px;">🎓</span></div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-salesforce">Salesforce</span>
+        <span class="angle-pill angle-inproduct">In-product</span>
+      </div>
+      <div class="card-body">
+        <h3>Trailhead · gamified learning academy</h3>
+        <div class="where">In-app + trailhead.salesforce.com · synced profile</div>
+        <p>Bite-sized modules award points and badges; users build a public "Trailblazer" profile with rank. Companies run internal leaderboards to drive adoption.</p>
+        <div class="why">Turns mandatory training into social capital. The badges are portable — users put them on LinkedIn — which converts the training cost into a career benefit.</div>
+        <div class="source">↗ <a href="https://trailhead.salesforce.com/" target="_blank">Salesforce · Trailhead</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="enterprise" data-angle="inproduct">
+      <div class="preview" style="background:#00a1e010;">
+        <div class="mockup" style="position:relative; justify-content:flex-end; padding:10px;">
+          <div class="mock-tooltip" style="position:static; max-width:none;">
+            <div style="font-weight:700; margin-bottom:2px;">Forecast categories</div>
+            <div style="opacity:0.8; font-size:9px;">Step 2 of 5 · Walkthrough</div>
+            <div style="margin-top:4px; display:flex; gap:4px;">
+              <button style="background:#00a1e0; color:#fff; border:0; padding:2px 6px; border-radius:3px; font-size:9px; cursor:pointer;">Next</button>
+              <button style="background:#333; color:#fff; border:0; padding:2px 6px; border-radius:3px; font-size:9px; cursor:pointer;">Skip</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-salesforce">Salesforce</span>
+        <span class="angle-pill angle-inproduct">In-product</span>
+      </div>
+      <div class="card-body">
+        <h3>In-App Guidance · docked walkthroughs</h3>
+        <div class="where">Lightning Experience · admin-authored prompts</div>
+        <p>Three types of in-app prompts (floating, targeted, docked) that admins configure per role and per page. Multi-step walkthroughs teach multi-screen workflows without leaving the app.</p>
+        <div class="why">Enterprise rollouts need admins to own the messaging, not Salesforce. This is a builder, not a product — adoption messaging becomes IT's job in the best possible way.</div>
+        <div class="source">↗ <a href="https://trailhead.salesforce.com/content/learn/modules/user-engagement/promote-feature-adoption-and-discovery" target="_blank">Trailhead · In-app guidance</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="enterprise" data-angle="personal">
+      <div class="preview" style="background:#fff;">
+        <div class="mockup">
+          <div style="background:#00a1e010; border:1px solid var(--line); border-radius:6px; padding:8px; font-size:10px;">
+            <div style="font-weight:700;">Lightning Usage App</div>
+            <div style="color:var(--ink-faint); margin-bottom:4px;">Last 30 days</div>
+            <div class="mock-chart" style="color:#00a1e0; height:40px;">
+              <div class="bar" style="height:60%;"></div>
+              <div class="bar" style="height:40%;"></div>
+              <div class="bar" style="height:75%;"></div>
+              <div class="bar" style="height:80%;"></div>
+              <div class="bar" style="height:90%;"></div>
+              <div class="bar" style="height:70%;"></div>
+            </div>
+            <div style="font-size:9px; color:var(--ink-faint); margin-top:4px;">DAU · Classic → Lightning switching ↓ 40%</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-salesforce">Salesforce</span>
+        <span class="angle-pill angle-personal">Personalization</span>
+      </div>
+      <div class="card-body">
+        <h3>Lightning Usage adoption dashboard</h3>
+        <div class="where">Admin Setup · auto-refreshing daily</div>
+        <p>Ships a pre-built analytics dashboard showing DAU, Classic→Lightning switch rates, most-used pages, and feature-specific adoption. Admins segment users by cohort and run targeted campaigns.</p>
+        <div class="why">Treats adoption like a product metric with an owner, not a rollout launch. Transforms "we trained everyone, why aren't they using it?" into an attackable funnel.</div>
+        <div class="source">↗ <a href="https://admin.salesforce.com/blog/2018/lightning-usage-app" target="_blank">Salesforce Admins · Lightning Usage App</a></div>
+      </div>
+    </article>
+
+    <!-- ============ HUBSPOT ============ -->
+
+    <article class="card" data-cat="enterprise" data-angle="personal">
+      <div class="preview" style="background:#ff7a5910;">
+        <div class="mockup" style="gap:5px;">
+          <div style="font-size:10px; font-weight:700;">What's your role?</div>
+          <div class="mock-templates" style="grid-template-columns: 1fr 1fr;">
+            <div class="tpl" style="background:#ff7a5920; outline:2px solid #ff7a59;">📣 Marketer</div>
+            <div class="tpl">💼 Sales rep</div>
+            <div class="tpl">🎧 Service</div>
+            <div class="tpl">⚙️ Admin</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-hubspot">HubSpot</span>
+        <span class="angle-pill angle-personal">Personalization</span>
+      </div>
+      <div class="card-body">
+        <h3>Role gate at first login</h3>
+        <div class="where">Signup · persistent in profile</div>
+        <p>A single question — "what's your role?" — routes every downstream decision: onboarding tours, homepage layout, Academy recommendations, email sequence, and feature announcements.</p>
+        <div class="why">HubSpot sells four clouds and three personas. Without a role gate, onboarding would try to be relevant to all 12 combinations — and be relevant to none.</div>
+        <div class="source">↗ <a href="https://www.avidlyagency.com/blog/the-a-z-of-hubspot-implementation-onboarding/" target="_blank">Avidly · HubSpot onboarding</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="enterprise" data-angle="lifecycle">
+      <div class="preview" style="background:#fff;">
+        <div class="mockup">
+          <div style="background:#ff7a59; color:#fff; padding:10px; border-radius:8px;">
+            <div style="font-size:11px; font-weight:700; margin-bottom:4px;">Inbound certification</div>
+            <div style="font-size:9px; opacity:0.9;">Earn credential · shareable on LinkedIn</div>
+            <div style="margin-top:6px; display:flex; gap:4px;">
+              <span style="background:#ffffff30; padding:2px 6px; border-radius:3px; font-size:9px;">4h</span>
+              <span style="background:#ffffff30; padding:2px 6px; border-radius:3px; font-size:9px;">12 lessons</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-hubspot">HubSpot</span>
+        <span class="angle-pill angle-lifecycle">Lifecycle</span>
+      </div>
+      <div class="card-body">
+        <h3>HubSpot Academy · shareable certifications</h3>
+        <div class="where">Help menu · embedded courses · external credentials</div>
+        <p>60,000+ certifications awarded annually; every one carries a LinkedIn-embeddable badge. Courses are triggered based on role and feature usage.</p>
+        <div class="why">Aligns the user's career incentive with the product's adoption incentive. The more they use the product, the better their resume — not many SaaS tools achieve this.</div>
+        <div class="source">↗ <a href="https://academy.hubspot.com/" target="_blank">HubSpot Academy</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="enterprise" data-angle="inproduct">
+      <div class="preview" style="background:#fff;">
+        <div class="mockup" style="justify-content:center; align-items:center;">
+          <div style="background:#faf8f3; border:1px dashed var(--line); border-radius:8px; padding:14px; text-align:center; font-size:10px; max-width:200px;">
+            <div style="font-size:22px; margin-bottom:4px;">📥</div>
+            <div style="font-weight:700; margin-bottom:4px;">No campaigns yet</div>
+            <div style="color:var(--ink-soft); font-size:9px; line-height:1.4; margin-bottom:6px;">Campaigns group assets, measure ROI, and keep your team aligned on one goal.</div>
+            <button style="background:#ff7a59; color:#fff; border:0; padding:5px 10px; border-radius:4px; font-size:9px; font-weight:700; cursor:pointer;">Create your first campaign</button>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-hubspot">HubSpot</span>
+        <span class="angle-pill angle-inproduct">In-product</span>
+      </div>
+      <div class="card-body">
+        <h3>Empty states that teach</h3>
+        <div class="where">Every feature area on first visit</div>
+        <p>Empty states follow "two parts instruction, one part delight": a clear explanation of what the thing does, a visual, a single primary action, and often a "load sample data" escape hatch.</p>
+        <div class="why">The blank state is the highest-churn moment in most SaaS. Turning it into a micro-teaching moment recovers 15-60% of otherwise-lost activations (per Appcues).</div>
+        <div class="source">↗ <a href="https://www.appcues.com/blog/empty-states" target="_blank">Appcues · Empty states</a></div>
+      </div>
+    </article>
+
+    <!-- ============ ATLASSIAN ============ -->
+
+    <article class="card" data-cat="enterprise" data-angle="lifecycle">
+      <div class="preview" style="background:#0052cc08;">
+        <div class="mockup">
+          <div style="background:#fff; border:1px solid var(--line); border-radius:8px; padding:10px; font-size:10px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <span style="font-weight:700;">What's new</span>
+              <span style="background:#0052cc; color:#fff; padding:1px 6px; border-radius:999px; font-size:8px; font-weight:700;">3</span>
+            </div>
+            <div style="font-size:9px; padding:4px 0; border-bottom:1px solid var(--line);"><span style="font-weight:700;">Rovo agents</span> · in Confluence</div>
+            <div style="font-size:9px; padding:4px 0; border-bottom:1px solid var(--line);"><span style="font-weight:700;">Visual Remix</span> · open beta</div>
+            <div style="font-size:9px; padding:4px 0;"><span style="font-weight:700;">Smart links update</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-atlassian">Atlassian</span>
+        <span class="angle-pill angle-lifecycle">Lifecycle</span>
+      </div>
+      <div class="card-body">
+        <h3>Persistent "What's new" widget</h3>
+        <div class="where">Product sidebar · always visible with badge</div>
+        <p>A sidebar widget with a notification badge that surfaces recent product updates, betas, and partner integrations, each linking to docs or a video. Never modal, never dismissible forever.</p>
+        <div class="why">Trains users to look at one stable surface for product news — vs. random modals. Over time, it becomes the trusted source, and email announcement reliance drops.</div>
+        <div class="source">↗ <a href="https://www.atlassian.com/software/jira/whats-new/core-experiences" target="_blank">Atlassian · What's new in Jira</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="enterprise" data-angle="personal">
+      <div class="preview" style="background:#fff;">
+        <div class="mockup" style="gap:5px;">
+          <div style="background:#0052cc; color:#fff; padding:8px 10px; border-radius:6px; font-size:10px;">
+            <div style="font-weight:700; margin-bottom:2px;">Atlassian Intelligence</div>
+            <div style="opacity:0.85; font-size:9px;">Rolling out in waves · Standard+ tiers</div>
+          </div>
+          <div style="display:flex; gap:6px; font-size:9px;">
+            <div style="background:#0052cc20; padding:4px 8px; border-radius:999px; color:#0052cc; font-weight:700;">Wave 1 · Q1</div>
+            <div style="background:#fff; border:1px solid var(--line); padding:4px 8px; border-radius:999px; color:var(--ink-faint);">Wave 2 · Q2</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-atlassian">Atlassian</span>
+        <span class="angle-pill angle-personal">Personalization</span>
+      </div>
+      <div class="card-body">
+        <h3>Phased AI rollout with admin opt-out</h3>
+        <div class="where">Admin console · site-level flags + wave cohorts</div>
+        <p>Atlassian Intelligence activates automatically for higher tiers, but admins can opt-out per site. Rollout happens in time-boxed waves so support and education can scale with it.</p>
+        <div class="why">Big feature launches concentrate support load. Waves + admin opt-out let Atlassian ship gradually and let orgs adopt when ready, not when marketing wants them to.</div>
+        <div class="source">↗ <a href="https://www.atlassian.com/platform/artificial-intelligence" target="_blank">Atlassian · Intelligence (Rovo)</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="enterprise" data-angle="inproduct">
+      <div class="preview" style="background:#0052cc08;">
+        <div class="mockup" style="justify-content:center; align-items:center;">
+          <div style="background:#fff; border:1px solid var(--line); border-radius:8px; padding:10px; position:relative; width:180px;">
+            <div style="font-size:10px;">Sprint velocity</div>
+            <div class="mock-chart" style="color:#0052cc; height:36px;">
+              <div class="bar" style="height:40%;"></div>
+              <div class="bar" style="height:65%;"></div>
+              <div class="bar" style="height:80%;"></div>
+            </div>
+            <div style="position:absolute; top:-4px; right:-8px; background:#0052cc; color:#fff; padding:2px 6px; border-radius:999px; font-size:8px; font-weight:700; transform:rotate(3deg);">✨ Try Remix</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-atlassian">Atlassian</span>
+        <span class="angle-pill angle-inproduct">In-product</span>
+      </div>
+      <div class="card-body">
+        <h3>Confluence Remix · "Try it" on data-heavy pages</h3>
+        <div class="where">Confluence pages · context-triggered banner</div>
+        <p>When a page contains tables or data, a "Try Remix" banner appears — one click transforms the content into an infographic, scorecard, or presentation.</p>
+        <div class="why">Tags the feature to the exact content that benefits from it. Users never see the banner on a text-only page. That context-awareness is the difference between useful and annoying.</div>
+        <div class="source">↗ <a href="https://techcrunch.com/2026/04/08/atlassian-confluence-visual-ai-tools-agents/" target="_blank">TechCrunch · Confluence visual AI</a></div>
+      </div>
+    </article>
+
+    <!-- ============ ASANA ============ -->
+
+    <article class="card" data-cat="enterprise" data-angle="inproduct">
+      <div class="preview" style="background:linear-gradient(135deg, #f06a6a10, #ffd16610);">
+        <div class="mockup" style="justify-content:center; align-items:center; gap:6px;">
+          <div style="font-size:36px; animation: bounce 2s infinite;">🦄</div>
+          <div style="font-size:9px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:0.08em; font-weight:700;">Task complete · confetti ✨</div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-asana">Asana</span>
+        <span class="angle-pill angle-inproduct">In-product</span>
+      </div>
+      <div class="card-body">
+        <h3>Celebration creatures · the unicorn moment</h3>
+        <div class="where">Any project · on task completion</div>
+        <p>Marking a task complete occasionally fires a full-screen celebratory animation (unicorn, narwhal, phoenix, etc.). Non-intrusive, but visible — teams deliberately sync completions to meetings.</p>
+        <div class="why">Variable reward turns the completion action into something users <em>want</em> to do. Asana is one of the few enterprise tools people describe as "fun."</div>
+        <div class="source">↗ <a href="https://forum.asana.com/t/asana-s-celebration-creatures-got-a-glow-up/476849" target="_blank">Asana · Celebration creatures</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="enterprise" data-angle="inproduct">
+      <div class="preview" style="background:#f06a6a08;">
+        <div class="mockup">
+          <div class="mock-templates" style="grid-template-columns: 1fr 1fr; gap:4px;">
+            <div class="tpl" style="text-align:left; padding:6px; font-size:9px;"><div style="font-weight:700;">Campaign launch</div><div>12 tasks</div></div>
+            <div class="tpl" style="text-align:left; padding:6px; font-size:9px;"><div style="font-weight:700;">Onboarding</div><div>8 tasks</div></div>
+            <div class="tpl" style="text-align:left; padding:6px; font-size:9px;"><div style="font-weight:700;">OKR planning</div><div>6 tasks</div></div>
+            <div class="tpl" style="text-align:left; padding:6px; font-size:9px; background:#f06a6a20;"><div style="font-weight:700;">✨ AI workflow</div><div>describe your goal</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-asana">Asana</span>
+        <span class="angle-pill angle-inproduct">In-product</span>
+      </div>
+      <div class="card-body">
+        <h3>80+ templates · now with AI workflow generation</h3>
+        <div class="where">+ Project menu · templates tab</div>
+        <p>Battle-tested project templates with custom fields, dependencies, and sections pre-configured. The AI option lets users describe a goal and auto-generate the full project plan.</p>
+        <div class="why">Reduces first-project time from hours to minutes. And because templates come from real use cases, they teach project management as a side effect of using them.</div>
+        <div class="source">↗ <a href="https://asana.com/templates" target="_blank">Asana · Templates</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="enterprise" data-angle="personal">
+      <div class="preview" style="background:#fff;">
+        <div class="mockup" style="gap:5px;">
+          <div style="background:#f06a6a15; border:1px solid var(--line); border-radius:6px; padding:8px; font-size:10px;">
+            <div style="font-weight:700; margin-bottom:2px;">+ AI Teammate · Marketing</div>
+            <div style="color:var(--ink-soft); font-size:9px;">Researching competitors · awaiting review from Sarah</div>
+          </div>
+          <div style="background:#fff; border:1px solid var(--line); border-radius:6px; padding:8px; font-size:10px;">
+            <div style="display:flex; gap:4px; align-items:center;">
+              <div style="width:16px; height:16px; background:#22c55e; border-radius:50%;"></div>
+              <span style="font-weight:600;">Human feedback routed</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-asana">Asana</span>
+        <span class="angle-pill angle-personal">Personalization</span>
+      </div>
+      <div class="card-body">
+        <h3>AI Teammates with multi-user feedback loop</h3>
+        <div class="where">Projects · + Teammate menu (beta)</div>
+        <p>21 out-of-the-box AI agents understand org context across all work. Agents assign tasks, gather feedback from multiple humans, and learn — not a single-user copilot.</p>
+        <div class="why">Most AI assistants serve one user at a time. Multi-user agents turn AI into a shared team resource, which is a much stickier adoption model for collaborative tools.</div>
+        <div class="source">↗ <a href="https://asana.com/press/releases/pr/asana-announces-new-ai-teammates-collaborative-agents-that-deliver-results" target="_blank">Asana · AI Teammates</a></div>
+      </div>
+    </article>
+
+    <!-- ============ MONDAY ============ -->
+
+    <article class="card" data-cat="enterprise" data-angle="inproduct">
+      <div class="preview" style="background:#fdab3d10;">
+        <div class="mockup">
+          <div class="mock-templates" style="grid-template-columns: 1fr 1fr 1fr; gap:4px;">
+            <div class="tpl" style="padding:4px; font-size:8px; background:linear-gradient(135deg, #fef08a, #fdab3d); color:#111;"><div style="font-weight:700;">Sales CRM</div></div>
+            <div class="tpl" style="padding:4px; font-size:8px; background:linear-gradient(135deg, #c7d2fe, #818cf8);"><div style="font-weight:700;">Sprint</div></div>
+            <div class="tpl" style="padding:4px; font-size:8px; background:linear-gradient(135deg, #bbf7d0, #34d399);"><div style="font-weight:700;">Content</div></div>
+            <div class="tpl" style="padding:4px; font-size:8px; background:linear-gradient(135deg, #fecaca, #f87171);"><div style="font-weight:700;">Hiring</div></div>
+            <div class="tpl" style="padding:4px; font-size:8px; background:linear-gradient(135deg, #e9d5ff, #a78bfa);"><div style="font-weight:700;">Bug tracker</div></div>
+            <div class="tpl" style="padding:4px; font-size:8px; background:linear-gradient(135deg, #fed7aa, #fb923c);"><div style="font-weight:700;">+97 more</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-monday">monday.com</span>
+        <span class="angle-pill angle-inproduct">In-product</span>
+      </div>
+      <div class="card-body">
+        <h3>Template Center · workflow in 4 clicks</h3>
+        <div class="where">Workspace + menu · Template Center tab</div>
+        <p>100+ bundled templates including docs, boards, forms, and dashboards configured to work together — not single artifacts but full-workflow kits.</p>
+        <div class="why">Users don't adopt features — they adopt workflows. Monday sells workflow kits, which means one template can lift 5 feature adoption rates at once.</div>
+        <div class="source">↗ <a href="https://support.monday.com/hc/en-us/articles/360001362625-monday-com-templates" target="_blank">monday.com · Templates</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="enterprise" data-angle="personal">
+      <div class="preview" style="background:#fff;">
+        <div class="mockup" style="gap:5px;">
+          <div style="background:#fff; border:1px solid var(--line); border-radius:6px; padding:8px;">
+            <div style="font-size:10px; font-weight:700; margin-bottom:6px;">AI governance</div>
+            <div style="display:flex; justify-content:space-between; font-size:9px; padding:3px 0;"><span>AI Sidekick</span><span style="background:#22c55e; color:#fff; padding:1px 6px; border-radius:999px; font-weight:700;">On</span></div>
+            <div style="display:flex; justify-content:space-between; font-size:9px; padding:3px 0;"><span>AI Blocks</span><span style="background:#22c55e; color:#fff; padding:1px 6px; border-radius:999px; font-weight:700;">Pilot</span></div>
+            <div style="display:flex; justify-content:space-between; font-size:9px; padding:3px 0;"><span>Vibe Apps</span><span style="background:#f4f4f4; color:#666; padding:1px 6px; border-radius:999px; font-weight:700;">Off</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-monday">monday.com</span>
+        <span class="angle-pill angle-personal">Personalization</span>
+      </div>
+      <div class="card-body">
+        <h3>AI Permissions · per-feature, per-workspace</h3>
+        <div class="where">Admin · AI Governance panel</div>
+        <p>Each AI capability (Sidekick, Blocks, Vibe Apps) is independently toggleable per workspace. Admins can pilot with ready teams before full rollout.</p>
+        <div class="why">Big orgs don't adopt uniformly. Granular controls let platform teams run internal A/B rollouts, so monday's AI usage data is far richer than a binary "on/off".</div>
+        <div class="source">↗ <a href="https://support.monday.com/hc/en-us/articles/30934592475410-AI-Permissions-and-Governance" target="_blank">monday · AI governance</a></div>
+      </div>
+    </article>
+
+    <!-- ============ INTERCOM ============ -->
+
+    <article class="card" data-cat="enterprise" data-angle="inproduct">
+      <div class="preview" style="background:#1f8ded08;">
+        <div class="mockup" style="position:relative;">
+          <div style="background:#fff; border:1px solid var(--line); border-radius:8px; padding:10px; font-size:10px;">
+            <div style="font-weight:700; margin-bottom:4px;">Build your first automation</div>
+            <div style="height:3px; background:#eee; border-radius:2px; margin-bottom:6px; overflow:hidden;"><div style="width:66%; height:100%; background:#1f8ded;"></div></div>
+            <div class="mock-checklist" style="padding:0; border:0; gap:2px;">
+              <div class="item done"><span class="check"></span> Choose a trigger</div>
+              <div class="item done"><span class="check"></span> Pick a channel</div>
+              <div class="item"><span class="check"></span> Write your message</div>
+              <div class="item"><span class="check"></span> Publish</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-intercom">Intercom</span>
+        <span class="angle-pill angle-inproduct">In-product</span>
+      </div>
+      <div class="card-body">
+        <h3>Checklists · auto-completing workflow runner</h3>
+        <div class="where">Messenger sidebar · modal</div>
+        <p>A sequence of tasks that auto-tick as the user completes the underlying action (the system detects it). Each step can branch to a tour, article, or another checklist.</p>
+        <div class="why">Removes manual "mark done" friction — users can't forget to self-report. The branching design also lets a single checklist fit multiple personas.</div>
+        <div class="source">↗ <a href="https://www.intercom.com/help/en/articles/6612245-checklists-explained" target="_blank">Intercom · Checklists</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="enterprise" data-angle="personal">
+      <div class="preview" style="background:#fff;">
+        <div class="mockup" style="gap:5px;">
+          <div style="background:#fff; border:1px solid var(--line); border-radius:6px; padding:8px; font-size:10px;">
+            <div style="font-weight:700; margin-bottom:4px;">Product tour targeting</div>
+            <div style="display:flex; gap:3px; flex-wrap:wrap;">
+              <span style="font-size:8px; background:#1f8ded20; color:#1f8ded; padding:2px 6px; border-radius:999px; font-weight:700;">Plan: Starter</span>
+              <span style="font-size:8px; background:#1f8ded20; color:#1f8ded; padding:2px 6px; border-radius:999px; font-weight:700;">Role: Marketer</span>
+              <span style="font-size:8px; background:#1f8ded20; color:#1f8ded; padding:2px 6px; border-radius:999px; font-weight:700;">Created 0 campaigns</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-intercom">Intercom</span>
+        <span class="angle-pill angle-personal">Personalization</span>
+      </div>
+      <div class="card-body">
+        <h3>Product Tours · segmented & behavior-triggered</h3>
+        <div class="where">Any page · triggered by attribute or action</div>
+        <p>Tours fire based on plan, role, lifecycle stage, and behavior (e.g. "hasn't created a campaign in 7 days"). Admins target tours to micro-cohorts.</p>
+        <div class="why">Intercom isn't just doing adoption — it <em>sells</em> adoption tooling. The playbook shown here is the baseline for the whole industry.</div>
+        <div class="source">↗ <a href="https://www.intercom.com/help/en/articles/3095688-best-practices-for-using-intercom-s-product-tours" target="_blank">Intercom · Product Tours</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="enterprise" data-angle="lifecycle">
+      <div class="preview" style="background:#1f8ded08;">
+        <div class="mockup" style="gap:5px;">
+          <div style="display:flex; gap:6px; align-items:center; font-size:10px; color:var(--ink-faint);"><span style="background:#1f8ded; color:#fff; padding:2px 6px; border-radius:999px; font-weight:700;">News</span> Filter · New features</div>
+          <div class="mock-notif"><div class="icon" style="background:#1f8ded;"></div><div><div style="font-weight:600;">Fin AI agent · resolutions update</div><div style="color:var(--ink-faint);">For Enterprise plans</div></div></div>
+          <div class="mock-notif"><div class="icon" style="background:#1f8ded;"></div><div><div style="font-weight:600;">Checklist branching</div><div style="color:var(--ink-faint);">For all plans</div></div></div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-intercom">Intercom</span>
+        <span class="angle-pill angle-lifecycle">Lifecycle</span>
+      </div>
+      <div class="card-body">
+        <h3>News module · filtered release feed</h3>
+        <div class="where">Messenger · News tab</div>
+        <p>A feed of product announcements filtered by plan and user role. Enterprise users don't see SMB-only news; marketers don't see admin changes.</p>
+        <div class="why">"What's new" feeds tend to become noise. Segmentation + a single entry point makes the feed a habit-forming surface instead of a dismissible modal.</div>
+        <div class="source">↗ <a href="https://www.intercom.com/blog/intercom-checklists-onboard-engage-customers/" target="_blank">Intercom · News & Checklists</a></div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- EXPERIMENTAL / NICHE SECTION                                  -->
+<!-- ============================================================ -->
+<style>
+  /* Experimental section styling */
+  .experimental-intro {
+    background: #0a0a12;
+    color: #f5f3ef;
+    padding: 56px 48px;
+    border-radius: 20px;
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .experimental-intro::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 20% 30%, #ff4fa040 0%, transparent 40%),
+      radial-gradient(circle at 80% 70%, #58cc0240 0%, transparent 40%),
+      radial-gradient(circle at 60% 20%, #0085ff40 0%, transparent 40%);
+    pointer-events: none;
+  }
+  .experimental-intro > * { position: relative; z-index: 1; }
+  .experimental-intro .eyebrow-exp {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #ff4fa0;
+    margin-bottom: 14px;
+  }
+  .experimental-intro h3.manifest {
+    font-size: 36px;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+    margin: 0 0 14px;
+    color: #fff;
+    max-width: 820px;
+    line-height: 1.1;
+  }
+  .experimental-intro p.manifest-p {
+    max-width: 760px;
+    font-size: 17px;
+    color: #c4c4d0;
+    margin: 0 0 24px;
+  }
+  .experimental-themes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .experimental-themes span {
+    background: #ffffff10;
+    border: 1px solid #ffffff22;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #fff;
+  }
+  /* cards in experimental get a subtle neon top stripe */
+  [data-cat-section="experimental"] .card {
+    position: relative;
+  }
+  [data-cat-section="experimental"] .card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #ff4fa0, #8b5cf6, #0085ff, #58cc02);
+    z-index: 2;
+  }
+</style>
+
+<section class="section" data-cat-section="experimental">
+  <div class="section-header">
+    <h2>Experimental & niche</h2>
+    <span class="kicker">Bolder, weirder, newer · where feature adoption is going</span>
+  </div>
+
+  <div class="experimental-intro">
+    <div class="eyebrow-exp">✦ Field notes from the frontier</div>
+    <h3 class="manifest">Adoption isn't being taught top-down anymore.<br/>It's emerging through conversation, agents, and play.</h3>
+    <p class="manifest-p">
+      The patterns below invert the classic "checklist + tooltip" playbook. Features reveal themselves through prompts, agents, summaries, streaks, canvases, and remix culture — not through onboarding tours. These products are unlikely to survive in their current form, but the primitives they're inventing are where Wix Bookings' adoption engine will look in 2027.
+    </p>
+    <div class="experimental-themes">
+      <span>⌘K-native</span>
+      <span>Prompt-as-onboarding</span>
+      <span>Post-hoc discovery</span>
+      <span>Agents as teammates</span>
+      <span>Streaks & leagues</span>
+      <span>Spatial multiplayer</span>
+      <span>Usage-visible rollouts</span>
+      <span>Remix-driven virality</span>
+    </div>
+  </div>
+
+  <div class="grid">
+
+    <!-- ========= COMMAND-DRIVEN / INVISIBLE ========= -->
+
+    <article class="card" data-cat="experimental" data-angle="inproduct">
+      <div class="preview" style="background: linear-gradient(135deg, #ff5e0015, #ff2d8f15);">
+        <div class="mockup" style="justify-content:center; align-items:center;">
+          <div style="background:#0a0a12; padding:10px; border-radius:10px; border:1px solid #ffffff20; width:220px;">
+            <div style="color:#888; font-size:9px; margin-bottom:6px; font-family: ui-monospace, Menlo, monospace;">⌘T · Command Bar</div>
+            <input value="/Pin  " style="width:100%; background:#1a1a24; color:#fff; border:0; border-radius:4px; padding:6px; font-size:11px; font-family: ui-monospace, Menlo, monospace; box-sizing: border-box;" readonly/>
+            <div style="font-size:10px; color:#ff5e00; padding:4px 6px; margin-top:4px;">📌 Pin this tab</div>
+            <div style="font-size:10px; color:#bbb; padding:4px 6px;">📌 Pin to Easel</div>
+            <div style="font-size:10px; color:#bbb; padding:4px 6px;">📌 Pin · archive others</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-arc">Arc</span>
+        <span class="angle-pill angle-inproduct">In-product</span>
+      </div>
+      <div class="card-body">
+        <h3>Command Bar with "/" grammar</h3>
+        <div class="where">⌘T · global invocation · self-documenting prefix</div>
+        <p>Every action in Arc is accessible through one keystroke. Typing <code>/Pin</code> filters to pin-related commands, <code>/Split</code> to view-splitting, <code>/Note</code> to note-taking. The product has nearly no chrome.</p>
+        <div class="why">Inverts the visibility problem: features are hidden <em>by default</em>, surfaced only when asked. The prefix grammar teaches discoverability while you type.</div>
+        <div class="source">↗ <a href="https://start.arc.net/command-bar-actions" target="_blank">Arc · Command Bar actions</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="experimental" data-angle="inproduct">
+      <div class="preview" style="background: linear-gradient(135deg, #ff4fa015, #7b2cff15);">
+        <div class="mockup" style="justify-content:center; align-items:center;">
+          <div style="background:#fff; border:1px solid var(--line); border-radius:10px; padding:10px; width:210px;">
+            <div style="font-size:9px; color:var(--ink-faint); margin-bottom:6px;">Dia · ⌘E</div>
+            <div style="background:#f4f4f8; border-radius:8px; padding:8px; font-size:10px; margin-bottom:4px;">Compare <span style="background:#ff4fa030; color:#b8006b; padding:0 4px; border-radius:3px;">@tab1</span> and <span style="background:#7b2cff30; color:#4b1ab8; padding:0 4px; border-radius:3px;">@tab2</span> on pricing</div>
+            <div style="font-size:10px; color:var(--ink-faint);">✨ Synthesizing across 2 pages…</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-dia">Dia</span>
+        <span class="angle-pill angle-inproduct">In-product</span>
+      </div>
+      <div class="card-body">
+        <h3>Chat-as-browser · @-mention tabs</h3>
+        <div class="where">Right-side sidepanel · native to every page</div>
+        <p>⌘E opens a chat that automatically has context of the current page. You can @-mention other tabs to synthesize across them. Search, bookmarks, and settings all collapse into conversation.</p>
+        <div class="why">Flips the discovery model: instead of "tool → feature," it's "intent → result." Features are invoked by describing goals, not navigating menus.</div>
+        <div class="source">↗ <a href="https://www.diabrowser.com/" target="_blank">Dia Browser</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="experimental" data-angle="inproduct">
+      <div class="preview" style="background:#ff636310;">
+        <div class="mockup">
+          <div style="background:#1a1a1a; border-radius:8px; padding:10px; color:#fff; font-size:10px;">
+            <div style="display:flex; gap:6px; align-items:center; margin-bottom:6px;"><span style="color:#ff6363; font-family: ui-monospace, Menlo, monospace;">@summarize</span></div>
+            <div style="background:#ffffff10; border-radius:5px; padding:6px;">This page · long-form article</div>
+            <div style="color:#888; font-size:9px; margin-top:6px;">↑↓ Navigate · ↵ Run · Tab for quick AI</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-raycast">Raycast</span>
+        <span class="angle-pill angle-inproduct">In-product</span>
+      </div>
+      <div class="card-body">
+        <h3>AI commands with @-prefix syntax</h3>
+        <div class="where">Launcher · type @ to reveal AI variants of any tool</div>
+        <p>Every extension has an optional AI layer invoked with <code>@</code>. <code>@summarize</code>, <code>@translate</code>, <code>@improve</code> — each one piggy-backs on an existing workflow without introducing a new app surface.</p>
+        <div class="why">AI adoption rides on top of muscle memory users already have. The <code>@</code> prefix becomes a self-documenting API for every extension in the store.</div>
+        <div class="source">↗ <a href="https://manual.raycast.com/ai-extensions" target="_blank">Raycast · AI extensions</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="experimental" data-angle="inproduct">
+      <div class="preview" style="background:#6d4aff10;">
+        <div class="mockup" style="gap:5px;">
+          <div style="background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px 10px; font-size:10px;">
+            <div style="font-weight:700; margin-bottom:4px;">🏆 Keyboard milestones</div>
+            <div style="display:flex; gap:4px; font-size:9px;">
+              <span style="background:#6d4aff; color:#fff; padding:3px 6px; border-radius:4px;">✔ 50 archived</span>
+              <span style="background:#6d4aff; color:#fff; padding:3px 6px; border-radius:4px;">✔ 100 W/M</span>
+              <span style="background:#faf8f3; color:var(--ink-faint); padding:3px 6px; border-radius:4px; border:1px dashed var(--line);">⋯ Inbox Zero</span>
+            </div>
+          </div>
+          <div style="font-size:9px; color:var(--ink-faint); text-align:center;">🎓 1:1 concierge onboarding call</div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-superhuman">Superhuman</span>
+        <span class="angle-pill angle-inproduct">In-product</span>
+      </div>
+      <div class="card-body">
+        <h3>Keyboard achievements + human concierge</h3>
+        <div class="where">Onboarding · 1:1 call + in-app achievement toasts</div>
+        <p>Every new Superhuman user gets a 30-min video onboarding with a real human. Post-onboarding, the app throws confetti for shortcut milestones — "first 50 archives," "first Inbox Zero."</p>
+        <div class="why">Nothing novel about either tactic alone — but combining expensive high-touch onboarding with per-shortcut microgames turns feature adoption into a pride surface. Users show off to each other.</div>
+        <div class="source">↗ <a href="https://www.growthmates.news/p/onboarding-lab-how-superhuman-and" target="_blank">Growthmates · Superhuman onboarding</a></div>
+      </div>
+    </article>
+
+    <!-- ========= PROMPT-AS-ONBOARDING ========= -->
+
+    <article class="card" data-cat="experimental" data-angle="inproduct">
+      <div class="preview" style="background:#ff4d6d10;">
+        <div class="mockup" style="gap:5px;">
+          <div style="background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px;">
+            <div style="font-size:9px; color:var(--ink-faint);">→ prompt</div>
+            <div style="font-size:10px;">Build an invoicing app with Stripe</div>
+          </div>
+          <div style="display:flex; gap:4px; font-size:9px;">
+            <div style="flex:1; background:#ff4d6d15; border-radius:5px; padding:5px; border:1px solid #ff4d6d30;">✨ Auth ready</div>
+            <div style="flex:1; background:#ff4d6d15; border-radius:5px; padding:5px; border:1px solid #ff4d6d30;">💳 Stripe wired</div>
+          </div>
+          <div style="font-size:9px; color:var(--ink-faint); text-align:center;">Running prototype in 60s</div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-lovable">Lovable</span>
+        <span class="angle-pill angle-inproduct">In-product</span>
+      </div>
+      <div class="card-body">
+        <h3>Prompt-as-onboarding · a sentence becomes a product</h3>
+        <div class="where">Landing page · single input field</div>
+        <p>There is no signup tour. The first interaction is "describe what you want to build." Seconds later, a running app with real code appears. Discovery happens by <em>using the output</em>, not reading docs.</p>
+        <div class="why">Removes the feature-discovery gap entirely. Users don't learn Lovable's primitives — they see a working auth system, database schema, and UI appear, then ask "how did it do that?"</div>
+        <div class="source">↗ <a href="https://docs.lovable.dev/" target="_blank">Lovable · Docs</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="experimental" data-angle="inproduct">
+      <div class="preview" style="background:#0a0a0a;">
+        <div class="mockup" style="gap:5px;">
+          <div style="display:flex; gap:5px;">
+            <div style="flex:1; background:#1a1a1a; border-radius:6px; padding:8px; color:#fff; font-size:9px;">
+              <div style="color:#666; margin-bottom:3px;">chat</div>
+              <div>make the sidebar collapsible</div>
+            </div>
+            <div style="flex:1; background:#111; border-radius:6px; padding:8px; color:#fff; font-size:8px; font-family:ui-monospace, Menlo, monospace;">
+              <div style="color:#3ba55d;">+ const [open, setOpen]</div>
+              <div style="color:#3ba55d;">+   = useState(true)</div>
+              <div style="color:#666;">&lt;Sidebar open={open} /&gt;</div>
+            </div>
+          </div>
+          <div style="font-size:9px; color:#666; text-align:center;">Iteration #3 · <span style="color:#fff;">Live preview</span></div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-v0">v0</span>
+        <span class="angle-pill angle-inproduct">In-product</span>
+      </div>
+      <div class="card-body">
+        <h3>Refinement loop as pair programming</h3>
+        <div class="where">Chat + live React preview · side-by-side</div>
+        <p>Each turn edits the running component. You learn shadcn/ui and Next.js conventions by watching v0 pick them — not by reading the library's docs. The conversation IS the tutorial.</p>
+        <div class="why">Turns API docs into a dialogue. Users who've never opened the shadcn/ui docs are using it fluently within an hour — because v0 is showing them how.</div>
+        <div class="source">↗ <a href="https://v0.dev/faq" target="_blank">v0 · FAQ</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="experimental" data-angle="inproduct">
+      <div class="preview" style="background:#fff;">
+        <div class="mockup" style="gap:4px;">
+          <div style="background:#111; border-radius:6px; padding:6px 8px; font-size:8px; color:#0f0; font-family:ui-monospace, Menlo, monospace;">
+            <div>$ npm install next react</div>
+            <div>✓ 342 packages in 18s</div>
+            <div style="color:#fff;">creating app/page.tsx…</div>
+            <div style="color:#fff;">creating lib/db.ts…</div>
+          </div>
+          <div style="display:flex; gap:4px;">
+            <div style="font-size:8px; background:#fef3c7; padding:3px 6px; border-radius:3px; border:1px solid #eab308;">📄 6 files</div>
+            <div style="font-size:8px; background:#fef3c7; padding:3px 6px; border-radius:3px; border:1px solid #eab308;">⚡ 32s</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-bolt">Bolt.new</span>
+        <span class="angle-pill angle-inproduct">In-product</span>
+      </div>
+      <div class="card-body">
+        <h3>Watch-it-build theater</h3>
+        <div class="where">Split-screen editor · visible terminal · live preview</div>
+        <p>After the prompt, files appear in the tree at real-time speed, the terminal installs dependencies visibly, and the app goes live in ~30s. The build process is deliberately <em>performative</em>.</p>
+        <div class="why">The spectacle is the feature. Users learn that Bolt <em>can</em> do something by watching it — then replicate the pattern for their own projects.</div>
+        <div class="source">↗ <a href="https://github.com/stackblitz/bolt.new" target="_blank">Bolt.new · GitHub</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="experimental" data-angle="inproduct">
+      <div class="preview" style="background:#0a84ff10;">
+        <div class="mockup">
+          <div style="background:#fff; border:1px solid var(--line); border-radius:6px; padding:8px; font-family:ui-monospace, Menlo, monospace; font-size:9px; color:var(--ink-soft);">
+            <div>function <span style="color:#0a84ff;">calculateBooking</span>(<span style="color:#db2777;">slot</span>) {</div>
+            <div style="opacity:0.4;">  return <span style="background:#0a84ff20; border-radius:2px; padding:0 2px;">slot.price * slot.duration</span></div>
+            <div>}</div>
+            <div style="opacity:0.4; margin-top:4px; padding:2px 4px; background:#0a84ff15; border-radius:3px;">⇥ Tab to accept · Esc to dismiss</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-cursor">Cursor</span>
+        <span class="angle-pill angle-inproduct">In-product</span>
+      </div>
+      <div class="card-body">
+        <h3>Tab completion as ambient pair programmer</h3>
+        <div class="where">Every keystroke · codebase-aware suggestions</div>
+        <p>As you type, Cursor predicts the next 1-20 lines based on your actual repo. ⌘L opens chat about your codebase; ⌘I refactors across multiple files with a visible diff.</p>
+        <div class="why">Features aren't surfaced — they just happen. Adoption is inverse: users discover what Cursor <em>can</em> do by noticing when the tab suggestion is weirdly good.</div>
+        <div class="source">↗ <a href="https://cursor.com/docs/tab/overview" target="_blank">Cursor · Tab docs</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="experimental" data-angle="inproduct">
+      <div class="preview" style="background:#f2620710;">
+        <div class="mockup" style="gap:4px;">
+          <div style="font-size:9px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:0.08em; font-weight:700;">Agent · checkpoints</div>
+          <div style="background:#fff; border:1px solid var(--line); border-radius:5px; padding:5px 8px; font-size:9px; display:flex; justify-content:space-between;"><span>✓ Auth + DB</span><span style="color:var(--ink-faint);">12m ago</span></div>
+          <div style="background:#fff; border:1px solid var(--line); border-radius:5px; padding:5px 8px; font-size:9px; display:flex; justify-content:space-between;"><span>✓ Booking schema</span><span style="color:var(--ink-faint);">8m ago</span></div>
+          <div style="background:#f2620720; border:1px solid #f26207; border-radius:5px; padding:5px 8px; font-size:9px; display:flex; justify-content:space-between;"><span style="font-weight:700;">⏱ Stripe broken</span><span style="color:#f26207; font-weight:700;">↶ Revert</span></div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-replit">Replit Agent</span>
+        <span class="angle-pill angle-inproduct">In-product</span>
+      </div>
+      <div class="card-body">
+        <h3>Auto-checkpointed agent builds · fearless iteration</h3>
+        <div class="where">Agent sidebar · every meaningful change snapshots state</div>
+        <p>As the agent codes, it checkpoints automatically. If anything breaks, one click reverts to a working state. No git knowledge required, no staging dance.</p>
+        <div class="why">Removes the #1 blocker for non-technical users: "what if I break it?" Safe undo turns timid users into aggressive feature explorers.</div>
+        <div class="source">↗ <a href="https://docs.replit.com/replitai/agent" target="_blank">Replit · Agent docs</a></div>
+      </div>
+    </article>
+
+    <!-- ========= POST-HOC / PASSIVE ========= -->
+
+    <article class="card" data-cat="experimental" data-angle="inproduct">
+      <div class="preview" style="background:#2bd68f10;">
+        <div class="mockup" style="gap:4px;">
+          <div style="font-size:9px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:0.08em; font-weight:700;">After your meeting</div>
+          <div style="background:#fff; border:1px solid var(--line); border-radius:6px; padding:8px; font-size:10px;">
+            <div style="font-weight:700; margin-bottom:3px;">3 decisions · 2 action items</div>
+            <div style="color:var(--ink-soft); font-size:9px;">✦ "Try Recipe: What competitors were mentioned?"</div>
+          </div>
+          <div style="background:#2bd68f15; border:1px dashed #2bd68f; border-radius:6px; padding:6px 8px; font-size:9px; color:#008040;">🎁 You didn't know this feature existed, did you?</div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-granola">Granola</span>
+        <span class="angle-pill angle-inproduct">In-product</span>
+      </div>
+      <div class="card-body">
+        <h3>Features revealed in the summary</h3>
+        <div class="where">Post-meeting recap · contextual suggestions</div>
+        <p>Granola takes notes silently. After the call, the summary reveals what Granola <em>could have</em> surfaced — "Ask a Recipe about competitors?", "Tag this theme across all your notes?" — as passive invitations.</p>
+        <div class="why">Post-hoc discovery is the inverse of a tooltip. The feature promotion arrives <em>after</em> the work, when the user is already relaxed and open to "what else?"</div>
+        <div class="source">↗ <a href="https://www.granola.ai/" target="_blank">Granola</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="experimental" data-angle="inproduct">
+      <div class="preview" style="background:#0085ff10;">
+        <div class="mockup" style="gap:4px;">
+          <div style="background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px;">
+            <div style="font-size:9px; color:var(--ink-faint); margin-bottom:4px;">🔎 Search your memory</div>
+            <input value="what did Sarah say about pricing" style="width:100%; font-size:10px; background:#f4f4f4; border:0; padding:5px 8px; border-radius:4px; box-sizing: border-box;" readonly/>
+          </div>
+          <div style="background:#fff; border:1px solid var(--line); border-radius:6px; padding:5px 8px; font-size:9px;"><span style="font-weight:700;">Mar 18 · 14:22</span> — "pricing only works if…"</div>
+          <div style="background:#fff; border:1px solid var(--line); border-radius:6px; padding:5px 8px; font-size:9px;"><span style="font-weight:700;">Apr 02 · 09:40</span> — slack · "considering $29…"</div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-rewind">Rewind / Limitless</span>
+        <span class="angle-pill angle-inproduct">In-product</span>
+      </div>
+      <div class="card-body">
+        <h3>Passive memory · zero curation required</h3>
+        <div class="where">Background daemon · invoked only when searching</div>
+        <p>Everything on your screen is indexed. Search your past like a search engine — "what did Sarah say about pricing?" — and get timestamped results with visual preview.</p>
+        <div class="why">Adoption is inverted: the <em>less</em> users do, the more value accrues. The product only reveals itself when you search, which means the first magical moment is also the second one.</div>
+        <div class="source">↗ <a href="https://www.limitless.ai/" target="_blank">Limitless</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="experimental" data-angle="inproduct">
+      <div class="preview" style="background:#20808d10;">
+        <div class="mockup" style="justify-content:center; align-items:center;">
+          <div style="background:#fff; border:1px solid var(--line); border-radius:999px; padding:10px 14px; width:90%; display:flex; align-items:center; gap:6px;">
+            <span style="color:#20808d; font-size:14px;">✦</span>
+            <span style="font-size:10px; color:var(--ink-faint);">Ask anything…</span>
+          </div>
+          <div style="font-size:9px; color:var(--ink-faint); text-align:center; margin-top:6px;">No menu. No dashboard. No settings.</div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-perplexity">Perplexity</span>
+        <span class="angle-pill angle-inproduct">In-product</span>
+      </div>
+      <div class="card-body">
+        <h3>Conversation is the entire product surface</h3>
+        <div class="where">Home · single input field</div>
+        <p>No dashboard. No tutorial. No modes to learn. Just one text box — every "feature" (file upload, image search, deep research, agent mode) is summoned through natural language or follow-up.</p>
+        <div class="why">Reduces feature-adoption UX to zero surface area. There are no buttons to miss. Users discover capabilities by trying increasingly ambitious asks — the product scales with user imagination, not menus.</div>
+        <div class="source">↗ <a href="https://www.perplexity.ai/help-center/en/articles/10352971-practical-tips-for-using-perplexity" target="_blank">Perplexity · Tips</a></div>
+      </div>
+    </article>
+
+    <!-- ========= AGENTIC ADOPTION ========= -->
+
+    <article class="card" data-cat="experimental" data-angle="personal">
+      <div class="preview" style="background:#5e6ad208;">
+        <div class="mockup" style="gap:4px;">
+          <div style="background:#fff; border:1px solid var(--line); border-radius:6px; padding:8px; font-size:10px;">
+            <div style="display:flex; gap:6px; align-items:center; margin-bottom:4px;"><div style="width:16px; height:16px; border-radius:4px; background:#5e6ad2; color:#fff; display:flex; align-items:center; justify-content:center; font-size:8px;">✦</div><span style="font-weight:700;">Linear agent · @triage</span></div>
+            <div style="color:var(--ink-soft); font-size:9px; line-height:1.4;">Scanned 34 inbound bugs. Grouped into 4 themes. Assigned priority. Created draft sub-issues. <em>Needs review.</em></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-linear">Linear · Agents</span>
+        <span class="angle-pill angle-personal">Personalization</span>
+      </div>
+      <div class="card-body">
+        <h3>Agents as transparent teammates</h3>
+        <div class="where">@-mention in any issue · visible reasoning logs</div>
+        <p>Agents do real work — triage issues, create sub-tasks, write PR descriptions — with their reasoning visible. Nothing is silently committed. Humans approve, agents execute.</p>
+        <div class="why">Trust is the bottleneck for agent adoption. Linear's "show your work" default is the opposite of black-box AI — users adopt because they can watch the agent be wrong safely.</div>
+        <div class="source">↗ <a href="https://linear.app/agents" target="_blank">Linear · Agents</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="experimental" data-angle="lifecycle">
+      <div class="preview" style="background:#1f8ded10;">
+        <div class="mockup" style="gap:4px;">
+          <div style="display:flex; gap:4px; align-items:flex-start;"><div style="width:20px; height:20px; border-radius:50%; background:#1f8ded; color:#fff; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700;">F</div><div style="background:#1f8ded; color:#fff; padding:5px 9px; border-radius:12px 12px 12px 3px; font-size:9px; max-width:140px;">Hi! I can help with that right now — you're on the Starter plan, so let me pull up the right answer.</div></div>
+          <div style="font-size:9px; color:var(--ink-faint); text-align:center; margin-top:4px;">Resolved in 12s · no human involved</div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-intercom">Intercom · Fin</span>
+        <span class="angle-pill angle-lifecycle">Lifecycle</span>
+      </div>
+      <div class="card-body">
+        <h3>Proactive resolution · the product answers before you ask</h3>
+        <div class="where">Messenger · before escalation · 45+ languages</div>
+        <p>Fin resolves support requests instantly with context-aware answers. Even when users ask for a human first, Fin re-engages mid-conversation with richer context ("while I connect you…").</p>
+        <div class="why">Adoption doesn't require an explicit "try Fin" moment. Users discover it resolves their issues <em>without them knowing it's AI</em> — which is a very different kind of trust than "try our AI feature."</div>
+        <div class="source">↗ <a href="https://www.intercom.com/help/en/articles/7120684-fin-ai-agent-explained" target="_blank">Intercom · Fin explained</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="experimental" data-angle="personal">
+      <div class="preview" style="background:#ff5a8a10;">
+        <div class="mockup" style="gap:4px;">
+          <div class="mock-templates" style="grid-template-columns:1fr 1fr; gap:4px;">
+            <div class="tpl" style="text-align:left; padding:6px; font-size:8px;"><div style="font-weight:700;">📧 Inbox triage</div><div>4.8★</div></div>
+            <div class="tpl" style="text-align:left; padding:6px; font-size:8px;"><div style="font-weight:700;">📞 Cold outreach</div><div>4.6★</div></div>
+            <div class="tpl" style="text-align:left; padding:6px; font-size:8px;"><div style="font-weight:700;">📝 Notes → CRM</div><div>4.9★</div></div>
+            <div class="tpl" style="text-align:left; padding:6px; font-size:8px; background:#ff5a8a20;"><div style="font-weight:700;">🧑‍💼 Screen CVs</div><div>deploy →</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-lindy">Lindy / Relevance AI</span>
+        <span class="angle-pill angle-personal">Personalization</span>
+      </div>
+      <div class="card-body">
+        <h3>Agent marketplace · deploy by use case</h3>
+        <div class="where">Agent browser · filter by job-to-be-done</div>
+        <p>Non-technical users browse pre-built agents by outcome ("triage my inbox," "enrich CRM contacts") and one-click deploy. No agent-building language required.</p>
+        <div class="why">Democratizes agent adoption. The unit of discovery is a <em>job</em> (not a tool), which matches how everyone who isn't a developer actually thinks about software.</div>
+        <div class="source">↗ <a href="https://www.lindy.ai/blog/ai-agent-platform" target="_blank">Lindy · Agent platform</a></div>
+      </div>
+    </article>
+
+    <!-- ========= GAME / ACHIEVEMENT ========= -->
+
+    <article class="card" data-cat="experimental" data-angle="lifecycle">
+      <div class="preview" style="background:linear-gradient(135deg, #58cc0215, #ffa50015);">
+        <div class="mockup" style="gap:5px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div style="display:flex; align-items:center; gap:4px;"><span style="font-size:18px;">🔥</span><span style="font-weight:700; font-size:14px;">147</span></div>
+            <div style="font-size:9px; color:var(--ink-faint);">Diamond League · 3rd</div>
+          </div>
+          <div style="background:#fff; border:1px solid var(--line); border-radius:6px; padding:6px; font-size:9px;">
+            <div style="display:flex; justify-content:space-between;"><span>Emma</span><span style="font-weight:700; color:#58cc02;">2,340 XP</span></div>
+            <div style="display:flex; justify-content:space-between;"><span>Ana</span><span style="font-weight:700; color:#58cc02;">1,890 XP</span></div>
+            <div style="display:flex; justify-content:space-between; background:#58cc0215; padding:2px 4px; border-radius:3px;"><span style="font-weight:700;">You</span><span style="font-weight:700; color:#58cc02;">1,720 XP</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-duolingo">Duolingo</span>
+        <span class="angle-pill angle-lifecycle">Lifecycle</span>
+      </div>
+      <div class="card-body">
+        <h3>Streaks + leagues + crowns — compounding habit loop</h3>
+        <div class="where">Home screen · persistent · weekly reset</div>
+        <p>A daily streak drives XP. XP drives league placement against 30 random peers. Weekly demotion/promotion drives return-the-next-week behavior. Achievements layer on for long-haul retention.</p>
+        <div class="why">None of the mechanics are novel individually. Their <em>composition</em> is: each one reinforces another, creating a 3.6x engagement lift after day 7. Adoption becomes non-linear.</div>
+        <div class="source">↗ <a href="https://blog.duolingo.com/duolingo-leagues-leaderboards/" target="_blank">Duolingo · Leagues</a></div>
+      </div>
+    </article>
+
+    <!-- ========= MULTIPLAYER / SPATIAL ========= -->
+
+    <article class="card" data-cat="experimental" data-angle="inproduct">
+      <div class="preview" style="background:#fafafa;">
+        <div class="mockup" style="gap:4px;">
+          <div style="display:flex; gap:4px;">
+            <div style="flex:1; background:#fff; border:1px dashed #111; border-radius:5px; padding:6px; min-height:50px; font-size:9px; color:var(--ink-faint); position:relative;">
+              <div style="border:1.5px solid #111; border-radius:4px; padding:6px 10px; font-size:9px; font-weight:700; display:inline-block;">Button!</div>
+              <div style="font-size:8px; margin-top:4px;">✏️ sketch</div>
+            </div>
+            <div style="width:16px; display:flex; align-items:center; justify-content:center;">→</div>
+            <div style="flex:1; background:#fff; border:1px solid var(--line); border-radius:5px; padding:6px; min-height:50px;">
+              <button style="background:#111; color:#fff; border:0; padding:5px 9px; border-radius:4px; font-size:9px;">Button!</button>
+              <div style="font-size:8px; color:#22c55e; margin-top:4px;">✨ real</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-tldraw">tldraw</span>
+        <span class="angle-pill angle-inproduct">In-product</span>
+      </div>
+      <div class="card-body">
+        <h3>"Make Real" · sketch-to-app on the canvas</h3>
+        <div class="where">Infinite canvas · toolbar button</div>
+        <p>Draw something rough. Click "Make Real." GPT-4V generates working Tailwind HTML+JS next to your drawing. Iterate by sketching on top of the output and running it again.</p>
+        <div class="why">Sketching feels nothing like "using software." It makes UI prototyping available to anyone who can hold a stylus — no component library knowledge required.</div>
+        <div class="source">↗ <a href="https://github.com/tldraw/make-real" target="_blank">tldraw · Make Real</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="experimental" data-angle="inproduct">
+      <div class="preview" style="background:#0099ff10;">
+        <div class="mockup" style="position:relative; gap:4px;">
+          <div style="background:#fff; border:1px solid var(--line); border-radius:5px; padding:8px; height:80%; position:relative;">
+            <div style="height:8px; background:#eee; border-radius:2px; width:60%; margin-bottom:4px;"></div>
+            <div style="height:8px; background:#eee; border-radius:2px; width:40%;"></div>
+            <div class="mock-cursor" style="top:10px; right:20px; background:#0099ff;">● Dana</div>
+            <div class="mock-cursor" style="top:45px; left:20px; background:#f59e0b;">● Noa</div>
+            <div style="position:absolute; bottom:6px; right:6px; background:#ff4fa0; color:#fff; padding:2px 6px; border-radius:3px; font-size:8px;">💬 "this color?"</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-framer">Framer</span>
+        <span class="angle-pill angle-inproduct">In-product</span>
+      </div>
+      <div class="card-body">
+        <h3>Real-time multi-role canvas</h3>
+        <div class="where">Any Framer project · simultaneous edit</div>
+        <p>Designer, marketer, and founder can all edit the same live page at the same time. Comments attach to specific components, not floating. Cursors show who's touching what.</p>
+        <div class="why">Feature learning spreads laterally: "how did you do that color system?" happens in context. One teammate's exploration teaches three others, every session.</div>
+        <div class="source">↗ <a href="https://www.framer.com/collaborate/" target="_blank">Framer · Collaborate</a></div>
+      </div>
+    </article>
+
+    <!-- ========= USAGE-VISIBLE ROLLOUTS ========= -->
+
+    <article class="card" data-cat="experimental" data-angle="personal">
+      <div class="preview" style="background:#f9bd2b10;">
+        <div class="mockup">
+          <div style="background:#fff; border:1px solid var(--line); border-radius:6px; padding:8px;">
+            <div style="font-size:10px; font-weight:700; margin-bottom:6px;">Rollout · new booking flow</div>
+            <div style="font-size:9px; color:var(--ink-faint); margin-bottom:4px;">Variant A (control) · 50%</div>
+            <div style="height:6px; background:#eee; border-radius:3px; margin-bottom:6px; overflow:hidden;"><div style="width:50%; height:100%; background:#94a3b8;"></div></div>
+            <div style="font-size:9px; color:var(--ink-faint); margin-bottom:4px;">Variant B (test) · 50% · <span style="color:#22c55e; font-weight:700;">+12% conv.</span></div>
+            <div style="height:6px; background:#eee; border-radius:3px; overflow:hidden;"><div style="width:50%; height:100%; background:#22c55e;"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-posthog">PostHog</span>
+        <span class="angle-pill angle-personal">Personalization</span>
+      </div>
+      <div class="card-body">
+        <h3>Feature flags double as experiments</h3>
+        <div class="where">Any flag → auto-creates cohort analytics</div>
+        <p>Every feature flag in PostHog is also an experiment. You ship to 5% → watch live metrics → ramp to 50% → 100%. If the data looks bad, rollback is one click.</p>
+        <div class="why">Converts adoption from a launch moment into a continuous experiment. Features don't "launch" — they ramp into existence, with evidence.</div>
+        <div class="source">↗ <a href="https://posthog.com/docs/experiments/creating-an-experiment" target="_blank">PostHog · Experiments</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="experimental" data-angle="personal">
+      <div class="preview" style="background:#fff;">
+        <div class="mockup" style="gap:4px;">
+          <div style="font-size:9px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:0.08em; font-weight:700;">GitHub · PR #241</div>
+          <div style="background:#fff; border:1px solid var(--line); border-radius:6px; padding:8px;">
+            <div style="display:flex; gap:4px; align-items:center; font-size:10px; margin-bottom:4px;"><div style="width:14px; height:14px; background:#000; border-radius:50%;"></div><span style="font-weight:700;">Vercel bot</span></div>
+            <div style="font-size:9px; color:var(--ink-soft); line-height:1.4;">✅ Preview: <span style="color:#0070f3; font-family:ui-monospace, Menlo, monospace;">booking-flow-241.vercel.app</span></div>
+            <div style="font-size:8px; color:var(--ink-faint); margin-top:3px;">🚀 Lighthouse 94 · 32s build</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-vercel">Vercel</span>
+        <span class="angle-pill angle-personal">Personalization</span>
+      </div>
+      <div class="card-body">
+        <h3>Preview deployments · try-it links on every PR</h3>
+        <div class="where">GitHub · auto-comment on every push</div>
+        <p>Every commit creates an ephemeral, shareable URL. Reviewers don't read specs — they click and see. Product managers can experience the feature before it's "approved."</p>
+        <div class="why">Collapses the feedback loop for internal feature adoption. The team adopts features before users do — by living in them for days during review.</div>
+        <div class="source">↗ <a href="https://vercel.com/docs/deployments/preview-deployments" target="_blank">Vercel · Preview deployments</a></div>
+      </div>
+    </article>
+
+    <!-- ========= COMMUNITY REMIX ========= -->
+
+    <article class="card" data-cat="experimental" data-angle="personal">
+      <div class="preview" style="background:#f2620710;">
+        <div class="mockup" style="gap:4px;">
+          <div class="mock-templates" style="grid-template-columns: 1fr 1fr; gap:4px;">
+            <div class="tpl" style="text-align:left; padding:6px; font-size:8px;"><div style="font-weight:700;">🎵 Lo-fi radio</div><div>4.2k remixes</div></div>
+            <div class="tpl" style="text-align:left; padding:6px; font-size:8px;"><div style="font-weight:700;">🎮 Flappy clone</div><div>12k remixes</div></div>
+            <div class="tpl" style="text-align:left; padding:6px; font-size:8px; background:#f2620720;"><div style="font-weight:700;">✧ Remix this</div><div>→ your own fork</div></div>
+            <div class="tpl" style="text-align:left; padding:6px; font-size:8px;"><div style="font-weight:700;">🗓 Meeting bot</div><div>680 remixes</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-replit">Replit</span>
+        <span class="angle-pill angle-personal">Personalization</span>
+      </div>
+      <div class="card-body">
+        <h3>Remix as viral feature discovery</h3>
+        <div class="where">Any shared Repl · fork lineage tracked</div>
+        <p>Shared Repl URLs carry a "Remix" button. One click forks the whole project with dependencies intact. Discovery happens on Twitter and Reddit, not in the app.</p>
+        <div class="why">The landing page for a feature isn't a marketing site — it's a working example someone else built. Adoption piggybacks on social sharing.</div>
+        <div class="source">↗ <a href="https://docs.replit.com/getting-started/quickstarts/remix-an-app" target="_blank">Replit · Remix an app</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="experimental" data-angle="personal">
+      <div class="preview" style="background:#8b5cf610;">
+        <div class="mockup" style="gap:4px;">
+          <div style="background:#fff; border:1px solid var(--line); border-radius:6px; padding:6px 8px; font-size:9px; display:flex; justify-content:space-between;"><span>📚 Study Buddy</span><span style="color:#8b5cf6;">180k chats</span></div>
+          <div style="background:#fff; border:1px solid var(--line); border-radius:6px; padding:6px 8px; font-size:9px; display:flex; justify-content:space-between;"><span>🎧 Spotify curator</span><span style="color:#8b5cf6;">42k chats</span></div>
+          <div style="background:#8b5cf615; border:1px dashed #8b5cf6; border-radius:6px; padding:6px 8px; font-size:9px; color:#5b1fa9; font-weight:700;">+ Create your own bot</div>
+        </div>
+      </div>
+      <div class="card-head">
+        <span class="platform-pill p-poe">Poe</span>
+        <span class="angle-pill angle-personal">Personalization</span>
+      </div>
+      <div class="card-body">
+        <h3>Custom-bot marketplace · crowd-discovered capabilities</h3>
+        <div class="where">Bot Explorer · browse + fork</div>
+        <p>Any user can build a bot in under a minute. Published bots become Poe's feature surface — the platform's capabilities aren't decided by Poe, they're decided by whoever ships the next interesting bot.</p>
+        <div class="why">Offloads feature R&D to the community. Poe doesn't "release" new capabilities — it just watches what the top bots are doing and elevates them.</div>
+        <div class="source">↗ <a href="https://quorablog.quora.com/Poe-1" target="_blank">Poe by Quora</a></div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SYNTHESIS                                                    -->
+<!-- ============================================================ -->
+<section class="synthesis">
+  <div class="synthesis-inner">
+    <div class="section-header" style="border-bottom-color:#fff;">
+      <h2>Cross-platform patterns that repeat</h2>
+      <span class="kicker" style="color:#aaa;">What every serious adoption engine seems to ship</span>
+    </div>
+    <div class="findings">
+      <div class="finding">
+        <div class="num">01</div>
+        <h3>Persona gate → every downstream surface</h3>
+        <p>HubSpot, Shopify, Webflow, Squarespace, Canva, Notion all branch the entire UX from one early question. Personalization isn't a module — it's a switch at the root of the tree.</p>
+      </div>
+      <div class="finding">
+        <div class="num">02</div>
+        <h3>Templates > blank canvas — always</h3>
+        <p>Notion, Airtable, Monday, Asana, Shopify, Squarespace, Canva, Etsy: all lead with a template gallery. None lead with a tutorial. Starting from "partial answer" beats starting from zero.</p>
+      </div>
+      <div class="finding">
+        <div class="num">03</div>
+        <h3>Checklists pair with progress bars</h3>
+        <p>Slack, Notion, Shopify, Intercom, HubSpot. Ordered steps, visible % done, dismissible-but-re-surfaceable. Still the highest-ROI activation pattern in SaaS.</p>
+      </div>
+      <div class="finding">
+        <div class="num">04</div>
+        <h3>"Try it" deep-links — not documentation</h3>
+        <p>Linear, Figma, Atlassian, Canva, Shopify: announcements include a button that routes straight to the feature. Reading about a feature and trying it happen in one click.</p>
+      </div>
+      <div class="finding">
+        <div class="num">05</div>
+        <h3>Empty states are onboarding moments</h3>
+        <p>HubSpot, Shopify, Notion. The "nothing here yet" screen is the one place every user lands — so it should be the most curated, educational, CTA-forward surface in the product.</p>
+      </div>
+      <div class="finding">
+        <div class="num">06</div>
+        <h3>Behavior-triggered >> time-triggered</h3>
+        <p>Canva's 650 variant catalog, Etsy's milestone emails, Intercom's action triggers. "Did feature X by day 3" beats "Day 3 since signup" at nearly every metric — open, click, and adoption.</p>
+      </div>
+      <div class="finding">
+        <div class="num">07</div>
+        <h3>Admin-owned adoption dashboards</h3>
+        <p>Salesforce Lightning Usage, Monday AI Governance, Figma DS Analytics. Big platforms hand adoption metrics to the admin, not the end user. Whoever can see the funnel owns it.</p>
+      </div>
+      <div class="finding">
+        <div class="num">08</div>
+        <h3>The product teaches the product</h3>
+        <p>Slackbot, Notion's "/" command, Linear's ⌘K, Figma's multiplayer. The highest-ROI adoption isn't a tour — it's a feature that <em>demonstrates itself</em> by being used.</p>
+      </div>
+      <div class="finding">
+        <div class="num">09</div>
+        <h3>Category-specific learning hubs</h3>
+        <p>HubSpot Academy, Salesforce Trailhead, Webflow University, Etsy Seller Handbook. In-product links to a deep learning resource that's branded, searchable, and often certified.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- WIX BOOKINGS TAKEAWAY                                        -->
+<!-- ============================================================ -->
+<section class="wix-takeaway">
+  <div class="wix-takeaway-inner">
+    <div class="section-header">
+      <h2>Plays worth testing for Wix Bookings</h2>
+      <span class="kicker">Translated into our context</span>
+    </div>
+    <p class="subhead">
+      Wix Bookings serves a uniquely heterogeneous user base — salons, fitness studios, tutors, consultants, medical practices — inside an even more heterogeneous Wix platform. Here's how the patterns above map to plays worth prototyping, stack-ranked by leverage.
+    </p>
+    <div class="play-grid">
+      <div class="play">
+        <div class="play-tag">Persona branching</div>
+        <h4>Vertical-aware setup wizard</h4>
+        <p>One question at Bookings install — "What kind of business?" — routes downstream: default service catalog, suggested policies, recommended apps, and email sequences all diverge.</p>
+        <div class="inspired">Inspired by · Shopify, HubSpot, Canva</div>
+      </div>
+      <div class="play">
+        <div class="play-tag">In-product</div>
+        <h4>The "First Booking" checklist</h4>
+        <p>Persistent home-dashboard card, 5-6 ordered steps from "add a service" to "accept a booking", with a progress bar and a celebratory moment at 100%.</p>
+        <div class="inspired">Inspired by · Shopify, Slack, Asana</div>
+      </div>
+      <div class="play">
+        <div class="play-tag">Templates</div>
+        <h4>Service template gallery</h4>
+        <p>Pre-built service catalogs per vertical: "Salon starter", "1:1 tutor", "Group fitness class". One-click adoption of services, pricing, duration, and policies.</p>
+        <div class="inspired">Inspired by · Airtable, Notion, Monday</div>
+      </div>
+      <div class="play">
+        <div class="play-tag">Lifecycle</div>
+        <h4>Milestone-triggered nurture</h4>
+        <p>First service published · first booking · 14 days no bookings · first repeat customer. Each milestone fires a vertical-specific playbook email with "Try X in Bookings" deep links.</p>
+        <div class="inspired">Inspired by · Etsy, Canva, Shopify</div>
+      </div>
+      <div class="play">
+        <div class="play-tag">Contextual discovery</div>
+        <h4>"Try it" banners on empty views</h4>
+        <p>Empty analytics page? "Try campaigns." No repeat customers? "Try automated reminders." Each CTA routes into the feature with smart defaults, not a marketing page.</p>
+        <div class="inspired">Inspired by · Linear, Canva, Atlassian</div>
+      </div>
+      <div class="play">
+        <div class="play-tag">Lifecycle</div>
+        <h4>Segmented "What's new" feed</h4>
+        <p>One widget in the Bookings dashboard. Feed filters by vertical and plan. Includes "Try it" buttons, dismissible per item, subscribable per category.</p>
+        <div class="inspired">Inspired by · Atlassian, Shopify, Intercom</div>
+      </div>
+      <div class="play">
+        <div class="play-tag">Personalization</div>
+        <h4>Next-best-action cards</h4>
+        <p>Dashboard cards adapt to business stage and data: new stores see "Add a service"; mature stores see "Enable reviews" or "Turn on memberships". Dismiss-with-reason trains the ranker.</p>
+        <div class="inspired">Inspired by · Shopify, Etsy</div>
+      </div>
+      <div class="play">
+        <div class="play-tag">In-product</div>
+        <h4>Celebration on first booking</h4>
+        <p>The moment a Bookings user receives their first real booking is emotionally loaded — own it with a memorable animation, email, and a next-step CTA ("Turn on SMS reminders?").</p>
+        <div class="inspired">Inspired by · Asana, Etsy</div>
+      </div>
+      <div class="play">
+        <div class="play-tag">Lifecycle</div>
+        <h4>Admin adoption dashboard (for us)</h4>
+        <p>Instrumentation isn't optional. Ship a per-vertical adoption funnel dashboard for the Bookings team on day one, so every play above can be measured, segmented, and iterated.</p>
+        <div class="inspired">Inspired by · Salesforce, Monday, Figma</div>
+      </div>
+      <div class="play">
+        <div class="play-tag">Measurement</div>
+        <h4>Behavior-triggered email infra</h4>
+        <p>Invest in event-trigger infrastructure before writing emails. "Booked first class" → beats "Day 3" at everything. Retrofit is expensive.</p>
+        <div class="inspired">Inspired by · Canva, Etsy, Intercom</div>
+      </div>
+      <div class="play">
+        <div class="play-tag">In-product</div>
+        <h4>Bookings Academy surface</h4>
+        <p>A tiny "Learn" icon next to every complex feature (staff calendars, memberships, packages) that opens a 60-90 sec video in a side panel — no app switch.</p>
+        <div class="inspired">Inspired by · Webflow, HubSpot</div>
+      </div>
+      <div class="play">
+        <div class="play-tag">Personalization</div>
+        <h4>Role-aware staff onboarding</h4>
+        <p>Staff members invited to a Bookings account see a role-aware checklist ("set your hours", "add a photo", "sync calendar") — not the same list the owner sees.</p>
+        <div class="inspired">Inspired by · Slack, Notion, Asana</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Compiled 2026-04-17 · Wix Bookings Adoption Engine · <strong>50+ patterns across 16 platforms</strong><br/>
+  Sources cited inline on each card. Deeper annotations available in the agent research bundle.
+</footer>
+
+<script>
+  // --- Filter logic ---
+  const chips = document.querySelectorAll('.chip');
+  const cards = document.querySelectorAll('.card');
+  let activeAngle = 'all';
+  let activeCat = 'all';
+
+  chips.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const group = btn.closest('.filter-group');
+      group.querySelectorAll('.chip').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      if (btn.dataset.angle) activeAngle = btn.dataset.angle;
+      if (btn.dataset.cat)   activeCat   = btn.dataset.cat;
+
+      cards.forEach(card => {
+        const cardAngle = card.dataset.angle;
+        const cardCat = card.dataset.cat;
+        const angleOk = activeAngle === 'all' || cardAngle === activeAngle;
+        const catOk   = activeCat === 'all' || cardCat === activeCat;
+        card.classList.toggle('hidden', !(angleOk && catOk));
+      });
+
+      // Hide empty sections
+      document.querySelectorAll('[data-cat-section]').forEach(section => {
+        const visible = section.querySelectorAll('.card:not(.hidden)').length;
+        section.style.display = visible === 0 ? 'none' : '';
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
