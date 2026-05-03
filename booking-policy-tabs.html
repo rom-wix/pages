@@ -427,6 +427,7 @@
     font-weight: var(--wds-font-weight-medium);
   }
   .wds-tab__count {
+    position: relative;
     background: var(--wds-color-black-700);
     color: var(--wds-color-text-secondary);
     border-radius: var(--wds-border-radius-full);
@@ -438,6 +439,65 @@
   .wds-tab--active .wds-tab__count {
     background: var(--wds-color-blue-500);
     color: var(--wds-color-blue-100);
+  }
+
+  /* =======================================================================
+     WDS TOOLTIP  (mirrors @wix/design-system <Tooltip>)
+     ======================================================================= */
+  .wds-tooltip-host { position: relative; display: inline-block; }
+  .wds-tooltip {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--wds-color-black-100);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: var(--wds-border-radius-300);
+    font-size: var(--wds-font-size-200);
+    font-weight: var(--wds-font-weight-regular);
+    line-height: 1.45;
+    box-shadow: 0 4px 12px rgba(0, 6, 36, 0.18);
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.12s ease, visibility 0.12s ease;
+    z-index: 1000;
+    min-width: 160px;
+    max-width: 260px;
+    text-align: left;
+  }
+  .wds-tooltip::after {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 4px solid transparent;
+    border-bottom-color: var(--wds-color-black-100);
+  }
+  .wds-tooltip-host:hover .wds-tooltip,
+  .wds-tooltip-host:focus-within .wds-tooltip {
+    opacity: 1;
+    visibility: visible;
+  }
+  .wds-tooltip__title {
+    display: block;
+    font-weight: var(--wds-font-weight-medium);
+    margin-bottom: 4px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+  .wds-tooltip__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .wds-tooltip__list li {
+    padding: 2px 0;
+    white-space: nowrap;
   }
 
   /* =======================================================================
@@ -1561,16 +1621,56 @@
         <ul class="wds-tabs__list">
           <li><button class="wds-tab wds-tab--active" data-tab="general" role="tab">General</button></li>
           <li><button class="wds-tab" data-tab="shared" role="tab">
-            Shared rules <span class="wds-tab__count">7</span>
+            Shared rules
+            <span class="wds-tab__count wds-tooltip-host" tabindex="0">6
+              <span class="wds-tooltip" role="tooltip">
+                <span class="wds-tooltip__title">Applied to</span>
+                <ul class="wds-tooltip__list">
+                  <li>Personal Training</li>
+                  <li>Massage Therapy</li>
+                  <li>Hair Styling</li>
+                  <li>Morning Yoga</li>
+                  <li>HIIT Bootcamp</li>
+                  <li>8-Week Strength Program</li>
+                </ul>
+              </span>
+            </span>
           </button></li>
           <li><button class="wds-tab" data-tab="appointment" role="tab">
-            Appointments <span class="wds-tab__count">3</span>
+            Appointments
+            <span class="wds-tab__count wds-tooltip-host" tabindex="0">3
+              <span class="wds-tooltip" role="tooltip">
+                <span class="wds-tooltip__title">Applied to</span>
+                <ul class="wds-tooltip__list">
+                  <li>Personal Training</li>
+                  <li>Massage Therapy</li>
+                  <li>Hair Styling</li>
+                </ul>
+              </span>
+            </span>
           </button></li>
           <li><button class="wds-tab" data-tab="class" role="tab">
-            Classes <span class="wds-tab__count">2</span>
+            Classes
+            <span class="wds-tab__count wds-tooltip-host" tabindex="0">2
+              <span class="wds-tooltip" role="tooltip">
+                <span class="wds-tooltip__title">Applied to</span>
+                <ul class="wds-tooltip__list">
+                  <li>Morning Yoga</li>
+                  <li>HIIT Bootcamp</li>
+                </ul>
+              </span>
+            </span>
           </button></li>
           <li><button class="wds-tab" data-tab="course" role="tab">
-            Courses <span class="wds-tab__count">1</span>
+            Courses
+            <span class="wds-tab__count wds-tooltip-host" tabindex="0">1
+              <span class="wds-tooltip" role="tooltip">
+                <span class="wds-tooltip__title">Applied to</span>
+                <ul class="wds-tooltip__list">
+                  <li>8-Week Strength Program</li>
+                </ul>
+              </span>
+            </span>
           </button></li>
         </ul>
       </nav>
