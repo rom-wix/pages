@@ -321,7 +321,7 @@
             <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
             <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
             <div class="ev ev--blue" style="top:60px;height:52px;"><div class="ev__title">Class | Per session or with a plan</div><div class="ev__meta">0/50 · Carlos Lampel Broadway</div></div>
-            <div class="ev ev--green" id="ev-nail" style="top:180px;height:70px;cursor:pointer;" onclick="openPanel()">
+            <div class="ev ev--green ev--active" id="ev-nail" style="top:180px;height:70px;cursor:pointer;" onclick="openPanel()">
               <div class="ev__title">Advanced Nail Design</div>
               <div class="ev__meta" id="ev-meta-line">Carlos Lampel · Broadway</div>
             </div>
@@ -356,7 +356,7 @@
     <!-- ══════════════════════════════════
          DETAIL PANEL
     ══════════════════════════════════ -->
-    <div class="dp dp--hidden" id="dp">
+    <div class="dp" id="dp">
 
       <!-- Header — always the booker (Carlos Lampel) -->
       <div class="dp-hd">
@@ -473,6 +473,9 @@
     document.getElementById('dp').classList.add('dp--hidden');
     document.getElementById('ev-nail').classList.remove('ev--active');
   }
+
+  // Panel open by default on load
+  renderParticipantSlot();
 </script>
 </body>
 </html>
