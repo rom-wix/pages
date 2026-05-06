@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Book on Behalf — Owner Calendar View</title>
+<style>
+  :root {
+    --B10:#0F1141;--B20:#15206B;--B30:#2B5672;--B40:#3899EC;--B50:#4EB7F5;
+    --D10:#162D3D;--D20:#32536A;--D30:#7A92A5;--D40:#BAC9D1;
+    --D50:#DFE5EB;--D55:#E9EDF0;--D60:#EAF7FF;--D70:#F7F8F8;--D80:#FFFFFF;
+    --G10:#1F8645;--G20:#20C45F;
+    --R10:#DF3131;--R20:#F4757A;--Y10:#FDB10C;
+    --shadow-1:0 1px 4px 0 rgba(22,45,61,0.16);
+    --shadow-2:0 6px 12px 0 rgba(22,45,61,0.18);
+    --radius-1:4px;--radius-2:6px;
+    --topbar-bg:#0E0E2C;--side-bg:#1B1A33;--side-fg:#C2C0DA;
+  }
+  html,body{margin:0;padding:0;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;color:var(--D10);background:var(--D70);min-height:100vh;}
+  *{box-sizing:border-box;}
+  button{font-family:inherit;cursor:pointer;}
+
+  /* ── Page intro ── */
+  .page-intro{padding:20px 28px 12px;max-width:1400px;margin:0 auto;}
+  .page-intro h1{font-size:16px;font-weight:700;color:var(--D10);margin:0 0 4px;}
+  .page-intro p{font-size:12px;color:var(--D30);margin:0 0 14px;}
+
+  /* ── Variant switcher ── */
+  .variant-bar{display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding:0 28px 16px;max-width:1400px;margin:0 auto;}
+  .variant-bar__label{font-size:12px;color:var(--D30);margin-right:4px;white-space:nowrap;}
+  .vtab{height:28px;padding:0 14px;border-radius:14px;font-size:12px;border:1px solid var(--D50);background:#fff;color:var(--D20);}
+  .vtab[aria-pressed="true"]{background:var(--D10);color:#fff;border-color:var(--D10);}
+
+  /* ── Browser chrome ── */
+  .browser{background:#E7EAF0;border-bottom:1px solid #D5DAE2;padding:8px 12px;display:flex;align-items:center;gap:12px;}
+  .browser__dots{display:flex;gap:6px;}
+  .browser__dot{width:12px;height:12px;border-radius:50%;}
+  .browser__dot--r{background:#FF5F57;}
+  .browser__dot--y{background:#FEBC2E;}
+  .browser__dot--g{background:#28C840;}
+  .browser__url{flex:1;background:#fff;border-radius:6px;padding:5px 12px;font-size:12px;color:var(--D20);border:1px solid #D5DAE2;}
+
+  /* ── Topbar ── */
+  .topbar{height:54px;background:var(--topbar-bg);color:#fff;display:flex;align-items:center;padding:0 16px;gap:14px;flex-shrink:0;}
+  .topbar__brand{font-weight:700;font-size:14px;letter-spacing:.5px;}
+  .topbar__site{background:rgba(255,255,255,.08);color:#fff;padding:5px 12px;border-radius:18px;font-size:13px;display:flex;align-items:center;gap:6px;}
+  .topbar__site-letter{width:18px;height:18px;border-radius:50%;background:#B6BCD1;color:#1B1A33;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;}
+  .topbar__nav{display:flex;gap:18px;margin-left:10px;}
+  .topbar__nav a{color:rgba(255,255,255,.85);font-size:13px;text-decoration:none;padding:5px 2px;}
+  .topbar__upgrade{border:1px solid rgba(255,255,255,.5);color:#fff;background:transparent;padding:5px 14px;border-radius:18px;font-size:13px;}
+  .topbar__search{flex:1;max-width:360px;background:rgba(255,255,255,.08);border-radius:18px;padding:5px 14px;font-size:13px;color:rgba(255,255,255,.6);margin-left:auto;}
+  .topbar__icons{display:flex;gap:14px;align-items:center;color:rgba(255,255,255,.85);font-size:13px;}
+  .topbar__avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#FFB85C,#E97B3B);}
+  .topbar__ai{background:linear-gradient(135deg,#7B5BFF,#3899EC);color:#fff;font-size:12px;font-weight:600;padding:5px 12px;border-radius:14px;}
+
+  /* ── Shell ── */
+  .shell{display:flex;height:calc(100vh - 54px - 36px);min-height:700px;}
+  .sidenav{width:56px;background:var(--side-bg);color:var(--side-fg);display:flex;flex-direction:column;align-items:center;padding:12px 0;gap:6px;flex-shrink:0;}
+  .sidenav__btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:6px;color:var(--side-fg);font-size:16px;border:none;background:transparent;}
+  .sidenav__btn--active{background:rgba(255,255,255,.12);color:#fff;}
+  .sidenav__sep{width:28px;height:1px;background:rgba(255,255,255,.1);margin:6px 0;}
+  .main{flex:1;display:flex;min-width:0;background:#fff;overflow:hidden;}
+
+  /* ── Calendar aside ── */
+  .cal-aside{width:240px;background:#fff;border-right:1px solid var(--D55);padding:16px;flex-shrink:0;overflow-y:auto;}
+  .cal-aside__header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+  .cal-aside__title{font-size:16px;font-weight:700;}
+  .mini-cal__head{display:flex;align-items:center;justify-content:space-between;font-size:13px;margin-bottom:6px;}
+  .mini-cal__nav{width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;color:var(--D30);border:none;background:transparent;}
+  .mini-cal__grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px 0;font-size:12px;}
+  .mini-cal__dow{text-align:center;color:var(--D30);font-size:11px;padding:4px 0;}
+  .mini-cal__day{text-align:center;padding:4px 0;border-radius:50%;cursor:pointer;color:var(--D10);}
+  .mini-cal__day--mute{color:var(--D40);}
+  .mini-cal__day--today{background:var(--B40);color:#fff;}
+  .sync-card{margin-top:18px;padding:12px;border:1px solid var(--D55);border-radius:var(--radius-1);}
+  .sync-card__title{font-size:13px;font-weight:600;display:flex;justify-content:space-between;}
+  .sync-card__desc{font-size:12px;color:var(--D20);margin:6px 0 8px;line-height:1.4;}
+  .sync-card__link{color:var(--B40);font-size:13px;cursor:pointer;}
+  .activity{margin-top:22px;}
+  .activity__title{font-size:14px;font-weight:700;margin-bottom:10px;}
+  .activity__row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--D55);font-size:13px;cursor:pointer;}
+  .activity__chev{color:var(--D30);}
+
+  /* ── Calendar canvas ── */
+  .canvas{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden;}
+  .toolbar{display:flex;align-items:center;gap:8px;padding:10px 18px;border-bottom:1px solid var(--D55);flex-shrink:0;}
+  .toolbar__title{font-size:18px;font-weight:700;margin-left:4px;}
+  .toolbar__chev{width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;border:none;background:transparent;color:var(--D20);}
+  .toolbar__spacer{flex:1;}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:30px;padding:0 14px;border-radius:18px;font-size:13px;border:1px solid transparent;cursor:pointer;background:#fff;color:var(--D10);}
+  .btn--secondary{border-color:var(--D40);color:var(--B30);}
+  .btn--primary{background:var(--B40);color:#fff;border-color:var(--B40);}
+  .btn--ghost{background:transparent;color:var(--B30);border-color:transparent;}
+  .select{height:30px;border:1px solid var(--D40);border-radius:18px;padding:0 28px 0 12px;font-size:13px;color:var(--D10);background:#fff url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M0 0l5 6 5-6z' fill='%237A92A5'/></svg>") no-repeat right 10px center;appearance:none;}
+
+  /* ── Week grid ── */
+  .week-grid{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+  .week-head{display:grid;grid-template-columns:54px repeat(7,1fr);border-bottom:1px solid var(--D55);flex-shrink:0;}
+  .week-head__cell{padding:8px 4px;text-align:center;font-size:12px;color:var(--D30);border-right:1px solid var(--D55);}
+  .week-head__day{font-size:20px;font-weight:700;color:var(--D10);line-height:1;}
+  .week-body{flex:1;overflow-y:auto;display:grid;grid-template-columns:54px repeat(7,1fr);}
+  .time-col{display:flex;flex-direction:column;}
+  .time-label{height:60px;display:flex;align-items:flex-start;padding-top:2px;justify-content:flex-end;padding-right:8px;font-size:11px;color:var(--D30);flex-shrink:0;}
+  .day-col{border-right:1px solid var(--D55);position:relative;}
+  .day-col:last-child{border-right:none;}
+  .hour-line{height:60px;border-bottom:1px solid var(--D55);}
+
+  /* ── Calendar events ── */
+  .ev{position:absolute;left:3px;right:3px;border-radius:3px;padding:3px 5px;font-size:11px;line-height:1.3;overflow:hidden;cursor:pointer;border-left:3px solid transparent;}
+  .ev--blue{background:#EAF4FF;border-left-color:var(--B40);color:var(--B30);}
+  .ev--green{background:#E6F7EE;border-left-color:var(--G10);color:var(--G10);}
+  .ev--orange{background:#FFF3E6;border-left-color:#E8750A;color:#C45F00;}
+  .ev--active{box-shadow:0 0 0 2px var(--B40);}
+  .ev__title{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .ev__meta{opacity:.8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+  /* ── Detail panel ── */
+  .dp{width:320px;flex-shrink:0;border-left:1px solid var(--D55);background:#fff;display:flex;flex-direction:column;overflow:hidden;transition:width .2s;}
+  .dp.dp--hidden{width:0;border:none;overflow:hidden;}
+
+  /* Header */
+  .dp-hd{padding:16px 16px 0;display:flex;align-items:flex-start;gap:10px;}
+  .dp-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#5B9BF5,#3572C6);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0;letter-spacing:-.5px;}
+  .dp-hd__info{flex:1;min-width:0;}
+  .dp-hd__name{font-size:15px;font-weight:700;color:var(--D10);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .dp-hd__email{font-size:12px;color:var(--D30);margin-top:1px;}
+  .dp-hd__phone{font-size:12px;color:var(--D30);}
+  .dp-hd__actions{display:flex;gap:4px;flex-shrink:0;}
+  .dp-hd__actions button{background:none;border:none;color:var(--D30);font-size:15px;padding:3px;width:26px;height:26px;border-radius:4px;display:flex;align-items:center;justify-content:center;}
+  .dp-hd__actions button:hover{background:var(--D70);}
+
+  .dp-divider{height:1px;background:var(--D55);margin:12px 0;}
+
+  /* Booking info row */
+  .dp-section{padding:0 16px;}
+  .dp-dt{font-size:13px;color:var(--D20);margin-bottom:4px;}
+  .dp-loc{font-size:13px;color:var(--D20);}
+  .dp-badges{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+  .badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:12px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;border:1px solid transparent;}
+  .badge--booked{background:#E6F7EE;color:var(--G10);border-color:#B8E8CC;}
+  .badge--unpaid{background:#FFF3E6;color:#C45F00;border-color:#FFCF99;}
+  .dp-manage{font-size:12px;color:var(--B40);cursor:pointer;margin-top:8px;display:block;}
+
+  /* Booking service card */
+  .dp-card{padding:14px 16px;border-top:1px solid var(--D55);}
+  .dp-card__hd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;}
+  .dp-card__service{font-size:14px;font-weight:600;color:var(--D10);}
+  .dp-card__actions{display:flex;gap:6px;color:var(--D30);}
+  .dp-card__actions button{background:none;border:none;color:var(--D30);font-size:14px;}
+  .dp-card__meta{font-size:12px;color:var(--D30);line-height:1.7;}
+
+  .dp-total{display:flex;justify-content:space-between;align-items:center;padding:14px 16px 0;font-size:13px;color:var(--D20);}
+  .dp-total__amt{font-size:16px;font-weight:700;color:var(--D10);}
+  .dp-footer{display:flex;justify-content:flex-end;gap:10px;padding:12px 16px;border-top:1px solid var(--D55);margin-top:auto;flex-shrink:0;}
+
+  /* ── On-behalf participant block ── */
+  .dp-body{flex:1;overflow-y:auto;}
+  .dp-body-inner{padding-bottom:8px;}
+
+  /* Option E — avatar row matching the booker header style */
+  .ob-e{padding:4px 16px 12px;display:flex;align-items:center;gap:10px;}
+  .ob-e__label{font-size:11px;color:var(--D30);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;}
+  .ob-e__avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#58C8A8,#1F8B6B);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0;}
+  .ob-e__info{flex:1;min-width:0;}
+  .ob-e__name{font-size:13px;font-weight:600;color:var(--D10);}
+  .ob-e__detail{font-size:11px;color:var(--D30);}
+
+  /* ── Separator between booker and participant areas ── */
+  .dp-subdiv{height:1px;background:var(--D55);margin:0 16px;}
+</style>
+</head>
+<body>
+
+<div class="page-intro">
+  <h1>Book on Behalf — Owner Calendar</h1>
+  <p>Click "Advanced Nail Design" (Wed 27) to open the panel. Toggle between Current and Book on Behalf views.</p>
+</div>
+
+<div class="variant-bar">
+  <span class="variant-bar__label">Panel view:</span>
+  <button class="vtab" id="v0" data-v="0" aria-pressed="true">Current</button>
+  <button class="vtab" id="v1" data-v="1" aria-pressed="false">Book on Behalf</button>
+</div>
+
+<!-- Browser chrome -->
+<div class="browser">
+  <div class="browser__dots">
+    <div class="browser__dot browser__dot--r"></div>
+    <div class="browser__dot browser__dot--y"></div>
+    <div class="browser__dot browser__dot--g"></div>
+  </div>
+  <div class="browser__url">roml07-cartqa.manage.wix.com/dashboard/…/bookings/calendar?referralInfo=sidebar</div>
+</div>
+
+<!-- Topbar -->
+<div class="topbar">
+  <div class="topbar__brand">WIX STUDIO</div>
+  <div class="topbar__site"><span class="topbar__site-letter">R</span> A La Cart</div>
+  <nav class="topbar__nav">
+    <a href="#">Resources</a><a href="#">Community</a><a href="#">Help</a>
+  </nav>
+  <button class="topbar__upgrade">Upgrade</button>
+  <div class="topbar__search">🔍 Search for tools, apps, help &amp; more...</div>
+  <div class="topbar__icons">
+    <span>🔔</span><span>📋</span>
+    <div class="topbar__avatar"></div>
+    <div class="topbar__ai">✦ AI</div>
+  </div>
+</div>
+
+<div class="shell">
+  <!-- Sidenav -->
+  <nav class="sidenav">
+    <button class="sidenav__btn">🕐</button>
+    <button class="sidenav__btn">＋</button>
+    <div class="sidenav__sep"></div>
+    <button class="sidenav__btn">🏠</button>
+    <button class="sidenav__btn">✦</button>
+    <button class="sidenav__btn">📊</button>
+    <button class="sidenav__btn sidenav__btn--active">📅</button>
+    <button class="sidenav__btn">💰</button>
+    <button class="sidenav__btn">👤</button>
+    <button class="sidenav__btn">📦</button>
+    <div class="sidenav__sep"></div>
+    <button class="sidenav__btn">⚙</button>
+  </nav>
+
+  <div class="main">
+    <!-- Calendar aside -->
+    <aside class="cal-aside">
+      <div class="cal-aside__header">
+        <div class="cal-aside__title">Booking Calendar</div>
+        <button style="background:none;border:none;color:var(--D30);font-size:14px;">▣</button>
+      </div>
+      <div class="mini-cal__head">
+        <button class="mini-cal__nav">‹</button>
+        <span style="font-size:13px;font-weight:600;">May 2026</span>
+        <button class="mini-cal__nav">›</button>
+      </div>
+      <div class="mini-cal__grid">
+        <div class="mini-cal__dow">Su</div><div class="mini-cal__dow">Mo</div><div class="mini-cal__dow">Tu</div><div class="mini-cal__dow">We</div><div class="mini-cal__dow">Th</div><div class="mini-cal__dow">Fr</div><div class="mini-cal__dow">Sa</div>
+        <div class="mini-cal__day mini-cal__day--mute">26</div><div class="mini-cal__day mini-cal__day--mute">27</div><div class="mini-cal__day mini-cal__day--mute">28</div><div class="mini-cal__day mini-cal__day--mute">29</div><div class="mini-cal__day mini-cal__day--mute">30</div><div class="mini-cal__day">1</div><div class="mini-cal__day">2</div>
+        <div class="mini-cal__day">3</div><div class="mini-cal__day">4</div><div class="mini-cal__day">5</div><div class="mini-cal__day mini-cal__day--today">6</div><div class="mini-cal__day">7</div><div class="mini-cal__day">8</div><div class="mini-cal__day">9</div>
+        <div class="mini-cal__day">10</div><div class="mini-cal__day">11</div><div class="mini-cal__day">12</div><div class="mini-cal__day">13</div><div class="mini-cal__day">14</div><div class="mini-cal__day">15</div><div class="mini-cal__day">16</div>
+        <div class="mini-cal__day">17</div><div class="mini-cal__day">18</div><div class="mini-cal__day">19</div><div class="mini-cal__day">20</div><div class="mini-cal__day">21</div><div class="mini-cal__day">22</div><div class="mini-cal__day">23</div>
+        <div class="mini-cal__day">24</div><div class="mini-cal__day">25</div><div class="mini-cal__day">26</div><div class="mini-cal__day">27</div><div class="mini-cal__day">28</div><div class="mini-cal__day">29</div><div class="mini-cal__day">30</div>
+        <div class="mini-cal__day">31</div>
+      </div>
+      <div class="sync-card">
+        <div class="sync-card__title">Sync your personal calendar <span style="color:var(--D30)">···</span></div>
+        <div class="sync-card__desc">View personal and business events...</div>
+        <div class="sync-card__link">Sync Calendars</div>
+      </div>
+      <div class="activity">
+        <div class="activity__title">Activity</div>
+        <div class="activity__row">Upcoming session <span class="activity__chev">⌄</span></div>
+        <div class="activity__row">Appointment waitlist <span class="activity__chev">⌄</span></div>
+        <div class="activity__row">Booking requests <span class="activity__chev">⌄</span></div>
+        <div class="activity__row">Class waitlists <span class="activity__chev">⌄</span></div>
+        <div class="activity__row">Recent activity <span class="activity__chev">⌄</span></div>
+      </div>
+    </aside>
+
+    <!-- Calendar canvas -->
+    <div class="canvas">
+      <div class="toolbar">
+        <button class="btn btn--secondary">Today</button>
+        <span style="font-weight:700;font-size:14px;margin-left:4px;">May 2026</span>
+        <button class="toolbar__chev">‹</button>
+        <button class="toolbar__chev">›</button>
+        <div class="toolbar__spacer"></div>
+        <select class="select"><option>Weekly</option></select>
+        <button class="btn btn--ghost" style="font-size:15px;width:30px;padding:0;">⚙</button>
+        <button class="btn btn--ghost" style="font-size:15px;width:30px;padding:0;">▽</button>
+        <button class="btn btn--secondary">Manage ⌄</button>
+        <button class="btn btn--primary">Add ＋</button>
+      </div>
+
+      <div class="week-grid">
+        <div class="week-head">
+          <div class="week-head__cell" style="border-right:1px solid var(--D55);"></div>
+          <div class="week-head__cell">Sun <div class="week-head__day">24</div></div>
+          <div class="week-head__cell">Mon <div class="week-head__day">25</div></div>
+          <div class="week-head__cell">Tue <div class="week-head__day">26</div></div>
+          <div class="week-head__cell">Wed <div class="week-head__day">27</div></div>
+          <div class="week-head__cell">Thu <div class="week-head__day">28</div></div>
+          <div class="week-head__cell">Fri <div class="week-head__day">29</div></div>
+          <div class="week-head__cell" style="border-right:none;">Sat <div class="week-head__day">30</div></div>
+        </div>
+        <div class="week-body">
+          <!-- time -->
+          <div class="time-col">
+            <div class="time-label">9 AM</div><div class="time-label">10 AM</div><div class="time-label">11 AM</div>
+            <div class="time-label">12 PM</div><div class="time-label">1 PM</div><div class="time-label">2 PM</div>
+            <div class="time-label">3 PM</div><div class="time-label">4 PM</div><div class="time-label">5 PM</div><div class="time-label">6 PM</div>
+          </div>
+          <!-- Sun 24 -->
+          <div class="day-col">
+            <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+            <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+          </div>
+          <!-- Mon 25 -->
+          <div class="day-col">
+            <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+            <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+            <div class="ev ev--blue" style="top:0;height:52px;"><div class="ev__title">Class with form</div><div class="ev__meta">0/50 · Weekday Broadway</div></div>
+            <div class="ev ev--blue" style="top:60px;height:52px;"><div class="ev__title">Class | Per session or with a plan</div><div class="ev__meta">0/50 · Carlos Lampel Broadway</div></div>
+            <div class="ev ev--orange" style="top:210px;height:70px;"><div class="ev__title">Dance Class - Test</div><div class="ev__meta">0/50 · Weekday · Room 1 · Broadway</div></div>
+            <div class="ev ev--blue" style="top:300px;height:52px;"><div class="ev__title">Class with form</div><div class="ev__meta">0/50 · Carlos Lampel Broadway</div></div>
+            <div class="ev ev--blue" style="top:450px;height:52px;"><div class="ev__title">Pilates</div><div class="ev__meta">0/10 · Carlos Lampel Broadway</div></div>
+          </div>
+          <!-- Tue 26 -->
+          <div class="day-col">
+            <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+            <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+            <div class="ev ev--green" style="top:120px;height:52px;"><div class="ev__title">Basketball - Group B</div><div class="ev__meta">0/50 · Weekday AU</div></div>
+            <div class="ev ev--blue" style="top:300px;height:52px;"><div class="ev__title">Pilates</div><div class="ev__meta">0/10 · Carlos Lampel Broadway</div></div>
+          </div>
+          <!-- Wed 27 — the clickable event -->
+          <div class="day-col">
+            <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+            <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+            <div class="ev ev--blue" style="top:60px;height:52px;"><div class="ev__title">Class | Per session or with a plan</div><div class="ev__meta">0/50 · Carlos Lampel Broadway</div></div>
+            <div class="ev ev--green" id="ev-nail" style="top:180px;height:70px;cursor:pointer;" onclick="openPanel()">
+              <div class="ev__title">Advanced Nail Design</div>
+              <div class="ev__meta" id="ev-meta-line">Carlos Lampel · Broadway</div>
+            </div>
+            <div class="ev ev--blue" style="top:330px;height:52px;"><div class="ev__title">Class | Per session or with a plan</div><div class="ev__meta">0/50</div></div>
+          </div>
+          <!-- Thu 28 -->
+          <div class="day-col">
+            <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+            <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+            <div class="ev ev--blue" style="top:0;height:52px;"><div class="ev__title">Class with form</div><div class="ev__meta">0/50 · Broadway</div></div>
+            <div class="ev ev--blue" style="top:60px;height:52px;"><div class="ev__title">Class | Per session or with a plan</div><div class="ev__meta">0/50 · Carlos Lampel</div></div>
+            <div class="ev ev--green" style="top:180px;height:52px;"><div class="ev__title">Basic Makeup Tutorial</div><div class="ev__meta">Carlos Lampel Broadway</div></div>
+            <div class="ev ev--blue" style="top:270px;height:52px;"><div class="ev__title">Service 65</div><div class="ev__meta">0/5 · Carlos Lampel · World Way</div></div>
+          </div>
+          <!-- Fri 29 -->
+          <div class="day-col">
+            <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+            <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+            <div class="ev ev--blue" style="top:0;height:52px;"><div class="ev__title">Pilates</div><div class="ev__meta">0/10 participants</div></div>
+            <div class="ev ev--blue" style="top:60px;height:52px;"><div class="ev__title">Class | Per session or with a plan</div><div class="ev__meta">0/50 · Carlos Lampel Broadway</div></div>
+            <div class="ev ev--blue" style="top:390px;height:52px;"><div class="ev__title">Class - PP only</div><div class="ev__meta">0/100 participants</div></div>
+          </div>
+          <!-- Sat 30 -->
+          <div class="day-col">
+            <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+            <div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div><div class="hour-line"></div>
+          </div>
+        </div>
+      </div>
+    </div><!-- canvas -->
+
+    <!-- ══════════════════════════════════
+         DETAIL PANEL
+    ══════════════════════════════════ -->
+    <div class="dp dp--hidden" id="dp">
+
+      <!-- Header — always the booker (Carlos Lampel) -->
+      <div class="dp-hd">
+        <div class="dp-avatar">CL</div>
+        <div class="dp-hd__info">
+          <div class="dp-hd__name">Carlos Lampel</div>
+          <div class="dp-hd__email">carloslampel1@gmail.com</div>
+          <div class="dp-hd__phone">052487956</div>
+        </div>
+        <div class="dp-hd__actions">
+          <button title="Delete">🗑</button>
+          <button title="Edit">✎</button>
+          <button title="Close" onclick="closePanel()">✕</button>
+        </div>
+      </div>
+
+      <!-- Participant area — injected by JS when Book on Behalf is active -->
+      <div id="dp-participant-slot"></div>
+
+      <div class="dp-body">
+        <div class="dp-body-inner">
+          <div class="dp-section" style="padding-top:12px;">
+            <div class="dp-dt">Wed, May 27 · 12:00 PM – 1:00 PM</div>
+            <div class="dp-loc">Broadway</div>
+            <div class="dp-badges">
+              <span class="badge badge--booked">● Booked</span>
+              <span class="badge badge--unpaid">Not Paid</span>
+            </div>
+            <a class="dp-manage">Manage Form Submissions</a>
+          </div>
+
+          <div class="dp-card">
+            <div class="dp-card__hd">
+              <div class="dp-card__service">Advanced Nail Design</div>
+              <div class="dp-card__actions">
+                <button title="Chat">💬</button>
+                <button title="More">···</button>
+              </div>
+            </div>
+            <div class="dp-card__meta">
+              12:00 PM · 1 hr<br>
+              Weekday<br>
+              $110.00 · Test 1
+            </div>
+          </div>
+
+          <div class="dp-total">
+            <span>Total due for order</span>
+            <span class="dp-total__amt">$121.00</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dp-footer">
+        <button class="btn btn--ghost">···</button>
+        <button class="btn btn--secondary">Book Again</button>
+        <button class="btn btn--primary">Go to Checkout</button>
+      </div>
+    </div>
+
+  </div><!-- main -->
+</div><!-- shell -->
+
+<!-- Participant slot template — Option E: avatar row -->
+<template id="tmpl-E">
+  <div class="ob-e">
+    <div style="flex:1;min-width:0;">
+      <div class="ob-e__label">Participant</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-top:3px;">
+        <div class="ob-e__avatar">AM</div>
+        <div class="ob-e__info">
+          <div class="ob-e__name">Alex Morgan</div>
+          <div class="ob-e__detail">alex@example.com · +1 555 234 5678</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="dp-subdiv"></div>
+</template>
+
+<script>
+  let activeVariant = 0;
+
+  document.querySelectorAll('.vtab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeVariant = parseInt(btn.dataset.v);
+      document.querySelectorAll('.vtab').forEach(b => b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'));
+      renderParticipantSlot();
+      const meta = document.getElementById('ev-meta-line');
+      meta.textContent = activeVariant === 0
+        ? 'Carlos Lampel · Broadway'
+        : 'Carlos Lampel (for Alex Morgan) · Broadway';
+    });
+  });
+
+  function renderParticipantSlot() {
+    const slot = document.getElementById('dp-participant-slot');
+    if (activeVariant === 0) {
+      slot.innerHTML = '';
+      return;
+    }
+    const tmpl = document.getElementById('tmpl-E');
+    slot.innerHTML = '';
+    slot.appendChild(tmpl.content.cloneNode(true));
+  }
+
+  function openPanel() {
+    document.getElementById('dp').classList.remove('dp--hidden');
+    document.getElementById('ev-nail').classList.add('ev--active');
+    renderParticipantSlot();
+  }
+
+  function closePanel() {
+    document.getElementById('dp').classList.add('dp--hidden');
+    document.getElementById('ev-nail').classList.remove('ev--active');
+  }
+</script>
+</body>
+</html>
