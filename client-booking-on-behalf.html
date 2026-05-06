@@ -1,0 +1,1549 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ParkySpa — Book on Behalf (interactive)</title>
+<style>
+  :root {
+    --bg: #e8e6e1;
+    --canvas: #f6f2e9;
+    --ink: #4d4639;
+    --ink-soft: #6b6354;
+    --line: #d8d1c1;
+    --line-soft: #e6dfce;
+    --cta-dark: #5e564a;
+    --cta-light: #ece5d2;
+    --primary-blue: #2b6cdf;
+  }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: #2c2c2c;
+    min-height: 100vh;
+  }
+  * { box-sizing: border-box; }
+
+  .stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 28px 16px 60px;
+    gap: 18px;
+  }
+  .stage__title {
+    font-size: 13px;
+    color: #6b6354;
+    text-align: center;
+  }
+  .stage__title strong { color: #2c2c2c; }
+
+  /* Phone frame */
+  .phone {
+    width: 380px;
+    max-width: 100%;
+    height: 780px;
+    background: #1a1a1a;
+    border-radius: 38px;
+    padding: 10px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.12);
+    position: relative;
+  }
+  .phone__notch {
+    position: absolute;
+    top: 10px; left: 50%;
+    transform: translateX(-50%);
+    width: 36%;
+    height: 22px;
+    background: #1a1a1a;
+    border-radius: 0 0 14px 14px;
+    z-index: 50;
+  }
+  .phone__screen {
+    width: 100%;
+    height: 100%;
+    border-radius: 30px;
+    overflow: hidden;
+    background: var(--canvas);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  /* Status bar */
+  .status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 24px 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #2c2c2c;
+    flex-shrink: 0;
+    background: var(--canvas);
+  }
+  .status-bar--white { background: #fff; }
+  .status-bar__icons { display: flex; gap: 4px; align-items: center; font-size: 11px; }
+
+  /* Spa header */
+  .spa-header {
+    text-align: center;
+    background: var(--canvas);
+    flex-shrink: 0;
+  }
+  .spa-header__brand {
+    font-size: 18px;
+    letter-spacing: 5px;
+    font-weight: 400;
+    color: #2c2c2c;
+    padding: 6px 0;
+  }
+  .spa-nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .spa-nav__item {
+    padding: 12px 6px;
+    text-align: center;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: #2c2c2c;
+    border-right: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: transparent;
+    border-top: none;
+    border-bottom: none;
+    border-left: none;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .spa-nav__item:last-child { border-right: none; }
+  .spa-nav__avatar {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: #b8b3a4;
+    display: inline-block;
+  }
+
+  /* Wix header */
+  .wix-header {
+    padding: 14px 16px;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+    flex-shrink: 0;
+  }
+  .wix-header__title {
+    font-size: 11px;
+    letter-spacing: 1.8px;
+    font-weight: 500;
+    color: #2c2c2c;
+  }
+
+  /* Screen container */
+  .screens {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+  }
+  .screen {
+    position: absolute;
+    inset: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 18px 22px 24px;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.18s ease;
+  }
+  .screen.is-active {
+    visibility: visible;
+    opacity: 1;
+  }
+  .screen--checkout {
+    background: #fdfaf3;
+    padding: 14px 18px 20px;
+  }
+
+  /* Common */
+  .back-link {
+    font-size: 12px;
+    color: #2c2c2c;
+    margin-bottom: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: none;
+    border: none;
+    padding: 4px 0;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .section-title {
+    font-family: 'Courier New', monospace;
+    font-size: 20px;
+    font-weight: 400;
+    color: #4d4639;
+    margin: 0 0 12px;
+    line-height: 1.2;
+  }
+  .section-title--lg { font-size: 26px; }
+  .section-sub {
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    color: #6b6354;
+    margin: 0 0 18px;
+    line-height: 1.4;
+  }
+  .eyebrow {
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    color: #6b6354;
+    text-transform: uppercase;
+    margin: 16px 0 8px;
+  }
+  .heading-display {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 400;
+    color: #4d4639;
+    margin: 0 0 24px;
+    line-height: 1.15;
+  }
+  .filter-row {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 12px 4px;
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    color: #4d4639;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+
+  /* Service card */
+  .service-card { padding: 8px 0 16px; }
+  .service-card__img {
+    width: 70%;
+    aspect-ratio: 1;
+    margin: 0 auto 14px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 50%, #f3d8e0 0%, #d9b6c0 28%, #a07685 60%, #f5efe2 95%);
+    filter: blur(0.5px);
+  }
+  .service-card__name {
+    font-family: 'Courier New', monospace;
+    font-size: 16px;
+    color: #4d4639;
+    margin-bottom: 6px;
+  }
+  .service-card__link {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: #4d4639;
+    text-decoration: underline;
+    margin-bottom: 12px;
+    background: none; border: none; padding: 0;
+    cursor: pointer;
+  }
+  .divider {
+    border-top: 1px solid var(--line);
+    margin: 12px 0;
+  }
+  .meta {
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    color: #4d4639;
+    line-height: 1.6;
+    margin-bottom: 14px;
+  }
+
+  /* Buttons */
+  .btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    text-align: center;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    border: 1px solid var(--cta-dark);
+    background: transparent;
+    color: var(--cta-dark);
+    cursor: pointer;
+    margin-bottom: 0;
+  }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn--filled { background: var(--cta-dark); color: #fff; }
+  .btn--light { background: var(--cta-light); border-color: var(--cta-light); color: #4d4639; }
+  .btn--blue {
+    background: var(--primary-blue); color: #fff; border-color: var(--primary-blue);
+    font-family: -apple-system, sans-serif;
+    font-size: 13px; font-weight: 500;
+    border-radius: 4px;
+  }
+
+  /* Calendar */
+  .cal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    color: #4d4639;
+    padding: 10px 4px;
+    border-top: 1px solid var(--line);
+  }
+  .cal-header button {
+    background: none; border: none;
+    font-size: 16px;
+    color: #4d4639;
+    cursor: pointer;
+    padding: 0 8px;
+  }
+  .cal-week {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    margin-top: 8px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: #4d4639;
+    text-align: center;
+  }
+  .cal-week__head { padding: 8px 0; }
+  .cal-day {
+    padding: 10px 0;
+    text-align: center;
+    position: relative;
+    border: none;
+    background: transparent;
+    font-family: inherit;
+    color: inherit;
+    cursor: pointer;
+  }
+  .cal-day--active {
+    background: var(--cta-dark);
+    color: #fff;
+    border-radius: 4px;
+  }
+  .cal-day__dot {
+    width: 4px; height: 4px;
+    background: var(--cta-dark);
+    border-radius: 50%;
+    margin: 2px auto 0;
+  }
+  .availability-label {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: #4d4639;
+    margin: 18px 0 10px;
+  }
+  .time-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .time-slot {
+    border: 1px solid var(--line);
+    padding: 10px 0;
+    text-align: center;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    color: #4d4639;
+    background: transparent;
+    cursor: pointer;
+  }
+  .time-slot--active {
+    background: var(--cta-dark);
+    color: #fff;
+    border-color: var(--cta-dark);
+  }
+  .show-all {
+    display: block;
+    text-align: center;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: #4d4639;
+    text-decoration: underline;
+    margin-top: 14px;
+    background: none; border: none;
+    width: 100%;
+    cursor: pointer;
+  }
+
+  /* Form */
+  .form-group { margin-bottom: 14px; }
+  .form-label {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: #6b6354;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .form-input {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #4d4639;
+    background: transparent;
+    padding: 8px 0;
+    font-size: 14px;
+    color: #4d4639;
+    font-family: inherit;
+    outline: none;
+  }
+  .form-input:focus { border-bottom-color: var(--primary-blue); }
+  select.form-input {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M0 0l5 6 5-6z' fill='%234d4639'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 4px center;
+  }
+  .form-banner {
+    background: #ece5d2;
+    padding: 12px 14px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: #4d4639;
+    margin-bottom: 18px;
+  }
+  .form-banner a { color: inherit; text-decoration: underline; cursor: pointer; }
+  .checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    color: #4d4639;
+    padding: 6px 0;
+    cursor: pointer;
+  }
+  .checkbox-row__box {
+    width: 14px; height: 14px;
+    border: 1px solid #4d4639;
+    background: transparent;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: #4d4639;
+  }
+  .accordion-row {
+    display:flex; justify-content: space-between;
+    font-family: 'Courier New', monospace;
+    font-size: 14px; color: #4d4639;
+    cursor: pointer;
+    padding: 12px 0;
+  }
+  .total-row {
+    display: flex; justify-content: space-between;
+    font-family: 'Courier New', monospace;
+    font-size: 14px; color: #4d4639;
+    margin-bottom: 12px;
+  }
+  .total-row__label { color: #6b6354; font-size: 12px; }
+  .footer-note {
+    font-family: 'Courier New', monospace;
+    font-size: 10px; color: #6b6354;
+    margin-bottom: 10px; line-height: 1.5;
+  }
+
+  /* Wix Checkout styles */
+  .wix-summary {
+    background: #f3f0e9;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: var(--primary-blue);
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    margin-bottom: 12px;
+  }
+  .wix-summary__total {
+    color: #2c2c2c;
+    font-weight: 600;
+  }
+  .wix-banner {
+    background: #f3f0e9;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: #2c2c2c;
+    margin-bottom: 14px;
+    border-radius: 2px;
+  }
+  .wix-banner a { text-decoration: underline; cursor: pointer; }
+  .wix-section { margin-bottom: 16px; }
+  .wix-section__title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #2c2c2c;
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .wix-section__title a {
+    font-size: 12px; font-weight: 400; color: #2c2c2c;
+    text-decoration: underline; cursor: pointer;
+  }
+  .wix-customer-info { font-size: 12px; color: #6b6354; line-height: 1.6; }
+  .wix-divider {
+    border-top: 1px solid #d8d1c1;
+    margin: 14px 0;
+  }
+  .wix-payment-tile {
+    border: 1px solid #2c2c2c;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .wix-payment-tile__top {
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .wix-payment-tile__icon {
+    width: 26px; height: 18px;
+    border: 1px solid #2c2c2c;
+    border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+  }
+  .wix-payment-tile__bottom {
+    background: #efece4;
+    padding: 9px 12px;
+    border-top: 1px solid #2c2c2c;
+    font-size: 12px;
+    color: #2c2c2c;
+  }
+  .wix-form-label {
+    font-size: 12px; color: #2c2c2c;
+    margin-bottom: 4px; display: block;
+  }
+  .wix-form-input {
+    width: 100%;
+    border: 1px solid #2c2c2c;
+    border-radius: 3px;
+    padding: 9px 10px;
+    font-size: 13px;
+    background: #fff;
+    color: #2c2c2c;
+    margin-bottom: 10px;
+    font-family: inherit;
+    outline: none;
+  }
+  .wix-form-input:focus { border-color: var(--primary-blue); }
+  select.wix-form-input {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M0 0l5 6 5-6z' fill='%232c2c2c'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+  }
+  .wix-promo {
+    border: 1px solid #2c2c2c;
+    border-radius: 3px;
+    padding: 11px 12px;
+    font-size: 13px;
+    text-align: center;
+    margin-bottom: 14px;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .wix-line {
+    display: flex; justify-content: space-between;
+    font-size: 13px; margin-bottom: 6px;
+  }
+  .wix-line--total {
+    font-size: 16px; font-weight: 600; margin-top: 8px;
+  }
+  .wix-secure {
+    text-align: center;
+    font-size: 11px; color: #6b6354;
+    padding: 12px 0;
+    border-top: 1px solid #e6dfce;
+    margin-top: 12px;
+  }
+
+  /* Confirmation */
+  .confirm {
+    text-align: center;
+    padding: 60px 20px;
+  }
+  .confirm__check {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: #e6f5ec;
+    color: #1f8645;
+    margin: 0 auto 22px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px;
+  }
+  .confirm__title {
+    font-family: 'Courier New', monospace;
+    font-size: 22px; color: #4d4639;
+    margin-bottom: 10px;
+  }
+  .confirm__sub {
+    font-family: 'Courier New', monospace;
+    font-size: 13px; color: #6b6354;
+    margin-bottom: 30px;
+  }
+
+  /* Bottom nav controls (mockup helper, not part of product) */
+  .controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .controls button {
+    background: #fff;
+    border: 1px solid #d8d1c1;
+    border-radius: 18px;
+    padding: 6px 14px;
+    font-size: 12px;
+    color: #4d4639;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .controls__pill {
+    background: #2c2c2c;
+    color: #fff;
+    border-radius: 18px;
+    padding: 6px 14px;
+    font-size: 12px;
+  }
+
+  /* Booking-for checkbox (book on behalf) */
+  .behalf-check {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 14px 0 16px;
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    color: #4d4639;
+    user-select: none;
+  }
+  .behalf-check__box {
+    width: 16px;
+    height: 16px;
+    border: 1px solid #4d4639;
+    background: transparent;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #4d4639;
+    line-height: 1;
+  }
+  .behalf-check input:checked + .behalf-check__box {
+    background: var(--cta-dark);
+    border-color: var(--cta-dark);
+    color: #fff;
+  }
+  .behalf-check input:checked + .behalf-check__box::before {
+    content: '✓';
+  }
+
+  .behalf-notice {
+    background: #ece5d2;
+    border-left: 3px solid #5e564a;
+    padding: 12px 14px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: #4d4639;
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+  .behalf-notice strong {
+    display: block;
+    margin-bottom: 4px;
+    font-weight: 400;
+    color: #2c2c2c;
+  }
+
+  .section-pill {
+    display: inline-block;
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #6b6354;
+    background: #ece5d2;
+    padding: 4px 8px;
+    margin-bottom: 8px;
+  }
+
+  /* Service-type switcher */
+  .type-switch {
+    display: inline-flex;
+    background: #fff;
+    border: 1px solid #d8d1c1;
+    border-radius: 22px;
+    padding: 3px;
+    gap: 0;
+  }
+  .type-switch button {
+    border: none;
+    background: transparent;
+    padding: 7px 16px;
+    font-size: 12px;
+    font-family: inherit;
+    color: #6b6354;
+    cursor: pointer;
+    border-radius: 18px;
+  }
+  .type-switch button[aria-pressed="true"] {
+    background: #2c2c2c;
+    color: #fff;
+  }
+
+  /* Multi-participant (course & class) */
+  .participant-block {
+    border-top: 1px solid var(--line);
+    padding-top: 18px;
+    margin-top: 18px;
+    position: relative;
+  }
+  .participant-block:first-of-type {
+    border-top: none;
+    padding-top: 0;
+    margin-top: 0;
+  }
+  .participant-block__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .participant-block__title {
+    font-family: 'Courier New', monospace;
+    font-size: 18px;
+    color: #4d4639;
+  }
+  .participant-block__remove {
+    background: none;
+    border: none;
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    color: #6b6354;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  .add-participant-btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    text-align: center;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    border: 1px dashed var(--cta-dark);
+    background: transparent;
+    color: var(--cta-dark);
+    cursor: pointer;
+    margin: 18px 0 18px;
+  }
+  .add-participant-btn::before {
+    content: '+ ';
+  }
+
+  /* Participant navigator */
+  .pp-nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 4px 0 18px;
+    padding: 8px 6px;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .pp-nav__arrow {
+    background: transparent;
+    border: 1px solid var(--line);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 18px;
+    color: #4d4639;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-family: inherit;
+    line-height: 1;
+  }
+  .pp-nav__arrow:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+  .pp-nav__center {
+    flex: 1;
+    text-align: center;
+  }
+  .pp-nav__label {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: #4d4639;
+    margin-bottom: 6px;
+  }
+  .pp-nav__dots {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+  }
+  .pp-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #d8d1c1;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+  .pp-dot--active {
+    background: var(--cta-dark);
+  }
+</style>
+    <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "wmgp02ftys");
+    </script>
+</head>
+<body>
+
+<div class="stage">
+  <div class="stage__title">
+    <strong>ParkySpa — book on behalf</strong><br>
+    Try both paths (myself / someone else) for each service type.
+  </div>
+
+  <div class="type-switch" role="group" aria-label="Service type">
+    <button id="type-appointment" data-type="appointment" aria-pressed="true">Appointment</button>
+    <button id="type-course" data-type="course" aria-pressed="false">Course &amp; Class</button>
+  </div>
+
+  <div class="phone">
+    <div class="phone__notch"></div>
+    <div class="phone__screen">
+
+      <!-- ============================================================
+           SCREEN 1 — Service list (site widget)
+      ============================================================ -->
+      <div class="screen is-active" data-screen="services">
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="status-bar__icons"><span>●●●●</span><span>📶</span><span>🔋</span></div>
+        </div>
+        <div class="spa-header">
+          <div class="spa-header__brand">PARKYSPA</div>
+          <div class="spa-nav">
+            <button class="spa-nav__item">MENU</button>
+            <button class="spa-nav__item">BOOK NOW →</button>
+            <button class="spa-nav__item"><span class="spa-nav__avatar"></span>Log In</button>
+          </div>
+        </div>
+        <div style="padding: 18px 22px 24px;">
+          <div class="eyebrow">Treatments</div>
+          <div class="heading-display">Discover Complete<br>Relaxation</div>
+          <div class="filter-row">All Treatments &nbsp; ⌄</div>
+
+          <div class="service-card">
+            <div class="service-card__img"></div>
+            <div class="service-card__name">Hydrotherapy</div>
+            <button class="service-card__link">Read More</button>
+            <div class="divider"></div>
+            <div class="meta">1 hr<br>$65</div>
+            <button class="btn" data-go="schedule">Book Now</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================
+           SCREEN 2 — Schedule (date + time)
+      ============================================================ -->
+      <div class="screen" data-screen="schedule">
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="status-bar__icons"><span>●●●●</span><span>📶</span><span>🔋</span></div>
+        </div>
+        <div class="spa-header">
+          <div class="spa-header__brand">PARKYSPA</div>
+          <div class="spa-nav">
+            <button class="spa-nav__item">MENU</button>
+            <button class="spa-nav__item">BOOK NOW →</button>
+            <button class="spa-nav__item"><span class="spa-nav__avatar"></span>Log In</button>
+          </div>
+        </div>
+        <div style="padding: 18px 22px 24px;">
+          <button class="back-link" data-go="services">‹ Back</button>
+          <h2 class="section-title section-title--lg">Schedule your service</h2>
+          <p class="section-sub">Check out our availability and book the date and time that works for you</p>
+
+          <div class="form-label" style="margin-bottom: 6px;">Select a Date and Time</div>
+          <div class="cal-header">
+            <button>‹</button>
+            <span>May 2026</span>
+            <button>›</button>
+          </div>
+          <div class="cal-week">
+            <div class="cal-week__head">Sun</div>
+            <div class="cal-week__head">Mon</div>
+            <div class="cal-week__head">Tue</div>
+            <div class="cal-week__head">Wed</div>
+            <div class="cal-week__head">Thu</div>
+            <div class="cal-week__head">Fri</div>
+            <div class="cal-week__head">Sat</div>
+            <button class="cal-day">3</button>
+            <button class="cal-day">4</button>
+            <button class="cal-day">5</button>
+            <button class="cal-day cal-day--active" data-day>6</button>
+            <button class="cal-day">7<div class="cal-day__dot"></div></button>
+            <button class="cal-day">8<div class="cal-day__dot"></div></button>
+            <button class="cal-day">9</button>
+          </div>
+
+          <div class="availability-label">Availability for Wednesday, May 6</div>
+          <div class="time-grid" id="time-slots">
+            <button class="time-slot time-slot--active" data-slot>10:30 am</button>
+            <button class="time-slot" data-slot>11:00 am</button>
+            <button class="time-slot" data-slot>11:30 am</button>
+            <button class="time-slot" data-slot>12:00 pm</button>
+            <button class="time-slot" data-slot>12:30 pm</button>
+            <button class="time-slot" data-slot>1:00 pm</button>
+            <button class="time-slot" data-slot>1:30 pm</button>
+            <button class="time-slot" data-slot>2:00 pm</button>
+            <button class="time-slot" data-slot>2:30 pm</button>
+            <button class="time-slot" data-slot>3:00 pm</button>
+          </div>
+          <button class="show-all">Show all sessions</button>
+
+          <h2 class="section-title" style="margin-top: 28px;">Service Details</h2>
+          <div class="divider"></div>
+          <div style="display:flex; justify-content: space-between; font-family: 'Courier New', monospace; font-size: 14px; color: #4d4639; margin-bottom: 10px;">
+            <span>Hydrotherapy</span>
+            <span style="cursor:pointer;">✎ Edit</span>
+          </div>
+          <div class="accordion-row" style="border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin-bottom: 18px;">
+            <span style="font-size: 13px;">More details</span><span>⌄</span>
+          </div>
+          <button class="btn btn--light" data-go="form">Next</button>
+        </div>
+      </div>
+
+      <!-- ============================================================
+           SCREEN 3 — Booking form
+      ============================================================ -->
+      <div class="screen" data-screen="form">
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="status-bar__icons"><span>●●●●</span><span>📶</span><span>🔋</span></div>
+        </div>
+        <div class="spa-header">
+          <div class="spa-header__brand">PARKYSPA</div>
+          <div class="spa-nav">
+            <button class="spa-nav__item">MENU</button>
+            <button class="spa-nav__item">BOOK NOW →</button>
+            <button class="spa-nav__item"><span class="spa-nav__avatar"></span>Log In</button>
+          </div>
+        </div>
+        <div style="padding: 18px 22px 24px;" id="form-body">
+          <!-- Rendered by JS based on current participant index -->
+        </div>
+      </div>
+
+      <!-- ============================================================
+           SCREEN 4 — Wix Checkout
+      ============================================================ -->
+      <div class="screen screen--checkout" data-screen="checkout">
+        <div class="status-bar status-bar--white">
+          <span>9:41</span>
+          <div class="status-bar__icons"><span>●●●●</span><span>📶</span><span>🔋</span></div>
+        </div>
+        <div class="wix-header">
+          <div class="wix-header__title">SECURE CHECKOUT</div>
+        </div>
+        <div style="padding: 14px 18px 24px;">
+          <div class="wix-summary">
+            <span>Show summary ⌄</span>
+            <span class="wix-summary__total">$80.00</span>
+          </div>
+
+          <!-- Customer details: editable form (initial state for "someone else") -->
+          <div class="wix-section" id="customer-form" style="display:none;">
+            <div class="wix-section__title">Customer details</div>
+
+            <label class="wix-form-label">Email *</label>
+            <input class="wix-form-input" id="cust-email" placeholder="" />
+
+            <label class="wix-form-label">First name *</label>
+            <input class="wix-form-input" id="cust-first" placeholder="" />
+
+            <label class="wix-form-label">Last name *</label>
+            <input class="wix-form-input" id="cust-last" placeholder="" />
+
+            <label class="wix-form-label">Phone *</label>
+            <input class="wix-form-input" id="cust-phone" placeholder="" />
+
+            <button class="btn" id="cust-continue"
+              style="background:#000; color:#fff; border-color:#000; border-radius:4px; font-family:-apple-system,sans-serif; font-weight:500; margin-top: 8px;">
+              Continue
+            </button>
+
+            <div class="wix-section" style="margin-top: 22px;">
+              <div class="wix-section__title" style="color: #b8b3a4; font-weight: 400;">Payment</div>
+            </div>
+
+            <div class="wix-divider"></div>
+
+            <div style="display:flex; justify-content: space-between; font-size: 13px; margin-bottom: 12px; cursor:pointer;">
+              <span>Show items (1)</span><span>⌄</span>
+            </div>
+
+            <div class="wix-promo">🏷 &nbsp; Enter a promo code</div>
+          </div>
+
+          <!-- Customer details: read-only summary (after Continue, or default for "self") -->
+          <div class="wix-section" id="customer-summary">
+            <div class="wix-section__title" id="customer-details-title">Customer details <a id="customer-edit">Edit</a></div>
+            <div class="wix-customer-info" id="customer-details-body">
+              Rom Lampel<br>
+              roml@wix.com<br>
+              +972549226155
+            </div>
+          </div>
+
+          <!-- Sections gated behind Continue when booking on behalf -->
+          <div id="checkout-rest">
+            <div class="wix-divider"></div>
+
+            <div class="wix-section">
+              <div class="wix-section__title">Payment</div>
+              <div class="wix-payment-tile">
+                <div class="wix-payment-tile__top">
+                  <div class="wix-payment-tile__icon">💵</div>
+                  <span>Manual Payment</span>
+                </div>
+                <div class="wix-payment-tile__bottom">cash</div>
+              </div>
+            </div>
+
+            <div class="wix-section">
+              <div class="wix-section__title" style="font-size: 14px;">Billing address</div>
+
+              <label class="wix-form-label">First name *</label>
+              <input class="wix-form-input" value="Rom" />
+
+              <label class="wix-form-label">Last name *</label>
+              <input class="wix-form-input" value="Lampel" />
+
+              <label class="wix-form-label">Phone *</label>
+              <input class="wix-form-input" value="+972549226155" />
+
+            <label class="wix-form-label">Country/Region *</label>
+            <select class="wix-form-input">
+              <option value=""></option>
+              <option>United States</option>
+              <option>Israel</option>
+              <option>United Kingdom</option>
+            </select>
+
+            <label class="wix-form-label">Address *</label>
+            <input class="wix-form-input" />
+
+            <label class="wix-form-label">City *</label>
+            <input class="wix-form-input" />
+
+            <label class="wix-form-label">Zip / Postal code *</label>
+            <input class="wix-form-input" />
+          </div>
+
+          <div class="wix-divider"></div>
+
+          <div class="wix-section">
+            <div class="wix-section__title" style="font-size: 14px;">Review &amp; place order</div>
+            <div style="font-size: 12px; color: #6b6354; line-height: 1.5;">
+              Review your details above and continue when you're ready.
+            </div>
+          </div>
+
+          <div class="wix-divider"></div>
+
+          <div style="display:flex; justify-content: space-between; font-size: 13px; margin-bottom: 12px; cursor:pointer;">
+            <span>Show items (1)</span><span>⌄</span>
+          </div>
+
+          <div class="wix-promo">🏷 &nbsp; Enter a promo code</div>
+
+          <div class="wix-line"><span>Subtotal</span><span>$80.00</span></div>
+          <div class="wix-line wix-line--total"><span>Total</span><span>$80.00</span></div>
+
+          <button class="btn btn--blue" style="margin-top: 14px;" data-go="confirm">Place Order &amp; Pay</button>
+          <div class="wix-secure">🔒 &nbsp; Secure Checkout</div>
+          </div><!-- /#checkout-rest -->
+        </div>
+      </div>
+
+      <!-- ============================================================
+           SCREEN 5 — Confirmation
+      ============================================================ -->
+      <div class="screen" data-screen="confirm">
+        <div class="status-bar status-bar--white">
+          <span>9:41</span>
+          <div class="status-bar__icons"><span>●●●●</span><span>📶</span><span>🔋</span></div>
+        </div>
+        <div class="wix-header">
+          <div class="wix-header__title">SECURE CHECKOUT</div>
+        </div>
+        <div class="confirm">
+          <div class="confirm__check">✓</div>
+          <div class="confirm__title">Booking confirmed</div>
+          <div class="confirm__sub" id="confirm-sub">
+            Hydrotherapy<br>
+            Wednesday, May 6 · 10:30 am<br>
+            $80.00
+          </div>
+          <button class="btn btn--filled" style="max-width: 240px; margin: 0 auto;" data-go="services">Start over</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="controls">
+    <span class="controls__pill" id="step-pill">1 / 5</span>
+    <button id="prev-btn">← Back</button>
+    <button id="next-btn">Next →</button>
+    <button id="restart-btn">Restart</button>
+  </div>
+</div>
+
+<script>
+  const order = ['services', 'schedule', 'form', 'checkout', 'confirm'];
+  let current = 0;
+
+  function show(name) {
+    const idx = order.indexOf(name);
+    if (idx === -1) return;
+    current = idx;
+    document.querySelectorAll('.screen').forEach(s => {
+      s.classList.toggle('is-active', s.dataset.screen === name);
+      if (s.dataset.screen === name) s.scrollTop = 0;
+    });
+    document.getElementById('step-pill').textContent = (idx + 1) + ' / ' + order.length;
+  }
+
+  document.querySelectorAll('[data-go]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      show(btn.dataset.go);
+    });
+  });
+
+  document.getElementById('next-btn').addEventListener('click', () => {
+    if (current < order.length - 1) show(order[current + 1]);
+  });
+  document.getElementById('prev-btn').addEventListener('click', () => {
+    if (current > 0) show(order[current - 1]);
+  });
+  document.getElementById('restart-btn').addEventListener('click', () => {
+    show('services');
+  });
+
+  // Time slot selection
+  document.querySelectorAll('[data-slot]').forEach(slot => {
+    slot.addEventListener('click', () => {
+      document.querySelectorAll('[data-slot]').forEach(s => s.classList.remove('time-slot--active'));
+      slot.classList.add('time-slot--active');
+    });
+  });
+
+  // Day selection (light interactive nicety)
+  document.querySelectorAll('.cal-day').forEach(d => {
+    d.addEventListener('click', () => {
+      document.querySelectorAll('.cal-day').forEach(x => x.classList.remove('cal-day--active'));
+      d.classList.add('cal-day--active');
+    });
+  });
+
+  function toggleCheck(input) {
+    const box = input.parentElement.querySelector('.checkbox-row__box');
+    box.textContent = input.checked ? '✓' : '';
+  }
+
+  // ----- Booking-for ("myself" / "someone else") -----
+  let bookingFor = 'self';
+
+  // ----- Service type (appointment / course) -----
+  let serviceType = 'appointment';
+
+  // ----- Participant data + which one is currently being edited -----
+  // For appointment: always exactly 1 participant.
+  // For course: starts at 1, grows when user clicks "Add Another Participant".
+  let participants = [emptyParticipant()];
+  let currentIdx = 0;
+
+  function emptyParticipant() {
+    return { first: '', last: '', email: '', phone: '', food: [], shirt: '', notes: '' };
+  }
+
+  function applyServiceType(type) {
+    serviceType = type;
+    document.querySelectorAll('.type-switch button').forEach(b => {
+      b.setAttribute('aria-pressed', b.dataset.type === type ? 'true' : 'false');
+    });
+    if (type === 'appointment') {
+      // Collapse to a single participant when switching back
+      participants = participants.slice(0, 1);
+      currentIdx = 0;
+    }
+    renderForm();
+  }
+
+  document.querySelectorAll('.type-switch button').forEach(btn => {
+    btn.addEventListener('click', () => applyServiceType(btn.dataset.type));
+  });
+
+  // ----- Render the booking form for the currentIdx participant -----
+  function renderForm() {
+    const total = participants.length;
+    const isCourse = serviceType === 'course';
+    const isOther  = bookingFor === 'other';
+    const isFirst  = currentIdx === 0;
+    const p = participants[currentIdx];
+
+    const showBehalf  = isFirst;             // checkbox lives on participant 1
+    const showAdd     = isCourse;            // course only — adds another page
+    const showBookNow = isCourse ? true : true; // both end with Book Now / Add to Cart
+
+    let titleText;
+    if (isCourse) {
+      titleText = 'Booking Form — Participant ' + (currentIdx + 1) + (total > 1 ? ' of ' + total : '');
+    } else {
+      titleText = 'Booking Form';
+    }
+
+    let detailsHeading;
+    if (isCourse) {
+      detailsHeading = 'Participant ' + (currentIdx + 1) + ' Details';
+    } else {
+      detailsHeading = isOther ? 'Participant Details' : 'Client Details';
+    }
+
+    // Field labels behave differently per type/who
+    let lblFirst, lblLast, lblEmail, lblPhone;
+    if (isCourse) {
+      lblFirst = "Participant's first name *";
+      lblLast  = "Participant's last name *";
+      lblEmail = "Participant's email *";
+      lblPhone = "Participant's phone";
+    } else {
+      lblFirst = isOther ? "Participant's first name *" : 'First name *';
+      lblLast  = isOther ? "Participant's last name *"  : 'Last name *';
+      lblEmail = isOther ? "Participant's email *"      : 'Email *';
+      lblPhone = isOther ? "Participant's phone"        : 'Phone';
+    }
+
+    // Participant navigator (course mode, multiple participants)
+    let navHtml = '';
+    if (isCourse && total > 1) {
+      let dots = '';
+      for (let i = 0; i < total; i++) {
+        dots += `<button type="button" class="pp-dot ${i === currentIdx ? 'pp-dot--active' : ''}" data-go-idx="${i}" aria-label="Go to participant ${i + 1}"></button>`;
+      }
+      navHtml = `
+        <div class="pp-nav">
+          <button type="button" class="pp-nav__arrow" id="pp-prev" ${currentIdx === 0 ? 'disabled' : ''} aria-label="Previous participant">‹</button>
+          <div class="pp-nav__center">
+            <div class="pp-nav__label">Participant ${currentIdx + 1} of ${total}</div>
+            <div class="pp-nav__dots">${dots}</div>
+          </div>
+          <button type="button" class="pp-nav__arrow" id="pp-next" ${currentIdx === total - 1 ? 'disabled' : ''} aria-label="Next participant">›</button>
+        </div>
+      `;
+    }
+
+    const food = p.food || [];
+
+    const body = document.getElementById('form-body');
+    body.innerHTML = `
+      <button class="back-link" id="form-back">‹ Back</button>
+      <h2 class="section-title">${titleText}</h2>
+
+      ${navHtml}
+
+      ${showBehalf ? `
+        <label class="behalf-check">
+          <input type="checkbox" id="behalf-input" hidden ${isOther ? 'checked' : ''}>
+          <span class="behalf-check__box" aria-hidden="true"></span>
+          <span class="behalf-check__label">I'm booking for someone else</span>
+        </label>
+
+        <div class="behalf-notice" style="display: ${isOther ? 'block' : 'none'};">
+          <strong>You're booking for someone else</strong>
+          Enter the <u>${isCourse ? "participants'" : "participant's"} details</u> below — they'll get the booking and any reminders. We'll ask for <u>your details</u> on the next step (checkout).
+        </div>
+      ` : ''}
+
+      <h2 class="section-title section-title--lg" style="margin-top: 18px;">${detailsHeading}</h2>
+
+      <div class="form-group">
+        <label class="form-label">${lblFirst}</label>
+        <input class="form-input" type="text" data-field="first" value="${escapeAttr(p.first)}" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">${lblLast}</label>
+        <input class="form-input" type="text" data-field="last" value="${escapeAttr(p.last)}" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">${lblEmail}</label>
+        <input class="form-input" type="email" data-field="email" value="${escapeAttr(p.email)}" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">${lblPhone}</label>
+        <div class="form-input" style="display:flex; align-items: center; gap: 8px; padding: 8px 0;">🌐 ⌄ <input type="tel" data-field="phone" value="${escapeAttr(p.phone)}" style="border:none; background:transparent; outline:none; flex:1; font-size: 14px;" /></div>
+      </div>
+
+      <div class="form-label" style="margin-top: 8px;">Food preference</div>
+      ${['Vegetarian','Vegan','Gluten-free','Dairy-free','Other'].map(opt => `
+        <label class="checkbox-row">
+          <input type="checkbox" hidden data-food="${opt}" ${food.includes(opt) ? 'checked' : ''} onchange="toggleCheck(this)">
+          <span class="checkbox-row__box">${food.includes(opt) ? '✓' : ''}</span>${opt}
+        </label>
+      `).join('')}
+
+      <div class="form-group" style="margin-top: 16px;">
+        <label class="form-label">T-shirt size</label>
+        <select class="form-input" data-field="shirt">
+          <option value=""></option>
+          ${['S','M','L','XL'].map(s => `<option ${p.shirt === s ? 'selected' : ''}>${s}</option>`).join('')}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Anything else we should know</label>
+        <input class="form-input" type="text" data-field="notes" value="${escapeAttr(p.notes)}" />
+      </div>
+
+      <div class="divider" style="margin: 18px 0 6px;"></div>
+      <div class="accordion-row">
+        <span>Booking Details</span><span>⌄</span>
+      </div>
+      <div class="divider"></div>
+
+      <div style="font-family: 'Courier New', monospace; font-size: 13px; color: #6b6354; margin-bottom: 6px;">Payment Details</div>
+      <div class="total-row"><span>Total</span><span>${'$' + (80 * total)}</span></div>
+
+      <div class="footer-note">By completing your booking, you agree to receive related phone notifications.</div>
+
+      ${showAdd ? `<button class="add-participant-btn" id="add-participant">Add Another Participant</button>` : ''}
+
+      <button class="btn btn--light" style="margin-bottom: 8px;" id="add-to-cart-btn">Add to Cart</button>
+      <button class="btn btn--filled" id="book-now-btn">Book Now</button>
+    `;
+
+    // Wire up handlers
+    body.querySelectorAll('[data-field]').forEach(input => {
+      input.addEventListener('input', () => {
+        participants[currentIdx][input.dataset.field] = input.value;
+      });
+    });
+    body.querySelectorAll('[data-food]').forEach(input => {
+      input.addEventListener('change', () => {
+        const list = participants[currentIdx].food || [];
+        const opt = input.dataset.food;
+        if (input.checked && !list.includes(opt)) list.push(opt);
+        if (!input.checked) {
+          const i = list.indexOf(opt);
+          if (i > -1) list.splice(i, 1);
+        }
+        participants[currentIdx].food = list;
+      });
+    });
+
+    const behalfCb = document.getElementById('behalf-input');
+    if (behalfCb) {
+      behalfCb.addEventListener('change', e => {
+        bookingFor = e.target.checked ? 'other' : 'self';
+        applyCheckoutForBookingFor();
+        renderForm();
+      });
+    }
+
+    document.getElementById('form-back').addEventListener('click', () => {
+      saveCurrent();
+      show('schedule');
+    });
+
+    const prevArrow = document.getElementById('pp-prev');
+    if (prevArrow) prevArrow.addEventListener('click', () => {
+      if (currentIdx === 0) return;
+      saveCurrent();
+      currentIdx--;
+      renderForm();
+      scrollFormTop();
+    });
+
+    const nextArrow = document.getElementById('pp-next');
+    if (nextArrow) nextArrow.addEventListener('click', () => {
+      if (currentIdx >= participants.length - 1) return;
+      saveCurrent();
+      currentIdx++;
+      renderForm();
+      scrollFormTop();
+    });
+
+    body.querySelectorAll('[data-go-idx]').forEach(dot => {
+      dot.addEventListener('click', () => {
+        const idx = parseInt(dot.dataset.goIdx, 10);
+        if (idx === currentIdx) return;
+        saveCurrent();
+        currentIdx = idx;
+        renderForm();
+        scrollFormTop();
+      });
+    });
+
+    const addBtn = document.getElementById('add-participant');
+    if (addBtn) addBtn.addEventListener('click', () => {
+      saveCurrent();
+      participants.push(emptyParticipant());
+      currentIdx = participants.length - 1;
+      renderForm();
+      scrollFormTop();
+    });
+
+    document.getElementById('book-now-btn').addEventListener('click', () => {
+      saveCurrent();
+      applyCheckoutForBookingFor();
+      updateConfirmation();
+      show('checkout');
+    });
+    document.getElementById('add-to-cart-btn').addEventListener('click', () => {
+      saveCurrent();
+      applyCheckoutForBookingFor();
+      updateConfirmation();
+      show('checkout');
+    });
+  }
+
+  function saveCurrent() {
+    const body = document.getElementById('form-body');
+    body.querySelectorAll('[data-field]').forEach(input => {
+      participants[currentIdx][input.dataset.field] = input.value;
+    });
+  }
+
+  function scrollFormTop() {
+    const screen = document.querySelector('[data-screen="form"]');
+    if (screen) screen.scrollTop = 0;
+  }
+
+  function escapeAttr(s) {
+    return (s || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+  }
+
+  // ----- Checkout adaptations driven by bookingFor -----
+  function applyCheckoutForBookingFor() {
+    const isOther = bookingFor === 'other';
+    const custForm = document.getElementById('customer-form');
+    const custSummary = document.getElementById('customer-summary');
+    const custBody = document.getElementById('customer-details-body');
+    const checkoutRest = document.getElementById('checkout-rest');
+
+    if (isOther) {
+      custForm.style.display = 'block';
+      custSummary.style.display = 'none';
+      checkoutRest.style.display = 'none';
+      custBody.innerHTML = '';
+    } else {
+      custForm.style.display = 'none';
+      custSummary.style.display = 'block';
+      checkoutRest.style.display = 'block';
+      custBody.innerHTML = 'Rom Lampel<br>roml@wix.com<br>+972549226155';
+    }
+
+    // Update price in checkout pill / total to reflect participant count
+    const total = participants.length * 80;
+    document.querySelector('.wix-summary__total').textContent = '$' + total + '.00';
+    document.querySelectorAll('.wix-line').forEach(line => {
+      const label = line.querySelector('span:first-child');
+      if (label && (label.textContent === 'Subtotal' || label.textContent === 'Total')) {
+        line.querySelector('span:last-child').textContent = '$' + total + '.00';
+      }
+    });
+  }
+
+  function updateConfirmation() {
+    const confirmSub = document.getElementById('confirm-sub');
+    const total = participants.length * 80;
+    const lines = ['Hydrotherapy', 'Wednesday, May 6 · 10:30 am'];
+
+    if (serviceType === 'course' && participants.length > 0) {
+      const names = participants.map((p, i) => {
+        const name = (p.first + ' ' + p.last).trim() || ('Participant ' + (i + 1));
+        return '· ' + name;
+      });
+      lines.push('Participants (' + participants.length + '):');
+      lines.push(names.join('<br>'));
+    } else if (bookingFor === 'other' && participants[0]) {
+      const p = participants[0];
+      const name = (p.first + ' ' + p.last).trim() || 'Alex Morgan';
+      lines.push('For: ' + name);
+    }
+    lines.push('$' + total + '.00');
+    confirmSub.innerHTML = lines.join('<br>');
+  }
+
+  // Continue button on checkout: collapse customer form into summary, reveal rest
+  document.getElementById('cust-continue').addEventListener('click', () => {
+    const email = document.getElementById('cust-email').value.trim() || 'roml@wix.com';
+    const first = document.getElementById('cust-first').value.trim() || 'Rom';
+    const last  = document.getElementById('cust-last').value.trim()  || 'Lampel';
+    const phone = document.getElementById('cust-phone').value.trim() || '+972549226155';
+
+    document.getElementById('customer-details-body').innerHTML =
+      first + ' ' + last + '<br>' + email + '<br>' + phone;
+
+    document.getElementById('customer-form').style.display = 'none';
+    document.getElementById('customer-summary').style.display = 'block';
+    document.getElementById('checkout-rest').style.display = 'block';
+    const screen = document.querySelector('[data-screen="checkout"]');
+    if (screen) screen.scrollTop = 0;
+  });
+
+  document.getElementById('customer-edit').addEventListener('click', (e) => {
+    e.preventDefault();
+    if (bookingFor !== 'other') return;
+    document.getElementById('customer-form').style.display = 'block';
+    document.getElementById('customer-summary').style.display = 'none';
+    document.getElementById('checkout-rest').style.display = 'none';
+  });
+
+  applyServiceType('appointment');
+  applyCheckoutForBookingFor();
+  updateConfirmation();
+</script>
+
+</body>
+</html>
