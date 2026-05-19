@@ -343,7 +343,21 @@
 <script>
   document.addEventListener('click', (e) => {
     if (e.target.classList.contains('toggle')) {
-      e.target.classList.toggle('on');
+      const isOn = e.target.classList.toggle('on');
+      const row = e.target.closest('.row');
+      if (row) {
+        row.querySelector('.row-status').textContent = isOn ? 'Active' : 'Inactive';
+      }
+    }
+
+    if (e.target.textContent.trim() === 'Enable WhatsApp Notifications') {
+      document.querySelectorAll('.toggle').forEach(toggle => {
+        toggle.classList.add('on');
+      });
+      document.querySelectorAll('.row-status').forEach(status => {
+        status.textContent = 'Active';
+      });
+      document.querySelector('.copy-banner').style.display = 'none';
     }
   });
 </script>
