@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Option 9: Copy from another channel</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #EEF0F4;
+    color: #111432;
+    padding: 24px;
+  }
+  .browser {
+    width: 100%;
+    max-width: 1080px;
+    margin: 0 auto;
+    background: #FFFFFF;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(15,23,42,0.10);
+    overflow: hidden;
+  }
+  .topbar {
+    background: #FFFFFF;
+    border-bottom: 1px solid #EAECEF;
+    padding: 12px 20px;
+  }
+  .breadcrumbs { font-size: 13px; color: #6B7280; }
+  .breadcrumbs b { color: #111432; font-weight: 600; }
+
+  .page { padding: 24px 32px 40px; background: #F4F6FA; }
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+  .page-title { font-size: 24px; font-weight: 700; margin: 0 0 6px; }
+  .page-sub { font-size: 14px; color: #4B5563; }
+
+  .btn {
+    padding: 9px 16px;
+    border-radius: 24px;
+    border: 1px solid #D1D5DB;
+    background: #FFFFFF;
+    font-size: 14px;
+    cursor: pointer;
+    color: #111432;
+    font-weight: 500;
+  }
+  .btn-primary { background: #116DFF; color: #FFFFFF; border-color: #116DFF; }
+  .btn-primary:hover { background: #0E5BD9; }
+  .btn-ghost { background: transparent; border-color: transparent; color: #116DFF; }
+  .btn-sm { padding: 6px 12px; font-size: 13px; }
+
+  .quota {
+    background: #FFFFFF;
+    border-radius: 10px;
+    border: 1px solid #EAECEF;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .quota-bar { width: 60%; height: 6px; background: #E5E7EB; border-radius: 3px; margin-top: 8px; overflow: hidden; }
+  .quota-bar .fill { width: 0.4%; height: 100%; background: #116DFF; }
+  .quota-text { font-size: 13px; color: #4B5563; margin-top: 6px; }
+  .quota-title { font-size: 16px; font-weight: 600; }
+
+  .tabs {
+    display: flex;
+    gap: 24px;
+    border-bottom: 1px solid #E5E7EB;
+    margin-bottom: 16px;
+  }
+  .tab {
+    padding: 12px 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: #6B7280;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+  }
+  .tab.active { color: #116DFF; border-bottom-color: #116DFF; }
+  .tab .badge {
+    background: #DCFCE7;
+    color: #15803D;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 4px;
+  }
+  .tab .dot-active {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: #15803D;
+    border-radius: 50%;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  .copy-banner {
+    background: linear-gradient(90deg, #F0F6FF 0%, #F8FAFF 100%);
+    border: 1px solid #BFDBFE;
+    border-radius: 10px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .copy-banner-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: #FFFFFF;
+    border: 1px solid #BFDBFE;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .copy-banner-content { flex: 1; }
+  .copy-banner-title { font-size: 15px; font-weight: 600; }
+  .copy-banner-sub { font-size: 13px; color: #4B5563; margin-top: 3px; line-height: 1.45; }
+
+  .card {
+    background: #FFFFFF;
+    border-radius: 10px;
+    border: 1px solid #EAECEF;
+    overflow: hidden;
+  }
+  .card-header { padding: 18px 20px 14px; border-bottom: 1px solid #F1F3F5; }
+  .card-title { font-size: 16px; font-weight: 600; margin: 0 0 4px; }
+  .card-sub { font-size: 13px; color: #6B7280; }
+
+  .row {
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid #F1F3F5;
+    gap: 14px;
+  }
+  .row:last-child { border-bottom: none; }
+  .row-status { font-size: 13px; color: #6B7280; width: 60px; flex-shrink: 0; }
+  .row-content { flex: 1; min-width: 0; }
+  .row-title { font-size: 14px; color: #111432; font-weight: 500; }
+  .row-meta { font-size: 12px; color: #6B7280; margin-top: 3px; }
+  .row-actions { display: flex; gap: 6px; align-items: center; }
+  .icon-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid #D1D5DB;
+    background: #FFFFFF;
+    cursor: pointer;
+    color: #6B7280;
+  }
+
+  .toggle {
+    width: 36px;
+    height: 20px;
+    background: #CBD5E1;
+    border-radius: 10px;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.2s;
+    flex-shrink: 0;
+  }
+  .toggle::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    background: #FFFFFF;
+    border-radius: 50%;
+    transition: left 0.2s;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  }
+  .toggle.on { background: #116DFF; }
+  .toggle.on::after { left: 18px; }
+</style>
+</head>
+<body>
+
+<div class="browser">
+  <div class="topbar">
+    <div class="breadcrumbs">Settings &nbsp;›&nbsp; Booking Settings &nbsp;›&nbsp; <b>Notifications you send</b></div>
+  </div>
+  <div class="page">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Notifications you send</h1>
+        <div class="page-sub">Manage notifications that are automatically sent to clients. <span style="color:#116DFF">Learn more</span></div>
+      </div>
+      <button class="btn">More Actions ▾</button>
+    </div>
+
+    <div class="quota">
+      <div style="flex:1">
+        <div class="quota-title">249 messages left</div>
+        <div class="quota-bar"><div class="fill"></div></div>
+        <div class="quota-text">1 / 250 sent. Your messaging quota renews on the 1st of each month.</div>
+      </div>
+      <button class="btn btn-primary">Upgrade Messaging Plan</button>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active">WhatsApp</div>
+      <div class="tab">SMS</div>
+      <div class="tab">Emails <span class="badge">Free</span></div>
+    </div>
+
+    <div class="copy-banner">
+      <div class="copy-banner-icon">✉️</div>
+      <div class="copy-banner-content">
+        <div class="copy-banner-title">Keep clients updated on WhatsApp</div>
+        <div class="copy-banner-sub">You already send 8 booking notifications by email. Mirror them to WhatsApp in one click so clients never miss a booking update.</div>
+      </div>
+      <button class="btn btn-primary">Enable WhatsApp Notifications</button>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">WhatsApp Notifications</div>
+        <div class="card-sub">Choose which booking updates you send via WhatsApp.</div>
+      </div>
+
+      <div class="row">
+        <div class="toggle"></div>
+        <div class="row-status">Inactive</div>
+        <div class="row-content">
+          <div class="row-title">Send a WhatsApp to clients when they book</div>
+          <div class="row-meta">Session booked → Send a WhatsApp message (+1 action)</div>
+        </div>
+        <div class="row-actions">
+          <button class="icon-btn">⋯</button>
+          <button class="btn btn-sm">Edit</button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="toggle"></div>
+        <div class="row-status">Inactive</div>
+        <div class="row-content">
+          <div class="row-title">Send a WhatsApp to clients when their booking is canceled</div>
+          <div class="row-meta">Booking canceled → Send a WhatsApp message</div>
+        </div>
+        <div class="row-actions">
+          <button class="icon-btn">⋯</button>
+          <button class="btn btn-sm">Edit</button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="toggle"></div>
+        <div class="row-status">Inactive</div>
+        <div class="row-content">
+          <div class="row-title">Send a WhatsApp to clients when there's a change to appointment or class</div>
+          <div class="row-meta">Appointment or class updated → Send a WhatsApp message</div>
+        </div>
+        <div class="row-actions">
+          <button class="icon-btn">⋯</button>
+          <button class="btn btn-sm">Edit</button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="toggle"></div>
+        <div class="row-status">Inactive</div>
+        <div class="row-content">
+          <div class="row-title">Send a WhatsApp to clients when there's a change to a course</div>
+          <div class="row-meta">Course updated → Send a WhatsApp message</div>
+        </div>
+        <div class="row-actions">
+          <button class="icon-btn">⋯</button>
+          <button class="btn btn-sm">Edit</button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="toggle"></div>
+        <div class="row-status">Inactive</div>
+        <div class="row-content">
+          <div class="row-title">Send a WhatsApp to clients when their booking request is pending confirmation</div>
+          <div class="row-meta">Appointment requested → Send a WhatsApp message</div>
+        </div>
+        <div class="row-actions">
+          <button class="icon-btn">⋯</button>
+          <button class="btn btn-sm">Edit</button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="toggle"></div>
+        <div class="row-status">Inactive</div>
+        <div class="row-content">
+          <div class="row-title">Send a WhatsApp to clients when their booking request has been approved</div>
+          <div class="row-meta">Appointment request approved → Send a WhatsApp message</div>
+        </div>
+        <div class="row-actions">
+          <button class="icon-btn">⋯</button>
+          <button class="btn btn-sm">Edit</button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="toggle"></div>
+        <div class="row-status">Inactive</div>
+        <div class="row-content">
+          <div class="row-title">Send a WhatsApp to clients when their booking request has been declined</div>
+          <div class="row-meta">Appointment request declined → Send a WhatsApp message</div>
+        </div>
+        <div class="row-actions">
+          <button class="icon-btn">⋯</button>
+          <button class="btn btn-sm">Edit</button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="toggle"></div>
+        <div class="row-status">Inactive</div>
+        <div class="row-content">
+          <div class="row-title">Send a WhatsApp to clients a day before their session starts</div>
+          <div class="row-meta">Session starts → Send a WhatsApp message</div>
+        </div>
+        <div class="row-actions">
+          <button class="icon-btn">⋯</button>
+          <button class="btn btn-sm">Edit</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('toggle')) {
+      e.target.classList.toggle('on');
+    }
+  });
+</script>
+
+</body>
+</html>
