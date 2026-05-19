@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Notifications you send — 10 UX sketches</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #EEF0F4;
+    color: #111432;
+  }
+  /* Switcher */
+  .switcher {
+    position: sticky;
+    top: 0;
+    background: #FFFFFF;
+    border-bottom: 1px solid #E5E7EB;
+    padding: 14px 20px;
+    z-index: 100;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  }
+  .switcher-title {
+    font-size: 12px;
+    color: #6B7280;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  .switcher-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .chip {
+    padding: 8px 12px;
+    background: #F3F4F6;
+    border-radius: 999px;
+    font-size: 13px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    color: #374151;
+    user-select: none;
+    transition: all 0.15s;
+  }
+  .chip:hover { background: #E5E7EB; }
+  .chip.active {
+    background: #116DFF;
+    color: #FFFFFF;
+    border-color: #116DFF;
+  }
+  .chip-num {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+    text-align: center;
+    background: rgba(0,0,0,0.08);
+    color: inherit;
+    border-radius: 50%;
+    font-size: 11px;
+    margin-right: 6px;
+    font-weight: 600;
+  }
+  .chip.active .chip-num { background: rgba(255,255,255,0.25); }
+
+  /* Mockup canvas */
+  .stage {
+    padding: 24px;
+    display: flex;
+    justify-content: center;
+  }
+  .browser {
+    width: 100%;
+    max-width: 1080px;
+    background: #FFFFFF;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(15,23,42,0.10);
+    overflow: hidden;
+    position: relative;
+  }
+  .description {
+    max-width: 1080px;
+    margin: 0 auto 16px;
+    padding: 0 4px;
+    font-size: 14px;
+    color: #4B5563;
+    line-height: 1.5;
+  }
+  .description b { color: #111432; }
+
+  /* Wix-like top bar */
+  .topbar {
+    background: #FFFFFF;
+    border-bottom: 1px solid #EAECEF;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .breadcrumbs {
+    font-size: 13px;
+    color: #6B7280;
+  }
+  .breadcrumbs b { color: #111432; font-weight: 600; }
+
+  /* Page */
+  .page {
+    padding: 24px 32px 40px;
+    background: #F4F6FA;
+  }
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+  .page-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 0 6px;
+  }
+  .page-sub {
+    font-size: 14px;
+    color: #4B5563;
+  }
+  .btn {
+    padding: 9px 16px;
+    border-radius: 24px;
+    border: 1px solid #D1D5DB;
+    background: #FFFFFF;
+    font-size: 14px;
+    cursor: pointer;
+    color: #111432;
+    font-weight: 500;
+  }
+  .btn-primary {
+    background: #116DFF;
+    color: #FFFFFF;
+    border-color: #116DFF;
+  }
+  .btn-primary:hover { background: #0E5BD9; }
+  .btn-ghost {
+    background: transparent;
+    border-color: transparent;
+    color: #116DFF;
+  }
+  .btn-sm { padding: 6px 12px; font-size: 13px; }
+
+  /* Quota card */
+  .quota {
+    background: #FFFFFF;
+    border-radius: 10px;
+    border: 1px solid #EAECEF;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .quota-bar {
+    width: 60%;
+    height: 6px;
+    background: #E5E7EB;
+    border-radius: 3px;
+    margin-top: 8px;
+    overflow: hidden;
+  }
+  .quota-bar .fill { width: 0.4%; height: 100%; background: #116DFF; }
+  .quota-text { font-size: 13px; color: #4B5563; margin-top: 6px; }
+  .quota-title { font-size: 16px; font-weight: 600; }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 24px;
+    border-bottom: 1px solid #E5E7EB;
+    margin-bottom: 16px;
+  }
+  .tab {
+    padding: 12px 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: #6B7280;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+  }
+  .tab.active {
+    color: #116DFF;
+    border-bottom-color: #116DFF;
+  }
+  .tab .badge {
+    background: #DCFCE7;
+    color: #15803D;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 4px;
+  }
+
+  /* Card with notifications */
+  .card {
+    background: #FFFFFF;
+    border-radius: 10px;
+    border: 1px solid #EAECEF;
+    overflow: hidden;
+  }
+  .card-header {
+    padding: 18px 20px 14px;
+    border-bottom: 1px solid #F1F3F5;
+  }
+  .card-title { font-size: 16px; font-weight: 600; margin: 0 0 4px; }
+  .card-sub { font-size: 13px; color: #6B7280; }
+
+  /* Row */
+  .row {
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid #F1F3F5;
+    gap: 14px;
+  }
+  .row:last-child { border-bottom: none; }
+  .row-toggle { flex-shrink: 0; }
+  .row-status { font-size: 13px; color: #6B7280; width: 60px; flex-shrink: 0; }
+  .row-status.on { color: #15803D; font-weight: 500; }
+  .row-content { flex: 1; min-width: 0; }
+  .row-title { font-size: 14px; color: #111432; font-weight: 500; }
+  .row-meta { font-size: 12px; color: #6B7280; margin-top: 3px; }
+  .row-meta .arrow { margin: 0 4px; }
+  .row-actions { display: flex; gap: 6px; align-items: center; }
+  .icon-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid #D1D5DB;
+    background: #FFFFFF;
+    cursor: pointer;
+    color: #6B7280;
+  }
+
+  /* Toggle */
+  .toggle {
+    width: 36px;
+    height: 20px;
+    background: #CBD5E1;
+    border-radius: 10px;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.2s;
+    flex-shrink: 0;
+  }
+  .toggle::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    background: #FFFFFF;
+    border-radius: 50%;
+    transition: left 0.2s;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  }
+  .toggle.on { background: #116DFF; }
+  .toggle.on::after { left: 18px; }
+  .toggle.lg { width: 44px; height: 24px; }
+  .toggle.lg::after { width: 20px; height: 20px; }
+  .toggle.lg.on::after { left: 22px; }
+
+  /* OPTION 1: master toggle banner */
+  .master-row {
+    background: linear-gradient(90deg, #EAF2FF 0%, #F4F8FF 100%);
+    padding: 16px 20px;
+    border-bottom: 1px solid #D6E4FF;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .master-row-content { flex: 1; }
+  .master-row-title { font-size: 14px; font-weight: 600; }
+  .master-row-sub { font-size: 12px; color: #6B7280; margin-top: 2px; }
+
+  /* OPTION 2: dropdown menu */
+  .dropdown {
+    position: absolute;
+    top: 70px;
+    right: 32px;
+    background: #FFFFFF;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(15,23,42,0.18);
+    padding: 6px;
+    width: 260px;
+    border: 1px solid #E5E7EB;
+    z-index: 5;
+  }
+  .dropdown-item {
+    padding: 10px 12px;
+    font-size: 13px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .dropdown-item:hover { background: #F4F6FA; }
+  .dropdown-item.new { color: #116DFF; font-weight: 500; }
+  .dropdown-divider { height: 1px; background: #F1F3F5; margin: 4px 0; }
+
+  /* OPTION 3: recommended preset card */
+  .preset-card {
+    background: linear-gradient(135deg, #116DFF 0%, #6E47FF 100%);
+    color: white;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .preset-card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+  }
+  .preset-card-content { flex: 1; }
+  .preset-card h3 { margin: 0 0 4px; font-size: 16px; }
+  .preset-card p { margin: 0; font-size: 13px; opacity: 0.9; line-height: 1.4; }
+  .btn-white {
+    background: white;
+    color: #116DFF;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  /* OPTION 4: preset picker */
+  .preset-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 20px;
+    background: #F8FAFF;
+    border-bottom: 1px solid #E5E7EB;
+  }
+  .preset-bar-label { font-size: 13px; color: #4B5563; font-weight: 500; }
+  .preset-chip {
+    padding: 7px 14px;
+    border-radius: 18px;
+    font-size: 13px;
+    border: 1px solid #D1D5DB;
+    background: #FFFFFF;
+    cursor: pointer;
+    color: #374151;
+  }
+  .preset-chip.selected {
+    background: #116DFF;
+    color: white;
+    border-color: #116DFF;
+  }
+  .preset-chip .count {
+    font-size: 11px;
+    margin-left: 4px;
+    opacity: 0.7;
+  }
+
+  /* OPTION 5: bulk select */
+  .row.with-check { padding-left: 16px; }
+  .check {
+    width: 20px;
+    height: 20px;
+    border: 1.5px solid #D1D5DB;
+    border-radius: 4px;
+    flex-shrink: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #FFFFFF;
+  }
+  .check.checked {
+    background: #116DFF;
+    border-color: #116DFF;
+    color: white;
+    font-size: 13px;
+  }
+  .check.checked::after { content: "✓"; }
+  .check-header-bar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 20px;
+    background: #F4F6FA;
+    border-bottom: 1px solid #E5E7EB;
+    font-size: 13px;
+    color: #4B5563;
+  }
+  .bulk-action-bar {
+    position: sticky;
+    bottom: 0;
+    background: #111432;
+    color: white;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 0 0 10px 10px;
+  }
+  .bulk-action-bar .count-pill {
+    background: rgba(255,255,255,0.15);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 13px;
+    margin-right: 12px;
+  }
+  .bulk-buttons { display: flex; gap: 8px; }
+  .btn-dark-primary {
+    background: #116DFF;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 18px;
+    font-size: 13px;
+    cursor: pointer;
+    font-weight: 500;
+  }
+  .btn-dark-ghost {
+    background: transparent;
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 8px 16px;
+    border-radius: 18px;
+    font-size: 13px;
+    cursor: pointer;
+  }
+
+  /* OPTION 6: first-run modal */
+  .modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(15,23,42,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+  }
+  .modal {
+    background: white;
+    border-radius: 14px;
+    width: 560px;
+    max-width: 90%;
+    padding: 28px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  }
+  .modal-title { font-size: 22px; font-weight: 700; margin: 0 0 6px; }
+  .modal-sub { font-size: 14px; color: #6B7280; margin: 0 0 20px; }
+  .preset-option {
+    border: 1.5px solid #E5E7EB;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .preset-option:hover { border-color: #116DFF; background: #F8FAFF; }
+  .preset-option.selected { border-color: #116DFF; background: #F0F6FF; }
+  .preset-option .radio {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid #D1D5DB;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .preset-option.selected .radio {
+    border-color: #116DFF;
+    background: radial-gradient(circle, #116DFF 35%, white 40%);
+  }
+  .preset-option .info { flex: 1; }
+  .preset-option .info-title { font-size: 14px; font-weight: 600; }
+  .preset-option .info-sub { font-size: 13px; color: #6B7280; margin-top: 3px; }
+  .preset-option .info-meta { font-size: 12px; color: #116DFF; margin-top: 6px; font-weight: 500; }
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  /* OPTION 7: empty state banner */
+  .banner {
+    background: linear-gradient(90deg, #FFF7E6 0%, #FFFBF0 100%);
+    border: 1px solid #FFD591;
+    border-radius: 10px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .banner-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #FFE7BA;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .banner-content { flex: 1; }
+  .banner-title { font-size: 14px; font-weight: 600; }
+  .banner-sub { font-size: 13px; color: #6B7280; margin-top: 2px; }
+
+  /* OPTION 8: groups */
+  .group {
+    background: #FFFFFF;
+    border-radius: 10px;
+    border: 1px solid #EAECEF;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .group-header {
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    background: #F8FAFF;
+    border-bottom: 1px solid #E5E7EB;
+  }
+  .group-header .caret {
+    width: 18px;
+    height: 18px;
+    text-align: center;
+    color: #6B7280;
+    font-size: 12px;
+    transition: transform 0.2s;
+  }
+  .group-header.collapsed .caret { transform: rotate(-90deg); }
+  .group-info { flex: 1; }
+  .group-title { font-size: 14px; font-weight: 600; }
+  .group-sub { font-size: 12px; color: #6B7280; margin-top: 2px; }
+
+  /* OPTION 9: copy from channel */
+  .copy-banner {
+    background: #F0F6FF;
+    border: 1px solid #BFDBFE;
+    border-radius: 10px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .copy-banner-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .copy-banner-content { flex: 1; }
+  .copy-banner-title { font-size: 14px; font-weight: 600; }
+  .copy-banner-sub { font-size: 13px; color: #4B5563; margin-top: 2px; }
+
+  /* OPTION 10: quota preview sheet */
+  .sheet-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(15,23,42,0.45);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .sheet {
+    background: white;
+    border-radius: 14px;
+    width: 520px;
+    max-width: 90%;
+    padding: 24px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  }
+  .sheet-title { font-size: 20px; font-weight: 700; margin: 0 0 6px; }
+  .sheet-sub { font-size: 14px; color: #6B7280; margin: 0 0 18px; }
+  .quota-preview-card {
+    background: #F8FAFF;
+    border: 1px solid #BFDBFE;
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  .quota-preview-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    padding: 6px 0;
+  }
+  .quota-preview-row b { font-weight: 600; }
+  .quota-preview-bar {
+    height: 8px;
+    background: #E5E7EB;
+    border-radius: 4px;
+    margin: 10px 0 6px;
+    overflow: hidden;
+    display: flex;
+  }
+  .quota-preview-bar .used { background: #94A3B8; }
+  .quota-preview-bar .projected { background: #116DFF; }
+  .legend {
+    display: flex;
+    gap: 14px;
+    font-size: 12px;
+    color: #6B7280;
+  }
+  .legend-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    margin-right: 5px;
+    vertical-align: middle;
+  }
+  .selectable-list {
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    max-height: 180px;
+    overflow-y: auto;
+    margin-bottom: 16px;
+  }
+  .selectable-row {
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    border-bottom: 1px solid #F1F3F5;
+  }
+  .selectable-row:last-child { border-bottom: none; }
+</style>
+</head>
+<body>
+
+<div class="switcher">
+  <div class="switcher-title">Pick a sketch</div>
+  <div class="switcher-row" id="switcher">
+    <div class="chip active" data-opt="1"><span class="chip-num">1</span>Master toggle</div>
+    <div class="chip" data-opt="2"><span class="chip-num">2</span>More Actions menu</div>
+    <div class="chip" data-opt="3"><span class="chip-num">3</span>Recommended preset</div>
+    <div class="chip" data-opt="4"><span class="chip-num">4</span>Preset picker</div>
+    <div class="chip" data-opt="5"><span class="chip-num">5</span>Bulk select</div>
+    <div class="chip" data-opt="6"><span class="chip-num">6</span>First-run modal</div>
+    <div class="chip" data-opt="7"><span class="chip-num">7</span>Empty-state banner</div>
+    <div class="chip" data-opt="8"><span class="chip-num">8</span>Lifecycle groups</div>
+    <div class="chip" data-opt="9"><span class="chip-num">9</span>Copy from channel</div>
+    <div class="chip" data-opt="10"><span class="chip-num">10</span>Quota preview</div>
+  </div>
+</div>
+
+<div class="stage">
+  <div style="width: 100%; max-width: 1080px;">
+    <div class="description" id="desc"></div>
+    <div class="browser" id="browser"></div>
+  </div>
+</div>
+
+<script>
+const notifications = [
+  { title: "Send a WhatsApp to clients when they book", meta: "Session booked → Send a WhatsApp message (+1 action)" },
+  { title: "Send a WhatsApp to clients when their booking is canceled", meta: "Booking canceled → Send a WhatsApp message" },
+  { title: "Send a WhatsApp to clients when there's a change to appointment or class", meta: "Appointment or class updated → Send a WhatsApp message" },
+  { title: "Send a WhatsApp to clients when there's a change to a course", meta: "Course updated → Send a WhatsApp message" },
+  { title: "Send a WhatsApp to clients when their booking request is pending confirmation", meta: "Appointment requested → Send a WhatsApp message" },
+  { title: "Send a WhatsApp to clients when their booking request has been approved", meta: "Appointment request approved → Send a WhatsApp message" },
+  { title: "Send a WhatsApp to clients when their booking request has been declined", meta: "Appointment request declined → Send a WhatsApp message" },
+  { title: "Send a WhatsApp to clients a day before their session starts", meta: "Session starts → Send a WhatsApp message" }
+];
+
+function renderRow(n, opts = {}) {
+  const on = opts.on || false;
+  const check = opts.check;
+  return `
+    <div class="row ${opts.withCheck ? 'with-check' : ''}">
+      ${opts.withCheck ? `<div class="check ${check ? 'checked' : ''}"></div>` : ''}
+      <div class="toggle ${on ? 'on' : ''}"></div>
+      <div class="row-status ${on ? 'on' : ''}">${on ? 'Active' : 'Inactive'}</div>
+      <div class="row-content">
+        <div class="row-title">${n.title}</div>
+        <div class="row-meta">${n.meta}</div>
+      </div>
+      <div class="row-actions">
+        <button class="icon-btn">⋯</button>
+        <button class="btn btn-sm">Edit</button>
+      </div>
+    </div>
+  `;
+}
+
+function renderRows(opts = {}) {
+  return notifications.map(n => renderRow(n, opts)).join('');
+}
+
+function baseShell(content) {
+  return `
+    <div class="topbar">
+      <div class="breadcrumbs">Settings &nbsp;›&nbsp; Booking Settings &nbsp;›&nbsp; <b>Notifications you send</b></div>
+    </div>
+    <div class="page">${content}</div>
+  `;
+}
+
+function pageHeader(actionHtml = '') {
+  return `
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Notifications you send</h1>
+        <div class="page-sub">Manage notifications that are automatically sent to clients. <span style="color:#116DFF">Learn more</span></div>
+      </div>
+      <div style="display:flex; gap:8px;">
+        ${actionHtml}
+        <button class="btn">More Actions ▾</button>
+      </div>
+    </div>
+  `;
+}
+
+function quotaBlock() {
+  return `
+    <div class="quota">
+      <div style="flex:1">
+        <div class="quota-title">249 messages left</div>
+        <div class="quota-bar"><div class="fill"></div></div>
+        <div class="quota-text">1 / 250 sent. Your messaging quota renews on the 1st of each month.</div>
+      </div>
+      <button class="btn btn-primary">Upgrade Messaging Plan</button>
+    </div>
+  `;
+}
+
+function tabsBlock() {
+  return `
+    <div class="tabs">
+      <div class="tab active">WhatsApp</div>
+      <div class="tab">SMS</div>
+      <div class="tab">Emails <span class="badge">Free</span></div>
+    </div>
+  `;
+}
+
+const options = {
+  1: {
+    desc: `<b>Option 1: Channel-level master toggle.</b> A single switch sits at the top of each channel section. Tapping it flips every notification in the tab, with a small note that explains how many automations and quota will be used.`,
+    render: () => baseShell(`
+      ${pageHeader()}
+      ${quotaBlock()}
+      ${tabsBlock()}
+      <div class="card">
+        <div class="master-row">
+          <div class="toggle lg on"></div>
+          <div class="master-row-content">
+            <div class="master-row-title">Turn on all WhatsApp notifications (8)</div>
+            <div class="master-row-sub">Enabling all will use up to 8 messages from your quota per booking event.</div>
+          </div>
+          <button class="btn btn-ghost">Choose individually</button>
+        </div>
+        <div class="card-header">
+          <div class="card-title">WhatsApp Notifications</div>
+          <div class="card-sub">Choose which booking updates you send via WhatsApp.</div>
+        </div>
+        ${renderRows({ on: true })}
+      </div>
+    `)
+  },
+  2: {
+    desc: `<b>Option 2: More Actions menu.</b> Bulk actions live inside the existing dropdown. Lightweight, no new chrome, but less discoverable. Best as a complement to a more visible option.`,
+    render: () => baseShell(`
+      ${pageHeader()}
+      ${quotaBlock()}
+      ${tabsBlock()}
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">WhatsApp Notifications</div>
+          <div class="card-sub">Choose which booking updates you send via WhatsApp.</div>
+        </div>
+        ${renderRows()}
+      </div>
+      <div class="dropdown">
+        <div class="dropdown-item new">⚡ Enable all WhatsApp notifications</div>
+        <div class="dropdown-item new">⚡ Enable recommended (4)</div>
+        <div class="dropdown-item new">⚡ Enable across all channels</div>
+        <div class="dropdown-divider"></div>
+        <div class="dropdown-item">Disable all in this tab</div>
+        <div class="dropdown-item">Reset to defaults</div>
+        <div class="dropdown-divider"></div>
+        <div class="dropdown-item">View messaging history</div>
+      </div>
+    `)
+  },
+  3: {
+    desc: `<b>Option 3: Recommended preset (one-click).</b> A primary CTA enables the 4 highest-ROI notifications. Tooltip explains why each was picked. Balances speed with responsible quota use.`,
+    render: () => baseShell(`
+      ${pageHeader()}
+      ${quotaBlock()}
+      ${tabsBlock()}
+      <div class="preset-card">
+        <div class="preset-card-icon">✨</div>
+        <div class="preset-card-content">
+          <h3>Get started with recommended notifications</h3>
+          <p>We'll turn on the 4 notifications that reduce no-shows and improve client experience the most: booking confirmation, day-before reminder, cancellation, and reschedule.</p>
+        </div>
+        <button class="btn-white">Use recommended setup</button>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">WhatsApp Notifications</div>
+          <div class="card-sub">Choose which booking updates you send via WhatsApp.</div>
+        </div>
+        ${renderRows()}
+      </div>
+    `)
+  },
+  4: {
+    desc: `<b>Option 4: Preset picker.</b> Named bundles (Essentials, Customer-facing, Everything, Custom) with clear quota implications. Helps the user feel in control without scanning eight rows.`,
+    render: () => baseShell(`
+      ${pageHeader()}
+      ${quotaBlock()}
+      ${tabsBlock()}
+      <div class="card">
+        <div class="preset-bar">
+          <div class="preset-bar-label">Setup:</div>
+          <div class="preset-chip selected">Essentials <span class="count">(3)</span></div>
+          <div class="preset-chip">Customer-facing <span class="count">(5)</span></div>
+          <div class="preset-chip">Everything <span class="count">(8)</span></div>
+          <div class="preset-chip">Custom</div>
+          <div style="margin-left:auto; font-size:12px; color:#6B7280">≈ 90 messages/month at your booking pace</div>
+        </div>
+        <div class="card-header">
+          <div class="card-title">WhatsApp Notifications</div>
+          <div class="card-sub">Essentials includes confirmation, reminder, and cancellation.</div>
+        </div>
+        ${notifications.map((n, i) => renderRow(n, { on: [0,1,7].includes(i) })).join('')}
+      </div>
+    `)
+  },
+  5: {
+    desc: `<b>Option 5: Bulk selection with checkboxes.</b> Familiar pattern from email and file managers. Adds a checkbox column and a sticky bottom action bar for the selected rows.`,
+    render: () => baseShell(`
+      ${pageHeader()}
+      ${quotaBlock()}
+      ${tabsBlock()}
+      <div class="card">
+        <div class="check-header-bar">
+          <div class="check checked"></div>
+          <div style="flex:1">All 8 notifications selected</div>
+          <button class="btn btn-sm btn-ghost">Clear selection</button>
+        </div>
+        ${notifications.map(n => renderRow(n, { withCheck: true, check: true })).join('')}
+        <div class="bulk-action-bar">
+          <div style="display:flex; align-items:center;">
+            <span class="count-pill">8 selected</span>
+            <span style="font-size:13px; opacity:0.8">Estimated 180 messages/month</span>
+          </div>
+          <div class="bulk-buttons">
+            <button class="btn-dark-ghost">Disable</button>
+            <button class="btn-dark-primary">Enable selected</button>
+          </div>
+        </div>
+      </div>
+    `)
+  },
+  6: {
+    desc: `<b>Option 6: First-run setup modal.</b> On first visit (or right after creating a service), prompt the user with a preset picker. Bulk activation becomes the default path, not a hidden feature.`,
+    render: () => baseShell(`
+      ${pageHeader()}
+      ${quotaBlock()}
+      ${tabsBlock()}
+      <div class="card" style="opacity:0.4">
+        <div class="card-header">
+          <div class="card-title">WhatsApp Notifications</div>
+          <div class="card-sub">Choose which booking updates you send via WhatsApp.</div>
+        </div>
+        ${renderRows()}
+      </div>
+      <div class="modal-overlay">
+        <div class="modal">
+          <h2 class="modal-title">Set up client notifications</h2>
+          <p class="modal-sub">Pick a starting point. You can fine-tune any time.</p>
+          <div class="preset-option selected">
+            <div class="radio"></div>
+            <div class="info">
+              <div class="info-title">Essentials (recommended)</div>
+              <div class="info-sub">Confirmation, day-before reminder, cancellation. Best for most spas.</div>
+              <div class="info-meta">3 notifications · ≈ 90 msgs/month</div>
+            </div>
+          </div>
+          <div class="preset-option">
+            <div class="radio"></div>
+            <div class="info">
+              <div class="info-title">Full customer journey</div>
+              <div class="info-sub">Every status change and reminder, end-to-end.</div>
+              <div class="info-meta">8 notifications · ≈ 180 msgs/month</div>
+            </div>
+          </div>
+          <div class="preset-option">
+            <div class="radio"></div>
+            <div class="info">
+              <div class="info-title">Skip for now</div>
+              <div class="info-sub">I'll set these up manually.</div>
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button class="btn">Skip</button>
+            <button class="btn btn-primary">Apply to WhatsApp, SMS, and Email</button>
+          </div>
+        </div>
+      </div>
+    `)
+  },
+  7: {
+    desc: `<b>Option 7: Empty-state banner.</b> When everything is off, a prominent banner nudges the user with a single CTA. Disappears once at least one notification is active.`,
+    render: () => baseShell(`
+      ${pageHeader()}
+      ${quotaBlock()}
+      ${tabsBlock()}
+      <div class="banner">
+        <div class="banner-icon">📣</div>
+        <div class="banner-content">
+          <div class="banner-title">Your clients aren't getting any notifications</div>
+          <div class="banner-sub">Spas using reminders see up to 30% fewer no-shows. Turn on the recommended set in one click.</div>
+        </div>
+        <button class="btn btn-primary">Turn on recommended</button>
+        <button class="btn btn-ghost">Dismiss</button>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">WhatsApp Notifications</div>
+          <div class="card-sub">Choose which booking updates you send via WhatsApp.</div>
+        </div>
+        ${renderRows()}
+      </div>
+    `)
+  },
+  8: {
+    desc: `<b>Option 8: Lifecycle groups.</b> The 8 rows are reorganized into 3 meaningful groups, each with its own master toggle. Users can enable a chunk that makes sense without scanning every line.`,
+    render: () => baseShell(`
+      ${pageHeader()}
+      ${quotaBlock()}
+      ${tabsBlock()}
+      <div class="group">
+        <div class="group-header">
+          <div class="caret">▼</div>
+          <div class="group-info">
+            <div class="group-title">Booking confirmations</div>
+            <div class="group-sub">Sent when a client books or their request is approved.</div>
+          </div>
+          <div class="toggle on"></div>
+        </div>
+        ${renderRow(notifications[0], { on: true })}
+        ${renderRow(notifications[5], { on: true })}
+      </div>
+      <div class="group">
+        <div class="group-header">
+          <div class="caret">▼</div>
+          <div class="group-info">
+            <div class="group-title">Changes and cancellations</div>
+            <div class="group-sub">Keep clients in the loop when something shifts.</div>
+          </div>
+          <div class="toggle"></div>
+        </div>
+        ${renderRow(notifications[1])}
+        ${renderRow(notifications[2])}
+        ${renderRow(notifications[3])}
+        ${renderRow(notifications[4])}
+        ${renderRow(notifications[6])}
+      </div>
+      <div class="group">
+        <div class="group-header">
+          <div class="caret">▼</div>
+          <div class="group-info">
+            <div class="group-title">Reminders</div>
+            <div class="group-sub">Reduce no-shows with timely nudges.</div>
+          </div>
+          <div class="toggle on"></div>
+        </div>
+        ${renderRow(notifications[7], { on: true })}
+      </div>
+    `)
+  },
+  9: {
+    desc: `<b>Option 9: Copy from another channel.</b> Once one channel is configured (typically the free Email tab), offer a one-click mirror to WhatsApp or SMS. Reuses decisions the user already made.`,
+    render: () => baseShell(`
+      ${pageHeader()}
+      ${quotaBlock()}
+      ${tabsBlock()}
+      <div class="copy-banner">
+        <div class="copy-banner-icon">📋</div>
+        <div class="copy-banner-content">
+          <div class="copy-banner-title">You already enabled 5 notifications in Email</div>
+          <div class="copy-banner-sub">Match the same set here so your WhatsApp clients get the same updates.</div>
+        </div>
+        <button class="btn">Preview</button>
+        <button class="btn btn-primary">Match Email settings</button>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">WhatsApp Notifications</div>
+          <div class="card-sub">Choose which booking updates you send via WhatsApp.</div>
+        </div>
+        ${renderRows()}
+      </div>
+    `)
+  },
+  10: {
+    desc: `<b>Option 10: Quota-aware bulk enable.</b> "Enable all" opens a confirmation sheet that estimates monthly usage based on actual booking pace and lets the user deselect rows before committing.`,
+    render: () => baseShell(`
+      ${pageHeader('<button class="btn btn-primary">Enable all</button>')}
+      ${quotaBlock()}
+      ${tabsBlock()}
+      <div class="card" style="opacity:0.4">
+        <div class="card-header">
+          <div class="card-title">WhatsApp Notifications</div>
+          <div class="card-sub">Choose which booking updates you send via WhatsApp.</div>
+        </div>
+        ${renderRows()}
+      </div>
+      <div class="sheet-overlay">
+        <div class="sheet">
+          <h2 class="sheet-title">Enable 8 WhatsApp notifications?</h2>
+          <p class="sheet-sub">Here's how this will affect your messaging quota.</p>
+          <div class="quota-preview-card">
+            <div class="quota-preview-row"><span>Current usage</span><b>1 / 250</b></div>
+            <div class="quota-preview-row"><span>Projected with all enabled</span><b>~ 181 / 250</b></div>
+            <div class="quota-preview-bar">
+              <div class="used" style="width:0.5%"></div>
+              <div class="projected" style="width:72%"></div>
+            </div>
+            <div class="legend">
+              <span><span class="legend-dot" style="background:#94A3B8"></span>Current</span>
+              <span><span class="legend-dot" style="background:#116DFF"></span>Projected</span>
+              <span style="margin-left:auto">Based on ~22 bookings/month</span>
+            </div>
+          </div>
+          <div style="font-size:13px; color:#374151; margin-bottom:8px;">Adjust selection:</div>
+          <div class="selectable-list">
+            ${notifications.map((n, i) => `
+              <div class="selectable-row">
+                <div class="check ${i < 7 ? 'checked' : ''}"></div>
+                <div style="flex:1">${n.title.replace('Send a WhatsApp to clients ', '')}</div>
+                <div style="color:#6B7280; font-size:12px">~ ${[44, 8, 12, 4, 6, 18, 3, 86][i]} msg/mo</div>
+              </div>
+            `).join('')}
+          </div>
+          <div class="modal-actions">
+            <button class="btn">Cancel</button>
+            <button class="btn btn-primary">Enable 7 notifications</button>
+          </div>
+        </div>
+      </div>
+    `)
+  }
+};
+
+function render(opt) {
+  document.getElementById('browser').innerHTML = options[opt].render();
+  document.getElementById('desc').innerHTML = options[opt].desc;
+  document.querySelectorAll('.chip').forEach(c => {
+    c.classList.toggle('active', c.dataset.opt === String(opt));
+  });
+}
+
+document.getElementById('switcher').addEventListener('click', (e) => {
+  const chip = e.target.closest('.chip');
+  if (!chip) return;
+  render(chip.dataset.opt);
+});
+
+// Allow clicking toggles for fun
+document.addEventListener('click', (e) => {
+  if (e.target.classList.contains('toggle')) {
+    e.target.classList.toggle('on');
+  }
+  if (e.target.classList.contains('check')) {
+    e.target.classList.toggle('checked');
+  }
+});
+
+render(1);
+</script>
+
+</body>
+</html>
