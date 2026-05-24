@@ -593,6 +593,35 @@
     font-weight: 500;
   }
   .wds-tooltip-link:hover { opacity: 0.85; }
+
+  /* Tooltip-below variant (arrow on top, tooltip under the host) */
+  .wds-tooltip.wds-tooltip-below {
+    bottom: auto;
+    top: calc(100% + 10px);
+  }
+  .wds-tooltip.wds-tooltip-below::after {
+    top: auto;
+    bottom: 100%;
+    border-top-color: transparent;
+    border-bottom-color: #162D3D;
+  }
+
+  /* Tooltip host wrapping the disabled "+ Add Products" buttons.
+     The button itself is pointer-events:none when disabled, but the host
+     must still receive hover, so it intercepts on top of the button. */
+  .add-products-host {
+    cursor: help;
+  }
+  /* When a tag is selected, hide the helper tooltip and let clicks pass through */
+  .add-products-host.tag-ready {
+    cursor: default;
+  }
+  .add-products-host.tag-ready:hover .wds-tooltip,
+  .add-products-host.tag-ready:focus-within .wds-tooltip {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
   .btn-outline {
     background: #fff;
     color: #1a59ff;
@@ -913,6 +942,28 @@
     margin-bottom: 14px;
   }
   .wds-products-empty .wds-btn-secondary { padding: 7px 18px; }
+
+  /* Disabled button + dashed add-row */
+  .wds-btn-secondary.disabled,
+  .wds-btn-secondary[disabled] {
+    background: #FFFFFF;
+    color: #8C9EAE;
+    border-color: #C2CDD6;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  .wds-add-products.disabled,
+  .wds-add-products[disabled] {
+    color: #8C9EAE;
+    border-color: #DFE5EB;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  .wds-add-products.disabled:hover,
+  .wds-add-products[disabled]:hover {
+    background: transparent;
+    border-color: #DFE5EB;
+  }
 
   /* Tag input (when creating a new tag) */
   .wds-text-input {
@@ -1434,12 +1485,18 @@
         <div class="wds-products-empty" id="products-empty-state">
           <div class="title">No products added yet</div>
           <div class="desc">Choose products from your store catalog to recommend with this service.</div>
-          <button class="wds-btn wds-btn-secondary" onclick="openAddProducts()">+ Add Products</button>
+          <span class="wds-tooltip-host add-products-host" id="add-products-empty-host" tabindex="0">
+            <button class="wds-btn wds-btn-secondary disabled" id="add-products-empty-btn" onclick="openAddProducts()">+ Add Products</button>
+            <span class="wds-tooltip wds-tooltip-below">Choose or create a tag first to add products.</span>
+          </span>
         </div>
 
         <div id="products-populated-state" style="display:none;">
           <div class="wds-product-list" id="connected-products-list"></div>
-          <button class="wds-add-products" onclick="openAddProducts()">+ Add Products</button>
+          <span class="wds-tooltip-host add-products-host" id="add-products-row-host" tabindex="0" style="display:block;">
+            <button class="wds-add-products" id="add-products-row-btn" onclick="openAddProducts()">+ Add Products</button>
+            <span class="wds-tooltip">Choose or create a tag first to add products.</span>
+          </span>
         </div>
       </div>
     </div>
@@ -1517,6 +1574,7 @@
     // Pre-fill the connected products from the chosen tag
     connectedIds = (EXISTING_TAGS[name] || []).slice();
     renderConnectedProducts();
+    updateAddProductsEnabled();
     updateSaveBtn();
   }
   function showCreateTagInput() {
@@ -1529,15 +1587,44 @@
     // New tag starts empty
     connectedIds = [];
     renderConnectedProducts();
+    updateAddProductsEnabled();
     updateSaveBtn();
   }
   function cancelCreateTag() {
     document.getElementById('tag-input-field').style.display = 'none';
     document.getElementById('tag-dropdown-field').style.display = 'block';
+    updateAddProductsEnabled();
+    updateSaveBtn();
   }
   function updateTagCharCount() {
     const v = document.getElementById('new-tag-input').value;
     document.getElementById('tag-char-count').textContent = v.length + '/40';
+    updateAddProductsEnabled();
+    updateSaveBtn();
+  }
+  function isTagSelected() {
+    const inputVisible = document.getElementById('tag-input-field').style.display === 'block';
+    if (inputVisible) {
+      return document.getElementById('new-tag-input').value.trim().length > 0;
+    }
+    const placeholder = document.getElementById('tag-dropdown').querySelector('.placeholder').textContent.trim();
+    return placeholder !== 'Choose or create a tag';
+  }
+  function updateAddProductsEnabled() {
+    const enabled = isTagSelected();
+    const emptyBtn = document.getElementById('add-products-empty-btn');
+    const rowBtn = document.getElementById('add-products-row-btn');
+    [emptyBtn, rowBtn].forEach(btn => {
+      if (!btn) return;
+      btn.classList.toggle('disabled', !enabled);
+      if (enabled) btn.removeAttribute('disabled');
+      else btn.setAttribute('disabled', '');
+    });
+    // Tooltip hosts: show the "choose a tag first" hint only while disabled
+    ['add-products-empty-host', 'add-products-row-host'].forEach(id => {
+      const host = document.getElementById(id);
+      if (host) host.classList.toggle('tag-ready', enabled);
+    });
   }
   function renderConnectedProducts() {
     const list = document.getElementById('connected-products-list');
@@ -1583,6 +1670,7 @@
 
   // ===== Add Products modal =====
   function openAddProducts() {
+    if (!isTagSelected()) return;
     // Start with already-connected products preselected
     pickerSelection = connectedIds.slice();
     renderPickerList();
@@ -1681,6 +1769,7 @@
     document.getElementById('tag-dropdown-field').style.display = 'block';
     document.getElementById('recommend-saved').style.display = 'none';
     document.getElementById('recommend-empty').style.display = 'flex';
+    updateAddProductsEnabled();
   }
 </script>
 
