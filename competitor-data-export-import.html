@@ -16,19 +16,19 @@
   body{margin:0;background:var(--bg);color:var(--ink);
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     line-height:1.5;-webkit-font-smoothing:antialiased}
-  .wrap{max-width:1180px;margin:0 auto;padding:40px 28px 64px}
+  .wrap{max-width:1280px;margin:0 auto;padding:40px 28px 64px}
   header{border-bottom:2px solid var(--line);padding-bottom:20px;margin-bottom:28px}
   h1{font-size:26px;margin:0 0 6px;letter-spacing:-.02em;color:var(--head)}
   .sub{color:var(--muted);font-size:14px;margin:0}
   .meta{color:var(--muted);font-size:12.5px;margin-top:10px}
   h2{font-size:18px;margin:38px 0 14px;color:var(--head);letter-spacing:-.01em}
-  p.lead{color:var(--muted);font-size:14.5px;max-width:780px}
-  table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:8px}
-  thead th{background:var(--head);color:#fff;text-align:left;padding:11px 12px;
-    font-weight:600;font-size:12.5px;vertical-align:bottom}
+  p.lead{color:var(--muted);font-size:14.5px;max-width:820px}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
+  thead th{background:var(--head);color:#fff;text-align:left;padding:10px 11px;
+    font-weight:600;font-size:12px;vertical-align:bottom}
   thead th:first-child{border-top-left-radius:8px}
   thead th:last-child{border-top-right-radius:8px}
-  tbody td{padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  tbody td{padding:10px 11px;border-bottom:1px solid var(--line);vertical-align:top}
   tbody tr:nth-child(even){background:var(--row)}
   tbody td:first-child{font-weight:600;color:var(--head);white-space:nowrap}
   .badge{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11px;
@@ -36,12 +36,12 @@
   .b-green{background:var(--green-bg);color:var(--green)}
   .b-amber{background:var(--amber-bg);color:var(--amber)}
   .b-red{background:var(--red-bg);color:var(--red)}
-  .cellnote{display:block;margin-top:5px;font-size:12px;color:var(--muted)}
+  .cellnote{display:block;margin-top:5px;font-size:11.5px;color:var(--muted)}
   .legend{display:flex;gap:18px;flex-wrap:wrap;margin:14px 0 0;font-size:12.5px;color:var(--muted)}
   .legend span{display:inline-flex;align-items:center;gap:7px}
   .dot{width:11px;height:11px;border-radius:3px;display:inline-block}
   ul.links{list-style:none;padding:0;margin:0}
-  ul.links li{padding:10px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+  ul.links li{padding:10px 0;border-bottom:1px solid var(--line);font-size:13px}
   ul.links li b{color:var(--head)}
   a{color:var(--accent);text-decoration:none}
   a:hover{text-decoration:underline}
@@ -52,6 +52,7 @@
   footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);
     font-size:12px;color:var(--muted)}
   .scroll{overflow-x:auto}
+  .star{color:var(--green);font-weight:700}
 </style>
 </head>
 <body>
@@ -63,14 +64,14 @@
     <p class="meta">Beauty Onboarding project &middot; Updated June 5, 2026 &middot; Framed around how easily a business can export its own data to migrate into Wix</p>
   </header>
 
-  <p class="lead">Two export columns below: <b>client export</b> and <b>bookings / calendar export</b>.
-  Client export is near-universal; <b>bookings/calendar export is the real migration differentiator</b>.
-  "Client Secure" refers to <b>SimplePractice</b> (clientsecure.me is its client booking domain).</p>
+  <p class="lead">Three export dimensions below: <b>clients</b>, <b>bookings / calendar</b>, and <b>service catalog</b>
+  (the service menu and pricing). Client export is near-universal; <b>bookings and especially the service catalog
+  are where platforms diverge</b>. "Client Secure" refers to <b>SimplePractice</b> (clientsecure.me is its booking domain).</p>
 
   <div class="legend">
     <span><i class="dot" style="background:var(--green)"></i> Yes — self-serve export</span>
     <span><i class="dot" style="background:var(--amber)"></i> Partial — caveats, paid, or limited scope</span>
-    <span><i class="dot" style="background:var(--red)"></i> No — support/specialist request required</span>
+    <span><i class="dot" style="background:var(--red)"></i> No — not available / support request only</span>
   </div>
 
   <h2>Comparison matrix</h2>
@@ -78,10 +79,11 @@
   <table>
     <thead>
       <tr>
-        <th style="min-width:118px">Platform</th>
-        <th style="min-width:140px">Client export</th>
-        <th style="min-width:150px">Bookings / calendar export</th>
-        <th>Import in</th>
+        <th style="min-width:112px">Platform</th>
+        <th style="min-width:128px">Client export</th>
+        <th style="min-width:140px">Bookings / calendar export</th>
+        <th style="min-width:140px">Service catalog export</th>
+        <th style="min-width:150px">Import in</th>
         <th>Key friction</th>
       </tr>
     </thead>
@@ -89,83 +91,95 @@
       <tr>
         <td>Vagaro</td>
         <td><span class="badge b-green">✓ Yes</span><span class="cellnote">Customer list → CSV/Excel (owner only)</span></td>
-        <td><span class="badge b-amber">◐ Partial</span><span class="cellnote">Calendar → .ics + appointment report (Excel/PDF) self-serve; full appointment CSV via support</span></td>
+        <td><span class="badge b-amber">◐ Partial</span><span class="cellnote">Calendar .ics + appointment report; full CSV via support</span></td>
+        <td><span class="badge b-green">✓ Yes</span><span class="cellnote">Service &amp; price list → Excel/PDF</span></td>
         <td>Self-serve contacts + free "Premium Import" via a specialist (3–5 days)</td>
         <td>Full business migration needs a booked specialist call</td>
       </tr>
       <tr>
         <td>Square Appointments</td>
         <td><span class="badge b-green">✓ Yes</span><span class="cellnote">Customer directory → CSV</span></td>
-        <td><span class="badge b-red">✗ No</span><span class="cellnote">Appointments only via Square Professional Services</span></td>
+        <td><span class="badge b-red">✗ No</span><span class="cellnote">Only via Square Professional Services</span></td>
+        <td><span class="badge b-red">✗ No</span><span class="cellnote">Item library exports, but service list does not (copy/paste only)</span></td>
         <td>Customer CSV self-serve; appointments cannot be self-imported</td>
-        <td>No appointment import/export without paid Professional Services</td>
+        <td>No appointment or service export without paid Professional Services</td>
       </tr>
       <tr>
-        <td>Fresha</td>
+        <td>Fresha <span class="star">★</span></td>
         <td><span class="badge b-green">✓ Yes</span><span class="cellnote">Clients → CSV/Excel</span></td>
-        <td><span class="badge b-green">✓ Yes</span><span class="cellnote">Sales → Appointments, by date range → CSV/Excel/PDF</span></td>
+        <td><span class="badge b-green">✓ Yes</span><span class="cellnote">Sales → Appointments → CSV/Excel/PDF</span></td>
+        <td><span class="badge b-green">✓ Yes</span><span class="cellnote">Catalog → Service menu → CSV/Excel/PDF</span></td>
         <td>Self-serve client CSV import</td>
-        <td>Card/payment data not exportable (PCI)</td>
+        <td>Card/payment data not exportable (PCI). Exports all three cleanly.</td>
       </tr>
       <tr>
         <td>Acuity</td>
         <td><span class="badge b-green">✓ Yes</span><span class="cellnote">Clients → CSV</span></td>
         <td><span class="badge b-green">✓ Yes</span><span class="cellnote">Appointments → CSV, incl. intake-form answers</span></td>
+        <td><span class="badge b-amber">◐ Partial</span><span class="cellnote">No standalone export; appointment types only embedded in appointment CSV / API</span></td>
         <td>Self-serve clients (5k/file) and appointments (1k/file)</td>
         <td>Re-importing appointments creates duplicates; per-file row caps</td>
       </tr>
       <tr>
         <td>Mindbody</td>
-        <td><span class="badge b-amber">◐ Partial</span><span class="cellnote">Free report exports; full Subscriber Data Export ~$500</span></td>
-        <td><span class="badge b-amber">◐ Partial</span><span class="cellnote">Schedule via free report exports; complete data export is paid</span></td>
+        <td><span class="badge b-amber">◐ Partial</span><span class="cellnote">Free report exports; full data export ~$500</span></td>
+        <td><span class="badge b-amber">◐ Partial</span><span class="cellnote">Schedule via free reports; full export paid</span></td>
+        <td><span class="badge b-amber">◐ Partial</span><span class="cellnote">Pricing-options report (CSV); full catalog via paid export</span></td>
         <td>Guided, phased migration run by the Mindbody team</td>
         <td>Complete data export is gated behind a fee — hardest to leave</td>
       </tr>
       <tr>
         <td>Jane</td>
         <td><span class="badge b-green">✓ Yes</span><span class="cellnote">Patient list → CSV/Excel</span></td>
-        <td><span class="badge b-green">✓ Yes</span><span class="cellnote">Appointments report → Excel/CSV (past &amp; future, filterable)</span></td>
+        <td><span class="badge b-green">✓ Yes</span><span class="cellnote">Appointments report → Excel/CSV</span></td>
+        <td><span class="badge b-amber">◐ Partial</span><span class="cellnote">Treatments live in settings; only via reports, no standalone export</span></td>
         <td>CSV / Excel / Numbers + PDF/image charts, guided import</td>
         <td>Batch chart export requires an email request (account owner only)</td>
       </tr>
       <tr>
         <td>SimplePractice<br><span class="note">(Client Secure)</span></td>
         <td><span class="badge b-green">✓ Yes</span><span class="cellnote">Contacts → CSV + chart-note PDFs (ZIP)</span></td>
-        <td><span class="badge b-amber">◐ Partial</span><span class="cellnote">Past appointments only, via separate Appointment Status report</span></td>
+        <td><span class="badge b-amber">◐ Partial</span><span class="cellnote">Past appointments only, via Appointment Status report</span></td>
+        <td><span class="badge b-amber">◐ Partial</span><span class="cellnote">Service codes/fees via billing reports; no standalone list export</span></td>
         <td>Has transfer / migration support</td>
         <td>Main export excludes appointments; cards not transferable</td>
       </tr>
       <tr>
         <td>HoneyBook</td>
-        <td><span class="badge b-green">✓ Yes</span><span class="cellnote">Contacts → CSV (name, email, phone, address, custom fields)</span></td>
-        <td><span class="badge b-amber">◐ Partial</span><span class="cellnote">Calendar sync (.ics) + analytics report CSV; no granular appointment-list export</span></td>
+        <td><span class="badge b-green">✓ Yes</span><span class="cellnote">Contacts → CSV (incl. custom fields)</span></td>
+        <td><span class="badge b-amber">◐ Partial</span><span class="cellnote">Calendar sync (.ics) + analytics report; no appointment-list export</span></td>
+        <td><span class="badge b-red">✗ No</span><span class="cellnote">Services live in files/templates; no catalog export</span></td>
         <td>Self-serve CSV + free account migration (2 templates)</td>
         <td>No bulk file export; attachments downloaded one by one</td>
       </tr>
       <tr>
         <td>Booksy</td>
-        <td><span class="badge b-green">✓ Yes</span><span class="cellnote">Clients + service history → CSV (sometimes 2 files)</span></td>
-        <td><span class="badge b-red">✗ No</span><span class="cellnote">Appointments are not self-serve; must request a CSV from support</span></td>
+        <td><span class="badge b-green">✓ Yes</span><span class="cellnote">Clients + service history → CSV</span></td>
+        <td><span class="badge b-red">✗ No</span><span class="cellnote">Appointments not self-serve; request CSV from support</span></td>
+        <td><span class="badge b-red">✗ No</span><span class="cellnote">Services managed in-app; no menu export</span></td>
         <td>Self-serve multi-client import</td>
-        <td>Appointment schedule locked behind a support request</td>
+        <td>Both schedule and service menu locked behind support</td>
       </tr>
       <tr>
-        <td>Jobber</td>
+        <td>Jobber <span class="star">★</span></td>
         <td><span class="badge b-green">✓ Yes</span><span class="cellnote">Clients → CSV/vCard (1500/file)</span></td>
-        <td><span class="badge b-green">✓ Yes</span><span class="cellnote">Visits / one-off / recurring jobs reports → CSV</span></td>
+        <td><span class="badge b-green">✓ Yes</span><span class="cellnote">Visits / jobs reports → CSV</span></td>
+        <td><span class="badge b-green">✓ Yes</span><span class="cellnote">Products &amp; Services → Export to CSV (emailed)</span></td>
         <td>Self-serve CSV / TSV / PSV + QuickBooks, guided field mapping</td>
         <td>Admin-only; field-service oriented rather than beauty-specific</td>
       </tr>
       <tr>
         <td>FareHarbor</td>
         <td><span class="badge b-green">✓ Yes</span><span class="cellnote">Customers report → CSV</span></td>
-        <td><span class="badge b-green">✓ Yes</span><span class="cellnote">Bookings reports / manifests → CSV (Dashboard); API access</span></td>
+        <td><span class="badge b-green">✓ Yes</span><span class="cellnote">Bookings reports / manifests → CSV; API</span></td>
+        <td><span class="badge b-amber">◐ Partial</span><span class="cellnote">Item/activity data via reports &amp; API; no clean price-list export</span></td>
         <td>No native import tool; via API or third parties (e.g. TRYTN)</td>
         <td>Tours/activities platform; importing in is not self-serve</td>
       </tr>
     </tbody>
   </table>
   </div>
+  <p class="note"><span class="star">★</span> Exports all three dimensions (clients, bookings, service catalog) self-serve.</p>
 
   <h2>Bookings / calendar export at a glance</h2>
   <div class="takeaways">
@@ -176,29 +190,39 @@
     </ul>
   </div>
 
+  <h2>Service catalog export at a glance</h2>
+  <div class="takeaways">
+    <ul>
+      <li><span class="badge b-green">✓ Yes — self-serve</span>&nbsp; Vagaro, Fresha, Jobber</li>
+      <li><span class="badge b-amber">◐ Partial</span>&nbsp; Acuity (embedded in appointment CSV / API), Mindbody (pricing-options report; full via paid export), Jane (via reports only), SimplePractice (via billing reports), FareHarbor (reports &amp; API)</li>
+      <li><span class="badge b-red">✗ No</span>&nbsp; Square (item library exports, service list does not), HoneyBook, Booksy</li>
+    </ul>
+  </div>
+
   <h2>Export resources (official help docs)</h2>
   <ul class="links">
-    <li><b>Vagaro</b> — <a href="https://support.vagaro.com/hc/en-us/articles/360006371094-Export-Your-Customer-List">Export customer list</a> &middot; <a href="https://support.vagaro.com/hc/en-us/articles/360000242193-Export-Your-Vagaro-Calendar">Export your calendar (.ics)</a> &middot; <a href="https://support.vagaro.com/hc/en-us/articles/360000550993-Appointments-Summary-Report">Appointments Summary Report</a></li>
-    <li><b>Square</b> — <a href="https://squareup.com/help/us/en/article/6632-import-customers-online">Import/export customer directory</a> &middot; <a href="https://community.squareup.com/t5/Using-Square/How-can-I-export-my-customer-list/m-p/328147">Export customer list (community)</a></li>
-    <li><b>Fresha</b> — <a href="https://www.fresha.com/help-center/knowledge-base/clients/58-export-your-client-list">Export your client list</a> &middot; <a href="https://www.fresha.com/help-center/knowledge-base/reports/191-export-reports">Export reports (appointments)</a></li>
-    <li><b>Acuity</b> — <a href="https://help.acuityscheduling.com/hc/en-us/articles/16676916553485-Exporting-Acuity-Scheduling-appointments-and-clients">Exporting appointments and clients</a></li>
-    <li><b>Mindbody</b> — <a href="https://support.mindbodyonline.com/s/article/I-need-to-export-my-Data-Subscriber-Data-Export">Subscriber Data Export</a> &middot; <a href="https://content.mindbodyonline.com/sites/default/files/aBrandon/General_Export_Directions.pdf">General export directions (PDF)</a></li>
-    <li><b>Jane</b> — <a href="https://jane.app/guide/batch-chart-export-for-practitioners">Batch chart export</a> &middot; <a href="https://jane.app/guide/importing-from-jane">What exports for migration (incl. appointments)</a></li>
-    <li><b>SimplePractice (Client Secure)</b> — <a href="https://support.simplepractice.com/hc/en-us/articles/207625506-Data-export-Exporting-client-information">Exporting client information</a> &middot; <a href="https://support.simplepractice.com/hc/en-us/articles/40941848114957-Exporting-and-downloading-client-data-for-transfer">Exporting/downloading client data for transfer</a></li>
-    <li><b>HoneyBook</b> — <a href="https://help.honeybook.com/en/articles/2650752-download-and-export-your-contacts-list-from-honeybook">Export contacts list</a> &middot; <a href="https://help.honeybook.com/en/articles/2209117-understanding-honeybook-reports">Reports (bookings)</a> &middot; <a href="https://help.honeybook.com/en/articles/2209101-sync-your-personal-calendar-with-honeybook">Calendar sync</a></li>
-    <li><b>Booksy</b> — <a href="https://support.booksy.com/hc/en-us/sections/20664663544594-Data-Export">Data Export help section</a></li>
-    <li><b>Jobber</b> — <a href="https://help.getjobber.com/hc/en-us/articles/115009619328-Export-Client-Information">Export Client Information</a> &middot; <a href="https://help.getjobber.com/hc/en-us/articles/22081958176407-Visits-Report">Visits Report (schedule) export</a></li>
-    <li><b>FareHarbor</b> — <a href="https://help.fareharbor.com/hc/en-us/articles/40898092549403-Report-types-overview">Report types overview</a> &middot; <a href="https://help.fareharbor.com/hc/en-us/articles/40897898334619-How-do-I-download-a-manifest-or-report">Download a manifest or report</a></li>
+    <li><b>Vagaro</b> — <a href="https://support.vagaro.com/hc/en-us/articles/360006371094-Export-Your-Customer-List">Customer list</a> &middot; <a href="https://support.vagaro.com/hc/en-us/articles/360000242193-Export-Your-Vagaro-Calendar">Calendar (.ics)</a> &middot; <a href="https://support.vagaro.com/hc/en-us/articles/360000550993-Appointments-Summary-Report">Appointments report</a> &middot; <a href="https://support.vagaro.com/hc/en-us/articles/360000841774-Export-the-Service-and-Price-List">Service &amp; price list</a></li>
+    <li><b>Square</b> — <a href="https://squareup.com/help/us/en/article/6632-import-customers-online">Customer directory</a> &middot; <a href="https://community.squareup.com/t5/Using-Square/How-can-I-export-my-customer-list/m-p/328147">Export customers (community)</a> &middot; <a href="https://community.squareup.com/t5/Feature-Requests/Ability-to-export-the-Services-List/idi-p/801839">Service-list export (not available, feature request)</a></li>
+    <li><b>Fresha</b> — <a href="https://www.fresha.com/help-center/knowledge-base/clients/58-export-your-client-list">Client list</a> &middot; <a href="https://www.fresha.com/help-center/knowledge-base/reports/191-export-reports">Reports (appointments)</a> &middot; <a href="https://www.fresha.com/help-center/knowledge-base/catalog/100646-export-your-service-menu">Service menu</a></li>
+    <li><b>Acuity</b> — <a href="https://help.acuityscheduling.com/hc/en-us/articles/16676916553485-Exporting-Acuity-Scheduling-appointments-and-clients">Appointments &amp; clients</a> &middot; <a href="https://help.acuityscheduling.com/hc/en-us/articles/16676922487949-Creating-and-editing-appointment-types">Appointment types (no standalone export)</a></li>
+    <li><b>Mindbody</b> — <a href="https://support.mindbodyonline.com/s/article/I-need-to-export-my-Data-Subscriber-Data-Export">Subscriber Data Export</a> &middot; <a href="https://support.mindbodyonline.com/s/article/203515773-Services-Pricing-screen-pricing-option-management">Services &amp; Pricing</a> &middot; <a href="https://content.mindbodyonline.com/sites/default/files/aBrandon/General_Export_Directions.pdf">Export directions (PDF)</a></li>
+    <li><b>Jane</b> — <a href="https://jane.app/guide/batch-chart-export-for-practitioners">Batch chart export</a> &middot; <a href="https://jane.app/guide/importing-from-jane">What exports for migration</a> &middot; <a href="https://jane.app/guide/setting-up-treatments">Treatments (in-settings, no standalone export)</a></li>
+    <li><b>SimplePractice (Client Secure)</b> — <a href="https://support.simplepractice.com/hc/en-us/articles/207625506-Data-export-Exporting-client-information">Client information</a> &middot; <a href="https://support.simplepractice.com/hc/en-us/articles/40941848114957-Exporting-and-downloading-client-data-for-transfer">Data for transfer</a> &middot; <a href="https://support.simplepractice.com/hc/en-us/articles/207624616-Creating-and-using-service-codes-and-products">Service codes (via billing reports)</a></li>
+    <li><b>HoneyBook</b> — <a href="https://help.honeybook.com/en/articles/2650752-download-and-export-your-contacts-list-from-honeybook">Contacts list</a> &middot; <a href="https://help.honeybook.com/en/articles/2209117-understanding-honeybook-reports">Reports (bookings)</a> &middot; <a href="https://help.honeybook.com/en/articles/5643712-add-services-to-a-file">Services (in files, no catalog export)</a></li>
+    <li><b>Booksy</b> — <a href="https://support.booksy.com/hc/en-us/sections/20664663544594-Data-Export">Data Export section</a> &middot; <a href="https://support.booksy.com/hc/en-us/articles/20706548191378-Guide-to-setting-up-your-Services">Services (in-app, no export)</a></li>
+    <li><b>Jobber</b> — <a href="https://help.getjobber.com/hc/en-us/articles/115009619328-Export-Client-Information">Client info</a> &middot; <a href="https://help.getjobber.com/hc/en-us/articles/22081958176407-Visits-Report">Visits report (schedule)</a> &middot; <a href="https://help.getjobber.com/hc/en-us/articles/115009735848-Products-Services-List">Products &amp; Services list</a></li>
+    <li><b>FareHarbor</b> — <a href="https://help.fareharbor.com/hc/en-us/articles/40898092549403-Report-types-overview">Report types</a> &middot; <a href="https://help.fareharbor.com/hc/en-us/articles/40897898334619-How-do-I-download-a-manifest-or-report">Download a report</a> &middot; <a href="https://fareharbor.com/help/dashboard/items/overview/">Items / activities</a></li>
   </ul>
 
   <h2>Key takeaways for onboarding</h2>
   <div class="takeaways">
     <ul>
       <li><b>Client export is table stakes</b> — every platform offers it self-serve (Mindbody is the exception, gating a full export behind a fee).</li>
-      <li><b>Bookings/calendar export is where they diverge</b> — Acuity, Fresha, Jane, Jobber, and FareHarbor let you export the schedule yourself; the rest gate, limit, or charge for it.</li>
-      <li><b>Hardest to leave:</b> Square and Booksy lock appointment data behind support/specialist requests; Mindbody charges for the full export (~$500).</li>
+      <li><b>Bookings/calendar export is the first divider</b> — Acuity, Fresha, Jane, Jobber, and FareHarbor let you export the schedule yourself; the rest gate, limit, or charge for it.</li>
+      <li><b>Service-catalog export is the rarest</b> — only Vagaro, Fresha, and Jobber export the service menu cleanly. Square, HoneyBook, and Booksy don't export services at all, so the menu must be rebuilt on import.</li>
+      <li><b>Fresha is the standout for beauty</b> — the only beauty-relevant platform that exports clients, bookings, and the service catalog self-serve (Jobber matches it but is field-service oriented).</li>
+      <li><b>Hardest to leave:</b> Square and Booksy lock both bookings and services behind support/specialist requests; Mindbody charges for the full export (~$500).</li>
       <li><b>Payment cards are never portable</b> — card-on-file data is PCI-protected and cannot be exported on any platform.</li>
-      <li><b>Slightly off-domain:</b> FareHarbor (tours/activities) and Jobber (field services) are not beauty-specific but export both clients and bookings cleanly.</li>
     </ul>
   </div>
 
