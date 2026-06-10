@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Receptionist for salons — App Market Performance</title>
+<style>
+  :root{--bg:#16181d;--panel:#1e2127;--panel2:#252932;--line:#30343d;--txt:#e8eaed;
+    --muted:#9aa0aa;--faint:#6b7280;--impr:#5b8def;--pv:#28c0c0;--inst:#3ecf8e;--warn:#e0a44a;--radius:12px;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);
+    font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;padding:32px 28px 60px;}
+  .wrap{max-width:980px;margin:0 auto}
+  h1{font-size:24px;margin:0 0 4px;font-weight:650;letter-spacing:-.2px}
+  .sub{color:var(--muted);font-size:13.5px}
+  .sub code{background:var(--panel2);padding:1px 6px;border-radius:5px;font-size:12px;color:#c2c7d0}
+  .period{display:inline-block;margin-top:10px;background:var(--panel2);border:1px solid var(--line);
+    color:#cdd2da;padding:5px 12px;border-radius:999px;font-size:13px;font-weight:500}
+  h2{font-size:15px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin:38px 0 14px;font-weight:600}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px 16px 14px}
+  .card .k{color:var(--muted);font-size:12.5px;font-weight:500;min-height:32px}
+  .card .k em{color:var(--faint);font-style:normal;font-weight:400}
+  .card .v{font-size:28px;font-weight:680;letter-spacing:-.5px;margin-top:6px}
+  .card.accent .v{color:var(--impr)} .card.green .v{color:var(--inst)} .card.warn .v{color:var(--warn)}
+  .card.manual{border-style:dashed;border-color:#4a4f5a}.card.manual .v{color:var(--warn)}
+  .card .drillcount{font-size:11.5px;color:var(--faint);margin-top:3px}
+  .card .drillcount b{color:var(--muted)}
+  table{width:100%;border-collapse:collapse;margin-top:4px}
+  th,td{padding:9px 10px;text-align:left;border-bottom:1px solid var(--line);vertical-align:middle}
+  th{font-size:11.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:600}
+  td.surface{font-weight:560;white-space:nowrap}
+  .tag{font-size:10.5px;padding:2px 7px;border-radius:5px;margin-left:6px;font-weight:600;letter-spacing:.3px}
+  .tag.browse{background:rgba(91,141,239,.16);color:#8db1f5}
+  .tag.context{background:rgba(62,207,142,.16);color:#6fdcab}
+  .tag.other{background:rgba(154,160,170,.14);color:#aab0ba}
+  .bar{height:20px;border-radius:4px;min-width:2px}
+  .barwrap{display:flex;align-items:center;gap:9px}
+  .num{font-variant-numeric:tabular-nums;font-weight:560;min-width:48px;text-align:right}
+  .b-impr{background:linear-gradient(90deg,#5b8def,#6f9bf2)}
+  .b-pv{background:linear-gradient(90deg,#28c0c0,#3ad0d0)}
+  .b-inst{background:linear-gradient(90deg,#3ecf8e,#52daa0)}
+  .pct{color:var(--faint);font-size:12px;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .na{color:var(--faint)}
+  tr.total td{border-top:2px solid var(--line);border-bottom:none;font-weight:680}
+  tr.group td{background:var(--panel2);color:var(--muted);font-size:11.5px;text-transform:uppercase;letter-spacing:.5px;font-weight:600;padding:7px 10px}
+  .legend{display:flex;gap:18px;margin:14px 0 4px;font-size:12.5px;color:var(--muted);flex-wrap:wrap}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .dot{width:11px;height:11px;border-radius:3px;display:inline-block}
+  .callout{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--inst);
+    border-radius:10px;padding:14px 18px;margin-top:22px;font-size:14px;color:#d2d6dd}
+  .callout b{color:#fff}
+  .privacy{background:rgba(224,164,74,.08);border:1px solid rgba(224,164,74,.3);border-radius:10px;
+    padding:11px 16px;margin-top:14px;font-size:12.5px;color:#d9c39a}
+  .foot{color:var(--faint);font-size:12px;margin-top:26px;line-height:1.7;border-top:1px solid var(--line);padding-top:16px}
+  .foot b{color:var(--muted)}
+</style></head>
+<body><div class="wrap">
+  <header>
+    <h1>AI Receptionist for salons <span style="color:var(--faint);font-weight:400">· Aiphoria</span></h1>
+    <div class="sub">Wix App Market performance &nbsp;·&nbsp; <code>edb8a754-651f-4c4e-ad6c-6f80f5c4b32b</code></div>
+    <div class="period">📅 Mar 26 – May 27, 2026</div>
+  </header>
+
+  <h2>Headline metrics</h2>
+  <div class="grid" id="kpis"></div>
+
+  <h2>Funnel by surface — impressions → page views → installs</h2>
+  <div class="legend">
+    <span><i class="dot" style="background:var(--impr)"></i> Impressions</span>
+    <span><i class="dot" style="background:var(--pv)"></i> App page views</span>
+    <span><i class="dot" style="background:var(--inst)"></i> Installs</span>
+    <span style="color:var(--faint)">bars scaled within each column</span>
+  </div>
+  <table id="funnel"><thead><tr>
+    <th style="width:24%">Surface</th><th style="width:30%">Impressions</th><th style="width:9%">CTR</th>
+    <th style="width:21%">Page views</th><th style="width:16%">Installs</th>
+  </tr></thead><tbody></tbody></table>
+
+  <div class="callout"><b>The funnel splits in two.</b> Browse surfaces (collections, sub-category, search, homepage)
+    generate <b>~93% of impressions</b> (24K of 26K) but only <b>~10% of installs</b>. In-context surfaces
+    (BM flow + Bookings integration) produce <b>~74% of installs</b> (99 of 133) with barely any App Market
+    impressions. Discovery and conversion happen on different surfaces.</div>
+
+  <div class="privacy">🔒 Aggregate view. Per-site detail (metasite IDs &amp; URLs) is omitted; the
+    counts shown under each metric are the number of distinct sites behind it.</div>
+
+  <div class="foot">
+    <b>Sources:</b> impressions/page views from BI events (evid 113 impression, 111 app page view);
+    installs/uninstalls from the App Market install history; active &amp; premium live installs from the
+    monthly success-tiers snapshot (May). Net Installs = Gross − Uninstalls. Per-surface attribution is
+    stitched across independent event streams and is directional, not exact. Window starts at the
+    Mar 26, 2026 publish date.
+  </div>
+</div>
+<script>
+const KPIS=[{"k": "Impressions", "v": "26,146", "c": "accent", "cnt": 16996}, {"k": "App Page Views", "v": "380", "c": "accent", "cnt": 215}, {"k": "Gross Installs", "v": "133", "c": "green", "cnt": 77}, {"k": "Uninstalls", "v": "13", "c": "warn", "cnt": 9}, {"k": "Net Installs", "v": "120", "c": "green", "cnt": null}, {"k": "Active Installs <em>(end of May snapshot)</em>", "v": "82", "c": "", "cnt": null}, {"k": "Premium Live Installs <em>(end of May snapshot)</em>", "v": "82", "c": "", "cnt": 66}, {"k": "Install CVR (\u00f7 page views)", "v": "35.0%", "c": "", "cnt": null}, {"k": "Install CVR (\u00f7 impressions)", "v": "0.51%", "c": "", "cnt": null}, {"k": "Active Beta Users <em>(fixed input)</em>", "v": "12", "c": "manual", "cnt": null}], SURF={"browse": [["Collection", 5945, 44, 5], ["Sub-category", 4112, 15, 2], ["Search results", 3686, 25, 6], ["Homepage", 2527, 81, 0], ["Sidebar", 1851, 0, 0], ["Search bar", 424, 5, 0]], "context": [["Bookings integration", 111, 63, 38], ["BM flow", 0, 84, 61], ["App page (self-nav)", 0, 29, 2], ["Other in-context", 0, 6, 0]], "other": [["Unattributed", 7490, 28, 19]]}, fmt=n=>n.toLocaleString();
+document.getElementById('kpis').innerHTML=KPIS.map(m=>{
+  const cnt=(m.cnt!=null)?`<div class="drillcount"><b>${fmt(m.cnt)}</b> distinct sites</div>`:'';
+  return `<div class="card ${m.c||''}"><div class="k">${m.k}</div><div class="v">${m.v}</div>${cnt}</div>`;
+}).join('');
+const all=[].concat(SURF.browse,SURF.context,SURF.other).map(r=>({impr:r[1],pv:r[2],inst:r[3]}));
+const maxI=Math.max(...all.map(r=>r.impr)),maxP=Math.max(...all.map(r=>r.pv)),maxN=Math.max(...all.map(r=>r.inst));
+function bar(v,mx,c){const w=mx>0?Math.max(v>0?3:0,v/mx*100):0;return `<div class="barwrap"><div class="bar ${c}" style="width:${w}%"></div><span class="num">${fmt(v)}</span></div>`;}
+function ctr(i,p){return i>0?(p/i*100).toFixed(1)+'%':'<span class="na">—</span>';}
+function srow(r,tc,tt){return `<tr><td class="surface">${r[0]}<span class="tag ${tc}">${tt}</span></td>
+  <td>${bar(r[1],maxI,'b-impr')}</td><td class="pct">${ctr(r[1],r[2])}</td>
+  <td>${bar(r[2],maxP,'b-pv')}</td><td>${bar(r[3],maxN,'b-inst')}</td></tr>`;}
+let h='';
+h+='<tr class="group"><td colspan="5">Browse · App Market discovery</td></tr>';SURF.browse.forEach(r=>h+=srow(r,'browse','browse'));
+h+='<tr class="group"><td colspan="5">In-context &amp; direct</td></tr>';SURF.context.forEach(r=>h+=srow(r,'context','in-context'));
+h+='<tr class="group"><td colspan="5">Unattributed</td></tr>';SURF.other.forEach(r=>h+=srow(r,'other','n/a'));
+const T={impr:26146,pv:380,inst:133};
+h+=`<tr class="total"><td class="surface">Total</td><td>${bar(T.impr,maxI,'b-impr')}</td>
+  <td class="pct">${(T.pv/T.impr*100).toFixed(1)}%</td><td>${bar(T.pv,maxP,'b-pv')}</td><td>${bar(T.inst,maxN,'b-inst')}</td></tr>`;
+document.querySelector('#funnel tbody').innerHTML=h;
+</script></body></html>
