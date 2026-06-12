@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mean-reversion indicator POC — AUD/NZD/CAD complex</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root {
+  --bg: #faf9f6; --surface: #ffffff; --surface2: #f1efe8;
+  --text: #2c2c2a; --muted: #5f5e5a; --faint: #888780; --border: #e3e1d9;
+  --teal: #1D9E75; --teal-bg: #e1f5ee; --teal-text: #085041;
+  --purple: #7F77DD; --pink: #D4537E;
+  --red-bg: #fcebeb; --red-text: #791f1f;
+  --amber-bg: #faeeda; --amber-text: #633806;
+  --green-bg: #eaf3de; --green-text: #27500a;
+  --mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1a18; --surface: #242422; --surface2: #2c2c2a;
+    --text: #f1efe8; --muted: #b4b2a9; --faint: #888780; --border: #3a3a37;
+    --teal-bg: #085041; --teal-text: #9fe1cb;
+    --red-bg: #501313; --red-text: #f7c1c1;
+    --amber-bg: #412402; --amber-text: #fac775;
+    --green-bg: #173404; --green-text: #c0dd97;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text);
+  font: 16px/1.65 -apple-system, "Segoe UI", Roboto, sans-serif; }
+.wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 80px; }
+h1 { font-size: 28px; font-weight: 600; margin: 0 0 4px; }
+h2 { font-size: 20px; font-weight: 600; margin: 48px 0 12px; }
+h3 { font-size: 16px; font-weight: 600; margin: 24px 0 8px; }
+p { margin: 0 0 12px; color: var(--muted); }
+.sub { color: var(--faint); font-size: 14px; margin-bottom: 32px; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.stat { background: var(--surface2); border-radius: 10px; padding: 14px 16px; }
+.stat .l { font-size: 13px; color: var(--muted); }
+.stat .v { font-size: 26px; font-weight: 600; }
+.stat .s { font-size: 12px; color: var(--faint); }
+.verdicts { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin: 16px 0; }
+.verdict { border-radius: 12px; padding: 14px 16px; font-size: 14px; }
+.verdict b { display: block; font-size: 15px; margin-bottom: 2px; }
+.v-red { background: var(--red-bg); color: var(--red-text); }
+.v-amber { background: var(--amber-bg); color: var(--amber-text); }
+.v-green { background: var(--green-bg); color: var(--green-text); }
+.hero { background: var(--teal-bg); color: var(--teal-text); border-radius: 14px; padding: 20px 24px; margin: 24px 0; }
+.hero b { font-size: 17px; }
+.rule { background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 16px 20px; font-family: var(--mono); font-size: 14px; line-height: 1.9; margin: 16px 0; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 12px 0 24px; }
+th { text-align: left; color: var(--faint); font-weight: 500; font-size: 13px;
+  border-bottom: 1px solid var(--border); padding: 6px 10px 6px 0; }
+td { padding: 7px 10px 7px 0; border-bottom: 1px solid var(--border); }
+td.num, th.num { text-align: right; font-family: var(--mono); font-size: 13px; }
+.pos { color: var(--teal); } .neg { color: #e24b4a; }
+.chip { display: inline-block; font-size: 12px; padding: 3px 12px; border-radius: 999px; margin: 0 6px 8px 0; }
+.timeline { border-left: 2px solid var(--border); margin: 16px 0 16px 8px; padding-left: 24px; }
+.tl { position: relative; margin-bottom: 24px; }
+.tl::before { content: ""; position: absolute; left: -31px; top: 6px; width: 12px; height: 12px;
+  border-radius: 50%; background: var(--faint); }
+.tl.win::before { background: var(--teal); }
+.tl b { font-size: 15px; }
+.tl p { font-size: 14px; margin: 2px 0 0; }
+.controls { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+button { font: 14px inherit; padding: 7px 14px; border-radius: 8px; cursor: pointer;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text); }
+button.on { border-color: var(--teal); background: var(--teal-bg); color: var(--teal-text); }
+input[type=range] { width: 100%; accent-color: var(--teal); }
+.chartbox { position: relative; height: 320px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+.note { font-size: 13px; color: var(--faint); margin-top: 8px; }
+.cost-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-top: 12px; }
+.cc { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; }
+.cc .n { font-size: 13px; font-weight: 600; }
+.cc .d { font-size: 12px; color: var(--faint); margin-bottom: 6px; }
+.cc .x { font-size: 22px; font-weight: 600; font-family: var(--mono); }
+.cc .b { font-size: 11px; color: var(--faint); }
+footer { margin-top: 56px; padding-top: 16px; border-top: 1px solid var(--border);
+  font-size: 13px; color: var(--faint); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Finding a mean-reversion entry indicator</h1>
+<div class="sub">AUD / NZD / CAD complex · 5 datasets · 550,040 bars · 2010–2026 · flat 2-pip cost model · 2026-06-12</div>
+
+<div class="cards">
+  <div class="stat"><div class="l">Datasets</div><div class="v">5</div><div class="s">M5 · M15 · H1 ×3 pairs</div></div>
+  <div class="stat"><div class="l">Rule cells scored</div><div class="v">22,860</div><div class="s">4,572 per dataset</div></div>
+  <div class="stat"><div class="l">Outcomes labeled</div><div class="v">19.8M</div><div class="s">triple-barrier trades</div></div>
+  <div class="stat"><div class="l">Verification agents</div><div class="v">22</div><div class="s">4 replications, all exact</div></div>
+</div>
+
+<div class="hero">
+  <b>Final validated result.</b> Fade 1-hour stochastic extremes: short when raw %K(5) ≥ 95, with TP/SL = 1.5×ATR(14) and a 24-hour limit. Positive on every in-sample and holdout split of all three pairs — including AUDNZD, a pair it was never fitted to — and it survived independent replication, negative controls, and a parameter-plateau test. Combined holdout 2021–2026: ~3,850 trades, +3,044 pips net.
+</div>
+
+<h2>How the answer was found</h2>
+<div class="timeline">
+  <div class="tl"><b>Part 1 — AUDCAD M15 (50k bars)</b>
+    <p>None of 4,572 indicator cells beat the 2-pip cost in-sample. A lone survivor — CCI(14) ≤ −250 longs in the Asia session — looked good on the holdout (+2.3 pips, t≈2.9) but verification flagged regime drift and selection effects.</p></div>
+  <div class="tl"><b>Part 2 — AUDCAD M5 and H1</b>
+    <p>M5: conclusively untradeable (cost ≈ 40% of any target). H1: the first timeframe with 73 parameter-stable rules, all short-side. The M15 survivor failed its pre-registered transfer test to both timeframes — correctly exposed as resolution-specific. A float32 boundary bug at round stochastic thresholds was caught and fixed.</p></div>
+  <div class="tl win"><b>Part 3 — AUDNZD and NZDCAD H1 (16 years each)</b>
+    <p>The H1 stochastic fade transferred verbatim: positive in all 6 pair×split cells, strongest on AUDNZD (t = 2.4 on both splits). The EMA-distance rule that verification had flagged failed on both new pairs, as predicted. Four verification agents: four passes.</p></div>
+</div>
+
+<div class="verdicts">
+  <div class="verdict v-red"><b>M5 — untradeable</b>0 of 4,572 cells survive cost</div>
+  <div class="verdict v-amber"><b>M15 — marginal</b>one survivor, failed transfer</div>
+  <div class="verdict v-green"><b>H1 — validated</b>73–522 stable cells per pair</div>
+</div>
+
+<h2>The rule</h2>
+<div class="rule">
+  SHORT when raw stochastic %K(5) ≥ 95 on H1<br>
+  &nbsp;&nbsp;take-profit&nbsp;= entry − 1.5 × ATR(14)<br>
+  &nbsp;&nbsp;stop-loss&nbsp;&nbsp;&nbsp;= entry + 1.5 × ATR(14)<br>
+  &nbsp;&nbsp;time limit&nbsp;&nbsp;= 24 bars (exit at close) · enter at next bar open<br>
+  <span style="color:var(--faint)">at real spreads, add the filter:</span> 8-bar ROC ≥ 98th trailing-500 percentile (then TP = 1.0 × ATR)
+</div>
+
+<h3>Holdout 2021–2026, net of 2 pips</h3>
+<table>
+  <tr><th>Pair</th><th>Variant</th><th class="num">Trades</th><th class="num">Win</th><th class="num">Pips/trade</th><th class="num">t-stat</th><th class="num">Total</th></tr>
+  <tr><td>AUDNZD</td><td>plain</td><td class="num">1,335</td><td class="num">58.9%</td><td class="num pos">+1.14</td><td class="num">2.43</td><td class="num pos">+1,518</td></tr>
+  <tr><td>AUDCAD</td><td>plain</td><td class="num">1,262</td><td class="num">57.4%</td><td class="num pos">+0.72</td><td class="num">1.31</td><td class="num pos">+911</td></tr>
+  <tr><td>NZDCAD</td><td>plain</td><td class="num">1,251</td><td class="num">56.4%</td><td class="num pos">+0.49</td><td class="num">0.90</td><td class="num pos">+615</td></tr>
+  <tr><td>NZDCAD</td><td>∧ ROC combo</td><td class="num">147</td><td class="num">70.8%</td><td class="num pos">+2.68</td><td class="num">1.91</td><td class="num pos">+394</td></tr>
+  <tr><td>AUDCAD</td><td>∧ ROC combo</td><td class="num">147</td><td class="num">70.8%</td><td class="num pos">+2.15</td><td class="num">1.48</td><td class="num pos">+316</td></tr>
+  <tr><td>AUDNZD</td><td>∧ ROC combo</td><td class="num">164</td><td class="num">70.7%</td><td class="num pos">+1.51</td><td class="num">1.26</td><td class="num pos">+248</td></tr>
+</table>
+
+<h2>Equity explorer</h2>
+<div class="controls" id="viewBtns"></div>
+<p class="note" id="viewNote"></p>
+<div class="chartbox"><canvas id="eq"></canvas></div>
+
+<h2>What does your broker's spread do to each edge?</h2>
+<p>The study charged a flat 2.0 pips round-trip. The MT5 files put real average spreads at 2.4–2.9 (AUDCAD), 3.2 (AUDNZD), 3.7 (NZDCAD) pips.</p>
+<div style="display:flex;align-items:center;gap:14px;margin-top:8px;">
+  <span style="font-size:14px;color:var(--muted);white-space:nowrap;">Cost (pips)</span>
+  <input type="range" id="cost" min="0" max="5" step="0.1" value="2">
+  <span id="costOut" style="font-family:var(--mono);font-size:16px;font-weight:600;min-width:48px;">2.0</span>
+</div>
+<div class="cost-cards" id="costCards"></div>
+
+<h2>Verification trail</h2>
+<div>
+  <span class="chip v-green">4 independent replications: all pass, exact match</span>
+  <span class="chip v-green">Code audit: no lookahead, no split leaks</span>
+  <span class="chip v-green">Controls AUDNZD + NZDCAD: pass (delay, random, leak probe)</span>
+  <span class="chip v-green">Transfer AUDCAD → AUDNZD/NZDCAD: pass, 6/6 cells</span>
+  <span class="chip v-amber">M15 / EMA-dist controls: warn — regime-concentrated</span>
+  <span class="chip v-red">M15 Asia-CCI transfer: fail</span>
+  <span class="chip v-red">Regime filters on H1: refuted out-of-sample</span>
+  <span class="chip v-red">M5 timeframe: refuted entirely</span>
+</div>
+
+<h2>Caveats that travel with the result</h2>
+<p>Per-pair t-stats are modest (0.9–2.4) and the three pairs share currencies, so they are not independent samples. At real spreads the plain rule is near breakeven on the weaker pairs — the ROC combo (≈4–6 pips gross per trade) is what survives realistic costs. The edge decays within 1–2 bars of delayed entry, so execution timing matters. 2026 year-to-date is flat-to-negative on all pairs. Mandatory next step before any live risk: forward / paper validation.</p>
+
+<footer>
+  Methodology: triple-barrier labeling (entry at next open, ATR-scaled barriers, stop wins same-bar ties, timed exits at close), sequential non-overlapping trades, in-sample/holdout firewall with embargo, parameter-plateau test, multiple-testing deflation, adversarial verification (independent replication from raw data, delay/random/leak-probe controls, pre-registered transfer tests). Engine and all artifacts: <span style="font-family:var(--mono)">~/terminal/audcad-poc/</span>
+</footer>
+</div>
+
+<script>
+const audnzd = [[0,18],[1.4,25],[2.8,1],[4.3,28],[5.7,92],[7.1,109],[8.5,106],[10,119],[11.4,133],[12.8,76],[14.2,119],[15.7,47],[17.1,22],[18.5,6],[19.9,-25],[21.4,16],[22.8,5],[24.2,-8],[25.6,10],[27.1,26],[28.5,99],[29.9,49],[31.3,291],[32.8,350],[34.2,266],[35.6,257],[37,333],[38.5,328],[39.9,345],[41.3,332],[42.7,350],[44.2,465],[45.6,559],[47,583],[48.4,509],[49.9,596],[51.3,688],[52.7,719],[54.1,717],[55.5,815],[57,743],[58.4,809],[59.8,983],[61.2,1004],[62.7,997],[64.1,1158],[65.5,1207],[66.9,1219],[68.4,1235],[69.8,1187],[71.2,1193],[72.6,1285],[74.1,1293],[75.5,1415],[76.9,1487],[78.3,1579],[79.8,1712],[81.2,1724],[82.6,1752],[84,1800],[85.5,1784],[86.9,1874],[88.3,1851],[89.7,1826],[91.2,1779],[92.6,1685],[94,1601],[95.4,1595],[96.9,1453],[98.3,1554],[99.7,1468],[100,1518]];
+const audcadS = [[0,-26],[1.4,-32],[2.9,-74],[4.3,-77],[5.7,-73],[7.1,-37],[8.6,-85],[10,-117],[11.4,-150],[12.8,-3],[14.3,16],[15.7,133],[17.1,142],[18.6,218],[20,193],[21.4,80],[22.8,126],[24.3,104],[25.7,120],[27.1,166],[28.5,220],[30,217],[31.4,392],[32.8,250],[34.3,460],[35.7,316],[37.1,285],[38.5,155],[40,-21],[41.4,-28],[42.8,0],[44.3,147],[45.7,140],[47.1,136],[48.5,172],[50,134],[51.4,133],[52.8,110],[54.2,144],[55.7,177],[57.1,157],[58.5,94],[60,82],[61.4,143],[62.8,165],[64.2,117],[65.7,110],[67.1,25],[68.5,176],[69.9,351],[71.4,376],[72.8,456],[74.2,469],[75.7,489],[77.1,720],[78.5,679],[79.9,713],[81.4,639],[82.8,688],[84.2,709],[85.6,770],[87.1,720],[88.5,703],[89.9,807],[91.4,822],[92.8,926],[94.2,854],[95.6,998],[97.1,948],[98.5,861],[99.9,893],[100,911]];
+const nzdcad = [[0,-25],[1.4,85],[2.7,85],[4.1,1],[5.4,24],[6.8,-58],[8.2,-71],[9.5,-13],[10.9,95],[12.2,0],[13.6,80],[15,134],[16.3,249],[17.7,342],[19,224],[20.4,210],[21.8,245],[23.1,307],[24.5,484],[25.8,446],[27.2,535],[28.6,599],[29.9,554],[31.3,689],[32.6,626],[34,525],[35.4,426],[36.7,537],[38.1,672],[39.4,634],[40.8,622],[42.2,685],[43.5,663],[44.9,739],[46.2,842],[47.6,770],[49,898],[50.3,889],[51.7,857],[53,891],[54.4,932],[55.8,825],[57.1,838],[58.5,951],[59.8,968],[61.2,1035],[62.6,1038],[63.9,1017],[65.3,972],[66.6,933],[68,793],[69.4,841],[70.7,853],[72.1,800],[73.4,964],[74.8,879],[76.2,864],[77.5,764],[78.9,732],[80.2,584],[81.6,574],[83,599],[84.3,601],[85.7,702],[87,704],[88.4,773],[89.8,847],[91.1,893],[92.5,865],[93.8,820],[95.2,814],[96.6,799],[97.9,816],[99.3,690],[100,615]];
+const h1combo = [[0,-26],[2.1,-23],[3.4,-63],[5.5,-24],[7.5,-56],[9.6,-26],[11.6,6],[13.7,34],[15.1,18],[17.1,49],[18.5,1],[19.9,27],[21.9,30],[24,76],[24.7,46],[26.7,101],[28.8,107],[30.8,119],[32.9,164],[33.6,184],[34.9,119],[37,170],[39,128],[41.1,90],[43.2,48],[45.2,84],[47.3,116],[48.6,141],[50,92],[52.1,119],[54.1,94],[56.2,93],[58.2,121],[60.3,89],[62.3,91],[64.4,127],[65.8,81],[67.8,76],[69.9,113],[71.9,114],[74,147],[76,149],[78.1,119],[79.5,188],[80.8,111],[82.9,150],[84.9,176],[87,204],[89,172],[90.4,162],[92.5,163],[94.5,209],[96.6,281],[97.9,314],[100,316]];
+const h1edist = [[0,-25],[1.8,-48],[2.4,-111],[4.3,-36],[5.5,-123],[7.3,-21],[9.1,-59],[11,-131],[12.2,-39],[14,-82],[15.2,7],[16.5,-54],[18.3,4],[19.5,-89],[21.3,-96],[23.2,-138],[25,11],[25.6,112],[26.8,202],[28.7,212],[29.9,382],[31.1,199],[32.9,110],[34.8,272],[36,398],[36.6,473],[38.4,560],[39.6,670],[40.9,723],[42.7,762],[44.5,974],[46.3,1122],[47.6,1194],[48.8,1136],[50.6,1055],[52.4,1043],[54.3,1160],[55.5,1208],[57.3,1108],[59.1,1041],[60.4,996],[62.2,1033],[64,1023],[65.9,1091],[66.5,1129],[68.3,1080],[70.1,1038],[72,1018],[73.8,1177],[75.6,1147],[77.4,1131],[79.3,1198],[79.9,1249],[81.7,1296],[82.3,1328],[84.1,1246],[86,1209],[87.8,1174],[89.6,1055],[90.9,1068],[92.7,1087],[94.5,1166],[95.1,1053],[97,1006],[98.8,952],[100,1037]];
+const m15is = [-9.3,-8.2,-15.9,-24.5,-33.7,-28.4,-24.2,-31.5,-39.6,-49.5,-42.9,-39.1,-33.9,-30.1,-40.6,-34.1,-33.4,-25.7,-22.5,-19,-15.3,-10.8,-5.2,-13.3,-22.4,-16.2,-12.4,-13.2,-21.5,-18.5,-13.9,-21.8,-19.2,-19.2,-24.4,-19.9,-14.9,-10.2,-6.2,-0.5,6,10.5,14.8,18.2,21.1,26.8,31.6,36.1,20.9,20.9,-3.2,2.1,6.3,-6.2,-4.7,-0.9,2.9,-5.6,-12.8,-21,-30.6,-23.7,-32.1,-25.1,-16.9,-11.7,-4.5,-15,-6.4,0,-11,-3.5,2.3,-7.4,-9.1,-5.9,-0.8,4.7,11,17.2,8.2,17.7,7.2,14.1,25.2,31.2,36,30.8,36.9,41.7,48,54.7,42.2,51.2,51,57.9,63.5,68.8,74.9,62.9,62.9,40.4,30.3,20.6,26.4,33.4,39.4,44.5,44.2,34.6,41,49.9,57,62.7,64.7,65.5,55.5,63.7,52.1,60.4,66.8,40.3,60.2,50.2,58.5,66.5,55.1,63.8,71,80.3,87.9,94.9,101.1,107.9,96,104.1,113.6,117.1,124.3,129.8,121.8,129,135.1,140.4,130.5,136.5,144.7,144.9,131.3,137.4,125.8];
+const m15oos = [6.7,11.8,18.2,24.5,30,17.4,8.2,13.4,17.6,8.2,13.5,17.6,21.6,26.6,31.2,36.4,40.9,31.4,36.7,42.6,48.2,52.5,56.5,60.2,64.9,67.1,74.1,65.6,71,76.5,80.5,86.7,78.3,83.1,88.2,93.4,97.6,102.1,107.9,112.9,117.1,123.8,127.6,138.1,145.7,150.1,140.2,144.5,147.9,153.6,157.6,152.3,157.8,162.3,153.3,157.6,149.8,156.6,162.8,152.1,156.7,158.2,162.1,168.2,171.7,176.8,181.3,187.7,190.9,205.1,191.5,176.1,185.7,196.7,190.3,193.6,201.5,189.1,199.1,190.2,206.9,187.5];
+const xy = a => a.map(p => ({x: p[0], y: p[1]}));
+const VIEWS = {
+  pairs: { label: 'Final rule × 3 pairs', xMax: 100,
+    note: 'The identical stochastic short rule, untouched, on each pair’s 2021–2026 holdout. AUDNZD +1,518 · AUDCAD +911 · NZDCAD +615 pips.',
+    xTitle: 'Holdout progress, Jan 2021 → Jun 2026 (%)',
+    ds: [
+      { label: 'AUDNZD', data: xy(audnzd), borderColor: '#1D9E75', borderWidth: 2 },
+      { label: 'AUDCAD', data: xy(audcadS), borderColor: '#7F77DD', borderDash: [6,3], borderWidth: 2 },
+      { label: 'NZDCAD', data: xy(nzdcad), borderColor: '#D4537E', borderDash: [2,3], borderWidth: 2 }]},
+  h1: { label: 'AUDCAD H1 candidates', xMax: 100,
+    note: 'The three H1 finalists. The combo retains 86% of its in-sample edge; the EMA-distance rule’s gains concentrate in 2022–23 and it later failed on the other pairs.',
+    xTitle: 'Holdout progress, Jan 2021 → Jun 2026 (%)',
+    ds: [
+      { label: 'Stoch(5) ≥ 95', data: xy(audcadS), borderColor: '#1D9E75', borderWidth: 2 },
+      { label: 'Stoch ∧ ROC combo', data: xy(h1combo), borderColor: '#7F77DD', borderDash: [6,3], borderWidth: 2 },
+      { label: 'EMA-dist(50) ≥ 2.5', data: xy(h1edist), borderColor: '#888780', borderDash: [2,3], borderWidth: 2 }]},
+  m15: { label: 'M15 winner (downgraded)', xMax: 233,
+    note: 'The Part-1 survivor: CCI(14) ≤ −250 ∧ Asia session, long. Holdout +188 pips — but it failed the cross-timeframe transfer test and is no longer recommended.',
+    xTitle: 'Trade number (holdout restarts at 152)',
+    ds: [
+      { label: 'In-sample', data: m15is.map((y,i)=>({x:i+1,y})), borderColor: '#888780', borderDash: [5,4], borderWidth: 1.5 },
+      { label: 'Holdout', data: m15oos.map((y,i)=>({x:152+i,y})), borderColor: '#1D9E75', borderWidth: 2 }]},
+};
+let chart = null;
+const btnWrap = document.getElementById('viewBtns');
+Object.keys(VIEWS).forEach(k => {
+  const b = document.createElement('button');
+  b.textContent = VIEWS[k].label; b.id = 'vb_' + k;
+  b.onclick = () => show(k);
+  btnWrap.appendChild(b);
+});
+function show(k) {
+  Object.keys(VIEWS).forEach(o => document.getElementById('vb_' + o).className = o === k ? 'on' : '');
+  document.getElementById('viewNote').textContent = VIEWS[k].note;
+  if (chart) chart.destroy();
+  const grid = matchMedia('(prefers-color-scheme: dark)').matches ? 'rgba(255,255,255,.07)' : 'rgba(0,0,0,.06)';
+  const tick = matchMedia('(prefers-color-scheme: dark)').matches ? '#b4b2a9' : '#5f5e5a';
+  chart = new Chart(document.getElementById('eq'), {
+    type: 'line',
+    data: { datasets: VIEWS[k].ds.map(d => Object.assign({pointRadius: 0, tension: 0}, d)) },
+    options: { responsive: true, maintainAspectRatio: false, parsing: false,
+      plugins: { legend: { labels: { color: tick, usePointStyle: false, boxHeight: 2 } },
+        tooltip: { callbacks: { label: c => c.dataset.label + ': ' + Math.round(c.parsed.y) + ' pips' } } },
+      scales: {
+        x: { type: 'linear', min: 0, max: VIEWS[k].xMax, grid: { color: grid }, ticks: { color: tick },
+          title: { display: true, text: VIEWS[k].xTitle, color: tick } },
+        y: { grid: { color: grid }, ticks: { color: tick },
+          title: { display: true, text: 'Cumulative net pips', color: tick } } } }
+  });
+}
+const RULES = [
+  { n: 'Best M5 cell', d: 'CCI(14) ≥ 250 short', g: 0.67 },
+  { n: 'M15 Asia-CCI long', d: 'failed transfer test', g: 3.88 },
+  { n: 'H1 stoch(5) ≥ 95 short', d: '3-pair average', g: 2.78 },
+  { n: 'H1 stoch ∧ ROC combo', d: '3-pair average', g: 4.11 },
+];
+const costEl = document.getElementById('cost');
+function renderCost() {
+  const c = parseFloat(costEl.value);
+  document.getElementById('costOut').textContent = c.toFixed(1);
+  document.getElementById('costCards').innerHTML = RULES.map(r => {
+    const net = r.g - c;
+    const col = net >= 0.2 ? 'var(--teal)' : net <= -0.2 ? '#e24b4a' : '#ba7517';
+    const tag = net >= 0.2 ? 'survives' : net <= -0.2 ? 'loses' : 'breakeven';
+    return '<div class="cc"><div class="n">' + r.n + '</div><div class="d">' + r.d + '</div>' +
+      '<div class="x" style="color:' + col + '">' + (net >= 0 ? '+' : '') + net.toFixed(2) + '</div>' +
+      '<div class="b">pips/trade · ' + tag + ' · breakeven at ' + r.g.toFixed(1) + '</div></div>';
+  }).join('');
+}
+costEl.addEventListener('input', renderCost);
+renderCost();
+show('pairs');
+</script>
+</body>
+</html>
