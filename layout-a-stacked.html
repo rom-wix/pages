@@ -371,13 +371,13 @@ body {
       <!-- ============ TYPE: Date & time ============ -->
       <div class="type-body" data-type="datetime">
         <!-- Shared across ALL variations -->
-        <div class="wsr-field">
+        <div class="wsr-field" style="max-width:340px;">
           <label class="wsr-label">Price varies by</label>
-          <div class="wsr-tabs" id="sharedTabs">
-            <button class="wsr-tab active" data-mode="hours">Hours &amp; days</button>
-            <button class="wsr-tab" data-mode="months">Months</button>
-            <button class="wsr-tab" data-mode="range">Date range</button>
-          </div>
+          <select class="wsr-select" id="sharedMode">
+            <option value="hours">Hours &amp; days</option>
+            <option value="months">Months</option>
+            <option value="range">Date range</option>
+          </select>
         </div>
         <div id="vboxes"></div>
         <button class="wsr-textbtn" id="addVar" style="width:100%; justify-content:center; border:1px dashed var(--D70); border-radius:var(--radius-sm); padding:14px;">+ Add Variation</button>
@@ -478,7 +478,7 @@ body {
   // ================= Date & time: collapsible variation boxes =================
   const vboxes = document.getElementById('vboxes');
   const tpl = document.getElementById('vboxTpl');
-  const sharedTabs = document.getElementById('sharedTabs');
+  const sharedMode = document.getElementById('sharedMode');
 
   // mode (Hours&days / Months / Date range) is SHARED across all variations
   let currentMode = 'hours';
@@ -532,6 +532,12 @@ body {
     box.classList.remove('open');
   }
 
+  // a single variation can't be deleted → hide its delete button
+  function updateDeletability() {
+    const only = vboxes.children.length <= 1;
+    vboxes.querySelectorAll('.vbox-del').forEach(b => b.style.display = only ? 'none' : '');
+  }
+
   function wireBox(box) {
     // header click / chevron toggles this box
     box.querySelector('.vbox-head').addEventListener('click', e => {
@@ -545,6 +551,7 @@ body {
       const wasOpen = box.classList.contains('open');
       box.remove();
       if (wasOpen && vboxes.lastElementChild) expand(vboxes.lastElementChild);
+      updateDeletability();
     });
     // live-update summary as fields change (visible once collapsed)
     box.addEventListener('input', () => { if (!box.classList.contains('open')) summarize(box); });
@@ -557,33 +564,21 @@ body {
     box.classList.toggle('open', !!open);
     vboxes.appendChild(box);
     wireBox(box);
+    updateDeletability();
     return box;
   }
 
-  // shared tabs → switch mode for ALL variation boxes + refresh summaries
-  sharedTabs.querySelectorAll('.wsr-tab').forEach(t => t.addEventListener('click', () => {
-    sharedTabs.querySelectorAll('.wsr-tab').forEach(x => x.classList.remove('active'));
-    t.classList.add('active');
-    currentMode = t.dataset.mode;
+  // shared dropdown → switch mode for ALL variation boxes + refresh summaries
+  sharedMode.addEventListener('change', () => {
+    currentMode = sharedMode.value;
     [...vboxes.children].forEach(box => {
       applyModeTo(box);
       if (!box.classList.contains('open')) summarize(box);
     });
-  }));
-
-  // seed two example variations: first collapsed (summary visible), second open
-  const b1 = makeBox(false);
-  b1.querySelector('.v-name').value = 'Weekend mornings';
-  // set b1 to Sat+Sun, 9 AM–5 PM, $45
-  b1.querySelectorAll('.v-days .wsr-day').forEach(d => {
-    d.classList.toggle('on', d.dataset.d === 'Sat' || d.dataset.d === 'Sun');
   });
-  b1.querySelector('.v-start').value = '9:00 AM';
-  b1.querySelector('.v-end').value = '5:00 PM';
-  b1.querySelector('.v-price').value = '45';
-  summarize(b1);   // b1 is already collapsed → generate its summary line directly
 
-  makeBox(true);  // second box, open & ready to edit
+  // start with a single, expanded variation ready to edit
+  makeBox(true);
 
   document.getElementById('addVar').addEventListener('click', () => {
     [...vboxes.children].forEach(collapse);   // minimize existing boxes
