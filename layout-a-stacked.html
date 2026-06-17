@@ -370,6 +370,15 @@ body {
 
       <!-- ============ TYPE: Date & time ============ -->
       <div class="type-body" data-type="datetime">
+        <!-- Shared across ALL variations -->
+        <div class="wsr-field">
+          <label class="wsr-label">Price varies by</label>
+          <div class="wsr-tabs" id="sharedTabs">
+            <button class="wsr-tab active" data-mode="hours">Hours &amp; days</button>
+            <button class="wsr-tab" data-mode="months">Months</button>
+            <button class="wsr-tab" data-mode="range">Date range</button>
+          </div>
+        </div>
         <div id="vboxes"></div>
         <button class="wsr-textbtn" id="addVar" style="width:100%; justify-content:center; border:1px dashed var(--D70); border-radius:var(--radius-sm); padding:14px;">+ Add Variation</button>
       </div>
@@ -387,15 +396,6 @@ body {
             <button class="vbox-del" aria-label="Delete variation">🗑</button>
           </div>
           <div class="vbox-body">
-            <div class="wsr-field">
-              <label class="wsr-label">Price varies by</label>
-              <div class="wsr-tabs vtabs">
-                <button class="wsr-tab active" data-mode="hours">Hours &amp; days</button>
-                <button class="wsr-tab" data-mode="months">Months</button>
-                <button class="wsr-tab" data-mode="range">Date range</button>
-              </div>
-            </div>
-
             <div class="mode" data-mode="hours">
               <div class="wsr-field name-field"><label class="wsr-label">Variation name</label><input class="wsr-input v-name" placeholder="e.g., Weekend mornings"></div>
               <div class="wsr-field"><label class="wsr-label">Days</label>
@@ -478,18 +478,21 @@ body {
   // ================= Date & time: collapsible variation boxes =================
   const vboxes = document.getElementById('vboxes');
   const tpl = document.getElementById('vboxTpl');
+  const sharedTabs = document.getElementById('sharedTabs');
 
-  function activeMode(box) {
-    const tab = box.querySelector('.vtabs .wsr-tab.active');
-    return tab ? tab.dataset.mode : 'hours';
-  }
+  // mode (Hours&days / Months / Date range) is SHARED across all variations
+  let currentMode = 'hours';
   function activeModeEl(box) {
-    return box.querySelector(`.mode[data-mode="${activeMode(box)}"]`);
+    return box.querySelector(`.mode[data-mode="${currentMode}"]`);
+  }
+  // show only the current mode's fields inside a box
+  function applyModeTo(box) {
+    box.querySelectorAll('.mode').forEach(m => m.hidden = (m.dataset.mode !== currentMode));
   }
 
-  // build the collapsed title + summary + price from the box's active mode
+  // build the collapsed title + summary + price from the box's active (shared) mode
   function summarize(box) {
-    const mode = activeMode(box);
+    const mode = currentMode;
     const modeEl = activeModeEl(box);
     const nameInput = modeEl.querySelector('.v-name');
     const price = (modeEl.querySelector('.v-price')?.value || '').trim() || '0';
@@ -543,15 +546,9 @@ body {
       box.remove();
       if (wasOpen && vboxes.lastElementChild) expand(vboxes.lastElementChild);
     });
-    // per-box tabs switch the active mode inside this box
-    box.querySelectorAll('.vtabs .wsr-tab').forEach(t => t.addEventListener('click', () => {
-      box.querySelectorAll('.vtabs .wsr-tab').forEach(x => x.classList.remove('active'));
-      t.classList.add('active');
-      const m = t.dataset.mode;
-      box.querySelectorAll('.mode').forEach(b => b.hidden = (b.dataset.mode !== m));
-    }));
     // live-update summary as fields change (visible once collapsed)
     box.addEventListener('input', () => { if (!box.classList.contains('open')) summarize(box); });
+    applyModeTo(box);
     applyNamesTo(box);
   }
 
@@ -562,6 +559,17 @@ body {
     wireBox(box);
     return box;
   }
+
+  // shared tabs → switch mode for ALL variation boxes + refresh summaries
+  sharedTabs.querySelectorAll('.wsr-tab').forEach(t => t.addEventListener('click', () => {
+    sharedTabs.querySelectorAll('.wsr-tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    currentMode = t.dataset.mode;
+    [...vboxes.children].forEach(box => {
+      applyModeTo(box);
+      if (!box.classList.contains('open')) summarize(box);
+    });
+  }));
 
   // seed two example variations: first collapsed (summary visible), second open
   const b1 = makeBox(false);
