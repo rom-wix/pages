@@ -209,6 +209,37 @@ body {
 .opt-title { font-size: 16px; color: var(--D10); }
 .opt-sub { font-size: 13px; color: var(--D20); margin-top: 2px; }
 
+/* ---------- Collapsible variation box (accordion) ---------- */
+.vbox { border: 1px solid var(--D80); border-radius: var(--radius); margin-bottom: 12px; overflow: hidden; }
+.vbox.open { border-color: var(--D70); box-shadow: var(--shadow-card); }
+.vbox-head {
+  display: flex; align-items: center; gap: 12px; padding: 14px 16px; cursor: pointer;
+}
+.vbox.open .vbox-head { border-bottom: 1px solid var(--D80); background: #fff; }
+.vbox:not(.open) .vbox-head:hover { background: var(--GR05); }
+.vbox-chevron {
+  width: 20px; height: 20px; flex-shrink: 0; color: var(--D20);
+  display: flex; align-items: center; justify-content: center; transition: transform .15s;
+}
+.vbox.open .vbox-chevron { transform: rotate(180deg); }
+.vbox-headmain { flex: 1; min-width: 0; }
+.vbox-title { font-size: 14px; font-weight: 600; color: var(--B10); }
+.vbox-summary {
+  font-size: 13px; color: var(--D20); margin-top: 2px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.vbox.open .vbox-summary { display: none; }            /* hide summary while editing */
+.vbox-price-chip { font-size: 14px; font-weight: 600; color: var(--B10); flex-shrink: 0; }
+.vbox.open .vbox-price-chip { display: none; }
+.vbox-del {
+  background: none; border: none; cursor: pointer; color: var(--D20); flex-shrink: 0;
+  width: 30px; height: 30px; border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+}
+.vbox-del:hover { color: var(--R10); background: var(--GR10); }
+.vbox-body { padding: 18px 16px; }
+.vbox:not(.open) .vbox-body { display: none; }
+
 /* ---------- Range/variant table (participants etc.) ---------- */
 .wsr-vtable { width: 100%; }
 .wsr-vtable .vt-head { display: flex; gap: 14px; padding: 0 2px 6px; }
@@ -339,49 +370,66 @@ body {
 
       <!-- ============ TYPE: Date & time ============ -->
       <div class="type-body" data-type="datetime">
-        <div class="wsr-field">
-          <label class="wsr-label">Price varies by</label>
-          <div class="wsr-tabs" id="tabs">
-            <button class="wsr-tab active" data-mode="hours">Hours &amp; days</button>
-            <button class="wsr-tab" data-mode="months">Months</button>
-            <button class="wsr-tab" data-mode="range">Date range</button>
-          </div>
-        </div>
+        <div id="vboxes"></div>
+        <button class="wsr-textbtn" id="addVar" style="width:100%; justify-content:center; border:1px dashed var(--D70); border-radius:var(--radius-sm); padding:14px;">+ Add Variation</button>
+      </div>
 
-        <div class="rule-block mode" data-mode="hours">
-          <div class="wsr-field name-field"><label class="wsr-label">Variation name</label><input class="wsr-input" placeholder="e.g., Weekend mornings"></div>
-          <div class="wsr-field"><label class="wsr-label">Days</label>
-            <div class="wsr-days">
-              <button class="wsr-day" onclick="this.classList.toggle('on')">S</button><button class="wsr-day on" onclick="this.classList.toggle('on')">M</button><button class="wsr-day on" onclick="this.classList.toggle('on')">T</button><button class="wsr-day on" onclick="this.classList.toggle('on')">W</button><button class="wsr-day on" onclick="this.classList.toggle('on')">T</button><button class="wsr-day on" onclick="this.classList.toggle('on')">F</button><button class="wsr-day" onclick="this.classList.toggle('on')">S</button>
+      <!-- Template for one Date & time variation box -->
+      <template id="vboxTpl">
+        <div class="vbox open">
+          <div class="vbox-head">
+            <span class="vbox-chevron">▾</span>
+            <div class="vbox-headmain">
+              <div class="vbox-title">New variation</div>
+              <div class="vbox-summary">Not set yet</div>
+            </div>
+            <span class="vbox-price-chip">$2</span>
+            <button class="vbox-del" aria-label="Delete variation">🗑</button>
+          </div>
+          <div class="vbox-body">
+            <div class="wsr-field">
+              <label class="wsr-label">Price varies by</label>
+              <div class="wsr-tabs vtabs">
+                <button class="wsr-tab active" data-mode="hours">Hours &amp; days</button>
+                <button class="wsr-tab" data-mode="months">Months</button>
+                <button class="wsr-tab" data-mode="range">Date range</button>
+              </div>
+            </div>
+
+            <div class="mode" data-mode="hours">
+              <div class="wsr-field name-field"><label class="wsr-label">Variation name</label><input class="wsr-input v-name" placeholder="e.g., Weekend mornings"></div>
+              <div class="wsr-field"><label class="wsr-label">Days</label>
+                <div class="wsr-days v-days">
+                  <button class="wsr-day" data-d="Sun" onclick="this.classList.toggle('on')">S</button><button class="wsr-day on" data-d="Mon" onclick="this.classList.toggle('on')">M</button><button class="wsr-day on" data-d="Tue" onclick="this.classList.toggle('on')">T</button><button class="wsr-day on" data-d="Wed" onclick="this.classList.toggle('on')">W</button><button class="wsr-day on" data-d="Thu" onclick="this.classList.toggle('on')">T</button><button class="wsr-day on" data-d="Fri" onclick="this.classList.toggle('on')">F</button><button class="wsr-day" data-d="Sat" onclick="this.classList.toggle('on')">S</button>
+                </div>
+              </div>
+              <div class="row" style="gap:24px;">
+                <div style="flex:1;"><label class="wsr-label">Start time</label><select class="wsr-select v-start"><option>12:00 AM</option><option>9:00 AM</option><option>5:00 PM</option></select></div>
+                <div style="flex:1;"><label class="wsr-label">End time</label><select class="wsr-select v-end"><option>11:30 PM</option><option>5:00 PM</option><option>9:00 PM</option></select></div>
+              </div>
+              <div class="wsr-field mt16"><label class="wsr-label">Price</label>
+                <div class="wsr-price"><span class="affix">$</span><input class="wsr-input v-price" value="2"><span class="stepper"><button>▲</button><button>▼</button></span></div>
+              </div>
+            </div>
+
+            <div class="mode" data-mode="months" hidden>
+              <div class="wsr-field name-field"><label class="wsr-label">Variation name</label><input class="wsr-input v-name" placeholder="e.g., Holiday season"></div>
+              <div class="wsr-field"><label class="wsr-label">Months</label><select class="wsr-select v-months"><option>Select months…</option><option>December</option><option>July–August</option></select></div>
+              <div class="wsr-field" style="margin:0;"><label class="wsr-label">Price</label><div class="wsr-price"><span class="affix">$</span><input class="wsr-input v-price" value="2"><span class="stepper"><button>▲</button><button>▼</button></span></div></div>
+            </div>
+
+            <div class="mode" data-mode="range" hidden>
+              <div class="wsr-field name-field"><label class="wsr-label">Variation name</label><input class="wsr-input v-name" placeholder="e.g., Summer rate"></div>
+              <div class="row" style="gap:12px;">
+                <div><label class="wsr-label">Start date</label><input class="wsr-input v-startdate" style="width:150px;" placeholder="📅 Select"></div>
+                <div><label class="wsr-label">End date</label><input class="wsr-input v-enddate" style="width:150px;" placeholder="📅 Select"></div>
+              </div>
+              <label class="wsr-switch wsr-switch--sm mt12" onclick="this.classList.toggle('on')"><span class="track"></span><span class="t-sm">Repeat annually</span></label>
+              <div class="wsr-field mt16" style="margin-bottom:0;"><label class="wsr-label">Price</label><div class="wsr-price"><span class="affix">$</span><input class="wsr-input v-price" value="2"><span class="stepper"><button>▲</button><button>▼</button></span></div></div>
             </div>
           </div>
-          <div class="row" style="gap:24px;">
-            <div style="flex:1;"><label class="wsr-label">Start time</label><select class="wsr-select"><option>12:00 AM</option><option>9:00 AM</option></select></div>
-            <div style="flex:1;"><label class="wsr-label">End time</label><select class="wsr-select"><option>11:30 PM</option><option>5:00 PM</option></select></div>
-          </div>
-          <div class="wsr-field mt16"><label class="wsr-label">Price</label>
-            <div class="wsr-price"><span class="affix">$</span><input class="wsr-input" value="2"><span class="stepper"><button>▲</button><button>▼</button></span></div>
-          </div>
         </div>
-
-        <div class="rule-block mode" data-mode="months" hidden>
-          <div class="wsr-field name-field"><label class="wsr-label">Variation name</label><input class="wsr-input" placeholder="e.g., Holiday season"></div>
-          <div class="wsr-field"><label class="wsr-label">Months</label><select class="wsr-select"><option>Select months…</option></select></div>
-          <div class="wsr-field" style="margin:0;"><label class="wsr-label">Price</label><div class="wsr-price"><span class="affix">$</span><input class="wsr-input" value="2"><span class="stepper"><button>▲</button><button>▼</button></span></div></div>
-        </div>
-
-        <div class="rule-block mode" data-mode="range" hidden>
-          <div class="wsr-field name-field"><label class="wsr-label">Variation name</label><input class="wsr-input" placeholder="e.g., Summer rate"></div>
-          <div class="row" style="gap:12px;">
-            <div><label class="wsr-label">Start date</label><input class="wsr-input" style="width:150px;" placeholder="📅 Select"></div>
-            <div><label class="wsr-label">End date</label><input class="wsr-input" style="width:150px;" placeholder="📅 Select"></div>
-          </div>
-          <label class="wsr-switch wsr-switch--sm mt12" onclick="this.classList.toggle('on')"><span class="track"></span><span class="t-sm">Repeat annually</span></label>
-          <div class="wsr-field mt16" style="margin-bottom:0;"><label class="wsr-label">Price</label><div class="wsr-price"><span class="affix">$</span><input class="wsr-input" value="2"><span class="stepper"><button>▲</button><button>▼</button></span></div></div>
-        </div>
-
-        <button class="wsr-textbtn mt16" style="width:100%; justify-content:center; border:1px dashed var(--D70); border-radius:var(--radius-sm); padding:14px;">+ Add Variation</button>
-      </div>
+      </template>
 
       <!-- ============ TYPE: Number of participants ============ -->
       <div class="type-body" data-type="participants" hidden>
@@ -420,13 +468,120 @@ body {
 </div>
 
 <script>
-  // ----- Tabs (Date & time modes) -----
-  document.querySelectorAll('#tabs .wsr-tab').forEach(t => t.addEventListener('click', () => {
-    document.querySelectorAll('#tabs .wsr-tab').forEach(x => x.classList.remove('active'));
-    t.classList.add('active');
-    const m = t.dataset.mode;
-    document.querySelectorAll('.type-body[data-type="datetime"] .mode').forEach(b => b.hidden = (b.dataset.mode !== m));
-  }));
+  // ----- "Add variation names" state (defined early; used during seeding) -----
+  const nameToggle = document.getElementById('nameToggle');
+  function namesOn() { return nameToggle.classList.contains('on'); }
+  function applyNamesTo(scope) {
+    (scope || document).querySelectorAll('.name-field').forEach(f => f.style.display = namesOn() ? '' : 'none');
+  }
+
+  // ================= Date & time: collapsible variation boxes =================
+  const vboxes = document.getElementById('vboxes');
+  const tpl = document.getElementById('vboxTpl');
+
+  function activeMode(box) {
+    const tab = box.querySelector('.vtabs .wsr-tab.active');
+    return tab ? tab.dataset.mode : 'hours';
+  }
+  function activeModeEl(box) {
+    return box.querySelector(`.mode[data-mode="${activeMode(box)}"]`);
+  }
+
+  // build the collapsed title + summary + price from the box's active mode
+  function summarize(box) {
+    const mode = activeMode(box);
+    const modeEl = activeModeEl(box);
+    const nameInput = modeEl.querySelector('.v-name');
+    const price = (modeEl.querySelector('.v-price')?.value || '').trim() || '0';
+    let summary = '';
+
+    if (mode === 'hours') {
+      const days = [...modeEl.querySelectorAll('.v-days .wsr-day.on')].map(d => d.dataset.d);
+      const dayStr = days.length === 7 ? 'Every day'
+        : days.length === 0 ? 'No days'
+        : days.join(', ');
+      const start = modeEl.querySelector('.v-start').value;
+      const end = modeEl.querySelector('.v-end').value;
+      summary = `${dayStr} · ${start}–${end}`;
+    } else if (mode === 'months') {
+      const m = modeEl.querySelector('.v-months').value;
+      summary = m && !m.startsWith('Select') ? m : 'No months selected';
+    } else {
+      const s = modeEl.querySelector('.v-startdate').value || '—';
+      const e = modeEl.querySelector('.v-enddate').value || '—';
+      summary = `${s} → ${e}`;
+    }
+
+    const fallbackTitle = { hours: 'Hours & days', months: 'Months', range: 'Date range' }[mode];
+    const title = (nameInput && nameInput.value.trim()) || fallbackTitle;
+    box.querySelector('.vbox-title').textContent = title;
+    box.querySelector('.vbox-summary').textContent = summary;
+    box.querySelector('.vbox-price-chip').textContent = '$' + price;
+  }
+
+  function expand(box) {
+    [...vboxes.children].forEach(b => { if (b !== box) collapse(b); });
+    box.classList.add('open');
+  }
+  function collapse(box) {
+    if (!box.classList.contains('open')) return;
+    summarize(box);
+    box.classList.remove('open');
+  }
+
+  function wireBox(box) {
+    // header click / chevron toggles this box
+    box.querySelector('.vbox-head').addEventListener('click', e => {
+      if (e.target.closest('.vbox-del')) return;       // delete handled separately
+      if (box.classList.contains('open')) collapse(box);
+      else expand(box);
+    });
+    // delete
+    box.querySelector('.vbox-del').addEventListener('click', () => {
+      if (vboxes.children.length <= 1) return;
+      const wasOpen = box.classList.contains('open');
+      box.remove();
+      if (wasOpen && vboxes.lastElementChild) expand(vboxes.lastElementChild);
+    });
+    // per-box tabs switch the active mode inside this box
+    box.querySelectorAll('.vtabs .wsr-tab').forEach(t => t.addEventListener('click', () => {
+      box.querySelectorAll('.vtabs .wsr-tab').forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+      const m = t.dataset.mode;
+      box.querySelectorAll('.mode').forEach(b => b.hidden = (b.dataset.mode !== m));
+    }));
+    // live-update summary as fields change (visible once collapsed)
+    box.addEventListener('input', () => { if (!box.classList.contains('open')) summarize(box); });
+    applyNamesTo(box);
+  }
+
+  function makeBox(open) {
+    const box = tpl.content.firstElementChild.cloneNode(true);
+    box.classList.toggle('open', !!open);
+    vboxes.appendChild(box);
+    wireBox(box);
+    return box;
+  }
+
+  // seed two example variations: first collapsed (summary visible), second open
+  const b1 = makeBox(false);
+  b1.querySelector('.v-name').value = 'Weekend mornings';
+  // set b1 to Sat+Sun, 9 AM–5 PM, $45
+  b1.querySelectorAll('.v-days .wsr-day').forEach(d => {
+    d.classList.toggle('on', d.dataset.d === 'Sat' || d.dataset.d === 'Sun');
+  });
+  b1.querySelector('.v-start').value = '9:00 AM';
+  b1.querySelector('.v-end').value = '5:00 PM';
+  b1.querySelector('.v-price').value = '45';
+  summarize(b1);   // b1 is already collapsed → generate its summary line directly
+
+  makeBox(true);  // second box, open & ready to edit
+
+  document.getElementById('addVar').addEventListener('click', () => {
+    [...vboxes.children].forEach(collapse);   // minimize existing boxes
+    const box = makeBox(true);                // add a fresh open one
+    box.scrollIntoView({ block: 'nearest' });
+  });
 
   // ----- Type dropdown with subtitles -----
   const dd = document.getElementById('typeDropdown');
@@ -450,20 +605,19 @@ body {
   });
 
   // ----- "Add variation names" toggle hides label/name fields everywhere -----
-  const nameToggle = document.getElementById('nameToggle');
   nameToggle.addEventListener('click', () => {
     nameToggle.classList.toggle('on');
-    const on = nameToggle.classList.contains('on');
-    document.querySelectorAll('.name-field').forEach(f => f.style.display = on ? '' : 'none');
+    applyNamesTo(document);
+    // refresh collapsed summaries (title may fall back when names off)
+    [...vboxes.children].forEach(b => { if (!b.classList.contains('open')) summarize(b); });
   });
 
   // ----- Participants: add / delete rows -----
   document.getElementById('addPRow').addEventListener('click', () => {
     const row = document.createElement('div');
     row.className = 'wsr-vrow';
-    const namesOn = nameToggle.classList.contains('on');
     row.innerHTML = `
-      <div class="label-input name-field" style="${namesOn ? '' : 'display:none'}"><input class="wsr-input" placeholder="e.g., Large group"></div>
+      <div class="label-input name-field" style="${namesOn() ? '' : 'display:none'}"><input class="wsr-input" placeholder="e.g., Large group"></div>
       <div class="num-input"><input class="wsr-input" value=""></div>
       <div class="num-input"><input class="wsr-input" value=""></div>
       <div class="wsr-price"><span class="affix">$</span><input class="wsr-input" value="2"><span class="stepper"><button>▲</button><button>▼</button></span></div>
