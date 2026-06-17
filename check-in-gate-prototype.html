@@ -33,6 +33,8 @@ button{font-family:var(--sans)}
 .launch button{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);color:#fff;font-size:13.5px;font-weight:600;padding:9px 15px;border-radius:10px 10px 0 0;cursor:pointer;display:flex;align-items:center;gap:7px}
 .launch button.on{background:#eef2f8;color:var(--b10);border-color:#eef2f8}
 .launch button .dot{width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.8}
+.launch button .wip{font-size:9px;font-weight:800;letter-spacing:.04em;line-height:1;padding:2px 5px;border-radius:5px;background:#FFC233;color:#5A3A00}
+.launch button.on .wip{background:#FFC233;color:#5A3A00}
 .reset{margin-left:auto;background:transparent !important;border-color:transparent !important;opacity:.8;font-weight:500 !important;border-radius:10px !important}
 
 /* stage */
@@ -48,7 +50,7 @@ button{font-family:var(--sans)}
 .notch{position:absolute;top:11px;left:50%;transform:translateX(-50%);width:120px;height:26px;background:#0b0e1a;border-radius:0 0 16px 16px;z-index:60;pointer-events:none}
 .viewport{position:absolute;inset:0;overflow:hidden}
 .scr{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg);transform:translateX(100%);transition:transform .34s cubic-bezier(.36,.66,.04,1);will-change:transform}
-.scr.on{transform:translateX(0)}
+.scr.on{transform:translateX(0);z-index:2}
 .scr.left{transform:translateX(-24%)}
 .scr.right{transform:translateX(100%)}
 
@@ -127,6 +129,16 @@ button{font-family:var(--sans)}
 .verifying.show{display:flex}
 .spin{width:40px;height:40px;border-radius:50%;border:3px solid rgba(255,255,255,.25);border-top-color:#fff;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
+/* manual code entry sheet */
+.man-code{display:flex;align-items:center;justify-content:center;gap:8px;margin:14px 0 4px;font-family:ui-monospace,Menlo,monospace}
+.man-code .dg{width:34px;height:46px;border-radius:8px;border:1.5px solid var(--line);display:grid;place-items:center;font-size:22px;font-weight:700;color:var(--d10)}
+.man-code .dg.f{border-color:var(--b10);background:#fff}
+.man-code .dg.empty{color:#CFD1DC}
+.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0 4px}
+.key{height:54px;border-radius:12px;background:#F1F3F7;border:none;font-size:22px;font-weight:600;color:var(--d10);cursor:pointer;display:grid;place-items:center}
+.key:active{background:#E4E7EE}
+.key.fn{background:transparent;color:var(--d30)}
+.key.fn svg{width:24px;height:24px}
 
 /* result sheet */
 .sheet-layer{position:absolute;inset:0;z-index:40;visibility:hidden}
@@ -432,8 +444,8 @@ button{font-family:var(--sans)}
   <div class="launch">
     <button class="on" data-surf="owner" onclick="surf('owner',this)"><span class="dot"></span>Owner App · scan</button>
     <button data-surf="member" onclick="surf('member',this)"><span class="dot"></span>Member App · pass</button>
-    <button data-surf="setm" onclick="surf('setm',this)"><span class="dot"></span>Setup · mobile</button>
-    <button data-surf="web" onclick="surf('web',this)"><span class="dot"></span>Setup · web</button>
+    <button data-surf="setm" onclick="surf('setm',this)"><span class="dot"></span>Setup · mobile<span class="wip">WIP</span></button>
+    <button data-surf="web" onclick="surf('web',this)"><span class="dot"></span>Setup · web<span class="wip">WIP</span></button>
     <button data-surf="guest" onclick="surf('guest',this)"><span class="dot"></span>Guest pass · web</button>
     <button class="reset" onclick="location.reload()">↺ Reset</button>
   </div>
@@ -448,7 +460,7 @@ button{font-family:var(--sans)}
 
       <!-- o-sessions -->
       <!-- o-home -->
-      <div class="scr on" id="o-home">
+      <div class="scr" id="o-home">
         <div class="statusbar" style="background:#fff"></div>
         <div class="oa-home-head">
           <div class="ava"></div>
@@ -487,10 +499,10 @@ button{font-family:var(--sans)}
       </div>
 
       <!-- o-bookings -->
-      <div class="scr" id="o-bookings">
+      <div class="scr on" id="o-bookings">
         <div class="statusbar" style="background:#fff"></div>
         <div class="oa-bk-head">
-          <div class="bk" onclick="back('vpOwner')"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></div>
+          <div class="bk" onclick="jump('vpOwner','o-home')"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></div>
           <div class="ttl"><div class="t">Bookings</div><div class="s">A La Cart</div></div>
           <div class="r">
             <div class="ic" onclick="push('vpOwner','o-entries')"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h12M8 12h12M8 18h12M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg></div>
@@ -585,11 +597,26 @@ button{font-family:var(--sans)}
           <div class="scan-qr"><img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=0&data=WIX-PASS%7Cpulse-studio" alt="" onerror="this.parentNode.style.background='repeating-conic-gradient(#000 0 25%,#fff 0 50%) 0 0/20px 20px'"></div>
           <div class="scan-nav"><span class="x" onclick="closeScanner()"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span><span class="t" id="o-scan-title">Scan QR code</span></div>
           <div class="scan-help">Point the camera at the member's pass<small>Tap the frame to scan</small></div>
-          <div class="scan-actions"><span class="torch" onclick="this.classList.toggle('on')"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></svg></span><span class="text-btn" onclick="toast('Manual code entry — fallback path')">Enter code manually</span></div>
+          <div class="scan-actions"><span class="torch" onclick="this.classList.toggle('on')"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></svg></span><span class="text-btn" onclick="openManual()">Enter code manually</span></div>
         </div>
         <div class="statusbar light" style="position:absolute;top:0;left:0;right:0;z-index:8"></div>
         <div class="verifying" id="o-verifying"><div class="spin"></div><span>Verifying…</span></div>
         <div class="sheet-layer" id="o-sheet"><div class="dim" onclick="hideSheet()"></div><div class="sheet" id="o-sheet-c"></div></div>
+        <div class="sheet-layer" id="o-manual"><div class="dim" onclick="closeManual()"></div><div class="sheet">
+          <span class="grip"></span>
+          <h3 style="font-size:20px;margin:6px 0 4px">Enter code manually</h3>
+          <p class="body" style="margin-bottom:6px">Type the member's check-in code or booking ID</p>
+          <div class="man-code" id="man-code"></div>
+          <div class="keypad">
+            <button class="key" onclick="manKey('1')">1</button><button class="key" onclick="manKey('2')">2</button><button class="key" onclick="manKey('3')">3</button>
+            <button class="key" onclick="manKey('4')">4</button><button class="key" onclick="manKey('5')">5</button><button class="key" onclick="manKey('6')">6</button>
+            <button class="key" onclick="manKey('7')">7</button><button class="key" onclick="manKey('8')">8</button><button class="key" onclick="manKey('9')">9</button>
+            <span class="key fn" onclick="toast('Search by name instead')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></span>
+            <button class="key" onclick="manKey('0')">0</button>
+            <span class="key fn" onclick="manBack()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 5H8L2 12l6 7h13a1 1 0 001-1V6a1 1 0 00-1-1z"/><path d="M16 9l-5 6M11 9l5 6"/></svg></span>
+          </div>
+          <div class="acts" style="margin-top:8px"><button class="btn btn-primary" id="man-submit" onclick="manSubmit()" disabled style="opacity:.5">Check in</button><button class="text-btn" onclick="closeManual()">Scan instead</button></div>
+        </div></div>
         <div class="homebar light" style="position:absolute;bottom:0;left:0;right:0;z-index:8"><i></i></div>
       </div>
 
@@ -621,7 +648,7 @@ button{font-family:var(--sans)}
     <div class="phone member"><div class="screen"><div class="notch"></div><div class="viewport" id="vpMember">
 
       <!-- m-profile (My Profile hub) -->
-      <div class="scr on" id="m-profile">
+      <div class="scr" id="m-profile">
         <div class="statusbar"></div>
         <div class="bk-head"><div class="row"><span class="ttl" style="margin-right:0">My Profile</span></div></div>
         <div style="flex:1;overflow-y:auto;background:#fff">
@@ -638,9 +665,9 @@ button{font-family:var(--sans)}
       </div>
 
       <!-- m-bookings -->
-      <div class="scr" id="m-bookings">
+      <div class="scr on" id="m-bookings">
         <div class="statusbar"></div>
-        <div class="bk-head"><div class="row"><span class="ico" onclick="back('vpMember')"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></span><span class="ttl">Bookings</span></div></div>
+        <div class="bk-head"><div class="row"><span class="ico" onclick="jump('vpMember','m-profile')"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></span><span class="ttl">Bookings</span></div></div>
         <div class="seg"><span class="s on">Upcoming</span><span class="s" onclick="toast('History')">History</span></div>
         <div style="flex:1;overflow-y:auto;background:#fff">
           <div class="entry-banner" onclick="showPass('entry')"><span class="qi"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"><rect x="3" y="4" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="6" rx="1"/><rect x="14" y="4" width="7" height="7" rx="1"/><path d="M14 15h3v5M20 14v6" stroke-linecap="round"/></svg></span><div style="flex:1"><div class="t">Your entry pass</div><div class="s">Active member · show your code at the door</div></div><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div>
@@ -714,7 +741,7 @@ button{font-family:var(--sans)}
           <div style="width:108px;height:108px;border-radius:50%;background:rgba(255,255,255,.18);display:grid;place-items:center;margin-bottom:24px"><div style="width:78px;height:78px;border-radius:50%;background:#fff;display:grid;place-items:center"><svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div></div>
           <div style="font-family:var(--disp);font-size:30px;font-weight:800">You're in!</div>
           <div style="font-size:16px;opacity:.95;margin-top:10px;line-height:1.5">Checked in to <b>Pilates</b><br>Tomorrow · 22:00 · Broadway</div>
-          <button class="m-btn" style="background:rgba(255,255,255,.18);margin-top:28px;width:auto;padding:0 26px" onclick="jump('vpMember','m-profile')">Done</button>
+          <button class="m-btn" style="background:rgba(255,255,255,.18);margin-top:28px;width:auto;padding:0 26px" onclick="passDone()">Done</button>
         </div>
         <div class="homebar light"><i></i></div>
       </div>
@@ -965,13 +992,16 @@ function back(vpId){
   to.classList.remove('left','right');to.classList.add('on');
 }
 function jump(vpId,toId){ /* tab switch, no slide */
-  var vp=document.getElementById(vpId), from=curScr(vp), to=document.getElementById(toId);
-  if(from===to) return;
-  vp.querySelectorAll('.scr').forEach(function(s){s.style.transition='none';});
-  if(from){from.classList.remove('on','left');from.classList.add('right');}
-  to.classList.remove('left','right');to.classList.add('on');
+  var vp=document.getElementById(vpId), to=document.getElementById(toId);
+  if(!to) return;
+  var screens=vp.querySelectorAll(':scope > .scr');
+  screens.forEach(function(s){s.style.transition='none';});
+  screens.forEach(function(s){
+    if(s===to){s.classList.remove('left','right');s.classList.add('on');}
+    else{s.classList.remove('on','left');s.classList.add('right');}
+  });
   stacks[vpId]=[toId];
-  requestAnimationFrame(function(){vp.querySelectorAll('.scr').forEach(function(s){s.style.transition='';});});
+  requestAnimationFrame(function(){screens.forEach(function(s){s.style.transition='';});});
 }
 function memTab(id){jump('vpMember',id);}
 function openMSheet(){document.getElementById('m-sheet').classList.add('show');}
@@ -990,6 +1020,15 @@ function showPass(mode){
   push('vpMember','m-pass');
 }
 function goPass(){showPass('session');}
+function passDone(){ /* after 'You're in', return to the screen the pass was opened from */
+  var vp=document.getElementById('vpMember'), st=stacks['vpMember']||['m-bookings'];
+  var pi=st.indexOf('m-pass');
+  var originId=(pi>0)?st[pi-1]:'m-bookings';
+  var from=curScr(vp), to=document.getElementById(originId);
+  if(from){from.classList.remove('on','left');from.classList.add('right');}
+  if(to){to.classList.remove('left','right');to.classList.add('on');}
+  stacks['vpMember']=(pi>0)?st.slice(0,pi):[originId];
+}
 
 /* ---------- surface switch ---------- */
 function surf(name,btn){
@@ -1087,6 +1126,19 @@ function showResult(type){
   document.getElementById('o-sheet').classList.add('show');
 }
 function hideSheet(){document.getElementById('o-sheet').classList.remove('show');}
+var manCode='';
+function renderMan(){
+  var el=document.getElementById('man-code'),h='';
+  for(var i=0;i<6;i++){var d=manCode[i];h+='<span class="dg '+(d?'f':'empty')+'">'+(d||'·')+'</span>';}
+  el.innerHTML=h;
+  var btn=document.getElementById('man-submit'),ok=manCode.length>=4;
+  btn.disabled=!ok;btn.style.opacity=ok?'1':'.5';
+}
+function openManual(){manCode='';renderMan();document.getElementById('o-manual').classList.add('show');}
+function closeManual(){document.getElementById('o-manual').classList.remove('show');}
+function manKey(d){if(manCode.length<6){manCode+=d;renderMan();}}
+function manBack(){manCode=manCode.slice(0,-1);renderMan();}
+function manSubmit(){if(manCode.length<4)return;closeManual();doScan();}
 function afterCheck(msg){hideSheet();toast(msg,true);}
 
 /* ---------- member ---------- */
