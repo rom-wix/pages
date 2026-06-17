@@ -139,6 +139,41 @@ button{font-family:var(--sans)}
 .key:active{background:#E4E7EE}
 .key.fn{background:transparent;color:var(--d30)}
 .key.fn svg{width:24px;height:24px}
+/* owner: manage participants */
+.mp-head{flex:0 0 auto;background:#fff;padding:4px 8px 0}
+.mp-head .row{display:flex;align-items:center;gap:4px}
+.mp-head .bk{width:32px;height:32px;display:grid;place-items:center;color:#16213A;cursor:pointer}
+.mp-head .bk svg{width:22px;height:22px}
+.mp-head .ttl{flex:1;text-align:center}
+.mp-head .ttl .t{font-size:16px;font-weight:700;color:#16213A;font-family:var(--disp);line-height:1.1}
+.mp-head .ttl .s{font-size:12.5px;color:#5B6478}
+.mp-head .hbtn{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;cursor:pointer;color:#16213A;flex:0 0 30px}
+.mp-head .hbtn.dark{background:#16213A;color:#fff}
+.mp-head .hbtn svg{width:17px;height:17px}
+.mp-tabs{display:flex;border-bottom:1px solid var(--line);margin-top:6px}
+.mp-tab{flex:1;text-align:center;padding:10px 0;font-size:14px;font-weight:700;color:#5B6478;position:relative;cursor:pointer}
+.mp-tab.on{color:#2B5CE6}
+.mp-tab.on:after{content:"";position:absolute;left:24px;right:24px;bottom:-1px;height:2.5px;background:#2B5CE6;border-radius:2px}
+.mp-pills{display:flex;gap:8px;padding:12px 14px 2px}
+.mp-pill{height:30px;padding:0 13px;border-radius:15px;border:1.5px solid var(--line);background:#fff;font-size:13px;font-weight:600;color:#5B6478;cursor:pointer;display:flex;align-items:center}
+.mp-pill.on{border-color:#2B5CE6;color:#2B5CE6}
+.pt-row{display:flex;gap:11px;padding:12px 14px;border-bottom:1px solid #EDEEF2;align-items:flex-start}
+.pt-ava{width:42px;height:42px;border-radius:50%;flex:0 0 42px;display:grid;place-items:center;color:#fff;font-size:14px;font-weight:600;position:relative;background-size:cover;background-position:center}
+.pt-ava .bang{position:absolute;right:-1px;bottom:-1px;width:16px;height:16px;border-radius:50%;background:#E0301E;color:#fff;display:grid;place-items:center;font-size:10px;font-weight:800;border:2px solid #fff}
+.pt-main{flex:1;min-width:0}
+.pt-name{font-size:15.5px;font-weight:700;color:#16213A}
+.pt-total{font-size:13px;color:#5B6478;margin-top:1px}
+.pt-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.pt-tag{height:24px;padding:0 9px;border-radius:6px;font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:4px}
+.pt-tag.red{background:#FBE7E5;color:#C0291F}
+.pt-tag.green{background:#E3F4EA;color:#1F7A4D}
+.pt-tag svg{width:12px;height:12px}
+.pt-action{margin-top:9px;height:32px;padding:0 16px;border-radius:16px;border:1.5px solid #2B5CE6;background:#fff;color:#2B5CE6;font-size:13.5px;font-weight:700;cursor:pointer}
+.pt-more{color:#16213A;cursor:pointer;flex:0 0 auto;padding-top:1px;display:grid;place-items:center;width:24px}
+.pt-more svg{width:20px;height:20px}
+.mp-checkin{flex:0 0 auto;background:#E8F0FE;display:flex;align-items:center;gap:10px;padding:12px 14px}
+.mp-checkin .tx{flex:1;font-size:13.5px;color:#16213A;line-height:1.3}
+.mp-checkin button{height:42px;padding:0 20px;border-radius:21px;background:#2B5CE6;color:#fff;border:none;font-size:15px;font-weight:700;cursor:pointer;flex:0 0 auto}
 
 /* result sheet */
 .sheet-layer{position:absolute;inset:0;z-index:40;visibility:hidden}
@@ -410,7 +445,7 @@ button{font-family:var(--sans)}
 .oa-evt .ln{font-size:13.5px;color:#3B4250;line-height:1.55}
 .oa-evt .dd{position:absolute;top:11px;right:11px;color:#16213A}
 .oa-fab{position:absolute;right:16px;bottom:80px;width:54px;height:54px;border-radius:50%;background:#2B5CE6;display:grid;place-items:center;color:#fff;box-shadow:0 6px 16px rgba(43,92,230,.4);z-index:15;cursor:pointer}
-.oa-sess-head{flex:0 0 auto;background:#2B5CE6;color:#fff;padding:4px 18px 18px}
+.oa-sess-head{flex:0 0 auto;background:linear-gradient(rgba(43,92,230,.80),rgba(43,92,230,.86)),#2B5CE6 url('https://images.unsplash.com/photo-1518611012118-696072aa579a?w=900&q=60') center/cover;color:#fff;padding:4px 18px 18px}
 .oa-sess-head .top{display:flex;align-items:center;justify-content:space-between}
 .oa-sess-head .top .bk{width:32px;height:32px;display:grid;place-items:center;margin-left:-6px;cursor:pointer}
 .oa-sess-head .top .mi{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.22);display:grid;place-items:center;cursor:pointer}
@@ -431,6 +466,8 @@ button{font-family:var(--sans)}
 .oa-link .tx .t{font-size:16px;font-weight:700;color:#1F6BFF}
 .oa-link .tx .s{font-size:14px;color:#6B7280;margin-top:1px}
 .oa-parth{font-size:23px;font-weight:800;color:#16213A;padding:16px 18px 6px}
+.oa-booked{display:flex;align-items:center;justify-content:space-between;padding:8px 18px 6px;font-size:16px;color:#16213A;cursor:pointer}
+.oa-booked svg{width:20px;height:20px;color:#2B5CE6}
 .oa-checkin{display:flex;justify-content:center;padding:12px}
 .oa-checkin button{background:#2B5CE6;color:#fff;border:none;border-radius:25px;height:50px;padding:0 52px;font-size:17px;font-weight:700;cursor:pointer}
 .oa-cancel{display:flex;align-items:center;justify-content:center;gap:11px;padding:16px;color:#E5402C;font-weight:700;font-size:17px;border-top:1px solid #EEF0F3;cursor:pointer}
@@ -455,7 +492,7 @@ button{font-family:var(--sans)}
 
   <!-- ============ OWNER ============ -->
   <div class="surface-stage on" id="surf-owner">
-    <div class="hint">Open a session ("Yoga class") → <b>Scan QR</b> for check-in · On <b>Bookings</b>, the top-right scan = membership entry</div>
+    <div class="hint">Open a session → <b>Check In</b> to scan participants · On <b>Bookings</b>, the top-right scan = membership entry</div>
     <div class="phone"><div class="screen"><div class="notch"></div><div class="viewport" id="vpOwner">
 
       <!-- o-sessions -->
@@ -538,13 +575,12 @@ button{font-family:var(--sans)}
         <div class="statusbar light" style="background:#2B5CE6"></div>
         <div class="oa-sess-head">
           <div class="top"><div class="bk" onclick="back('vpOwner')"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></div><div class="mi" onclick="toast('More')"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></div></div>
-          <h2>Yoga class</h2>
+          <h2>Pilates</h2>
           <div class="with">With Carlos Lampel</div>
           <div class="oa-meta">
-            <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></svg>Wed, Jun 3, 2026</div>
-            <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>17:00 (1hr)</div>
+            <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></svg>Today</div>
+            <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>22:00 (1hr)</div>
             <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9l3-3 3 3"/><path d="M7 6v8a3 3 0 003 3h7"/><path d="M20 15l-3 3-3-3"/><path d="M17 18v-8a3 3 0 00-3-3H7"/></svg>This session repeats weekly</div>
-            <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="11" rx="1.5"/><path d="M4 9h16M9 16v3M15 16v3"/></svg>Room 1</div>
             <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.3 7-11a7 7 0 10-14 0c0 4.7 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Broadway</div>
           </div>
         </div>
@@ -553,14 +589,14 @@ button{font-family:var(--sans)}
             <div class="oa-act" onclick="push('vpOwner','o-list')"><div class="circ"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3.6 2.8-5.5 6-5.5 .9 0 1.8.1 2.5.4"/><path d="M17 12v6M14 15h6"/></svg></div><div class="lbl">Manage<br>Participants</div></div>
             <div class="oa-act" onclick="toast('Invite')"><div class="circ"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4M8 8l4-4 4 4"/><path d="M5 14v4a2 2 0 002 2h10a2 2 0 002-2v-4"/></svg></div><div class="lbl">Invite</div></div>
             <div class="oa-act" onclick="toast('Broadcast')"><div class="circ"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10v4a1 1 0 001 1h2l8 4V5L7 9H5a1 1 0 00-1 1z"/><path d="M18 8.5a4 4 0 010 7"/></svg></div><div class="lbl">Broadcast</div></div>
-            <div class="oa-act" onclick="openScanner('session')"><div class="circ"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V5a1 1 0 011-1h2M17 4h2a1 1 0 011 1v2M20 17v2a1 1 0 01-1 1h-2M7 20H5a1 1 0 01-1-1v-2"/><path d="M4 12h16"/></svg></div><div class="lbl">Scan QR</div></div>
           </div>
           <div class="oa-divln"></div>
           <div class="oa-link"><div class="vc"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3"/></svg></div><div class="tx"><div class="t">Add a Session Link</div><div class="s">Account: (eehrenkranz5@gmail.com)</div></div><svg viewBox="0 0 24 24" width="20" height="20" fill="#B6C1CD"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></div>
           <div class="oa-divln"></div>
           <div class="oa-parth">Participants</div>
-          <div class="oa-checkin"><button onclick="push('vpOwner','o-list')">Check In</button></div>
-          <div class="oa-cancel"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V5a1 1 0 011-1h4a1 1 0 011 1v2M6 7l1 13h10l1-13"/></svg>Cancel Session</div>
+          <div class="oa-booked" onclick="push('vpOwner','o-list')"><span>7/10 Booked</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div>
+          <div class="oa-checkin"><button onclick="openScanner('session')">Check In</button></div>
+          <div class="oa-cancel" onclick="toast('Cancel session')"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V5a1 1 0 011-1h4a1 1 0 011 1v2M6 7l1 13h10l1-13"/></svg>Cancel Session</div>
         </div>
         <div class="oa-tabbar">
           <div class="oa-tab on" onclick="jump('vpOwner','o-home')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3.2l9 7.8h-2.2V21H14v-6h-4v6H5.2V11H3z"/></svg>Home</div>
@@ -572,20 +608,49 @@ button{font-family:var(--sans)}
         <div class="homebar"><i></i></div>
       </div>
 
-      <!-- o-list -->
+      <!-- o-list (Manage Participants) -->
       <div class="scr" id="o-list">
         <div class="statusbar"></div>
-        <div class="navbar"><div class="ico" onclick="back('vpOwner')"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></div><div class="ttl"><div class="t">Yoga class</div><div class="s">Wed, Jun 3 · 17:00 · Room 1</div></div></div>
-        <div class="sec-h"><span id="o-count">12 booked · 5 checked in</span><span class="lnk" onclick="checkInAll()">Check in all</span></div>
-        <div class="scroll"><div class="list" id="o-rows">
-          <div class="cell"><div class="avatar" style="background:#51B77B">MC</div><div class="who"><div class="nm">Maya Cohen</div><div class="sub">Unlimited membership · Active</div></div><span class="trail">CIN</span></div>
-          <div class="cell"><div class="avatar" style="background:#116DFF">JR</div><div class="who"><div class="nm">Jordan Reyes</div><div class="sub">10-class pack · 6 left</div></div><span class="trail" data-elig="1">BOOK</span></div>
-          <div class="cell"><div class="avatar" style="background:#5A48F5">AP</div><div class="who"><div class="nm">Aisha Patel</div><div class="sub">Unlimited membership · Active</div></div><span class="trail" data-elig="1">BOOK</span></div>
-          <div class="cell"><div class="avatar" style="background:#F9AD4D">TN</div><div class="who"><div class="nm">Tom Nguyen</div><div class="sub">Monthly membership · Payment due</div></div><span class="trail">WARN</span></div>
-          <div class="cell"><div class="avatar" style="background:#06BEE1">SK</div><div class="who"><div class="nm">Sara Klein</div><div class="sub">No active plan or pack</div></div><span class="trail">ERR</span></div>
-          <div class="cell"><div class="avatar" style="background:#868AA5">DM</div><div class="who"><div class="nm">Diego Morales</div><div class="sub">Drop-in · paid</div></div><span class="trail" data-elig="1" data-btn="1">BTN</span></div>
-        </div></div>
-        <div class="actionbar"><button class="btn btn-primary" onclick="openScanner()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V5a1 1 0 011-1h2M17 4h2a1 1 0 011 1v2M20 17v2a1 1 0 01-1 1h-2M7 20H5a1 1 0 01-1-1v-2"/><path d="M4 12h16"/></svg>Scan QR code</button></div>
+        <div class="mp-head">
+          <div class="row">
+            <span class="bk" onclick="back('vpOwner')"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></span>
+            <div class="ttl"><div class="t">Manage Participants</div><div class="s">Pilates</div></div>
+            <span class="hbtn" title="Scan QR to check in" onclick="openScanner('session')"><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V5a1 1 0 011-1h2M17 4h2a1 1 0 011 1v2M20 17v2a1 1 0 01-1 1h-2M7 20H5a1 1 0 01-1-1v-2"/><path d="M4 12h16"/></svg></span>
+            <span class="hbtn dark" onclick="toast('Add participant')"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+          </div>
+          <div class="mp-tabs"><div class="mp-tab on">Booked (7/10)</div><div class="mp-tab" onclick="toast('Waitlist')">Waitlist</div></div>
+        </div>
+        <div class="mp-pills"><span class="mp-pill on">All 4</span><span class="mp-pill" onclick="toast('Filter: Not Paid')">Not Paid 3</span></div>
+        <div class="scroll">
+          <div class="pt-row">
+            <div class="pt-ava" style="background:#7B3FF2">JS</div>
+            <div class="pt-main"><div class="pt-name">John Snow</div><div class="pt-tags"><span class="pt-tag red">Not Redeemed</span></div><button class="pt-action" onclick="toast('Sell a plan')">Sell a plan</button></div>
+            <span class="pt-more" onclick="toast('More')"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><circle cx="5" cy="12" r="1.9"/><circle cx="12" cy="12" r="1.9"/><circle cx="19" cy="12" r="1.9"/></svg></span>
+          </div>
+          <div class="pt-row">
+            <div class="pt-ava" style="background:#6B7280">NS<span class="bang">!</span></div>
+            <div class="pt-main"><div class="pt-name">Nati Shlezinger</div><div class="pt-total">$88.00 total</div><div class="pt-tags"><span class="pt-tag red">Not Paid</span></div><button class="pt-action" onclick="toast('Collect payment')">Collect Payment</button></div>
+            <span class="pt-more" onclick="toast('More')"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><circle cx="5" cy="12" r="1.9"/><circle cx="12" cy="12" r="1.9"/><circle cx="19" cy="12" r="1.9"/></svg></span>
+          </div>
+          <div class="pt-row">
+            <div class="pt-ava" style="background:#E8613C">C</div>
+            <div class="pt-main"><div class="pt-name">Carlos Lampel</div><div class="pt-tags"><span class="pt-tag green">Checked-in</span><span class="pt-tag red">Not Redeemed</span></div></div>
+            <span class="pt-more" onclick="toast('More')"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><circle cx="5" cy="12" r="1.9"/><circle cx="12" cy="12" r="1.9"/><circle cx="19" cy="12" r="1.9"/></svg></span>
+          </div>
+          <div class="pt-row">
+            <div class="pt-ava" style="background:#5A48F5">RL</div>
+            <div class="pt-main"><div class="pt-name">Rom Lampel</div><div class="pt-total">$22.00 total</div><div class="pt-tags" id="tags-rom"><span class="pt-tag green">Paid</span></div></div>
+            <span class="pt-more" onclick="toast('More')"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><circle cx="5" cy="12" r="1.9"/><circle cx="12" cy="12" r="1.9"/><circle cx="19" cy="12" r="1.9"/></svg></span>
+          </div>
+        </div>
+        <div class="mp-checkin"><div class="tx">Check in participants to your class session.</div><button onclick="openScanner('session')">Scan QR</button></div>
+        <div class="oa-tabbar">
+          <div class="oa-tab on" onclick="jump('vpOwner','o-home')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3.2l9 7.8h-2.2V21H14v-6h-4v6H5.2V11H3z"/></svg>Home</div>
+          <div class="oa-tab" onclick="toast('Analytics')"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="11" width="3.4" height="9" rx="1"/><rect x="10.3" y="5" width="3.4" height="15" rx="1"/><rect x="16.6" y="8.5" width="3.4" height="11.5" rx="1"/></svg>Analytics</div>
+          <div class="oa-tab" onclick="toast('AI Agents')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11 2.5l1.7 4.8 4.8 1.7-4.8 1.7L11 15.5 9.3 10.7 4.5 9l4.8-1.7z"/><path d="M17.5 13l.9 2.4 2.4.9-2.4.9-.9 2.4-.9-2.4-2.4-.9 2.4-.9z"/></svg>AI Agents</div>
+          <div class="oa-tab" onclick="toast('Inbox')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M5 5h14a1 1 0 011 1v9a1 1 0 01-1 1H9l-4 4V6a1 1 0 011-1z"/></svg>Inbox</div>
+          <div class="oa-tab" onclick="toast('Manage')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>Manage</div>
+        </div>
         <div class="homebar"><i></i></div>
       </div>
 
@@ -1089,9 +1154,9 @@ function doScan(){
   },850);
 }
 var RESULTS={
- ok:{cls:'ok',icon:'<path d="M5 13l4 4L19 7"/>',sw:3,h:'Checked in',b:'Jordan is eligible — confirmed booking for this session.',
-     mini:['JR','#116DFF','Jordan Reyes','10-class pack · 6 left'],
-     acts:'<button class="btn btn-primary" onclick="hideSheet()">Scan next</button><button class="text-btn" onclick="closeScanner()">Done</button>'},
+ ok:{cls:'ok',icon:'<path d="M5 13l4 4L19 7"/>',sw:3,h:'Checked in',b:'Rom is eligible — confirmed booking for this session.',
+     mini:['RL','#5A48F5','Rom Lampel','$22.00 · Paid'],
+     acts:'<button class="btn btn-primary" onclick="checkinQR();hideSheet()">Scan next</button><button class="text-btn" onclick="checkinQR();closeScanner()">Done</button>'},
  warn:{cls:'wn',icon:'<path d="M12 3L2 21h20z"/><path d="M12 10v5"/><path d="M12 18h.01"/>',sw:2.4,h:'Plan may be lapsed',b:'No active plan found for Tom. His last payment didn\'t go through.',
      reason:['var(--y-tint)','var(--y-text)','Monthly membership · Payment due'],
      mini:['TN','#F9AD4D','Tom Nguyen','Booked this session'],
@@ -1139,6 +1204,13 @@ function closeManual(){document.getElementById('o-manual').classList.remove('sho
 function manKey(d){if(manCode.length<6){manCode+=d;renderMan();}}
 function manBack(){manCode=manCode.slice(0,-1);renderMan();}
 function manSubmit(){if(manCode.length<4)return;closeManual();doScan();}
+function checkinQR(){ /* flip the scanned participant's row to a 'Checked in via QR' tag */
+  var t=document.getElementById('tags-rom');
+  if(t && !t.dataset.qr){
+    t.insertAdjacentHTML('afterbegin','<span class="pt-tag green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="4" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="6" rx="1"/><rect x="14" y="4" width="7" height="7" rx="1"/><path d="M14 15h3v5M20 14v6" stroke-linecap="round"/></svg>Checked in via QR</span>');
+    t.dataset.qr='1';
+  }
+}
 function afterCheck(msg){hideSheet();toast(msg,true);}
 
 /* ---------- member ---------- */
