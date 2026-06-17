@@ -7,23 +7,62 @@
 <style>
 /* ============================================================
    Wix Design System (WDS / wix-style-react) — faithful tokens
+   Used by all 5 advanced-pricing concepts.
+   Colors, type ramp and component shapes mirror WSR defaults.
    ============================================================ */
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  --B10: #001737; --B20: #162D3D; --B30: #213c52;
-  --D10: #162d3d; --D20: #32536a; --D30: #5999ff00;
-  --T10: #116dff; --T20: #4287ff; --T05: #e7f0ff; --T01: #f0f6ff; --A10: #0d5aef;
-  --R10: #ee2942; --R05: #fdecee; --Y10: #fdb10c; --Y05: #fff8ef; --G10: #25a55f; --G05: #ecf7f0;
-  --D80: #dfe5eb; --D70: #c3cfd9; --D60: #939393; --GR10: #f0f3f5; --GR05: #f7f8f8; --white: #ffffff;
-  --radius: 8px; --radius-sm: 6px; --radius-pill: 18px;
+  /* ---- WSR color palette ---- */
+  --B10: #001737;   /* darkest blue – primary text */
+  --B20: #162D3D;
+  --B30: #213c52;
+  --D10: #162d3d;   /* text */
+  --D20: #32536a;   /* secondary text */
+  --D30: #5999ff00;
+  --T10: #116dff;   /* primary action blue */
+  --T20: #4287ff;
+  --T05: #e7f0ff;   /* light blue tint (banners/selected) */
+  --T01: #f0f6ff;
+  --A10: #0d5aef;   /* hover blue */
+  --R10: #ee2942;   /* destructive */
+  --R05: #fdecee;
+  --Y10: #fdb10c;   /* warning */
+  --Y05: #fff8ef;
+  --G10: #25a55f;   /* success */
+  --G05: #ecf7f0;
+
+  /* greys */
+  --D80: #dfe5eb;   /* border */
+  --D70: #c3cfd9;
+  --D60: #939393;
+  --GR10: #f0f3f5;  /* page bg */
+  --GR05: #f7f8f8;
+  --white: #ffffff;
+
+  /* radii / shadow */
+  --radius: 8px;
+  --radius-sm: 6px;
+  --radius-pill: 18px;
   --shadow-modal: 0 0 24px 0 rgba(22,45,61,0.18), 0 12px 36px 0 rgba(22,45,61,0.16);
   --shadow-card: 0 1px 2px 0 rgba(22,45,61,0.10), 0 6px 12px -4px rgba(22,45,61,0.10);
+
   --font: 'Inter', 'Helvetica Neue', Helvetica, Arial, 'Madefor', sans-serif;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: var(--font); color: var(--D10); font-size: 16px; line-height: 1.4; background: var(--GR10); -webkit-font-smoothing: antialiased; }
 
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font);
+  color: var(--D10);
+  font-size: 16px;
+  line-height: 1.4;
+  background: var(--GR10);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Typography ramp (WSR <Text>/<Heading>) ---------- */
 .h1 { font-size: 20px; font-weight: 700; color: var(--B10); letter-spacing: -.2px; }
 .h2 { font-size: 18px; font-weight: 700; color: var(--B10); }
 .t-md   { font-size: 16px; color: var(--D10); }
@@ -33,80 +72,219 @@ body { font-family: var(--font); color: var(--D10); font-size: 16px; line-height
 .t-light { color: var(--D60); }
 .t-bold { font-weight: 600; }
 
-.wsr-overlay { position: fixed; inset: 0; background: rgba(22,45,61,0.55); display: flex; align-items: center; justify-content: center; padding: 24px; z-index: 100; }
-.wsr-modal { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow-modal); width: 600px; max-width: 100%; max-height: 92vh; display: flex; flex-direction: column; overflow: hidden; }
+/* ---------- Modal shell ---------- */
+.wsr-overlay {
+  position: fixed; inset: 0; background: rgba(22,45,61,0.55);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px; z-index: 100;
+}
+.wsr-modal {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-modal);
+  width: 600px; max-width: 100%;
+  max-height: 92vh; display: flex; flex-direction: column;
+  overflow: hidden;
+}
 .wsr-modal--wide { width: 744px; }
-.wsr-modal-header { display: flex; align-items: center; justify-content: space-between; padding: 24px 30px 18px; }
+.wsr-modal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 24px 30px 18px;
+}
 .wsr-modal-header .h2 { font-size: 20px; }
 .wsr-modal-body { padding: 6px 30px 24px; overflow-y: auto; flex: 1; }
-.wsr-modal-footer { display: flex; align-items: center; justify-content: flex-end; gap: 12px; padding: 18px 30px; border-top: 1px solid var(--D80); }
-.wsr-x { background: none; border: none; cursor: pointer; color: var(--D20); width: 30px; height: 30px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 20px; line-height: 1; }
+.wsr-modal-footer {
+  display: flex; align-items: center; justify-content: flex-end; gap: 12px;
+  padding: 18px 30px; border-top: 1px solid var(--D80);
+}
+.wsr-x {
+  background: none; border: none; cursor: pointer; color: var(--D20);
+  width: 30px; height: 30px; border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; line-height: 1;
+}
 .wsr-x:hover { background: var(--GR10); color: var(--D10); }
 
-.wsr-btn { font-family: var(--font); font-size: 16px; font-weight: 500; height: 36px; padding: 0 18px; border-radius: var(--radius-pill); border: 1px solid transparent; cursor: pointer; line-height: 1; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+/* ---------- Buttons ---------- */
+.wsr-btn {
+  font-family: var(--font); font-size: 16px; font-weight: 500;
+  height: 36px; padding: 0 18px; border-radius: var(--radius-pill);
+  border: 1px solid transparent; cursor: pointer; line-height: 1;
+  display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
+}
 .wsr-btn--primary { background: var(--T10); color: #fff; }
 .wsr-btn--primary:hover { background: var(--A10); }
 .wsr-btn--secondary { background: #fff; color: var(--T10); border-color: var(--T10); }
 .wsr-btn--secondary:hover { background: var(--T01); }
 .wsr-btn--sm { height: 30px; font-size: 14px; padding: 0 14px; }
-.wsr-textbtn { background: none; border: none; color: var(--T10); cursor: pointer; font-family: var(--font); font-size: 16px; font-weight: 500; display: inline-flex; align-items: center; gap: 6px; padding: 0; }
+.wsr-textbtn {
+  background: none; border: none; color: var(--T10); cursor: pointer;
+  font-family: var(--font); font-size: 16px; font-weight: 500;
+  display: inline-flex; align-items: center; gap: 6px; padding: 0;
+}
 .wsr-textbtn:hover { text-decoration: underline; }
 .wsr-textbtn--sm { font-size: 14px; }
 .wsr-textbtn--danger { color: var(--R10); }
 
+/* ---------- Form primitives ---------- */
 .wsr-field { margin-bottom: 18px; }
-.wsr-label { display: block; font-size: 14px; font-weight: 500; color: var(--D10); margin-bottom: 6px; }
+.wsr-label {
+  display: block; font-size: 14px; font-weight: 500; color: var(--D10);
+  margin-bottom: 6px;
+}
 .wsr-label .req { color: var(--R10); }
-.wsr-input, .wsr-select { font-family: var(--font); font-size: 16px; color: var(--D10); height: 36px; width: 100%; padding: 0 12px; border: 1px solid var(--D70); border-radius: var(--radius-sm); background: #fff; transition: border-color .12s, box-shadow .12s; }
-.wsr-input:focus, .wsr-select:focus { outline: none; border-color: var(--T10); box-shadow: 0 0 0 1px var(--T10); }
+.wsr-input, .wsr-select {
+  font-family: var(--font); font-size: 16px; color: var(--D10);
+  height: 36px; width: 100%; padding: 0 12px;
+  border: 1px solid var(--D70); border-radius: var(--radius-sm);
+  background: #fff; transition: border-color .12s, box-shadow .12s;
+}
+.wsr-input:focus, .wsr-select:focus {
+  outline: none; border-color: var(--T10);
+  box-shadow: 0 0 0 1px var(--T10);
+}
 .wsr-input::placeholder { color: var(--D60); }
-.wsr-select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 18 18' fill='none'%3E%3Cpath d='M5 7l4 4 4-4' stroke='%23162d3d' stroke-width='1.4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; padding-right: 32px; }
+.wsr-select { appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 18 18' fill='none'%3E%3Cpath d='M5 7l4 4 4-4' stroke='%23162d3d' stroke-width='1.4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 10px center; padding-right: 32px;
+}
 .wsr-help { font-size: 12px; color: var(--D20); margin-top: 5px; }
 
+/* price input with $ affix */
 .wsr-price { position: relative; display: inline-flex; align-items: center; width: 110px; }
-.wsr-price .affix { position: absolute; left: 12px; color: var(--D20); font-size: 16px; pointer-events: none; }
-.wsr-price .stepper { position: absolute; right: 1px; top: 1px; bottom: 1px; width: 22px; display: flex; flex-direction: column; border-left: 1px solid var(--D80); }
-.wsr-price .stepper button { flex: 1; background: #fff; border: none; cursor: pointer; color: var(--D20); display: flex; align-items: center; justify-content: center; font-size: 9px; padding: 0; }
+.wsr-price .affix {
+  position: absolute; left: 12px; color: var(--D20); font-size: 16px; pointer-events: none;
+}
+.wsr-price .stepper {
+  position: absolute; right: 1px; top: 1px; bottom: 1px; width: 22px;
+  display: flex; flex-direction: column; border-left: 1px solid var(--D80);
+}
+.wsr-price .stepper button {
+  flex: 1; background: #fff; border: none; cursor: pointer; color: var(--D20);
+  display: flex; align-items: center; justify-content: center; font-size: 9px; padding: 0;
+}
 .wsr-price .stepper button:hover { background: var(--GR10); }
 .wsr-price input { padding-left: 24px; padding-right: 26px; }
 
+/* ---------- Toggle / Switch ---------- */
 .wsr-switch { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
-.wsr-switch .track { width: 36px; height: 20px; border-radius: 10px; background: var(--D70); position: relative; transition: background .15s; flex-shrink: 0; }
-.wsr-switch .track::after { content: ""; position: absolute; width: 16px; height: 16px; border-radius: 50%; background: #fff; top: 2px; left: 2px; transition: transform .15s; box-shadow: 0 1px 2px rgba(0,0,0,.25); }
+.wsr-switch .track {
+  width: 36px; height: 20px; border-radius: 10px; background: var(--D70);
+  position: relative; transition: background .15s; flex-shrink: 0;
+}
+.wsr-switch .track::after {
+  content: ""; position: absolute; width: 16px; height: 16px; border-radius: 50%;
+  background: #fff; top: 2px; left: 2px; transition: transform .15s;
+  box-shadow: 0 1px 2px rgba(0,0,0,.25);
+}
 .wsr-switch.on .track { background: var(--T10); }
 .wsr-switch.on .track::after { transform: translateX(16px); }
 
-.wsr-tabs { display: flex; border: 1px solid var(--D70); border-radius: var(--radius-sm); overflow: hidden; width: 100%; }
-.wsr-tab { flex: 1; text-align: center; padding: 9px 12px; font-size: 14px; font-weight: 500; color: var(--D10); cursor: pointer; background: #fff; border: none; border-right: 1px solid var(--D80); font-family: var(--font); }
+/* small variant */
+.wsr-switch--sm .track { width: 28px; height: 16px; border-radius: 8px; }
+.wsr-switch--sm .track::after { width: 12px; height: 12px; }
+.wsr-switch--sm.on .track::after { transform: translateX(12px); }
+
+/* ---------- Dropdown with subtitles (custom Dropdown) ---------- */
+.wsr-dropdown { position: relative; }
+.wsr-dropdown-trigger {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 36px; padding: 0 12px; width: 100%;
+  border: 1px solid var(--D70); border-radius: var(--radius-sm);
+  background: #fff; cursor: pointer; font-family: var(--font); font-size: 16px; color: var(--D10);
+}
+.wsr-dropdown-trigger .caret { color: var(--D20); margin-left: 8px; }
+.wsr-dropdown.open .wsr-dropdown-trigger { border-color: var(--T10); box-shadow: 0 0 0 1px var(--T10); }
+.wsr-dropdown-menu {
+  display: none; position: absolute; top: calc(100% + 4px); left: 0; right: 0; z-index: 30;
+  background: #fff; border: 1px solid var(--D80); border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-card); padding: 6px; max-height: 320px; overflow-y: auto;
+}
+.wsr-dropdown.open .wsr-dropdown-menu { display: block; }
+.wsr-option { padding: 10px 12px; border-radius: var(--radius-sm); cursor: pointer; }
+.wsr-option:hover { background: var(--GR10); }
+.wsr-option.selected { background: var(--T10); }
+.wsr-option.selected .opt-title,
+.wsr-option.selected .opt-sub { color: #fff; }
+.opt-title { font-size: 16px; color: var(--D10); }
+.opt-sub { font-size: 13px; color: var(--D20); margin-top: 2px; }
+
+/* ---------- Range/variant table (participants etc.) ---------- */
+.wsr-vtable { width: 100%; }
+.wsr-vtable .vt-head { display: flex; gap: 14px; padding: 0 2px 6px; }
+.wsr-vtable .vt-head span { font-size: 13px; font-weight: 600; color: var(--D10); }
+.wsr-vrow { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+.wsr-vrow .num-input { width: 110px; }
+.wsr-vrow .label-input { flex: 1; min-width: 0; }
+.vt-del {
+  background: none; border: none; cursor: pointer; color: var(--D20);
+  width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--D80);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.vt-del:hover { color: var(--R10); border-color: var(--R10); }
+.wsr-addvar {
+  width: 100%; text-align: center; padding: 13px; background: var(--T01);
+  border: none; border-radius: var(--radius-sm); color: var(--T10);
+  font-family: var(--font); font-size: 16px; font-weight: 500; cursor: pointer;
+}
+.wsr-addvar:hover { background: var(--T05); }
+
+/* ---------- Segmented control (TabsRow) ---------- */
+.wsr-tabs {
+  display: flex; border: 1px solid var(--D70); border-radius: var(--radius-sm);
+  overflow: hidden; width: 100%;
+}
+.wsr-tab {
+  flex: 1; text-align: center; padding: 9px 12px; font-size: 14px; font-weight: 500;
+  color: var(--D10); cursor: pointer; background: #fff; border: none;
+  border-right: 1px solid var(--D80); font-family: var(--font);
+}
 .wsr-tab:last-child { border-right: none; }
 .wsr-tab.active { color: var(--T10); box-shadow: inset 0 0 0 1px var(--T10); border-radius: var(--radius-sm); }
 
-.wsr-banner { display: flex; gap: 10px; padding: 14px 16px; border-radius: var(--radius-sm); background: var(--T05); color: var(--D10); font-size: 14px; line-height: 1.45; }
+/* ---------- Banner / notification ---------- */
+.wsr-banner {
+  display: flex; gap: 10px; padding: 14px 16px; border-radius: var(--radius-sm);
+  background: var(--T05); color: var(--D10); font-size: 14px; line-height: 1.45;
+}
 .wsr-banner .ic { flex-shrink: 0; color: var(--T10); margin-top: 1px; }
 .wsr-banner--warn { background: var(--Y05); }
 .wsr-banner--warn .ic { color: var(--Y10); }
 
-.wsr-card { border: 1px solid var(--D80); border-radius: var(--radius); background: #fff; }
+/* ---------- Card ---------- */
+.wsr-card {
+  border: 1px solid var(--D80); border-radius: var(--radius);
+  background: #fff;
+}
 
+/* day-of-week circle picker */
 .wsr-days { display: flex; gap: 8px; }
-.wsr-day { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--D70); background: #fff; color: var(--D20); font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-family: var(--font); }
+.wsr-day {
+  width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--D70);
+  background: #fff; color: var(--D20); font-size: 13px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; font-family: var(--font);
+}
 .wsr-day.on { background: var(--T10); border-color: var(--T10); color: #fff; font-weight: 600; }
 
+/* generic helpers */
 .row { display: flex; align-items: center; gap: 12px; }
 .between { justify-content: space-between; }
 .wrap { flex-wrap: wrap; }
 .mt8 { margin-top: 8px; } .mt12 { margin-top: 12px; } .mt16 { margin-top: 16px; } .mt24 { margin-top: 24px; }
 .mb6 { margin-bottom: 6px; } .mb12 { margin-bottom: 12px; } .mb16 { margin-bottom: 16px; }
 .divider { height: 1px; background: var(--D80); border: none; }
-.pill { display: inline-flex; align-items: center; gap: 4px; height: 22px; padding: 0 10px; border-radius: 11px; font-size: 12px; font-weight: 500; background: var(--GR10); color: var(--D20); }
+.pill {
+  display: inline-flex; align-items: center; gap: 4px; height: 22px; padding: 0 10px;
+  border-radius: 11px; font-size: 12px; font-weight: 500; background: var(--GR10); color: var(--D20);
+}
 .pill--blue { background: var(--T05); color: var(--T10); }
 .pill--green { background: var(--G05); color: var(--G10); }
 
-/* page-specific */
-.stage { position: fixed; inset: 0; background: #1c2a38; }
-.stage-hint { position:absolute; top:16px; left:24px; color:#6b7d8e; font-size:13px; }
-.rule-block { border:1px solid var(--D80); border-radius:var(--radius); padding:18px 20px; }
-.preview-bar { display:flex; align-items:center; gap:10px; background:var(--GR05); border:1px solid var(--D80); border-radius:var(--radius-sm); padding:12px 16px; font-size:14px; }
+</style>
+<style>
+  .stage { position: fixed; inset: 0; background: #1c2a38; }
+  .stage-hint { position:absolute; top:16px; left:24px; color:#6b7d8e; font-size:13px; }
+  .rule-block { border:1px solid var(--D80); border-radius:var(--radius); padding:18px 20px; }
 </style>
 </head>
 <body>
@@ -120,68 +298,119 @@ body { font-family: var(--font); color: var(--D10); font-size: 16px; line-height
     </div>
     <div class="wsr-modal-body">
 
-      <!-- Everything stacked in one column, generous vertical rhythm -->
+      <!-- Type dropdown (with subtitles) + small toggle on the same line -->
       <div class="row between mb16" style="align-items:flex-end;">
         <div class="wsr-field" style="margin:0; flex:1; max-width:340px;">
           <label class="wsr-label">What are the variations based on?</label>
-          <select class="wsr-select">
-            <option>Date &amp; time</option><option>Client or service</option>
-            <option>Duration</option><option>Staff member</option>
-          </select>
+          <div class="wsr-dropdown" id="typeDropdown">
+            <div class="wsr-dropdown-trigger" id="typeTrigger">
+              <span id="typeLabel">Date &amp; time</span>
+              <span class="caret">▾</span>
+            </div>
+            <div class="wsr-dropdown-menu" id="typeMenu">
+              <div class="wsr-option selected" data-type="datetime" data-label="Date &amp; time">
+                <div class="opt-title">Date &amp; time</div>
+                <div class="opt-sub">e.g., weekends $70, weekday mornings $45</div>
+              </div>
+              <div class="wsr-option" data-type="participants" data-label="Number of participants">
+                <div class="opt-title">Number of participants</div>
+                <div class="opt-sub">e.g., 1–5 people $10/person, 6+ $8/person</div>
+              </div>
+              <div class="wsr-option" data-type="client" data-label="Client or service">
+                <div class="opt-title">Client or service</div>
+                <div class="opt-sub">e.g., Adult vs child haircut, long vs short hair</div>
+              </div>
+              <div class="wsr-option" data-type="duration" data-label="Duration">
+                <div class="opt-title">Duration</div>
+                <div class="opt-sub">e.g., 30 vs 60 minute massage</div>
+              </div>
+              <div class="wsr-option" data-type="staff" data-label="Staff member">
+                <div class="opt-title">Staff member</div>
+                <div class="opt-sub">e.g., Jack $40, Vera $45</div>
+              </div>
+            </div>
+          </div>
         </div>
-        <label class="wsr-switch on" id="nameToggle" style="padding-bottom:9px;">
+        <label class="wsr-switch wsr-switch--sm on" id="nameToggle" style="padding-bottom:9px;">
           <span class="track"></span><span class="t-sm">Add variation names</span>
           <span class="ic" title="Give each rule a label clients can recognize">ⓘ</span>
         </label>
       </div>
 
-      <div class="wsr-banner mb16">
-        <span class="ic">ⓘ</span>
-        <span>Set different prices based on when a client books. The <b>first matching rule</b> is applied. If none match, the default price (<b>$2</b>) is used.</span>
-      </div>
-
-      <div class="wsr-field">
-        <label class="wsr-label">Price varies by</label>
-        <div class="wsr-tabs" id="tabs">
-          <button class="wsr-tab active" data-mode="hours">Hours &amp; days</button>
-          <button class="wsr-tab" data-mode="months">Months</button>
-          <button class="wsr-tab" data-mode="range">Date range</button>
-        </div>
-      </div>
-
-      <div class="rule-block mode" data-mode="hours">
-        <div class="wsr-field name-field"><label class="wsr-label">Variation name</label><input class="wsr-input" placeholder="e.g., Weekend mornings"></div>
-        <div class="wsr-field"><label class="wsr-label">Days</label>
-          <div class="wsr-days">
-            <button class="wsr-day" onclick="this.classList.toggle('on')">S</button><button class="wsr-day on" onclick="this.classList.toggle('on')">M</button><button class="wsr-day on" onclick="this.classList.toggle('on')">T</button><button class="wsr-day on" onclick="this.classList.toggle('on')">W</button><button class="wsr-day on" onclick="this.classList.toggle('on')">T</button><button class="wsr-day on" onclick="this.classList.toggle('on')">F</button><button class="wsr-day" onclick="this.classList.toggle('on')">S</button>
+      <!-- ============ TYPE: Date & time ============ -->
+      <div class="type-body" data-type="datetime">
+        <div class="wsr-field">
+          <label class="wsr-label">Price varies by</label>
+          <div class="wsr-tabs" id="tabs">
+            <button class="wsr-tab active" data-mode="hours">Hours &amp; days</button>
+            <button class="wsr-tab" data-mode="months">Months</button>
+            <button class="wsr-tab" data-mode="range">Date range</button>
           </div>
         </div>
-        <div class="row" style="gap:24px;">
-          <div style="flex:1;"><label class="wsr-label">Start time</label><select class="wsr-select"><option>12:00 AM</option><option>9:00 AM</option></select></div>
-          <div style="flex:1;"><label class="wsr-label">End time</label><select class="wsr-select"><option>11:30 PM</option><option>5:00 PM</option></select></div>
+
+        <div class="rule-block mode" data-mode="hours">
+          <div class="wsr-field name-field"><label class="wsr-label">Variation name</label><input class="wsr-input" placeholder="e.g., Weekend mornings"></div>
+          <div class="wsr-field"><label class="wsr-label">Days</label>
+            <div class="wsr-days">
+              <button class="wsr-day" onclick="this.classList.toggle('on')">S</button><button class="wsr-day on" onclick="this.classList.toggle('on')">M</button><button class="wsr-day on" onclick="this.classList.toggle('on')">T</button><button class="wsr-day on" onclick="this.classList.toggle('on')">W</button><button class="wsr-day on" onclick="this.classList.toggle('on')">T</button><button class="wsr-day on" onclick="this.classList.toggle('on')">F</button><button class="wsr-day" onclick="this.classList.toggle('on')">S</button>
+            </div>
+          </div>
+          <div class="row" style="gap:24px;">
+            <div style="flex:1;"><label class="wsr-label">Start time</label><select class="wsr-select"><option>12:00 AM</option><option>9:00 AM</option></select></div>
+            <div style="flex:1;"><label class="wsr-label">End time</label><select class="wsr-select"><option>11:30 PM</option><option>5:00 PM</option></select></div>
+          </div>
+          <div class="wsr-field mt16"><label class="wsr-label">Price</label>
+            <div class="wsr-price"><span class="affix">$</span><input class="wsr-input" value="2"><span class="stepper"><button>▲</button><button>▼</button></span></div>
+          </div>
         </div>
-        <div class="wsr-field mt16"><label class="wsr-label">Price</label>
-          <div class="wsr-price"><span class="affix">$</span><input class="wsr-input" value="2"><span class="stepper"><button>▲</button><button>▼</button></span></div>
+
+        <div class="rule-block mode" data-mode="months" hidden>
+          <div class="wsr-field name-field"><label class="wsr-label">Variation name</label><input class="wsr-input" placeholder="e.g., Holiday season"></div>
+          <div class="wsr-field"><label class="wsr-label">Months</label><select class="wsr-select"><option>Select months…</option></select></div>
+          <div class="wsr-field" style="margin:0;"><label class="wsr-label">Price</label><div class="wsr-price"><span class="affix">$</span><input class="wsr-input" value="2"><span class="stepper"><button>▲</button><button>▼</button></span></div></div>
         </div>
+
+        <div class="rule-block mode" data-mode="range" hidden>
+          <div class="wsr-field name-field"><label class="wsr-label">Variation name</label><input class="wsr-input" placeholder="e.g., Summer rate"></div>
+          <div class="row" style="gap:12px;">
+            <div><label class="wsr-label">Start date</label><input class="wsr-input" style="width:150px;" placeholder="📅 Select"></div>
+            <div><label class="wsr-label">End date</label><input class="wsr-input" style="width:150px;" placeholder="📅 Select"></div>
+          </div>
+          <label class="wsr-switch wsr-switch--sm mt12" onclick="this.classList.toggle('on')"><span class="track"></span><span class="t-sm">Repeat annually</span></label>
+          <div class="wsr-field mt16" style="margin-bottom:0;"><label class="wsr-label">Price</label><div class="wsr-price"><span class="affix">$</span><input class="wsr-input" value="2"><span class="stepper"><button>▲</button><button>▼</button></span></div></div>
+        </div>
+
+        <button class="wsr-textbtn mt16" style="width:100%; justify-content:center; border:1px dashed var(--D70); border-radius:var(--radius-sm); padding:14px;">+ Add Variation</button>
       </div>
 
-      <div class="rule-block mode" data-mode="months" hidden>
-        <div class="wsr-field name-field"><label class="wsr-label">Variation name</label><input class="wsr-input" placeholder="e.g., Holiday season"></div>
-        <div class="wsr-field"><label class="wsr-label">Months</label><select class="wsr-select"><option>Select months…</option></select></div>
-        <div class="wsr-field" style="margin:0;"><label class="wsr-label">Price</label><div class="wsr-price"><span class="affix">$</span><input class="wsr-input" value="2"><span class="stepper"><button>▲</button><button>▼</button></span></div></div>
-      </div>
-
-      <div class="rule-block mode" data-mode="range" hidden>
-        <div class="wsr-field name-field"><label class="wsr-label">Variation name</label><input class="wsr-input" placeholder="e.g., Summer rate"></div>
-        <div class="row" style="gap:12px;">
-          <div><label class="wsr-label">Start date</label><input class="wsr-input" style="width:150px;" placeholder="📅 Select"></div>
-          <div><label class="wsr-label">End date</label><input class="wsr-input" style="width:150px;" placeholder="📅 Select"></div>
+      <!-- ============ TYPE: Number of participants ============ -->
+      <div class="type-body" data-type="participants" hidden>
+        <div class="wsr-vtable" id="ptable">
+          <div class="vt-head">
+            <span class="label-col name-field" style="flex:1;">Label</span>
+            <span style="width:110px;">From</span>
+            <span style="width:110px;">To</span>
+            <span style="width:110px;">Price</span>
+            <span style="width:36px;"></span>
+          </div>
+          <div class="wsr-vrow">
+            <div class="label-input name-field"><input class="wsr-input" placeholder="e.g., Small group"></div>
+            <div class="num-input"><input class="wsr-input" value="1"></div>
+            <div class="num-input"><input class="wsr-input" value="2"></div>
+            <div class="wsr-price"><span class="affix">$</span><input class="wsr-input" value="2"><span class="stepper"><button>▲</button><button>▼</button></span></div>
+            <button class="vt-del" aria-label="Delete">🗑</button>
+          </div>
+          <div class="wsr-vrow">
+            <div class="label-input name-field"><input class="wsr-input" placeholder="e.g., Medium group"></div>
+            <div class="num-input"><input class="wsr-input" value="3"></div>
+            <div class="num-input"><input class="wsr-input" value="4"></div>
+            <div class="wsr-price"><span class="affix">$</span><input class="wsr-input" value="2"><span class="stepper"><button>▲</button><button>▼</button></span></div>
+            <button class="vt-del" aria-label="Delete">🗑</button>
+          </div>
         </div>
-        <label class="wsr-switch mt12" onclick="this.classList.toggle('on')"><span class="track"></span><span class="t-sm">Repeat annually</span></label>
-        <div class="wsr-field mt16" style="margin-bottom:0;"><label class="wsr-label">Price</label><div class="wsr-price"><span class="affix">$</span><input class="wsr-input" value="2"><span class="stepper"><button>▲</button><button>▼</button></span></div></div>
+        <button class="wsr-addvar mt8" id="addPRow">+ Add Variation</button>
       </div>
 
-      <button class="wsr-textbtn mt16" style="width:100%; justify-content:center; border:1px dashed var(--D70); border-radius:var(--radius-sm); padding:14px;">+ Add Variation</button>
     </div>
     <div class="wsr-modal-footer">
       <button class="wsr-btn wsr-btn--secondary">Cancel</button>
@@ -189,20 +418,63 @@ body { font-family: var(--font); color: var(--D10); font-size: 16px; line-height
     </div>
   </div>
 </div>
+
 <script>
+  // ----- Tabs (Date & time modes) -----
   document.querySelectorAll('#tabs .wsr-tab').forEach(t => t.addEventListener('click', () => {
     document.querySelectorAll('#tabs .wsr-tab').forEach(x => x.classList.remove('active'));
     t.classList.add('active');
     const m = t.dataset.mode;
-    document.querySelectorAll('.mode').forEach(b => b.hidden = (b.dataset.mode !== m));
+    document.querySelectorAll('.type-body[data-type="datetime"] .mode').forEach(b => b.hidden = (b.dataset.mode !== m));
   }));
 
-  // "Add variation names" toggle — hides the per-rule name fields when off
+  // ----- Type dropdown with subtitles -----
+  const dd = document.getElementById('typeDropdown');
+  const trigger = document.getElementById('typeTrigger');
+  const typeLabel = document.getElementById('typeLabel');
+  trigger.addEventListener('click', () => dd.classList.toggle('open'));
+  document.addEventListener('click', e => { if (!dd.contains(e.target)) dd.classList.remove('open'); });
+
+  document.querySelectorAll('#typeMenu .wsr-option').forEach(opt => {
+    opt.addEventListener('click', () => {
+      document.querySelectorAll('#typeMenu .wsr-option').forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+      typeLabel.innerHTML = opt.dataset.label;
+      dd.classList.remove('open');
+      const type = opt.dataset.type;
+      // show only the matching type body (datetime & participants have bodies; others are stubs → show datetime layout placeholder)
+      const known = ['datetime', 'participants'];
+      const shown = known.includes(type) ? type : 'datetime';
+      document.querySelectorAll('.type-body').forEach(b => b.hidden = (b.dataset.type !== shown));
+    });
+  });
+
+  // ----- "Add variation names" toggle hides label/name fields everywhere -----
   const nameToggle = document.getElementById('nameToggle');
   nameToggle.addEventListener('click', () => {
     nameToggle.classList.toggle('on');
     const on = nameToggle.classList.contains('on');
     document.querySelectorAll('.name-field').forEach(f => f.style.display = on ? '' : 'none');
+  });
+
+  // ----- Participants: add / delete rows -----
+  document.getElementById('addPRow').addEventListener('click', () => {
+    const row = document.createElement('div');
+    row.className = 'wsr-vrow';
+    const namesOn = nameToggle.classList.contains('on');
+    row.innerHTML = `
+      <div class="label-input name-field" style="${namesOn ? '' : 'display:none'}"><input class="wsr-input" placeholder="e.g., Large group"></div>
+      <div class="num-input"><input class="wsr-input" value=""></div>
+      <div class="num-input"><input class="wsr-input" value=""></div>
+      <div class="wsr-price"><span class="affix">$</span><input class="wsr-input" value="2"><span class="stepper"><button>▲</button><button>▼</button></span></div>
+      <button class="vt-del" aria-label="Delete">🗑</button>`;
+    document.getElementById('ptable').appendChild(row);
+  });
+  document.addEventListener('click', e => {
+    if (e.target.classList.contains('vt-del')) {
+      const rows = document.querySelectorAll('#ptable .wsr-vrow');
+      if (rows.length > 1) e.target.closest('.wsr-vrow').remove();
+    }
   });
 </script>
 </body>
