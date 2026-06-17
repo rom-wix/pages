@@ -1,0 +1,1130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Check-in Gate — Interactive Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@500;600;700;800&family=Wix+Madefor+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --b10:#116DFF;--b05:#0F62E6;--b20:#5899FF;--b40:#D3E4FF;--b50:#E8F1FF;
+  --d10:#000624;--d20:#333850;--d30:#595D70;--d40:#868AA5;--d50:#B6C1CD;--d55:#CFD1DC;
+  --line:#DFE5EB;--bg:#ECEFF3;--white:#fff;
+  --g:#51B77B;--g-tint:#CDF2CF;--g-text:#1F7A4D;
+  --y:#F9AD4D;--y-tint:#FFF7E2;--y-text:#9A5B00;
+  --r:#EE4437;--r-tint:#FDE3E1;--r-text:#C0291F;
+  --dash-bg:#F0F0F0;--dash-line:#E4E4E4;--dash-border:#DADADA;--dash-sec:#6E6F71;
+  --dash-success:#3B8500;--dash-success-bg:#EBFFCA;--dash-info-bg:#D6E6FE;
+  --sans:'Wix Madefor Text','Helvetica Neue',Helvetica,Arial,'Segoe UI',Roboto,sans-serif;
+  --disp:'Wix Madefor Display',var(--sans);
+}
+*{box-sizing:border-box}
+body{margin:0;background:#0d1326;color:var(--d10);font-family:var(--sans);-webkit-font-smoothing:antialiased;min-height:100vh}
+button{font-family:var(--sans)}
+
+/* top bar / launcher */
+.topbar{background:linear-gradient(120deg,#0a1f5c,#116DFF);color:#fff;padding:18px 0 0}
+.tb-in{max-width:1280px;margin:0 auto;padding:0 24px}
+.tb-in h1{font-family:var(--disp);font-size:21px;margin:0;letter-spacing:-.01em;display:flex;align-items:center;gap:10px}
+.tb-in h1 .pill{font-size:11px;font-weight:700;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.25);padding:3px 9px;border-radius:999px;letter-spacing:.04em}
+.tb-in p{margin:5px 0 14px;opacity:.85;font-size:13px}
+.launch{display:flex;gap:6px;flex-wrap:wrap}
+.launch button{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);color:#fff;font-size:13.5px;font-weight:600;padding:9px 15px;border-radius:10px 10px 0 0;cursor:pointer;display:flex;align-items:center;gap:7px}
+.launch button.on{background:#eef2f8;color:var(--b10);border-color:#eef2f8}
+.launch button .dot{width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.8}
+.reset{margin-left:auto;background:transparent !important;border-color:transparent !important;opacity:.8;font-weight:500 !important;border-radius:10px !important}
+
+/* stage */
+.stage{background:#eef2f8;min-height:calc(100vh - 118px);padding:34px 16px 60px;display:flex;justify-content:center;align-items:flex-start}
+.surface-stage{display:none;width:100%;flex-direction:column;align-items:center;gap:18px}
+.surface-stage.on{display:flex}
+.hint{color:var(--d30);font-size:13px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 16px;box-shadow:0 1px 3px rgba(11,17,40,.06)}
+.hint b{color:var(--b10)}
+
+/* phone */
+.phone{width:360px;height:760px;background:#0b0e1a;border-radius:46px;padding:11px;box-shadow:0 24px 60px rgba(11,17,40,.4),0 2px 6px rgba(11,17,40,.3);position:relative;flex:0 0 auto}
+.phone .screen{position:relative;width:338px;height:738px;background:var(--bg);border-radius:36px;overflow:hidden}
+.notch{position:absolute;top:11px;left:50%;transform:translateX(-50%);width:120px;height:26px;background:#0b0e1a;border-radius:0 0 16px 16px;z-index:60;pointer-events:none}
+.viewport{position:absolute;inset:0;overflow:hidden}
+.scr{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg);transform:translateX(100%);transition:transform .34s cubic-bezier(.36,.66,.04,1);will-change:transform}
+.scr.on{transform:translateX(0)}
+.scr.left{transform:translateX(-24%)}
+.scr.right{transform:translateX(100%)}
+
+.statusbar{height:42px;flex:0 0 42px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 22px 6px;font-size:13px;font-weight:600;color:var(--d10);z-index:20;position:relative}
+.statusbar.light{color:#fff}
+.statusbar .sb-r{display:flex;align-items:center;gap:5px}
+.homebar{height:26px;flex:0 0 26px;display:flex;align-items:flex-start;justify-content:center;padding-top:8px;background:transparent;position:relative;z-index:20}
+.homebar i{width:120px;height:5px;border-radius:3px;background:#0b0e1a;opacity:.85}
+.homebar.light i{background:#fff;opacity:.9}
+
+.navbar{flex:0 0 auto;background:var(--white);border-bottom:1px solid var(--line);padding:8px 14px 10px;display:flex;align-items:center;gap:10px}
+.navbar .ico{width:34px;height:34px;display:grid;place-items:center;color:var(--d10);cursor:pointer;border-radius:50%}
+.navbar .ico:active{background:var(--bg)}
+.navbar .ttl{flex:1}
+.navbar .ttl .t{font-size:17px;font-weight:700;color:var(--d10);font-family:var(--disp);line-height:1.1}
+.navbar .ttl .s{font-size:12.5px;color:var(--d30);margin-top:1px}
+
+.tabbar{flex:0 0 auto;background:var(--white);border-top:1px solid var(--line);display:flex;padding:7px 6px 2px}
+.tabbar .tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--d40);font-size:10px;font-weight:500;cursor:pointer;padding:2px}
+.tabbar .tab.on{color:var(--b10)}
+.tabbar .tab svg{width:24px;height:24px}
+
+.scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.sec-h{background:var(--bg);padding:9px 16px;font-size:13px;font-weight:600;color:var(--d30);display:flex;justify-content:space-between;align-items:center}
+.sec-h .lnk{color:var(--b10);cursor:pointer}
+.list{background:var(--white)}
+.cell{background:var(--white);display:flex;align-items:center;gap:12px;padding:12px 16px;min-height:72px;position:relative;cursor:pointer}
+.cell:active{background:var(--bg)}
+.cell+.cell:before{content:"";position:absolute;top:0;left:68px;right:0;height:1px;background:var(--line)}
+.avatar{width:40px;height:40px;border-radius:50%;flex:0 0 40px;display:grid;place-items:center;color:#fff;font-size:15px;font-weight:600}
+.who{flex:1;min-width:0}
+.who .nm{font-size:16px;font-weight:600;color:var(--d10);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.who .sub{font-size:13.5px;color:var(--d20);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chip{display:inline-flex;align-items:center;gap:4px;height:24px;padding:0 9px;border-radius:12px;font-size:12px;font-weight:600;white-space:nowrap}
+.chip svg{width:13px;height:13px}
+.chip.book{background:var(--b40);color:var(--b10)}
+.chip.cin{background:var(--g-tint);color:var(--g-text)}
+.chip.warn{background:var(--y-tint);color:var(--y-text)}
+.chip.err{background:var(--r-tint);color:var(--r-text)}
+.btn-checkin{height:32px;padding:0 14px;border-radius:16px;border:1.5px solid var(--b10);background:transparent;color:var(--b10);font-size:13.5px;font-weight:600;cursor:pointer}
+.btn-checkin:active{background:var(--b50)}
+
+.actionbar{flex:0 0 auto;background:var(--white);border-top:1px solid var(--line);padding:10px 16px;box-shadow:0 -1px 8px rgba(0,6,36,.06);display:flex;gap:10px}
+.btn{height:48px;border-radius:24px;border:none;font-size:16px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;flex:1}
+.btn-primary{background:var(--b10);color:#fff}.btn-primary:active{background:var(--b05)}
+.btn-sec{background:var(--white);border:1.5px solid var(--b10);color:var(--b10)}
+.btn svg{width:20px;height:20px}
+.text-btn{background:none;border:none;color:var(--b10);font-size:15px;font-weight:600;cursor:pointer}
+
+/* scanner */
+.scanner-screen{background:#0b0e1a}
+.scanner{position:absolute;inset:0;background:radial-gradient(120% 90% at 50% 35%,#1b2235,#0b0e1a 75%);overflow:hidden}
+.scan-grain{position:absolute;inset:0;opacity:.25;background:repeating-linear-gradient(115deg,rgba(255,255,255,.04) 0 2px,transparent 2px 7px),radial-gradient(40% 30% at 30% 25%,rgba(120,140,200,.22),transparent),radial-gradient(50% 40% at 75% 70%,rgba(90,110,180,.18),transparent)}
+.scan-topscrim{position:absolute;top:0;left:0;right:0;height:130px;background:linear-gradient(rgba(0,6,36,.62),transparent);z-index:5}
+.scan-botscrim{position:absolute;bottom:0;left:0;right:0;height:170px;background:linear-gradient(transparent,rgba(0,6,36,.66));z-index:5}
+.scan-nav{position:absolute;top:44px;left:0;right:0;z-index:8;display:flex;align-items:center;gap:10px;padding:6px 16px 0;color:#fff}
+.scan-nav .x{width:34px;height:34px;display:grid;place-items:center;border-radius:50%;background:rgba(255,255,255,.14);cursor:pointer}
+.scan-nav .t{font-size:17px;font-weight:600}
+.scan-window{position:absolute;top:50%;left:50%;transform:translate(-50%,-54%);width:240px;height:240px;border-radius:18px;box-shadow:0 0 0 1000px rgba(0,6,36,.65);z-index:6;cursor:pointer}
+.scan-window .br{position:absolute;width:30px;height:30px;border:3px solid var(--b10)}
+.scan-window .tl{top:-2px;left:-2px;border-right:none;border-bottom:none;border-radius:16px 0 0 0}
+.scan-window .tr{top:-2px;right:-2px;border-left:none;border-bottom:none;border-radius:0 16px 0 0}
+.scan-window .bl{bottom:-2px;left:-2px;border-right:none;border-top:none;border-radius:0 0 0 16px}
+.scan-window .brr{bottom:-2px;right:-2px;border-left:none;border-top:none;border-radius:0 0 16px 0}
+.scanline{position:absolute;left:8px;right:8px;top:8px;height:2px;background:var(--b10);box-shadow:0 0 9px 1px var(--b10);border-radius:2px;animation:scan 2.4s ease-in-out infinite}
+@keyframes scan{0%,100%{top:10px}50%{top:228px}}
+.scan-qr{position:absolute;top:50%;left:50%;transform:translate(-50%,-54%);width:150px;height:150px;border-radius:8px;z-index:7;background:#fff;padding:8px;pointer-events:none}
+.scan-qr img{width:100%;height:100%;display:block}
+.scan-help{position:absolute;left:0;right:0;bottom:120px;z-index:8;text-align:center;color:#fff;font-size:14px;padding:0 30px}
+.scan-help small{display:block;opacity:.7;font-size:12px;margin-top:4px}
+.scan-actions{position:absolute;left:0;right:0;bottom:50px;z-index:8;display:flex;flex-direction:column;align-items:center;gap:14px}
+.scan-actions .text-btn{color:#fff}
+.torch{width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.16);display:grid;place-items:center;color:#fff;cursor:pointer}
+.torch.on{background:#fff;color:var(--d10)}
+.verifying{position:absolute;inset:0;z-index:30;background:rgba(0,6,36,.55);display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#fff;font-size:15px}
+.verifying.show{display:flex}
+.spin{width:40px;height:40px;border-radius:50%;border:3px solid rgba(255,255,255,.25);border-top-color:#fff;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* result sheet */
+.sheet-layer{position:absolute;inset:0;z-index:40;visibility:hidden}
+.sheet-layer.show{visibility:visible}
+.sheet-layer .dim{position:absolute;inset:0;background:rgba(0,6,36,.45);opacity:0;transition:opacity .25s}
+.sheet-layer.show .dim{opacity:1}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:22px 22px 0 0;padding:26px 22px 22px;box-shadow:0 -8px 24px rgba(0,6,36,.18);text-align:center;transform:translateY(100%);transition:transform .32s cubic-bezier(.36,.66,.04,1)}
+.sheet-layer.show .sheet{transform:translateY(0)}
+.grip{position:absolute;top:9px;left:50%;transform:translateX(-50%);width:38px;height:4px;border-radius:3px;background:#E2E6EE}
+.badge{width:74px;height:74px;border-radius:50%;display:grid;place-items:center;margin:8px auto 14px}
+.badge svg{width:40px;height:40px}
+.badge.ok{background:var(--g-tint);color:var(--g)}.badge.wn{background:var(--y-tint);color:var(--y)}.badge.er{background:var(--r-tint);color:var(--r)}
+.sheet h3{font-family:var(--disp);font-size:23px;margin:0 0 6px}
+.sheet .body{font-size:15px;color:var(--d20);line-height:1.45;margin:0 auto 8px;max-width:280px}
+.reason{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;padding:6px 12px;border-radius:10px;margin:2px 0 4px}
+.mini-row{display:flex;align-items:center;gap:10px;justify-content:center;background:var(--bg);border-radius:12px;padding:10px 12px;margin:14px 0 16px}
+.mini-row .nm{font-size:15px;font-weight:600}.mini-row .sub{font-size:13px;color:var(--d30)}
+.acts{display:flex;flex-direction:column;gap:10px;margin-top:4px}
+
+/* member */
+.member{--accent:#9C1AB1;--accent-dk:#84129A}
+.m-header{flex:0 0 auto;background:linear-gradient(135deg,var(--accent),var(--accent-dk));color:#fff;padding:0 20px 20px}
+.m-header .top{display:flex;align-items:center;justify-content:space-between;padding-top:4px}
+.m-header .brand{font-family:var(--disp);font-weight:800;font-size:15px;letter-spacing:.14em}
+.m-header .ic{width:30px;height:30px;display:grid;place-items:center;border-radius:50%;background:rgba(255,255,255,.16)}
+.m-header .hello{font-family:var(--disp);font-size:23px;font-weight:700;margin-top:14px}
+.m-header .hello .s{font-size:13px;font-weight:400;opacity:.9;display:block;margin-top:2px;font-family:var(--sans)}
+.m-header.compact .hello{font-size:19px;margin-top:10px}
+.m-body{flex:1;overflow-y:auto;background:#F0F1F5;padding:16px 20px 12px}
+.m-card{background:#fff;border-radius:16px;padding:16px;box-shadow:0 2px 8px rgba(22,45,61,.08);margin-bottom:16px}
+.m-sec{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#849AA9;margin:6px 2px 8px}
+.m-chip{display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 10px;border-radius:12px;font-size:12px;font-weight:600}
+.m-chip .d{width:6px;height:6px;border-radius:50%}
+.m-chip.active{background:#E0F5E0;color:#3B8332}
+.m-row{display:flex;align-items:center;justify-content:space-between}
+.m-meter{height:8px;border-radius:6px;background:#F0F1F5;margin-top:12px;overflow:hidden}
+.m-meter i{display:block;height:100%;background:var(--accent);border-radius:6px}
+.m-tabbar{flex:0 0 auto;background:#fff;border-top:1px solid var(--line);display:flex;padding:7px 6px 2px}
+.m-tabbar .tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;color:#849AA9;font-size:10px;font-weight:500;cursor:pointer;padding:2px}
+.m-tabbar .tab.on{color:var(--accent)}
+.m-tabbar .tab svg{width:24px;height:24px}
+.bk-cell{display:flex;align-items:center;gap:12px;padding:11px 0}
+.bk-cell+.bk-cell{border-top:1px solid var(--line)}
+.bk-date{width:46px;text-align:center;flex:0 0 46px}
+.bk-date .dd{font-size:18px;font-weight:700;color:#162D3D;line-height:1}
+.bk-date .mm{font-size:11px;font-weight:600;color:#849AA9}
+.bk-cell .info{flex:1}.bk-cell .info .t{font-size:15px;font-weight:600;color:#162D3D}.bk-cell .info .s{font-size:13px;color:#32536A;margin-top:1px}
+.pass-wrap{flex:1;overflow-y:auto;background:#F0F1F5;padding:18px 20px;display:flex;flex-direction:column}
+.pass-card{background:#fff;border-radius:20px;padding:22px 20px;box-shadow:0 6px 22px rgba(22,45,61,.14);text-align:center}
+.pass-card .pname{font-size:21px;font-weight:700;color:#162D3D;font-family:var(--disp)}
+.pass-card .pplan{font-size:14px;color:#32536A;margin-top:2px}
+.qr-box{width:208px;height:208px;margin:18px auto 14px;background:#fff;border-radius:10px;position:relative}
+.qr-box img{width:100%;height:100%;display:block;border-radius:6px}
+.qr-box .qr-fallback{position:absolute;inset:0;border-radius:6px;background:repeating-conic-gradient(#000 0% 25%,#fff 0% 50%) 0 0/22px 22px;display:none}
+.qr-box.broken .qr-fallback{display:block}.qr-box.broken img{display:none}
+.pass-card .valid{font-size:14px;color:#32536A}.pass-card .valid b{color:#162D3D}
+.pass-card .pid{font-size:12px;color:#849AA9;font-family:ui-monospace,Menlo,monospace;margin-top:4px}
+.pass-bright{display:inline-flex;align-items:center;gap:7px;margin-top:16px;color:var(--accent);font-size:13px;font-weight:600;cursor:pointer}
+.pass-hint{font-size:12px;color:#849AA9;margin-top:6px}
+.m-btn{height:48px;border-radius:24px;background:var(--accent);color:#fff;border:none;font-size:16px;font-weight:600;width:100%;cursor:pointer}
+.bright-flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:50;transition:opacity .25s}
+.bright-flash.on{opacity:.55}
+.placeholder{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#849AA9;padding:30px;text-align:center;background:#F0F1F5}
+.placeholder svg{width:54px;height:54px;opacity:.5}
+/* real member app (Spaces by Wix): blue app chrome + purple site brand */
+.appnav{flex:0 0 auto;background:#fff;border-top:1px solid var(--line);display:flex;padding:8px 6px 4px}
+.appnav .tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;color:#5B6478;font-size:11px;font-weight:500;cursor:pointer;padding:2px}
+.appnav .tab.on{color:#116DFF;font-weight:600}
+.appnav .tab svg{width:24px;height:24px}
+.bk-head{flex:0 0 auto;background:#EDF1FB;padding:8px 10px 12px}
+.bk-head .row{display:flex;align-items:center;gap:6px}
+.bk-head .ico{width:34px;height:34px;display:grid;place-items:center;color:#2B2B36;cursor:pointer}
+.bk-head .ttl{flex:1;text-align:center;font-size:17px;font-weight:700;color:#2B2B36;font-family:var(--disp);margin-right:34px}
+.seg{display:flex;background:#fff;border-bottom:1px solid var(--line)}
+.seg .s{flex:1;text-align:center;padding:13px 0;font-size:15px;font-weight:600;color:#5B6478;position:relative;cursor:pointer}
+.seg .s.on{color:#116DFF}
+.seg .s.on:after{content:"";position:absolute;left:24px;right:24px;bottom:-1px;height:2.5px;background:#116DFF;border-radius:2px}
+.tzchip{display:flex;align-items:center;gap:9px;background:#EDF1FB;border-radius:10px;padding:11px 14px;margin:14px 16px 0;font-size:14px;color:#2B2B36}
+.tzchip .x{color:#5B6478;cursor:pointer;display:grid;place-items:center}
+.bkcard{margin:16px;border:1px solid #E6E8F0;border-radius:14px;padding:16px;display:flex;gap:14px;align-items:flex-start;background:#fff;cursor:pointer;box-shadow:0 1px 3px rgba(11,17,40,.04)}
+.bkcard .date{text-align:center;width:34px;flex:0 0 34px}
+.bkcard .date .dd{font-size:22px;font-weight:700;color:#2B2B36;line-height:1}
+.bkcard .date .mm{font-size:12px;font-weight:600;color:#5B6478}
+.bkcard .mid{flex:1;min-width:0}
+.bkcard .mid .t{font-size:18px;font-weight:700;color:#2B2B36}
+.bkcard .mid .when{font-size:16px;color:#2B2B36;margin-top:1px}
+.bkcard .mid .meta{font-size:14px;color:#5B6478;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.badge-g{display:inline-flex;align-items:center;height:26px;padding:0 11px;border-radius:7px;font-size:14px;font-weight:600;background:#E6F4EA;color:#1F7A4D;margin-top:10px}
+.dots{color:#2B2B36;cursor:pointer;flex:0 0 auto;display:grid;place-items:center;width:30px;height:30px}
+.det-banner{height:150px;flex:0 0 150px}
+.det-body{flex:1;overflow-y:auto;background:#fff;padding:18px 20px 16px}
+.det-body h2{font-size:25px;font-weight:700;color:#2B2B36;margin:0 0 14px;font-family:var(--disp)}
+.det-row{display:flex;align-items:center;gap:11px;margin-bottom:11px;font-size:17px;color:#3B3F4D}
+.det-row svg{flex:0 0 20px;color:#868AA5}
+.det-row a{color:#2B2B36;text-decoration:underline}
+.det-badges{display:flex;gap:10px;margin:2px 0 8px}
+.det-div{height:1px;background:#EDEEF2;margin:16px 0}
+.det-label{font-size:13px;font-weight:700;letter-spacing:.04em;color:#5B6478;margin-bottom:8px}
+.det-link{display:flex;align-items:center;justify-content:space-between;color:var(--accent);font-size:17px;font-weight:600;cursor:pointer}
+.qr-cta{display:flex;align-items:center;gap:12px;border:1.5px solid var(--accent);background:#FBF1FD;border-radius:14px;padding:13px 15px;cursor:pointer;margin:6px 0 2px}
+.qr-cta .qi{width:40px;height:40px;border-radius:10px;background:var(--accent);display:grid;place-items:center;flex:0 0 40px}
+.qr-cta .ct{flex:1}
+.qr-cta .ct .t{font-size:16px;font-weight:700;color:#2B2B36}
+.qr-cta .ct .s{font-size:13px;color:#5B6478;margin-top:1px}
+.btn-purple{height:54px;border-radius:27px;background:var(--accent);color:#fff;border:none;font-size:18px;font-weight:700;width:100%;cursor:pointer;margin-top:4px}
+.btn-red{height:54px;border-radius:27px;background:#fff;border:1.5px solid #E0301E;color:#E0301E;font-size:18px;font-weight:700;width:100%;cursor:pointer;margin-top:12px}
+.msheet .act-i{display:flex;align-items:center;gap:16px;padding:15px 4px;font-size:18px;font-weight:600;color:#2B2B36;cursor:pointer}
+.msheet .act-i svg{width:24px;height:24px;color:#2B2B36}
+.msheet .act-i.danger{color:#E0301E}.msheet .act-i.danger svg{color:#E0301E}
+.entry-banner{display:flex;align-items:center;gap:12px;margin:16px 16px 0;background:linear-gradient(135deg,var(--accent),var(--accent-dk));color:#fff;border-radius:14px;padding:14px 16px;cursor:pointer}
+.entry-banner .qi{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.2);display:grid;place-items:center;flex:0 0 40px}
+.entry-banner .t{font-size:16px;font-weight:700}.entry-banner .s{font-size:13px;opacity:.92;margin-top:1px}
+.prow{display:flex;align-items:center;justify-content:space-between;padding:16px;font-size:17px;color:#2B2B36;border-top:1px solid #EDEEF2;cursor:pointer}
+.prow svg{color:#B6C1CD}
+
+/* settings (mobile) */
+.set-group{background:#fff;margin:14px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.set-row{display:flex;align-items:center;gap:13px;padding:14px 16px;position:relative}
+.set-row.tap{cursor:pointer}.set-row.tap:active{background:var(--bg)}
+.set-row+.set-row:before{content:"";position:absolute;top:0;left:16px;right:0;height:1px;background:var(--line)}
+.set-row .txt{flex:1}.set-row .txt .t{font-size:15px;color:var(--d10);font-weight:500}.set-row .txt .s{font-size:13px;color:var(--d30);margin-top:3px;line-height:1.4}
+.set-row .val{font-size:14px;color:var(--d30);display:flex;align-items:center;gap:4px}
+.set-lead{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--d30);padding:6px 16px 0}
+.gate-hero{background:linear-gradient(135deg,#0a1f5c,#116DFF);color:#fff;padding:18px 16px 20px;display:flex;align-items:center;gap:14px}
+.gate-hero .ic{width:46px;height:46px;border-radius:13px;background:rgba(255,255,255,.16);display:grid;place-items:center;flex:0 0 46px}
+.gate-hero .t{font-family:var(--disp);font-size:17px;font-weight:700}.gate-hero .s{font-size:13px;opacity:.92;margin-top:2px;line-height:1.4}
+
+/* toggle / check / radio (shared) */
+.toggle{width:40px;height:24px;border-radius:12px;background:#DADADA;position:relative;flex:0 0 40px;cursor:pointer;transition:background .15s}
+.toggle.on{background:var(--b10)}
+.toggle i{position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.2);transition:left .16s}
+.toggle.on i{left:18px}
+.check{width:18px;height:18px;border-radius:3px;border:1.5px solid var(--dash-border);flex:0 0 18px;display:grid;place-items:center;background:#fff;cursor:pointer}
+.check.on{background:var(--b10);border-color:var(--b10);color:#fff}
+.check svg{width:12px;height:12px}.check:not(.on) svg{visibility:hidden}
+.radio{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--dash-border);flex:0 0 18px;display:grid;place-items:center;background:#fff;cursor:pointer}
+.radio.on{border:2px solid var(--b10)}
+.radio i{width:8px;height:8px;border-radius:50%;background:var(--b10)}.radio:not(.on) i{display:none}
+
+/* sheet picker (mobile) */
+.picker{position:absolute;inset:0;z-index:40;visibility:hidden}
+.picker.show{visibility:visible}
+.picker .dim{position:absolute;inset:0;background:rgba(0,6,36,.45);opacity:0;transition:.25s}
+.picker.show .dim{opacity:1}
+.picker .sheet{transform:translateY(100%)}
+.picker.show .sheet{transform:translateY(0)}
+.picker .opt-row{display:flex;align-items:center;justify-content:space-between;padding:15px 4px;font-size:16px;cursor:pointer;border-bottom:1px solid var(--line);color:var(--d10)}
+.picker .opt-row:last-child{border-bottom:none}
+.picker .opt-row .ck{color:var(--b10);visibility:hidden}.picker .opt-row.sel .ck{visibility:visible}
+
+/* ===== dashboard web ===== */
+.browser{width:1180px;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 24px 60px rgba(11,17,40,.4);transform-origin:top center}
+.bro-bar{height:42px;background:#e7e9ee;display:flex;align-items:center;gap:8px;padding:0 14px;border-bottom:1px solid #d7dae1}
+.bro-bar .dots{display:flex;gap:7px}.bro-bar .dots i{width:12px;height:12px;border-radius:50%}
+.bro-url{flex:1;height:26px;background:#fff;border-radius:8px;border:1px solid #d7dae1;display:flex;align-items:center;padding:0 12px;font-size:12px;color:var(--d30);gap:8px}
+.dash{display:flex;height:740px;background:var(--dash-bg);position:relative}
+.dash-side{width:230px;flex:0 0 230px;background:#fff;border-right:1px solid var(--dash-line);padding:14px 0;overflow-y:auto}
+.dash-side .logo{display:flex;align-items:center;gap:9px;padding:4px 18px 16px;font-family:var(--disp);font-weight:800;font-size:18px}
+.dash-side .logo .m{width:26px;height:26px;border-radius:7px;background:var(--d10);color:#fff;display:grid;place-items:center;font-size:15px}
+.nav-i{display:flex;align-items:center;gap:11px;padding:9px 18px;font-size:14px;color:var(--d20);cursor:pointer}
+.nav-i:hover{background:#f5f7fb}
+.nav-i svg{width:18px;height:18px;color:var(--d30)}
+.nav-i.on{background:#eaf1ff;color:var(--b10);font-weight:700;box-shadow:inset 3px 0 0 var(--b10)}
+.nav-i.on svg{color:var(--b10)}
+.nav-i.sub{padding-left:48px;font-size:13.5px}
+.dash-main{flex:1;display:flex;flex-direction:column;position:relative;overflow:hidden}
+.dash-top{height:54px;flex:0 0 54px;background:#fff;border-bottom:1px solid var(--dash-line);display:flex;align-items:center;justify-content:space-between;padding:0 24px}
+.dash-top .search{width:300px;height:32px;background:#f3f4f7;border-radius:8px;display:flex;align-items:center;padding:0 12px;gap:8px;color:var(--d40);font-size:13px}
+.dash-top .right{display:flex;align-items:center;gap:16px;color:var(--d30)}
+.dash-top .right .av{width:30px;height:30px;border-radius:50%;background:var(--b10);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:600}
+.dash-canvas{flex:1;overflow-y:auto;padding:26px 30px 90px;background:var(--dash-bg)}
+.dash-inner{max-width:1000px;margin:0 auto}
+.pg-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:20px}
+.pg-head .back{font-size:13px;color:var(--b10);font-weight:600;margin-bottom:8px;display:inline-flex;gap:5px;align-items:center;cursor:pointer}
+.pg-head h1{font-family:var(--disp);font-size:24px;margin:0 0 5px}
+.pg-head .sub{font-size:14px;color:var(--dash-sec);max-width:560px}
+.d-badge{display:inline-flex;align-items:center;gap:5px;height:20px;padding:0 9px;border-radius:10px;font-size:11px;font-weight:700;vertical-align:middle;margin-left:10px}
+.d-badge.on{background:var(--dash-success-bg);color:var(--dash-success)}
+.d-badge.cs{background:#EDEBFF;color:#5A48F5}
+.dbtn{height:30px;padding:0 18px;border-radius:15px;border:none;font-size:14px;font-weight:600;cursor:pointer}
+.dbtn.primary{background:var(--b10);color:#fff}.dbtn.primary:hover{background:var(--b05)}
+.dbtn.sec{background:#fff;border:1px solid var(--b10);color:var(--b10)}
+.dbtn.ghost{background:#fff;border:1px solid var(--dash-border);color:var(--d20)}
+.helper{display:flex;gap:11px;align-items:flex-start;background:var(--dash-info-bg);border-radius:8px;padding:13px 15px;margin-bottom:20px;font-size:13.5px;color:var(--d10)}
+.helper svg{flex:0 0 20px;color:var(--b10);margin-top:1px}
+.dcard{background:#fff;border:1px solid var(--dash-line);border-radius:8px;margin-bottom:24px}
+.dcard-h{padding:20px 24px 16px}
+.dcard-h .t{font-size:18px;font-weight:700;font-family:var(--disp)}
+.dcard-h .s{font-size:13.5px;color:var(--dash-sec);margin-top:4px}
+.dcard-div{height:1px;background:var(--dash-line)}
+.dcard-c{padding:8px 24px}
+.drow{display:flex;align-items:center;gap:16px;padding:15px 0}
+.drow+.drow{border-top:1px solid var(--dash-line)}
+.drow .txt{flex:1}.drow .txt .t{font-size:14px;color:var(--d10)}.drow .txt .s{font-size:13px;color:var(--dash-sec);margin-top:3px;line-height:1.45;max-width:560px}
+.opt{display:flex;gap:11px;align-items:flex-start;padding:12px 0;cursor:pointer}
+.opt .ot{font-size:14px;color:var(--d10);font-weight:500}.opt .os{font-size:13px;color:var(--dash-sec);margin-top:2px}
+.ddwrap{position:relative}
+.dropdown{height:36px;min-width:190px;border:1px solid var(--dash-border);border-radius:6px;background:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 12px;font-size:14px;color:var(--d10);gap:10px;cursor:pointer}
+.dropdown svg{color:var(--d30);width:16px;height:16px}
+.ddmenu{position:absolute;top:40px;right:0;min-width:190px;background:#fff;border:1px solid var(--dash-line);border-radius:6px;box-shadow:0 2px 12px rgba(0,6,36,.14);z-index:20;display:none;overflow:hidden}
+.ddmenu.show{display:block}
+.ddmenu div{padding:9px 12px;font-size:14px;cursor:pointer}
+.ddmenu div:hover{background:#E7F0FF}
+.ddmenu div.sel{color:var(--b10);font-weight:600}
+.save-bar{position:absolute;left:0;right:0;bottom:0;height:64px;background:#fff;border-top:1px solid var(--dash-line);box-shadow:0 -2px 6px rgba(0,6,36,.06);display:flex;align-items:center;justify-content:flex-end;gap:12px;padding:0 30px;transform:translateY(100%);transition:transform .25s}
+.save-bar.show{transform:translateY(0)}
+.save-bar .note{margin-right:auto;font-size:13px;color:var(--dash-sec)}
+
+/* toast */
+#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:#000624;color:#fff;font-size:13.5px;font-weight:500;padding:11px 18px;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:.25s;z-index:300;display:flex;align-items:center;gap:9px;max-width:90vw}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#toast svg{width:17px;height:17px;flex:0 0 17px}
+
+@media(max-width:480px){.phone{transform:scale(.88);transform-origin:top center;margin-bottom:-80px}}
+
+/* ===== Owner App — real Wix Owner App chrome ===== */
+#surf-owner{--b10:#2B5CE6;--b05:#2348C9;--b40:#DCE4FB}
+.oa-tabbar{flex:0 0 auto;background:#fff;border-top:1px solid #EAECEF;display:flex;padding:8px 2px 4px}
+.oa-tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;color:#2B3038;font-size:11px;font-weight:500;cursor:pointer}
+.oa-tab svg{width:23px;height:23px}
+.oa-tab.on{color:#1F6BFF}
+.oa-home-head{flex:0 0 auto;display:flex;align-items:center;gap:9px;padding:6px 14px 12px;border-bottom:1px solid #EEF0F3;background:#fff}
+.oa-home-head .ava{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#5b3df5,#a23bd6);flex:0 0 36px}
+.oa-home-head .biz{flex:1;font-size:18px;font-weight:700;color:#16213A;display:flex;align-items:center;gap:5px}
+.oa-ic{width:36px;height:36px;border-radius:50%;background:#F3F4F6;display:grid;place-items:center;color:#16213A;position:relative;cursor:pointer}
+.oa-ic svg{width:18px;height:18px}
+.oa-badge{position:absolute;top:-2px;right:-2px;background:#E53935;color:#fff;font-size:9px;font-weight:700;min-width:17px;height:17px;border-radius:9px;display:grid;place-items:center;padding:0 4px}
+.oa-quick{display:flex;gap:9px;padding:13px 14px;border-bottom:1px solid #EEF0F3;background:#fff}
+.oa-quick .pen{width:50px;height:42px;border:1px solid #E2E5EA;border-radius:10px;display:grid;place-items:center;color:#16213A}
+.oa-quick .pill{height:42px;flex:1;background:#16213A;color:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:15px;font-weight:600;cursor:pointer}
+.oa-quick .pill svg{width:17px;height:17px}
+.oa-secrow{display:flex;align-items:center;justify-content:space-between;padding:16px 16px 4px}
+.oa-secrow .h{font-size:19px;font-weight:700;color:#16213A}
+.oa-secrow .a{font-size:15px;font-weight:600;color:#1F6BFF;cursor:pointer}
+.oa-sess{display:flex;gap:14px;padding:12px 16px;cursor:pointer}
+.oa-sess+.oa-sess{border-top:1px solid #EEF0F3}
+.oa-sess .dt{width:30px;text-align:center;flex:0 0 30px}
+.oa-sess .dt .d{font-size:19px;font-weight:700;color:#16213A;line-height:1}
+.oa-sess .dt .m{font-size:10px;font-weight:600;color:#5B6472;margin-top:1px}
+.oa-sess .c .t{font-size:17px;font-weight:700;color:#16213A}
+.oa-sess .c .s{font-size:13.5px;color:#8A8F99;margin-top:3px}
+.oa-sess .c .p{font-size:14px;color:#16213A;margin-top:6px}
+.oa-dots{display:flex;gap:6px;justify-content:center;padding:14px}
+.oa-dots i{width:7px;height:7px;border-radius:50%;background:#D2D6DC}
+.oa-dots i.on{background:#16213A}
+.oa-feedband{height:8px;background:#EEF1F5}
+.oa-bk-head{flex:0 0 auto;display:flex;align-items:center;padding:6px 10px 8px;background:#fff}
+.oa-bk-head .bk{width:34px;height:34px;display:grid;place-items:center;color:#16213A;cursor:pointer}
+.oa-bk-head .ttl{flex:1;text-align:center}
+.oa-bk-head .ttl .t{font-size:17px;font-weight:700;color:#16213A}
+.oa-bk-head .ttl .s{font-size:13px;color:#6B7280}
+.oa-bk-head .r{display:flex;gap:4px}
+.oa-bk-head .r .ic{width:34px;height:34px;display:grid;place-items:center;color:#16213A;border-radius:50%;cursor:pointer}
+.oa-bktabs{display:flex;gap:20px;padding:0 16px;border-bottom:1px solid #EAECEF;background:#fff;overflow-x:auto}
+.oa-bktab{padding:11px 0;font-size:15px;color:#6B7280;white-space:nowrap;position:relative;cursor:pointer}
+.oa-bktab.on{color:#1F6BFF;font-weight:600}
+.oa-bktab.on:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:3px;background:#1F6BFF;border-radius:3px}
+.oa-monthrow{display:flex;align-items:center;justify-content:space-between;padding:13px 16px}
+.oa-monthrow .m{font-size:18px;font-weight:700;color:#16213A;display:flex;align-items:center;gap:5px}
+.oa-monthrow .ics{display:flex;gap:15px;color:#16213A}
+.oa-dayrow{display:flex;gap:13px;padding:0 16px 18px}
+.oa-dayrow .d{width:38px;flex:0 0 38px;padding-top:5px}
+.oa-dayrow .d .w{font-size:12px;font-weight:600;color:#6B7280}
+.oa-dayrow .d .n{font-size:23px;font-weight:700;color:#16213A;line-height:1}
+.oa-evt{flex:1;border:1px solid #E6E8EC;border-left:4px solid #2B5CE6;border-radius:10px;padding:11px 13px;position:relative;cursor:pointer}
+.oa-evt.pur{border-left-color:#7A5BF0}
+.oa-evt .tm{font-size:13.5px;color:#6B7280}
+.oa-evt .tt{font-size:17px;font-weight:700;color:#16213A;margin:3px 0 6px}
+.oa-evt .ln{font-size:13.5px;color:#3B4250;line-height:1.55}
+.oa-evt .dd{position:absolute;top:11px;right:11px;color:#16213A}
+.oa-fab{position:absolute;right:16px;bottom:80px;width:54px;height:54px;border-radius:50%;background:#2B5CE6;display:grid;place-items:center;color:#fff;box-shadow:0 6px 16px rgba(43,92,230,.4);z-index:15;cursor:pointer}
+.oa-sess-head{flex:0 0 auto;background:#2B5CE6;color:#fff;padding:4px 18px 18px}
+.oa-sess-head .top{display:flex;align-items:center;justify-content:space-between}
+.oa-sess-head .top .bk{width:32px;height:32px;display:grid;place-items:center;margin-left:-6px;cursor:pointer}
+.oa-sess-head .top .mi{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.22);display:grid;place-items:center;cursor:pointer}
+.oa-sess-head h2{font-size:25px;font-weight:800;margin:12px 0 0;letter-spacing:-.01em}
+.oa-sess-head .with{font-size:16px;font-weight:700;margin-top:8px}
+.oa-meta{margin-top:14px;display:flex;flex-direction:column;gap:11px}
+.oa-meta .row{display:flex;align-items:center;gap:13px;font-size:15px}
+.oa-meta .row svg{width:20px;height:20px;flex:0 0 20px;opacity:.95}
+.oa-actions{display:flex;justify-content:space-around;padding:20px 6px 16px;background:#fff}
+.oa-act{display:flex;flex-direction:column;align-items:center;gap:9px;cursor:pointer;flex:1}
+.oa-act .circ{width:52px;height:52px;border-radius:50%;border:1.6px solid #2B5CE6;display:grid;place-items:center;color:#2B5CE6}
+.oa-act .circ svg{width:24px;height:24px}
+.oa-act .lbl{font-size:12.5px;font-weight:700;color:#2B5CE6;text-align:center;line-height:1.2}
+.oa-divln{height:1px;background:#EAECEF}
+.oa-link{display:flex;align-items:center;gap:13px;padding:15px 18px}
+.oa-link .vc{width:40px;height:40px;border-radius:50%;background:#2B5CE6;display:grid;place-items:center;color:#fff;flex:0 0 40px}
+.oa-link .tx{flex:1}
+.oa-link .tx .t{font-size:16px;font-weight:700;color:#1F6BFF}
+.oa-link .tx .s{font-size:14px;color:#6B7280;margin-top:1px}
+.oa-parth{font-size:23px;font-weight:800;color:#16213A;padding:16px 18px 6px}
+.oa-checkin{display:flex;justify-content:center;padding:12px}
+.oa-checkin button{background:#2B5CE6;color:#fff;border:none;border-radius:25px;height:50px;padding:0 52px;font-size:17px;font-weight:700;cursor:pointer}
+.oa-cancel{display:flex;align-items:center;justify-content:center;gap:11px;padding:16px;color:#E5402C;font-weight:700;font-size:17px;border-top:1px solid #EEF0F3;cursor:pointer}
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="tb-in">
+  <h1>Check-in Gate <span class="pill">Interactive prototype</span></h1>
+  <p>Tap inside the device to use it. In the scanner, <b>tap the frame</b> to simulate scanning the next member in the queue.</p>
+  <div class="launch">
+    <button class="on" data-surf="owner" onclick="surf('owner',this)"><span class="dot"></span>Owner App · scan</button>
+    <button data-surf="member" onclick="surf('member',this)"><span class="dot"></span>Member App · pass</button>
+    <button data-surf="setm" onclick="surf('setm',this)"><span class="dot"></span>Setup · mobile</button>
+    <button data-surf="web" onclick="surf('web',this)"><span class="dot"></span>Setup · web</button>
+    <button data-surf="guest" onclick="surf('guest',this)"><span class="dot"></span>Guest pass · web</button>
+    <button class="reset" onclick="location.reload()">↺ Reset</button>
+  </div>
+</div></div>
+
+<div class="stage">
+
+  <!-- ============ OWNER ============ -->
+  <div class="surface-stage on" id="surf-owner">
+    <div class="hint">Open a session ("Yoga class") → <b>Scan QR</b> for check-in · On <b>Bookings</b>, the top-right scan = membership entry</div>
+    <div class="phone"><div class="screen"><div class="notch"></div><div class="viewport" id="vpOwner">
+
+      <!-- o-sessions -->
+      <!-- o-home -->
+      <div class="scr on" id="o-home">
+        <div class="statusbar" style="background:#fff"></div>
+        <div class="oa-home-head">
+          <div class="ava"></div>
+          <div class="biz">A La Cart <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></div>
+          <div class="oa-ic" onclick="toast('Search')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></div>
+          <div class="oa-ic" onclick="toast('Create new')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+          <div class="oa-ic" onclick="toast('14 notifications')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M10.5 21a1.8 1.8 0 003 0"/></svg><span class="oa-badge">14</span></div>
+        </div>
+        <div class="scroll" style="background:#fff">
+          <div class="oa-quick">
+            <div class="pen"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#16213A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L18.5 9.5a2 2 0 00-3-3L5 17v3z"/><path d="M14 7l3 3"/></svg></div>
+            <div class="pill" onclick="push('vpOwner','o-bookings')"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></svg>Calendar</div>
+            <div class="pill" onclick="toast('Orders')"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h3l2.4 12h11l2-8H6"/></svg>Orders</div>
+          </div>
+          <div class="oa-secrow"><div class="h">Upcoming Sessions</div><div class="a" onclick="push('vpOwner','o-bookings')">View All</div></div>
+          <div class="oa-sess" onclick="push('vpOwner','o-session')"><div class="dt"><div class="d">17</div><div class="m">JUN</div></div><div class="c"><div class="t">Pilates</div><div class="s">Wed, 22:00 (1hr) With Carlos Lampel</div><div class="p">No participants yet</div></div></div>
+          <div class="oa-sess" onclick="push('vpOwner','o-session')"><div class="dt"><div class="d">18</div><div class="m">JUN</div></div><div class="c"><div class="t">Yoga</div><div class="s">Thu, 9:00 (1hr) With Tom jones</div><div class="p">No participants yet</div></div></div>
+          <div class="oa-sess" onclick="push('vpOwner','o-session')"><div class="dt"><div class="d">18</div><div class="m">JUN</div></div><div class="c"><div class="t">Yoga</div><div class="s">Thu, 9:00 (1hr) With Weekday</div><div class="p">No participants yet</div></div></div>
+          <div class="oa-dots"><i class="on"></i><i></i><i></i><i></i></div>
+          <div class="oa-feedband"></div>
+          <div class="oa-secrow"><div class="h">Activity Feed</div></div>
+          <div style="text-align:center;padding:4px 0 12px"><span style="background:#EEF1F5;color:#3B4250;font-size:14px;font-weight:600;padding:6px 14px;border-radius:14px">Attention Required</span></div>
+          <div style="margin:0 16px 18px;border:1px solid #E6E8EC;border-radius:12px;padding:13px;display:flex;gap:11px;align-items:flex-start">
+            <div style="width:38px;height:38px;border-radius:50%;background:#FCE38A;display:grid;place-items:center;flex:0 0 38px"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#9A6A00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6z"/><path d="M9 9h6M9 13h6M9 17h4"/></svg></div>
+            <div style="flex:1"><div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font-size:16px;font-weight:700;color:#16213A">Invoice Overdue</div><div style="font-size:13px;color:#9AA0AB">4hrs</div></div><div style="font-size:14px;color:#6B7280;margin-top:3px;line-height:1.4">Invoice #0000808 that was sent to a is overdue.</div></div>
+          </div>
+        </div>
+        <div class="oa-tabbar">
+          <div class="oa-tab on" onclick="jump('vpOwner','o-home')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3.2l9 7.8h-2.2V21H14v-6h-4v6H5.2V11H3z"/></svg>Home</div>
+          <div class="oa-tab" onclick="toast('Analytics')"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="11" width="3.4" height="9" rx="1"/><rect x="10.3" y="5" width="3.4" height="15" rx="1"/><rect x="16.6" y="8.5" width="3.4" height="11.5" rx="1"/></svg>Analytics</div>
+          <div class="oa-tab" onclick="toast('AI Agents')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11 2.5l1.7 4.8 4.8 1.7-4.8 1.7L11 15.5 9.3 10.7 4.5 9l4.8-1.7z"/><path d="M17.5 13l.9 2.4 2.4.9-2.4.9-.9 2.4-.9-2.4-2.4-.9 2.4-.9z"/></svg>AI Agents</div>
+          <div class="oa-tab" onclick="toast('Inbox')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M5 5h14a1 1 0 011 1v9a1 1 0 01-1 1H9l-4 4V6a1 1 0 011-1z"/></svg>Inbox</div>
+          <div class="oa-tab" onclick="toast('Manage')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>Manage</div>
+        </div>
+        <div class="homebar"><i></i></div>
+      </div>
+
+      <!-- o-bookings -->
+      <div class="scr" id="o-bookings">
+        <div class="statusbar" style="background:#fff"></div>
+        <div class="oa-bk-head">
+          <div class="bk" onclick="back('vpOwner')"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></div>
+          <div class="ttl"><div class="t">Bookings</div><div class="s">A La Cart</div></div>
+          <div class="r">
+            <div class="ic" onclick="push('vpOwner','o-entries')"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h12M8 12h12M8 18h12M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg></div>
+            <div class="ic" onclick="openScanner('entry')"><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V5a1 1 0 011-1h2M17 4h2a1 1 0 011 1v2M20 17v2a1 1 0 01-1 1h-2M7 20H5a1 1 0 01-1-1v-2"/><path d="M4 12h16"/></svg></div>
+          </div>
+        </div>
+        <div class="oa-bktabs">
+          <div class="oa-bktab on">Calendar</div>
+          <div class="oa-bktab" onclick="toast('Booking List')">Booking List</div>
+          <div class="oa-bktab" onclick="toast('Work Schedule')">Work Schedule</div>
+          <div class="oa-bktab" onclick="toast('Services')">Services</div>
+        </div>
+        <div class="oa-monthrow"><div class="m">June 2026 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></div><div class="ics"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/><text x="12" y="18" font-size="7" font-weight="700" text-anchor="middle" fill="currentColor" stroke="none">17</text></svg><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h9M19 7h1M4 17h1M11 17h9"/><circle cx="16" cy="7" r="2.4"/><circle cx="8" cy="17" r="2.4"/></svg></div></div>
+        <div class="scroll">
+          <div class="oa-dayrow"><div class="d"><div class="w">WED</div><div class="n">17</div></div><div class="oa-evt" onclick="push('vpOwner','o-session')"><div class="dd"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></div><div class="tm">22:00 - 23:00</div><div class="tt">Pilates</div><div class="ln">0/10<br>With: Carlos Lampel<br>Broadway</div></div></div>
+          <div class="oa-dayrow"><div class="d"><div class="w">THU</div><div class="n">18</div></div><div class="oa-evt pur" onclick="push('vpOwner','o-session')"><div class="dd"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></div><div class="tm">9:00 - 10:00</div><div class="tt">Yoga</div><div class="ln">0/50<br>With: Tom jones<br>Broadway</div></div></div>
+          <div class="oa-dayrow"><div class="d"></div><div class="oa-evt pur" onclick="push('vpOwner','o-session')"><div class="dd"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></div><div class="tm">9:00 - 10:00</div><div class="tt">Yoga</div><div class="ln">0/50<br>With: Weekday<br>Broadway</div></div></div>
+          <div style="height:96px"></div>
+        </div>
+        <div class="oa-fab" onclick="toast('New booking')"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+        <div class="oa-tabbar">
+          <div class="oa-tab on" onclick="jump('vpOwner','o-home')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3.2l9 7.8h-2.2V21H14v-6h-4v6H5.2V11H3z"/></svg>Home</div>
+          <div class="oa-tab" onclick="toast('Analytics')"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="11" width="3.4" height="9" rx="1"/><rect x="10.3" y="5" width="3.4" height="15" rx="1"/><rect x="16.6" y="8.5" width="3.4" height="11.5" rx="1"/></svg>Analytics</div>
+          <div class="oa-tab" onclick="toast('AI Agents')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11 2.5l1.7 4.8 4.8 1.7-4.8 1.7L11 15.5 9.3 10.7 4.5 9l4.8-1.7z"/><path d="M17.5 13l.9 2.4 2.4.9-2.4.9-.9 2.4-.9-2.4-2.4-.9 2.4-.9z"/></svg>AI Agents</div>
+          <div class="oa-tab" onclick="toast('Inbox')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M5 5h14a1 1 0 011 1v9a1 1 0 01-1 1H9l-4 4V6a1 1 0 011-1z"/></svg>Inbox</div>
+          <div class="oa-tab" onclick="toast('Manage')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>Manage</div>
+        </div>
+        <div class="homebar"><i></i></div>
+      </div>
+
+      <!-- o-session -->
+      <div class="scr" id="o-session">
+        <div class="statusbar light" style="background:#2B5CE6"></div>
+        <div class="oa-sess-head">
+          <div class="top"><div class="bk" onclick="back('vpOwner')"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></div><div class="mi" onclick="toast('More')"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></div></div>
+          <h2>Yoga class</h2>
+          <div class="with">With Carlos Lampel</div>
+          <div class="oa-meta">
+            <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></svg>Wed, Jun 3, 2026</div>
+            <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>17:00 (1hr)</div>
+            <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9l3-3 3 3"/><path d="M7 6v8a3 3 0 003 3h7"/><path d="M20 15l-3 3-3-3"/><path d="M17 18v-8a3 3 0 00-3-3H7"/></svg>This session repeats weekly</div>
+            <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="11" rx="1.5"/><path d="M4 9h16M9 16v3M15 16v3"/></svg>Room 1</div>
+            <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.3 7-11a7 7 0 10-14 0c0 4.7 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Broadway</div>
+          </div>
+        </div>
+        <div class="scroll" style="background:#fff">
+          <div class="oa-actions">
+            <div class="oa-act" onclick="push('vpOwner','o-list')"><div class="circ"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3.6 2.8-5.5 6-5.5 .9 0 1.8.1 2.5.4"/><path d="M17 12v6M14 15h6"/></svg></div><div class="lbl">Manage<br>Participants</div></div>
+            <div class="oa-act" onclick="toast('Invite')"><div class="circ"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4M8 8l4-4 4 4"/><path d="M5 14v4a2 2 0 002 2h10a2 2 0 002-2v-4"/></svg></div><div class="lbl">Invite</div></div>
+            <div class="oa-act" onclick="toast('Broadcast')"><div class="circ"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10v4a1 1 0 001 1h2l8 4V5L7 9H5a1 1 0 00-1 1z"/><path d="M18 8.5a4 4 0 010 7"/></svg></div><div class="lbl">Broadcast</div></div>
+            <div class="oa-act" onclick="openScanner('session')"><div class="circ"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V5a1 1 0 011-1h2M17 4h2a1 1 0 011 1v2M20 17v2a1 1 0 01-1 1h-2M7 20H5a1 1 0 01-1-1v-2"/><path d="M4 12h16"/></svg></div><div class="lbl">Scan QR</div></div>
+          </div>
+          <div class="oa-divln"></div>
+          <div class="oa-link"><div class="vc"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3"/></svg></div><div class="tx"><div class="t">Add a Session Link</div><div class="s">Account: (eehrenkranz5@gmail.com)</div></div><svg viewBox="0 0 24 24" width="20" height="20" fill="#B6C1CD"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></div>
+          <div class="oa-divln"></div>
+          <div class="oa-parth">Participants</div>
+          <div class="oa-checkin"><button onclick="push('vpOwner','o-list')">Check In</button></div>
+          <div class="oa-cancel"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V5a1 1 0 011-1h4a1 1 0 011 1v2M6 7l1 13h10l1-13"/></svg>Cancel Session</div>
+        </div>
+        <div class="oa-tabbar">
+          <div class="oa-tab on" onclick="jump('vpOwner','o-home')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3.2l9 7.8h-2.2V21H14v-6h-4v6H5.2V11H3z"/></svg>Home</div>
+          <div class="oa-tab" onclick="toast('Analytics')"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="11" width="3.4" height="9" rx="1"/><rect x="10.3" y="5" width="3.4" height="15" rx="1"/><rect x="16.6" y="8.5" width="3.4" height="11.5" rx="1"/></svg>Analytics</div>
+          <div class="oa-tab" onclick="toast('AI Agents')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11 2.5l1.7 4.8 4.8 1.7-4.8 1.7L11 15.5 9.3 10.7 4.5 9l4.8-1.7z"/><path d="M17.5 13l.9 2.4 2.4.9-2.4.9-.9 2.4-.9-2.4-2.4-.9 2.4-.9z"/></svg>AI Agents</div>
+          <div class="oa-tab" onclick="toast('Inbox')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M5 5h14a1 1 0 011 1v9a1 1 0 01-1 1H9l-4 4V6a1 1 0 011-1z"/></svg>Inbox</div>
+          <div class="oa-tab" onclick="toast('Manage')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>Manage</div>
+        </div>
+        <div class="homebar"><i></i></div>
+      </div>
+
+      <!-- o-list -->
+      <div class="scr" id="o-list">
+        <div class="statusbar"></div>
+        <div class="navbar"><div class="ico" onclick="back('vpOwner')"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></div><div class="ttl"><div class="t">Yoga class</div><div class="s">Wed, Jun 3 · 17:00 · Room 1</div></div></div>
+        <div class="sec-h"><span id="o-count">12 booked · 5 checked in</span><span class="lnk" onclick="checkInAll()">Check in all</span></div>
+        <div class="scroll"><div class="list" id="o-rows">
+          <div class="cell"><div class="avatar" style="background:#51B77B">MC</div><div class="who"><div class="nm">Maya Cohen</div><div class="sub">Unlimited membership · Active</div></div><span class="trail">CIN</span></div>
+          <div class="cell"><div class="avatar" style="background:#116DFF">JR</div><div class="who"><div class="nm">Jordan Reyes</div><div class="sub">10-class pack · 6 left</div></div><span class="trail" data-elig="1">BOOK</span></div>
+          <div class="cell"><div class="avatar" style="background:#5A48F5">AP</div><div class="who"><div class="nm">Aisha Patel</div><div class="sub">Unlimited membership · Active</div></div><span class="trail" data-elig="1">BOOK</span></div>
+          <div class="cell"><div class="avatar" style="background:#F9AD4D">TN</div><div class="who"><div class="nm">Tom Nguyen</div><div class="sub">Monthly membership · Payment due</div></div><span class="trail">WARN</span></div>
+          <div class="cell"><div class="avatar" style="background:#06BEE1">SK</div><div class="who"><div class="nm">Sara Klein</div><div class="sub">No active plan or pack</div></div><span class="trail">ERR</span></div>
+          <div class="cell"><div class="avatar" style="background:#868AA5">DM</div><div class="who"><div class="nm">Diego Morales</div><div class="sub">Drop-in · paid</div></div><span class="trail" data-elig="1" data-btn="1">BTN</span></div>
+        </div></div>
+        <div class="actionbar"><button class="btn btn-primary" onclick="openScanner()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V5a1 1 0 011-1h2M17 4h2a1 1 0 011 1v2M20 17v2a1 1 0 01-1 1h-2M7 20H5a1 1 0 01-1-1v-2"/><path d="M4 12h16"/></svg>Scan QR code</button></div>
+        <div class="homebar"><i></i></div>
+      </div>
+
+      <!-- o-scanner -->
+      <div class="scr scanner-screen" id="o-scanner">
+        <div class="scanner">
+          <div class="scan-grain"></div><div class="scan-topscrim"></div><div class="scan-botscrim"></div>
+          <div class="scan-window" onclick="doScan()"><span class="br tl"></span><span class="br tr"></span><span class="br bl"></span><span class="br brr"></span><span class="scanline"></span></div>
+          <div class="scan-qr"><img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=0&data=WIX-PASS%7Cpulse-studio" alt="" onerror="this.parentNode.style.background='repeating-conic-gradient(#000 0 25%,#fff 0 50%) 0 0/20px 20px'"></div>
+          <div class="scan-nav"><span class="x" onclick="closeScanner()"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span><span class="t" id="o-scan-title">Scan QR code</span></div>
+          <div class="scan-help">Point the camera at the member's pass<small>Tap the frame to scan</small></div>
+          <div class="scan-actions"><span class="torch" onclick="this.classList.toggle('on')"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></svg></span><span class="text-btn" onclick="toast('Manual code entry — fallback path')">Enter code manually</span></div>
+        </div>
+        <div class="statusbar light" style="position:absolute;top:0;left:0;right:0;z-index:8"></div>
+        <div class="verifying" id="o-verifying"><div class="spin"></div><span>Verifying…</span></div>
+        <div class="sheet-layer" id="o-sheet"><div class="dim" onclick="hideSheet()"></div><div class="sheet" id="o-sheet-c"></div></div>
+        <div class="homebar light" style="position:absolute;bottom:0;left:0;right:0;z-index:8"><i></i></div>
+      </div>
+
+      <!-- o-entries -->
+      <div class="scr" id="o-entries">
+        <div class="statusbar"></div>
+        <div class="navbar"><div class="ico" onclick="back('vpOwner')"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></div><div class="ttl"><div class="t">Entries</div><div class="s">Today · 14 entries</div></div></div>
+        <div class="scroll">
+          <div class="sec-h"><span>This morning</span><span style="color:#868AA5">Member · Mode</span></div>
+          <div class="list">
+            <div class="cell"><div class="avatar" style="background:#116DFF">JR</div><div class="who"><div class="nm">Jordan Reyes</div><div class="sub">9:07 AM · Unlimited membership</div></div><span class="chip book">Entry</span></div>
+            <div class="cell"><div class="avatar" style="background:#51B77B">MC</div><div class="who"><div class="nm">Maya Cohen</div><div class="sub">9:00 AM · Vinyasa Flow</div></div><span class="chip cin">Check-in</span></div>
+            <div class="cell"><div class="avatar" style="background:#5A48F5">EL</div><div class="who"><div class="nm">Erin Lee</div><div class="sub">8:58 AM · Off-peak · 1 credit used</div></div><span class="chip book">Entry</span></div>
+            <div class="cell"><div class="avatar" style="background:#868AA5">GV</div><div class="who"><div class="nm">Guest · Noa Bar</div><div class="sub">8:55 AM · Vinyasa Flow · email pass</div></div><span class="chip walk">Guest</span></div>
+            <div class="cell"><div class="avatar" style="background:#06BEE1">RS</div><div class="who"><div class="nm">Riya Shah</div><div class="sub">8:51 AM · Unlimited membership</div></div><span class="chip book">Entry</span></div>
+            <div class="cell"><div class="avatar" style="background:#F2542D">DM</div><div class="who"><div class="nm">Diego Morales</div><div class="sub">8:47 AM · Unlimited membership</div></div><span class="chip book">Entry</span></div>
+            <div class="cell"><div class="avatar" style="background:#51B77B">AP</div><div class="who"><div class="nm">Aisha Patel</div><div class="sub">8:42 AM · Off-peak · entered today</div></div><span class="chip book">Entry</span></div>
+          </div>
+        </div>
+        <div class="homebar"><i></i></div>
+      </div>
+
+    </div></div></div>
+  </div>
+
+  <!-- ============ MEMBER ============ -->
+  <div class="surface-stage" id="surf-member">
+    <div class="hint">Switch tabs at the bottom · open <b>My Pass</b> · tap <b>Preview entry</b> to see the "You're in" moment</div>
+    <div class="phone member"><div class="screen"><div class="notch"></div><div class="viewport" id="vpMember">
+
+      <!-- m-profile (My Profile hub) -->
+      <div class="scr on" id="m-profile">
+        <div class="statusbar"></div>
+        <div class="bk-head"><div class="row"><span class="ttl" style="margin-right:0">My Profile</span></div></div>
+        <div style="flex:1;overflow-y:auto;background:#fff">
+          <div style="display:flex;align-items:center;gap:14px;padding:18px 16px"><div class="avatar" style="width:54px;height:54px;flex:0 0 54px;background:#9C1AB1;font-size:20px">RL</div><div><div style="font-size:19px;font-weight:700;color:#2B2B36">Rom Lampel</div><div style="font-size:14px;color:#5B6478">Member · A La Cart</div></div></div>
+          <div class="entry-banner" style="margin:0 16px 4px" onclick="showPass('entry')"><span class="qi"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"><rect x="3" y="4" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="6" rx="1"/><rect x="14" y="4" width="7" height="7" rx="1"/><path d="M14 15h3v5M20 14v6" stroke-linecap="round"/></svg></span><div style="flex:1"><div class="t">Your entry pass</div><div class="s">Active member · tap to show your code</div></div><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div>
+          <div style="font-size:12px;color:#849AA9;margin:8px 18px 12px">Use this to enter sites where you're an active member</div>
+          <div class="prow" onclick="push('vpMember','m-bookings')"><span>Bookings</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div>
+          <div class="prow" onclick="toast('Memberships')"><span>Memberships</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div>
+          <div class="prow" onclick="toast('Payment methods')"><span>Payment methods</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div>
+          <div class="prow" onclick="toast('Account settings')"><span>Account settings</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div>
+        </div>
+        <div class="appnav"><div class="tab" onclick="toast('My Sites')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7M6 10v9h12v-9"/></svg>My Sites</div><div class="tab" onclick="toast('Chat')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8 8 0 01-11.7 7L4 20l1.5-4.3A8 8 0 1121 11.5z"/></svg>Chat</div><div class="tab on" onclick="jump('vpMember','m-profile')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg>My Profile</div></div>
+        <div class="homebar"><i></i></div>
+      </div>
+
+      <!-- m-bookings -->
+      <div class="scr" id="m-bookings">
+        <div class="statusbar"></div>
+        <div class="bk-head"><div class="row"><span class="ico" onclick="back('vpMember')"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></span><span class="ttl">Bookings</span></div></div>
+        <div class="seg"><span class="s on">Upcoming</span><span class="s" onclick="toast('History')">History</span></div>
+        <div style="flex:1;overflow-y:auto;background:#fff">
+          <div class="entry-banner" onclick="showPass('entry')"><span class="qi"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"><rect x="3" y="4" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="6" rx="1"/><rect x="14" y="4" width="7" height="7" rx="1"/><path d="M14 15h3v5M20 14v6" stroke-linecap="round"/></svg></span><div style="flex:1"><div class="t">Your entry pass</div><div class="s">Active member · show your code at the door</div></div><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div>
+          <div class="tzchip"><span class="x" onclick="toast('Time zone')"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 2.6 15 0 18M12 3c-2.6 2.6-2.6 15 0 18"/></svg>Jerusalem time (GMT +03:00)</div>
+          <div class="bkcard" onclick="push('vpMember','m-detail')"><div class="date"><div class="dd">18</div><div class="mm">JUN</div></div><div class="mid"><div class="t">Pilates</div><div class="when">Tomorrow 22:00 (1hr)</div><div class="meta">With Carlos Lampel · 21 Broadway, New York,…</div><span class="badge-g">Booked</span></div><span class="dots" onclick="event.stopPropagation();openMSheet()"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></span></div>
+        </div>
+        <div class="appnav"><div class="tab" onclick="toast('My Sites')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7M6 10v9h12v-9"/></svg>My Sites</div><div class="tab" onclick="toast('Chat')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8 8 0 01-11.7 7L4 20l1.5-4.3A8 8 0 1121 11.5z"/></svg>Chat</div><div class="tab on" onclick="jump('vpMember','m-profile')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg>My Profile</div></div>
+        <div class="homebar"><i></i></div>
+        <div class="picker msheet" id="m-sheet"><div class="dim" onclick="closeMSheet()"></div><div class="sheet"><span class="grip"></span>
+          <div style="margin-bottom:6px"><b style="color:#2B2B36;font-size:18px;display:block">Pilates</b><span style="font-size:15px;color:#5B6478">Tomorrow 22:00 (1hr)</span></div>
+          <div class="det-div"></div>
+          <div class="act-i" onclick="toast('Added to calendar',true);closeMSheet()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4M12 13v4M10 15h4"/></svg>Add to Calendar</div>
+          <div class="act-i" style="color:var(--accent)" onclick="closeMSheet();showPass('session')"><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"><rect x="3" y="4" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="6" rx="1"/><rect x="14" y="4" width="7" height="7" rx="1"/><path d="M14 15h3v5M20 14v6" stroke-linecap="round"/></svg>Show check-in code</div>
+          <div class="act-i" onclick="toast('Reschedule');closeMSheet()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Reschedule</div>
+          <div class="act-i" onclick="toast('Form submission');closeMSheet()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 10h6M9 14h6"/></svg>View form submission</div>
+          <div class="act-i danger" onclick="toast('Cancel booking');closeMSheet()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7h14M10 7V5h4v2M6 7l1 13h10l1-13"/></svg>Cancel Booking</div>
+        </div></div>
+      </div>
+
+      <!-- m-detail (booking detail) -->
+      <div class="scr" id="m-detail">
+        <div class="statusbar light"></div>
+        <div class="m-header" style="padding:6px 16px 14px"><div class="top" style="padding-top:0"><span style="cursor:pointer;display:grid;place-items:center;width:30px;height:30px" onclick="back('vpMember')"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></span><span style="flex:1;text-align:center;font-size:17px;font-weight:700;margin-right:30px">Pilates</span></div></div>
+        <div class="det-banner" style="background:linear-gradient(120deg,#E8D9F0,#C9A9E0 55%,#9C6FC4)"></div>
+        <div class="det-body">
+          <h2>Pilates</h2>
+          <div class="det-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></svg>Tomorrow, 22:00 (1 hour)</div>
+          <div class="det-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg>Carlos Lampel</div>
+          <div class="det-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s7-6.3 7-11a7 7 0 10-14 0c0 4.7 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><a>Broadway</a></div>
+          <div class="det-badges"><span class="badge-g">Booked</span><span class="badge-g">Paid</span></div>
+          <div class="qr-cta" onclick="showPass('session')"><span class="qi"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"><rect x="3" y="4" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="6" rx="1"/><rect x="14" y="4" width="7" height="7" rx="1"/><path d="M14 15h3v5M20 14v6" stroke-linecap="round"/></svg></span><div class="ct"><div class="t">Show check-in code</div><div class="s">Scan this at the door to check in</div></div><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#868AA5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div>
+          <div class="det-div"></div>
+          <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:17px;color:#2B2B36">9 spots left</span><span style="width:36px;height:36px;border-radius:50%;background:#EDEFF3;display:grid;place-items:center"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#B6C1CD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg></span></div>
+          <div class="det-div"></div>
+          <div class="det-label">PRICE</div>
+          <div style="font-size:18px;color:#2B2B36;margin-bottom:16px">$22.00 per session</div>
+          <div style="font-size:18px;font-weight:700;color:#2B2B36">Part of a Pricing Plan</div>
+          <div style="font-size:15px;color:#5B6478;margin-top:4px">Renewed monthly, Silver punch card</div>
+          <div class="det-div"></div>
+          <div class="det-link" onclick="toast('Form submission')"><span>View form submission</span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div>
+          <button class="btn-purple" onclick="toast('Reschedule')" style="margin-top:18px">Reschedule</button>
+          <button class="btn-red" onclick="toast('Cancel booking')">Cancel Booking</button>
+        </div>
+        <div class="appnav"><div class="tab" onclick="toast('My Sites')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7M6 10v9h12v-9"/></svg>My Sites</div><div class="tab" onclick="toast('Chat')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8 8 0 01-11.7 7L4 20l1.5-4.3A8 8 0 1121 11.5z"/></svg>Chat</div><div class="tab on" onclick="jump('vpMember','m-profile')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg>My Profile</div></div>
+        <div class="homebar"><i></i></div>
+      </div>
+
+      <!-- m-pass (QR check-in code / entry pass) -->
+      <div class="scr" id="m-pass">
+        <div class="statusbar light"></div>
+        <div class="m-header" style="padding:6px 16px 14px"><div class="top" style="padding-top:0"><span style="cursor:pointer;display:grid;place-items:center;width:30px;height:30px" onclick="back('vpMember')"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></span><span id="m-pass-title" style="flex:1;text-align:center;font-size:17px;font-weight:700;margin-right:30px">Check-in code</span></div></div>
+        <div class="pass-wrap" style="background:#F0F1F5">
+          <div class="pass-card">
+            <div id="m-pass-context"><div class="pname">Pilates</div><div class="pplan">Tomorrow, 22:00 · with Carlos Lampel</div></div>
+            <div class="qr-box"><img src="https://api.qrserver.com/v1/create-qr-code/?size=440x440&margin=0&data=WIX-BOOKINGS-PASS%7Cmember%3Arom-lampel%7Csite%3Aa-la-cart%7Cbooking%3Apilates-2200" alt="check-in QR" onerror="this.closest('.qr-box').classList.add('broken')"><div class="qr-fallback"></div></div>
+            <div id="m-pass-foot"><div class="valid">Show this to staff to check in</div><div class="pid">Booking · #BK-90213</div></div>
+            <div class="pass-bright" onclick="brighten(this)"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg>Brighten screen</div>
+            <div class="pass-hint">Auto-refreshes every 60 sec for security</div>
+          </div>
+          <div style="margin-top:auto;padding-top:14px"><button class="m-btn" style="background:var(--accent)" onclick="push('vpMember','m-yourein')">▶ Preview entry (simulate scan)</button></div>
+        </div>
+        <div class="bright-flash" id="m-flash"></div>
+        <div class="appnav"><div class="tab" onclick="toast('My Sites')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7M6 10v9h12v-9"/></svg>My Sites</div><div class="tab" onclick="toast('Chat')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8 8 0 01-11.7 7L4 20l1.5-4.3A8 8 0 1121 11.5z"/></svg>Chat</div><div class="tab on" onclick="jump('vpMember','m-profile')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg>My Profile</div></div>
+        <div class="homebar"><i></i></div>
+      </div>
+
+      <!-- m-yourein -->
+      <div class="scr" id="m-yourein">
+        <div class="statusbar light"></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 28px;text-align:center;color:#fff;background:linear-gradient(160deg,var(--accent),var(--accent-dk))">
+          <div style="width:108px;height:108px;border-radius:50%;background:rgba(255,255,255,.18);display:grid;place-items:center;margin-bottom:24px"><div style="width:78px;height:78px;border-radius:50%;background:#fff;display:grid;place-items:center"><svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div></div>
+          <div style="font-family:var(--disp);font-size:30px;font-weight:800">You're in!</div>
+          <div style="font-size:16px;opacity:.95;margin-top:10px;line-height:1.5">Checked in to <b>Pilates</b><br>Tomorrow · 22:00 · Broadway</div>
+          <button class="m-btn" style="background:rgba(255,255,255,.18);margin-top:28px;width:auto;padding:0 26px" onclick="jump('vpMember','m-profile')">Done</button>
+        </div>
+        <div class="homebar light"><i></i></div>
+      </div>
+
+    </div></div></div>
+  </div>
+
+  <!-- ============ SETUP MOBILE ============ -->
+  <div class="surface-stage" id="surf-setm">
+    <div class="hint">Tap toggles &amp; checkboxes · open <b>Check-in window</b> to pick a value</div>
+    <div class="phone"><div class="screen"><div class="notch"></div><div class="viewport" id="vpSetM">
+      <div class="scr on" id="s-main">
+        <div class="statusbar"></div>
+        <div class="navbar"><div class="ico" onclick="toast('Back to Booking Settings')"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></div><div class="ttl"><div class="t">Check-in Gate</div></div></div>
+        <div class="scroll" style="background:var(--bg)">
+          <div class="gate-hero"><div class="ic"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/><circle cx="12" cy="15.5" r="1.4" fill="#fff" stroke="none"/></svg></div><div><div class="t">Check-in Gate</div><div class="s">Verify a booking or active plan before entry</div></div></div>
+          <div class="set-group">
+            <div class="set-row"><div class="txt"><div class="t">Turn on check-in gate</div><div class="s">Show eligibility on the booking list &amp; enable QR scan</div></div><div class="toggle on" onclick="this.classList.toggle('on')"><i></i></div></div>
+          </div>
+          <div class="set-lead">What you're gating</div>
+          <div class="set-group">
+            <div class="set-row tap" onclick="pickGate(this)"><div class="radio"><i></i></div><div class="txt"><div class="t">Session check-in</div><div class="s">Classes &amp; appointments only</div></div></div>
+            <div class="set-row tap" onclick="pickGate(this)"><div class="radio"><i></i></div><div class="txt"><div class="t">Membership access</div><div class="s">Entry by membership — no booking</div></div></div>
+            <div class="set-row tap" onclick="pickGate(this)"><div class="radio on"><i></i></div><div class="txt"><div class="t">Both</div><div class="s">Classes and open entry</div></div></div>
+          </div>
+          <div class="set-lead">What grants entry</div>
+          <div class="set-group">
+            <div class="set-row tap" onclick="toggleCheck(this)"><div class="check on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div><div class="txt"><div class="t">Confirmed booking</div><div class="s">Client booked this session</div></div></div>
+            <div class="set-row tap" onclick="toggleCheck(this)"><div class="check on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div><div class="txt"><div class="t">Active plan or pack</div><div class="s">Membership or class pack covering this service</div></div></div>
+          </div>
+          <div class="set-lead">At the door</div>
+          <div class="set-group">
+            <div class="set-row"><div class="txt"><div class="t">Soft check-in</div><div class="s">Warn staff on lapsed plans — don't block the client</div></div><div class="toggle on" onclick="this.classList.toggle('on')"><i></i></div></div>
+            <div class="set-row tap" onclick="openPicker()"><div class="txt"><div class="t">Check-in window</div></div><div class="val"><span id="s-window">1 hr before</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#B6C1CD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div></div>
+            <div class="set-row"><div class="txt"><div class="t">Member QR pass</div><div class="s">Let members show an entry code in the app</div></div><div class="toggle on" onclick="this.classList.toggle('on')"><i></i></div></div>
+          </div>
+          <div class="set-lead">Membership access</div>
+          <div class="set-group">
+            <div class="set-row tap" onclick="toast('2 of 4 plans grant entry')"><div class="txt"><div class="t">Plans that grant entry</div><div class="s">Choose which memberships open the door</div></div><div class="val">2 of 4<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#B6C1CD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div></div>
+            <div class="set-row tap" onclick="toast('Access hours are set per plan')"><div class="txt"><div class="t">Access hours</div><div class="s">Per-plan windows (e.g. off-peak)</div></div><div class="val">Per plan<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#B6C1CD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div></div>
+            <div class="set-row"><div class="txt"><div class="t">Guest email pass</div><div class="s">Email a QR to non-members who book a session</div></div><div class="toggle on" onclick="this.classList.toggle('on')"><i></i></div></div>
+            <div class="set-row tap" onclick="toast('Opening entries history')"><div class="txt"><div class="t">Entries history</div><div class="s">See who entered and when</div></div><div class="val" style="color:#116DFF;font-weight:600">View<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#116DFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div></div>
+          </div>
+          <div class="set-lead">Door hardware</div>
+          <div class="set-group">
+            <div class="set-row tap" onclick="toast('Connecting to Kisi…')"><div class="txt"><div class="t">Door access (Kisi)</div><div class="s">Unlock the door automatically for eligible members</div></div><div class="val" style="color:#116DFF;font-weight:600">Connect<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#116DFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div></div>
+          </div>
+          <div style="height:20px"></div>
+        </div>
+        <!-- picker -->
+        <div class="picker" id="s-picker"><div class="dim" onclick="closePicker()"></div><div class="sheet"><span class="grip"></span>
+          <h3 style="font-size:18px;margin:6px 0 6px">Check-in window</h3>
+          <div class="body" style="margin-bottom:10px">How early before a session a client can check in</div>
+          <div class="opt-row" onclick="pickWindow('15 min before')"><span>15 min before</span><span class="ck">✓</span></div>
+          <div class="opt-row" onclick="pickWindow('30 min before')"><span>30 min before</span><span class="ck">✓</span></div>
+          <div class="opt-row sel" onclick="pickWindow('1 hr before')"><span>1 hr before</span><span class="ck">✓</span></div>
+          <div class="opt-row" onclick="pickWindow('2 hr before')"><span>2 hr before</span><span class="ck">✓</span></div>
+        </div></div>
+        <div class="homebar"><i></i></div>
+      </div>
+    </div></div></div>
+  </div>
+
+  <!-- ============ SETUP WEB ============ -->
+  <div class="surface-stage" id="surf-web">
+    <div class="hint">Flip toggles, pick a check-in method, change the window — the <b>Save bar</b> appears when something changes</div>
+    <div class="browser" id="webBrowser">
+      <div class="bro-bar"><div class="dots"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i></div><div class="bro-url"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#868AA5" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>wix.com/dashboard/pulse-studio/bookings/check-in-gate</div></div>
+      <div class="dash">
+        <div class="dash-side">
+          <div class="logo"><span class="m">W</span>Wix</div>
+          <div class="nav-i" onclick="toast('Home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7M6 10v9h12v-9"/></svg>Home</div>
+          <div class="nav-i" style="font-weight:700;color:#000624"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></svg>Bookings</div>
+          <div class="nav-i sub" onclick="toast('Booking calendar')">Booking calendar</div>
+          <div class="nav-i sub" onclick="toast('Services')">Services</div>
+          <div class="nav-i sub" onclick="toast('Booking list')">Booking list</div>
+          <div class="nav-i sub on" style="padding-left:48px">Check-in Gate</div>
+          <div class="nav-i" onclick="toast('Marketing')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-6 9 6v10a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M3 9h18"/></svg>Marketing</div>
+          <div class="nav-i" onclick="toast('Payments')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 10h19"/></svg>Payments</div>
+          <div class="nav-i" onclick="toast('Settings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 13a7.6 7.6 0 000-2l2-1.5-2-3.5-2.4 1a7 7 0 00-1.7-1L14.9 3h-4l-.4 2.4a7 7 0 00-1.7 1l-2.4-1-2 3.5L6.6 11a7.6 7.6 0 000 2l-2 1.5 2 3.5 2.4-1a7 7 0 001.7 1l.4 2.5h4l.4-2.5a7 7 0 001.7-1l2.4 1 2-3.5z"/></svg>Settings</div>
+        </div>
+        <div class="dash-main">
+          <div class="dash-top">
+            <div class="search"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>Search tools, apps, help &amp; more</div>
+            <div class="right"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 015 0c0 1.7-2.5 2-2.5 3.5"/><path d="M12 17h.01"/></svg><span class="av">PS</span></div>
+          </div>
+          <div class="dash-canvas">
+            <div class="dash-inner">
+              <div class="pg-head">
+                <div>
+                  <span class="back" onclick="toast('Back to Booking Settings')"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Booking Settings</span>
+                  <h1>Check-in Gate<span class="d-badge on"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>On</span></h1>
+                  <div class="sub">Verify that a client has a confirmed booking or an active plan before they check in to a session.</div>
+                </div>
+                <button class="dbtn ghost" onclick="toast('Opening check-in log…')">View check-in log</button>
+              </div>
+              <div class="helper"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg><div>Soft check-in is on. Staff are <b>warned</b> about lapsed plans but can still check the client in — recommended while plan data can be unreliable. <a href="#" onclick="event.preventDefault();toast('Help article')">Learn more</a></div></div>
+
+              <div class="dcard">
+                <div class="dcard-h"><div class="t">What are you gating?</div><div class="s">Choose the kind of access this gate controls. One member pass works for whichever you pick.</div></div>
+                <div class="dcard-div"></div>
+                <div class="dcard-c">
+                  <div class="opt" onclick="pickRadio(this)"><div class="radio"><i></i></div><div><div class="ot">Session check-in</div><div class="os">Classes &amp; appointments only — verify a booking at the door.</div></div></div>
+                  <div class="dcard-div"></div>
+                  <div class="opt" onclick="pickRadio(this)"><div class="radio"><i></i></div><div><div class="ot">Membership access</div><div class="os">Entry by membership with no booking — open gym, pool, lounge, co-working.</div></div></div>
+                  <div class="dcard-div"></div>
+                  <div class="opt" onclick="pickRadio(this)"><div class="radio on"><i></i></div><div><div class="ot">Both</div><div class="os">Session check-in and membership access — a hybrid studio with classes and open entry.</div></div></div>
+                </div>
+              </div>
+
+              <div class="dcard">
+                <div class="dcard-h"><div class="t">Check-in method</div><div class="s">How staff and clients record arrivals at the door.</div></div>
+                <div class="dcard-div"></div>
+                <div class="dcard-c">
+                  <div class="opt" onclick="pickRadio(this)"><div class="radio on"><i></i></div><div><div class="ot">QR scan (Owner App)</div><div class="os">Staff scan the member's pass with the Wix Owner App camera. Fastest for group sessions.</div></div></div>
+                  <div class="dcard-div"></div>
+                  <div class="opt" onclick="pickRadio(this)"><div class="radio"><i></i></div><div><div class="ot">Manual check-in</div><div class="os">Staff tap each client on the booking list. No scanning required.</div></div></div>
+                  <div class="dcard-div"></div>
+                  <div class="opt" onclick="pickRadio(this)"><div class="radio"><i></i></div><div><div class="ot">Self check-in kiosk <span class="d-badge cs">Coming soon</span></div><div class="os">Members check themselves in on a reception tablet.</div></div></div>
+                </div>
+              </div>
+
+              <div class="dcard">
+                <div class="dcard-h"><div class="t">What grants entry</div><div class="s">A client is eligible if they match any selected condition.</div></div>
+                <div class="dcard-div"></div>
+                <div class="dcard-c">
+                  <div class="drow" style="cursor:pointer" onclick="toggleCheck(this)"><div class="check on" style="margin-top:1px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div><div class="txt"><div class="t">Confirmed booking</div><div class="s">The client has a confirmed booking for this session.</div></div></div>
+                  <div class="drow" style="cursor:pointer" onclick="toggleCheck(this)"><div class="check on" style="margin-top:1px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div><div class="txt"><div class="t">Active plan or pack</div><div class="s">A membership or class pack that covers this service is active.</div></div></div>
+                  <div class="drow"><div class="txt"><div class="t">Soft check-in</div><div class="s">When a plan looks lapsed or can't be verified, warn staff instead of turning the client away.</div></div><div class="toggle on" onclick="this.classList.toggle('on');markDirty()"><i></i></div></div>
+                  <div class="drow"><div class="txt"><div class="t">Check-in window</div><div class="s">How early before a session a client can check in.</div></div>
+                    <div class="ddwrap"><div class="dropdown" onclick="toggleDD(event)"><span id="w-window">1 hour before</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></div>
+                      <div class="ddmenu" id="w-ddmenu"><div onclick="pickDD('15 minutes before')">15 minutes before</div><div onclick="pickDD('30 minutes before')">30 minutes before</div><div class="sel" onclick="pickDD('1 hour before')">1 hour before</div><div onclick="pickDD('2 hours before')">2 hours before</div></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="dcard">
+                <div class="dcard-h"><div class="t">Membership access</div><div class="s">Which plans open the door, whether an entry uses a credit, and the hours each plan allows.</div></div>
+                <div class="dcard-div"></div>
+                <div class="dcard-c">
+                  <div style="display:flex;align-items:center;gap:16px;padding:10px 0 6px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#6E6F71">
+                    <div style="flex:1">Plan</div><div style="width:92px;text-align:center">Grants entry</div><div style="width:104px;text-align:center">Uses a credit</div><div style="width:150px;text-align:right">Access hours</div>
+                  </div>
+                  <div class="drow"><div class="txt" style="flex:1"><div class="t">Unlimited membership</div><div class="s">Recurring</div></div><div style="width:92px;display:flex;justify-content:center"><div class="toggle on" onclick="this.classList.toggle('on');markDirty()"><i></i></div></div><div style="width:104px;display:flex;justify-content:center"><div class="toggle" onclick="this.classList.toggle('on');markDirty()"><i></i></div></div><div style="width:150px;text-align:right;font-size:13.5px;color:#000624">24/7</div></div>
+                  <div class="drow"><div class="txt" style="flex:1"><div class="t">Off-peak membership</div><div class="s">Recurring</div></div><div style="width:92px;display:flex;justify-content:center"><div class="toggle on" onclick="this.classList.toggle('on');markDirty()"><i></i></div></div><div style="width:104px;display:flex;justify-content:center"><div class="toggle" onclick="this.classList.toggle('on');markDirty()"><i></i></div></div><div style="width:150px;text-align:right;font-size:13.5px;color:#000624">10:00–16:00</div></div>
+                  <div class="drow"><div class="txt" style="flex:1"><div class="t">10-class pack</div><div class="s">Limited · 10 sessions · session-only</div></div><div style="width:92px;display:flex;justify-content:center"><div class="toggle" onclick="this.classList.toggle('on');markDirty()"><i></i></div></div><div style="width:104px;display:flex;justify-content:center"><div class="toggle" onclick="this.classList.toggle('on');markDirty()"><i></i></div></div><div style="width:150px;text-align:right;font-size:13.5px;color:#6E6F71">—</div></div>
+                  <div class="drow"><div class="txt" style="flex:1"><div class="t">Monthly membership</div><div class="s">Recurring · 12 entries/mo</div></div><div style="width:92px;display:flex;justify-content:center"><div class="toggle on" onclick="this.classList.toggle('on');markDirty()"><i></i></div></div><div style="width:104px;display:flex;justify-content:center"><div class="toggle on" onclick="this.classList.toggle('on');markDirty()"><i></i></div></div><div style="width:150px;text-align:right;font-size:13.5px;color:#000624">06:00–22:00</div></div>
+                  <div class="dcard-div"></div>
+                  <div class="drow"><div class="txt"><div class="t">Email a guest pass for single-session bookings</div><div class="s">Non-members who book one session get a QR by email plus a no-login web pass. Valid for that session only.</div></div><div class="toggle on" onclick="this.classList.toggle('on');markDirty()"><i></i></div></div>
+                  <div class="drow"><div class="txt"><div class="t">Entries history</div><div class="s">A log of who entered and when, with the plan used and whether a credit was consumed.</div></div><button class="dbtn ghost" onclick="toast('Opening entries history…')">View entries</button></div>
+                </div>
+              </div>
+
+              <div class="dcard">
+                <div class="dcard-h"><div class="t">Member pass</div><div class="s">The QR code members show in your app to check in.</div></div>
+                <div class="dcard-div"></div>
+                <div class="dcard-c">
+                  <div class="drow"><div class="txt"><div class="t">Show entry QR pass in the member app</div><div class="s">Members open "My Pass" to display a scannable code. Auto-refreshes for security.</div></div><div class="toggle on" onclick="this.classList.toggle('on');markDirty()"><i></i></div></div>
+                  <div class="drow"><div class="txt"><div class="t">Show remaining classes on the pass</div><div class="s">Display the member's plan balance — a quiet renewal nudge at the door.</div></div><div class="toggle on" onclick="this.classList.toggle('on');markDirty()"><i></i></div></div>
+                </div>
+              </div>
+
+              <div class="dcard">
+                <div class="dcard-h"><div class="t">Door access</div><div class="s">Unlock a physical door automatically for eligible members.</div></div>
+                <div class="dcard-div"></div>
+                <div class="dcard-c">
+                  <div class="drow"><div style="width:38px;height:38px;border-radius:9px;background:#F0F0F0;display:grid;place-items:center;flex:0 0 38px"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#595D70" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg></div><div class="txt"><div class="t">Kisi door access</div><div class="s">Eligible check-ins unlock the door; access is revoked automatically when a plan lapses.</div></div><button class="dbtn sec" id="w-kisi" onclick="connectKisi(this)">Connect</button></div>
+                </div>
+              </div>
+              <div style="height:8px"></div>
+            </div>
+          </div>
+          <div class="save-bar" id="w-savebar"><span class="note">You have unsaved changes</span><button class="dbtn ghost" onclick="cancelWeb()">Cancel</button><button class="dbtn primary" onclick="saveWeb()">Save</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ GUEST PASS (web) ============ -->
+  <div class="surface-stage" id="surf-guest">
+    <div class="hint">The no-login <b>web pass</b> a guest opens from their booking email — valid for one session, no app or membership</div>
+    <div class="phone"><div class="screen"><div class="notch"></div>
+      <div class="statusbar"></div>
+      <div style="display:flex;align-items:center;gap:8px;padding:6px 14px 8px;background:#f3f4f7;border-bottom:1px solid var(--line)"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#868AA5" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg><div style="flex:1;background:#fff;border:1px solid #e2e6ee;border-radius:8px;padding:5px 10px;font-size:12px;color:var(--d30);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">pulse-studio.wixsite.com/pass/noa-bar</div><svg viewBox="0 0 24 24" width="16" height="16" fill="#868AA5"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></div>
+      <div style="flex:1;overflow-y:auto;background:#fff;padding:20px 22px 24px;text-align:center">
+        <div style="font-family:var(--disp);font-weight:800;font-size:16px;letter-spacing:.14em;color:#000624">PULSE STUDIO</div>
+        <div style="font-family:var(--disp);font-size:22px;font-weight:700;margin-top:18px;color:#000624">Your check-in pass</div>
+        <div style="font-size:13px;color:#595D70;margin-top:4px">Guest booking · no account needed</div>
+        <div style="background:#F0F3F7;border-radius:14px;padding:14px 16px;margin:18px 0 4px;text-align:left;display:flex;gap:12px;align-items:center">
+          <div style="width:46px;text-align:center;flex:0 0 46px"><div style="font-size:20px;font-weight:700;color:#000624;line-height:1">16</div><div style="font-size:11px;font-weight:600;color:#868AA5">JUN</div></div>
+          <div><div style="font-size:15px;font-weight:600;color:#000624">Vinyasa Flow</div><div style="font-size:13px;color:#595D70">9:00 AM · Studio A · Pulse Studio</div></div>
+        </div>
+        <div class="qr-box" style="margin:18px auto 12px"><img src="https://api.qrserver.com/v1/create-qr-code/?size=440x440&margin=0&data=WIX-GUEST-PASS%7Cbooking%3Avinyasa-0900%7Cguest%3Anoa-bar%7Csite%3Apulse-studio" alt="guest QR" onerror="this.closest('.qr-box').classList.add('broken')"><div class="qr-fallback"></div></div>
+        <div style="font-size:14px;color:#32536A">Check in from <b style="color:#000624">8:00 AM</b></div>
+        <div style="font-size:12px;color:#849AA9;font-family:ui-monospace,Menlo,monospace;margin-top:4px">Booking · #BK-90213</div>
+        <button class="btn" style="background:#000;color:#fff;margin-top:20px;width:100%;display:flex;align-items:center;justify-content:center;gap:8px"><svg viewBox="0 0 24 24" width="18" height="18" fill="#fff"><path d="M16.4 12.9c0-2 1.6-3 1.7-3.1-0.9-1.4-2.4-1.5-2.9-1.6-1.2-.1-2.4.7-3 .7-.6 0-1.6-.7-2.6-.7-1.3 0-2.6.8-3.3 2-1.4 2.4-.4 6 1 8 .7 1 1.4 2 2.5 2 1 0 1.3-.6 2.5-.6 1.2 0 1.5.6 2.5.6s1.7-.9 2.4-1.9c.7-1.1 1-2.1 1-2.2 0 0-1.9-.7-2.3-2.5zM14.5 6.7c.5-.7.9-1.6.8-2.5-.8 0-1.7.5-2.3 1.2-.5.6-.9 1.5-.8 2.4.9.1 1.8-.4 2.3-1.1z"/></svg>Add to Apple Wallet</button>
+        <div style="font-size:12px;color:#849AA9;margin-top:14px;line-height:1.5">Show this at the door. We also emailed it to you, so you can reopen it anytime.</div>
+      </div>
+      <div class="homebar"><i></i></div>
+    </div></div>
+  </div>
+
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* ---------- status bars ---------- */
+var SB='<span>9:41</span><span class="sb-r">'+
+'<svg width="17" height="11" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>'+
+'<svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><path d="M8 2.2c2.6 0 5 1 6.8 2.7l-1.5 1.6A7.4 7.4 0 008 4.6 7.4 7.4 0 002.7 6.5L1.2 4.9A9.7 9.7 0 018 2.2zm0 3.4c1.6 0 3.1.6 4.2 1.7l-1.6 1.6A3.7 3.7 0 008 8.2c-1 0-2 .4-2.6 1.1L3.8 7.7A6 6 0 018 5.6z"/></svg>'+
+'<svg width="25" height="12" viewBox="0 0 25 12" fill="currentColor"><rect x="1" y="1.5" width="20" height="9" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.1" opacity=".45"/><rect x="2.8" y="3" width="14.5" height="6" rx="1.2"/><rect x="22.2" y="4" width="1.8" height="4" rx=".9" opacity=".5"/></svg></span>';
+document.querySelectorAll('.statusbar').forEach(function(s){s.innerHTML=SB;});
+
+/* ---------- member tab bars ---------- */
+var MTABS=[
+ ['home','Home','<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7M6 10v9h12v-9"/></svg>','m-home'],
+ ['classes','Classes','<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></svg>','m-classes'],
+ ['pass','My Pass','<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="4" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="6" rx="1"/><rect x="14" y="4" width="7" height="7" rx="1"/><path d="M14 15h3v5M20 14v6" stroke-linecap="round"/></svg>','m-pass'],
+ ['profile','Profile','<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg>','m-profile']
+];
+document.querySelectorAll('.m-tabs').forEach(function(bar){
+  var active=bar.getAttribute('data-active');
+  var html='<div class="m-tabbar">';
+  MTABS.forEach(function(t){html+='<div class="tab'+(t[0]===active?' on':'')+'" onclick="memTab(\''+t[3]+'\')">'+t[2]+t[1]+'</div>';});
+  html+='</div>';
+  bar.outerHTML=html;
+});
+
+/* ---------- navigator ---------- */
+var stacks={};
+function curScr(vp){return vp.querySelector('.scr.on');}
+function push(vpId,toId){
+  var vp=document.getElementById(vpId), from=curScr(vp), to=document.getElementById(toId);
+  if(!to||from===to) return;
+  stacks[vpId]=stacks[vpId]||[from?from.id:null];
+  to.classList.remove('right','left'); to.classList.add('on');
+  if(from){from.classList.remove('on');from.classList.add('left');}
+  stacks[vpId].push(toId);
+}
+function back(vpId){
+  var st=stacks[vpId]; var vp=document.getElementById(vpId);
+  if(!st||st.length<2){return;}
+  var fromId=st.pop(), toId=st[st.length-1];
+  var from=document.getElementById(fromId), to=document.getElementById(toId);
+  from.classList.remove('on');from.classList.add('right');
+  to.classList.remove('left','right');to.classList.add('on');
+}
+function jump(vpId,toId){ /* tab switch, no slide */
+  var vp=document.getElementById(vpId), from=curScr(vp), to=document.getElementById(toId);
+  if(from===to) return;
+  vp.querySelectorAll('.scr').forEach(function(s){s.style.transition='none';});
+  if(from){from.classList.remove('on','left');from.classList.add('right');}
+  to.classList.remove('left','right');to.classList.add('on');
+  stacks[vpId]=[toId];
+  requestAnimationFrame(function(){vp.querySelectorAll('.scr').forEach(function(s){s.style.transition='';});});
+}
+function memTab(id){jump('vpMember',id);}
+function openMSheet(){document.getElementById('m-sheet').classList.add('show');}
+function closeMSheet(){document.getElementById('m-sheet').classList.remove('show');}
+function showPass(mode){
+  var t=document.getElementById('m-pass-title'),c=document.getElementById('m-pass-context'),f=document.getElementById('m-pass-foot');
+  if(mode==='entry'){
+    t.textContent='Entry pass';
+    c.innerHTML='<div class="pname">Rom Lampel</div><div class="pplan">A La Cart · Silver punch card</div><span class="m-chip active" style="margin-top:10px;display:inline-flex"><span class="d" style="background:#3B8332"></span>Active member</span>';
+    f.innerHTML='<div class="valid">Show this at the door to enter</div><div class="pid">Valid until Aug 31, 2026</div>';
+  } else {
+    t.textContent='Check-in code';
+    c.innerHTML='<div class="pname">Pilates</div><div class="pplan">Tomorrow, 22:00 · with Carlos Lampel</div>';
+    f.innerHTML='<div class="valid">Show this to staff to check in</div><div class="pid">Booking · #BK-90213</div>';
+  }
+  push('vpMember','m-pass');
+}
+function goPass(){showPass('session');}
+
+/* ---------- surface switch ---------- */
+function surf(name,btn){
+  document.querySelectorAll('.surface-stage').forEach(function(s){s.classList.remove('on');});
+  document.getElementById('surf-'+name).classList.add('on');
+  document.querySelectorAll('.launch button[data-surf]').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');
+  if(name==='web') scaleWeb();
+}
+function scaleWeb(){
+  var b=document.getElementById('webBrowser');
+  var avail=Math.min(1180, window.innerWidth-48);
+  b.style.transform='scale('+(avail/1180)+')';
+  b.style.marginBottom=(-(740+42)*(1-avail/1180))+'px';
+}
+window.addEventListener('resize',function(){if(document.getElementById('surf-web').classList.contains('on'))scaleWeb();});
+
+/* ---------- toast ---------- */
+var toastT;
+function toast(msg,ok){
+  var el=document.getElementById('toast');
+  el.innerHTML=(ok?'<svg viewBox="0 0 24 24" fill="none" stroke="#51B77B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>':'')+msg;
+  el.classList.add('show');clearTimeout(toastT);toastT=setTimeout(function(){el.classList.remove('show');},2200);
+}
+
+/* ---------- owner: booking list ---------- */
+var TRAIL={
+  CIN:'<span class="chip cin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>Checked in</span>',
+  BOOK:'<span class="chip book"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 6"/></svg>Booked</span>',
+  WARN:'<span class="chip warn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L2 20h20z"/><path d="M12 10v4"/><path d="M12 17h.01"/></svg>Plan lapsed</span>',
+  ERR:'<span class="chip err"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/></svg>Not eligible</span>',
+  BTN:'<button class="btn-checkin" onclick="checkInRow(this)">Check in</button>'
+};
+document.querySelectorAll('#o-rows .trail').forEach(function(t){t.innerHTML=TRAIL[t.textContent.trim()]||'';});
+var checked=5;
+function setCount(){document.getElementById('o-count').textContent='12 booked · '+checked+' checked in';}
+function checkInRow(btn){var t=btn.closest('.trail');t.innerHTML=TRAIL.CIN;t.dataset.done='1';checked++;setCount();toast('Diego Morales checked in',true);}
+function checkInAll(){
+  var n=0;
+  document.querySelectorAll('#o-rows .trail[data-elig="1"]').forEach(function(t){
+    if(t.dataset.done!=='1'){t.innerHTML=TRAIL.CIN;t.dataset.done='1';n++;checked++;}
+  });
+  setCount();
+  toast(n? n+' eligible client'+(n>1?'s':'')+' checked in':'Everyone eligible is already in',true);
+}
+
+/* ---------- owner: scanner ---------- */
+var SCAN={session:{title:'Scan QR code',queue:['ok','warn','err']},entry:{title:'Scan entry',queue:['autoSession','mActive','mWindow','mNone']}};
+var scanMode='session', qi=0, scanning=false;
+function openScanner(mode){scanMode=mode||'session';qi=0;document.getElementById('o-scan-title').textContent=SCAN[scanMode].title;push('vpOwner','o-scanner');}
+function closeScanner(){hideSheet();back('vpOwner');}
+function doScan(){
+  if(scanning) return; scanning=true;
+  var v=document.getElementById('o-verifying'); v.classList.add('show');
+  setTimeout(function(){
+    v.classList.remove('show');
+    var q=SCAN[scanMode].queue; showResult(q[qi%q.length]); qi++; scanning=false;
+  },850);
+}
+var RESULTS={
+ ok:{cls:'ok',icon:'<path d="M5 13l4 4L19 7"/>',sw:3,h:'Checked in',b:'Jordan is eligible — confirmed booking for this session.',
+     mini:['JR','#116DFF','Jordan Reyes','10-class pack · 6 left'],
+     acts:'<button class="btn btn-primary" onclick="hideSheet()">Scan next</button><button class="text-btn" onclick="closeScanner()">Done</button>'},
+ warn:{cls:'wn',icon:'<path d="M12 3L2 21h20z"/><path d="M12 10v5"/><path d="M12 18h.01"/>',sw:2.4,h:'Plan may be lapsed',b:'No active plan found for Tom. His last payment didn\'t go through.',
+     reason:['var(--y-tint)','var(--y-text)','Monthly membership · Payment due'],
+     mini:['TN','#F9AD4D','Tom Nguyen','Booked this session'],
+     acts:'<button class="btn btn-primary" onclick="afterCheck(\'Tom Nguyen checked in\')">Check in anyway</button><button class="btn btn-sec" onclick="toast(\'Collecting payment…\')">Collect payment</button><button class="text-btn" onclick="hideSheet()">Don\'t check in</button>'},
+ err:{cls:'er',icon:'<circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/>',sw:2.4,h:'Not eligible',b:'No booking or active plan found for this session.',
+     reason:['var(--r-tint)','var(--r-text)','No records found · Sara Klein'],
+     acts:'<button class="btn btn-primary" onclick="toast(\'Drop-in sold · checked in\',true);hideSheet()">Sell a drop-in &amp; check in</button><button class="text-btn" onclick="hideSheet()">Scan next</button>'},
+ autoSession:{cls:'ok',icon:'<path d="M5 13l4 4L19 7"/>',sw:3,h:'Checked in',b:'Maya has a class starting now — auto-checked into Vinyasa Flow.',
+     reason:['var(--b40)','var(--b10)','Auto-matched to her booking'],
+     mini:['MC','#51B77B','Maya Cohen','Vinyasa Flow · 9:00 AM'],
+     acts:'<button class="btn btn-primary" onclick="hideSheet()">Scan next</button><button class="text-btn" onclick="closeScanner()">Done</button>'},
+ mActive:{cls:'ok',icon:'<path d="M5 13l4 4L19 7"/>',sw:3,h:'Welcome back',b:'Active member — entry granted.',
+     reason:['var(--b40)','var(--b10)','Unlimited membership · 24/7 access'],
+     mini:['JR','#116DFF','Jordan Reyes','Member since 2024'],
+     acts:'<button class="btn btn-primary" onclick="hideSheet()">Scan next</button><button class="text-btn" onclick="closeScanner()">Done</button>'},
+ mWindow:{cls:'wn',icon:'<path d="M12 3L2 21h20z"/><path d="M12 10v5"/><path d="M12 18h.01"/>',sw:2.4,h:'Outside access hours',b:'This plan allows entry 10:00–16:00. It\'s 9:05 now.',
+     reason:['var(--y-tint)','var(--y-text)','Off-peak membership · 10:00–16:00'],
+     mini:['AP','#F9AD4D','Aisha Patel','Off-peak membership'],
+     acts:'<button class="btn btn-primary" onclick="afterCheck(\'Let in — outside-hours override logged\')">Let in anyway</button><button class="text-btn" onclick="hideSheet()">Don\'t let in</button>'},
+ mNone:{cls:'er',icon:'<circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/>',sw:2.4,h:'No active membership',b:'Sara has no plan that grants entry.',
+     reason:['var(--r-tint)','var(--r-text)','No membership found · Sara Klein'],
+     acts:'<button class="btn btn-primary" onclick="toast(\'Membership started · entry granted\',true);hideSheet()">Start a membership &amp; let in</button><button class="text-btn" onclick="hideSheet()">Scan next</button>'}
+};
+function showResult(type){
+  var r=RESULTS[type];
+  var html='<span class="grip"></span><div class="badge '+r.cls+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="'+r.sw+'" stroke-linecap="round" stroke-linejoin="round">'+r.icon+'</svg></div>';
+  html+='<h3>'+r.h+'</h3><p class="body">'+r.b+'</p>';
+  if(r.reason) html+='<span class="reason" style="background:'+r.reason[0]+';color:'+r.reason[1]+'">'+r.reason[2]+'</span>';
+  if(r.mini) html+='<div class="mini-row"><div class="avatar" style="background:'+r.mini[1]+';width:36px;height:36px;flex:0 0 36px;font-size:13px">'+r.mini[0]+'</div><div style="text-align:left"><div class="nm">'+r.mini[2]+'</div><div class="sub">'+r.mini[3]+'</div></div></div>';
+  html+='<div class="acts">'+r.acts+'</div>';
+  document.getElementById('o-sheet-c').innerHTML=html;
+  document.getElementById('o-sheet').classList.add('show');
+}
+function hideSheet(){document.getElementById('o-sheet').classList.remove('show');}
+function afterCheck(msg){hideSheet();toast(msg,true);}
+
+/* ---------- member ---------- */
+function brighten(el){var f=document.getElementById('m-flash');f.classList.add('on');setTimeout(function(){f.classList.remove('on');},1400);el.innerHTML=el.innerHTML.replace('Brighten screen','Brightness boosted');setTimeout(function(){el.lastChild.textContent='Brighten screen';},1400);toast('Screen brightness maxed for scanning');}
+function bookClass(btn){btn.textContent='Booked';btn.style.background='var(--g-tint)';btn.style.borderColor='var(--g-tint)';btn.style.color='var(--g-text)';toast('Class booked — see it on your pass',true);}
+
+/* ---------- setup mobile ---------- */
+function toggleCheck(row){row.querySelector('.check').classList.toggle('on');}
+function pickGate(row){row.closest('.set-group').querySelectorAll('.radio').forEach(function(r){r.classList.remove('on');});row.querySelector('.radio').classList.add('on');}
+function openPicker(){document.getElementById('s-picker').classList.add('show');}
+function closePicker(){document.getElementById('s-picker').classList.remove('show');}
+function pickWindow(v){
+  document.getElementById('s-window').textContent=v;
+  document.querySelectorAll('#s-picker .opt-row').forEach(function(o){o.classList.toggle('sel',o.textContent.trim().slice(0,v.length)===v||o.querySelector('span').textContent===v);});
+  closePicker();toast('Check-in window: '+v);
+}
+
+/* ---------- setup web ---------- */
+function markDirty(){document.getElementById('w-savebar').classList.add('show');}
+function pickRadio(opt){
+  opt.closest('.dcard-c').querySelectorAll('.radio').forEach(function(r){r.classList.remove('on');});
+  opt.querySelector('.radio').classList.add('on');markDirty();
+}
+function toggleDD(e){e.stopPropagation();document.getElementById('w-ddmenu').classList.toggle('show');}
+function pickDD(v){
+  document.getElementById('w-window').textContent=v;
+  document.querySelectorAll('#w-ddmenu div').forEach(function(d){d.classList.toggle('sel',d.textContent===v);});
+  document.getElementById('w-ddmenu').classList.remove('show');markDirty();
+}
+function connectKisi(btn){btn.textContent='Connected';btn.classList.remove('sec');btn.classList.add('ghost');btn.style.color='var(--dash-success)';btn.style.borderColor='#bfe6a0';markDirty();toast('Kisi connected',true);}
+function saveWeb(){document.getElementById('w-savebar').classList.remove('show');toast('Changes saved',true);}
+function cancelWeb(){document.getElementById('w-savebar').classList.remove('show');}
+document.addEventListener('click',function(e){if(!e.target.closest('.ddwrap')){var m=document.getElementById('w-ddmenu');if(m)m.classList.remove('show');}});
+
+/* override check toggle for web rows that also markDirty */
+document.querySelectorAll('#surf-web .drow .check').forEach(function(c){
+  c.closest('.drow').addEventListener('click',function(){markDirty();});
+});
+</script>
+</body>
+</html>
