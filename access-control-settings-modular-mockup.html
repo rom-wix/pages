@@ -245,7 +245,17 @@
     closeWindow();
   }
 
-  window.addEventListener('DOMContentLoaded', function(){ renderMemTable(); renderDoorHardware(); applyFeature(); });
+  window.addEventListener('DOMContentLoaded', function(){
+    renderMemTable(); renderDoorHardware();
+    // optional installed-apps preset from the URL (?installed=both|bookings|pp)
+    var m = location.search.match(/[?&]installed=(both|bookings|pp)/);
+    if(m){ setInstalled(m[1]); } else { applyFeature(); }
+    // when embedded (e.g. the prototype's "Setup · web" tab): open detail + hide the demo switcher
+    if(/[?&]view=detail/.test(location.search)){
+      showView('detail');
+      var sw = document.getElementById('stateSwitch'); if(sw) sw.style.display='none';
+    }
+  });
 </script>
 <style>
   @font-face{
