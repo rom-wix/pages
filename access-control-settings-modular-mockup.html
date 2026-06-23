@@ -875,26 +875,17 @@
       </div>
 
       <!-- ============ 1. Check-in methods ============ -->
-      <div class="sec-head"><h2>Check-in</h2></div>
-      <div class="sec-desc">How clients are verified and let in at the door.</div>
+      <div class="sec-head"><h2>QR check-in</h2></div>
+      <div class="sec-desc">How staff verify and let clients in by scanning their QR code at the door.</div>
       <div class="scard">
         <!-- QR check-in (master) -->
         <div class="srow">
           <div class="si">
-            <div class="lt">QR check-in</div>
+            <div class="lt">Turn on QR check-in</div>
             <div class="ld">Adds a <b>QR scanner</b> to the <b>Wix Owner</b> app for staff, and a personal <b>QR generator</b>
             in the <b>member app</b> so each client has a code to scan at the door.</div>
           </div>
           <div class="sv"><span class="tog lg" id="tog-qr" onclick="toggleQR()"></span></div>
-        </div>
-        <!-- Check-in window (nested, depends on QR) -->
-        <div class="srow nested" id="row-window">
-          <div class="si">
-            <div class="lt">Check-in window</div>
-            <div class="ld">How early and how late clients can check in around the session start time.
-            <span class="dep-hint">Turn on QR check-in to enable.</span></div>
-          </div>
-          <div class="sv"><span class="chip" id="winChip">15 min before <span class="mut">→</span> 10 min after</span><span class="edit" onclick="openWindow()">Edit</span></div>
         </div>
         <!-- Include QR in confirmation email (nested, depends on QR) -->
         <div class="srow nested" id="row-qr-email">
@@ -904,6 +895,15 @@
             <span class="dep-hint">Turn on QR check-in to enable.</span></div>
           </div>
           <div class="sv"><span class="tog" id="tog-qr-email" onclick="toggleQrEmail()"></span></div>
+        </div>
+        <!-- Check-in window (nested, depends on QR) -->
+        <div class="srow nested" id="row-window">
+          <div class="si">
+            <div class="lt">Check-in window</div>
+            <div class="ld">How early and how late clients can check in around the session start time.
+            <span class="dep-hint">Turn on QR check-in to enable.</span></div>
+          </div>
+          <div class="sv"><span class="chip" id="winChip">15 min before <span class="mut">→</span> 10 min after</span><span class="edit" onclick="openWindow()">Edit</span></div>
         </div>
         <!-- Let members enter with an active plan (nested, depends on QR) -->
         <div class="srow nested" id="row-membership">
