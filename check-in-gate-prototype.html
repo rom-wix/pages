@@ -42,6 +42,12 @@ button{font-family:var(--sans)}
 .surface-stage{display:none;width:100%;flex-direction:column;align-items:center;gap:18px}
 .surface-stage.on{display:flex}
 .hint{color:var(--d30);font-size:13px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 16px;box-shadow:0 1px 3px rgba(11,17,40,.06)}
+/* demo state switcher (outside the prototype browser frame) */
+.demo-switch{display:flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px;box-shadow:0 2px 8px rgba(11,17,40,.1)}
+.demo-switch .ds-label{font-size:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--d40);padding:0 8px}
+.demo-switch .ds-btn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 12px;font-size:12.5px;font-weight:600;color:var(--d20);cursor:pointer;font-family:inherit}
+.demo-switch .ds-btn:hover{border-color:var(--b10)}
+.demo-switch .ds-btn.on{background:var(--b10);border-color:var(--b10);color:#fff}
 .hint b{color:var(--b10)}
 
 /* phone */
@@ -297,6 +303,10 @@ button{font-family:var(--sans)}
 .set-row .txt{flex:1}.set-row .txt .t{font-size:15px;color:var(--d10);font-weight:500}.set-row .txt .s{font-size:13px;color:var(--d30);margin-top:3px;line-height:1.4}
 .set-row .val{font-size:14px;color:var(--d30);display:flex;align-items:center;gap:4px}
 .set-lead{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--d30);padding:6px 16px 0}
+.set-note{font-size:12.5px;color:var(--d30);line-height:1.45;padding:10px 16px 0}
+.m-managelink{font-size:13.5px;font-weight:600;color:var(--b10);cursor:pointer}
+.m-cta{flex:0 0 auto;background:#fff;border-top:1px solid var(--line);padding:12px 16px}
+.m-cta button{width:100%;background:var(--b10);color:#fff;border:none;border-radius:10px;padding:13px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
 .gate-hero{background:linear-gradient(135deg,#0a1f5c,#116DFF);color:#fff;padding:18px 16px 20px;display:flex;align-items:center;gap:14px}
 .gate-hero .ic{width:46px;height:46px;border-radius:13px;background:rgba(255,255,255,.16);display:grid;place-items:center;flex:0 0 46px}
 .gate-hero .t{font-family:var(--disp);font-size:17px;font-weight:700}.gate-hero .s{font-size:13px;opacity:.92;margin-top:2px;line-height:1.4}
@@ -481,8 +491,8 @@ button{font-family:var(--sans)}
   <div class="launch">
     <button class="on" data-surf="owner" onclick="surf('owner',this)"><span class="dot"></span>Owner App · scan</button>
     <button data-surf="member" onclick="surf('member',this)"><span class="dot"></span>Member App · pass</button>
-    <button data-surf="setm" onclick="surf('setm',this)"><span class="dot"></span>Setup · mobile<span class="wip">WIP</span></button>
-    <button data-surf="web" onclick="surf('web',this)"><span class="dot"></span>Setup · web<span class="wip">WIP</span></button>
+    <button data-surf="setm" onclick="surf('setm',this)"><span class="dot"></span>Setup · mobile</button>
+    <button data-surf="web" onclick="surf('web',this)"><span class="dot"></span>Setup · web</button>
     <button data-surf="guest" onclick="surf('guest',this)"><span class="dot"></span>Guest pass · web</button>
     <button class="reset" onclick="location.reload()">↺ Reset</button>
   </div>
@@ -643,7 +653,7 @@ button{font-family:var(--sans)}
             <span class="pt-more" onclick="toast('More')"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><circle cx="5" cy="12" r="1.9"/><circle cx="12" cy="12" r="1.9"/><circle cx="19" cy="12" r="1.9"/></svg></span>
           </div>
         </div>
-        <div class="mp-checkin"><div class="tx">Check in participants to your class session.</div><button onclick="openScanner('session')">Scan QR</button></div>
+        <div class="mp-checkin"><div class="tx">Check in participants to your class session.</div><button onclick="openScanner('session')">Check In</button></div>
         <div class="oa-tabbar">
           <div class="oa-tab on" onclick="jump('vpOwner','o-home')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3.2l9 7.8h-2.2V21H14v-6h-4v6H5.2V11H3z"/></svg>Home</div>
           <div class="oa-tab" onclick="toast('Analytics')"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="11" width="3.4" height="9" rx="1"/><rect x="10.3" y="5" width="3.4" height="15" rx="1"/><rect x="16.6" y="8.5" width="3.4" height="11.5" rx="1"/></svg>Analytics</div>
@@ -816,41 +826,36 @@ button{font-family:var(--sans)}
 
   <!-- ============ SETUP MOBILE ============ -->
   <div class="surface-stage" id="surf-setm">
-    <div class="hint">Tap toggles &amp; checkboxes · open <b>Check-in window</b> to pick a value</div>
+    <div class="hint">Turn on QR check-in to enable the rest · open <b>Check-in window</b> to pick a value</div>
+    <div class="demo-switch" id="mobStateSwitch">
+      <span class="ds-label">Installed apps · demo</span>
+      <button class="ds-btn on" data-st="both"     onclick="setMobState('both',this)">Bookings + Pricing Plans</button>
+      <button class="ds-btn"    data-st="bookings" onclick="setMobState('bookings',this)">Bookings only</button>
+      <button class="ds-btn"    data-st="pp"       onclick="setMobState('pp',this)">Pricing Plans only</button>
+    </div>
     <div class="phone"><div class="screen"><div class="notch"></div><div class="viewport" id="vpSetM">
       <div class="scr on" id="s-main">
         <div class="statusbar"></div>
         <div class="navbar"><div class="ico" onclick="toast('Back to Booking Settings')"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></div><div class="ttl"><div class="t">Check-in Gate</div></div></div>
         <div class="scroll" style="background:var(--bg)">
-          <div class="gate-hero"><div class="ic"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/><circle cx="12" cy="15.5" r="1.4" fill="#fff" stroke="none"/></svg></div><div><div class="t">Check-in Gate</div><div class="s">Verify a booking or active plan before entry</div></div></div>
+          <div class="gate-hero"><div class="ic"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/><circle cx="12" cy="15.5" r="1.4" fill="#fff" stroke="none"/></svg></div><div><div class="t">Check-in &amp; Access</div><div class="s">Decide who can enter — by booking or active plan</div></div></div>
+
+          <div class="set-lead">QR check-in</div>
           <div class="set-group">
-            <div class="set-row"><div class="txt"><div class="t">Turn on check-in gate</div><div class="s">Show eligibility on the booking list &amp; enable QR scan</div></div><div class="toggle on" onclick="this.classList.toggle('on')"><i></i></div></div>
+            <div class="set-row"><div class="txt"><div class="t">Turn on QR check-in</div><div class="s">QR scanner in the Owner app, QR generator in the member app</div></div><div class="toggle" id="m-qr" onclick="mToggleQR(this)"><i></i></div></div>
+            <div class="set-row mqr m-bookings"><div class="txt"><div class="t">Include QR in confirmation email</div><div class="s">So clients can check in without the member app</div></div><div class="toggle on" onclick="this.classList.toggle('on')"><i></i></div></div>
+            <div class="set-row tap mqr m-bookings" onclick="openPicker()"><div class="txt"><div class="t">Check-in window</div></div><div class="val"><span id="s-window">1 hr before</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#B6C1CD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div></div>
+            <div class="set-row tap mqr m-pp" onclick="push('vpSetM','s-connect')"><div class="txt"><div class="t">Let members enter with an active plan</div><div class="s">Connect the plans that grant entry</div></div><div class="val" style="color:#116DFF;font-weight:600"><span id="m-plancount">Connect</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#116DFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div></div>
           </div>
-          <div class="set-lead">What you're gating</div>
-          <div class="set-group">
-            <div class="set-row tap" onclick="pickGate(this)"><div class="radio"><i></i></div><div class="txt"><div class="t">Session check-in</div><div class="s">Classes &amp; appointments only</div></div></div>
-            <div class="set-row tap" onclick="pickGate(this)"><div class="radio"><i></i></div><div class="txt"><div class="t">Membership access</div><div class="s">Entry by membership — no booking</div></div></div>
-            <div class="set-row tap" onclick="pickGate(this)"><div class="radio on"><i></i></div><div class="txt"><div class="t">Both</div><div class="s">Classes and open entry</div></div></div>
+
+          <div class="m-bookings" id="m-intake-group">
+            <div class="set-lead">Intake forms</div>
+            <div class="set-group">
+              <div class="set-row tap" onclick="toast('Opening Intake Forms')"><div class="txt"><div class="t">Set up &amp; manage</div><div class="s">A client's form status appears when they check in</div></div><div class="val" style="color:#116DFF;font-weight:600">Manage<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#116DFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div></div>
+            </div>
           </div>
-          <div class="set-lead">What grants entry</div>
-          <div class="set-group">
-            <div class="set-row tap" onclick="toggleCheck(this)"><div class="check on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div><div class="txt"><div class="t">Confirmed booking</div><div class="s">Client booked this session</div></div></div>
-            <div class="set-row tap" onclick="toggleCheck(this)"><div class="check on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div><div class="txt"><div class="t">Active plan or pack</div><div class="s">Membership or class pack covering this service</div></div></div>
-          </div>
-          <div class="set-lead">At the door</div>
-          <div class="set-group">
-            <div class="set-row"><div class="txt"><div class="t">Soft check-in</div><div class="s">Warn staff on lapsed plans — don't block the client</div></div><div class="toggle on" onclick="this.classList.toggle('on')"><i></i></div></div>
-            <div class="set-row tap" onclick="openPicker()"><div class="txt"><div class="t">Check-in window</div></div><div class="val"><span id="s-window">1 hr before</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#B6C1CD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div></div>
-            <div class="set-row"><div class="txt"><div class="t">Member QR pass</div><div class="s">Let members show an entry code in the app</div></div><div class="toggle on" onclick="this.classList.toggle('on')"><i></i></div></div>
-          </div>
-          <div class="set-lead">Membership access</div>
-          <div class="set-group">
-            <div class="set-row tap" onclick="toast('2 of 4 plans grant entry')"><div class="txt"><div class="t">Plans that grant entry</div><div class="s">Choose which memberships open the door</div></div><div class="val">2 of 4<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#B6C1CD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div></div>
-            <div class="set-row tap" onclick="toast('Access hours are set per plan')"><div class="txt"><div class="t">Access hours</div><div class="s">Per-plan windows (e.g. off-peak)</div></div><div class="val">Per plan<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#B6C1CD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div></div>
-            <div class="set-row"><div class="txt"><div class="t">Guest email pass</div><div class="s">Email a QR to non-members who book a session</div></div><div class="toggle on" onclick="this.classList.toggle('on')"><i></i></div></div>
-            <div class="set-row tap" onclick="toast('Opening entries history')"><div class="txt"><div class="t">Entries history</div><div class="s">See who entered and when</div></div><div class="val" style="color:#116DFF;font-weight:600">View<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#116DFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div></div>
-          </div>
-          <div class="set-lead">Door hardware</div>
+
+          <div class="set-lead">Door access</div>
           <div class="set-group">
             <div class="set-row tap" onclick="toast('Connecting to Kisi…')"><div class="txt"><div class="t">Door access (Kisi)</div><div class="s">Unlock the door automatically for eligible members</div></div><div class="val" style="color:#116DFF;font-weight:600">Connect<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#116DFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div></div>
           </div>
@@ -867,14 +872,41 @@ button{font-family:var(--sans)}
         </div></div>
         <div class="homebar"><i></i></div>
       </div>
+
+      <!-- connect-a-plan screen -->
+      <div class="scr" id="s-connect">
+        <div class="statusbar"></div>
+        <div class="navbar"><div class="ico" onclick="back('vpSetM')"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></div><div class="ttl"><div class="t">Connect plans</div></div></div>
+        <div class="scroll" style="background:var(--bg)">
+          <div class="set-lead">Plans that let members check in</div>
+          <div class="set-group" id="m-plan-list"><!-- rendered by JS --></div>
+          <div class="set-note">Select the plans that grant entry. Plans come from <b>Pricing Plans</b>.</div>
+          <div style="padding:14px 16px"><a class="m-managelink" onclick="toast('Opening Pricing Plans')">Manage plans in Pricing Plans ↗</a></div>
+          <div style="height:20px"></div>
+        </div>
+        <div class="m-cta"><button onclick="mSaveConnect()">Done</button></div>
+        <div class="homebar"><i></i></div>
+      </div>
     </div></div></div>
   </div>
 
   <!-- ============ SETUP WEB ============ -->
   <div class="surface-stage" id="surf-web">
-    <div class="hint">Flip toggles, pick a check-in method, change the window — the <b>Save bar</b> appears when something changes</div>
+    <div class="hint">The full <b>Check-in &amp; Access</b> settings page — turn on QR check-in, connect plans, set up the kiosk and door hardware</div>
+    <div class="demo-switch" id="webStateSwitch">
+      <span class="ds-label">Installed apps · demo</span>
+      <button class="ds-btn on" data-st="both"     onclick="setWebState('both',this)">Bookings + Pricing Plans</button>
+      <button class="ds-btn"    data-st="bookings" onclick="setWebState('bookings',this)">Bookings only</button>
+      <button class="ds-btn"    data-st="pp"       onclick="setWebState('pp',this)">Pricing Plans only</button>
+    </div>
     <div class="browser" id="webBrowser">
-      <div class="bro-bar"><div class="dots"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i></div><div class="bro-url"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#868AA5" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>wix.com/dashboard/pulse-studio/bookings/check-in-gate</div></div>
+      <div class="bro-bar"><div class="dots"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i></div><div class="bro-url"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#868AA5" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>wix.com/dashboard/pulse-studio/settings/check-in-access</div></div>
+      <iframe id="webFrame" src="access-control-settings-modular-mockup.html?view=detail&installed=both" title="Check-in &amp; Access settings" style="width:1180px;height:740px;border:0;display:block;background:#f0f4f7"></iframe>
+    </div>
+  </div>
+
+  <!-- (old inline web settings removed — now embedded from access-control-settings-modular-mockup.html) -->
+  <div style="display:none">
       <div class="dash">
         <div class="dash-side">
           <div class="logo"><span class="m">W</span>Wix</div>
@@ -983,8 +1015,7 @@ button{font-family:var(--sans)}
           <div class="save-bar" id="w-savebar"><span class="note">You have unsaved changes</span><button class="dbtn ghost" onclick="cancelWeb()">Cancel</button><button class="dbtn primary" onclick="saveWeb()">Save</button></div>
         </div>
       </div>
-    </div>
-  </div>
+  </div><!-- /hidden old web settings -->
 
   <!-- ============ GUEST PASS (web) ============ -->
   <div class="surface-stage" id="surf-guest">
@@ -1102,6 +1133,58 @@ function surf(name,btn){
   document.querySelectorAll('.launch button[data-surf]').forEach(function(b){b.classList.remove('on');});
   btn.classList.add('on');
   if(name==='web') scaleWeb();
+}
+/* mobile setup state — mirrors the web modular defaults:
+   QR off by default; Bookings gates window/email/intake; Pricing Plans gates the plan row */
+var MOB = { qr:false, bookings:true, pp:true };
+function setMobState(state,btn){
+  MOB.bookings = (state==='both'||state==='bookings');
+  MOB.pp       = (state==='both'||state==='pp');
+  document.querySelectorAll('#mobStateSwitch .ds-btn').forEach(function(b){b.classList.remove('on');});
+  if(btn) btn.classList.add('on');
+  applyMob();
+}
+function mToggleQR(el){ MOB.qr = !MOB.qr; el.classList.toggle('on', MOB.qr); applyMob(); }
+function applyMob(){
+  // installed-apps visibility (hide whole rows/groups when the app isn't installed)
+  document.querySelectorAll('#s-main .m-bookings').forEach(function(r){ r.style.display = MOB.bookings ? '' : 'none'; });
+  document.querySelectorAll('#s-main .m-pp').forEach(function(r){ r.style.display = MOB.pp ? '' : 'none'; });
+  // sync the QR toggle visual
+  var q=document.getElementById('m-qr'); if(q) q.classList.toggle('on', MOB.qr);
+  // QR gates the nested rows
+  document.querySelectorAll('#s-main .set-row.mqr').forEach(function(r){
+    r.style.opacity = MOB.qr ? '1' : '.45'; r.style.pointerEvents = MOB.qr ? '' : 'none';
+  });
+}
+
+/* ---- mobile connect-a-plan flow ---- */
+var MPLANS=[
+  {id:'unlimited',name:'Unlimited Monthly',meta:'$200 every month · Unlimited',on:false},
+  {id:'pack',name:'10-Class Pack',meta:'$180 one-time · 10 sessions',on:false},
+  {id:'offpeak',name:'Off-Peak Membership',meta:'$120 every month · Unlimited',on:false},
+  {id:'annual',name:'Annual All-Access',meta:'$2,000 every year · Unlimited',on:false},
+  {id:'intro',name:'Intro Drop-In',meta:'$25 one-time · 1 session',on:false}
+];
+function renderMPlans(){
+  var host=document.getElementById('m-plan-list'); if(!host) return;
+  host.innerHTML=MPLANS.map(function(p){
+    return '<div class="set-row tap" onclick="mTogglePlan(\''+p.id+'\')">'+
+      '<div class="check'+(p.on?' on':'')+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div>'+
+      '<div class="txt"><div class="t">'+p.name+'</div><div class="s">'+p.meta+'</div></div></div>';
+  }).join('');
+}
+function mTogglePlan(id){ var p=MPLANS.find(function(x){return x.id===id;}); if(p){p.on=!p.on;renderMPlans();} }
+function mSaveConnect(){ updatePlanCount(); back('vpSetM'); }
+function updatePlanCount(){
+  var n=MPLANS.filter(function(p){return p.on;}).length;
+  var el=document.getElementById('m-plancount');
+  if(el) el.textContent = n ? (n+' connected') : 'Connect';
+}
+function setWebState(state,btn){
+  var f=document.getElementById('webFrame');
+  if(f) f.src='access-control-settings-modular-mockup.html?view=detail&installed='+state;
+  document.querySelectorAll('#webStateSwitch .ds-btn').forEach(function(b){b.classList.remove('on');});
+  if(btn) btn.classList.add('on');
 }
 function scaleWeb(){
   var b=document.getElementById('webBrowser');
@@ -1249,6 +1332,10 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ddwrap')){v
 document.querySelectorAll('#surf-web .drow .check').forEach(function(c){
   c.closest('.drow').addEventListener('click',function(){markDirty();});
 });
+
+/* mobile setup init — default state matches web (QR off, both apps installed) */
+renderMPlans();
+applyMob();
 </script>
 </body>
 </html>
