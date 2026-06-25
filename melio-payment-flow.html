@@ -1,0 +1,1163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Melio · Pay a vendor (redesigned)</title>
+<style>
+  :root{
+    --bg:#EDF2F1;
+    --card:#FFFFFF;
+    --ink:#0E2C2A;
+    --muted:#5E7572;
+    --faint:#8AA09D;
+    --line:#E3EAE8;
+    --line-strong:#D2DEDB;
+    --primary:#0B4F49;
+    --primary-700:#083B36;
+    --primary-050:#E7F2F0;
+    --accent:#00B383;
+    --accent-050:#E4F7F0;
+    --free:#0E8F66;
+    --warn:#9A6B00;
+    --warn-050:#FBF3E0;
+    --danger:#B23B3B;
+    --shadow:0 1px 2px rgba(13,42,40,.05),0 10px 30px rgba(13,42,40,.06);
+    --shadow-lg:0 24px 60px rgba(13,42,40,.18);
+    --r:16px;
+    --r-sm:12px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);color:var(--ink);
+    -webkit-font-smoothing:antialiased;line-height:1.45;
+  }
+  button{font-family:inherit;cursor:pointer;border:none;background:none}
+  input{font-family:inherit}
+  .wrap{max-width:1080px;margin:0 auto;padding:22px 20px 80px}
+
+  /* Top bar */
+  .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:-.02em;font-size:20px;color:var(--primary)}
+  .brand .logo{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--primary),#13776c);display:grid;place-items:center;color:#fff;font-weight:800}
+  .topnav{display:flex;gap:6px;color:var(--muted);font-size:14px}
+  .topnav span{padding:8px 12px;border-radius:9px}
+  .topnav span.active{background:#fff;color:var(--ink);font-weight:600;box-shadow:var(--shadow)}
+  .avatar{width:34px;height:34px;border-radius:50%;background:#cfe0dd;display:grid;place-items:center;color:var(--primary-700);font-weight:700;font-size:13px}
+
+  /* ---------- Dashboard ---------- */
+  .dash-hero{background:linear-gradient(135deg,var(--primary),#0d6056);border-radius:var(--r);padding:26px;color:#eafaf6;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  .dash-hero h1{margin:0 0 4px;font-size:22px;letter-spacing:-.02em}
+  .dash-hero p{margin:0;color:#bfe7df;font-size:14px}
+  .dash-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+  .stat{background:#fff;border-radius:var(--r-sm);padding:16px;box-shadow:var(--shadow)}
+  .stat .k{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+  .stat .v{font-size:24px;font-weight:800;letter-spacing:-.02em;margin-top:4px}
+  .stat .v small{font-size:13px;color:var(--muted);font-weight:600}
+  .cta-row{display:flex;align-items:center;gap:14px;margin-top:18px;flex-wrap:wrap}
+  .btn-primary{background:var(--primary);color:#fff;font-weight:700;font-size:15px;padding:13px 20px;border-radius:12px;box-shadow:0 8px 20px rgba(11,79,73,.25);transition:transform .08s ease,background .15s}
+  .btn-primary:hover{background:var(--primary-700)}
+  .btn-primary:active{transform:translateY(1px)}
+  .btn-ghost{background:#fff;color:var(--primary);font-weight:700;font-size:15px;padding:13px 18px;border-radius:12px;box-shadow:var(--shadow)}
+  .hint{color:#bfe7df;font-size:13px}
+
+  /* ---------- Composer layout ---------- */
+  .composer{display:grid;grid-template-columns:1fr 360px;gap:22px;align-items:start}
+  .panel{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+  .panel-head{padding:18px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
+  .panel-head h2{margin:0;font-size:18px;letter-spacing:-.01em}
+  .panel-head .sub{color:var(--muted);font-size:13px;margin-top:2px}
+  .pill{display:inline-flex;align-items:center;gap:6px;background:var(--accent-050);color:var(--free);font-weight:700;font-size:12px;padding:6px 10px;border-radius:999px}
+  .backlink{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-weight:600;font-size:14px;margin-bottom:14px}
+  .backlink:hover{color:var(--ink)}
+
+  .section{padding:20px 22px;border-bottom:1px solid var(--line)}
+  .section:last-child{border-bottom:none}
+  .step-label{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  .step-num{width:24px;height:24px;border-radius:50%;background:var(--primary-050);color:var(--primary);font-weight:800;font-size:13px;display:grid;place-items:center;flex:none}
+  .step-num.done{background:var(--accent);color:#fff}
+  .step-title{font-weight:700;font-size:15px}
+  .step-hint{color:var(--muted);font-size:13px;margin-left:auto}
+
+  /* Vendor search */
+  .search{position:relative}
+  .search input{width:100%;padding:13px 14px 13px 42px;border:1.5px solid var(--line-strong);border-radius:12px;font-size:15px;outline:none;transition:border .15s,box-shadow .15s;background:#fff}
+  .search input:focus{border-color:var(--primary);box-shadow:0 0 0 4px var(--primary-050)}
+  .search .ico{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--faint)}
+  .results{margin-top:8px;border:1px solid var(--line);border-radius:12px;overflow:hidden;display:none}
+  .results.show{display:block}
+  .res-item{display:flex;align-items:center;gap:12px;padding:11px 14px;border-bottom:1px solid var(--line);cursor:pointer}
+  .res-item:last-child{border-bottom:none}
+  .res-item:hover{background:var(--primary-050)}
+  .res-ava{width:34px;height:34px;border-radius:9px;background:#dfeae8;color:var(--primary-700);font-weight:700;display:grid;place-items:center;font-size:13px;flex:none}
+  .res-name{font-weight:600;font-size:14px}
+  .res-sub{color:var(--muted);font-size:12px}
+  .res-add{color:var(--primary);font-weight:700}
+  .res-add .res-ava{background:var(--primary);color:#fff}
+
+  /* Inline vendor form */
+  .vform{margin-top:6px;border:1.5px dashed var(--line-strong);border-radius:14px;padding:16px;background:#FBFDFC;display:none}
+  .vform.show{display:block;animation:pop .2s ease}
+  @keyframes pop{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+  .vform .vhead{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .vform .vhead .res-ava{background:var(--primary);color:#fff;border-radius:10px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .field{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+  .field.full{grid-column:1 / -1}
+  .field label{font-size:12.5px;font-weight:600;color:var(--muted)}
+  .field label .req{color:var(--danger)}
+  .field label .opt{color:var(--faint);font-weight:500}
+  .field input{padding:11px 12px;border:1.5px solid var(--line-strong);border-radius:10px;font-size:14px;outline:none;background:#fff;transition:border .15s,box-shadow .15s}
+  .field input:focus{border-color:var(--primary);box-shadow:0 0 0 4px var(--primary-050)}
+  .vform .vfoot{display:flex;align-items:center;justify-content:space-between;margin-top:4px}
+  .saved-banner{display:none;align-items:center;gap:12px;padding:12px 14px;background:var(--accent-050);border:1px solid #c7ecdd;border-radius:12px;margin-top:4px}
+  .saved-banner.show{display:flex;animation:pop .2s ease}
+  .saved-banner .res-ava{background:var(--primary);color:#fff;border-radius:10px}
+  .link{color:var(--primary);font-weight:700;font-size:13px}
+
+  /* Amount */
+  .amount-wrap{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .amount{position:relative;flex:1;min-width:200px}
+  .amount .cur{position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:22px;font-weight:700;color:var(--muted)}
+  .amount input{width:100%;padding:14px 14px 14px 38px;border:1.5px solid var(--line-strong);border-radius:12px;font-size:24px;font-weight:700;letter-spacing:-.02em;outline:none}
+  .amount input:focus{border-color:var(--primary);box-shadow:0 0 0 4px var(--primary-050)}
+  .note-field input{padding:13px 14px;border:1.5px solid var(--line-strong);border-radius:12px;font-size:14px;width:100%;outline:none}
+  .note-field input:focus{border-color:var(--primary);box-shadow:0 0 0 4px var(--primary-050)}
+
+  /* Option cards (pay method / delivery / speed) */
+  .opt-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .opt{border:1.5px solid var(--line-strong);border-radius:14px;padding:14px;cursor:pointer;transition:border .15s,box-shadow .15s,background .15s;position:relative;background:#fff}
+  .opt:hover{border-color:var(--primary)}
+  .opt.sel{border-color:var(--primary);background:var(--primary-050);box-shadow:0 0 0 3px var(--primary-050)}
+  .opt .o-top{display:flex;align-items:center;gap:10px}
+  .opt .o-ico{width:36px;height:36px;border-radius:10px;background:#eef4f3;display:grid;place-items:center;color:var(--primary);flex:none}
+  .opt.sel .o-ico{background:var(--primary);color:#fff}
+  .opt .o-name{font-weight:700;font-size:14.5px}
+  .opt .o-desc{color:var(--muted);font-size:12.5px;margin-top:1px}
+  .opt .o-meta{margin-top:10px;display:flex;align-items:center;justify-content:space-between}
+  .opt .o-fee{font-weight:700;font-size:13px}
+  .opt .o-fee.free{color:var(--free)}
+  .opt .o-eta{font-size:12.5px;color:var(--muted)}
+  .opt .check{position:absolute;top:12px;right:12px;width:20px;height:20px;border-radius:50%;border:2px solid var(--line-strong);display:grid;place-items:center}
+  .opt.sel .check{background:var(--primary);border-color:var(--primary)}
+  .opt.sel .check svg{display:block}
+  .opt .check svg{display:none}
+  .badge-default{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--free);background:var(--accent-050);padding:3px 7px;border-radius:6px}
+
+  .speed-list{display:flex;flex-direction:column;gap:10px}
+  .speed{display:flex;align-items:center;gap:14px;border:1.5px solid var(--line-strong);border-radius:14px;padding:13px 15px;cursor:pointer;transition:border .15s,background .15s}
+  .speed:hover{border-color:var(--primary)}
+  .speed.sel{border-color:var(--primary);background:var(--primary-050);box-shadow:0 0 0 3px var(--primary-050)}
+  .speed .radio{width:20px;height:20px;border-radius:50%;border:2px solid var(--line-strong);flex:none;display:grid;place-items:center}
+  .speed.sel .radio{border-color:var(--primary)}
+  .speed.sel .radio:after{content:"";width:10px;height:10px;border-radius:50%;background:var(--primary)}
+  .speed .s-main{flex:1}
+  .speed .s-name{font-weight:700;font-size:14.5px;display:flex;align-items:center;gap:8px}
+  .speed .s-eta{color:var(--muted);font-size:12.5px;margin-top:1px}
+  .speed .s-fee{font-weight:800;font-size:14px;text-align:right}
+  .speed .s-fee.free{color:var(--free)}
+  .bolt{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--primary);background:var(--primary-050);padding:3px 7px;border-radius:6px}
+
+  .infonote{display:flex;gap:11px;align-items:flex-start;background:var(--primary-050);border:1px solid #cfe6e2;border-radius:12px;padding:12px 14px;margin-top:14px;font-size:13px;color:var(--primary-700)}
+  .infonote svg{flex:none;margin-top:1px}
+  .infonote b{color:var(--primary-700)}
+
+  /* ---------- Summary rail ---------- */
+  .rail{position:sticky;top:18px}
+  .summary{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+  .summary .s-head{padding:18px 20px;border-bottom:1px solid var(--line)}
+  .summary .s-head h3{margin:0;font-size:16px}
+  .summary .s-head .vendor-line{display:flex;align-items:center;gap:10px;margin-top:12px}
+  .summary .s-head .vendor-line .res-ava{width:38px;height:38px}
+  .summary-body{padding:16px 20px}
+  .rowline{display:flex;align-items:center;justify-content:space-between;padding:7px 0;font-size:14px}
+  .rowline .lbl{color:var(--muted)}
+  .rowline .val{font-weight:600}
+  .rowline.muted .val{color:var(--muted);font-weight:600}
+  .rowline .val.free{color:var(--free);font-weight:700}
+  .divider{height:1px;background:var(--line);margin:10px 0}
+  .total-row{display:flex;align-items:flex-end;justify-content:space-between;padding-top:6px}
+  .total-row .lbl{font-weight:700;font-size:15px}
+  .total-row .val{font-weight:800;font-size:26px;letter-spacing:-.02em}
+  .receives{display:flex;align-items:center;justify-content:space-between;background:var(--accent-050);border-radius:10px;padding:10px 12px;margin-top:12px;font-size:13px}
+  .receives .r-amt{font-weight:800;color:var(--free)}
+  .eta-chip{display:inline-flex;align-items:center;gap:7px;background:#eef4f3;border-radius:10px;padding:9px 12px;font-size:13px;font-weight:600;color:var(--primary-700);margin-top:12px;width:100%}
+  .summary-foot{padding:16px 20px;border-top:1px solid var(--line)}
+  .pay-btn{width:100%;background:var(--primary);color:#fff;font-weight:800;font-size:16px;padding:15px;border-radius:13px;box-shadow:0 10px 24px rgba(11,79,73,.28);transition:transform .08s,background .15s}
+  .pay-btn:hover{background:var(--primary-700)}
+  .pay-btn:active{transform:translateY(1px)}
+  .pay-btn:disabled{background:#b8c7c4;box-shadow:none;cursor:not-allowed}
+  .secure{display:flex;align-items:center;justify-content:center;gap:7px;color:var(--faint);font-size:12px;margin-top:11px}
+
+  .stepcount{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);font-weight:600}
+  .stepcount s{color:var(--faint)}
+
+  /* ---------- Modal ---------- */
+  .overlay{position:fixed;inset:0;background:rgba(10,34,32,.45);backdrop-filter:blur(2px);display:none;align-items:center;justify-content:center;padding:20px;z-index:50}
+  .overlay.show{display:flex;animation:fade .15s ease}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  .modal{background:#fff;border-radius:18px;max-width:420px;width:100%;box-shadow:var(--shadow-lg);overflow:hidden;animation:rise .2s ease}
+  @keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+  .modal-head{padding:20px 22px 0}
+  .modal-head h3{margin:0;font-size:19px;letter-spacing:-.01em}
+  .modal-head p{margin:6px 0 0;color:var(--muted);font-size:13.5px}
+  .modal-body{padding:16px 22px}
+  .modal-foot{padding:14px 22px 20px;display:flex;gap:10px}
+  .modal-foot .pay-btn{flex:1}
+  .btn-cancel{flex:none;background:#eef2f1;color:var(--ink);font-weight:700;padding:15px 18px;border-radius:13px}
+
+  /* ---------- Success ---------- */
+  .success{max-width:520px;margin:30px auto 0;background:#fff;border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;text-align:center}
+  .success .scheck{width:74px;height:74px;border-radius:50%;background:var(--accent-050);display:grid;place-items:center;margin:30px auto 0;animation:pop .3s ease}
+  .success h2{margin:18px 22px 4px;font-size:23px;letter-spacing:-.02em}
+  .success .ssub{color:var(--muted);margin:0 22px;font-size:14.5px}
+  .success .sreceipt{margin:20px;border:1px solid var(--line);border-radius:14px;text-align:left;overflow:hidden}
+  .success .sreceipt .sr-row{display:flex;justify-content:space-between;padding:12px 16px;font-size:14px;border-bottom:1px solid var(--line)}
+  .success .sreceipt .sr-row:last-child{border-bottom:none}
+  .success .sreceipt .sr-row .l{color:var(--muted)}
+  .success .sreceipt .sr-row .r{font-weight:700}
+  .success .svendor{display:flex;align-items:center;gap:11px;background:var(--primary-050);margin:0 20px 6px;padding:12px 14px;border-radius:12px;text-align:left}
+  .success .sfoot{padding:8px 22px 26px;display:flex;gap:10px}
+  .success .sfoot .btn-primary{flex:1}
+  .success .sfoot .btn-ghost{flex:1;box-shadow:none;border:1.5px solid var(--line-strong)}
+
+  /* ---------- Bills list (dashboard) ---------- */
+  .bills{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;margin-top:16px}
+  .bills-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--line)}
+  .bills-head h2{margin:0;font-size:17px}
+  .bills-head .bh-sub{color:var(--muted);font-size:13px;margin-top:2px}
+  .selectall{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;user-select:none}
+  .cbox{width:20px;height:20px;border-radius:6px;border:2px solid var(--line-strong);display:grid;place-items:center;flex:none;transition:.12s;background:#fff}
+  .cbox svg{display:none}
+  .cbox.on{background:var(--primary);border-color:var(--primary)}
+  .cbox.on svg{display:block}
+  .bill-row{display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid var(--line);cursor:pointer;transition:background .12s}
+  .bill-row:last-child{border-bottom:none}
+  .bill-row:hover{background:#F7FAF9}
+  .bill-row.on{background:var(--primary-050)}
+  .bill-ava{width:38px;height:38px;border-radius:10px;background:#dfeae8;color:var(--primary-700);font-weight:700;display:grid;place-items:center;flex:none}
+  .bill-main{flex:1;min-width:0}
+  .bill-name{font-weight:700;font-size:14.5px}
+  .bill-sub{color:var(--muted);font-size:12.5px}
+  .bill-amt{font-weight:800;font-size:15px;letter-spacing:-.01em;text-align:right}
+  .bill-due{font-size:12px;color:var(--muted);text-align:right;margin-top:1px}
+  .bill-due.soon{color:var(--warn);font-weight:600}
+
+  /* sticky bulk bar */
+  .bulkbar{position:fixed;left:0;right:0;bottom:0;z-index:40;display:none;justify-content:center;padding:14px 20px;pointer-events:none}
+  .bulkbar.show{display:flex;animation:rise .2s ease}
+  .bulkbar .inner{pointer-events:auto;background:var(--primary-700);color:#fff;border-radius:16px;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:16px;padding:12px 14px 12px 20px;max-width:680px;width:100%}
+  .bulkbar .bb-info{flex:1}
+  .bulkbar .bb-count{font-weight:800;font-size:15px}
+  .bulkbar .bb-sum{color:#bfe7df;font-size:13px;margin-top:1px}
+  .bulkbar .bb-clear{color:#bfe7df;font-weight:700;font-size:14px;padding:10px 14px}
+  .bulkbar .bb-clear:hover{color:#fff}
+  .bulkbar .bb-pay{background:#fff;color:var(--primary-700);font-weight:800;font-size:15px;padding:13px 20px;border-radius:12px}
+
+  /* ---------- Batch composer ---------- */
+  .batch-head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--line)}
+  .batch-head h2{margin:0;font-size:18px;letter-spacing:-.01em}
+  .batch-head .sub{color:var(--muted);font-size:13px;margin-top:2px}
+  .bulk-actions{display:flex;align-items:center;gap:10px;padding:14px 22px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+  .chip-btn{border:1.5px solid var(--line-strong);background:#fff;border-radius:999px;padding:8px 14px;font-size:13px;font-weight:700;color:var(--primary)}
+  .chip-btn:hover{border-color:var(--primary);background:var(--primary-050)}
+  .bcard{padding:15px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px}
+  .bcard:last-child{border-bottom:none}
+  .bcard .bc-main{flex:1;min-width:120px}
+  .bcard .bc-name{font-weight:700;font-size:14.5px}
+  .bcard .bc-sub{color:var(--muted);font-size:12.5px}
+  .bcard .bc-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .minisel{position:relative}
+  .minisel select{appearance:none;-webkit-appearance:none;border:1.5px solid var(--line-strong);background:#fff;border-radius:10px;padding:9px 30px 9px 12px;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;outline:none}
+  .minisel select:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-050)}
+  .minisel:after{content:"▾";position:absolute;right:11px;top:50%;transform:translateY(-50%);color:var(--faint);pointer-events:none;font-size:12px}
+  .bcard .bc-amt{font-weight:800;font-size:15px;text-align:right;min-width:84px}
+  .bcard .bc-fee{font-size:11.5px;color:var(--muted);text-align:right;margin-top:1px}
+  .bcard .bc-x{color:var(--faint);font-size:20px;line-height:1;padding:4px 6px;flex:none}
+  .bcard .bc-x:hover{color:var(--danger)}
+
+  .hide{display:none !important}
+
+  @media(max-width:860px){
+    .composer{grid-template-columns:1fr}
+    .rail{position:static}
+    .dash-cards{grid-template-columns:1fr}
+    .topnav{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <div class="brand"><span class="logo">m</span> melio</div>
+    <div class="topnav">
+      <span class="active">Pay</span><span>Get paid</span><span>Vendors</span><span>Insights</span>
+    </div>
+    <div class="avatar">RL</div>
+  </div>
+
+  <!-- ============ DASHBOARD ============ -->
+  <section id="view-dashboard">
+    <div class="dash-hero">
+      <h1>Good afternoon, Rom 👋</h1>
+      <p>You have 6 bills due this week, totaling $9,785.</p>
+      <div class="cta-row">
+        <button class="btn-primary" onclick="openComposer()">+ Make a payment</button>
+        <span class="hint">Or select bills below to pay several at once.</span>
+      </div>
+    </div>
+    <div class="dash-cards">
+      <div class="stat"><div class="k">Due this week</div><div class="v">$9,785</div></div>
+      <div class="stat"><div class="k">Scheduled</div><div class="v">$6,200</div></div>
+      <div class="stat"><div class="k">Payments this month</div><div class="v">28 <small>/ avg 30</small></div></div>
+    </div>
+
+    <!-- Bills list with bulk select -->
+    <div class="bills">
+      <div class="bills-head">
+        <div>
+          <h2>Bills due</h2>
+          <div class="bh-sub">Tick several to pay them in one go.</div>
+        </div>
+        <div class="selectall" onclick="toggleSelectAll()">
+          <span class="cbox" id="selectAllBox"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 12l5 5L20 6"/></svg></span>
+          Select all
+        </div>
+      </div>
+      <div id="billsList"></div>
+    </div>
+  </section>
+
+  <!-- ============ COMPOSER ============ -->
+  <section id="view-composer" class="hide">
+    <a class="backlink" onclick="goDashboard()">← Back to dashboard</a>
+    <div class="composer">
+
+      <!-- LEFT: single smart form -->
+      <div>
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Pay a vendor</h2>
+              <div class="sub">Everything on one screen. Add a vendor as you go.</div>
+            </div>
+            <span class="stepcount">1 screen <s>· was 5 steps</s></span>
+          </div>
+
+          <!-- Who -->
+          <div class="section">
+            <div class="step-label">
+              <span class="step-num" id="num-who">1</span>
+              <span class="step-title">Who are you paying?</span>
+            </div>
+
+            <div class="search" id="searchBlock">
+              <span class="ico">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+              </span>
+              <input id="vendorSearch" type="text" placeholder="Search vendors or type a new name…" oninput="onSearch(this.value)" autocomplete="off" />
+              <div class="results" id="results"></div>
+            </div>
+
+            <!-- inline add-vendor form -->
+            <div class="vform" id="vform">
+              <div class="vhead">
+                <span class="res-ava">T</span>
+                <div>
+                  <div style="font-weight:700">New vendor</div>
+                  <div class="res-sub">We only need a name and email to start. The rest is optional.</div>
+                </div>
+              </div>
+              <div class="grid2">
+                <div class="field full">
+                  <label>Business name <span class="req">*</span></label>
+                  <input id="f-name" type="text" />
+                </div>
+                <div class="field full">
+                  <label>Email <span class="req">*</span> <span class="opt">— we'll send a receipt &amp; payment status</span></label>
+                  <input id="f-email" type="email" />
+                </div>
+                <div class="field">
+                  <label>Contact person <span class="opt">(optional)</span></label>
+                  <input id="f-contact" type="text" />
+                </div>
+                <div class="field">
+                  <label>Phone <span class="opt">(optional)</span></label>
+                  <input id="f-phone" type="text" />
+                </div>
+                <div class="field full">
+                  <label>Business address <span class="opt">(needed only for paper checks)</span></label>
+                  <input id="f-address" type="text" />
+                </div>
+              </div>
+              <div class="vfoot">
+                <a class="link" onclick="cancelVendor()">Cancel</a>
+                <button class="btn-primary" style="padding:11px 18px;font-size:14px" onclick="saveVendor()">Save &amp; continue</button>
+              </div>
+            </div>
+
+            <!-- saved confirmation -->
+            <div class="saved-banner" id="savedBanner">
+              <span class="res-ava" id="savedInitial">T</span>
+              <div style="flex:1">
+                <div style="font-weight:700" id="savedName">Teddy's Coffee Supplies</div>
+                <div class="res-sub" id="savedMeta">teddys@coffeesupplies.com · Teddy Gold</div>
+              </div>
+              <a class="link" onclick="changeVendor()">Change</a>
+            </div>
+          </div>
+
+          <!-- Amount -->
+          <div class="section" id="sec-amount">
+            <div class="step-label">
+              <span class="step-num" id="num-amount">2</span>
+              <span class="step-title">How much?</span>
+              <span class="step-hint">Add an invoice # or note (optional)</span>
+            </div>
+            <div class="amount-wrap">
+              <div class="amount">
+                <span class="cur">$</span>
+                <input id="amountInput" type="text" inputmode="decimal" value="1,260.00" oninput="onAmount(this.value)" />
+              </div>
+              <div class="note-field" style="flex:1;min-width:200px">
+                <input type="text" placeholder="Invoice # / note for Teddy" value="Invoice #TCS-0425" />
+              </div>
+            </div>
+          </div>
+
+          <!-- How you pay -->
+          <div class="section">
+            <div class="step-label">
+              <span class="step-num" id="num-pay">3</span>
+              <span class="step-title">How do you want to pay?</span>
+            </div>
+            <div class="opt-grid">
+              <div class="opt sel" id="pay-bank" onclick="setPay('bank')">
+                <div class="check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 12l5 5L20 6"/></svg></div>
+                <div class="o-top">
+                  <span class="o-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V10m14 11V10M3 10l9-6 9 6M9 21v-6h6v6"/></svg></span>
+                  <div><div class="o-name">Bank account</div><div class="o-desc">Chase ••4821</div></div>
+                </div>
+                <div class="o-meta"><span class="o-fee free">No fee</span><span class="o-eta">ACH</span></div>
+              </div>
+              <div class="opt" id="pay-card" onclick="setPay('card')">
+                <div class="check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 12l5 5L20 6"/></svg></div>
+                <div class="o-top">
+                  <span class="o-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span>
+                  <div><div class="o-name">Credit card</div><div class="o-desc">Visa ••6014</div></div>
+                </div>
+                <div class="o-meta"><span class="o-fee">2.9% fee</span><span class="o-eta">Keep cash longer</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- How they get paid -->
+          <div class="section">
+            <div class="step-label">
+              <span class="step-num" id="num-deliver">4</span>
+              <span class="step-title">How should Teddy get paid?</span>
+            </div>
+            <div class="opt-grid">
+              <div class="opt sel" id="del-bank" onclick="setDelivery('bank')">
+                <div class="check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 12l5 5L20 6"/></svg></div>
+                <div class="o-top">
+                  <span class="o-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V10m14 11V10M3 10l9-6 9 6"/></svg></span>
+                  <div><div class="o-name">Bank transfer</div><div class="o-desc">Deposited to their account</div></div>
+                </div>
+                <div class="o-meta"><span class="o-fee free">From free</span><span class="o-eta">Fastest</span></div>
+              </div>
+              <div class="opt" id="del-check" onclick="setDelivery('check')">
+                <div class="check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 12l5 5L20 6"/></svg></div>
+                <div class="o-top">
+                  <span class="o-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M2 12h6m8 0h2"/></svg></span>
+                  <div><div class="o-name">Paper check</div><div class="o-desc">Mailed to their address</div></div>
+                </div>
+                <div class="o-meta"><span class="o-fee">From $1.50</span><span class="o-eta">No bank info needed</span></div>
+              </div>
+            </div>
+
+            <!-- contextual smart note -->
+            <div class="infonote" id="deliverNote"></div>
+          </div>
+
+          <!-- Speed -->
+          <div class="section">
+            <div class="step-label">
+              <span class="step-num" id="num-speed">5</span>
+              <span class="step-title">Delivery speed</span>
+              <span class="step-hint">Standard is free or lowest cost</span>
+            </div>
+            <div class="speed-list" id="speedList"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: live summary -->
+      <div class="rail">
+        <div class="summary">
+          <div class="s-head">
+            <h3>Payment summary</h3>
+            <div class="vendor-line">
+              <span class="res-ava" id="sumInitial">T</span>
+              <div>
+                <div style="font-weight:700;font-size:14px" id="sumVendor">Teddy's Coffee Supplies</div>
+                <div class="res-sub" id="sumVendorSub">New vendor</div>
+              </div>
+            </div>
+          </div>
+          <div class="summary-body">
+            <div class="rowline"><span class="lbl">Payment amount</span><span class="val" id="sumAmount">$1,260.00</span></div>
+            <div class="rowline muted" id="rowCardFee" style="display:none"><span class="lbl">Card fee (2.9%)</span><span class="val" id="sumCardFee">$0.00</span></div>
+            <div class="rowline muted"><span class="lbl" id="sumFeeLabel">Delivery (standard)</span><span class="val free" id="sumDelFee">Free</span></div>
+            <div class="divider"></div>
+            <div class="total-row"><span class="lbl">You pay</span><span class="val" id="sumTotal">$1,260.00</span></div>
+            <div class="receives"><span>Teddy receives</span><span class="r-amt" id="sumReceives">$1,260.00</span></div>
+            <div class="eta-chip">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+              <span id="sumEta">Arrives in 3 business days</span>
+            </div>
+          </div>
+          <div class="summary-foot">
+            <button class="pay-btn" id="payBtn" onclick="openConfirm()" disabled>Review &amp; pay</button>
+            <div class="secure">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+              Bank-grade encryption · funds held securely
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ SUCCESS ============ -->
+  <section id="view-success" class="hide">
+    <div class="success">
+      <div class="scheck">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#0E8F66" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>
+      </div>
+      <h2>Payment scheduled 🎉</h2>
+      <p class="ssub" id="successSub">Teddy's Coffee Supplies will be paid in 3 business days.</p>
+      <div class="svendor">
+        <span class="res-ava" style="background:var(--primary);color:#fff;width:38px;height:38px">T</span>
+        <div style="flex:1">
+          <div style="font-weight:700;font-size:14px">Teddy's Coffee Supplies</div>
+          <div class="res-sub">Saved to your vendors — next payment takes seconds.</div>
+        </div>
+      </div>
+      <div class="sreceipt" id="successReceipt"></div>
+      <div class="sfoot">
+        <button class="btn-ghost" onclick="goDashboard()">Done</button>
+        <button class="btn-primary" onclick="payAnother()">Pay another vendor</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BATCH (bulk pay) ============ -->
+  <section id="view-batch" class="hide">
+    <a class="backlink" onclick="goDashboard()">← Back to bills</a>
+    <div class="composer">
+      <div>
+        <div class="panel">
+          <div class="batch-head">
+            <div>
+              <h2>Pay <span id="batchCount">3</span> bills</h2>
+              <div class="sub">One funding source, one confirmation. Set speed per bill if you need to.</div>
+            </div>
+            <span class="stepcount">1 review <s>· was 5 steps each</s></span>
+          </div>
+
+          <div class="section">
+            <div class="step-label"><span class="step-num done">✓</span><span class="step-title">Pay all from</span></div>
+            <div class="opt-grid">
+              <div class="opt sel" id="bpay-bank" onclick="setBatchPay('bank')">
+                <div class="check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 12l5 5L20 6"/></svg></div>
+                <div class="o-top"><span class="o-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V10m14 11V10M3 10l9-6 9 6"/></svg></span><div><div class="o-name">Bank account</div><div class="o-desc">Chase ••4821</div></div></div>
+                <div class="o-meta"><span class="o-fee free">No fee</span><span class="o-eta">ACH</span></div>
+              </div>
+              <div class="opt" id="bpay-card" onclick="setBatchPay('card')">
+                <div class="check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 12l5 5L20 6"/></svg></div>
+                <div class="o-top"><span class="o-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span><div><div class="o-name">Credit card</div><div class="o-desc">Visa ••6014</div></div></div>
+                <div class="o-meta"><span class="o-fee">2.9% fee</span><span class="o-eta">Per bill</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bulk-actions">
+            <span style="font-size:13px;font-weight:600;color:var(--muted)">Set speed for all:</span>
+            <button class="chip-btn" onclick="allStandard()">All standard</button>
+            <button class="chip-btn" onclick="expediteAll()">⚡ Expedite all</button>
+          </div>
+
+          <div id="batchList"></div>
+        </div>
+      </div>
+
+      <div class="rail">
+        <div class="summary">
+          <div class="s-head"><h3>Bulk summary</h3><div class="res-sub" id="batchVendorsLine" style="margin-top:6px">3 vendors, one charge</div></div>
+          <div class="summary-body">
+            <div class="rowline"><span class="lbl">Bills</span><span class="val" id="bsBills">3</span></div>
+            <div class="rowline"><span class="lbl">Subtotal</span><span class="val" id="bsSub">$0.00</span></div>
+            <div class="rowline muted" id="bsCardRow" style="display:none"><span class="lbl">Card fees (2.9%)</span><span class="val" id="bsCard">$0.00</span></div>
+            <div class="rowline muted"><span class="lbl">Delivery fees</span><span class="val free" id="bsDel">Free</span></div>
+            <div class="divider"></div>
+            <div class="total-row"><span class="lbl">You pay</span><span class="val" id="bsTotal">$0.00</span></div>
+            <div class="eta-chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span id="bsEta">All standard delivery</span></div>
+          </div>
+          <div class="summary-foot">
+            <button class="pay-btn" id="batchPayBtn" onclick="openBatchConfirm()">Schedule payments</button>
+            <div class="secure"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> One charge, scheduled securely</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BATCH SUCCESS ============ -->
+  <section id="view-batch-success" class="hide">
+    <div class="success">
+      <div class="scheck"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#0E8F66" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg></div>
+      <h2 id="batchSuccessTitle">3 payments scheduled 🎉</h2>
+      <p class="ssub" id="batchSuccessSub">Your vendors will be paid on time.</p>
+      <div class="sreceipt" id="batchReceipt"></div>
+      <div class="sfoot">
+        <button class="btn-ghost" onclick="goDashboard()">Done</button>
+        <button class="btn-primary" onclick="goDashboard()">Back to bills</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- Bulk action bar -->
+<div class="bulkbar" id="bulkbar">
+  <div class="inner">
+    <div class="bb-info"><div class="bb-count" id="bbCount">0 bills selected</div><div class="bb-sum" id="bbSum">$0.00 total</div></div>
+    <button class="bb-clear" onclick="clearSelection()">Clear</button>
+    <button class="bb-pay" onclick="openBatch()">Review &amp; pay →</button>
+  </div>
+</div>
+
+<!-- Confirm modal -->
+<div class="overlay" id="confirmOverlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Confirm payment</h3>
+      <p id="confirmLine">Paying Teddy's Coffee Supplies</p>
+    </div>
+    <div class="modal-body">
+      <div class="rowline"><span class="lbl">Amount</span><span class="val" id="cAmount">$1,260.00</span></div>
+      <div class="rowline" id="cCardRow" style="display:none"><span class="lbl">Card fee</span><span class="val" id="cCard">$0.00</span></div>
+      <div class="rowline"><span class="lbl" id="cFeeLabel">Delivery fee</span><span class="val" id="cFee">Free</span></div>
+      <div class="divider"></div>
+      <div class="total-row"><span class="lbl">Total charge</span><span class="val" style="font-size:22px" id="cTotal">$1,260.00</span></div>
+      <div class="eta-chip" style="margin-top:14px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span id="cEta">Arrives in 3 business days</span></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeConfirm()">Back</button>
+      <button class="pay-btn" onclick="completePayment()" id="confirmPayBtn">Confirm &amp; pay</button>
+    </div>
+  </div>
+</div>
+
+<!-- Batch confirm modal -->
+<div class="overlay" id="batchOverlay">
+  <div class="modal">
+    <div class="modal-head"><h3>Confirm bulk payment</h3><p id="bConfirmLine">Scheduling 3 payments</p></div>
+    <div class="modal-body">
+      <div class="rowline"><span class="lbl">Bills</span><span class="val" id="bcBills">3</span></div>
+      <div class="rowline"><span class="lbl">Subtotal</span><span class="val" id="bcSub">$0.00</span></div>
+      <div class="rowline" id="bcCardRow" style="display:none"><span class="lbl">Card fees</span><span class="val" id="bcCard">$0.00</span></div>
+      <div class="rowline"><span class="lbl">Delivery fees</span><span class="val" id="bcDel">Free</span></div>
+      <div class="divider"></div>
+      <div class="total-row"><span class="lbl">Total charge</span><span class="val" style="font-size:22px" id="bcTotal">$0.00</span></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeBatchConfirm()">Back</button>
+      <button class="pay-btn" onclick="completeBatch()">Confirm &amp; pay all</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---------- State ---------- */
+const state = {
+  vendor: null,          // {name,email,contact,phone,address}
+  isNewVendor: false,
+  amount: 1260.00,
+  payMethod: 'bank',     // bank | card
+  delivery: 'bank',      // bank | check
+  speed: 'standard',     // bank: standard|instant ; check: standard|fast
+};
+
+const SAMPLE_VENDORS = [
+  {name:'Pacific Roasters Co.', sub:'pacificroasters@mail.com', initial:'P'},
+  {name:'Sunrise Dairy', sub:'orders@sunrisedairy.com', initial:'S'},
+  {name:'CleanCup Disposables', sub:'billing@cleancup.io', initial:'C'},
+];
+
+const fmt = n => '$' + n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+
+/* ---------- Navigation ---------- */
+function show(id){
+  ['view-dashboard','view-composer','view-success','view-batch','view-batch-success'].forEach(v=>{
+    document.getElementById(v).classList.toggle('hide', v!==id);
+  });
+  const bar=document.getElementById('bulkbar');
+  if(id==='view-dashboard'){ updateBulkBar(); } else { bar.classList.remove('show'); }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function openComposer(){ resetComposer(); show('view-composer'); setTimeout(()=>document.getElementById('vendorSearch').focus(),200); }
+function goDashboard(){ renderBills(); show('view-dashboard'); }
+function payAnother(){ openComposer(); }
+
+/* ---------- Vendor search ---------- */
+function onSearch(q){
+  const box = document.getElementById('results');
+  q = q.trim();
+  if(!q){ box.classList.remove('show'); box.innerHTML=''; return; }
+  const matches = SAMPLE_VENDORS.filter(v=>v.name.toLowerCase().includes(q.toLowerCase()));
+  let html = '';
+  matches.forEach(v=>{
+    html += `<div class="res-item" onclick="pickExisting('${v.name.replace(/'/g,"\\'")}','${v.sub}','${v.initial}')">
+      <span class="res-ava">${v.initial}</span>
+      <div><div class="res-name">${v.name}</div><div class="res-sub">${v.sub}</div></div>
+    </div>`;
+  });
+  // Always offer to add the typed name as a new vendor
+  html += `<div class="res-item res-add" onclick="startAddVendor()">
+      <span class="res-ava">+</span>
+      <div><div class="res-name">Add "${q}" as a new vendor</div><div class="res-sub">Pay them now — no setup detour</div></div>
+    </div>`;
+  box.innerHTML = html;
+  box.classList.add('show');
+}
+
+function pickExisting(name, sub, initial){
+  state.vendor = {name, email:sub, contact:'', phone:'', address:''};
+  state.isNewVendor = false;
+  document.getElementById('results').classList.remove('show');
+  document.getElementById('searchBlock').classList.add('hide');
+  showSavedBanner(name, sub, initial);
+  refresh();
+}
+
+function startAddVendor(){
+  const typed = document.getElementById('vendorSearch').value.trim();
+  document.getElementById('results').classList.remove('show');
+  document.getElementById('searchBlock').classList.add('hide');
+  // Pre-fill with the scenario vendor so review is fast (all editable)
+  document.getElementById('f-name').value = typed || "Teddy's Coffee Supplies";
+  document.getElementById('f-email').value = 'teddys@coffeesupplies.com';
+  document.getElementById('f-contact').value = 'Teddy Gold';
+  document.getElementById('f-phone').value = '(555) 123-4567';
+  document.getElementById('f-address').value = '123 Java Lane, Coffee City, CA 90210';
+  document.getElementById('vform').classList.add('show');
+  setTimeout(()=>document.getElementById('f-name').focus(),120);
+}
+
+function cancelVendor(){
+  document.getElementById('vform').classList.remove('show');
+  document.getElementById('searchBlock').classList.remove('hide');
+  document.getElementById('vendorSearch').focus();
+}
+
+function saveVendor(){
+  const name = document.getElementById('f-name').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  if(!name || !email){ alert('Business name and email are required.'); return; }
+  state.vendor = {
+    name, email,
+    contact: document.getElementById('f-contact').value.trim(),
+    phone: document.getElementById('f-phone').value.trim(),
+    address: document.getElementById('f-address').value.trim(),
+  };
+  state.isNewVendor = true;
+  document.getElementById('vform').classList.remove('show');
+  const meta = state.vendor.contact ? `${email} · ${state.vendor.contact}` : email;
+  showSavedBanner(name, meta, name.charAt(0).toUpperCase());
+  refresh();
+}
+
+function showSavedBanner(name, meta, initial){
+  document.getElementById('savedName').textContent = name;
+  document.getElementById('savedMeta').textContent = meta;
+  document.getElementById('savedInitial').textContent = initial;
+  document.getElementById('savedBanner').classList.add('show');
+  document.getElementById('num-who').classList.add('done');
+  document.getElementById('num-who').innerHTML = '✓';
+}
+
+function changeVendor(){
+  document.getElementById('savedBanner').classList.remove('show');
+  document.getElementById('searchBlock').classList.remove('hide');
+  document.getElementById('vendorSearch').value='';
+  document.getElementById('num-who').classList.remove('done');
+  document.getElementById('num-who').textContent='1';
+  state.vendor=null; state.isNewVendor=false;
+  refresh();
+}
+
+/* ---------- Amount ---------- */
+function onAmount(v){
+  const num = parseFloat(v.replace(/[^0-9.]/g,'')) || 0;
+  state.amount = num;
+  refresh();
+}
+
+/* ---------- Method selection ---------- */
+function setPay(m){
+  state.payMethod = m;
+  document.getElementById('pay-bank').classList.toggle('sel', m==='bank');
+  document.getElementById('pay-card').classList.toggle('sel', m==='card');
+  refresh();
+}
+
+function setDelivery(d){
+  state.delivery = d;
+  state.speed = 'standard'; // reset to default for the method
+  document.getElementById('del-bank').classList.toggle('sel', d==='bank');
+  document.getElementById('del-check').classList.toggle('sel', d==='check');
+  renderSpeeds();
+  renderDeliverNote();
+  refresh();
+}
+
+/* ---------- Speed options (contextual) ---------- */
+function speedOptions(){
+  if(state.delivery==='bank'){
+    return [
+      {id:'standard', name:'Standard', eta:'3 business days', fee:0, def:true},
+      {id:'instant',  name:'Instant',  eta:'Arrives in minutes', fee:+(state.amount*0.01).toFixed(2), pct:'1.0%', fast:true},
+    ];
+  }
+  return [
+    {id:'standard', name:'Standard check', eta:'5 business days', fee:1.50, def:true},
+    {id:'fast',     name:'Fast check',     eta:'2 business days', fee:6.00, fast:true},
+  ];
+}
+
+function renderSpeeds(){
+  const list = document.getElementById('speedList');
+  list.innerHTML = speedOptions().map(o=>{
+    const sel = state.speed===o.id ? 'sel':'';
+    const feeTxt = o.fee===0 ? 'Free' : fmt(o.fee);
+    const feeCls = o.fee===0 ? 'free':'';
+    const tag = o.fast ? `<span class="bolt">⚡ Expedited</span>` : (o.def?`<span class="badge-default">Default</span>`:'');
+    const pct = o.pct ? ` <span style="color:var(--muted);font-weight:600">(${o.pct})</span>`:'';
+    return `<div class="speed ${sel}" onclick="setSpeed('${o.id}')">
+      <span class="radio"></span>
+      <div class="s-main">
+        <div class="s-name">${o.name} ${tag}</div>
+        <div class="s-eta">${o.eta}</div>
+      </div>
+      <div class="s-fee ${feeCls}">${feeTxt}${pct}</div>
+    </div>`;
+  }).join('');
+}
+
+function setSpeed(id){ state.speed = id; renderSpeeds(); refresh(); }
+
+/* ---------- Contextual delivery note ---------- */
+function renderDeliverNote(){
+  const el = document.getElementById('deliverNote');
+  const newV = state.isNewVendor;
+  if(state.delivery==='bank'){
+    el.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z" opacity="0"/><path d="M22 6l-10 7L2 6"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>
+      <span>${newV
+        ? `<b>No bank details needed from you.</b> We'll email Teddy a secure link to add their account. The payment is scheduled now and released the moment they confirm.`
+        : `Deposited straight to the vendor's connected bank account.`}</span>`;
+  } else {
+    const addr = (state.vendor && state.vendor.address) ? state.vendor.address : '123 Java Lane, Coffee City, CA 90210';
+    el.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <span>We'll print &amp; mail a check to <b>${addr}</b>. No bank info required from Teddy.</span>`;
+  }
+}
+
+/* ---------- Fee + ETA computation ---------- */
+function compute(){
+  const opt = speedOptions().find(o=>o.id===state.speed) || speedOptions()[0];
+  const deliveryFee = opt.fee;
+  const cardFee = state.payMethod==='card' ? +(state.amount*0.029).toFixed(2) : 0;
+  const total = +(state.amount + deliveryFee + cardFee).toFixed(2);
+  return {deliveryFee, cardFee, total, eta:opt.eta, speedName:opt.name};
+}
+
+/* ---------- Master refresh ---------- */
+function refresh(){
+  const c = compute();
+  // amount mirror
+  document.getElementById('sumAmount').textContent = fmt(state.amount);
+  // card fee row
+  const cardRow = document.getElementById('rowCardFee');
+  if(c.cardFee>0){ cardRow.style.display='flex'; document.getElementById('sumCardFee').textContent = fmt(c.cardFee); }
+  else cardRow.style.display='none';
+  // delivery fee row
+  const label = state.delivery==='bank'
+      ? (state.speed==='instant' ? 'Instant transfer (1.0%)' : 'Bank transfer (standard)')
+      : (state.speed==='fast' ? 'Fast check' : 'Paper check (standard)');
+  document.getElementById('sumFeeLabel').textContent = label;
+  const delEl = document.getElementById('sumDelFee');
+  if(c.deliveryFee===0){ delEl.textContent='Free'; delEl.classList.add('free'); }
+  else { delEl.textContent=fmt(c.deliveryFee); delEl.classList.remove('free'); }
+  // totals
+  document.getElementById('sumTotal').textContent = fmt(c.total);
+  document.getElementById('sumReceives').textContent = fmt(state.amount);
+  document.getElementById('sumEta').textContent = state.delivery==='bank' && state.speed==='instant'
+      ? 'Arrives in minutes' : 'Arrives in ' + c.eta;
+  // vendor block
+  if(state.vendor){
+    document.getElementById('sumVendor').textContent = state.vendor.name;
+    document.getElementById('sumVendorSub').textContent = state.isNewVendor ? 'New vendor · being added' : 'Saved vendor';
+    document.getElementById('sumInitial').textContent = state.vendor.name.charAt(0).toUpperCase();
+  } else {
+    document.getElementById('sumVendor').textContent = 'No vendor selected';
+    document.getElementById('sumVendorSub').textContent = 'Pick or add a vendor above';
+    document.getElementById('sumInitial').textContent = '–';
+  }
+  // step ticks
+  document.getElementById('num-amount').classList.toggle('done', state.amount>0);
+  // enable pay
+  document.getElementById('payBtn').disabled = !(state.vendor && state.amount>0);
+}
+
+/* ---------- Confirm modal ---------- */
+function openConfirm(){
+  const c = compute();
+  document.getElementById('confirmLine').textContent = 'Paying ' + state.vendor.name + (state.isNewVendor?' (new vendor)':'');
+  document.getElementById('cAmount').textContent = fmt(state.amount);
+  const cardRow = document.getElementById('cCardRow');
+  if(c.cardFee>0){ cardRow.style.display='flex'; document.getElementById('cCard').textContent=fmt(c.cardFee); }
+  else cardRow.style.display='none';
+  document.getElementById('cFeeLabel').textContent = state.delivery==='bank'
+      ? (state.speed==='instant'?'Instant transfer fee':'Transfer fee')
+      : (state.speed==='fast'?'Fast check fee':'Check fee');
+  document.getElementById('cFee').textContent = c.deliveryFee===0 ? 'Free' : fmt(c.deliveryFee);
+  document.getElementById('cTotal').textContent = fmt(c.total);
+  document.getElementById('cEta').textContent = state.delivery==='bank' && state.speed==='instant'
+      ? 'Arrives in minutes' : 'Arrives in ' + c.eta;
+  document.getElementById('confirmOverlay').classList.add('show');
+}
+function closeConfirm(){ document.getElementById('confirmOverlay').classList.remove('show'); }
+
+function completePayment(){
+  closeConfirm();
+  const c = compute();
+  // build receipt
+  const rows = [
+    ['Vendor', state.vendor.name],
+    ['Pay from', state.payMethod==='bank'?'Chase ••4821':'Visa ••6014'],
+    ['Delivery', state.delivery==='bank'?'Bank transfer':'Paper check'],
+    ['Speed', c.speedName],
+    ['Fees', (c.cardFee+c.deliveryFee)===0 ? 'None' : fmt(c.cardFee+c.deliveryFee)],
+    ['Total charged', fmt(c.total)],
+  ];
+  document.getElementById('successReceipt').innerHTML = rows.map(r=>
+    `<div class="sr-row"><span class="l">${r[0]}</span><span class="r">${r[1]}</span></div>`).join('');
+  const etaTxt = state.delivery==='bank' && state.speed==='instant' ? 'within minutes' : c.eta;
+  document.getElementById('successSub').textContent =
+    `${state.vendor.name} will be paid ${state.delivery==='bank'&&state.speed==='instant'?etaTxt:'in '+etaTxt}.`;
+  show('view-success');
+}
+
+/* ---------- Reset ---------- */
+function resetComposer(){
+  state.vendor=null; state.isNewVendor=false; state.amount=1260.00;
+  state.payMethod='bank'; state.delivery='bank'; state.speed='standard';
+  document.getElementById('vendorSearch').value='';
+  document.getElementById('results').classList.remove('show');
+  document.getElementById('searchBlock').classList.remove('hide');
+  document.getElementById('vform').classList.remove('show');
+  document.getElementById('savedBanner').classList.remove('show');
+  document.getElementById('num-who').classList.remove('done');
+  document.getElementById('num-who').textContent='1';
+  document.getElementById('amountInput').value='1,260.00';
+  setPay('bank'); setDelivery('bank');
+}
+
+/* ===================================================================
+   BULK PAYMENTS  (bills list + batch composer)
+   =================================================================== */
+let BILLS = [
+  {id:'b1', vendor:'Pacific Roasters Co.',     initial:'P', invoice:'PR-1180',  due:'Jun 28', soon:true,  amount:2400.00, delivery:'bank'},
+  {id:'b2', vendor:'Sunrise Dairy',            initial:'S', invoice:'SD-3391',  due:'Jun 30', soon:true,  amount:860.00,  delivery:'bank'},
+  {id:'b3', vendor:'CleanCup Disposables',     initial:'C', invoice:'CC-7720',  due:'Jul 2',  soon:false, amount:1540.00, delivery:'check'},
+  {id:'b4', vendor:"Teddy's Coffee Supplies",  initial:'T', invoice:'TCS-0425', due:'Jul 3',  soon:false, amount:1260.00, delivery:'check'},
+  {id:'b5', vendor:'Metro Bakery Equipment',   initial:'M', invoice:'MBE-0099', due:'Jul 5',  soon:false, amount:3250.00, delivery:'bank'},
+  {id:'b6', vendor:'GreenLeaf Cleaning',       initial:'G', invoice:'GL-2025',  due:'Jul 6',  soon:false, amount:475.00,  delivery:'check'},
+];
+const batch = { selected:new Set(), payMethod:'bank', rows:{} };
+
+function feeFor(delivery, speed, amt){
+  if(delivery==='bank') return speed==='instant' ? +(amt*0.01).toFixed(2) : 0;
+  return speed==='fast' ? 6.00 : 1.50;
+}
+function deliverySpeeds(delivery, amt){
+  if(delivery==='bank') return [
+    {id:'standard', label:'Standard · 3 days', fee:0},
+    {id:'instant',  label:'Instant · minutes', fee:+(amt*0.01).toFixed(2)}];
+  return [
+    {id:'standard', label:'Standard · 5 days', fee:1.50},
+    {id:'fast',     label:'Fast · 2 days',     fee:6.00}];
+}
+
+/* ----- Dashboard bills list ----- */
+function renderBills(){
+  const el = document.getElementById('billsList');
+  if(BILLS.length===0){
+    el.innerHTML = '<div style="padding:30px 20px;text-align:center;color:var(--muted)">🎉 No bills due — you\'re all caught up.</div>';
+    updateBulkBar();
+    document.getElementById('selectAllBox').classList.remove('on');
+    return;
+  }
+  el.innerHTML = BILLS.map(b=>{
+    const on = batch.selected.has(b.id);
+    return `<div class="bill-row ${on?'on':''}" onclick="toggleBill('${b.id}')">
+      <span class="cbox ${on?'on':''}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 12l5 5L20 6"/></svg></span>
+      <span class="bill-ava">${b.initial}</span>
+      <div class="bill-main"><div class="bill-name">${b.vendor}</div><div class="bill-sub">Invoice #${b.invoice}</div></div>
+      <div><div class="bill-amt">${fmt(b.amount)}</div><div class="bill-due ${b.soon?'soon':''}">Due ${b.due}</div></div>
+    </div>`;
+  }).join('');
+  updateBulkBar();
+  document.getElementById('selectAllBox').classList.toggle('on', batch.selected.size===BILLS.length && BILLS.length>0);
+}
+function toggleBill(id){
+  if(batch.selected.has(id)) batch.selected.delete(id); else batch.selected.add(id);
+  renderBills();
+}
+function toggleSelectAll(){
+  if(batch.selected.size===BILLS.length) batch.selected.clear();
+  else BILLS.forEach(b=>batch.selected.add(b.id));
+  renderBills();
+}
+function clearSelection(){ batch.selected.clear(); renderBills(); }
+function updateBulkBar(){
+  const bar=document.getElementById('bulkbar');
+  const n=batch.selected.size;
+  if(n>0){
+    let sum=0; batch.selected.forEach(id=>{const b=BILLS.find(x=>x.id===id); if(b)sum+=b.amount;});
+    document.getElementById('bbCount').textContent = n+(n===1?' bill selected':' bills selected');
+    document.getElementById('bbSum').textContent = fmt(sum)+' total';
+    bar.classList.add('show');
+  } else bar.classList.remove('show');
+}
+
+/* ----- Batch composer ----- */
+function openBatch(){
+  if(batch.selected.size===0) return;
+  batch.selected.forEach(id=>{ if(!batch.rows[id]){ const b=BILLS.find(x=>x.id===id); batch.rows[id]={delivery:b.delivery, speed:'standard'}; }});
+  Object.keys(batch.rows).forEach(id=>{ if(!batch.selected.has(id)) delete batch.rows[id]; });
+  setBatchPay('bank');
+  renderBatch();
+  show('view-batch');
+}
+function renderBatch(){
+  document.getElementById('batchCount').textContent = batch.selected.size;
+  renderBatchList();
+  renderBatchSummary();
+}
+function renderBatchList(){
+  const el=document.getElementById('batchList');
+  el.innerHTML = [...batch.selected].map(id=>{
+    const b=BILLS.find(x=>x.id===id);
+    const r=batch.rows[id];
+    const sps=deliverySpeeds(r.delivery, b.amount);
+    const fee=sps.find(s=>s.id===r.speed).fee;
+    const delOpts=[['bank','Bank transfer'],['check','Paper check']]
+      .map(o=>`<option value="${o[0]}" ${r.delivery===o[0]?'selected':''}>${o[1]}</option>`).join('');
+    const spOpts=sps.map(s=>`<option value="${s.id}" ${r.speed===s.id?'selected':''}>${s.label} · ${s.fee?fmt(s.fee):'Free'}</option>`).join('');
+    return `<div class="bcard">
+      <span class="bill-ava">${b.initial}</span>
+      <div class="bc-main"><div class="bc-name">${b.vendor}</div><div class="bc-sub">Invoice #${b.invoice}</div></div>
+      <div class="bc-controls">
+        <span class="minisel"><select onchange="setBillDelivery('${id}',this.value)">${delOpts}</select></span>
+        <span class="minisel"><select onchange="setBillSpeed('${id}',this.value)">${spOpts}</select></span>
+      </div>
+      <div><div class="bc-amt">${fmt(b.amount)}</div><div class="bc-fee">${fee?('+ '+fmt(fee)+' fee'):'No fee'}</div></div>
+      <button class="bc-x" title="Remove from batch" onclick="removeFromBatch('${id}')">×</button>
+    </div>`;
+  }).join('');
+}
+function setBatchPay(m){
+  batch.payMethod=m;
+  document.getElementById('bpay-bank').classList.toggle('sel', m==='bank');
+  document.getElementById('bpay-card').classList.toggle('sel', m==='card');
+  renderBatchSummary();
+}
+function setBillDelivery(id,d){ batch.rows[id].delivery=d; batch.rows[id].speed='standard'; renderBatch(); }
+function setBillSpeed(id,s){ batch.rows[id].speed=s; renderBatch(); }
+function allStandard(){ batch.selected.forEach(id=>batch.rows[id].speed='standard'); renderBatch(); }
+function expediteAll(){ batch.selected.forEach(id=>{ const r=batch.rows[id]; r.speed = r.delivery==='bank'?'instant':'fast'; }); renderBatch(); }
+function removeFromBatch(id){
+  batch.selected.delete(id); delete batch.rows[id];
+  if(batch.selected.size===0){ goDashboard(); return; }
+  renderBatch();
+}
+function computeBatch(){
+  let amount=0, deliveryFees=0, cardFees=0;
+  batch.selected.forEach(id=>{
+    const b=BILLS.find(x=>x.id===id); const r=batch.rows[id];
+    amount+=b.amount;
+    deliveryFees+=feeFor(r.delivery, r.speed, b.amount);
+    if(batch.payMethod==='card') cardFees += +(b.amount*0.029).toFixed(2);
+  });
+  return {amount:+amount.toFixed(2), deliveryFees:+deliveryFees.toFixed(2), cardFees:+cardFees.toFixed(2), total:+(amount+deliveryFees+cardFees).toFixed(2)};
+}
+function renderBatchSummary(){
+  const c=computeBatch(); const n=batch.selected.size;
+  document.getElementById('bsBills').textContent=n;
+  document.getElementById('bsSub').textContent=fmt(c.amount);
+  const cardRow=document.getElementById('bsCardRow');
+  if(c.cardFees>0){ cardRow.style.display='flex'; document.getElementById('bsCard').textContent=fmt(c.cardFees); } else cardRow.style.display='none';
+  const delEl=document.getElementById('bsDel');
+  if(c.deliveryFees===0){ delEl.textContent='Free'; delEl.classList.add('free'); } else { delEl.textContent=fmt(c.deliveryFees); delEl.classList.remove('free'); }
+  document.getElementById('bsTotal').textContent=fmt(c.total);
+  document.getElementById('batchVendorsLine').textContent=n+' vendor'+(n===1?'':'s')+', one charge';
+  document.getElementById('batchPayBtn').textContent='Schedule '+n+' payment'+(n===1?'':'s');
+  let exp=0; batch.selected.forEach(id=>{ const r=batch.rows[id]; if((r.delivery==='bank'&&r.speed==='instant')||(r.delivery==='check'&&r.speed==='fast')) exp++; });
+  document.getElementById('bsEta').textContent = exp ? (exp+' expedited · '+(n-exp)+' standard') : 'All standard delivery';
+}
+function openBatchConfirm(){
+  const c=computeBatch();
+  document.getElementById('bConfirmLine').textContent='Scheduling '+batch.selected.size+' payments from '+(batch.payMethod==='bank'?'Chase ••4821':'Visa ••6014');
+  document.getElementById('bcBills').textContent=batch.selected.size;
+  document.getElementById('bcSub').textContent=fmt(c.amount);
+  const cr=document.getElementById('bcCardRow');
+  if(c.cardFees>0){ cr.style.display='flex'; document.getElementById('bcCard').textContent=fmt(c.cardFees); } else cr.style.display='none';
+  document.getElementById('bcDel').textContent = c.deliveryFees===0 ? 'Free' : fmt(c.deliveryFees);
+  document.getElementById('bcTotal').textContent=fmt(c.total);
+  document.getElementById('batchOverlay').classList.add('show');
+}
+function closeBatchConfirm(){ document.getElementById('batchOverlay').classList.remove('show'); }
+function completeBatch(){
+  closeBatchConfirm();
+  const c=computeBatch();
+  const rows=[...batch.selected].map(id=>{
+    const b=BILLS.find(x=>x.id===id); const r=batch.rows[id];
+    const eta = r.delivery==='bank' ? (r.speed==='instant'?'minutes':'3 business days') : (r.speed==='fast'?'2 business days':'5 business days');
+    return `<div class="sr-row"><span class="l">${b.vendor} · ${eta}</span><span class="r">${fmt(b.amount)}</span></div>`;
+  }).join('');
+  document.getElementById('batchReceipt').innerHTML = rows + `<div class="sr-row"><span class="l" style="font-weight:700;color:var(--ink)">Total charged</span><span class="r">${fmt(c.total)}</span></div>`;
+  document.getElementById('batchSuccessTitle').textContent = batch.selected.size+' payments scheduled 🎉';
+  document.getElementById('batchSuccessSub').textContent = 'Your vendors will be paid on time. Total charged '+fmt(c.total)+'.';
+  // remove paid bills from the due list
+  [...batch.selected].forEach(id=>{ const i=BILLS.findIndex(x=>x.id===id); if(i>-1) BILLS.splice(i,1); });
+  batch.selected.clear(); batch.rows={};
+  renderBills();
+  show('view-batch-success');
+}
+
+/* ---------- Init ---------- */
+renderSpeeds();
+renderDeliverNote();
+refresh();
+renderBills();
+</script>
+</body>
+</html>
