@@ -179,7 +179,6 @@
   .rev-table tr.dup-row:hover{background:#fbe9bf}
   .rev-table tr.removed{opacity:.45}
   .rev-table tr.removed .cell-edit{text-decoration:line-through}
-  .rev-table .cb{width:48px} .rev-table .cb input{width:16px;height:16px;accent-color:var(--B10)}
   /* inline-editable cell */
   .cell-edit{border:1px solid transparent;border-radius:6px;padding:5px 8px;font:inherit;font-size:14px;color:var(--D20);background:transparent;width:100%;min-width:80px}
   .cell-edit:hover{border-color:var(--D60)}
@@ -754,9 +753,9 @@
       if(i<steps.length){
         steps[i].classList.add('active');
         i++;
-        setTimeout(advance, 520 + Math.random()*260);
+        setTimeout(advance, 240 + Math.random()*140);
       } else {
-        setTimeout(openReview, 350);
+        setTimeout(openReview, 180);
       }
     }
     advance();
@@ -891,7 +890,6 @@
     const head=document.getElementById('revHead');
     const body=document.getElementById('revBody');
     head.innerHTML=`<tr>
-      <th class="cb"><input type="checkbox" id="selAll"></th>
       <th>Status</th>
       ${cfg.cols.map(c=>`<th>${c.label}</th>`).join('')}
       <th style="text-align:right">Actions</th>
@@ -908,7 +906,7 @@
     });
 
     if(!rows.length){
-      body.innerHTML=`<tr class="empty-row"><td colspan="${cfg.cols.length+3}">No records match.</td></tr>`;
+      body.innerHTML=`<tr class="empty-row"><td colspan="${cfg.cols.length+2}">No records match.</td></tr>`;
       return;
     }
 
@@ -928,7 +926,6 @@
         actions=`<button class="icon-btn" data-act="remove" data-id="${r.id}" title="Remove">🗑</button>`;
       }
       return `<tr class="${r.status==='dup'?'dup-row':''} ${removed?'removed':''}">
-        <td class="cb"><input type="checkbox" ${removed?'disabled':''}></td>
         <td>${statusCell}</td>
         ${cells}
         <td><div class="row-actions">${actions}</div></td>
