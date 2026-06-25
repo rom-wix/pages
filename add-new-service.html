@@ -1,0 +1,971 @@
+<title>Add a New Service — Wix Bookings</title>
+<style>
+  /* ===== WDS foundations ===== */
+  :root{
+    /* WDS palette (canonical light-theme hexes) */
+    --D10:#000624; --D20:#333853; --D30:#404256; --D40:#868aa5;
+    --D50:#acafc4; --D60:#dfe5eb; --D70:#eceff3; --D80:#ffffff;
+    --B10:#116dff; --B20:#5999ff; --B30:#a8caff; --B40:#d6e6fe; --B50:#e7f0ff;
+    --G10:#25a55a; --G30:#87cea5; --G50:#e1f4eb;
+    --Y10:#ffb700; --Y50:#fff0d1;
+    --R10:#e62214; --R30:#f69891; --R50:#fde3e1;
+    --bg:#eef0f3; --white:#fff; --line:#dfe5eb; --line-soft:#eceff3;
+    --ink:#000624; --grad:linear-gradient(101deg,#116dff 0%,#01b8aa 100%);
+    --side-bg:#16181d; --side-text:#dfe1e6; --side-icon:#c2c6cf; --side-muted:#8b9099;
+    --radius:6px; --radius-card:8px;
+    --shadow-card:0 2px 4px 0 rgba(22,45,61,.12),0 0 6px 0 rgba(22,45,61,.12);
+    --shadow-input:inset 0 0 0 1px #dfe5eb;
+  }
+  @font-face{font-family:'Madefor';src:local('Helvetica Neue');}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:'Wix Madefor Text','Madefor',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;font-size:14px;line-height:1.4}
+  button{font-family:inherit;cursor:pointer}
+
+  /* ===== Top bar ===== */
+  .topbar{height:54px;background:#000;display:flex;align-items:center;gap:0;padding:0 18px;color:#fff}
+  .logo{font-weight:800;font-size:13px;letter-spacing:1.5px;margin-right:16px}
+  .acct{display:flex;align-items:center;gap:6px;background:#16181d;border-radius:7px;padding:5px 8px;margin-right:10px}
+  .acct .sq{width:24px;height:24px;border-radius:5px;background:#00b9aa;display:grid;place-items:center;font-size:11px;font-weight:800;color:#003}
+  .acct .car{opacity:.7;font-size:10px}
+  .site{display:flex;align-items:center;gap:8px;background:#16181d;border-radius:7px;padding:7px 12px;margin-right:18px;font-size:13.5px;font-weight:600}
+  .navlink{color:#dfe1e6;font-size:13.5px;margin-right:18px;display:flex;align-items:center;gap:5px}
+  .upgrade{border:1px solid #3a3d44;background:#16181d;color:#fff;border-radius:18px;font-size:13px;font-weight:600;padding:6px 15px;margin-right:18px}
+  .search{flex:1;max-width:600px;background:#fff;border-radius:8px;height:36px;display:flex;align-items:center;gap:10px;padding:0 14px;color:#9aa2b1;font-size:13.5px}
+  .topbar .right{display:flex;align-items:center;gap:16px;margin-left:18px}
+  .bell{position:relative;font-size:16px;color:#cfd3db}
+  .bell .b{position:absolute;top:-7px;right:-9px;background:#e62214;color:#fff;font-size:9px;font-weight:700;border-radius:9px;padding:1px 5px}
+  .avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#6a5acd,#ff7eb3);display:inline-block}
+  .ai-pill{background:var(--grad);border:none;color:#fff;font-weight:700;border-radius:8px;height:36px;padding:0 14px;display:flex;align-items:center;gap:6px;font-size:13.5px}
+
+  /* ===== Layout ===== */
+  .shell{display:flex;min-height:calc(100vh - 54px)}
+
+  /* Sidebar — dark, like the top bar */
+  .sidebar{width:228px;background:var(--side-bg);flex-shrink:0;padding:12px 0 0;position:relative;display:flex;flex-direction:column}
+  .qa{margin:6px 14px 0;display:flex;align-items:center;gap:8px}
+  .qa .hist{width:34px;height:34px;border-radius:50%;border:1px solid #34373e;display:grid;place-items:center;color:var(--side-icon);font-size:15px}
+  .qa .btn{flex:1;border:none;border-radius:20px;text-align:center;font-size:13.5px;font-weight:600;padding:9px;color:#16181d;background:#fff}
+  .collapse{position:absolute;right:-11px;top:18px;width:22px;height:22px;border-radius:50%;background:var(--side-bg);border:1px solid #34373e;display:grid;place-items:center;color:var(--side-icon);font-size:11px;z-index:2}
+  .setup{padding:16px 16px 14px;border-bottom:1px solid #2a2d34;margin:14px 0 8px}
+  .setup .t{font-size:14px;font-weight:700;display:flex;justify-content:space-between;align-items:center;color:#fff}
+  .setup .t .car{color:var(--side-muted)}
+  .setup .bar{height:4px;border-radius:4px;background:#34373e;margin-top:10px;overflow:hidden}
+  .setup .bar i{display:block;height:100%;width:14%;background:var(--B10)}
+  .setup .sub{font-size:12px;color:var(--side-muted);margin-top:7px}
+
+  nav{padding:0 8px;flex:1}
+  .nav-item{display:flex;align-items:center;gap:13px;font-size:14px;color:var(--side-text);padding:9px 12px;border-radius:7px;font-weight:500}
+  .nav-item .ic{width:18px;text-align:center;opacity:1;color:var(--side-icon);font-size:15px}
+  .nav-item .car{margin-left:auto;color:var(--side-muted);font-size:11px}
+  .nav-item.open{color:#fff;font-weight:600}
+  .nav-badge{margin-left:auto;font-size:10px;background:#fdd872;color:#5b4500;font-weight:800;border-radius:5px;padding:2px 6px;letter-spacing:.3px}
+  .subnav{padding:2px 0 6px}
+  .sub-item{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--side-text);padding:8px 12px 8px 43px;border-radius:7px;font-weight:500}
+  .sub-item.active{background:#2c2f37;color:#fff;font-weight:600}
+  .sub-item .star{margin-left:auto;color:var(--side-muted)}
+  .edit-site{border-top:1px solid #2a2d34;padding:14px 16px;display:flex;align-items:center;gap:10px;color:var(--side-text);font-size:13.5px;font-weight:600;margin-top:6px}
+  .edit-site .ic{color:var(--side-icon)}
+
+  /* Main */
+  .main{flex:1;padding:24px 44px 60px;overflow:auto}
+  .main > *{max-width:1380px}
+  .back{color:var(--B10);font-size:14px;font-weight:600;display:inline-flex;align-items:center;gap:4px;margin-bottom:14px;text-decoration:none}
+  h1{font-size:30px;line-height:1.2;margin:0 0 26px;font-weight:700;letter-spacing:-.4px;color:var(--D10)}
+  h2{font-size:18px;font-weight:700;margin:0 0 5px;color:var(--D10)}
+  .subtle{color:var(--D40);font-size:14px;margin:0}
+
+  /* AI card */
+  .ai-card{background:#f4f6f8;border:1px solid #e3e7ec;border-radius:var(--radius-card);padding:24px;margin-bottom:34px}
+  .ai-input{border:1px solid var(--D70);border-radius:8px;min-height:138px;padding:18px;font-size:15px;color:var(--D10);outline:none;transition:box-shadow .12s,border-color .12s;width:100%;resize:none;display:block;font-family:inherit;line-height:1.5;background:#fff}
+  .ai-input::placeholder{color:#9aa2b1}
+  .ai-input:focus{border-color:var(--B10);box-shadow:0 0 0 3px rgba(17,109,255,.15)}
+  /* attachment row inside card */
+  .attach-bar{margin-top:12px}
+  .file-list{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+  .file-list:empty{display:none}
+  /* explicit drop zone */
+  .dropzone{display:flex;align-items:center;gap:14px;border:1.5px dashed var(--D60);background:#fbfcfe;border-radius:8px;padding:14px 18px;cursor:pointer;transition:.12s}
+  .dropzone:hover{border-color:var(--B10);background:#f5f9ff}
+  .dropzone:focus-visible{outline:none;border-color:var(--B10);box-shadow:0 0 0 3px rgba(17,109,255,.15)}
+  .dropzone .dz-ic{width:34px;height:34px;flex-shrink:0;border-radius:50%;border:1.5px solid var(--B10);background:#fff;color:var(--B10);display:grid;place-items:center;font-size:22px;line-height:1;font-weight:400}
+  .dropzone .dz-text{display:flex;flex-direction:column;gap:2px}
+  .dropzone .dz-title{font-size:14px;font-weight:600;color:var(--D10)}
+  .dropzone .dz-sub{font-size:12.5px;color:var(--D40)}
+  .dropzone .dz-browse{color:var(--B10);font-weight:600;text-decoration:underline}
+  /* drag-over state on the zone itself */
+  .dropzone.over{border-color:var(--B10);border-style:solid;background:#eef5ff;box-shadow:0 0 0 3px rgba(17,109,255,.15)}
+  .dropzone.over .dz-title{color:var(--B10)}
+  .file-chip{display:inline-flex;align-items:center;gap:8px;background:#eef3ff;border:1px solid #cfe0ff;border-radius:8px;padding:6px 12px;font-size:13px;color:var(--D10);font-weight:600;max-width:420px}
+  .file-chip .fic{width:20px;height:20px;border-radius:5px;background:#fff;display:grid;place-items:center;font-size:11px;color:var(--G10);flex-shrink:0}
+  .file-chip .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .file-chip .sz{color:var(--D50);font-weight:500}
+  .file-chip .rm{background:none;border:none;color:var(--D50);font-size:15px;line-height:1;padding:0 0 0 2px;display:grid;place-items:center}
+  .file-chip .rm:hover{color:var(--R10)}
+  .file-chip.parsing .fic{color:var(--B10)}
+  .ai-foot{display:flex;align-items:center;justify-content:space-between;margin-top:16px;gap:16px}
+  .hint{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--D50)}
+  .hint .bulb{color:#f5b800}
+  .btn-primary{background:var(--grad);color:#fff;border:none;border-radius:22px;padding:11px 22px;font-weight:700;font-size:14px;display:inline-flex;gap:8px;align-items:center;box-shadow:0 4px 12px rgba(17,109,255,.22)}
+  .btn-primary:disabled{opacity:.55;cursor:default;box-shadow:none}
+
+
+  /* Templates */
+  .tmpl-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:18px}
+  .services-for{display:flex;align-items:center;gap:12px}
+  .services-for label{font-size:14px;color:var(--D20)}
+  .sf-input{width:300px;height:38px;border:1px solid var(--D70);border-radius:8px;display:flex;align-items:center;gap:9px;padding:0 13px;color:#9aa2b1;font-size:13.5px}
+  .tabs{display:flex;gap:26px;border-bottom:1px solid var(--line);margin-bottom:22px}
+  .tabs button{background:none;border:none;padding:10px 2px;font-size:14px;font-weight:600;color:var(--D40);border-bottom:2px solid transparent;margin-bottom:-1px}
+  .tabs button.on{color:var(--B10);border-bottom-color:var(--B10)}
+  .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px}
+  .card-tmpl{background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden;box-shadow:var(--shadow-card);display:flex;flex-direction:column}
+  .card-tmpl .ph{height:150px;position:relative;background-size:cover;background-position:center}
+  .ph.t1{background:linear-gradient(160deg,#aab9d4,#9aabc9)}
+  .ph.t2{background:linear-gradient(160deg,#cdbede,#bca5d6)}
+  .ph.t3{background:linear-gradient(160deg,#c2dac9,#aacbb6)}
+  .pack{position:absolute;top:12px;left:12px;background:var(--B10);color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.6px;border-radius:5px;padding:3px 8px}
+  .card-tmpl .body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:5px;flex:1}
+  .card-tmpl .nm{font-weight:700;font-size:15px;color:var(--D10)}
+  .card-tmpl .meta{font-size:12.5px;color:var(--D40);line-height:1.5;flex:1}
+  .card-tmpl .edit{align-self:flex-start;margin-top:14px;border:1px solid var(--D70);background:#fff;color:var(--D20);border-radius:18px;font-weight:600;font-size:13px;padding:7px 22px}
+  .card-tmpl .edit:hover{border-color:var(--B10);color:var(--B10)}
+  .scratch{border:1px dashed var(--D60);background:#fff;border-radius:10px;display:grid;place-items:center;color:var(--B10);min-height:100%}
+  .scratch .in{display:flex;flex-direction:column;align-items:center;gap:8px;font-weight:600;font-size:15px}
+  .scratch .plus{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--B10);display:grid;place-items:center;font-size:18px;line-height:1}
+
+  /* ===== Review import screen ===== */
+  .review-head{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-bottom:22px}
+  .stat-strip{display:flex;gap:14px;margin-bottom:20px;flex-wrap:wrap}
+  .stat{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 18px;min-width:150px;box-shadow:var(--shadow-card)}
+  .stat .num{font-size:24px;font-weight:800;color:var(--D10);line-height:1}
+  .stat .lbl{font-size:12.5px;color:var(--D40);margin-top:6px;display:flex;align-items:center;gap:6px}
+  .stat .lbl .dotc{width:8px;height:8px;border-radius:50%;display:inline-block}
+  .stat.ready .dotc{background:var(--G10)} .stat.dup .dotc{background:#f5a623} .stat.total .dotc{background:var(--B10)}
+
+  .src-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px}
+  .src-chip{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:7px 12px;font-size:12.5px;color:var(--D20);font-weight:600}
+  .src-chip .fic{color:var(--G10)}
+  .src-chip .ct{color:var(--D50);font-weight:500}
+
+  .rev-tabs{display:flex;gap:26px;border-bottom:1px solid var(--line);margin-bottom:18px}
+  .rev-tabs button{background:none;border:none;padding:10px 2px;font-size:15px;font-weight:600;color:var(--D40);border-bottom:2px solid transparent;margin-bottom:-1px;display:flex;align-items:center;gap:8px}
+  .rev-tabs button.on{color:var(--B10);border-bottom-color:var(--B10)}
+  .rev-tabs .cnt{font-size:12px;background:#eef1f4;color:var(--D30);border-radius:10px;padding:1px 8px;font-weight:700}
+  .rev-tabs button.on .cnt{background:#e3edff;color:var(--B10)}
+
+  .rev-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:14px;flex-wrap:wrap}
+  .rev-search{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--D70);border-radius:8px;padding:0 12px;height:38px;min-width:260px;color:#9aa2b1}
+  .rev-search input{border:none;outline:none;font-family:inherit;font-size:13.5px;color:var(--D10);width:100%;background:transparent}
+  .rev-filters{display:flex;gap:8px}
+  .filter-chip{border:1px solid var(--D70);background:#fff;border-radius:18px;padding:7px 14px;font-size:13px;font-weight:600;color:var(--D20);display:flex;align-items:center;gap:7px}
+  .filter-chip.on{border-color:var(--B10);background:#eef5ff;color:var(--B10)}
+  .filter-chip .fc-dot{width:8px;height:8px;border-radius:50%}
+
+  /* ---- WDS Cairo DataTable ---- */
+  .table-wrap{background:#fff;border:1px solid var(--D60);border-radius:8px;box-shadow:var(--shadow-card);overflow:hidden;margin-bottom:24px}
+  .rev-table{width:100%;border-collapse:collapse;font-size:14px;table-layout:auto}
+  /* header: neutral skin — F7F8F8 fill, 14px regular, sentence case, D10 */
+  .rev-table th{text-align:left;font-size:14px;letter-spacing:0;text-transform:none;color:var(--D10);font-weight:400;padding:12px;background:#f7f8f8;box-shadow:inset 0 1px 0 0 var(--D60),inset 0 -1px 0 0 var(--D60);white-space:nowrap;line-height:18px}
+  .rev-table th:first-child{padding-left:24px} .rev-table th:last-child{padding-right:24px;text-align:right}
+  /* data rows: 12px vertical padding, 14px D20, divider via inset box-shadow */
+  .rev-table td{padding:12px;color:var(--D20);vertical-align:middle;box-shadow:inset 0 -1px 0 0 var(--D60);line-height:18px}
+  .rev-table td:first-child{padding-left:24px} .rev-table td:last-child{padding-right:24px}
+  .rev-table tbody tr:last-child td{box-shadow:none}
+  .rev-table tbody tr:hover{background:var(--B50)}            /* B50 hover */
+  .rev-table tbody tr:hover .row-actions{opacity:1}           /* actions appear on hover */
+  .rev-table tr.dup-row{background:var(--Y50)}
+  .rev-table tr.dup-row:hover{background:#fbe9bf}
+  .rev-table tr.removed{opacity:.45}
+  .rev-table tr.removed .cell-edit{text-decoration:line-through}
+  .rev-table .cb{width:48px} .rev-table .cb input{width:16px;height:16px;accent-color:var(--B10)}
+  /* inline-editable cell */
+  .cell-edit{border:1px solid transparent;border-radius:6px;padding:5px 8px;font:inherit;font-size:14px;color:var(--D20);background:transparent;width:100%;min-width:80px}
+  .cell-edit:hover{border-color:var(--D60)}
+  .cell-edit:focus{border-color:var(--B10);outline:none;box-shadow:0 0 0 3px #a6d0ff;background:#fff;color:var(--D10)}
+  /* status = WDS Badge (medium 24px, radius 2px, neutral variants) */
+  .status-pill{display:inline-flex;align-items:center;height:24px;font-size:14px;font-weight:400;border-radius:2px;padding:0 12px;white-space:nowrap;line-height:18px}
+  .status-pill.ready{background:var(--G50);color:var(--D20)}   /* neutralSuccess */
+  .status-pill.dup{background:var(--Y50);color:var(--D20)}     /* warningLight */
+  /* action cell — TableActionCell: hidden until row hover, right-aligned, 12px gap */
+  .row-actions{display:flex;gap:12px;justify-content:flex-end;align-items:center;opacity:0;transition:opacity .12s}
+  .row-actions .icon-btn{border:none;background:none;color:var(--D20);font-size:16px;border-radius:6px;width:30px;height:30px;display:grid;place-items:center}
+  .row-actions .icon-btn:hover{background:var(--D70);color:var(--D10)}
+  /* keep = secondary WDS text button (pill, B10 outline) */
+  .row-actions .keep{height:30px;display:inline-flex;align-items:center;font-size:14px;font-weight:500;color:var(--B10);background:#fff;border:1px solid var(--B10);border-radius:15px;padding:0 14px}
+  .row-actions .keep:hover{background:var(--B50)}
+  .empty-row td{text-align:center;color:var(--D40);padding:42px;font-size:14px;box-shadow:none}
+
+  /* ---- unrecognized fields = WDS SectionHelper (warning skin) ---- */
+  .unrec{border:1px solid var(--Y10);background:var(--Y50);border-radius:6px;overflow:hidden;margin-bottom:30px}
+  .unrec-head{display:flex;align-items:flex-start;gap:6px;padding:18px 24px;cursor:pointer}
+  .unrec-ic{color:#9a6700;font-size:16px;flex-shrink:0;line-height:18px}
+  .unrec-title{font-size:14px;font-weight:700;color:var(--D10);line-height:18px;margin-bottom:6px}
+  .unrec-sub{font-size:14px;color:var(--D20);line-height:18px;max-width:540px}
+  .unrec-chev{margin-left:auto;color:var(--D20);transition:transform .15s}
+  .unrec.open .unrec-chev{transform:rotate(180deg)}
+  .unrec-body{display:none;padding:0 24px 18px 48px}
+  .unrec.open .unrec-body{display:block}
+  .unrec-field{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid #f0d99a}
+  .unrec-field .fname{font-weight:700;font-size:14px;color:var(--D10);min-width:150px}
+  .unrec-field .fsample{font-size:13px;color:var(--D20);flex:1}
+  .unrec-field select{font-family:inherit;font-size:13px;border:1px solid var(--D70);border-radius:7px;padding:6px 10px;background:#fff;color:var(--D10)}
+
+  /* overlay */
+  .overlay{position:fixed;inset:0;background:rgba(22,45,61,.5);display:none;align-items:center;justify-content:center;z-index:120}
+  .overlay.show{display:flex}
+  .overlay-box{background:#fff;border-radius:14px;padding:38px 40px;width:440px;max-width:92vw;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.3)}
+  .ov-title{font-size:20px;font-weight:800;color:var(--D10);margin:18px 0 6px}
+  .ov-sub{font-size:13.5px;color:var(--D40);line-height:1.5}
+  .spinner{width:46px;height:46px;border-radius:50%;border:4px solid #e3e8ee;border-top-color:var(--B10);margin:0 auto;animation:spin .8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .ov-bar{height:6px;border-radius:6px;background:#e8ebef;margin-top:20px;overflow:hidden}
+  .ov-bar i{display:block;height:100%;width:0;background:var(--grad);transition:width .3s}
+  .ov-check{width:54px;height:54px;border-radius:50%;background:#eaf7ef;color:var(--G10);font-size:28px;display:grid;place-items:center;margin:0 auto;font-weight:800}
+  .ov-list{list-style:none;padding:0;margin:18px 0 24px;text-align:left}
+  .ov-list li{display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--D20);padding:7px 0;border-bottom:1px solid var(--line-soft)}
+  .ov-list li:last-child{border:none}
+  .ov-list li .ico{color:var(--G10)} .ov-list li .skip{color:var(--D50);margin-left:auto;font-size:12px}
+
+  /* ===== Import hub page ===== */
+  .hub-drop{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;border:1.5px dashed var(--D50);background:#fbfcfe;border-radius:12px;padding:48px 24px;cursor:pointer;transition:.12s;text-align:center}
+  .hub-drop:hover{border-color:var(--B10);background:#f5f9ff}
+  .hub-drop.over{border-color:var(--B10);border-style:solid;background:#eef5ff;box-shadow:0 0 0 3px rgba(17,109,255,.15)}
+  .hub-drop:focus-visible{outline:none;border-color:var(--B10);box-shadow:0 0 0 3px rgba(17,109,255,.15)}
+  .hub-ic{width:52px;height:52px;border-radius:50%;border:2px solid var(--B10);color:var(--B10);display:grid;place-items:center;font-size:30px;line-height:1;margin-bottom:8px}
+  .hub-title{font-size:18px;font-weight:700;color:var(--D10)}
+  .hub-sub{font-size:14px;color:var(--D40)}
+  .hub-browse{color:var(--B10);font-weight:600;text-decoration:underline}
+  .cap-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  .cap{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:var(--shadow-card)}
+  .cap-ic{width:38px;height:38px;border-radius:9px;background:var(--B50);color:var(--B10);display:grid;place-items:center;font-size:18px;margin-bottom:12px}
+  .cap-t{font-size:15px;font-weight:700;color:var(--D10);margin-bottom:5px}
+  .cap-d{font-size:12.5px;color:var(--D40);line-height:1.5}
+  .src-note{background:var(--B50);border:1px solid var(--B30);border-radius:6px;padding:14px 18px;font-size:13.5px;color:var(--D20);line-height:1.5;margin-top:24px}
+  .src-note-t{font-weight:700;color:var(--D10);display:block;margin-bottom:2px}
+  .hub-cta-row{display:flex;align-items:center;gap:16px;margin-top:28px}
+
+  /* ===== Floating prototype switcher ===== */
+  .switcher{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);z-index:130;display:flex;align-items:center;gap:6px;background:var(--D10);border-radius:24px;padding:6px 8px 6px 16px;box-shadow:0 10px 30px rgba(0,0,0,.28)}
+  .switcher .sw-label{color:#9aa2b5;font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;margin-right:4px}
+  .switcher button{border:none;background:transparent;color:#cdd2de;font-size:13px;font-weight:600;padding:7px 14px;border-radius:18px;transition:.12s}
+  .switcher button:hover{color:#fff}
+  .switcher button.on{background:#fff;color:var(--D10)}
+
+  /* Toast */
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--D10);color:#fff;padding:12px 18px;border-radius:10px;font-size:13.5px;box-shadow:0 12px 34px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:.25s;z-index:99;display:flex;gap:10px;align-items:center;max-width:90vw}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .toast .dot{width:8px;height:8px;border-radius:50%;background:#01b8aa;flex-shrink:0}
+
+  .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+
+<!-- ===== TOP BAR ===== -->
+<header class="topbar">
+  <span class="logo">WIX STUDIO</span>
+  <div class="acct"><span class="sq">RL</span><span class="car">▾</span></div>
+  <div class="site">Relaxation Booking <span style="opacity:.6;font-size:10px">▾</span></div>
+  <span class="navlink">Explore <span style="font-size:9px;opacity:.7">▾</span></span>
+  <span class="navlink">Hire a Professional</span>
+  <span class="navlink">Help <span style="font-size:9px;opacity:.7">▾</span></span>
+  <button class="upgrade">Upgrade</button>
+  <div class="search">🔍 Search for tools, apps, help &amp; more…</div>
+  <div class="right">
+    <span class="bell">💬<span class="b">50</span></span>
+    <span class="bell">🔔<span class="b">!</span></span>
+    <span class="bell">📄<span class="b">17</span></span>
+    <span class="avatar"></span><span style="color:#cfd3db;font-size:10px">▾</span>
+    <button class="ai-pill">✦ AI</button>
+  </div>
+</header>
+
+<div class="shell">
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar">
+    <div class="qa">
+      <span class="hist">↺</span>
+      <span class="btn">Quick Actions ▾</span>
+    </div>
+    <span class="collapse">‹</span>
+    <div class="setup">
+      <div class="t">Let's set up your business <span class="car">›</span></div>
+      <div class="bar"><i></i></div>
+      <div class="sub">1/7 completed</div>
+    </div>
+    <nav>
+      <div class="nav-item"><span class="ic">◎</span> Setup</div>
+      <div class="nav-item"><span class="ic">⌂</span> Home</div>
+      <div class="nav-item"><span class="ic">✦</span> AI Agents <span class="nav-badge">NEW</span><span class="car">›</span></div>
+      <div class="nav-item"><span class="ic">▦</span> Booking Calendar <span class="car">›</span></div>
+      <div class="nav-item"><span class="ic">💳</span> Getting Paid <span class="car">›</span></div>
+      <div class="nav-item"><span class="ic">＄</span> Sales <span class="car">›</span></div>
+      <div class="nav-item open"><span class="ic">❖</span> Catalog <span class="car">⌄</span></div>
+      <div class="subnav">
+        <div class="sub-item">Store Products <span class="car" style="margin-left:auto;color:var(--D60)">›</span></div>
+        <div class="sub-item active">Booking Services <span class="star">★</span></div>
+        <div class="sub-item">Gift Cards</div>
+        <div class="sub-item">Discounts <span class="car" style="margin-left:auto;color:var(--D60)">›</span></div>
+        <div class="sub-item">Sales Channels <span class="car" style="margin-left:auto;color:var(--D60)">›</span></div>
+        <div class="sub-item">Booking Channels</div>
+      </div>
+      <div class="nav-item"><span class="ic">▥</span> Apps <span class="nav-badge" style="background:#cfe0ff;color:#1747c0">4</span><span class="car">›</span></div>
+      <div class="nav-item"><span class="ic">▭</span> Site &amp; Mobile App <span class="car">›</span></div>
+      <div class="nav-item"><span class="ic">◔</span> Marketing <span class="car">›</span></div>
+      <div class="nav-item"><span class="ic">✉</span> Inbox <span class="car">›</span></div>
+      <div class="nav-item"><span class="ic">☷</span> Customers &amp; Leads <span class="car">›</span></div>
+      <div class="nav-item"><span class="ic">◴</span> Analytics <span class="car">›</span></div>
+      <div class="nav-item"><span class="ic">⚙</span> Automations</div>
+    </nav>
+    <div class="edit-site"><span class="ic">✎</span> Edit Site</div>
+  </aside>
+
+  <!-- ===== MAIN ===== -->
+  <main class="main">
+   <div id="viewCreate" hidden>
+    <a class="back" href="#">‹ Back</a>
+    <h1>Add a New Service</h1>
+
+    <h2>Describe or upload the services you want to create</h2>
+    <p class="subtle" style="margin-bottom:16px">Tell us about your service, or upload your files — and we'll generate it for you using AI.</p>
+
+    <!-- AI generate card with file upload -->
+    <div class="ai-card" id="aiCard">
+      <textarea class="ai-input" id="aiInput" placeholder="Set up a 30-minute online appointment at $85 per session."></textarea>
+
+      <div class="attach-bar" id="attachBar">
+        <div class="file-list" id="fileList"></div>
+        <div class="dropzone" id="dropzone" role="button" tabindex="0">
+          <span class="dz-ic">+</span>
+          <div class="dz-text">
+            <span class="dz-title">Drop your files here</span>
+            <span class="dz-sub">or <span class="dz-browse">browse your files</span>. You can import your services, staff and existing bookings, and AI will create them for you.</span>
+          </div>
+        </div>
+        <input type="file" id="fileInput" class="visually-hidden" multiple>
+      </div>
+
+      <div class="ai-foot">
+        <span class="hint"><span class="bulb">💡</span> AI can make mistakes. Always double-check the results.</span>
+        <button class="btn-primary" id="genBtn">✦ Generate</button>
+      </div>
+    </div>
+
+    <!-- Templates -->
+    <div class="tmpl-head">
+      <div>
+        <h2>Or, start from a template.</h2>
+        <p class="subtle">Choose a ready-made service template and customize it.</p>
+      </div>
+      <div class="services-for">
+        <label>Services for:</label>
+        <div class="sf-input">🔍 Enter the type of business</div>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="on">Appointment</button>
+      <button>Class</button>
+      <button>Course</button>
+    </div>
+
+    <div class="grid">
+      <div class="card-tmpl">
+        <div class="ph t1"></div>
+        <div class="body">
+          <div class="nm">Group Trainings</div>
+          <div class="meta">Paid session,<br>Business address</div>
+          <button class="edit">Edit</button>
+        </div>
+      </div>
+      <div class="card-tmpl">
+        <div class="ph t2"></div>
+        <div class="body">
+          <div class="nm">Online Meeting</div>
+          <div class="meta">Free,<br>Online</div>
+          <button class="edit">Edit</button>
+        </div>
+      </div>
+      <div class="card-tmpl">
+        <div class="ph t3"><span class="pack">3 SESSION PACK</span></div>
+        <div class="body">
+          <div class="nm">Consultation</div>
+          <div class="meta">Paid session,<br>Online</div>
+          <button class="edit">Edit</button>
+        </div>
+      </div>
+      <div class="scratch">
+        <div class="in"><span class="plus">+</span> Start from Scratch</div>
+      </div>
+    </div>
+   </div><!-- /viewCreate -->
+
+   <!-- ===== IMPORT HUB VIEW ===== -->
+   <div id="viewImport">
+     <a class="back" href="#" id="importHubBack">‹ Back</a>
+     <h1>Import your booking data</h1>
+     <p class="subtle" style="margin:-16px 0 28px;max-width:680px">Switching from another booking platform? Bring everything over at once. Upload your files and we'll recreate your services, staff and existing bookings — no manual setup.</p>
+
+     <!-- big upload hub -->
+     <div class="hub-drop" id="hubDrop" role="button" tabindex="0">
+       <div class="hub-ic">+</div>
+       <div class="hub-title">Drop your files here</div>
+       <div class="hub-sub">or <span class="hub-browse">browse your files</span></div>
+       <input type="file" id="hubFileInput" class="visually-hidden" multiple>
+     </div>
+     <div class="file-list" id="hubFileList" style="margin-top:16px"></div>
+
+     <!-- supported sources -->
+     <div class="src-note" style="margin-top:24px">
+       <span class="src-note-t">Coming from another platform?</span>
+       Export a CSV or spreadsheet from Calendly, Acuity, Square, Fresha, Mindbody or similar — then drop it above.
+     </div>
+
+     <div class="hub-cta-row">
+       <button class="btn-primary" id="hubImportBtn" disabled>Continue to review</button>
+       <span class="hint"><span class="bulb">💡</span> You'll be able to review and edit everything before it's imported.</span>
+     </div>
+   </div><!-- /viewImport -->
+
+   <!-- ===== REVIEW IMPORT VIEW ===== -->
+   <div id="viewReview" hidden>
+     <a class="back" href="#" id="reviewBack">‹ Back</a>
+     <div class="review-head">
+       <div>
+         <h1 style="margin-bottom:8px">Review your import</h1>
+         <p class="subtle">We read your files and prepared the records below. Edit anything that looks off, resolve duplicates, then import.</p>
+       </div>
+       <button class="btn-primary" id="importBtn">Import <span id="importCount"></span></button>
+     </div>
+
+     <!-- summary stat strip -->
+     <div class="stat-strip" id="statStrip"></div>
+
+     <!-- source files -->
+     <div class="src-row" id="srcRow"></div>
+
+     <!-- type tabs -->
+     <div class="rev-tabs" id="revTabs">
+       <button data-type="services" class="on">Services <span class="cnt" id="cnt-services">0</span></button>
+       <button data-type="staff">Staff <span class="cnt" id="cnt-staff">0</span></button>
+       <button data-type="bookings">Bookings <span class="cnt" id="cnt-bookings">0</span></button>
+     </div>
+
+     <!-- toolbar -->
+     <div class="rev-toolbar">
+       <div class="rev-search">🔍 <input id="revSearch" placeholder="Search records…"></div>
+       <div class="rev-filters" id="revFilters"></div>
+     </div>
+
+     <!-- table -->
+     <div class="table-wrap">
+       <table class="rev-table" id="revTable">
+         <thead id="revHead"></thead>
+         <tbody id="revBody"></tbody>
+       </table>
+     </div>
+
+     <!-- unrecognized fields -->
+     <div class="unrec" id="unrec">
+       <div class="unrec-head" id="unrecHead">
+         <span class="unrec-ic">⚠</span>
+         <div>
+           <div class="unrec-title">Some columns weren't recognized</div>
+           <div class="unrec-sub" id="unrecSub">These fields from your file don't map to a Wix field. Map them or keep them as custom fields.</div>
+         </div>
+         <span class="unrec-chev" id="unrecChev">⌄</span>
+       </div>
+       <div class="unrec-body" id="unrecBody"></div>
+     </div>
+   </div><!-- /viewReview -->
+  </main>
+</div>
+
+<!-- import progress / success overlay -->
+<div class="overlay" id="overlay">
+  <div class="overlay-box" id="overlayBox">
+    <div class="ov-progress" id="ovProgress">
+      <div class="spinner"></div>
+      <div class="ov-title">Importing your data…</div>
+      <div class="ov-sub" id="ovProgressSub">Creating your services, staff and bookings.</div>
+      <div class="ov-bar"><i id="ovBar"></i></div>
+    </div>
+    <div class="ov-success" id="ovSuccess" hidden>
+      <div class="ov-check">✓</div>
+      <div class="ov-title">Import complete</div>
+      <div class="ov-sub" id="ovSuccessSub"></div>
+      <ul class="ov-list" id="ovList"></ul>
+      <button class="btn-primary" id="ovDone">Go to Booking Services</button>
+    </div>
+  </div>
+</div>
+
+<!-- floating prototype switcher between entry points -->
+<div class="switcher" id="switcher">
+  <span class="sw-label">Entry point</span>
+  <button data-go="import" class="on">Import data</button>
+  <button data-go="create">Add a service</button>
+</div>
+
+<div class="toast" id="toast"><span class="dot"></span><span id="toastMsg"></span></div>
+
+<script>
+  const card=document.getElementById('aiCard');
+  const fileInput=document.getElementById('fileInput');
+  const dropzone=document.getElementById('dropzone');
+  const attachBar=document.getElementById('attachBar');
+  const genBtn=document.getElementById('genBtn');
+
+  let toastT;
+  function toast(msg){
+    document.getElementById('toastMsg').textContent=msg;
+    const t=document.getElementById('toast');
+    t.classList.add('show');clearTimeout(toastT);
+    toastT=setTimeout(()=>t.classList.remove('show'),2600);
+  }
+  function fmtSize(b){
+    if(b<1024)return b+' B';
+    if(b<1048576)return (b/1024).toFixed(0)+' KB';
+    return (b/1048576).toFixed(1)+' MB';
+  }
+
+  // DEMO MODE: clicking the drop zone fakes an upload instead of opening the picker
+  const DEMO_FILES=[
+    {name:'services-export.csv',size:18432},
+    {name:'staff-list.xlsx',size:9216},
+    {name:'appointments.csv',size:42110},
+    {name:'bookings-2026.csv',size:33890},
+  ];
+  let demoIdx=0;
+  function nextDemoFile(){
+    const f=DEMO_FILES[demoIdx % DEMO_FILES.length];
+    demoIdx++;
+    return {name:f.name,size:f.size};
+  }
+
+  dropzone.addEventListener('click',()=>addFiles([nextDemoFile()]));
+  dropzone.addEventListener('keydown',e=>{
+    if(e.key==='Enter'||e.key===' '){e.preventDefault();addFiles([nextDemoFile()]);}
+  });
+  const fileList=document.getElementById('fileList');
+  let files=[];
+
+  fileInput.addEventListener('change',e=>{
+    addFiles(e.target.files);
+    fileInput.value=''; // allow re-selecting the same file
+  });
+
+  function addFiles(fileObjs){
+    const incoming=Array.from(fileObjs||[]);
+    if(!incoming.length) return;
+    incoming.forEach(f=>{
+      // skip exact duplicates (same name + size)
+      if(!files.some(x=>x.name===f.name && x.size===f.size)) files.push(f);
+    });
+    render();
+    const label=incoming.length===1 ? `"${incoming[0].name}"` : `${incoming.length} files`;
+    toast(`${label} added — AI will read your files and create your services, staff and bookings on Generate.`);
+  }
+
+  function removeFile(i){
+    files.splice(i,1);
+    render();
+  }
+
+  function render(){
+    fileList.innerHTML='';
+    files.forEach((f,i)=>{
+      const chip=document.createElement('span');
+      chip.className='file-chip';
+      chip.innerHTML=`<span class="fic">▦</span>
+        <span class="nm">${escapeHtml(f.name)}</span>
+        <span class="sz">${fmtSize(f.size||0)}</span>
+        <button class="rm" title="Remove" aria-label="Remove file">✕</button>`;
+      chip.querySelector('.rm').addEventListener('click',()=>removeFile(i));
+      fileList.appendChild(chip);
+    });
+    // keep the drop zone available so more files can be added
+    if(files.length===0){
+      genBtn.innerHTML='✦ Generate';
+    } else {
+      genBtn.innerHTML=`✦ Generate from ${files.length} file${files.length>1?'s':''}`;
+    }
+  }
+
+  function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+  // drag & drop highlight on the drop zone (still works anywhere over the card)
+  let dragDepth=0;
+  function dzVisible(){return dropzone.style.display!=='none';}
+  ['dragenter','dragover'].forEach(ev=>card.addEventListener(ev,e=>{
+    e.preventDefault();
+    if(ev==='dragenter')dragDepth++;
+    if(dzVisible())dropzone.classList.add('over');
+  }));
+  card.addEventListener('dragleave',e=>{
+    e.preventDefault();dragDepth--;
+    if(dragDepth<=0){dragDepth=0;dropzone.classList.remove('over');}
+  });
+  card.addEventListener('drop',e=>{
+    e.preventDefault();dragDepth=0;dropzone.classList.remove('over');
+    if(e.dataTransfer.files) addFiles(e.dataTransfer.files);
+  });
+
+  genBtn.addEventListener('click',()=>{
+    const hasFiles=files.length>0;
+    const hasText=document.getElementById('aiInput').value.trim().length>0;
+    if(hasFiles){ lastEntry='create'; openReview(); }
+    else if(hasText){toast('Generating your service with AI…');}
+    else {toast('Describe a service or upload files to get started.');}
+  });
+
+  /* ============================================================
+     REVIEW IMPORT SCREEN
+     ============================================================ */
+  const viewCreate=document.getElementById('viewCreate');
+  const viewReview=document.getElementById('viewReview');
+  const viewImport=document.getElementById('viewImport');
+  let lastEntry='import'; // which entry point opened the review (import is the default landing page)
+
+  // --- sample parsed data (what AI extracted from the files) ---
+  const DATA={
+    services:{
+      label:'Services',
+      cols:[
+        {key:'name',label:'Service name'},
+        {key:'type',label:'Type'},
+        {key:'duration',label:'Duration'},
+        {key:'price',label:'Price'},
+        {key:'staff',label:'Staff'},
+      ],
+      rows:[
+        {id:1,status:'ready',name:'Swedish Massage',type:'Appointment',duration:'60 min',price:'$90',staff:'Dana L.'},
+        {id:2,status:'ready',name:'Deep Tissue Massage',type:'Appointment',duration:'60 min',price:'$110',staff:'Dana L.'},
+        {id:3,status:'dup',name:'Hot Stone Therapy',type:'Appointment',duration:'75 min',price:'$130',staff:'Maya R.',dupOf:'an existing service "Hot Stone Therapy"'},
+        {id:4,status:'ready',name:'Aromatherapy Facial',type:'Appointment',duration:'45 min',price:'$75',staff:'Maya R.'},
+        {id:5,status:'ready',name:'Prenatal Massage',type:'Appointment',duration:'60 min',price:'$95',staff:'Dana L.'},
+        {id:6,status:'dup',name:'Couples Massage',type:'Appointment',duration:'90 min',price:'$220',staff:'Dana L. + Maya R.',dupOf:'row 7 in the same file'},
+        {id:7,status:'ready',name:'Couples Massage',type:'Appointment',duration:'90 min',price:'$220',staff:'Dana L. + Maya R.'},
+        {id:8,status:'ready',name:'Reflexology',type:'Appointment',duration:'30 min',price:'$50',staff:'Sam T.'},
+        {id:9,status:'ready',name:'Group Meditation',type:'Class',duration:'45 min',price:'$20',staff:'Sam T.'},
+      ],
+    },
+    staff:{
+      label:'Staff',
+      cols:[
+        {key:'name',label:'Name'},
+        {key:'email',label:'Email'},
+        {key:'role',label:'Role'},
+        {key:'phone',label:'Phone'},
+      ],
+      rows:[
+        {id:1,status:'ready',name:'Dana Levi',email:'dana@relaxbooking.com',role:'Therapist',phone:'+1 555-0142'},
+        {id:2,status:'ready',name:'Maya Roth',email:'maya@relaxbooking.com',role:'Therapist',phone:'+1 555-0198'},
+        {id:3,status:'dup',name:'Sam Tahan',email:'sam@relaxbooking.com',role:'Therapist',phone:'+1 555-0123',dupOf:'an existing staff member "Sam T."'},
+        {id:4,status:'ready',name:'Front Desk',email:'desk@relaxbooking.com',role:'Receptionist',phone:'+1 555-0100'},
+      ],
+    },
+    bookings:{
+      label:'Bookings',
+      cols:[
+        {key:'customer',label:'Customer'},
+        {key:'service',label:'Service'},
+        {key:'date',label:'Date & time'},
+        {key:'staff',label:'Staff'},
+        {key:'status_',label:'Booking status'},
+      ],
+      rows:[
+        {id:1,status:'ready',customer:'Rachel Green',service:'Swedish Massage',date:'Jul 2, 10:00 AM',staff:'Dana L.',status_:'Confirmed'},
+        {id:2,status:'ready',customer:'Tom Hardy',service:'Deep Tissue Massage',date:'Jul 2, 1:30 PM',staff:'Dana L.',status_:'Confirmed'},
+        {id:3,status:'dup',customer:'Lia Wong',service:'Aromatherapy Facial',date:'Jul 3, 11:00 AM',staff:'Maya R.',status_:'Confirmed',dupOf:'an existing booking for Lia Wong'},
+        {id:4,status:'ready',customer:'Omar Sami',service:'Reflexology',date:'Jul 3, 4:00 PM',staff:'Sam T.',status_:'Pending'},
+        {id:5,status:'ready',customer:'Nina Patel',service:'Prenatal Massage',date:'Jul 5, 9:00 AM',staff:'Dana L.',status_:'Confirmed'},
+      ],
+    },
+  };
+  // unrecognized columns found in the files (custom fields)
+  const UNREC=[
+    {name:'Loyalty tier',sample:'Gold, Silver, Bronze'},
+    {name:'Referral source',sample:'Instagram, Walk-in, Google'},
+    {name:'Preferred room',sample:'Room 2, Room 4'},
+  ];
+
+  // per-row removed flag is stored on the row object as ._removed
+  let activeType='services';
+  let searchTerm='';
+  let activeFilter='all'; // all | ready | dup
+
+  function rowStatus(r){ return r.status; }
+  function isRemoved(r){ return !!r._removed; }
+
+  function counts(type){
+    const rows=DATA[type].rows;
+    return {
+      total: rows.filter(r=>!isRemoved(r)).length,
+      ready: rows.filter(r=>!isRemoved(r)&&r.status==='ready').length,
+      dup:   rows.filter(r=>!isRemoved(r)&&r.status==='dup').length,
+    };
+  }
+  function grandReady(){
+    return Object.keys(DATA).reduce((n,t)=>n+counts(t).ready,0);
+  }
+
+  function openReview(){
+    viewCreate.hidden=true;
+    viewImport.hidden=true;
+    viewReview.hidden=false;
+    document.querySelector('.main').scrollTop=0;
+    renderSrc();
+    renderStats();
+    renderTabs();
+    renderFilters();
+    renderUnrec();
+    renderTable();
+    updateImportBtn();
+  }
+  function closeReview(){
+    viewReview.hidden=true;
+    if(lastEntry==='import'){ viewImport.hidden=false; }
+    else { viewCreate.hidden=false; }
+  }
+
+  /* ---- floating switcher between the two entry-point pages ---- */
+  function gotoPage(page){
+    viewReview.hidden=true;
+    viewCreate.hidden=(page!=='create');
+    viewImport.hidden=(page!=='import');
+    document.querySelector('.main').scrollTop=0;
+    document.querySelectorAll('#switcher button').forEach(b=>b.classList.toggle('on',b.dataset.go===page));
+  }
+  document.querySelectorAll('#switcher button').forEach(b=>{
+    b.addEventListener('click',()=>gotoPage(b.dataset.go));
+  });
+
+  /* ---- import hub page: files + drop zone ---- */
+  const hubFileInput=document.getElementById('hubFileInput');
+  const hubDrop=document.getElementById('hubDrop');
+  const hubFileList=document.getElementById('hubFileList');
+  const hubImportBtn=document.getElementById('hubImportBtn');
+  let hubFiles=[];
+
+  hubDrop.addEventListener('click',()=>hubAdd([nextDemoFile()]));
+  hubDrop.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();hubAdd([nextDemoFile()]);}});
+  hubFileInput.addEventListener('change',e=>{hubAdd(e.target.files);hubFileInput.value='';});
+  let hubDepth=0;
+  ['dragenter','dragover'].forEach(ev=>hubDrop.addEventListener(ev,e=>{e.preventDefault();if(ev==='dragenter')hubDepth++;hubDrop.classList.add('over');}));
+  hubDrop.addEventListener('dragleave',e=>{e.preventDefault();hubDepth--;if(hubDepth<=0){hubDepth=0;hubDrop.classList.remove('over');}});
+  hubDrop.addEventListener('drop',e=>{e.preventDefault();hubDepth=0;hubDrop.classList.remove('over');hubAdd(e.dataTransfer.files);});
+
+  function hubAdd(objs){
+    Array.from(objs||[]).forEach(f=>{ if(!hubFiles.some(x=>x.name===f.name&&x.size===f.size)) hubFiles.push(f); });
+    hubRender();
+  }
+  function hubRender(){
+    hubFileList.innerHTML='';
+    hubFiles.forEach((f,i)=>{
+      const chip=document.createElement('span');
+      chip.className='file-chip';
+      chip.innerHTML=`<span class="fic">▦</span><span class="nm">${escapeHtml(f.name)}</span><span class="sz">${fmtSize(f.size||0)}</span><button class="rm" aria-label="Remove file">✕</button>`;
+      chip.querySelector('.rm').addEventListener('click',()=>{hubFiles.splice(i,1);hubRender();});
+      hubFileList.appendChild(chip);
+    });
+    hubImportBtn.disabled=hubFiles.length===0;
+  }
+  hubImportBtn.addEventListener('click',()=>{
+    // feed the hub's files into the shared review flow
+    files=hubFiles.slice();
+    lastEntry='import';
+    openReview();
+  });
+
+  function renderSrc(){
+    const el=document.getElementById('srcRow');
+    if(!files.length){
+      // demo fallback if user reached here without real files
+      el.innerHTML=`<span class="src-chip"><span class="fic">▦</span> services.csv <span class="ct">· 9 rows</span></span>
+        <span class="src-chip"><span class="fic">▦</span> staff.xlsx <span class="ct">· 4 rows</span></span>
+        <span class="src-chip"><span class="fic">▦</span> bookings.csv <span class="ct">· 5 rows</span></span>`;
+      return;
+    }
+    el.innerHTML=files.map(f=>`<span class="src-chip"><span class="fic">▦</span> ${escapeHtml(f.name)} <span class="ct">· read</span></span>`).join('');
+  }
+
+  function renderStats(){
+    const t={total:0,ready:0,dup:0};
+    Object.keys(DATA).forEach(k=>{const c=counts(k);t.total+=c.total;t.ready+=c.ready;t.dup+=c.dup;});
+    document.getElementById('statStrip').innerHTML=`
+      <div class="stat total"><div class="num">${t.total}</div><div class="lbl"><span class="dotc"></span>Records found</div></div>
+      <div class="stat ready"><div class="num">${t.ready}</div><div class="lbl"><span class="dotc"></span>Ready to import</div></div>
+      <div class="stat dup"><div class="num">${t.dup}</div><div class="lbl"><span class="dotc"></span>Possible duplicates</div></div>`;
+  }
+
+  function renderTabs(){
+    Object.keys(DATA).forEach(t=>{
+      document.getElementById('cnt-'+t).textContent=counts(t).total;
+    });
+  }
+
+  function renderFilters(){
+    const c=counts(activeType);
+    document.getElementById('revFilters').innerHTML=`
+      <button class="filter-chip ${activeFilter==='all'?'on':''}" data-f="all">All <b style="margin-left:4px">${c.total}</b></button>
+      <button class="filter-chip ${activeFilter==='ready'?'on':''}" data-f="ready"><span class="fc-dot" style="background:var(--G10)"></span>Ready ${c.ready}</button>
+      <button class="filter-chip ${activeFilter==='dup'?'on':''}" data-f="dup"><span class="fc-dot" style="background:#f5a623"></span>Duplicates ${c.dup}</button>`;
+    document.getElementById('revFilters').querySelectorAll('.filter-chip').forEach(b=>{
+      b.onclick=()=>{activeFilter=b.dataset.f;renderFilters();renderTable();};
+    });
+  }
+
+  function renderUnrec(){
+    document.getElementById('unrecSub').textContent=
+      `${UNREC.length} fields from your files don't map to a Wix field. Map them or keep them as custom fields.`;
+    document.getElementById('unrecBody').innerHTML=UNREC.map((f,i)=>`
+      <div class="unrec-field">
+        <span class="fname">${escapeHtml(f.name)}</span>
+        <span class="fsample">e.g. ${escapeHtml(f.sample)}</span>
+        <select data-i="${i}">
+          <option>Keep as custom field</option>
+          <option>Map to Notes</option>
+          <option>Map to Tags</option>
+          <option>Ignore this column</option>
+        </select>
+      </div>`).join('');
+  }
+
+  function renderTable(){
+    const cfg=DATA[activeType];
+    const head=document.getElementById('revHead');
+    const body=document.getElementById('revBody');
+    head.innerHTML=`<tr>
+      <th class="cb"><input type="checkbox" id="selAll"></th>
+      <th>Status</th>
+      ${cfg.cols.map(c=>`<th>${c.label}</th>`).join('')}
+      <th style="text-align:right">Actions</th>
+    </tr>`;
+
+    let rows=cfg.rows.filter(r=>{
+      if(activeFilter==='ready'&&r.status!=='ready')return false;
+      if(activeFilter==='dup'&&r.status!=='dup')return false;
+      if(searchTerm){
+        const hay=cfg.cols.map(c=>String(r[c.key]??'')).join(' ').toLowerCase();
+        if(!hay.includes(searchTerm.toLowerCase()))return false;
+      }
+      return true;
+    });
+
+    if(!rows.length){
+      body.innerHTML=`<tr class="empty-row"><td colspan="${cfg.cols.length+3}">No records match.</td></tr>`;
+      return;
+    }
+
+    body.innerHTML=rows.map(r=>{
+      const removed=isRemoved(r);
+      const statusCell=r.status==='dup'
+        ? `<span class="status-pill dup" title="Matches ${escapeHtml(r.dupOf||'an existing record')}">Duplicate</span>`
+        : `<span class="status-pill ready">Ready</span>`;
+      const cells=cfg.cols.map(c=>`<td><input class="cell-edit" data-id="${r.id}" data-key="${c.key}" value="${escapeHtml(String(r[c.key]??''))}"></td>`).join('');
+      let actions;
+      if(removed){
+        actions=`<button class="keep" data-act="restore" data-id="${r.id}">Undo</button>`;
+      } else if(r.status==='dup'){
+        actions=`<button class="keep" data-act="keep" data-id="${r.id}" title="Import anyway">Keep</button>
+                 <button class="icon-btn" data-act="remove" data-id="${r.id}" title="Skip this record">🗑</button>`;
+      } else {
+        actions=`<button class="icon-btn" data-act="remove" data-id="${r.id}" title="Remove">🗑</button>`;
+      }
+      return `<tr class="${r.status==='dup'?'dup-row':''} ${removed?'removed':''}">
+        <td class="cb"><input type="checkbox" ${removed?'disabled':''}></td>
+        <td>${statusCell}</td>
+        ${cells}
+        <td><div class="row-actions">${actions}</div></td>
+      </tr>`;
+    }).join('');
+
+    // wire inline edits
+    body.querySelectorAll('.cell-edit').forEach(inp=>{
+      inp.addEventListener('change',()=>{
+        const row=cfg.rows.find(x=>String(x.id)===inp.dataset.id);
+        if(row) row[inp.dataset.key]=inp.value;
+      });
+    });
+    // wire actions
+    body.querySelectorAll('[data-act]').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const row=cfg.rows.find(x=>String(x.id)===btn.dataset.id);
+        if(!row)return;
+        const act=btn.dataset.act;
+        if(act==='remove'){ row._removed=true; }
+        if(act==='restore'){ row._removed=false; }
+        if(act==='keep'){ row.status='ready'; toast('Marked as a new record — it will be imported.'); }
+        refreshAll();
+      });
+    });
+  }
+
+  function refreshAll(){
+    renderStats();renderTabs();renderFilters();renderTable();updateImportBtn();
+  }
+
+  function updateImportBtn(){
+    const n=grandReady();
+    document.getElementById('importCount').textContent=n?`${n} record${n>1?'s':''}`:'';
+    document.getElementById('importBtn').disabled=n===0;
+  }
+
+  // tabs
+  document.getElementById('revTabs').querySelectorAll('button').forEach(b=>{
+    b.onclick=()=>{
+      document.getElementById('revTabs').querySelectorAll('button').forEach(x=>x.classList.remove('on'));
+      b.classList.add('on');
+      activeType=b.dataset.type;activeFilter='all';
+      renderFilters();renderTable();
+    };
+  });
+  // search
+  document.getElementById('revSearch').addEventListener('input',e=>{searchTerm=e.target.value;renderTable();});
+  // unrec collapse
+  document.getElementById('unrecHead').addEventListener('click',()=>{
+    document.getElementById('unrec').classList.toggle('open');
+  });
+  // back
+  document.getElementById('reviewBack').addEventListener('click',e=>{e.preventDefault();closeReview();});
+  document.getElementById('importHubBack').addEventListener('click',e=>{e.preventDefault();toast('Back would return to Booking Services.');});
+
+  /* ---- import → progress → success ---- */
+  const overlay=document.getElementById('overlay');
+  document.getElementById('importBtn').addEventListener('click',()=>{
+    // snapshot counts per type (ready only)
+    const summary=Object.keys(DATA).map(t=>({label:DATA[t].label,n:counts(t).ready}));
+    const skipped=Object.keys(DATA).reduce((s,t)=>s+DATA[t].rows.filter(r=>r._removed).length,0);
+
+    document.getElementById('ovProgress').hidden=false;
+    document.getElementById('ovSuccess').hidden=true;
+    overlay.classList.add('show');
+    const bar=document.getElementById('ovBar');
+    bar.style.width='0';
+    // animate progress
+    let p=0;
+    const iv=setInterval(()=>{
+      p+=Math.random()*22+10;
+      if(p>=100){p=100;clearInterval(iv);bar.style.width='100%';setTimeout(showSuccess,450);}
+      bar.style.width=p+'%';
+    },300);
+
+    function showSuccess(){
+      document.getElementById('ovProgress').hidden=true;
+      const s=document.getElementById('ovSuccess');
+      s.hidden=false;
+      const total=summary.reduce((n,x)=>n+x.n,0);
+      document.getElementById('ovSuccessSub').textContent=`${total} records were added to your business.`;
+      document.getElementById('ovList').innerHTML=
+        summary.map(x=>`<li><span class="ico">✓</span> ${x.n} ${x.label.toLowerCase()} imported</li>`).join('')+
+        (skipped?`<li><span class="skip">${skipped} record${skipped>1?'s':''} skipped</span></li>`:'');
+    }
+  });
+  document.getElementById('ovDone').addEventListener('click',()=>{
+    overlay.classList.remove('show');
+    toast('Your imported data is now in Booking Services.');
+    closeReview();
+  });
+  overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.classList.remove('show');});
+</script>
