@@ -220,6 +220,18 @@
   .ov-sub{font-size:13.5px;color:var(--D40);line-height:1.5}
   .spinner{width:46px;height:46px;border-radius:50%;border:4px solid #e3e8ee;border-top-color:var(--B10);margin:0 auto;animation:spin .8s linear infinite}
   @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* processing loader view */
+  .loading-wrap{max-width:480px;margin:80px auto 0;text-align:center;background:#fff;border:1px solid var(--D60);border-radius:8px;box-shadow:var(--shadow-card);padding:48px 44px}
+  .loading-title{font-size:22px;font-weight:700;color:var(--D10);margin:22px 0 6px}
+  .loading-sub{font-size:14px;color:var(--D40);line-height:1.5}
+  .loading-steps{list-style:none;padding:0;margin:28px 0 0;text-align:left}
+  .loading-steps li{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--D40);padding:9px 0;transition:color .2s}
+  .loading-steps li .ls-ic{font-size:14px;width:18px;text-align:center;color:var(--D50)}
+  .loading-steps li.active{color:var(--D20)}
+  .loading-steps li.active .ls-ic{color:var(--B10)}
+  .loading-steps li.done{color:var(--D20)}
+  .loading-steps li.done .ls-ic{color:var(--G10)}
   .ov-bar{height:6px;border-radius:6px;background:#e8ebef;margin-top:20px;overflow:hidden}
   .ov-bar i{display:block;height:100%;width:0;background:var(--grad);transition:width .3s}
   .ov-check{width:54px;height:54px;border-radius:50%;background:#eaf7ef;color:var(--G10);font-size:28px;display:grid;place-items:center;margin:0 auto;font-weight:800}
@@ -478,6 +490,21 @@
        <div class="unrec-body" id="unrecBody"></div>
      </div>
    </div><!-- /viewReview -->
+
+   <!-- ===== PROCESSING LOADER VIEW ===== -->
+   <div id="viewLoading" hidden>
+     <div class="loading-wrap">
+       <div class="spinner"></div>
+       <div class="loading-title">Reading your files…</div>
+       <div class="loading-sub" id="loadingSub">Analyzing your data and matching it to Wix Bookings.</div>
+       <ul class="loading-steps" id="loadingSteps">
+         <li data-step="0"><span class="ls-ic">○</span> Reading uploaded files</li>
+         <li data-step="1"><span class="ls-ic">○</span> Detecting services, staff and bookings</li>
+         <li data-step="2"><span class="ls-ic">○</span> Checking for duplicates</li>
+         <li data-step="3"><span class="ls-ic">○</span> Preparing your review</li>
+       </ul>
+     </div>
+   </div><!-- /viewLoading -->
   </main>
 </div>
 
@@ -614,7 +641,7 @@
   genBtn.addEventListener('click',()=>{
     const hasFiles=files.length>0;
     const hasText=document.getElementById('aiInput').value.trim().length>0;
-    if(hasFiles){ lastEntry='create'; openReview(); }
+    if(hasFiles){ lastEntry='create'; goToReview(); }
     else if(hasText){toast('Generating your service with AI…');}
     else {toast('Describe a service or upload files to get started.');}
   });
@@ -625,6 +652,7 @@
   const viewCreate=document.getElementById('viewCreate');
   const viewReview=document.getElementById('viewReview');
   const viewImport=document.getElementById('viewImport');
+  const viewLoading=document.getElementById('viewLoading');
   let lastEntry='import'; // which entry point opened the review (import is the default landing page)
 
   // --- sample parsed data (what AI extracted from the files) ---
@@ -710,7 +738,32 @@
     return Object.keys(DATA).reduce((n,t)=>n+counts(t).ready,0);
   }
 
+  // show the processing loader, then reveal the review report
+  function goToReview(){
+    viewCreate.hidden=true;
+    viewImport.hidden=true;
+    viewReview.hidden=true;
+    viewLoading.hidden=false;
+    document.querySelector('.main').scrollTop=0;
+
+    const steps=[...viewLoading.querySelectorAll('.loading-steps li')];
+    steps.forEach(li=>{li.classList.remove('active','done');li.querySelector('.ls-ic').textContent='○';});
+    let i=0;
+    function advance(){
+      if(i>0){const prev=steps[i-1];prev.classList.remove('active');prev.classList.add('done');prev.querySelector('.ls-ic').textContent='✓';}
+      if(i<steps.length){
+        steps[i].classList.add('active');
+        i++;
+        setTimeout(advance, 520 + Math.random()*260);
+      } else {
+        setTimeout(openReview, 350);
+      }
+    }
+    advance();
+  }
+
   function openReview(){
+    viewLoading.hidden=true;
     viewCreate.hidden=true;
     viewImport.hidden=true;
     viewReview.hidden=false;
@@ -732,6 +785,7 @@
   /* ---- floating switcher between the two entry-point pages ---- */
   function gotoPage(page){
     viewReview.hidden=true;
+    viewLoading.hidden=true;
     viewCreate.hidden=(page!=='create');
     viewImport.hidden=(page!=='import');
     document.querySelector('.main').scrollTop=0;
@@ -775,7 +829,7 @@
     // feed the hub's files into the shared review flow
     files=hubFiles.slice();
     lastEntry='import';
-    openReview();
+    goToReview();
   });
 
   function renderSrc(){
