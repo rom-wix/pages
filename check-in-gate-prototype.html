@@ -786,12 +786,12 @@ button{font-family:var(--sans)}
   <h1>Check-in Gate <span class="pill">Interactive prototype</span></h1>
   <p>Tap inside the device to use it. In the scanner, <b>tap the frame</b> to simulate scanning the next member in the queue.</p>
   <div class="launch">
-    <button class="on" data-surf="owner" onclick="surf('owner',this)"><span class="dot"></span>Owner App · scan</button>
-    <button data-surf="member" onclick="surf('member',this)"><span class="dot"></span>Member App · pass</button>
-    <button data-surf="setm" onclick="surf('setm',this)"><span class="dot"></span>Setup · mobile</button>
-    <button data-surf="web" onclick="surf('web',this)"><span class="dot"></span>Setup · web</button>
-    <button data-surf="guest" onclick="surf('guest',this)"><span class="dot"></span>Confirmation email</button>
-    <button data-surf="plan" onclick="surf('plan',this)"><span class="dot"></span>Pricing plan setup</button>
+    <button class="on" data-surf="owner" onclick="surf('owner',this)"><span class="dot"></span>Owner App</button>
+    <button data-surf="member" onclick="surf('member',this)"><span class="dot"></span>Member App</button>
+    <button data-surf="setm" onclick="surf('setm',this)"><span class="dot"></span>Mobile Setup</button>
+    <button data-surf="web" onclick="surf('web',this)"><span class="dot"></span>Web Setup</button>
+    <button data-surf="guest" onclick="surf('guest',this)"><span class="dot"></span>Confirmation Email</button>
+    <button data-surf="plan" onclick="surf('plan',this)"><span class="dot"></span>Pricing Plan Setup</button>
     <button class="reset" onclick="location.reload()">↺ Reset</button>
   </div>
 </div></div>
@@ -1203,8 +1203,8 @@ button{font-family:var(--sans)}
 
           <div class="set-lead">QR check-in</div>
           <div class="set-group">
-            <div class="set-row"><div class="txt"><div class="t">Show QR in the member app</div><div class="s">Members open their pass and show it at the door.</div><span class="set-scope both">Bookings + Pricing Plans</span></div><div class="toggle" id="m-qr" onclick="mToggleQR(this)"><i></i></div></div>
-            <div class="set-row m-bookings"><div class="txt"><div class="t">Add QR to confirmation email</div><div class="s">So clients can check in without the member app.</div><span class="set-scope">Bookings only</span></div><div class="toggle" id="m-email-qr" onclick="mToggleEmail(this)"><i></i></div></div>
+            <div class="set-row"><div class="txt"><div class="t">Show QR in the member app</div><div class="s">Members open their pass and show it at the door.</div></div><div class="toggle" id="m-qr" onclick="mToggleQR(this)"><i></i></div></div>
+            <div class="set-row m-bookings"><div class="txt"><div class="t">Add QR to confirmation email</div><div class="s">So clients can check in without the member app.</div></div><div class="toggle" id="m-email-qr" onclick="mToggleEmail(this)"><i></i></div></div>
             <div class="set-row tap mqr m-bookings" onclick="openPicker()"><div class="txt"><div class="t">Check-in window</div></div><div class="val"><span id="s-window">1 hr before</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#B6C1CD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div></div>
             <div class="set-row mqr m-pp"><div class="txt"><div class="t">Deduct credits or restrict entry by plan</div><div class="s">Set up how plans work at check-in in Pricing Plans.</div><a class="m-managelink" style="display:inline-block;margin-top:8px" onclick="toast('Opening Pricing Plans')">Manage in Pricing Plans ↗</a></div></div>
           </div>
