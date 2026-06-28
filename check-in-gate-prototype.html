@@ -42,12 +42,25 @@ button{font-family:var(--sans)}
 .surface-stage{display:none;width:100%;flex-direction:column;align-items:center;gap:18px}
 .surface-stage.on{display:flex}
 .hint{color:var(--d30);font-size:13px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 16px;box-shadow:0 1px 3px rgba(11,17,40,.06)}
-/* demo state switcher (outside the prototype browser frame) */
-.demo-switch{display:flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px;box-shadow:0 2px 8px rgba(11,17,40,.1)}
-.demo-switch .ds-label{font-size:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--d40);padding:0 8px}
-.demo-switch .ds-btn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 12px;font-size:12.5px;font-weight:600;color:var(--d20);cursor:pointer;font-family:inherit}
+/* demo state switcher — floats on the RIGHT side of the stage, same place as the scan-demo panel */
+.demo-switch{position:fixed;top:50%;right:24px;transform:translateY(-50%);z-index:60;display:flex;flex-direction:column;align-items:stretch;gap:7px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;box-shadow:0 12px 36px rgba(11,17,40,.18);width:248px}
+.demo-switch .ds-label{font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--d40);padding:2px 4px 5px}
+.demo-switch .ds-btn{border:1px solid var(--line);background:#fff;border-radius:9px;padding:10px 12px;font-size:13px;font-weight:600;color:var(--d20);cursor:pointer;font-family:inherit;text-align:left}
 .demo-switch .ds-btn:hover{border-color:var(--b10)}
 .demo-switch .ds-btn.on{background:var(--b10);border-color:var(--b10);color:#fff}
+/* desktop (browser) surfaces: switchers as horizontal bars on top of the frame */
+#webStateSwitch,#webViewSwitch{position:static;transform:none;flex-direction:row;align-items:center;width:auto;gap:6px;padding:6px}
+#webStateSwitch .ds-label,#webViewSwitch .ds-label{padding:0 8px}
+#webStateSwitch .ds-btn,#webViewSwitch .ds-btn{padding:7px 12px;border-radius:8px;text-align:center}
+/* scan-result demo panel — floats beside the phone while the scanner is open */
+.scan-demo{position:fixed;top:50%;right:24px;transform:translateY(-50%);z-index:60;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 12px 36px rgba(11,17,40,.18);padding:12px;display:flex;flex-direction:column;gap:7px;width:248px}
+.scan-demo .sd-label{font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--d40);padding:2px 4px 5px}
+.scan-demo .sd-btn{display:flex;align-items:center;gap:9px;text-align:left;border:1px solid var(--line);background:#fff;border-radius:9px;padding:10px 12px;font-size:13px;font-weight:600;color:var(--d10);cursor:pointer;font-family:inherit}
+.scan-demo .sd-btn:hover{background:#f5f7fb;border-color:#c7cdd8}
+.scan-demo .sd-dot{width:9px;height:9px;border-radius:50%;flex:0 0 9px}
+.scan-demo .sd-btn.ok   .sd-dot{background:#25A55F}
+.scan-demo .sd-btn.warn .sd-dot{background:#F9AD4D}
+.scan-demo .sd-btn.err  .sd-dot{background:#E62214}
 .hint b{color:var(--b10)}
 
 /* phone */
@@ -198,6 +211,27 @@ button{font-family:var(--sans)}
 .mini-row{display:flex;align-items:center;gap:10px;justify-content:center;background:var(--bg);border-radius:12px;padding:10px 12px;margin:14px 0 16px}
 .mini-row .nm{font-size:15px;font-weight:600}.mini-row .sub{font-size:13px;color:var(--d30)}
 .acts{display:flex;flex-direction:column;gap:10px;margin-top:4px}
+/* scan-result: active plans + credit redemption */
+.plan-list{display:flex;flex-direction:column;gap:8px;margin:14px 0 4px;text-align:left}
+.plan-row{display:flex;align-items:center;gap:11px;border:1.5px solid var(--line);border-radius:12px;padding:11px 13px;cursor:pointer;background:#fff}
+.plan-row.sel{border-color:var(--b10);box-shadow:0 0 0 1px var(--b10);background:#F7FAFF}
+.plan-row.static{cursor:default}
+.plan-row .pl-ic{width:34px;height:34px;border-radius:9px;flex:0 0 34px;display:grid;place-items:center;background:var(--b50);color:var(--b10)}
+.plan-row .pl-ic svg{width:18px;height:18px}
+.plan-row .pl-m{flex:1;min-width:0}
+.plan-row .pl-t{font-size:14.5px;font-weight:700;color:var(--d10)}
+.plan-row .pl-s{font-size:12.5px;color:var(--d30);margin-top:2px}
+.plan-row .pl-chip{font-size:11px;font-weight:700;padding:3px 8px;border-radius:7px;background:var(--g-tint);color:var(--g-text);white-space:nowrap}
+.plan-row .pl-radio{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--d50);flex:0 0 18px;display:grid;place-items:center}
+.plan-row.sel .pl-radio{border:2px solid var(--b10)}
+.plan-row.sel .pl-radio:after{content:"";width:8px;height:8px;border-radius:50%;background:var(--b10)}
+.credit-box{background:var(--bg);border-radius:12px;padding:13px 15px;margin:14px 0 4px;text-align:left}
+.credit-box .cr-row{display:flex;align-items:center;justify-content:space-between;font-size:14px;color:var(--d20)}
+.credit-box .cr-row+.cr-row{margin-top:9px}
+.credit-box .cr-row .cr-v{font-weight:700;color:var(--d10)}
+.credit-box .cr-row.cost .cr-v{color:var(--b10)}
+.credit-box .cr-after{border-top:1px dashed var(--d50);margin-top:11px;padding-top:11px}
+.credit-box .cr-after .cr-v{color:var(--g-text)}
 
 /* member */
 .member{--accent:#9C1AB1;--accent-dk:#84129A}
@@ -295,6 +329,94 @@ button{font-family:var(--sans)}
 .prow{display:flex;align-items:center;justify-content:space-between;padding:16px;font-size:17px;color:#2B2B36;border-top:1px solid #EDEEF2;cursor:pointer}
 .prow svg{color:#B6C1CD}
 
+/* setup-mobile: first-time experience (single intro screen) */
+.fte{background:#fff}
+.fte .fte-intro{flex:1;display:flex;flex-direction:column;overflow-y:auto}
+.fte .fte-skip{position:absolute;top:50px;right:18px;z-index:30;font-size:14px;font-weight:600;color:var(--d40);cursor:pointer}
+.fte .fte-x{position:absolute;top:44px;left:14px;z-index:30;width:36px;height:36px;display:grid;place-items:center;color:var(--d10);cursor:pointer;border-radius:50%}
+.fte .fte-x:active{background:var(--bg)}
+.fte .fte-lock{display:flex;align-items:center;gap:8px;justify-content:center;font-size:12.5px;color:var(--d30);margin-bottom:10px;line-height:1.4;text-align:center}
+.fte .fte-lock svg{width:15px;height:15px;flex:0 0 15px;color:var(--d40)}
+.fte .hero{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 26px 14px;text-align:center;background:radial-gradient(120% 80% at 50% 14%,#EAF1FF 0,#fff 72%)}
+.fte .art{width:184px;height:184px;border-radius:34px;position:relative;margin-bottom:28px;background:linear-gradient(150deg,#2B5CE6,#5E8BFF);box-shadow:0 22px 40px -18px rgba(43,92,230,.7);display:grid;place-items:center}
+.fte .art .qrtile{position:relative;width:108px;height:108px;border-radius:18px;background:#fff;box-shadow:0 10px 24px rgba(11,17,40,.28);display:flex;align-items:center;justify-content:center;padding:11px;z-index:2}
+.fte .art .qrtile img{width:100%;height:100%;display:block}
+.fte .art .qrtile.broken{background:#fff}
+.fte .art .qrtile.broken img{display:none}
+.fte .art .qrtile.broken::after{content:"";position:absolute;inset:11px;border-radius:6px;background:repeating-linear-gradient(0deg,#16213A 0 5px,#fff 5px 10px),repeating-linear-gradient(90deg,#16213A 0 5px,transparent 5px 10px)}
+.fte .art .beam{position:absolute;width:126px;height:126px;border:3px dashed rgba(255,255,255,.6);border-radius:22px;animation:ftespin 14s linear infinite}
+@keyframes ftespin{to{transform:rotate(360deg)}}
+.fte .art .tick{position:absolute;right:-10px;bottom:-10px;width:50px;height:50px;border-radius:50%;background:var(--g);display:grid;place-items:center;border:4px solid #fff;box-shadow:0 6px 16px rgba(81,183,123,.4)}
+.fte .art .tick svg{width:25px;height:25px}
+.fte .hero h3{font-family:var(--disp);font-weight:800;font-size:25px;line-height:1.15;color:var(--d10);margin:0}
+.fte .hero .sub{font-size:15px;color:var(--d30);line-height:1.55;margin:12px 0 0;max-width:30ch}
+.fte .cardhd{padding:30px 24px 2px}
+.fte .cardhd .ey{font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--b10)}
+.fte .cardhd h3{font-family:var(--disp);font-weight:800;font-size:23px;color:var(--d10);margin:8px 0 0;line-height:1.16}
+.fte .cardhd p{font-size:13.5px;color:var(--d30);line-height:1.5;margin:7px 0 0}
+.fte .fte-bullets{list-style:none;margin:6px 0 0;padding:20px 26px 0;display:flex;flex-direction:column;gap:18px}
+.fte .fte-bullets li{display:flex;gap:13px;align-items:flex-start;font-size:15px;line-height:1.45;color:var(--d10);font-weight:500}
+.fte .fte-bullets .bdot{width:26px;height:26px;border-radius:50%;flex:0 0 26px;display:grid;place-items:center;background:#E8F1FF;color:var(--b10);margin-top:1px}
+.fte .fte-bullets .bdot svg{width:15px;height:15px}
+.fte .foot{flex:0 0 auto;padding:14px 24px 8px}
+.fte .fbtn{height:48px;border-radius:24px;border:none;background:var(--b10);color:#fff;font-size:16px;font-weight:700;cursor:pointer;width:100%}
+.fte .fbtn:active{background:var(--b05)}
+.fte .fbtn.ghost{background:transparent;color:var(--b10);margin-top:4px}
+.fte .fbtn.ghost:active{background:var(--bg)}
+/* delivery-cards step */
+.fte .fte-cards{flex:1;overflow-y:auto;padding:18px 18px 0;display:flex;flex-direction:column;gap:14px}
+.fte .dcard{display:flex;gap:13px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px}
+.fte .dcard .ic{width:40px;height:40px;border-radius:11px;flex:0 0 40px;display:grid;place-items:center;background:var(--bg);color:var(--d10)}
+.fte .dcard .ic svg{width:21px;height:21px}
+.fte .dcard .tx{flex:1;min-width:0}
+.fte .dcard .tx .t{font-size:15.5px;font-weight:700;color:var(--d10);line-height:1.2}
+.fte .dcard .tx .s{font-size:13px;color:var(--d30);line-height:1.45;margin-top:4px}
+.fte .dcard .tx .set-scope{margin-top:9px}
+/* settings-sheet header (X · title · Save) */
+.set-head{flex:0 0 auto;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:6px 12px 10px}
+.set-head .x{width:36px;height:36px;display:grid;place-items:center;color:var(--d10);cursor:pointer;border-radius:50%}
+.set-head .x:active{background:var(--bg)}
+.set-head .ttl{flex:1;text-align:center;font-size:17px;font-weight:700;color:var(--d10);font-family:var(--disp)}
+.set-head .save{min-width:36px;text-align:right;padding:0 6px;font-size:16px;font-weight:700;color:var(--b10);cursor:pointer}
+.set-head .save:active{opacity:.6}
+/* scope label inside a settings row */
+.set-scope{display:inline-block;margin-top:8px;font-size:10.5px;font-weight:700;letter-spacing:.03em;padding:2px 8px;border-radius:6px;background:#EEF1F6;color:var(--d30)}
+.set-scope.both{background:#EDEBFF;color:#5A48F5}
+
+/* member: Spaces by Wix — site home */
+.ms-banner{flex:0 0 150px;height:150px;position:relative;overflow:hidden;background:#A41BB0}
+.ms-bnav{position:absolute;top:34px;left:0;right:0;display:flex;align-items:center;gap:18px;padding:0 16px}
+.ms-bk{cursor:pointer;display:grid;place-items:center}
+.ms-bic{cursor:pointer;display:grid;place-items:center}
+.ms-bnav .ms-bk svg{width:20px;height:20px}
+.ms-bnav .ms-bic svg{width:19px;height:19px}
+.ms-sheet{background:#fff;border-radius:18px 18px 0 0;margin-top:-18px;position:relative;padding:18px 18px 14px}
+.ms-name{font-family:var(--disp);font-size:21px;font-weight:800;color:#16213A}
+.ms-gen{font-size:13.5px;font-weight:600;color:#5B7AA8;margin-top:6px;display:inline-flex;align-items:center;gap:4px;cursor:pointer}
+.ms-gen svg{width:13px;height:13px}
+.ms-cta{display:flex;gap:11px;margin-top:16px}
+.ms-out{flex:1;height:42px;border-radius:21px;border:1.5px solid #5B7AA8;background:#fff;color:#5B7AA8;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px}
+.ms-out svg{width:15px;height:15px}
+.ms-fill{flex:1;height:42px;border-radius:21px;border:none;background:#5B7AA8;color:#fff;font-size:14px;font-weight:700;cursor:pointer}
+.ms-tabs{display:flex;justify-content:space-between;margin-top:18px;border-bottom:1px solid var(--line)}
+.ms-tab{font-size:13.5px;font-weight:600;color:#5B6478;padding:8px 2px 11px;position:relative;cursor:pointer}
+.ms-tab.on{color:#3A6BD4}
+.ms-tab.on:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2.5px;background:#3A6BD4;border-radius:2px}
+.ms-about{font-size:13.5px;color:#3B3F4D;line-height:1.5;margin-top:18px}
+.ms-touch{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:18px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.ms-th{font-size:15px;font-weight:700;color:#16213A}
+.ms-ts{font-size:12.5px;color:#5B6478;margin-top:2px}
+.ms-msg{height:34px;padding:0 16px;border-radius:17px;border:1.5px solid #5B7AA8;background:#fff;color:#5B7AA8;font-size:13.5px;font-weight:600;cursor:pointer;flex:0 0 auto}
+.ms-info{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.ms-iv{font-size:14.5px;font-weight:700;color:#16213A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:215px}
+.ms-il{font-size:12.5px;color:#5B6478;margin-top:2px}
+.ms-info svg{width:20px;height:20px;flex:0 0 20px}
+.ms-foot{display:flex;align-items:center;gap:9px;margin-top:18px}
+.ms-soc{width:38px;height:38px;border-radius:50%;background:#EFF1F4;display:grid;place-items:center;cursor:pointer;flex:0 0 38px}
+.ms-soc svg{width:18px;height:18px}
+.ms-manage{margin-left:auto;height:42px;padding:0 18px;border-radius:21px;border:none;background:#5B7AA8;color:#fff;font-size:14.5px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px}
+.ms-manage svg{width:17px;height:17px}
+
 /* settings (mobile) */
 .set-group{background:#fff;margin:14px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .set-row{display:flex;align-items:center;gap:13px;padding:14px 16px;position:relative}
@@ -391,6 +513,181 @@ button{font-family:var(--sans)}
 .save-bar{position:absolute;left:0;right:0;bottom:0;height:64px;background:#fff;border-top:1px solid var(--dash-line);box-shadow:0 -2px 6px rgba(0,6,36,.06);display:flex;align-items:center;justify-content:flex-end;gap:12px;padding:0 30px;transform:translateY(100%);transition:transform .25s}
 .save-bar.show{transform:translateY(0)}
 .save-bar .note{margin-right:auto;font-size:13px;color:var(--dash-sec)}
+
+/* ===== confirmation email (in a mobile mail client) ===== */
+#surf-guest .screen{display:flex;flex-direction:column}
+.mail-bar{flex:0 0 auto;display:flex;align-items:center;gap:10px;padding:4px 12px 8px;background:#fff;border-bottom:1px solid var(--line);color:var(--b10)}
+.mail-bar .mb-back{display:grid;place-items:center;cursor:pointer}
+.mail-bar .mb-ttl{flex:1;font-size:15px;font-weight:600;color:var(--b10)}
+.mail-bar .mb-ic{display:grid;place-items:center;color:var(--d40);cursor:pointer}
+.mail-meta{flex:0 0 auto;background:#fff;padding:10px 16px 14px;border-bottom:1px solid var(--line)}
+.mail-meta .mm-subj{font-size:18px;font-weight:700;color:var(--d10);font-family:var(--disp);line-height:1.2}
+.mail-meta .mm-from{display:flex;align-items:center;gap:10px;margin-top:11px}
+.mail-meta .mm-av{width:34px;height:34px;border-radius:50%;flex:0 0 34px;display:grid;place-items:center;background:linear-gradient(135deg,#5b3df5,#a23bd6);color:#fff;font-size:14px;font-weight:700}
+.mail-meta .mm-name{font-size:14px;font-weight:600;color:var(--d10)}
+.mail-meta .mm-to{font-size:12.5px;color:var(--d40);margin-top:1px}
+.mail-body{flex:1;overflow-y:auto;background:#fff}
+.em{padding:22px 22px 28px;color:#1A1A1A;font-family:Arial,Helvetica,sans-serif}
+.em-h1{font-size:26px;font-weight:800;margin:0;line-height:1.15;color:#111}
+.em-intro{font-size:14.5px;line-height:1.6;color:#222;margin:16px 0 0}
+.em-hr{height:1px;background:#E2E2E2;margin:22px 0}
+.em-h2{font-size:20px;font-weight:800;margin:0 0 16px;color:#111}
+.em-field{margin:0 0 16px}
+.em-field .em-lbl{font-size:14.5px;font-weight:700;color:#111}
+.em-field .em-val{font-size:14.5px;color:#222;margin-top:3px;line-height:1.4}
+.em-qr{margin:4px 0 18px}
+.em-qr .qr-box{width:150px;height:150px;background:#fff;border-radius:4px;padding:0;margin:0}
+.em-qr-cap{font-size:13px;color:#555;line-height:1.5;margin-top:10px;max-width:280px}
+.em-cta{display:inline-block;background:#000;color:#fff;border:none;font-size:15px;font-weight:600;padding:14px 26px;border-radius:4px;cursor:pointer;font-family:inherit}
+.em-thanks{font-size:13.5px;color:#999;margin:0}
+
+/* ===== pricing plan setup (Wix Studio dashboard) ===== */
+.pp-app{width:1180px;height:740px;display:flex;flex-direction:column;background:#f4f5f7;font-size:14px;color:#16213A;overflow:hidden}
+.pp-top{flex:0 0 50px;background:#16161e;display:flex;align-items:center;gap:18px;padding:0 16px;color:#cfd2da}
+.pp-logo{font-family:var(--disp);font-weight:800;font-size:15px;letter-spacing:.04em;color:#fff}
+.pp-acct{display:flex;align-items:center;gap:5px;background:#2a2a33;border-radius:7px;padding:4px 8px}
+.pp-acct-av{width:22px;height:22px;border-radius:5px;background:#2BC5B4;color:#06302b;font-size:11px;font-weight:800;display:grid;place-items:center}
+.pp-site{display:flex;align-items:center;gap:6px;color:#fff;font-weight:600;font-size:14px}
+.pp-nav-i{display:flex;align-items:center;gap:4px;color:#cfd2da;font-size:13.5px}
+.pp-upgrade{border:1px solid #4a4a55;border-radius:16px;padding:4px 13px;font-size:13px;color:#fff}
+.pp-search{margin-left:auto;display:flex;align-items:center;gap:8px;background:#26262e;border-radius:8px;padding:7px 12px;font-size:12.5px;color:#9aa0ad;width:300px}
+.pp-top-ai{background:linear-gradient(120deg,#5b3df5,#a23bd6);color:#fff;font-size:12.5px;font-weight:700;border-radius:8px;padding:6px 11px}
+.pp-main{flex:1;display:flex;min-height:0}
+.pp-side{width:208px;flex:0 0 208px;background:#16161e;color:#c2c5cf;padding:8px 8px 20px;overflow-y:auto}
+.pp-side::-webkit-scrollbar{width:0}
+.pp-qa{background:#fff;color:#16213A;border-radius:8px;padding:9px 12px;font-size:13.5px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px;margin:4px 4px 12px}
+.pp-s-i{display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:7px;font-size:13.5px;color:#c2c5cf;cursor:pointer;position:relative}
+.pp-s-i:hover{background:#22222b}
+.pp-s-i svg{width:18px;height:18px;flex:0 0 18px;opacity:.85}
+.pp-s-i.open{color:#fff;font-weight:600}
+.pp-s-i .pp-chev{margin-left:auto;width:14px;height:14px;opacity:.7}
+.pp-s-i .pp-caret,.pp-sub .pp-caret{margin-left:auto;opacity:.5;font-size:15px}
+.pp-new{margin-left:6px;background:#ffc233;color:#5A3A00;font-size:9px;font-weight:800;border-radius:4px;padding:1px 5px;letter-spacing:.03em}
+.pp-badge{margin-left:auto;background:#2B5CE6;color:#fff;font-size:10px;font-weight:700;border-radius:9px;min-width:17px;height:17px;display:grid;place-items:center;padding:0 4px}
+.pp-side .pp-s-i .pp-badge+.pp-caret{margin-left:8px}
+.pp-sub{display:flex;align-items:center;gap:8px;padding:8px 10px 8px 40px;border-radius:7px;font-size:13px;color:#a9adb8;cursor:pointer}
+.pp-sub:hover{background:#22222b}
+.pp-sub.on{background:#2a2a33;color:#fff;font-weight:600}
+.pp-canvas{flex:1;display:flex;flex-direction:column;min-width:0;background:#f4f5f7}
+.pp-bar{flex:0 0 56px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;background:#f4f5f7}
+.pp-crumbs{font-size:14px;color:#16213A}
+.pp-crumbs b{font-weight:700}
+.pp-crumb-sep{color:#9aa0ad;margin:0 4px}
+.web-crumb-link{color:#16213A;cursor:pointer}
+.web-crumb-link:hover{text-decoration:underline}
+.pp-bar-actions{display:flex;gap:10px}
+.pp-cancel{background:#fff;border:1px solid #c5cad3;border-radius:18px;padding:7px 18px;font-size:14px;font-weight:600;color:#16213A;cursor:pointer}
+.pp-save{background:#2B5CE6;border:none;border-radius:18px;padding:7px 22px;font-size:14px;font-weight:600;color:#fff;cursor:pointer}
+.pp-content{flex:1;overflow-y:auto;display:flex;gap:22px;padding:6px 26px 40px;align-items:flex-start}
+.pp-content::-webkit-scrollbar{width:8px}.pp-content::-webkit-scrollbar-thumb{background:#d4d8df;border-radius:4px}
+.pp-col-main{flex:1;min-width:0}
+.pp-card{background:#fff;border-radius:10px;border:1px solid #e6e8ec;padding:26px 28px}
+.pp-card-h{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
+.pp-h2{font-family:var(--disp);font-size:19px;font-weight:700;color:#16213A}
+.pp-desc{font-size:13.5px;color:#5b6478;margin-top:4px}
+.pp-link{color:#2B5CE6;font-size:13.5px;font-weight:600;cursor:pointer}
+.pp-benefit{display:flex;gap:14px;padding:18px 0 4px;border-top:1px solid #eef0f3;margin-top:18px}
+.pp-benefit.alt{padding:18px 0}
+.pp-chk{width:20px;height:20px;border-radius:5px;border:1.5px solid #c5cad3;flex:0 0 20px;margin-top:2px;display:grid;place-items:center}
+.pp-chk.on{background:#2B5CE6;border-color:#2B5CE6}
+.pp-chk svg{width:13px;height:13px}.pp-chk:not(.on) svg{display:none}
+.pp-b-body{flex:1;min-width:0}
+.pp-b-t{font-size:15.5px;font-weight:700;color:#16213A}
+.pp-b-s{font-size:13.5px;color:#5b6478;margin-top:3px}
+.pp-q{font-size:13.5px;font-weight:600;color:#16213A;margin:20px 0 9px}
+.pp-types{display:flex;gap:14px}
+.pp-type{flex:1;border:1.5px solid #dfe3e9;border-radius:8px;padding:16px;cursor:pointer;text-align:center}
+.pp-type.sel{border-color:#2B5CE6;box-shadow:0 0 0 1px #2B5CE6}
+.pp-type-t{font-size:14.5px;font-weight:700;color:#16213A}
+.pp-type-s{font-size:12.5px;color:#5b6478;line-height:1.45;margin-top:6px}
+.pp-stepper{width:140px;height:38px;border:1px solid #c5cad3;border-radius:6px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;font-size:14px;color:#16213A;background:#fff}
+.pp-stepper.wide{width:100%}
+.pp-step-ar{display:flex;flex-direction:column;gap:1px;color:#595d70}
+.pp-roll{display:flex;align-items:center;gap:10px;font-size:13.5px;color:#16213A;margin:16px 0 0}
+.pp-tog{width:34px;height:20px;border-radius:11px;background:#c5cad3;position:relative;flex:0 0 34px}
+.pp-tog i{position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff}
+.pp-inner{border:1px solid #e6e8ec;border-radius:10px;padding:18px}
+.pp-lbl{font-size:13px;color:#16213A;margin-bottom:7px}
+.pp-select{height:38px;border:1px solid #c5cad3;border-radius:6px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;font-size:14px;color:#9aa0ad;background:#fff}
+.pp-two{display:flex;gap:16px;margin-top:16px}
+.pp-two>div{flex:1}
+.pp-addset{margin-top:14px;background:#eef2fb;border-radius:8px;padding:14px;display:flex;align-items:center;justify-content:center;gap:8px;color:#2B5CE6;font-size:14px;font-weight:600;cursor:pointer}
+/* interactive Services dropdown (QR check-in row) */
+.ppq-select{cursor:pointer}
+.ppq-select.open{border-color:#2B5CE6;box-shadow:0 0 0 2px rgba(43,92,230,.18)}
+.ppq-menu{border:1px solid #e6e8ec;border-top:none;border-radius:0 0 8px 8px;box-shadow:0 12px 30px rgba(0,6,36,.16);overflow:hidden;background:#fff;margin-top:-2px}
+.ppq-row{display:flex;align-items:center;gap:11px;padding:10px 13px;font-size:14px;color:#16213A;cursor:pointer}
+.ppq-row+.ppq-row{border-top:1px solid #f1f2f5}
+.ppq-row:hover{background:#f6f8fb}
+.ppq-chk{width:18px;height:18px;border-radius:4px;border:1.6px solid #c5cad3;flex:0 0 18px;display:grid;place-items:center;background:#fff}
+.ppq-chk.on{background:#2B5CE6;border-color:#2B5CE6}
+.ppq-chk svg{width:12px;height:12px}.ppq-chk:not(.on) svg{display:none}
+.ppq-av{width:22px;height:22px;border-radius:50%;flex:0 0 22px;background:#e7eaef}
+.ppq-av.ph{background:linear-gradient(135deg,#d7c4b0,#b9a48d)}
+.ppq-sep{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#868aa5;padding:9px 13px 5px;background:#fafbfc;border-bottom:1px solid #f1f2f5}
+.ppq-qrow{display:flex;align-items:center;gap:11px;padding:13px;background:#EEF2FB;border-bottom:1px solid #DCE4FB;cursor:pointer}
+.ppq-qrow .ppq-chk{border-color:#2B5CE6;background:#2B5CE6}
+.ppq-qrow .ppq-chk svg{display:block}
+.ppq-qrow .ppq-chk.off{background:#fff}
+.ppq-qrow .ppq-chk.off svg{display:none}
+.ppq-qbody{flex:1;min-width:0}
+.ppq-qt{font-size:14px;font-weight:700;color:#16213A}
+.ppq-qs{font-size:12.5px;color:#5b6478;line-height:1.4;margin-top:3px}
+.ppq-howsel{cursor:pointer}
+.ppq-howsel.open{border-color:#2B5CE6;box-shadow:0 0 0 2px rgba(43,92,230,.18)}
+.ppq-howmenu{position:absolute;left:0;right:0;top:calc(100% + 4px);background:#fff;border:1px solid #e6e8ec;border-radius:8px;box-shadow:0 12px 30px rgba(0,6,36,.16);overflow:hidden;z-index:20}
+.ppq-howopt{padding:11px 13px;font-size:14px;color:#16213A;cursor:pointer}
+.ppq-howopt:hover{background:#f6f8fb}
+.ppq-howopt.sel{background:#2B5CE6;color:#fff}
+.pp-col-side{width:300px;flex:0 0 300px}
+.pp-pv-h{font-family:var(--disp);font-size:17px;font-weight:700;color:#16213A}
+.pp-pv-s{font-size:13px;color:#5b6478;margin-top:4px}
+.pp-info{color:#9aa0ad}
+.pp-pv-wrap{background:#eaf0fb;border-radius:12px;padding:26px 22px;margin-top:14px}
+.pp-pv-card{background:#fff;border-radius:10px;box-shadow:0 4px 16px rgba(11,17,40,.08);padding:0 0 22px;text-align:center;overflow:hidden}
+.pp-pv-img{height:120px;background:linear-gradient(160deg,#dbe8fb,#eef4fc);display:grid;place-items:center}
+.pp-pv-name{font-size:18px;font-weight:700;color:#16213A;margin-top:20px}
+.pp-pv-price{margin-top:12px;display:flex;align-items:flex-start;justify-content:center;gap:2px}
+.pp-cur{font-size:18px;font-weight:700;color:#16213A;margin-top:4px}
+.pp-amt{font-size:38px;font-weight:800;color:#16213A;line-height:1}
+.pp-pv-cycle{font-size:15px;font-weight:700;color:#16213A;margin-top:2px}
+.pp-pv-valid{font-size:13px;color:#5b6478;margin-top:8px}
+.pp-pv-btn{margin:18px auto 0;background:#2B5CE6;color:#fff;border:none;border-radius:18px;padding:9px 0;width:160px;font-size:14px;font-weight:600;cursor:pointer}
+/* setup-web: "set up in mobile" promo (Orion-style) */
+.wm-wrap{flex:1;position:relative;overflow:hidden;display:flex;gap:30px;padding:46px 48px;align-items:center}
+.wm-bg{position:absolute;inset:0;z-index:0;background:
+   radial-gradient(70% 90% at 16% 28%,#CFE0FB 0,transparent 60%),
+   radial-gradient(64% 84% at 92% 62%,#A9D4F0 0,transparent 58%),
+   radial-gradient(80% 90% at 60% 8%,#DCEAFC 0,transparent 62%),
+   linear-gradient(125deg,#E2EDFB,#CFE3F7)}
+.wm-left,.wm-card{position:relative;z-index:1}
+.wm-left{flex:1;min-width:0;max-width:540px}
+.wm-brand{display:flex;align-items:center;gap:10px;font-family:var(--disp);font-weight:800;font-size:15px;letter-spacing:.12em;color:#16213A}
+.wm-lock{width:30px;height:30px;border-radius:8px;background:rgba(255,255,255,.7);display:grid;place-items:center}
+.wm-lock svg{width:17px;height:17px}
+.wm-h1{font-family:var(--disp);font-weight:800;font-size:42px;line-height:1.05;letter-spacing:-.02em;color:#16213A;margin:26px 0 0}
+.wm-lead{font-size:16px;line-height:1.6;color:#2c3242;margin:20px 0 0;max-width:46ch}
+.wm-lead b{font-weight:700;color:#16213A}
+.wm-list{list-style:disc;margin:22px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:12px}
+.wm-list li{font-size:15px;line-height:1.5;color:#2c3242}
+.wm-list li b{color:#16213A;font-weight:700}
+.wm-foot-note{font-size:15px;color:#2c3242;margin:24px 0 0}
+.wm-card{width:330px;flex:0 0 330px;background:#fff;border-radius:16px;box-shadow:0 22px 50px rgba(22,33,58,.18);padding:24px 22px}
+.wm-card-h{font-size:14px;color:#2c3242;text-align:center;line-height:1.45}
+.wm-qr{width:210px;height:210px;margin:18px auto 16px;position:relative}
+.wm-qr img{width:100%;height:100%;display:block}
+.wm-qr.broken img{display:none}
+.wm-qr .wm-qr-fb{display:none}
+.wm-qr.broken .wm-qr-fb{display:block;position:absolute;inset:0;background:repeating-conic-gradient(#16213A 0 25%,#fff 0 50%) 0 0/22px 22px}
+.wm-btn-dark{width:100%;height:46px;border-radius:23px;border:none;background:#16213A;color:#fff;font-size:15px;font-weight:700;cursor:pointer}
+.wm-altrow{background:#F4F5F8;border-radius:10px;padding:13px;text-align:center;margin-top:14px}
+.wm-alt-t{font-size:13.5px;font-weight:700;color:#16213A}
+.wm-alt-l{font-size:13.5px;color:#2B5CE6;font-weight:600;cursor:pointer;display:inline-block;margin-top:3px}
+.wm-div{height:1px;background:#E6E8EC;margin:18px 0 14px}
+.wm-share-t{font-size:14px;color:#16213A;text-align:center;margin-bottom:10px}
+.wm-share{display:flex;gap:8px}
+.wm-share-in{flex:1;height:38px;border:1px solid #c5cad3;border-radius:8px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#9aa0ad}
+.wm-share-b{height:38px;padding:0 20px;border-radius:19px;border:none;background:#16213A;color:#fff;font-size:14px;font-weight:700;cursor:pointer}
 
 /* toast */
 #toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:#000624;color:#fff;font-size:13.5px;font-weight:500;padding:11px 18px;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:.25s;z-index:300;display:flex;align-items:center;gap:9px;max-width:90vw}
@@ -493,7 +790,8 @@ button{font-family:var(--sans)}
     <button data-surf="member" onclick="surf('member',this)"><span class="dot"></span>Member App · pass</button>
     <button data-surf="setm" onclick="surf('setm',this)"><span class="dot"></span>Setup · mobile</button>
     <button data-surf="web" onclick="surf('web',this)"><span class="dot"></span>Setup · web</button>
-    <button data-surf="guest" onclick="surf('guest',this)"><span class="dot"></span>Guest pass · web</button>
+    <button data-surf="guest" onclick="surf('guest',this)"><span class="dot"></span>Confirmation email</button>
+    <button data-surf="plan" onclick="surf('plan',this)"><span class="dot"></span>Pricing plan setup</button>
     <button class="reset" onclick="location.reload()">↺ Reset</button>
   </div>
 </div></div>
@@ -502,16 +800,20 @@ button{font-family:var(--sans)}
 
   <!-- ============ OWNER ============ -->
   <div class="surface-stage on" id="surf-owner">
-    <div class="hint">Open a session → <b>Check In</b> to scan participants · On <b>Bookings</b>, the top-right scan = membership entry</div>
+    <div class="demo-switch" id="ownerStateSwitch">
+      <span class="ds-label">Owner state · demo</span>
+      <button class="ds-btn on" data-st="firsttime" onclick="setOwnerState('firsttime',this)">First time</button>
+      <button class="ds-btn"    data-st="optedin"   onclick="setOwnerState('optedin',this)">Already opted in</button>
+    </div>
     <div class="phone"><div class="screen"><div class="notch"></div><div class="viewport" id="vpOwner">
 
       <!-- o-sessions -->
       <!-- o-home -->
-      <div class="scr" id="o-home">
+      <div class="scr on" id="o-home">
         <div class="statusbar" style="background:#fff"></div>
         <div class="oa-home-head">
           <div class="ava"></div>
-          <div class="biz">A La Cart <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></div>
+          <div class="biz">Jim's Gym <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></div>
           <div class="oa-ic" onclick="toast('Search')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></div>
           <div class="oa-ic" onclick="toast('Create new')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
           <div class="oa-ic" onclick="toast('14 notifications')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M10.5 21a1.8 1.8 0 003 0"/></svg><span class="oa-badge">14</span></div>
@@ -519,8 +821,8 @@ button{font-family:var(--sans)}
         <div class="scroll" style="background:#fff">
           <div class="oa-quick">
             <div class="pen"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#16213A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L18.5 9.5a2 2 0 00-3-3L5 17v3z"/><path d="M14 7l3 3"/></svg></div>
+            <div class="pill" onclick="ownerScanTap()"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V5a1 1 0 011-1h2M17 4h2a1 1 0 011 1v2M20 17v2a1 1 0 01-1 1h-2M7 20H5a1 1 0 01-1-1v-2"/><path d="M4 12h16"/></svg>Scan</div>
             <div class="pill" onclick="push('vpOwner','o-bookings')"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></svg>Calendar</div>
-            <div class="pill" onclick="toast('Orders')"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h3l2.4 12h11l2-8H6"/></svg>Orders</div>
           </div>
           <div class="oa-secrow"><div class="h">Upcoming Sessions</div><div class="a" onclick="push('vpOwner','o-bookings')">View All</div></div>
           <div class="oa-sess" onclick="push('vpOwner','o-session')"><div class="dt"><div class="d">17</div><div class="m">JUN</div></div><div class="c"><div class="t">Pilates</div><div class="s">Wed, 22:00 (1hr) With Carlos Lampel</div><div class="p">No participants yet</div></div></div>
@@ -546,14 +848,13 @@ button{font-family:var(--sans)}
       </div>
 
       <!-- o-bookings -->
-      <div class="scr on" id="o-bookings">
+      <div class="scr" id="o-bookings">
         <div class="statusbar" style="background:#fff"></div>
         <div class="oa-bk-head">
           <div class="bk" onclick="jump('vpOwner','o-home')"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></div>
-          <div class="ttl"><div class="t">Bookings</div><div class="s">A La Cart</div></div>
+          <div class="ttl"><div class="t">Bookings</div><div class="s">Jim's Gym</div></div>
           <div class="r">
             <div class="ic" onclick="push('vpOwner','o-entries')"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h12M8 12h12M8 18h12M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg></div>
-            <div class="ic" onclick="openScanner('entry')"><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V5a1 1 0 011-1h2M17 4h2a1 1 0 011 1v2M20 17v2a1 1 0 01-1 1h-2M7 20H5a1 1 0 01-1-1v-2"/><path d="M4 12h16"/></svg></div>
           </div>
         </div>
         <div class="oa-bktabs">
@@ -625,7 +926,6 @@ button{font-family:var(--sans)}
           <div class="row">
             <span class="bk" onclick="back('vpOwner')"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></span>
             <div class="ttl"><div class="t">Manage Participants</div><div class="s">Pilates</div></div>
-            <span class="hbtn" title="Scan QR to check in" onclick="openScanner('session')"><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V5a1 1 0 011-1h2M17 4h2a1 1 0 011 1v2M20 17v2a1 1 0 01-1 1h-2M7 20H5a1 1 0 01-1-1v-2"/><path d="M4 12h16"/></svg></span>
             <span class="hbtn dark" onclick="toast('Add participant')"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
           </div>
           <div class="mp-tabs"><div class="mp-tab on">Booked (7/10)</div><div class="mp-tab" onclick="toast('Waitlist')">Waitlist</div></div>
@@ -669,8 +969,8 @@ button{font-family:var(--sans)}
         <div class="scanner">
           <div class="scan-grain"></div><div class="scan-topscrim"></div><div class="scan-botscrim"></div>
           <div class="scan-window" onclick="doScan()"><span class="br tl"></span><span class="br tr"></span><span class="br bl"></span><span class="br brr"></span><span class="scanline"></span></div>
-          <div class="scan-qr"><img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=0&data=WIX-PASS%7Cpulse-studio" alt="" onerror="this.parentNode.style.background='repeating-conic-gradient(#000 0 25%,#fff 0 50%) 0 0/20px 20px'"></div>
-          <div class="scan-nav"><span class="x" onclick="closeScanner()"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span><span class="t" id="o-scan-title">Scan QR code</span></div>
+          <div class="scan-qr"><img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=0&data=WIX-PASS%7Cjims-gym" alt="" onerror="this.parentNode.style.background='repeating-conic-gradient(#000 0 25%,#fff 0 50%) 0 0/20px 20px'"></div>
+          <div class="scan-nav"><span class="x" onclick="closeScanner()"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span><span class="t" id="o-scan-title">Scan QR code</span><span class="x" style="margin-left:auto" title="Check-in settings" onclick="openSettingsFromScan()"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.6 1.6 0 00-1.8-.3 1.6 1.6 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.6 1.6 0 00-1-1.5 1.6 1.6 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.6 1.6 0 00.3-1.8 1.6 1.6 0 00-1.5-1H3a2 2 0 110-4h.1a1.6 1.6 0 001.5-1 1.6 1.6 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.6 1.6 0 001.8.3H9a1.6 1.6 0 001-1.5V3a2 2 0 114 0v.1a1.6 1.6 0 001 1.5 1.6 1.6 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.6 1.6 0 00-.3 1.8V9a1.6 1.6 0 001.5 1H21a2 2 0 110 4h-.1a1.6 1.6 0 00-1.5 1z"/></svg></span></div>
           <div class="scan-help">Point the camera at the member's pass<small>Tap the frame to scan</small></div>
           <div class="scan-actions"><span class="torch" onclick="this.classList.toggle('on')"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></svg></span><span class="text-btn" onclick="openManual()">Enter code manually</span></div>
         </div>
@@ -715,78 +1015,69 @@ button{font-family:var(--sans)}
       </div>
 
     </div></div></div>
+
+    <!-- demo: scan-result trigger panel (only while the scanner is open) -->
+    <div class="scan-demo" id="scanDemo" style="display:none">
+      <div class="sd-label">Simulate a scan result</div>
+      <button class="sd-btn ok"   onclick="triggerScan('ok')"><span class="sd-dot"></span>Approve · session check-in</button>
+      <button class="sd-btn ok"   onclick="triggerScan('mActive')"><span class="sd-dot"></span>Approve · membership entry</button>
+      <button class="sd-btn ok"   onclick="triggerScan('mPlans')"><span class="sd-dot"></span>Active plans · show all</button>
+      <button class="sd-btn ok"   onclick="triggerScan('mCredit')"><span class="sd-dot"></span>Credit plan · redeem</button>
+      <button class="sd-btn ok"   onclick="triggerScan('mCreditMulti')"><span class="sd-dot"></span>Multiple credit plans · choose</button>
+      <button class="sd-btn warn" onclick="triggerScan('intake')"><span class="sd-dot"></span>Missing intake form</button>
+      <button class="sd-btn warn" onclick="triggerScan('warn')"><span class="sd-dot"></span>Plan may be lapsed</button>
+      <button class="sd-btn warn" onclick="triggerScan('mWindow')"><span class="sd-dot"></span>Outside access hours</button>
+      <button class="sd-btn err"  onclick="triggerScan('mNone')"><span class="sd-dot"></span>Invalid / no membership</button>
+      <button class="sd-btn err"  onclick="triggerScan('err')"><span class="sd-dot"></span>Not eligible</button>
+    </div>
   </div>
 
   <!-- ============ MEMBER ============ -->
   <div class="surface-stage" id="surf-member">
-    <div class="hint">Switch tabs at the bottom · open <b>My Pass</b> · tap <b>Preview entry</b> to see the "You're in" moment</div>
     <div class="phone member"><div class="screen"><div class="notch"></div><div class="viewport" id="vpMember">
 
-      <!-- m-profile (My Profile hub) -->
-      <div class="scr" id="m-profile">
-        <div class="statusbar"></div>
-        <div class="bk-head"><div class="row"><span class="ttl" style="margin-right:0">My Profile</span></div></div>
-        <div style="flex:1;overflow-y:auto;background:#fff">
-          <div style="display:flex;align-items:center;gap:14px;padding:18px 16px"><div class="avatar" style="width:54px;height:54px;flex:0 0 54px;background:#9C1AB1;font-size:20px">RL</div><div><div style="font-size:19px;font-weight:700;color:#2B2B36">Rom Lampel</div><div style="font-size:14px;color:#5B6478">Member · A La Cart</div></div></div>
-          <div class="entry-banner" style="margin:0 16px 4px" onclick="showPass('entry')"><span class="qi"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"><rect x="3" y="4" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="6" rx="1"/><rect x="14" y="4" width="7" height="7" rx="1"/><path d="M14 15h3v5M20 14v6" stroke-linecap="round"/></svg></span><div style="flex:1"><div class="t">Your entry pass</div><div class="s">Active member · tap to show your code</div></div><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div>
-          <div style="font-size:12px;color:#849AA9;margin:8px 18px 12px">Use this to enter sites where you're an active member</div>
-          <div class="prow" onclick="push('vpMember','m-bookings')"><span>Bookings</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div>
-          <div class="prow" onclick="toast('Memberships')"><span>Memberships</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div>
-          <div class="prow" onclick="toast('Payment methods')"><span>Payment methods</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div>
-          <div class="prow" onclick="toast('Account settings')"><span>Account settings</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div>
-        </div>
-        <div class="appnav"><div class="tab" onclick="toast('My Sites')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7M6 10v9h12v-9"/></svg>My Sites</div><div class="tab" onclick="toast('Chat')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8 8 0 01-11.7 7L4 20l1.5-4.3A8 8 0 1121 11.5z"/></svg>Chat</div><div class="tab on" onclick="jump('vpMember','m-profile')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg>My Profile</div></div>
-        <div class="homebar"><i></i></div>
-      </div>
-
-      <!-- m-bookings -->
-      <div class="scr on" id="m-bookings">
-        <div class="statusbar"></div>
-        <div class="bk-head"><div class="row"><span class="ico" onclick="jump('vpMember','m-profile')"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></span><span class="ttl">Bookings</span></div></div>
-        <div class="seg"><span class="s on">Upcoming</span><span class="s" onclick="toast('History')">History</span></div>
-        <div style="flex:1;overflow-y:auto;background:#fff">
-          <div class="entry-banner" onclick="showPass('entry')"><span class="qi"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"><rect x="3" y="4" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="6" rx="1"/><rect x="14" y="4" width="7" height="7" rx="1"/><path d="M14 15h3v5M20 14v6" stroke-linecap="round"/></svg></span><div style="flex:1"><div class="t">Your entry pass</div><div class="s">Active member · show your code at the door</div></div><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div>
-          <div class="tzchip"><span class="x" onclick="toast('Time zone')"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 2.6 15 0 18M12 3c-2.6 2.6-2.6 15 0 18"/></svg>Jerusalem time (GMT +03:00)</div>
-          <div class="bkcard" onclick="push('vpMember','m-detail')"><div class="date"><div class="dd">18</div><div class="mm">JUN</div></div><div class="mid"><div class="t">Pilates</div><div class="when">Tomorrow 22:00 (1hr)</div><div class="meta">With Carlos Lampel · 21 Broadway, New York,…</div><span class="badge-g">Booked</span></div><span class="dots" onclick="event.stopPropagation();openMSheet()"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></span></div>
-        </div>
-        <div class="appnav"><div class="tab" onclick="toast('My Sites')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7M6 10v9h12v-9"/></svg>My Sites</div><div class="tab" onclick="toast('Chat')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8 8 0 01-11.7 7L4 20l1.5-4.3A8 8 0 1121 11.5z"/></svg>Chat</div><div class="tab on" onclick="jump('vpMember','m-profile')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg>My Profile</div></div>
-        <div class="homebar"><i></i></div>
-        <div class="picker msheet" id="m-sheet"><div class="dim" onclick="closeMSheet()"></div><div class="sheet"><span class="grip"></span>
-          <div style="margin-bottom:6px"><b style="color:#2B2B36;font-size:18px;display:block">Pilates</b><span style="font-size:15px;color:#5B6478">Tomorrow 22:00 (1hr)</span></div>
-          <div class="det-div"></div>
-          <div class="act-i" onclick="toast('Added to calendar',true);closeMSheet()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4M12 13v4M10 15h4"/></svg>Add to Calendar</div>
-          <div class="act-i" style="color:var(--accent)" onclick="closeMSheet();showPass('session')"><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"><rect x="3" y="4" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="6" rx="1"/><rect x="14" y="4" width="7" height="7" rx="1"/><path d="M14 15h3v5M20 14v6" stroke-linecap="round"/></svg>Show check-in code</div>
-          <div class="act-i" onclick="toast('Reschedule');closeMSheet()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Reschedule</div>
-          <div class="act-i" onclick="toast('Form submission');closeMSheet()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 10h6M9 14h6"/></svg>View form submission</div>
-          <div class="act-i danger" onclick="toast('Cancel booking');closeMSheet()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7h14M10 7V5h4v2M6 7l1 13h10l1-13"/></svg>Cancel Booking</div>
-        </div></div>
-      </div>
-
-      <!-- m-detail (booking detail) -->
-      <div class="scr" id="m-detail">
+      <!-- m-site (Spaces by Wix — site home) -->
+      <div class="scr on" id="m-site">
         <div class="statusbar light"></div>
-        <div class="m-header" style="padding:6px 16px 14px"><div class="top" style="padding-top:0"><span style="cursor:pointer;display:grid;place-items:center;width:30px;height:30px" onclick="back('vpMember')"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></span><span style="flex:1;text-align:center;font-size:17px;font-weight:700;margin-right:30px">Pilates</span></div></div>
-        <div class="det-banner" style="background:linear-gradient(120deg,#E8D9F0,#C9A9E0 55%,#9C6FC4)"></div>
-        <div class="det-body">
-          <h2>Pilates</h2>
-          <div class="det-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></svg>Tomorrow, 22:00 (1 hour)</div>
-          <div class="det-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg>Carlos Lampel</div>
-          <div class="det-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s7-6.3 7-11a7 7 0 10-14 0c0 4.7 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><a>Broadway</a></div>
-          <div class="det-badges"><span class="badge-g">Booked</span><span class="badge-g">Paid</span></div>
-          <div class="qr-cta" onclick="showPass('session')"><span class="qi"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"><rect x="3" y="4" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="6" rx="1"/><rect x="14" y="4" width="7" height="7" rx="1"/><path d="M14 15h3v5M20 14v6" stroke-linecap="round"/></svg></span><div class="ct"><div class="t">Show check-in code</div><div class="s">Scan this at the door to check in</div></div><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#868AA5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div>
-          <div class="det-div"></div>
-          <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:17px;color:#2B2B36">9 spots left</span><span style="width:36px;height:36px;border-radius:50%;background:#EDEFF3;display:grid;place-items:center"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#B6C1CD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg></span></div>
-          <div class="det-div"></div>
-          <div class="det-label">PRICE</div>
-          <div style="font-size:18px;color:#2B2B36;margin-bottom:16px">$22.00 per session</div>
-          <div style="font-size:18px;font-weight:700;color:#2B2B36">Part of a Pricing Plan</div>
-          <div style="font-size:15px;color:#5B6478;margin-top:4px">Renewed monthly, Silver punch card</div>
-          <div class="det-div"></div>
-          <div class="det-link" onclick="toast('Form submission')"><span>View form submission</span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div>
-          <button class="btn-purple" onclick="toast('Reschedule')" style="margin-top:18px">Reschedule</button>
-          <button class="btn-red" onclick="toast('Cancel booking')">Cancel Booking</button>
+        <div class="ms-banner">
+          <div class="ms-bnav">
+            <span style="flex:1"></span>
+            <span class="ms-bic" onclick="toast('Notifications')"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M10.5 21a1.8 1.8 0 003 0"/></svg></span>
+            <span class="ms-bic" onclick="showPass('entry')" title="Show your QR pass"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"><rect x="3" y="4" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="6" rx="1"/><rect x="14" y="4" width="7" height="7" rx="1"/><path d="M14 15h3v5M20 14v6" stroke-linecap="round"/></svg></span>
+            <span class="ms-bic" onclick="toast('More')"><svg viewBox="0 0 24 24" width="18" height="18" fill="#fff" stroke="none"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></span>
+          </div>
         </div>
-        <div class="appnav"><div class="tab" onclick="toast('My Sites')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7M6 10v9h12v-9"/></svg>My Sites</div><div class="tab" onclick="toast('Chat')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8 8 0 01-11.7 7L4 20l1.5-4.3A8 8 0 1121 11.5z"/></svg>Chat</div><div class="tab on" onclick="jump('vpMember','m-profile')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg>My Profile</div></div>
+        <div style="flex:1;overflow-y:auto;background:#fff">
+          <div class="ms-sheet">
+            <div class="ms-name" style="margin-top:0">Jim's Gym</div>
+            <div class="ms-gen" onclick="toast('General Info')">General Info <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div>
+            <div class="ms-cta">
+              <button class="ms-out" onclick="toast('Invite')"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M8 8l4-4 4 4"/><path d="M5 14v4a2 2 0 002 2h10a2 2 0 002-2v-4"/></svg>Invite</button>
+              <button class="ms-fill" onclick="toast('Book Now')">Book Now</button>
+            </div>
+            <div class="ms-tabs">
+              <span class="ms-tab on">Home</span>
+              <span class="ms-tab" onclick="toast('Schedule')">Schedule</span>
+              <span class="ms-tab" onclick="toast('Services')">Services</span>
+              <span class="ms-tab" onclick="toast('Shop')">Shop</span>
+            </div>
+            <div class="ms-about">Jim's Gym is where you can share posts, stay updated and chat with others in my community.</div>
+            <div class="ms-touch">
+              <div><div class="ms-th">Get in Touch</div><div class="ms-ts">Jim's Gym</div></div>
+              <button class="ms-msg" onclick="toast('Message')">Message</button>
+            </div>
+            <div class="ms-info" onclick="showPass('entry')"><div><div class="ms-iv">YQFK6A</div><div class="ms-il">Invite Code</div></div><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#5B7AA8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V5a1 1 0 011-1h2M17 4h2a1 1 0 011 1v2M20 17v2a1 1 0 01-1 1h-2M7 20H5a1 1 0 01-1-1v-2"/><path d="M8 9h2v6H8zM12 9h1M15 9h1v6h-1M13 12h2"/></svg></div>
+            <div class="ms-info" onclick="toast('Open homepage')"><div><div class="ms-iv ml" style="font-size:16px">https://roml07.wixsite.com/purrfect-groo…</div><div class="ms-il">Homepage</div></div><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#5B7AA8" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 2.6 15 0 18M12 3c-2.6 2.6-2.6 15 0 18"/></svg></div>
+            <div class="ms-foot">
+              <span class="ms-soc" onclick="toast('Instagram')"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#16213A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17" cy="7" r="1.2" fill="#16213A" stroke="none"/></svg></span>
+              <span class="ms-soc" onclick="toast('Facebook')"><svg viewBox="0 0 24 24" width="22" height="22" fill="#16213A" stroke="none"><path d="M14 9h3V5h-3c-2.2 0-4 1.8-4 4v2H7v4h3v6h4v-6h3l1-4h-4V9a1 1 0 011-1z"/></svg></span>
+              <span class="ms-soc" onclick="toast('X')"><svg viewBox="0 0 24 24" width="20" height="20" fill="#16213A" stroke="none"><path d="M3 3h4l5 6.5L17.5 3H21l-7 9 7.5 9H17l-5.3-6.8L6 21H3l7.4-9.3z"/></svg></span>
+              <span class="ms-soc" onclick="toast('YouTube')"><svg viewBox="0 0 24 24" width="22" height="22" fill="#16213A" stroke="none"><path d="M22 12c0-2.5-.2-3.6-.6-4.3a2.7 2.7 0 00-1.9-1.4C18 6 12 6 12 6s-6 0-7.5.3a2.7 2.7 0 00-1.9 1.4C2.2 8.4 2 9.5 2 12s.2 3.6.6 4.3a2.7 2.7 0 001.9 1.4C6 18 12 18 12 18s6 0 7.5-.3a2.7 2.7 0 001.9-1.4c.4-.7.6-1.8.6-4.3z"/><path d="M10 9.2l5 2.8-5 2.8z" fill="#fff"/></svg></span>
+              <button class="ms-manage" onclick="toast('Manage')"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>Manage</button>
+            </div>
+          </div>
+        </div>
+        <div class="appnav"><div class="tab on" onclick="jump('vpMember','m-site')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7M6 10v9h12v-9"/></svg>My Sites</div><div class="tab" onclick="toast('Chat')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8 8 0 01-11.7 7L4 20l1.5-4.3A8 8 0 1121 11.5z"/></svg>Chat</div><div class="tab" onclick="toast('My Profile')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg>My Profile</div></div>
         <div class="homebar"><i></i></div>
       </div>
 
@@ -802,50 +1093,120 @@ button{font-family:var(--sans)}
             <div class="pass-bright" onclick="brighten(this)"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg>Brighten screen</div>
             <div class="pass-hint">Auto-refreshes every 60 sec for security</div>
           </div>
-          <div style="margin-top:auto;padding-top:14px"><button class="m-btn" style="background:var(--accent)" onclick="push('vpMember','m-yourein')">▶ Preview entry (simulate scan)</button></div>
         </div>
         <div class="bright-flash" id="m-flash"></div>
-        <div class="appnav"><div class="tab" onclick="toast('My Sites')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7M6 10v9h12v-9"/></svg>My Sites</div><div class="tab" onclick="toast('Chat')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8 8 0 01-11.7 7L4 20l1.5-4.3A8 8 0 1121 11.5z"/></svg>Chat</div><div class="tab on" onclick="jump('vpMember','m-profile')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg>My Profile</div></div>
+        <div class="appnav"><div class="tab" onclick="toast('My Sites')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7M6 10v9h12v-9"/></svg>My Sites</div><div class="tab" onclick="toast('Chat')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8 8 0 01-11.7 7L4 20l1.5-4.3A8 8 0 1121 11.5z"/></svg>Chat</div><div class="tab" onclick="toast('My Profile')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg>My Profile</div></div>
         <div class="homebar"><i></i></div>
       </div>
 
-      <!-- m-yourein -->
-      <div class="scr" id="m-yourein">
+      <!-- m-result (scan outcome, shown on the member's own screen) -->
+      <div class="scr" id="m-result">
         <div class="statusbar light"></div>
-        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 28px;text-align:center;color:#fff;background:linear-gradient(160deg,var(--accent),var(--accent-dk))">
-          <div style="width:108px;height:108px;border-radius:50%;background:rgba(255,255,255,.18);display:grid;place-items:center;margin-bottom:24px"><div style="width:78px;height:78px;border-radius:50%;background:#fff;display:grid;place-items:center"><svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div></div>
-          <div style="font-family:var(--disp);font-size:30px;font-weight:800">You're in!</div>
-          <div style="font-size:16px;opacity:.95;margin-top:10px;line-height:1.5">Checked in to <b>Pilates</b><br>Tomorrow · 22:00 · Broadway</div>
-          <button class="m-btn" style="background:rgba(255,255,255,.18);margin-top:28px;width:auto;padding:0 26px" onclick="passDone()">Done</button>
-        </div>
+        <div id="m-result-body" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 28px;text-align:center;color:#fff"></div>
         <div class="homebar light"><i></i></div>
       </div>
 
     </div></div></div>
+
+    <!-- demo: member scan-result trigger panel -->
+    <div class="scan-demo" id="mScanDemo" style="display:none">
+      <div class="sd-label">Simulate a scan result</div>
+      <button class="sd-btn ok"   onclick="mTriggerScan('ok')"><span class="sd-dot"></span>Approved · You're in</button>
+      <button class="sd-btn ok"   onclick="mTriggerScan('mActive')"><span class="sd-dot"></span>Approved · membership entry</button>
+      <button class="sd-btn warn" onclick="mTriggerScan('mWindow')"><span class="sd-dot"></span>Outside access hours</button>
+      <button class="sd-btn warn" onclick="mTriggerScan('intake')"><span class="sd-dot"></span>Intake form needed</button>
+      <button class="sd-btn err"  onclick="mTriggerScan('mNone')"><span class="sd-dot"></span>No active membership</button>
+      <button class="sd-btn err"  onclick="mTriggerScan('err')"><span class="sd-dot"></span>Not eligible</button>
+    </div>
   </div>
 
   <!-- ============ SETUP MOBILE ============ -->
   <div class="surface-stage" id="surf-setm">
-    <div class="hint">Turn on QR check-in to enable the rest · open <b>Check-in window</b> to pick a value</div>
     <div class="demo-switch" id="mobStateSwitch">
       <span class="ds-label">Installed apps · demo</span>
       <button class="ds-btn on" data-st="both"     onclick="setMobState('both',this)">Bookings + Pricing Plans</button>
       <button class="ds-btn"    data-st="bookings" onclick="setMobState('bookings',this)">Bookings only</button>
       <button class="ds-btn"    data-st="pp"       onclick="setMobState('pp',this)">Pricing Plans only</button>
     </div>
+    <div class="demo-switch" id="fteAccessSwitch" style="display:none">
+      <span class="ds-label">Access state · demo</span>
+      <button class="ds-btn on" data-acc="have"    onclick="setFteAccess('have',this)">Has access</button>
+      <button class="ds-btn"    data-acc="upgrade" onclick="setFteAccess('upgrade',this)">Needs Business Premium</button>
+      <button class="ds-btn"    data-acc="buy"     onclick="setFteAccess('buy',this)">Needs to buy ($10/mo)</button>
+    </div>
     <div class="phone"><div class="screen"><div class="notch"></div><div class="viewport" id="vpSetM">
+
+      <!-- s-fte : first-time experience (single intro screen) -->
+      <div class="scr fte" id="s-fte">
+        <div class="statusbar"></div>
+        <span class="fte-x" onclick="fteBack()"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span>
+        <div class="fte-intro">
+          <div class="hero">
+            <div class="art">
+              <div class="beam"></div>
+              <div class="qrtile"><img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=0&data=WIX-CHECKIN%7Cjims-gym" alt="QR" onerror="this.parentNode.classList.add('broken')"></div>
+              <div class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div>
+            </div>
+            <h3>Enable QR Check-in</h3>
+            <div class="sub">Scan a member's QR code at the door to confirm they're good to enter — by <b style="color:var(--b10)">booking</b> or by <b style="color:var(--b10)">Pricing Plan</b>.</div>
+          </div>
+          <ul class="fte-bullets">
+            <li><span class="bdot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span>Confirm entry in a second — booked session or active Pricing Plan</li>
+            <li><span class="bdot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span>See who still needs to sign their intake form</li>
+            <li><span class="bdot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span>Deduct a plan credit automatically at check-in</li>
+          </ul>
+        </div>
+        <div class="foot">
+          <div class="fte-lock" id="fte-lock" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg><span id="fte-lock-txt"></span></div>
+          <button class="fbtn" id="fte-cta" onclick="fteCtaTap()">Set up check-in</button>
+        </div>
+        <div class="homebar"><i></i></div>
+      </div>
+
+      <!-- s-fte2 : first-time experience step 2 — choose how members get their code -->
+      <div class="scr fte" id="s-fte2">
+        <div class="statusbar"></div>
+        <span class="fte-x" onclick="back('vpSetM')"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></span>
+        <div class="cardhd" style="padding-top:50px">
+          <div class="ey">Almost there</div>
+          <h3>How members get<br>their code</h3>
+          <p>Pick one or both — change it anytime in settings.</p>
+        </div>
+        <div class="fte-cards">
+          <div class="dcard">
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="4" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="6" rx="1"/><rect x="14" y="4" width="7" height="7" rx="1"/><path d="M14 15h3v5M20 14v6" stroke-linecap="round"/></svg></div>
+            <div class="tx"><div class="t">Show QR in the member app</div><div class="s">Members open their pass and show it at the door.</div></div>
+            <div class="toggle on" id="fte2-app" onclick="this.classList.toggle('on')"><i></i></div>
+          </div>
+          <div class="dcard m-bookings">
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M4 7l8 6 8-6"/></svg></div>
+            <div class="tx"><div class="t">Add QR to confirmation email</div><div class="s">So clients can check in without the member app.</div></div>
+            <div class="toggle on" id="fte2-email" onclick="this.classList.toggle('on')"><i></i></div>
+          </div>
+        </div>
+        <div class="foot">
+          <button class="fbtn" onclick="fteDone()">Done</button>
+          <button class="fbtn ghost" onclick="fteEditMore()">Edit more settings</button>
+        </div>
+        <div class="homebar"><i></i></div>
+      </div>
+
       <div class="scr on" id="s-main">
         <div class="statusbar"></div>
-        <div class="navbar"><div class="ico" onclick="toast('Back to Booking Settings')"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></div><div class="ttl"><div class="t">Check-in Gate</div></div></div>
+        <div class="set-head">
+          <div class="x" onclick="setmBack()"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></div>
+          <div class="ttl">Check-in Gate</div>
+          <div class="save" onclick="setmSave()">Save</div>
+        </div>
         <div class="scroll" style="background:var(--bg)">
           <div class="gate-hero"><div class="ic"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/><circle cx="12" cy="15.5" r="1.4" fill="#fff" stroke="none"/></svg></div><div><div class="t">Check-in &amp; Access</div><div class="s">Decide who can enter — by booking or active plan</div></div></div>
 
           <div class="set-lead">QR check-in</div>
           <div class="set-group">
-            <div class="set-row"><div class="txt"><div class="t">Turn on QR check-in</div><div class="s">QR scanner in the Owner app, QR generator in the member app</div></div><div class="toggle" id="m-qr" onclick="mToggleQR(this)"><i></i></div></div>
-            <div class="set-row mqr m-bookings"><div class="txt"><div class="t">Include QR in confirmation email</div><div class="s">So clients can check in without the member app</div></div><div class="toggle on" onclick="this.classList.toggle('on')"><i></i></div></div>
+            <div class="set-row"><div class="txt"><div class="t">Show QR in the member app</div><div class="s">Members open their pass and show it at the door.</div><span class="set-scope both">Bookings + Pricing Plans</span></div><div class="toggle" id="m-qr" onclick="mToggleQR(this)"><i></i></div></div>
+            <div class="set-row m-bookings"><div class="txt"><div class="t">Add QR to confirmation email</div><div class="s">So clients can check in without the member app.</div><span class="set-scope">Bookings only</span></div><div class="toggle" id="m-email-qr" onclick="mToggleEmail(this)"><i></i></div></div>
             <div class="set-row tap mqr m-bookings" onclick="openPicker()"><div class="txt"><div class="t">Check-in window</div></div><div class="val"><span id="s-window">1 hr before</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#B6C1CD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div></div>
-            <div class="set-row tap mqr m-pp" onclick="push('vpSetM','s-connect')"><div class="txt"><div class="t">Let members enter with an active plan</div><div class="s">Connect the plans that grant entry</div></div><div class="val" style="color:#116DFF;font-weight:600"><span id="m-plancount">Connect</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#116DFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div></div>
+            <div class="set-row mqr m-pp"><div class="txt"><div class="t">Deduct credits or restrict entry by plan</div><div class="s">Set up how plans work at check-in in Pricing Plans.</div><a class="m-managelink" style="display:inline-block;margin-top:8px" onclick="toast('Opening Pricing Plans')">Manage in Pricing Plans ↗</a></div></div>
           </div>
 
           <div class="m-bookings" id="m-intake-group">
@@ -873,35 +1234,90 @@ button{font-family:var(--sans)}
         <div class="homebar"><i></i></div>
       </div>
 
-      <!-- connect-a-plan screen -->
-      <div class="scr" id="s-connect">
-        <div class="statusbar"></div>
-        <div class="navbar"><div class="ico" onclick="back('vpSetM')"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></div><div class="ttl"><div class="t">Connect plans</div></div></div>
-        <div class="scroll" style="background:var(--bg)">
-          <div class="set-lead">Plans that let members check in</div>
-          <div class="set-group" id="m-plan-list"><!-- rendered by JS --></div>
-          <div class="set-note">Select the plans that grant entry. Plans come from <b>Pricing Plans</b>.</div>
-          <div style="padding:14px 16px"><a class="m-managelink" onclick="toast('Opening Pricing Plans')">Manage plans in Pricing Plans ↗</a></div>
-          <div style="height:20px"></div>
-        </div>
-        <div class="m-cta"><button onclick="mSaveConnect()">Done</button></div>
-        <div class="homebar"><i></i></div>
-      </div>
     </div></div></div>
   </div>
 
   <!-- ============ SETUP WEB ============ -->
   <div class="surface-stage" id="surf-web">
-    <div class="hint">The full <b>Check-in &amp; Access</b> settings page — turn on QR check-in, connect plans, set up the kiosk and door hardware</div>
-    <div class="demo-switch" id="webStateSwitch">
+    <div class="demo-switch" id="webViewSwitch">
+      <span class="ds-label">View · demo</span>
+      <button class="ds-btn on" data-wv="mobile"   onclick="setWebView('mobile',this)">Set up in mobile</button>
+      <button class="ds-btn"    data-wv="settings" onclick="setWebView('settings',this)">Settings page</button>
+    </div>
+    <div class="demo-switch" id="webStateSwitch" style="display:none">
       <span class="ds-label">Installed apps · demo</span>
       <button class="ds-btn on" data-st="both"     onclick="setWebState('both',this)">Bookings + Pricing Plans</button>
       <button class="ds-btn"    data-st="bookings" onclick="setWebState('bookings',this)">Bookings only</button>
       <button class="ds-btn"    data-st="pp"       onclick="setWebState('pp',this)">Pricing Plans only</button>
     </div>
     <div class="browser" id="webBrowser">
-      <div class="bro-bar"><div class="dots"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i></div><div class="bro-url"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#868AA5" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>wix.com/dashboard/pulse-studio/settings/check-in-access</div></div>
-      <iframe id="webFrame" src="access-control-settings-modular-mockup.html?view=detail&installed=both" title="Check-in &amp; Access settings" style="width:1180px;height:740px;border:0;display:block;background:#f0f4f7"></iframe>
+      <div class="bro-bar"><div class="dots"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i></div><div class="bro-url"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#868AA5" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>jims-gym.manage.wix.com/dashboard/settings/check-in-access</div></div>
+      <div class="pp-app">
+        <!-- top bar (same chrome as Pricing plan setup) -->
+        <div class="pp-top">
+          <span class="pp-logo">WIX STUDIO</span>
+          <span class="pp-acct"><span class="pp-acct-av">RL</span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+          <span class="pp-site">Jim's Gym <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+          <span class="pp-nav-i">Explore <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+          <span class="pp-nav-i">Hire a Professional</span>
+          <span class="pp-nav-i">Help <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+          <span class="pp-upgrade">Upgrade</span>
+          <span class="pp-search"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#9aa0ad" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>Search for tools, apps, help &amp; more…</span>
+          <span class="pp-top-ai">✦ AI</span>
+        </div>
+        <div class="pp-main">
+          <!-- sidebar (Settings selected) -->
+          <div class="pp-side">
+            <div class="pp-qa">Quick Actions <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7M6 10v9h12v-9"/></svg>Home</div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M11 2.5l1.7 4.8 4.8 1.7-4.8 1.7L11 15.5 9.3 10.7 4.5 9z"/></svg>AI Agents<span class="pp-new">NEW</span><span class="pp-caret">›</span></div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></svg>Booking Calendar<span class="pp-caret">›</span></div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>Events<span class="pp-caret">›</span></div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Getting Paid<span class="pp-caret">›</span></div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Sales<span class="pp-caret">›</span></div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 7l1.5 12h13L20 7M4 7l2-4h12l2 4"/></svg>Catalog<span class="pp-caret">›</span></div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Portfolio<span class="pp-caret">›</span></div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3 2.7-5 6-5s6 2 6 5M15 20c0-2 .5-3.5 1.5-4.5"/></svg>Groups<span class="pp-caret">›</span></div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Apps<span class="pp-badge">5</span><span class="pp-caret">›</span></div>
+            <div class="pp-s-i" style="margin-top:10px;border-top:1px solid #26262e;padding-top:14px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7M6 10v9h12v-9"/></svg>Site &amp; Mobile App<span class="pp-caret">›</span></div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-6 9 6v10a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>Marketing<span class="pp-caret">›</span></div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 8l9 6 9-6"/></svg>Inbox<span class="pp-caret">›</span></div>
+            <div class="pp-s-i on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 00.3 1.8 2 2 0 11-2.8 2.8 1.6 1.6 0 00-1.8-.3 1.6 1.6 0 00-1 1.5 2 2 0 11-4 0 1.6 1.6 0 00-1-1.5 1.6 1.6 0 00-1.8.3 2 2 0 11-2.8-2.8 1.6 1.6 0 00.3-1.8 1.6 1.6 0 00-1.5-1 2 2 0 110-4 1.6 1.6 0 001.5-1 1.6 1.6 0 00-.3-1.8 2 2 0 112.8-2.8 1.6 1.6 0 001.8.3 1.6 1.6 0 001-1.5 2 2 0 114 0 1.6 1.6 0 001 1.5 1.6 1.6 0 001.8-.3 2 2 0 112.8 2.8 1.6 1.6 0 00-.3 1.8 1.6 1.6 0 001.5 1 2 2 0 110 4 1.6 1.6 0 00-1.5 1z"/></svg>Settings<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" style="margin-left:auto"><path d="M12 17.3l-6.2 3.7 1.6-7L2 9.2l7.1-.6L12 2l2.9 6.6 7.1.6-5.4 4.8 1.6 7z"/></svg></div>
+          </div>
+          <!-- content: the real Check-in & Access settings (chrome stripped via embed=1) -->
+          <div class="pp-canvas" id="web-view-settings" style="display:none">
+            <div class="pp-bar"><div class="pp-crumbs" id="web-crumbs"><span class="web-crumb-link" onclick="webCrumbHome()">Settings</span> <span class="pp-crumb-sep">›</span> <b>Check-in &amp; Access</b></div></div>
+            <iframe id="webFrame" src="access-control-settings-modular-mockup.html?view=detail&installed=both&embed=1" title="Check-in &amp; Access settings" style="flex:1;width:100%;border:0;display:block;background:#f4f5f7"></iframe>
+          </div>
+          <!-- content: set up in the mobile app (Orion-style promo) -->
+          <div class="pp-canvas" id="web-view-mobile" style="display:flex">
+            <div class="pp-bar"><div class="pp-crumbs"><span>Settings</span> <span class="pp-crumb-sep">›</span> <b>Check-in &amp; Access</b></div></div>
+            <div class="wm-wrap">
+              <div class="wm-bg"></div>
+              <div class="wm-left">
+                <div class="wm-brand"><span class="wm-lock"><svg viewBox="0 0 24 24" fill="none" stroke="#16213A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg></span>CHECK-IN &amp; ACCESS</div>
+                <h1 class="wm-h1">Run check-in<br>from your phone.</h1>
+                <p class="wm-lead">Scanning happens at the door — so check-in lives in the <b>Wix Owner app</b>. Install it to scan members in and out on the go.</p>
+                <ul class="wm-list">
+                  <li><b>Scan at the door:</b> Point your phone's camera at a member's QR to check them in.</li>
+                  <li><b>Instant verdict:</b> See booking, plan status, and intake forms the moment you scan.</li>
+                  <li><b>Works anywhere:</b> Front desk, studio floor, or pop-up — no extra hardware.</li>
+                </ul>
+                <p class="wm-foot-note">Set the rules here on web. Do the scanning on mobile.</p>
+              </div>
+              <div class="wm-card">
+                <div class="wm-card-h">Scan to get the Wix Owner app, or send the link to your phone.</div>
+                <div class="wm-qr"><img src="https://api.qrserver.com/v1/create-qr-code/?size=360x360&margin=0&data=WIX-OWNER-APP%7Cjims-gym%7Ccheck-in" alt="Get the app QR" onerror="this.closest('.wm-qr').classList.add('broken')"><div class="wm-qr-fb"></div></div>
+                <button class="wm-btn-dark" onclick="toast('Link sent to your phone',true)">Send Link to My Phone</button>
+                <div class="wm-altrow"><div class="wm-alt-t">Prefer the desktop dashboard?</div><a class="wm-alt-l" onclick="setWebView('settings',document.querySelector('#webViewSwitch [data-wv=settings]'))">Configure settings on web →</a></div>
+                <div class="wm-div"></div>
+                <div class="wm-share-t">Share setup with your team</div>
+                <div class="wm-share"><div class="wm-share-in">Select or enter an email</div><button class="wm-share-b" onclick="toast('Shared')">Share</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1019,26 +1435,204 @@ button{font-family:var(--sans)}
 
   <!-- ============ GUEST PASS (web) ============ -->
   <div class="surface-stage" id="surf-guest">
-    <div class="hint">The no-login <b>web pass</b> a guest opens from their booking email — valid for one session, no app or membership</div>
     <div class="phone"><div class="screen"><div class="notch"></div>
       <div class="statusbar"></div>
-      <div style="display:flex;align-items:center;gap:8px;padding:6px 14px 8px;background:#f3f4f7;border-bottom:1px solid var(--line)"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#868AA5" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg><div style="flex:1;background:#fff;border:1px solid #e2e6ee;border-radius:8px;padding:5px 10px;font-size:12px;color:var(--d30);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">pulse-studio.wixsite.com/pass/noa-bar</div><svg viewBox="0 0 24 24" width="16" height="16" fill="#868AA5"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></div>
-      <div style="flex:1;overflow-y:auto;background:#fff;padding:20px 22px 24px;text-align:center">
-        <div style="font-family:var(--disp);font-weight:800;font-size:16px;letter-spacing:.14em;color:#000624">PULSE STUDIO</div>
-        <div style="font-family:var(--disp);font-size:22px;font-weight:700;margin-top:18px;color:#000624">Your check-in pass</div>
-        <div style="font-size:13px;color:#595D70;margin-top:4px">Guest booking · no account needed</div>
-        <div style="background:#F0F3F7;border-radius:14px;padding:14px 16px;margin:18px 0 4px;text-align:left;display:flex;gap:12px;align-items:center">
-          <div style="width:46px;text-align:center;flex:0 0 46px"><div style="font-size:20px;font-weight:700;color:#000624;line-height:1">16</div><div style="font-size:11px;font-weight:600;color:#868AA5">JUN</div></div>
-          <div><div style="font-size:15px;font-weight:600;color:#000624">Vinyasa Flow</div><div style="font-size:13px;color:#595D70">9:00 AM · Studio A · Pulse Studio</div></div>
+      <!-- mail client chrome -->
+      <div class="mail-bar">
+        <span class="mb-back"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></span>
+        <span class="mb-ttl">Inbox</span>
+        <span class="mb-ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9 6 9-6"/><rect x="3" y="5" width="18" height="14" rx="2"/></svg></span>
+      </div>
+      <div class="mail-meta">
+        <div class="mm-subj">Thanks for booking</div>
+        <div class="mm-from"><span class="mm-av">J</span><div class="mm-fr"><div class="mm-name">Jim's Gym</div><div class="mm-to">to you · 2 min ago</div></div></div>
+      </div>
+
+      <div class="mail-body">
+        <div class="em">
+          <h1 class="em-h1">Thanks for booking</h1>
+          <p class="em-intro">Hi Rom Lampel,<br>Your booking for "Pilates" is all set. If you have any questions, feel free to reach out.</p>
+
+          <div class="em-hr"></div>
+
+          <h2 class="em-h2">Pilates</h2>
+          <div class="em-field"><div class="em-lbl">Date:</div><div class="em-val">June 17, 2026 at 10:00 PM GMT+1</div></div>
+          <div class="em-field"><div class="em-lbl">Location:</div><div class="em-val">21 Broadway, New York, NY, USA</div></div>
+          <div class="em-field"><div class="em-lbl">Staff:</div><div class="em-val">Carlos Lampel</div></div>
+          <div class="em-field"><div class="em-lbl">Price:</div><div class="em-val">$22.00</div></div>
+
+          <!-- QR check-in block -->
+          <div class="em-field"><div class="em-lbl">Check-in code:</div></div>
+          <div class="em-qr">
+            <div class="qr-box"><img src="https://api.qrserver.com/v1/create-qr-code/?size=440x440&margin=0&data=WIX-BOOKINGS-QR%7Cbooking%3Apilates-2200%7Cclient%3Arom-lampel%7Csite%3Ajims-gym" alt="check-in QR code" onerror="this.closest('.qr-box').classList.add('broken')"><div class="qr-fallback"></div></div>
+            <div class="em-qr-cap">Show this at the door to check in.</div>
+          </div>
+
+          <button class="em-cta">Manage Booking</button>
+
+          <div class="em-hr"></div>
+
+          <h2 class="em-h2">Clients details</h2>
+          <div class="em-field"><div class="em-lbl">Name:</div><div class="em-val">Rom Lampel</div></div>
+          <div class="em-field"><div class="em-lbl">Contact number:</div><div class="em-val">+972524879564</div></div>
+
+          <div class="em-hr"></div>
+          <p class="em-thanks">Thanks,</p>
         </div>
-        <div class="qr-box" style="margin:18px auto 12px"><img src="https://api.qrserver.com/v1/create-qr-code/?size=440x440&margin=0&data=WIX-GUEST-PASS%7Cbooking%3Avinyasa-0900%7Cguest%3Anoa-bar%7Csite%3Apulse-studio" alt="guest QR" onerror="this.closest('.qr-box').classList.add('broken')"><div class="qr-fallback"></div></div>
-        <div style="font-size:14px;color:#32536A">Check in from <b style="color:#000624">8:00 AM</b></div>
-        <div style="font-size:12px;color:#849AA9;font-family:ui-monospace,Menlo,monospace;margin-top:4px">Booking · #BK-90213</div>
-        <button class="btn" style="background:#000;color:#fff;margin-top:20px;width:100%;display:flex;align-items:center;justify-content:center;gap:8px"><svg viewBox="0 0 24 24" width="18" height="18" fill="#fff"><path d="M16.4 12.9c0-2 1.6-3 1.7-3.1-0.9-1.4-2.4-1.5-2.9-1.6-1.2-.1-2.4.7-3 .7-.6 0-1.6-.7-2.6-.7-1.3 0-2.6.8-3.3 2-1.4 2.4-.4 6 1 8 .7 1 1.4 2 2.5 2 1 0 1.3-.6 2.5-.6 1.2 0 1.5.6 2.5.6s1.7-.9 2.4-1.9c.7-1.1 1-2.1 1-2.2 0 0-1.9-.7-2.3-2.5zM14.5 6.7c.5-.7.9-1.6.8-2.5-.8 0-1.7.5-2.3 1.2-.5.6-.9 1.5-.8 2.4.9.1 1.8-.4 2.3-1.1z"/></svg>Add to Apple Wallet</button>
-        <div style="font-size:12px;color:#849AA9;margin-top:14px;line-height:1.5">Show this at the door. We also emailed it to you, so you can reopen it anytime.</div>
       </div>
       <div class="homebar"><i></i></div>
     </div></div>
+  </div>
+
+  <!-- ============ PRICING PLAN SETUP ============ -->
+  <div class="surface-stage" id="surf-plan">
+    <div class="browser" id="planBrowser">
+      <div class="bro-bar"><div class="dots"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i></div><div class="bro-url"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#868AA5" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>roml07-cartqa.manage.wix.com/dashboard/pricing-plans/edit</div></div>
+      <div class="pp-app">
+        <!-- top bar -->
+        <div class="pp-top">
+          <span class="pp-logo">WIX STUDIO</span>
+          <span class="pp-acct"><span class="pp-acct-av">RL</span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+          <span class="pp-site">Jim's Gym <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+          <span class="pp-nav-i">Explore <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+          <span class="pp-nav-i">Hire a Professional</span>
+          <span class="pp-nav-i">Help <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+          <span class="pp-upgrade">Upgrade</span>
+          <span class="pp-search"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#9aa0ad" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>Search for tools, apps, help &amp; more…</span>
+          <span class="pp-top-ai">✦ AI</span>
+        </div>
+        <div class="pp-main">
+          <!-- sidebar -->
+          <div class="pp-side">
+            <div class="pp-qa">Quick Actions <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7M6 10v9h12v-9"/></svg>Home</div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M11 2.5l1.7 4.8 4.8 1.7-4.8 1.7L11 15.5 9.3 10.7 4.5 9z"/></svg>AI Agents<span class="pp-new">NEW</span><span class="pp-caret">›</span></div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></svg>Booking Calendar<span class="pp-caret">›</span></div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>Events<span class="pp-caret">›</span></div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Getting Paid<span class="pp-caret">›</span></div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Sales<span class="pp-caret">›</span></div>
+            <div class="pp-s-i open"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 7l1.5 12h13L20 7M4 7l2-4h12l2 4"/></svg>Catalog<svg class="pp-chev" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></div>
+            <div class="pp-sub">Store Products<span class="pp-caret">›</span></div>
+            <div class="pp-sub">Booking Services</div>
+            <div class="pp-sub on">Pricing Plans<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" style="margin-left:auto"><path d="M12 17.3l-6.2 3.7 1.6-7L2 9.2l7.1-.6L12 2l2.9 6.6 7.1.6-5.4 4.8 1.6 7z"/></svg></div>
+            <div class="pp-sub">Donations</div>
+            <div class="pp-sub">Gift Cards</div>
+            <div class="pp-sub">Discounts<span class="pp-caret">›</span></div>
+            <div class="pp-sub">Sales Channels<span class="pp-caret">›</span></div>
+            <div class="pp-sub">Booking Channels<span class="pp-caret">›</span></div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Portfolio<span class="pp-caret">›</span></div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3 2.7-5 6-5s6 2 6 5M15 20c0-2 .5-3.5 1.5-4.5"/></svg>Groups<span class="pp-caret">›</span></div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Apps<span class="pp-badge">5</span><span class="pp-caret">›</span></div>
+          </div>
+          <!-- content -->
+          <div class="pp-canvas">
+            <div class="pp-bar">
+              <div class="pp-crumbs"><span>Pricing Plans</span> <span class="pp-crumb-sep">›</span> <b>Gym one pass</b></div>
+              <div class="pp-bar-actions"><button class="pp-cancel">Cancel</button><button class="pp-save">Save</button></div>
+            </div>
+            <div class="pp-content">
+              <div class="pp-col-main">
+                <div class="pp-card">
+                  <div class="pp-card-h">
+                    <div>
+                      <div class="pp-h2">Benefits</div>
+                      <div class="pp-desc">Connect and manage benefits for this plan.</div>
+                    </div>
+                    <a class="pp-link">How to connect more benefits</a>
+                  </div>
+
+                  <!-- services and usage (checked) -->
+                  <div class="pp-benefit">
+                    <div class="pp-chk on"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div>
+                    <div class="pp-b-body">
+                      <div class="pp-b-t">Services and usage</div>
+                      <div class="pp-b-s">Give access to services as part of a membership or a package.</div>
+
+                      <div class="pp-q">What type of plan is this?</div>
+                      <div class="pp-types">
+                        <div class="pp-type">
+                          <div class="pp-type-t">Session-based</div>
+                          <div class="pp-type-s">Give clients an amount of sessions to use across a combination of selected services.</div>
+                        </div>
+                        <div class="pp-type sel">
+                          <div class="pp-type-t">Credit-based</div>
+                          <div class="pp-type-s">Give clients credits to spend, and decide how much each service is worth.</div>
+                        </div>
+                      </div>
+
+                      <div class="pp-q">Total credits</div>
+                      <div class="pp-stepper"><span>0</span><span class="pp-step-ar"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="#595d70" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="#595d70" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></div>
+
+                      <div class="pp-roll"><span class="pp-tog"><i></i></span>Roll over unused credits to the next renewal period.</div>
+
+                      <div class="pp-q">What's in this plan?</div>
+                      <div class="pp-inner">
+                        <div class="pp-lbl">Services</div>
+                        <div class="pp-select ppq-select" id="ppq-select" onclick="ppqToggle()"><span id="ppq-seltext" style="color:#9aa0ad">Select services</span><svg class="ppq-caret" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#868aa5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></div>
+                        <div class="ppq-menu" id="ppq-menu" style="display:none">
+                          <div class="ppq-qrow" id="ppq-qrow" onclick="ppqPickQR()">
+                            <div class="ppq-chk off" id="ppq-qchk"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div>
+                            <div class="ppq-qbody"><div class="ppq-qt">QR check-in</div><div class="ppq-qs">Any door check-in is allowed and deducts credits — no need to pick services.</div></div>
+                          </div>
+                          <div class="ppq-sep">Your services</div>
+                          <div class="ppq-row ppq-svc" data-name="Gel Pedicure" onclick="ppqPickSvc(this)"><span class="ppq-chk"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span><span class="ppq-av ph"></span>Gel Pedicure</div>
+                          <div class="ppq-row ppq-svc" data-name="football" onclick="ppqPickSvc(this)"><span class="ppq-chk"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span><span class="ppq-av"></span>football</div>
+                          <div class="ppq-row ppq-svc" data-name="Appointment | With a plan" onclick="ppqPickSvc(this)"><span class="ppq-chk"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span><span class="ppq-av"></span>Appointment | With a plan</div>
+                        </div>
+
+                        <!-- per-service fields (shown for both QR check-in and services) -->
+                        <div class="pp-two" id="ppq-two" style="display:none">
+                          <div style="position:relative">
+                            <div class="pp-lbl">How many session can be booked?</div>
+                            <div class="pp-select ppq-howsel" id="ppq-howsel" onclick="ppqHowToggle(event)"><span id="ppq-howtext" style="color:#16213A">Limited amount</span><svg class="ppq-how-caret" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#868aa5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></div>
+                            <div class="ppq-howmenu" id="ppq-howmenu" style="display:none">
+                              <div class="ppq-howopt sel" onclick="ppqHowPick('Limited amount',this)">Limited amount</div>
+                              <div class="ppq-howopt" onclick="ppqHowPick('Unlimited',this)">Unlimited</div>
+                            </div>
+                          </div>
+                          <div>
+                            <div class="pp-lbl">Credits per session</div>
+                            <div class="pp-stepper wide"><span>0</span><span class="pp-step-ar"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="#595d70" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="#595d70" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="pp-addset"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Add Another Set of Services</div>
+                    </div>
+                  </div>
+
+                  <!-- events memberships -->
+                  <div class="pp-benefit alt">
+                    <div class="pp-chk"></div>
+                    <div class="pp-b-body"><div class="pp-b-t">Events Memberships</div><div class="pp-b-s">Add ticket discount and ticket limit for your events.</div></div>
+                  </div>
+                  <!-- groups -->
+                  <div class="pp-benefit alt">
+                    <div class="pp-chk"></div>
+                    <div class="pp-b-body"><div class="pp-b-t">Groups</div><div class="pp-b-s">Give clients access to exclusive groups.</div></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- plan preview -->
+              <div class="pp-col-side">
+                <div class="pp-pv-h">Plan preview</div>
+                <div class="pp-pv-s">See how your plan will appear online. <span class="pp-info">ⓘ</span></div>
+                <div class="pp-pv-wrap">
+                  <div class="pp-pv-card">
+                    <div class="pp-pv-img"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="#bcd3f0" stroke-width="1.6"><circle cx="8" cy="8" r="2.2"/><path d="M3 18l5-5 4 3 3-3 6 6"/></svg></div>
+                    <div class="pp-pv-name">Gym one pass</div>
+                    <div class="pp-pv-price"><span class="pp-cur">$</span><span class="pp-amt">28</span></div>
+                    <div class="pp-pv-cycle">Every month</div>
+                    <div class="pp-pv-valid">Valid for 12 months</div>
+                    <button class="pp-pv-btn">Select</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
 </div>
@@ -1071,6 +1665,21 @@ document.querySelectorAll('.m-tabs').forEach(function(bar){
 /* ---------- navigator ---------- */
 var stacks={};
 function curScr(vp){return vp.querySelector('.scr.on');}
+/* member scan-demo panel — visible only while the member surface shows the QR pass screen */
+function updateMScanDemo(){
+  var msd=document.getElementById('mScanDemo'); if(!msd) return;
+  var onMember=document.getElementById('surf-member').classList.contains('on');
+  var onPass=document.getElementById('m-pass').classList.contains('on');
+  msd.style.display=(onMember && onPass)?'flex':'none';
+}
+/* owner demo panels (both float on the right): owner-state on the HOME screen, scan-result on the SCANNER screen */
+function updateOwnerPanels(){
+  var onOwner=document.getElementById('surf-owner').classList.contains('on');
+  var onHome=document.getElementById('o-home').classList.contains('on');
+  var onScan=document.getElementById('o-scanner').classList.contains('on');
+  var os=document.getElementById('ownerStateSwitch'); if(os) os.style.display=(onOwner && onHome)?'flex':'none';
+  var sd=document.getElementById('scanDemo');        if(sd) sd.style.display=(onOwner && onScan)?'flex':'none';
+}
 function push(vpId,toId){
   var vp=document.getElementById(vpId), from=curScr(vp), to=document.getElementById(toId);
   if(!to||from===to) return;
@@ -1078,6 +1687,9 @@ function push(vpId,toId){
   to.classList.remove('right','left'); to.classList.add('on');
   if(from){from.classList.remove('on');from.classList.add('left');}
   stacks[vpId].push(toId);
+  if(vpId==='vpMember') updateMScanDemo();
+  if(vpId==='vpOwner') updateOwnerPanels();
+  if(vpId==='vpSetM') updateFteSwitch();
 }
 function back(vpId){
   var st=stacks[vpId]; var vp=document.getElementById(vpId);
@@ -1086,6 +1698,9 @@ function back(vpId){
   var from=document.getElementById(fromId), to=document.getElementById(toId);
   from.classList.remove('on');from.classList.add('right');
   to.classList.remove('left','right');to.classList.add('on');
+  if(vpId==='vpMember') updateMScanDemo();
+  if(vpId==='vpOwner') updateOwnerPanels();
+  if(vpId==='vpSetM') updateFteSwitch();
 }
 function jump(vpId,toId){ /* tab switch, no slide */
   var vp=document.getElementById(vpId), to=document.getElementById(toId);
@@ -1098,6 +1713,9 @@ function jump(vpId,toId){ /* tab switch, no slide */
   });
   stacks[vpId]=[toId];
   requestAnimationFrame(function(){screens.forEach(function(s){s.style.transition='';});});
+  if(vpId==='vpMember') updateMScanDemo();
+  if(vpId==='vpOwner') updateOwnerPanels();
+  if(vpId==='vpSetM') updateFteSwitch();
 }
 function memTab(id){jump('vpMember',id);}
 function openMSheet(){document.getElementById('m-sheet').classList.add('show');}
@@ -1106,7 +1724,7 @@ function showPass(mode){
   var t=document.getElementById('m-pass-title'),c=document.getElementById('m-pass-context'),f=document.getElementById('m-pass-foot');
   if(mode==='entry'){
     t.textContent='Entry pass';
-    c.innerHTML='<div class="pname">Rom Lampel</div><div class="pplan">A La Cart · Silver punch card</div><span class="m-chip active" style="margin-top:10px;display:inline-flex"><span class="d" style="background:#3B8332"></span>Active member</span>';
+    c.innerHTML='<div class="pname">Rom Lampel</div><div class="pplan">Jim\'s Gym · Silver punch card</div><span class="m-chip active" style="margin-top:10px;display:inline-flex"><span class="d" style="background:#3B8332"></span>Active member</span>';
     f.innerHTML='<div class="valid">Show this at the door to enter</div><div class="pid">Valid until Aug 31, 2026</div>';
   } else {
     t.textContent='Check-in code';
@@ -1116,23 +1734,183 @@ function showPass(mode){
   push('vpMember','m-pass');
 }
 function goPass(){showPass('session');}
-function passDone(){ /* after 'You're in', return to the screen the pass was opened from */
-  var vp=document.getElementById('vpMember'), st=stacks['vpMember']||['m-bookings'];
-  var pi=st.indexOf('m-pass');
-  var originId=(pi>0)?st[pi-1]:'m-bookings';
-  var from=curScr(vp), to=document.getElementById(originId);
-  if(from){from.classList.remove('on','left');from.classList.add('right');}
-  if(to){to.classList.remove('left','right');to.classList.add('on');}
-  stacks['vpMember']=(pi>0)?st.slice(0,pi):[originId];
+function passDone(){ /* after a scan result, return to the site home */
+  jump('vpMember','m-site');
+}
+
+/* ---------- member: simulate a scan result on the member's own screen ---------- */
+var MRESULTS={
+ ok:{cls:'ok',accent:'#3B8332',accentDk:'#2C6627',icon:'<path d="M5 13l4 4L19 7"/>',sw:3,h:"You're in!",
+     b:'Checked in to <b>Pilates</b><br>Tomorrow · 22:00 · Broadway'},
+ mActive:{cls:'ok',accent:'#116DFF',accentDk:'#0F62E6',icon:'<path d="M5 13l4 4L19 7"/>',sw:3,h:'Welcome back',
+     b:'Active member — <b>entry granted</b>.<br>Unlimited membership · 24/7 access'},
+ mWindow:{cls:'wn',accent:'#E8951C',accentDk:'#C97D0C',icon:'<path d="M12 3L2 21h20z"/><path d="M12 10v5"/><path d="M12 18h.01"/>',sw:2.4,h:'Outside access hours',
+     b:'Your plan allows entry <b>10:00–16:00</b>.<br>Please ask staff to let you in.'},
+ intake:{cls:'wn',accent:'#E8951C',accentDk:'#C97D0C',icon:'<path d="M14 3v4a1 1 0 001 1h4"/><path d="M17 21H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v11a2 2 0 01-2 2z"/><path d="M9 13h6M9 17h4"/>',sw:2.2,h:'Form needed',
+     b:'Your <b>liability waiver</b> isn\'t signed yet.<br>Complete it to check in.'},
+ mNone:{cls:'er',accent:'#D7382B',accentDk:'#B82C20',icon:'<circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/>',sw:2.4,h:'No active membership',
+     b:'No plan that grants entry was found.<br>Speak to staff to start a membership.'},
+ err:{cls:'er',accent:'#D7382B',accentDk:'#B82C20',icon:'<circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/>',sw:2.4,h:'Not eligible',
+     b:'No booking or active plan found for this session.'}
+};
+function mTriggerScan(type){
+  var btn=document.querySelector('.launch button[data-surf="member"]');
+  if(btn && !document.getElementById('surf-member').classList.contains('on')) surf('member',btn);
+  // make sure the pass is open so the result reads as "your code was scanned"
+  if(!document.getElementById('m-pass').classList.contains('on') && !document.getElementById('m-result').classList.contains('on')){
+    showPass('entry');
+  }
+  var v=document.getElementById('m-flash'); if(v){v.classList.add('on');setTimeout(function(){v.classList.remove('on');},500);}
+  setTimeout(function(){ mShowResult(type); }, 520);
+}
+function mShowResult(type){
+  var r=MRESULTS[type]||MRESULTS.ok;
+  var body=document.getElementById('m-result-body');
+  body.style.background='linear-gradient(160deg,'+r.accent+','+r.accentDk+')';
+  body.innerHTML=
+    '<div style="width:108px;height:108px;border-radius:50%;background:rgba(255,255,255,.18);display:grid;place-items:center;margin-bottom:24px">'+
+      '<div style="width:78px;height:78px;border-radius:50%;background:#fff;display:grid;place-items:center">'+
+        '<svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="'+r.accent+'" stroke-width="'+r.sw+'" stroke-linecap="round" stroke-linejoin="round">'+r.icon+'</svg>'+
+      '</div></div>'+
+    '<div style="font-family:var(--disp);font-size:30px;font-weight:800">'+r.h+'</div>'+
+    '<div style="font-size:16px;opacity:.95;margin-top:10px;line-height:1.5">'+r.b+'</div>'+
+    '<button class="m-btn" style="background:rgba(255,255,255,.18);margin-top:28px;width:auto;padding:0 26px" onclick="passDone()">Done</button>';
+  // show the result screen (no stack tracking needed — Done jumps home)
+  var vp=document.getElementById('vpMember'), from=curScr(vp), to=document.getElementById('m-result');
+  if(from && from!==to){from.classList.remove('on');from.classList.add('left');}
+  to.classList.remove('left','right');to.classList.add('on');
+  stacks['vpMember']=['m-result'];
+  updateMScanDemo();
 }
 
 /* ---------- surface switch ---------- */
 function surf(name,btn){
+  // leaving for any surface other than Setup·mobile cancels the "came from owner" back behavior
+  if(name!=='setm') cameFromOwner=false;
   document.querySelectorAll('.surface-stage').forEach(function(s){s.classList.remove('on');});
   document.getElementById('surf-'+name).classList.add('on');
   document.querySelectorAll('.launch button[data-surf]').forEach(function(b){b.classList.remove('on');});
   btn.classList.add('on');
   if(name==='web') scaleWeb();
+  if(name==='plan') scalePlan();
+  // owner demo panels — owner-state on home, scan-result on the scanner screen
+  updateOwnerPanels();
+  // member scan-result demo panel — only while the member surface shows the QR pass
+  updateMScanDemo();
+  // setup-mobile: swap installed-apps vs access-state switcher depending on the FTE screen
+  updateFteSwitch();
+}
+/* owner scan state — first time leads to setup, opted in opens the scanner */
+var OWNER = { optedIn:false };
+function setOwnerState(state,btn){
+  OWNER.optedIn = (state==='optedin');
+  document.querySelectorAll('#ownerStateSwitch .ds-btn').forEach(function(b){b.classList.remove('on');});
+  if(btn) btn.classList.add('on');
+}
+var cameFromOwner=false;
+function ownerScanTap(){
+  if(OWNER.optedIn){
+    openScanner('entry');
+  } else {
+    // first time → jump to Setup · mobile surface and show the first-time experience carousel
+    cameFromOwner=true;
+    var btn=document.querySelector('.launch button[data-surf="setm"]');
+    if(btn) surf('setm',btn);
+    jump('vpSetM','s-fte');
+  }
+}
+/* FTE access-state demo: swap which switcher shows + drive the CTA */
+var FTE_ACCESS='have';
+function updateFteSwitch(){
+  var onSetm=document.getElementById('surf-setm').classList.contains('on');
+  var onFte=document.getElementById('s-fte').classList.contains('on');
+  var acc=document.getElementById('fteAccessSwitch'), mob=document.getElementById('mobStateSwitch');
+  if(acc) acc.style.display=(onSetm&&onFte)?'flex':'none';
+  if(mob) mob.style.display=(onSetm&&!onFte)?'flex':'none';
+}
+function setFteAccess(state,btn){
+  FTE_ACCESS=state;
+  document.querySelectorAll('#fteAccessSwitch .ds-btn').forEach(function(b){b.classList.remove('on');});
+  if(btn) btn.classList.add('on');
+  var cta=document.getElementById('fte-cta'), lock=document.getElementById('fte-lock'), lt=document.getElementById('fte-lock-txt');
+  if(state==='upgrade'){
+    cta.textContent='Upgrade to Business Premium';
+    cta.style.background='#9610D9';
+    lock.style.display='flex'; lt.textContent='Check-in & Access is part of the Business Premium plan.';
+  } else if(state==='buy'){
+    cta.textContent='Add to plan · $10/month';
+    cta.style.background='#9610D9';
+    lock.style.display='flex'; lt.textContent='Add Check-in & Access to your plan for $10/month.';
+  } else {
+    cta.textContent='Set up check-in';
+    cta.style.background='';
+    lock.style.display='none';
+  }
+}
+function fteCtaTap(){
+  if(FTE_ACCESS==='upgrade'){ toast('Opening upgrade — Business Premium'); }
+  else if(FTE_ACCESS==='buy'){ toast('Opening checkout — $10/month'); }
+  else { push('vpSetM','s-fte2'); }
+}
+/* ---- first-time experience: intro screen → settings page ---- */
+function fteBack(){
+  // X on the intro screen → return to the screen it came from (the owner app)
+  if(cameFromOwner){
+    cameFromOwner=false;
+    var btn=document.querySelector('.launch button[data-surf="owner"]');
+    if(btn) surf('owner',btn);
+  } else {
+    jump('vpSetM','s-main');
+  }
+}
+function fteFinish(){ // intro "Skip" → leave without turning anything on
+  if(cameFromOwner){
+    cameFromOwner=false;
+    var btn=document.querySelector('.launch button[data-surf="owner"]');
+    if(btn) surf('owner',btn);
+  } else {
+    jump('vpSetM','s-main');
+  }
+}
+/* mirror the step-2 delivery toggles into the real settings page */
+function fteApplyChoices(){
+  var app=document.getElementById('fte2-app'), email=document.getElementById('fte2-email');
+  MOB.qr = app ? app.classList.contains('on') : true;
+  var setEmail=document.getElementById('m-email-qr');
+  if(setEmail && email) setEmail.classList.toggle('on', email.classList.contains('on'));
+  applyMob();
+}
+function fteDone(){ // apply choices and return to where we came from
+  fteApplyChoices();
+  toast('Check-in is on',true);
+  if(cameFromOwner){
+    cameFromOwner=false;
+    var btn=document.querySelector('.launch button[data-surf="owner"]');
+    if(btn) surf('owner',btn);
+  } else {
+    jump('vpSetM','s-main');
+  }
+}
+function fteEditMore(){ // apply choices and open the full settings page
+  fteApplyChoices();
+  jump('vpSetM','s-main'); // keep cameFromOwner so the settings X/Save returns to owner
+}
+function setmSave(){
+  toast('Check-in settings saved',true);
+  if(cameFromOwner){
+    cameFromOwner=false;
+    var btn=document.querySelector('.launch button[data-surf="owner"]');
+    if(btn) surf('owner',btn);
+  }
+}
+function setmBack(){
+  if(cameFromOwner){
+    cameFromOwner=false;
+    var btn=document.querySelector('.launch button[data-surf="owner"]');
+    if(btn) surf('owner',btn);
+  } else {
+    toast('Back to Booking Settings');
+  }
 }
 /* mobile setup state — mirrors the web modular defaults:
    QR off by default; Bookings gates window/email/intake; Pricing Plans gates the plan row */
@@ -1145,15 +1923,18 @@ function setMobState(state,btn){
   applyMob();
 }
 function mToggleQR(el){ MOB.qr = !MOB.qr; el.classList.toggle('on', MOB.qr); applyMob(); }
+function mToggleEmail(el){ el.classList.toggle('on'); applyMob(); }
 function applyMob(){
   // installed-apps visibility (hide whole rows/groups when the app isn't installed)
-  document.querySelectorAll('#s-main .m-bookings').forEach(function(r){ r.style.display = MOB.bookings ? '' : 'none'; });
-  document.querySelectorAll('#s-main .m-pp').forEach(function(r){ r.style.display = MOB.pp ? '' : 'none'; });
+  document.querySelectorAll('#s-main .m-bookings, #s-fte2 .m-bookings').forEach(function(r){ r.style.display = MOB.bookings ? '' : 'none'; });
+  document.querySelectorAll('#s-main .m-pp, #s-fte2 .m-pp').forEach(function(r){ r.style.display = MOB.pp ? '' : 'none'; });
   // sync the QR toggle visual
   var q=document.getElementById('m-qr'); if(q) q.classList.toggle('on', MOB.qr);
-  // QR gates the nested rows
+  // the dependent rows are enabled if EITHER delivery method is on
+  var emailEl=document.getElementById('m-email-qr');
+  var anyOn = MOB.qr || (emailEl && emailEl.classList.contains('on'));
   document.querySelectorAll('#s-main .set-row.mqr').forEach(function(r){
-    r.style.opacity = MOB.qr ? '1' : '.45'; r.style.pointerEvents = MOB.qr ? '' : 'none';
+    r.style.opacity = anyOn ? '1' : '.45'; r.style.pointerEvents = anyOn ? '' : 'none';
   });
 }
 
@@ -1178,21 +1959,98 @@ function mSaveConnect(){ updatePlanCount(); back('vpSetM'); }
 function updatePlanCount(){
   var n=MPLANS.filter(function(p){return p.on;}).length;
   var el=document.getElementById('m-plancount');
-  if(el) el.textContent = n ? (n+' connected') : 'Connect';
+  if(el) el.textContent = n ? (n+' connected') : 'Manage plans';
 }
 function setWebState(state,btn){
   var f=document.getElementById('webFrame');
-  if(f) f.src='access-control-settings-modular-mockup.html?view=detail&installed='+state;
+  if(f) f.src='access-control-settings-modular-mockup.html?view=detail&embed=1&installed='+state;
   document.querySelectorAll('#webStateSwitch .ds-btn').forEach(function(b){b.classList.remove('on');});
   if(btn) btn.classList.add('on');
 }
-function scaleWeb(){
-  var b=document.getElementById('webBrowser');
+function setWebView(view,btn){
+  var settings=document.getElementById('web-view-settings'), mobile=document.getElementById('web-view-mobile');
+  if(settings) settings.style.display=(view==='settings')?'flex':'none';
+  if(mobile) mobile.style.display=(view==='mobile')?'flex':'none';
+  document.querySelectorAll('#webViewSwitch .ds-btn').forEach(function(b){b.classList.remove('on');});
+  if(btn) btn.classList.add('on');
+  // installed-apps switcher only matters for the settings view
+  var sw=document.getElementById('webStateSwitch'); if(sw) sw.style.display=(view==='settings')?'flex':'none';
+}
+/* breadcrumb: clicking "Settings" goes to the main Settings page (list view in the iframe) */
+function webCrumbHome(){
+  var f=document.getElementById('webFrame');
+  if(f) f.src='access-control-settings-modular-mockup.html?view=list&embed=1&installed=both';
+  webSetCrumb('list');
+}
+function webSetCrumb(view){
+  var c=document.getElementById('web-crumbs'); if(!c) return;
+  if(view==='list'){
+    c.innerHTML='<b>Settings</b>';
+  } else {
+    c.innerHTML='<span class="web-crumb-link" onclick="webCrumbHome()">Settings</span> <span class="pp-crumb-sep">›</span> <b>Check-in &amp; Access</b>';
+  }
+}
+// keep the prototype breadcrumb in sync with the iframe's current view
+window.addEventListener('message',function(e){
+  if(e.data && e.data.wixCheckin==='view'){ webSetCrumb(e.data.view); }
+});
+function scaleBrowser(id){
+  var b=document.getElementById(id); if(!b) return;
   var avail=Math.min(1180, window.innerWidth-48);
   b.style.transform='scale('+(avail/1180)+')';
   b.style.marginBottom=(-(740+42)*(1-avail/1180))+'px';
 }
-window.addEventListener('resize',function(){if(document.getElementById('surf-web').classList.contains('on'))scaleWeb();});
+function scaleWeb(){ scaleBrowser('webBrowser'); }
+function scalePlan(){ scaleBrowser('planBrowser'); }
+window.addEventListener('resize',function(){
+  if(document.getElementById('surf-web').classList.contains('on'))scaleWeb();
+  if(document.getElementById('surf-plan').classList.contains('on'))scalePlan();
+});
+
+/* ---------- pricing-plan: Services dropdown with QR check-in ---------- */
+var PPQ={open:false,qr:false,svcs:[]};
+function ppqRender(){
+  var menu=document.getElementById('ppq-menu'); if(!menu) return;
+  menu.style.display=PPQ.open?'block':'none';
+  document.getElementById('ppq-select').classList.toggle('open',PPQ.open);
+  document.querySelector('#ppq-select .ppq-caret').innerHTML=PPQ.open?'<path d="M18 15l-6-6-6 6"/>':'<path d="M6 9l6 6 6-6"/>';
+  document.getElementById('ppq-qchk').classList.toggle('off',!PPQ.qr);
+  document.querySelectorAll('#ppq-menu .ppq-svc').forEach(function(r){
+    var on=PPQ.svcs.indexOf(r.dataset.name)>-1;
+    r.querySelector('.ppq-chk').classList.toggle('on',on);
+    r.style.opacity=PPQ.qr?'.4':'';r.style.pointerEvents=PPQ.qr?'none':'';
+  });
+  var t=document.getElementById('ppq-seltext');
+  if(PPQ.qr){t.textContent='QR check-in';t.style.color='#16213A';}
+  else if(PPQ.svcs.length){t.textContent=PPQ.svcs.length===1?PPQ.svcs[0]:PPQ.svcs.length+' services';t.style.color='#16213A';}
+  else{t.textContent='Select services';t.style.color='#9aa0ad';}
+  document.getElementById('ppq-two').style.display=(PPQ.qr||PPQ.svcs.length)?'flex':'none';
+}
+function ppqToggle(){PPQ.open=!PPQ.open;ppqRender();}
+function ppqPickQR(){PPQ.qr=!PPQ.qr;if(PPQ.qr)PPQ.svcs=[];ppqRender();}
+function ppqPickSvc(el){if(PPQ.qr)return;var n=el.dataset.name,i=PPQ.svcs.indexOf(n);if(i>-1)PPQ.svcs.splice(i,1);else PPQ.svcs.push(n);ppqRender();}
+document.addEventListener('click',function(e){
+  var sel=document.getElementById('ppq-select'),menu=document.getElementById('ppq-menu');
+  if(PPQ.open&&sel&&menu&&!sel.contains(e.target)&&!menu.contains(e.target)){PPQ.open=false;ppqRender();}
+});
+/* "How many sessions" dropdown */
+function ppqHowToggle(e){
+  if(e) e.stopPropagation();
+  var m=document.getElementById('ppq-howmenu'); var open=m.style.display!=='none';
+  m.style.display=open?'none':'block';
+  document.getElementById('ppq-howsel').classList.toggle('open',!open);
+}
+function ppqHowPick(val,el){
+  document.getElementById('ppq-howtext').textContent=val;
+  document.querySelectorAll('#ppq-howmenu .ppq-howopt').forEach(function(o){o.classList.remove('sel');});
+  el.classList.add('sel');
+  document.getElementById('ppq-howmenu').style.display='none';
+  document.getElementById('ppq-howsel').classList.remove('open');
+}
+document.addEventListener('click',function(e){
+  var s=document.getElementById('ppq-howsel'),m=document.getElementById('ppq-howmenu');
+  if(m&&m.style.display!=='none'&&!s.contains(e.target)&&!m.contains(e.target)){m.style.display='none';s.classList.remove('open');}
+});
 
 /* ---------- toast ---------- */
 var toastT;
@@ -1226,8 +2084,15 @@ function checkInAll(){
 /* ---------- owner: scanner ---------- */
 var SCAN={session:{title:'Scan QR code',queue:['ok','warn','err']},entry:{title:'Scan entry',queue:['autoSession','mActive','mWindow','mNone']}};
 var scanMode='session', qi=0, scanning=false;
-function openScanner(mode){scanMode=mode||'session';qi=0;document.getElementById('o-scan-title').textContent=SCAN[scanMode].title;push('vpOwner','o-scanner');}
-function closeScanner(){hideSheet();back('vpOwner');}
+function openScanner(mode){scanMode=mode||'session';qi=0;document.getElementById('o-scan-title').textContent=SCAN[scanMode].title;push('vpOwner','o-scanner');updateOwnerPanels();}
+function closeScanner(){hideSheet();back('vpOwner');updateOwnerPanels();}
+/* settings entry point from the scanner → open the Check-in settings page */
+function openSettingsFromScan(){
+  cameFromOwner=true; // so the settings X / Save returns to the owner app
+  var btn=document.querySelector('.launch button[data-surf="setm"]');
+  if(btn) surf('setm',btn);
+  jump('vpSetM','s-main');
+}
 function doScan(){
   if(scanning) return; scanning=true;
   var v=document.getElementById('o-verifying'); v.classList.add('show');
@@ -1237,8 +2102,8 @@ function doScan(){
   },850);
 }
 var RESULTS={
- ok:{cls:'ok',icon:'<path d="M5 13l4 4L19 7"/>',sw:3,h:'Checked in',b:'Rom is eligible — confirmed booking for this session.',
-     mini:['RL','#5A48F5','Rom Lampel','$22.00 · Paid'],
+ ok:{cls:'ok',icon:'<path d="M5 13l4 4L19 7"/>',sw:3,h:'Checked in',b:'Rom is eligible — confirmed booking for <b>Vinyasa Flow</b>.',
+     mini:['RL','#5A48F5','Rom Lampel','Vinyasa Flow · 9:00 AM'],
      acts:'<button class="btn btn-primary" onclick="checkinQR();hideSheet()">Scan next</button><button class="text-btn" onclick="checkinQR();closeScanner()">Done</button>'},
  warn:{cls:'wn',icon:'<path d="M12 3L2 21h20z"/><path d="M12 10v5"/><path d="M12 18h.01"/>',sw:2.4,h:'Plan may be lapsed',b:'No active plan found for Tom. His last payment didn\'t go through.',
      reason:['var(--y-tint)','var(--y-text)','Monthly membership · Payment due'],
@@ -1261,14 +2126,55 @@ var RESULTS={
      acts:'<button class="btn btn-primary" onclick="afterCheck(\'Let in — outside-hours override logged\')">Let in anyway</button><button class="text-btn" onclick="hideSheet()">Don\'t let in</button>'},
  mNone:{cls:'er',icon:'<circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/>',sw:2.4,h:'No active membership',b:'Sara has no plan that grants entry.',
      reason:['var(--r-tint)','var(--r-text)','No membership found · Sara Klein'],
-     acts:'<button class="btn btn-primary" onclick="toast(\'Membership started · entry granted\',true);hideSheet()">Start a membership &amp; let in</button><button class="text-btn" onclick="hideSheet()">Scan next</button>'}
+     acts:'<button class="btn btn-primary" onclick="toast(\'Membership started · entry granted\',true);hideSheet()">Start a membership &amp; let in</button><button class="text-btn" onclick="hideSheet()">Scan next</button>'},
+ intake:{cls:'wn',icon:'<path d="M14 3v4a1 1 0 001 1h4"/><path d="M17 21H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v11a2 2 0 01-2 2z"/><path d="M9 13h6M9 17h4"/>',sw:2.2,h:'Intake form needed',b:'Liam is eligible, but his liability waiver isn\'t signed.',
+     reason:['var(--y-tint)','var(--y-text)','Liability Release · Not signed'],
+     mini:['LB','#F9AD4D','Liam Brooks','Confirmed booking · Yoga Flow'],
+     acts:'<button class="btn btn-primary" onclick="toast(\'Waiver link sent to Liam\',true)">Send waiver link</button><button class="btn btn-sec" onclick="afterCheck(\'Liam checked in · waiver waived\')">Check in &amp; collect later</button><button class="text-btn" onclick="hideSheet()">Don\'t check in</button>'},
+ /* member with active plans — show all the plans (entry-granting, no credit deduction) */
+ mPlans:{cls:'ok',icon:'<path d="M5 13l4 4L19 7"/>',sw:3,h:'Active member',b:'Maya has 2 active plans that grant entry.',
+     mini:['MC','#5A48F5','Maya Cohen','Member since 2024'],
+     custom:'<div class="plan-list">'+
+       '<div class="plan-row static"><span class="pl-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v5c0 4.5-3.2 7.5-8 9-4.8-1.5-8-4.5-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg></span><div class="pl-m"><div class="pl-t">Unlimited Monthly</div><div class="pl-s">Renews Aug 1 · 24/7 access</div></div><span class="pl-chip">Active</span></div>'+
+       '<div class="plan-row static"><span class="pl-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v5c0 4.5-3.2 7.5-8 9-4.8-1.5-8-4.5-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg></span><div class="pl-m"><div class="pl-t">Pool Access</div><div class="pl-s">Renews monthly · Pool only</div></div><span class="pl-chip">Active</span></div>'+
+       '</div>',
+     acts:'<button class="btn btn-primary" onclick="hideSheet()">Scan next</button><button class="text-btn" onclick="closeScanner()">Done</button>'},
+ /* member with a credit-based plan — show balance, cost, and a Redeem button */
+ mCredit:{cls:'ok',icon:'<path d="M5 13l4 4L19 7"/>',sw:3,h:'Credit plan',b:'Jordan can redeem credits to enter this session.',
+     mini:['JR','#116DFF','Jordan Reyes','Gym one pass · Credit-based'],
+     custom:'<div class="credit-box">'+
+       '<div class="cr-row"><span>Credit balance</span><span class="cr-v">12 credits</span></div>'+
+       '<div class="cr-row cost"><span>This session costs</span><span class="cr-v">−2 credits</span></div>'+
+       '<div class="cr-row cr-after"><span>Balance after</span><span class="cr-v">10 credits</span></div>'+
+       '</div>',
+     acts:'<button class="btn btn-primary" onclick="afterCheck(\'2 credits redeemed · Jordan checked in\')">Redeem 2 credits &amp; check in</button><button class="text-btn" onclick="hideSheet()">Don\'t check in</button>'},
+ /* member with multiple credit plans — let the owner choose which plan to redeem from */
+ mCreditMulti:{cls:'ok',icon:'<path d="M5 13l4 4L19 7"/>',sw:3,h:'Choose a plan',b:'Priya has 2 credit plans. Pick which one to redeem.',
+     mini:['PS','#0FA958','Priya Shah','2 credit plans'],
+     custom:'<div class="plan-list" id="cr-plans">'+
+       '<div class="plan-row sel" onclick="pickCreditPlan(this)"><span class="pl-radio"></span><div class="pl-m"><div class="pl-t">Gym one pass</div><div class="pl-s">12 credits left · 2 per entry</div></div></div>'+
+       '<div class="plan-row" onclick="pickCreditPlan(this)"><span class="pl-radio"></span><div class="pl-m"><div class="pl-t">10-Class Pack</div><div class="pl-s">5 credits left · 1 per entry</div></div></div>'+
+       '</div>',
+     acts:'<button class="btn btn-primary" onclick="afterCheck(\'Credits redeemed · Priya checked in\')">Redeem &amp; check in</button><button class="text-btn" onclick="hideSheet()">Don\'t check in</button>'}
 };
+function pickCreditPlan(el){
+  el.parentNode.querySelectorAll('.plan-row').forEach(function(r){r.classList.remove('sel');});
+  el.classList.add('sel');
+}
+/* demo: jump straight to a given scan result (used by the buttons beside the scanner) */
+function triggerScan(type){
+  if(!document.getElementById('o-scanner').classList.contains('on')) openScanner('session');
+  hideSheet();
+  var v=document.getElementById('o-verifying'); v.classList.add('show');
+  setTimeout(function(){ v.classList.remove('show'); showResult(type); }, 650);
+}
 function showResult(type){
   var r=RESULTS[type];
   var html='<span class="grip"></span><div class="badge '+r.cls+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="'+r.sw+'" stroke-linecap="round" stroke-linejoin="round">'+r.icon+'</svg></div>';
   html+='<h3>'+r.h+'</h3><p class="body">'+r.b+'</p>';
   if(r.reason) html+='<span class="reason" style="background:'+r.reason[0]+';color:'+r.reason[1]+'">'+r.reason[2]+'</span>';
   if(r.mini) html+='<div class="mini-row"><div class="avatar" style="background:'+r.mini[1]+';width:36px;height:36px;flex:0 0 36px;font-size:13px">'+r.mini[0]+'</div><div style="text-align:left"><div class="nm">'+r.mini[2]+'</div><div class="sub">'+r.mini[3]+'</div></div></div>';
+  if(r.custom) html+=r.custom;
   html+='<div class="acts">'+r.acts+'</div>';
   document.getElementById('o-sheet-c').innerHTML=html;
   document.getElementById('o-sheet').classList.add('show');
@@ -1336,6 +2242,8 @@ document.querySelectorAll('#surf-web .drow .check').forEach(function(c){
 /* mobile setup init — default state matches web (QR off, both apps installed) */
 renderMPlans();
 applyMob();
+/* show the owner-state panel on the default (owner home) screen */
+updateOwnerPanels();
 </script>
 </body>
 </html>
