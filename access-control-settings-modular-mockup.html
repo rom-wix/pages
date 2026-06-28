@@ -6,6 +6,8 @@
     if(id==='detail') applyFeature();
     var main = document.querySelector('.main');
     if(main) main.scrollTop = 0;
+    // tell the host prototype which view we're on so it can sync its breadcrumb
+    try{ if(window.parent && window.parent!==window) window.parent.postMessage({wixCheckin:'view',view:id},'*'); }catch(e){}
   }
 
   /* ============================================================
@@ -22,8 +24,8 @@
            AND at least one plan is connected)
      ============================================================ */
   var STATE = {
-    qr:false,            // master QR check-in
-    qrEmail:true         // include QR in confirmation email — ON by default (depends on qr)
+    qr:false,            // show QR in the member app
+    qrEmail:false        // add QR to confirmation email — independent of qr
   };
 
   /* ---- installed apps: which surfaces are available ----
@@ -60,18 +62,17 @@
   }
 
   function applyQR(){
-    var on = STATE.qr;
-    setTog('tog-qr', on);
-    // everything nested under QR is only relevant when QR check-in is on
-    setDisabled('row-window', !on);
-    setTog('tog-qr-email', STATE.qrEmail);   // stays on by default; row just greys out when QR is off
-    setDisabled('row-qr-email', !on);
-    setDisabled('row-membership', !on);
-    setDisabled('row-plans', !on);
+    setTog('tog-qr', STATE.qr);
+    setTog('tog-qr-email', STATE.qrEmail);
+    // the two delivery methods are independent; dependent rows are enabled if EITHER is on
+    var anyOn = STATE.qr || STATE.qrEmail;
+    setDisabled('row-window', !anyOn);
+    setDisabled('row-membership', !anyOn);
+    setDisabled('row-plans', !anyOn);
   }
 
   function toggleQR(){ STATE.qr = !STATE.qr; applyFeature(); }
-  function toggleQrEmail(){ if(!STATE.qr) return; STATE.qrEmail = !STATE.qrEmail; applyQR(); }
+  function toggleQrEmail(){ STATE.qrEmail = !STATE.qrEmail; applyFeature(); }
 
   // ---- helpers ----
   function setTog(id, on){ var t=document.getElementById(id); if(t) t.classList.toggle('on', !!on); }
@@ -195,7 +196,7 @@
     document.getElementById('kisiStep2').style.display='block'; }
   function kisiFinish(){
     KISI.connected=true;
-    KISI.place=document.getElementById('kisiPlace') ? document.getElementById('kisiPlace').value : 'A La Cart Studio';
+    KISI.place=document.getElementById('kisiPlace') ? document.getElementById('kisiPlace').value : "Jim's Gym Studio";
     // mark checked doors as mapped
     var checks=document.querySelectorAll('#kisiStep2 .door-pick');
     checks.forEach(function(c,i){ if(KISI.doors[i]) KISI.doors[i].mapped=c.classList.contains('on'); });
@@ -245,17 +246,30 @@
     closeWindow();
   }
 
-  window.addEventListener('DOMContentLoaded', function(){
+  function initFromUrl(){
     renderMemTable(); renderDoorHardware();
     // optional installed-apps preset from the URL (?installed=both|bookings|pp)
     var m = location.search.match(/[?&]installed=(both|bookings|pp)/);
     if(m){ setInstalled(m[1]); } else { applyFeature(); }
-    // when embedded (e.g. the prototype's "Setup · web" tab): open detail + hide the demo switcher
-    if(/[?&]view=detail/.test(location.search)){
+    // when embedded (e.g. the prototype's "Setup · web" tab): open the requested view + hide the demo switcher
+    if(/[?&]view=list/.test(location.search)){
+      showView('list');
+      var sw0 = document.getElementById('stateSwitch'); if(sw0) sw0.style.display='none';
+    } else if(/[?&]view=detail/.test(location.search)){
       showView('detail');
       var sw = document.getElementById('stateSwitch'); if(sw) sw.style.display='none';
     }
-  });
+    // content-only mode: the host (prototype) provides the chrome, so hide our own top bar + sidebar
+    if(/[?&]embed=1/.test(location.search)){
+      var tb=document.querySelector('.topbar'); if(tb) tb.style.display='none';
+      var sd=document.querySelector('.side'); if(sd) sd.style.display='none';
+      var fr=document.querySelector('.frame'); if(fr) fr.style.background='#f4f5f7';
+      // host provides the breadcrumb — hide our own
+      var cr=document.querySelector('#view-detail .crumb'); if(cr) cr.style.display='none';
+    }
+  }
+  if(document.readyState==='loading'){ window.addEventListener('DOMContentLoaded', initFromUrl); }
+  else { initFromUrl(); }
 </script>
 <style>
   @font-face{
@@ -286,12 +300,12 @@
     /* status */
     --G10:#25a55f;
     --R10:#e62214;
-    /* nav surface */
-    --nav-bg:#192334;
-    --nav-bg-2:#222d40;
-    --nav-active:#2d3a4f;
-    --nav-ink:#cdd5df;
-    --nav-ink-2:#8fa1b3;
+    /* nav surface — matched to the Pricing plan setup chrome */
+    --nav-bg:#16161e;
+    --nav-bg-2:#22222b;
+    --nav-active:#2a2a33;
+    --nav-ink:#c2c5cf;
+    --nav-ink-2:#8b8f9c;
 
     --radius:8px;
     --sp200:12px; --sp300:18px; --sp400:24px; --sp500:30px;
@@ -303,12 +317,12 @@
   .frame{height:100vh;width:100%;background:var(--D80);display:flex;flex-direction:column;overflow:hidden}
 
   /* ---------- top bar ---------- */
-  .topbar{height:54px;flex-shrink:0;background:#101722;display:flex;align-items:center;gap:16px;padding:0 16px;color:#fff}
+  .topbar{height:50px;flex-shrink:0;background:#16161e;display:flex;align-items:center;gap:16px;padding:0 16px;color:#fff}
   .logo{font-weight:var(--w-xbold);letter-spacing:.2px;font-size:16px;white-space:nowrap}
   .logo span{font-weight:var(--w-regular);opacity:.75;font-size:12px;margin-left:4px;letter-spacing:1px}
   .ws-pill{background:var(--B10);border-radius:6px;width:34px;height:25px;display:flex;align-items:center;
     justify-content:center;font-size:11px;font-weight:var(--w-bold)}
-  .site-pill{background:#222d3b;border-radius:7px;padding:6px 11px;font-size:12.5px;display:flex;align-items:center;gap:7px}
+  .site-pill{background:#2a2a33;border-radius:7px;padding:6px 11px;font-size:12.5px;display:flex;align-items:center;gap:7px}
   .navword{font-size:12.5px;color:#d6dde6;display:flex;align-items:center;gap:5px;white-space:nowrap}
   .upgrade{border:1px solid #38465a;border-radius:15px;padding:5px 13px;font-size:12px;color:#fff}
   .search{flex:1;max-width:620px;margin-left:auto;background:#fff;border-radius:7px;height:32px;display:flex;
@@ -318,7 +332,7 @@
   .tb-ico{position:relative;opacity:.92;cursor:default}
   .tb-badge{position:absolute;top:-7px;left:9px;background:var(--R10);color:#fff;font-style:normal;
     font-size:9px;font-weight:var(--w-bold);min-width:15px;height:15px;border-radius:8px;padding:0 3px;
-    display:flex;align-items:center;justify-content:center;border:1.5px solid #101722}
+    display:flex;align-items:center;justify-content:center;border:1.5px solid #16161e}
   .avatar{width:30px;height:30px;border-radius:50%;background:#3a4a63;display:flex;align-items:center;
     justify-content:center;font-size:14px;margin-left:4px}
   .av-chev{color:#a9b4c2;font-size:10px;margin-left:-3px}
@@ -471,6 +485,8 @@
   .srow .si{flex:1;min-width:0}
   .srow .si .lt{font-size:14.5px;font-weight:var(--w-medium);color:var(--D10)}
   .srow .si .ld{font-size:13px;color:var(--D20);margin-top:3px;line-height:1.45}
+  .scope-tag{display:inline-block;margin-top:8px;font-size:11px;font-weight:var(--w-bold,700);letter-spacing:.03em;padding:2px 9px;border-radius:6px;background:#EEF1F6;color:var(--D30)}
+  .scope-tag.both{background:#EDEBFF;color:#5A48F5}
   .srow .sv{font-size:14px;color:var(--D10);font-weight:var(--w-medium);white-space:nowrap;display:flex;align-items:center;gap:8px}
   .srow .edit{color:var(--B10);font-size:13.5px;font-weight:var(--w-medium);cursor:pointer}
   /* nested sub-row (e.g. Include QR in email under QR check-in) */
@@ -709,7 +725,7 @@
   <div class="topbar">
     <div class="logo">WIX <span>STUDIO</span></div>
     <div class="ws-pill">RL</div>
-    <div class="site-pill">A La Cart ▾</div>
+    <div class="site-pill">Jim's Gym ▾</div>
     <div class="navword">Explore ▾</div>
     <div class="navword">Hire a Professional</div>
     <div class="navword">Help ▾</div>
@@ -888,21 +904,19 @@
       <div class="sec-head"><h2>QR check-in</h2></div>
       <div class="sec-desc">How staff verify and let clients in by scanning their QR code at the door.</div>
       <div class="scard">
-        <!-- QR check-in (master) -->
+        <!-- Show QR in the member app -->
         <div class="srow">
           <div class="si">
-            <div class="lt">Turn on QR check-in</div>
-            <div class="ld">Adds a <b>QR scanner</b> to the <b>Wix Owner</b> app for staff, and a personal <b>QR generator</b>
-            in the <b>member app</b> so each client has a code to scan at the door.</div>
+            <div class="lt">Show QR in the member app</div>
+            <div class="ld">Members open their pass and show it at the door.</div>
           </div>
-          <div class="sv"><span class="tog lg" id="tog-qr" onclick="toggleQR()"></span></div>
+          <div class="sv"><span class="tog" id="tog-qr" onclick="toggleQR()"></span></div>
         </div>
-        <!-- Include QR in confirmation email (nested, depends on QR) -->
-        <div class="srow nested" id="row-qr-email">
+        <!-- Add QR to confirmation email -->
+        <div class="srow" id="row-qr-email">
           <div class="si">
-            <div class="lt">Include QR in booking confirmation email</div>
-            <div class="ld">Send the QR in the confirmation email too, so clients can check in without installing the member app.
-            <span class="dep-hint">Turn on QR check-in to enable.</span></div>
+            <div class="lt">Add QR to confirmation email</div>
+            <div class="ld">So clients can check in without the member app.</div>
           </div>
           <div class="sv"><span class="tog" id="tog-qr-email" onclick="toggleQrEmail()"></span></div>
         </div>
@@ -911,18 +925,18 @@
           <div class="si">
             <div class="lt">Check-in window</div>
             <div class="ld">How early and how late clients can check in around the session start time.
-            <span class="dep-hint">Turn on QR check-in to enable.</span></div>
+            <span class="dep-hint">Turn on a QR method above to enable.</span></div>
           </div>
           <div class="sv"><span class="chip" id="winChip">15 min before <span class="mut">→</span> 10 min after</span><span class="edit" onclick="openWindow()">Edit</span></div>
         </div>
         <!-- Let members enter with an active plan (nested, depends on QR) -->
         <div class="srow nested" id="row-membership">
           <div class="si">
-            <div class="lt">Let members enter with an active plan</div>
-            <div class="ld">Members with a connected plan can check in without a booking. Connect the plans that grant entry.
-            <span class="dep-hint">Turn on QR check-in to enable.</span></div>
+            <div class="lt">Deduct credits or restrict entry by plan</div>
+            <div class="ld">Set up how plans work at check-in in Pricing Plans.
+            <span class="dep-hint">Turn on a QR method above to enable.</span></div>
           </div>
-          <div class="sv"><button class="btn ghost" onclick="openAddPlan()">Connect a plan</button></div>
+          <div class="sv"><button class="btn ghost" onclick="openAddPlan()">Manage plans</button></div>
         </div>
         <!-- connected plans live just under that row -->
         <div class="srow nested" id="row-plans">
@@ -1016,7 +1030,7 @@
         <b>Manage doors</b>.</p>
         <div class="fld">
           <label>Place name (shown to staff)</label>
-          <input id="kisiPlace" value="A La Cart Studio">
+          <input id="kisiPlace" value="Jim's Gym Studio">
         </div>
         <div class="door-pick-row">
           <div class="di"><div class="dn">Front Entrance</div><div class="ds">Kisi · Reader at main door</div></div>
