@@ -35,7 +35,6 @@ button{font-family:var(--sans)}
 .launch button .dot{width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.8}
 .launch button .wip{font-size:9px;font-weight:800;letter-spacing:.04em;line-height:1;padding:2px 5px;border-radius:5px;background:#FFC233;color:#5A3A00}
 .launch button.on .wip{background:#FFC233;color:#5A3A00}
-.reset{margin-left:auto;background:transparent !important;border-color:transparent !important;opacity:.8;font-weight:500 !important;border-radius:10px !important}
 
 /* stage */
 .stage{background:#eef2f8;min-height:calc(100vh - 118px);padding:34px 16px 60px;display:flex;justify-content:center;align-items:flex-start}
@@ -888,6 +887,108 @@ button{font-family:var(--sans)}
 
 @media(max-width:480px){.phone{transform:scale(.88);transform-origin:top center;margin-bottom:-80px}}
 
+/* ===== Self Check-In Kiosk — reception tablet (landscape) ===== */
+#surf-kiosk{--kac:#5A48F5;--kac2:#7B6CF6}
+.tablet{width:1000px;height:700px;background:#0b0e1a;border-radius:34px;padding:14px;box-shadow:0 24px 60px rgba(11,17,40,.45),0 2px 6px rgba(11,17,40,.3);position:relative;flex:0 0 auto;transform-origin:top center}
+.tablet .tcam{position:absolute;left:50%;top:22px;transform:translateX(-50%);width:8px;height:8px;border-radius:50%;background:#23283a;z-index:5}
+.tablet .tscreen{position:relative;width:972px;height:672px;background:#0e1430;border-radius:22px;overflow:hidden}
+.kscr{position:absolute;inset:0;display:none;flex-direction:column;background:#0e1430;color:#fff}
+.kscr.on{display:flex}
+.kscr.fade{animation:kfade .4s ease}
+@keyframes kfade{from{opacity:0;transform:scale(.99)}to{opacity:1;transform:none}}
+/* kiosk hero background */
+.k-bg{position:absolute;inset:0;background:radial-gradient(1100px 600px at 78% -10%,#6E5BF8 0%,rgba(110,91,248,0) 55%),radial-gradient(900px 500px at 12% 115%,#2B5CE6 0%,rgba(43,92,230,0) 55%),linear-gradient(160deg,#141a3a 0%,#0c1130 100%)}
+.k-pad{position:relative;flex:1;display:flex;flex-direction:column;padding:46px 56px;min-height:0;z-index:1}
+.k-top{display:flex;align-items:center;gap:13px;flex:0 0 auto}
+.k-logo{width:44px;height:44px;border-radius:13px;background:linear-gradient(135deg,#7B6CF6,#5A48F5);display:grid;place-items:center;font-family:var(--disp);font-weight:800;font-size:20px;color:#fff;box-shadow:0 6px 18px rgba(90,72,245,.5)}
+.k-biz{font-family:var(--disp);font-weight:800;font-size:20px;letter-spacing:.01em}
+.k-bizsub{font-size:12.5px;color:rgba(255,255,255,.6);margin-top:1px;font-weight:500}
+.k-clock{margin-left:auto;text-align:right}
+.k-clock .t{font-family:var(--disp);font-weight:700;font-size:21px}
+.k-clock .d{font-size:12px;color:rgba(255,255,255,.6);margin-top:1px}
+/* idle / welcome */
+.k-welcome{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:0;min-height:0}
+.k-h1{font-family:var(--disp);font-weight:800;font-size:50px;line-height:1.05;letter-spacing:-.02em;margin:0}
+.k-sub{font-size:18px;color:rgba(255,255,255,.7);margin-top:14px;max-width:560px;line-height:1.45}
+.k-actions{display:flex;gap:18px;margin-top:42px}
+.k-card{width:280px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.13);border-radius:20px;padding:28px 26px;text-align:left;cursor:pointer;transition:.18s;backdrop-filter:blur(6px)}
+.k-card:hover{background:rgba(255,255,255,.11);border-color:rgba(255,255,255,.28);transform:translateY(-3px)}
+.k-card .kc-ic{width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#7B6CF6,#5A48F5);display:grid;place-items:center;margin-bottom:18px}
+.k-card .kc-ic svg{width:27px;height:27px;color:#fff}
+.k-card .kc-t{font-family:var(--disp);font-weight:700;font-size:21px}
+.k-card .kc-s{font-size:13.5px;color:rgba(255,255,255,.62);margin-top:6px;line-height:1.45}
+/* sub-screen shell with back */
+.k-back{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#fff;border-radius:11px;padding:9px 15px;font-size:14px;font-weight:600;cursor:pointer;align-self:flex-start;font-family:var(--sans)}
+.k-back:hover{background:rgba(255,255,255,.16)}
+.k-back svg{width:16px;height:16px}
+.k-screen-h{font-family:var(--disp);font-weight:800;font-size:32px;margin:22px 0 4px;letter-spacing:-.015em}
+.k-screen-s{font-size:15px;color:rgba(255,255,255,.62)}
+/* search + roster */
+.k-search{margin-top:22px;height:56px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:14px;display:flex;align-items:center;gap:13px;padding:0 18px;flex:0 0 auto}
+.k-search svg{width:21px;height:21px;color:rgba(255,255,255,.55);flex:0 0 21px}
+.k-search input{flex:1;background:transparent;border:none;outline:none;color:#fff;font-size:18px;font-family:inherit}
+.k-search input::placeholder{color:rgba(255,255,255,.45)}
+.k-roster{margin-top:18px;flex:1;min-height:0;overflow-y:auto;display:grid;grid-template-columns:1fr 1fr;gap:10px;align-content:start;padding-right:4px}
+.k-rrow{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:13px 16px;cursor:pointer;transition:.15s}
+.k-rrow:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.28)}
+.k-rav{width:46px;height:46px;border-radius:50%;flex:0 0 46px;display:grid;place-items:center;color:#fff;font-size:16px;font-weight:700}
+.k-rmain{min-width:0}
+.k-rnm{font-size:17px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.k-rsub{font-size:12.5px;color:rgba(255,255,255,.6);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.k-empty{grid-column:1/-1;text-align:center;color:rgba(255,255,255,.5);font-size:15px;padding:40px 0}
+/* keypad / id entry */
+.k-id{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:0}
+.k-iddisplay{font-family:var(--disp);font-weight:700;font-size:34px;letter-spacing:.04em;min-height:44px;border-bottom:2px solid rgba(255,255,255,.3);padding:0 20px 10px;min-width:340px;text-align:center}
+.k-idph{color:rgba(255,255,255,.4)}
+.k-keypad{display:grid;grid-template-columns:repeat(3,96px);gap:14px;margin-top:34px}
+.k-key{height:72px;border-radius:16px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);color:#fff;font-size:26px;font-weight:600;cursor:pointer;font-family:var(--sans);transition:.12s}
+.k-key:hover{background:rgba(255,255,255,.16)}
+.k-key:active{transform:scale(.95)}
+.k-key.wide{font-size:18px}
+.k-idgo{margin-top:30px;height:58px;width:322px;border-radius:15px;border:none;background:linear-gradient(135deg,#7B6CF6,#5A48F5);color:#fff;font-size:18px;font-weight:700;cursor:pointer;font-family:var(--sans);box-shadow:0 10px 26px rgba(90,72,245,.45)}
+.k-idgo:disabled{opacity:.4;cursor:default;box-shadow:none}
+.k-idtabs{display:flex;gap:8px;margin-top:6px}
+.k-idtab{padding:8px 16px;border-radius:20px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);color:rgba(255,255,255,.7);font-size:13.5px;font-weight:600;cursor:pointer;font-family:var(--sans)}
+.k-idtab.on{background:#fff;color:#0e1430;border-color:#fff}
+/* scan-with-phone */
+.k-phone{flex:1;display:flex;align-items:center;justify-content:center;gap:64px;min-height:0}
+.k-qrbox{background:#fff;border-radius:24px;padding:26px;box-shadow:0 18px 50px rgba(0,0,0,.4);flex:0 0 auto}
+.k-qr{width:248px;height:248px;display:block;image-rendering:pixelated}
+.k-qrcap{text-align:center;font-size:13px;font-weight:700;color:#0e1430;margin-top:14px}
+.k-phone-steps{max-width:360px}
+.k-step{display:flex;gap:16px;margin-bottom:26px}
+.k-stepn{width:34px;height:34px;border-radius:50%;flex:0 0 34px;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.3);display:grid;place-items:center;font-weight:700;font-size:15px}
+.k-stept{font-size:18px;font-weight:700}
+.k-steps{font-size:13.5px;color:rgba(255,255,255,.62);margin-top:3px;line-height:1.45}
+.k-simlink{margin-top:8px;font-size:13px;color:#B9AEFF;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.k-simlink:hover{text-decoration:underline}
+/* verdict full screen */
+.k-verdict{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:0;padding:30px}
+.k-vbg-ok{background:radial-gradient(900px 600px at 50% 30%,rgba(31,157,91,.35),transparent 60%)}
+.k-vbg-wn{background:radial-gradient(900px 600px at 50% 30%,rgba(232,149,28,.32),transparent 60%)}
+.k-vbg-er{background:radial-gradient(900px 600px at 50% 30%,rgba(215,56,43,.3),transparent 60%)}
+.k-vring{width:128px;height:128px;border-radius:50%;display:grid;place-items:center;margin-bottom:8px;animation:kpop .45s cubic-bezier(.22,1.4,.4,1)}
+@keyframes kpop{0%{transform:scale(.4);opacity:0}100%{transform:scale(1);opacity:1}}
+.k-vring svg{width:62px;height:62px;color:#fff;stroke-width:2.4}
+.k-vring.ok{background:#1F9D5B;box-shadow:0 0 0 14px rgba(31,157,91,.18)}
+.k-vring.wn{background:#E8951C;box-shadow:0 0 0 14px rgba(232,149,28,.18)}
+.k-vring.er{background:#D7382B;box-shadow:0 0 0 14px rgba(215,56,43,.18)}
+.k-vname{font-family:var(--disp);font-weight:800;font-size:36px;margin-top:22px;letter-spacing:-.015em}
+.k-vh{font-family:var(--disp);font-weight:800;font-size:26px;margin-top:6px}
+.k-vh.ok{color:#5FE39B}.k-vh.wn{color:#FFC56B}.k-vh.er{color:#FF8B80}
+.k-vinfo{font-size:17px;color:rgba(255,255,255,.75);margin-top:10px;max-width:520px;line-height:1.45}
+.k-vnext{margin-top:30px;height:54px;padding:0 30px;border-radius:14px;border:1.5px solid rgba(255,255,255,.35);background:rgba(255,255,255,.1);color:#fff;font-family:var(--sans);font-size:17px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:9px;transition:.16s}
+.k-vnext:hover{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.55)}
+.k-vnext svg{width:18px;height:18px}
+.k-vfoot{font-size:13px;color:rgba(255,255,255,.45);margin-top:14px}
+.k-vbar{position:absolute;left:0;bottom:0;height:4px;width:100%;background:rgba(255,255,255,.1)}
+.k-vbar i{display:block;height:100%;background:rgba(255,255,255,.55);transform-origin:left;animation:kcount 6s linear forwards}
+@keyframes kcount{from{transform:scaleX(1)}to{transform:scaleX(0)}}
+/* kiosk demo switcher — horizontal on top like the other desktop screens */
+#kioskDemo{position:static;transform:none;flex-direction:row;flex-wrap:wrap;align-items:center;width:auto;max-width:1000px;gap:7px;padding:8px 12px}
+#kioskDemo .sd-label{padding:0 8px;flex:0 0 auto}
+#kioskDemo .sd-btn{padding:7px 11px;font-size:12px}
+
 /* ===== Owner App — real Wix Owner App chrome ===== */
 #surf-owner{--b10:#2B5CE6;--b05:#2348C9;--b40:#DCE4FB}
 .oa-tabbar{flex:0 0 auto;background:#fff;border-top:1px solid #EAECEF;display:flex;padding:8px 2px 4px}
@@ -978,14 +1079,14 @@ button{font-family:var(--sans)}
   <h1>Check-in Gate <span class="pill">Interactive prototype</span></h1>
   <p>Tap inside the device to use it. In the scanner, <b>tap the frame</b> to simulate scanning the next member in the queue.</p>
   <div class="launch">
-    <button class="on" data-surf="client" onclick="surf('client',this)"><span class="dot"></span>Check In Hub</button>
+    <button data-surf="client" onclick="surf('client',this)"><span class="dot"></span>Check In Hub</button>
+    <button data-surf="kiosk" onclick="surf('kiosk',this)"><span class="dot"></span>Self Check-In Kiosk</button>
     <button data-surf="owner" onclick="surf('owner',this)"><span class="dot"></span>Owner App</button>
     <button data-surf="member" onclick="surf('member',this)"><span class="dot"></span>Member App</button>
     <button data-surf="setm" onclick="surf('setm',this)"><span class="dot"></span>Mobile Setup</button>
-    <button data-surf="web" onclick="surf('web',this)"><span class="dot"></span>Web Setup</button>
+    <button class="on" data-surf="web" onclick="surf('web',this)"><span class="dot"></span>Web Setup</button>
     <button data-surf="guest" onclick="surf('guest',this)"><span class="dot"></span>Confirmation Email</button>
     <button data-surf="plan" onclick="surf('plan',this)"><span class="dot"></span>Pricing Plan Setup</button>
-    <button class="reset" onclick="location.reload()">↺ Reset</button>
   </div>
 </div></div>
 
@@ -1320,6 +1421,125 @@ button{font-family:var(--sans)}
     </div>
   </div>
 
+  <!-- ============ SELF CHECK-IN KIOSK ============ -->
+  <div class="surface-stage" id="surf-kiosk">
+    <div class="scan-demo" id="kioskDemo">
+      <span class="sd-label">Simulate check-in · demo</span>
+      <button class="sd-btn ok"   onclick="kioskVerdict('ok')"><span class="sd-dot"></span>Eligible · session</button>
+      <button class="sd-btn ok"   onclick="kioskVerdict('mActive')"><span class="sd-dot"></span>Membership entry</button>
+      <button class="sd-btn ok"   onclick="kioskVerdict('credit')"><span class="sd-dot"></span>Credit redeemed</button>
+      <button class="sd-btn warn" onclick="kioskVerdict('intake')"><span class="sd-dot"></span>Intake form needed</button>
+      <button class="sd-btn warn" onclick="kioskVerdict('warn')"><span class="sd-dot"></span>Plan may be lapsed</button>
+      <button class="sd-btn warn" onclick="kioskVerdict('mWindow')"><span class="sd-dot"></span>Outside access hours</button>
+      <button class="sd-btn err"  onclick="kioskVerdict('mNone')"><span class="sd-dot"></span>No active membership</button>
+      <button class="sd-btn err"  onclick="kioskVerdict('err')"><span class="sd-dot"></span>Not eligible</button>
+    </div>
+
+    <div class="tablet"><div class="tcam"></div><div class="tscreen" id="kioskScreen">
+
+      <!-- k-welcome -->
+      <div class="kscr on" id="k-welcome">
+        <div class="k-bg"></div>
+        <div class="k-pad">
+          <div class="k-top">
+            <div class="k-logo">J</div>
+            <div><div class="k-biz">Jim's Gym</div><div class="k-bizsub">Check in to start your session</div></div>
+            <div class="k-clock"><div class="t">9:02 AM</div><div class="d">Sun, Jun 29</div></div>
+          </div>
+          <div class="k-welcome">
+            <h1 class="k-h1">Welcome in.</h1>
+            <p class="k-sub">Check yourself in for today's class — find your name, enter your details, or scan with your phone.</p>
+            <div class="k-actions">
+              <div class="k-card" onclick="kioskGo('k-find')">
+                <div class="kc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></div>
+                <div class="kc-t">Find your name</div>
+                <div class="kc-s">Tap your name from today's class list.</div>
+              </div>
+              <div class="k-card" onclick="kioskGo('k-id')">
+                <div class="kc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h4"/></svg></div>
+                <div class="kc-t">Enter your details</div>
+                <div class="kc-s">Use your member ID, phone or email.</div>
+              </div>
+              <div class="k-card" onclick="kioskGo('k-phone')">
+                <div class="kc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="6" rx="1"/><rect x="14" y="4" width="7" height="7" rx="1"/><path d="M14 15h3v5M20 14v6"/></svg></div>
+                <div class="kc-t">Scan with your phone</div>
+                <div class="kc-s">Sign in on your own device — no app needed.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- k-find -->
+      <div class="kscr" id="k-find">
+        <div class="k-bg"></div>
+        <div class="k-pad">
+          <button class="k-back" onclick="kioskGo('k-welcome')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>Back</button>
+          <h2 class="k-screen-h">Find your name</h2>
+          <div class="k-screen-s">Tap your name to check in for today.</div>
+          <div class="k-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="kioskSearch" placeholder="Search your name" oninput="kioskRenderRoster(this.value)"></div>
+          <div class="k-roster" id="kioskRoster"></div>
+        </div>
+      </div>
+
+      <!-- k-id -->
+      <div class="kscr" id="k-id">
+        <div class="k-bg"></div>
+        <div class="k-pad">
+          <button class="k-back" onclick="kioskGo('k-welcome')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>Back</button>
+          <h2 class="k-screen-h" style="text-align:center">Enter your details</h2>
+          <div class="k-id">
+            <div class="k-idtabs">
+              <button class="k-idtab on" data-mode="phone" onclick="kioskIdMode('phone',this)">Phone</button>
+              <button class="k-idtab" data-mode="id" onclick="kioskIdMode('id',this)">Member ID</button>
+              <button class="k-idtab" data-mode="email" onclick="kioskIdMode('email',this)">Email</button>
+            </div>
+            <div class="k-iddisplay" id="kioskIdDisp"><span class="k-idph" id="kioskIdPh">Enter phone number</span></div>
+            <div class="k-keypad" id="kioskKeypad"></div>
+            <button class="k-idgo" id="kioskIdGo" disabled onclick="kioskIdSubmit()">Check in</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- k-phone -->
+      <div class="kscr" id="k-phone">
+        <div class="k-bg"></div>
+        <div class="k-pad">
+          <button class="k-back" onclick="kioskGo('k-welcome')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>Back</button>
+          <div class="k-phone">
+            <div>
+              <div class="k-qrbox"><div class="k-qr" id="kioskQR"></div><div class="k-qrcap">jimsgym.com/checkin</div></div>
+            </div>
+            <div class="k-phone-steps">
+              <h2 class="k-screen-h" style="margin-top:0">Scan to check in</h2>
+              <div class="k-step"><div class="k-stepn">1</div><div><div class="k-stept">Scan with your camera</div><div class="k-steps">Point your phone at this code — or the one posted at the front desk.</div></div></div>
+              <div class="k-step"><div class="k-stepn">2</div><div><div class="k-stept">Sign in to your account</div><div class="k-steps">Opens your member area. Log in so we know it's you — no app to install.</div></div></div>
+              <div class="k-step"><div class="k-stepn">3</div><div><div class="k-stept">You're checked in</div><div class="k-steps">Confirmation shows here and on your phone.</div></div></div>
+              <div class="k-simlink" onclick="kioskPhoneSim()"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>Simulate phone sign-in</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- k-verdict -->
+      <div class="kscr" id="k-verdict">
+        <div class="k-bg" id="kioskVBg"></div>
+        <div class="k-pad" style="justify-content:center">
+          <div class="k-verdict">
+            <div class="k-vring" id="kioskVRing"></div>
+            <div class="k-vname" id="kioskVName"></div>
+            <div class="k-vh" id="kioskVH"></div>
+            <div class="k-vinfo" id="kioskVInfo"></div>
+            <button class="k-vnext" onclick="kioskGo('k-welcome')">Done</button>
+            <div class="k-vfoot" id="kioskVFoot">Returning to start…</div>
+          </div>
+        </div>
+        <div class="k-vbar"><i></i></div>
+      </div>
+
+    </div></div>
+  </div>
+
   <!-- ============ SETUP MOBILE ============ -->
   <div class="surface-stage" id="surf-setm">
     <div class="demo-switch" id="mobStateSwitch">
@@ -1446,13 +1666,13 @@ button{font-family:var(--sans)}
   </div>
 
   <!-- ============ SETUP WEB ============ -->
-  <div class="surface-stage" id="surf-web">
+  <div class="surface-stage on" id="surf-web">
     <div class="demo-switch" id="webViewSwitch">
       <span class="ds-label">View · demo</span>
-      <button class="ds-btn on" data-wv="mobile"   onclick="setWebView('mobile',this)">Set up in mobile</button>
-      <button class="ds-btn"    data-wv="settings" onclick="setWebView('settings',this)">Settings page</button>
+      <button class="ds-btn"    data-wv="mobile"   onclick="setWebView('mobile',this)">Set up in mobile</button>
+      <button class="ds-btn on" data-wv="settings" onclick="setWebView('settings',this)">Settings page</button>
     </div>
-    <div class="demo-switch" id="webStateSwitch" style="display:none">
+    <div class="demo-switch" id="webStateSwitch">
       <span class="ds-label">Installed apps · demo</span>
       <button class="ds-btn on" data-st="both"     onclick="setWebState('both',this)">Bookings + Pricing Plans</button>
       <button class="ds-btn"    data-st="bookings" onclick="setWebState('bookings',this)">Bookings only</button>
@@ -1493,12 +1713,12 @@ button{font-family:var(--sans)}
             <div class="pp-s-i on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 00.3 1.8 2 2 0 11-2.8 2.8 1.6 1.6 0 00-1.8-.3 1.6 1.6 0 00-1 1.5 2 2 0 11-4 0 1.6 1.6 0 00-1-1.5 1.6 1.6 0 00-1.8.3 2 2 0 11-2.8-2.8 1.6 1.6 0 00.3-1.8 1.6 1.6 0 00-1.5-1 2 2 0 110-4 1.6 1.6 0 001.5-1 1.6 1.6 0 00-.3-1.8 2 2 0 112.8-2.8 1.6 1.6 0 001.8.3 1.6 1.6 0 001-1.5 2 2 0 114 0 1.6 1.6 0 001 1.5 1.6 1.6 0 001.8-.3 2 2 0 112.8 2.8 1.6 1.6 0 00-.3 1.8 1.6 1.6 0 001.5 1 2 2 0 110 4 1.6 1.6 0 00-1.5 1z"/></svg>Settings<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" style="margin-left:auto"><path d="M12 17.3l-6.2 3.7 1.6-7L2 9.2l7.1-.6L12 2l2.9 6.6 7.1.6-5.4 4.8 1.6 7z"/></svg></div>
           </div>
           <!-- content: the real Check-in & Access settings (chrome stripped via embed=1) -->
-          <div class="pp-canvas" id="web-view-settings" style="display:none">
+          <div class="pp-canvas" id="web-view-settings" style="display:flex">
             <div class="pp-bar"><div class="pp-crumbs" id="web-crumbs"><span class="web-crumb-link" onclick="webCrumbHome()">Settings</span> <span class="pp-crumb-sep">›</span> <b>Check-in &amp; Access</b></div></div>
             <iframe id="webFrame" src="access-control-settings-modular-mockup.html?view=detail&installed=both&embed=1" title="Check-in &amp; Access settings" style="flex:1;width:100%;border:0;display:block;background:#f4f5f7"></iframe>
           </div>
           <!-- content: set up in the mobile app (Orion-style promo) -->
-          <div class="pp-canvas" id="web-view-mobile" style="display:flex">
+          <div class="pp-canvas" id="web-view-mobile" style="display:none">
             <div class="pp-bar"><div class="pp-crumbs"><span>Settings</span> <span class="pp-crumb-sep">›</span> <b>Check-in &amp; Access</b></div></div>
             <div class="wm-wrap">
               <div class="wm-bg"></div>
@@ -1530,7 +1750,7 @@ button{font-family:var(--sans)}
   </div>
 
   <!-- ============ CLIENT CHECK IN (centralized dashboard hub) ============ -->
-  <div class="surface-stage on" id="surf-client">
+  <div class="surface-stage" id="surf-client">
     <div class="scan-demo" id="hubScanDemo">
       <div class="sd-label">Simulate check in</div>
       <span class="hub-auto"><span class="hub-auto-t">Auto every</span>
@@ -2146,6 +2366,9 @@ function surf(name,btn){
   if(name==='web') scaleWeb();
   if(name==='plan') scalePlan();
   if(name==='client') scaleClient();
+  if(name==='kiosk') scaleKiosk();
+  // kiosk demo switcher — only on the kiosk surface
+  var ksd=document.getElementById('kioskDemo'); if(ksd) ksd.style.display=(name==='kiosk')?'flex':'none';
   // owner demo panels — owner-state on home, scan-result on the scanner screen
   updateOwnerPanels();
   // member scan-result demo panel — only while the member surface shows the QR pass
@@ -2365,6 +2588,7 @@ window.addEventListener('resize',function(){
   if(document.getElementById('surf-web').classList.contains('on'))scaleWeb();
   if(document.getElementById('surf-plan').classList.contains('on'))scalePlan();
   if(document.getElementById('surf-client').classList.contains('on'))scaleClient();
+  if(document.getElementById('surf-kiosk').classList.contains('on'))scaleKiosk();
 });
 
 /* ---------- pricing-plan: Services dropdown with QR check-in ---------- */
@@ -2991,13 +3215,191 @@ document.addEventListener('click',function(e){
     document.querySelectorAll('#clientHub .hub-dd').forEach(function(d){d.classList.remove('open');});
   }
 });
+/* ============================================================
+   Self Check-In Kiosk (reception tablet)
+   Reuses HUB_STATES verdicts + HUB_EXPECTED/HUB_CLIENTS roster.
+   A successful check-in is posted to the Check In Hub (src:'kiosk').
+   ============================================================ */
+var KIOSK_RETURN=null; // timer back to idle after a verdict
+function scaleKiosk(){
+  var t=document.querySelector('#surf-kiosk .tablet'); if(!t) return;
+  var avail=Math.min(1000, window.innerWidth-48);
+  var sc=avail/1000;
+  t.style.transform='scale('+sc+')';
+  t.style.marginBottom=(-(700)*(1-sc))+'px';
+}
+function kioskGo(id){
+  if(KIOSK_RETURN){ clearTimeout(KIOSK_RETURN); KIOSK_RETURN=null; }
+  document.querySelectorAll('#surf-kiosk .kscr').forEach(function(s){s.classList.remove('on','fade');});
+  var el=document.getElementById(id); if(!el) return;
+  el.classList.add('on','fade');
+  if(id==='k-find'){ var s=document.getElementById('kioskSearch'); if(s){s.value='';} kioskRenderRoster(''); }
+  if(id==='k-id'){ kioskIdReset(); }
+  if(id==='k-welcome'){ kioskIdReset(); }
+}
+/* ---- roster (find your name) — today's expected + all clients, deduped ---- */
+function kioskRoster(){
+  var seen={},out=[];
+  HUB_EXPECTED.forEach(function(e){ if(!seen[e.nm]){seen[e.nm]=1;out.push({nm:e.nm,av:e.av,sub:e.svc+' · '+e.t,expected:true});} });
+  HUB_CLIENTS.forEach(function(c){ if(!seen[c.nm]){seen[c.nm]=1;out.push({nm:c.nm,av:c.av,sub:c.sub,expected:false});} });
+  return out;
+}
+function kioskInitials(n){return n.split(' ').map(function(w){return w[0];}).slice(0,2).join('').toUpperCase();}
+function kioskRenderRoster(q){
+  q=(q||'').toLowerCase().trim();
+  var list=kioskRoster().filter(function(p){return !q || p.nm.toLowerCase().indexOf(q)>-1;});
+  var wrap=document.getElementById('kioskRoster'); if(!wrap) return;
+  if(!list.length){ wrap.innerHTML='<div class="k-empty">No match. Try the front desk or enter your details.</div>'; return; }
+  wrap.innerHTML=list.map(function(p){
+    return '<div class="k-rrow" onclick="kioskPickName(\''+p.nm.replace(/'/g,"\\'")+'\')">'+
+      '<div class="k-rav" style="background:'+p.av+'">'+kioskInitials(p.nm)+'</div>'+
+      '<div class="k-rmain"><div class="k-rnm">'+p.nm+'</div><div class="k-rsub">'+p.sub+'</div></div></div>';
+  }).join('');
+}
+/* map a client to a verdict state for the demo (most are eligible) */
+function kioskStateFor(nm){
+  var m={'Tom Nguyen':'warn','Sara Klein':'mNone','Aisha Patel':'mWindow','Omar Haddad':'mWindow',
+         'Liam Brooks':'intake','Maya Cohen':'credit','Noa Bar':'credit','Carla Diaz':'credit',
+         'Yuki Tanaka':'credit','Jordan Reyes':'mActive','Dana Avraham':'mActive','Ben Stiller':'mActive',
+         'Riya Shah':'mActive','Diego Morales':'mActive','Elena Petrova':'mActive','Marco Rossi':'warn'};
+  return m[nm]||'ok';
+}
+function kioskPickName(nm){ kioskVerdict(kioskStateFor(nm),nm); }
+/* ---- enter details (member id / phone / email) ---- */
+var KIOSK_ID={mode:'phone',val:''};
+var KIOSK_PH={phone:'Enter phone number',id:'Enter member ID',email:'Enter email'};
+function kioskIdMode(mode,btn){
+  KIOSK_ID.mode=mode; KIOSK_ID.val='';
+  document.querySelectorAll('#surf-kiosk .k-idtab').forEach(function(b){b.classList.remove('on');});
+  if(btn) btn.classList.add('on');
+  kioskBuildKeypad(); kioskIdRender();
+}
+function kioskIdReset(){ KIOSK_ID.mode='phone'; KIOSK_ID.val='';
+  document.querySelectorAll('#surf-kiosk .k-idtab').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-mode')==='phone');});
+  kioskBuildKeypad(); kioskIdRender(); }
+function kioskBuildKeypad(){
+  var kp=document.getElementById('kioskKeypad'); if(!kp) return;
+  var keys;
+  if(KIOSK_ID.mode==='email'){
+    keys=['@','.com','gmail.com'].map(function(k){return '<button class="k-key wide" onclick="kioskKey(\''+k+'\')">'+k+'</button>';});
+    // for email demo we still give a compact set; full typing is out of scope for a mock
+    kp.style.gridTemplateColumns='repeat(3,110px)';
+    kp.innerHTML='<button class="k-key wide" onclick="kioskKey(\'a\')">a–z</button>'+
+                 '<button class="k-key wide" onclick="kioskKey(\'@\')">@</button>'+
+                 '<button class="k-key wide" onclick="kioskKey(\'.com\')">.com</button>'+
+                 '<button class="k-key wide" onclick="kioskKey(\'name@mail.com\')">demo email</button>'+
+                 '<button class="k-key wide" onclick="kioskKey(\' \')">space</button>'+
+                 '<button class="k-key" onclick="kioskBksp()">⌫</button>';
+    return;
+  }
+  kp.style.gridTemplateColumns='repeat(3,96px)';
+  var html='';
+  ['1','2','3','4','5','6','7','8','9'].forEach(function(d){ html+='<button class="k-key" onclick="kioskKey(\''+d+'\')">'+d+'</button>'; });
+  html+='<button class="k-key wide" onclick="kioskBksp()">⌫</button>';
+  html+='<button class="k-key" onclick="kioskKey(\'0\')">0</button>';
+  html+='<button class="k-key wide" onclick="kioskClear()">Clear</button>';
+  kp.innerHTML=html;
+}
+function kioskKey(ch){ KIOSK_ID.val+=ch; kioskIdRender(); }
+function kioskBksp(){ KIOSK_ID.val=KIOSK_ID.val.slice(0,-1); kioskIdRender(); }
+function kioskClear(){ KIOSK_ID.val=''; kioskIdRender(); }
+function kioskIdRender(){
+  var disp=document.getElementById('kioskIdDisp'); var go=document.getElementById('kioskIdGo');
+  if(!disp) return;
+  if(!KIOSK_ID.val){ disp.innerHTML='<span class="k-idph">'+KIOSK_PH[KIOSK_ID.mode]+'</span>'; }
+  else { disp.textContent=KIOSK_ID.val; }
+  if(go) go.disabled = KIOSK_ID.val.length < (KIOSK_ID.mode==='phone'?4:3);
+}
+function kioskIdSubmit(){
+  // demo: resolve to a known client by a cheap hash, so different inputs give variety
+  var roster=kioskRoster();
+  var sum=0; for(var i=0;i<KIOSK_ID.val.length;i++){ sum+=KIOSK_ID.val.charCodeAt(i); }
+  var p=roster[sum%roster.length];
+  kioskVerdict(kioskStateFor(p.nm),p.nm);
+}
+/* ---- scan with your phone (kiosk shows QR → client signs in on own device) ---- */
+function kioskRenderQR(){
+  var box=document.getElementById('kioskQR'); if(!box) return;
+  // deterministic pseudo-QR: 25x25 module grid with finder patterns
+  var N=25,cell=10,grid=[];
+  for(var y=0;y<N;y++){grid[y]=[];for(var x=0;x<N;x++){grid[y][x]=((x*7+y*13+x*y*3)%5===0)?1:0;}}
+  function finder(ox,oy){ for(var y=0;y<7;y++)for(var x=0;x<7;x++){var on=(x===0||x===6||y===0||y===6)||(x>=2&&x<=4&&y>=2&&y<=4);grid[oy+y][ox+x]=on?1:0;} }
+  finder(0,0); finder(N-7,0); finder(0,N-7);
+  // clear separators around finders
+  for(var k=0;k<8;k++){ if(grid[7]&&grid[7][k]!==undefined)grid[7][k]=0; if(grid[k]&&grid[k][7]!==undefined)grid[k][7]=0;
+    if(grid[7]&&grid[7][N-1-k]!==undefined)grid[7][N-1-k]=0; if(grid[k]&&grid[k][N-8]!==undefined)grid[k][N-8]=0;
+    if(grid[N-8]&&grid[N-8][k]!==undefined)grid[N-8][k]=0; if(grid[N-1-k]&&grid[N-1-k][7]!==undefined)grid[N-1-k][7]=0; }
+  var sz=N*cell, s='<svg width="248" height="248" viewBox="0 0 '+sz+' '+sz+'" xmlns="http://www.w3.org/2000/svg"><rect width="'+sz+'" height="'+sz+'" fill="#fff"/>';
+  for(var yy=0;yy<N;yy++)for(var xx=0;xx<N;xx++){ if(grid[yy][xx]) s+='<rect x="'+(xx*cell)+'" y="'+(yy*cell)+'" width="'+cell+'" height="'+cell+'" fill="#0e1430"/>'; }
+  s+='</svg>';
+  box.innerHTML=s;
+}
+function kioskPhoneSim(){
+  // simulate the client signing in on their phone → authenticated identity returns
+  toast('Signed in on phone · identity verified',true);
+  var roster=kioskRoster(); var p=roster.filter(function(x){return x.expected;})[0]||roster[0];
+  setTimeout(function(){ kioskVerdict(kioskStateFor(p.nm),p.nm); },650);
+}
+/* ---- verdict (full-screen) — also posts to the Check In Hub ---- */
+var KIOSK_SRC_ICON={ok:'<path d="M5 13l4 4L19 7"/>',
+  wn:'<path d="M12 3L2 21h20z"/><path d="M12 10v5"/><path d="M12 18h.01"/>',
+  er:'<circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/>'};
+function kioskVerdict(type,nm){
+  var s=HUB_STATES[type]; if(!s) return;
+  var person=HUB_PEOPLE[type]||{};
+  var name=nm||person.nm||'Member';
+  // friendly, client-facing headline (not the staff-facing wording)
+  var headMap={ok:'You\'re checked in',mActive:'Welcome back',showAll:'You\'re checked in',
+    credit:'You\'re checked in',multi:'You\'re checked in',intake:'One quick step',
+    warn:'See the front desk',mWindow:'Outside your access hours',
+    mNone:'See the front desk',err:'We couldn\'t check you in'};
+  var infoMap={ok:s.info,mActive:'Membership entry · enjoy your session',showAll:s.info,
+    credit:s.info+' · scan recorded',multi:'Choose your plan with staff',
+    intake:'Please sign your waiver — staff can help at the desk.',
+    warn:'There\'s a note on your plan. Staff will sort it out.',
+    mWindow:s.info+' · staff can let you in',
+    mNone:'No active plan found. Talk to staff to get set up.',
+    err:'No booking or active plan found for today.'};
+  document.getElementById('kioskVBg').className='k-bg k-vbg-'+s.cls;
+  var ring=document.getElementById('kioskVRing');
+  ring.className='k-vring '+s.cls;
+  ring.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">'+KIOSK_SRC_ICON[s.cls]+'</svg>';
+  document.getElementById('kioskVName').textContent=name;
+  var vh=document.getElementById('kioskVH'); vh.className='k-vh '+s.cls; vh.textContent=headMap[type]||s.h;
+  document.getElementById('kioskVInfo').textContent=infoMap[type]||s.info;
+  var foot=document.getElementById('kioskVFoot');
+  foot.textContent = (s.cls==='er'||type==='intake'||type==='warn'||type==='mNone'||type==='mWindow')
+    ? 'A staff member has been notified · returning to start…'
+    : 'Returning to start…';
+  kioskGo('k-verdict');
+  // restart the countdown bar
+  var bar=document.querySelector('#k-verdict .k-vbar i');
+  if(bar){ bar.style.animation='none'; void bar.offsetWidth; bar.style.animation='kcount 6s linear forwards'; }
+  // feed the Check In Hub so kiosk activity shows up live (uses the same person/state model)
+  hubKioskRecord(type,name,person.av);
+  // auto-return to idle
+  if(KIOSK_RETURN) clearTimeout(KIOSK_RETURN);
+  KIOSK_RETURN=setTimeout(function(){ kioskGo('k-welcome'); },6000);
+}
+/* post a kiosk check-in into the hub's history (and gate if hub is open) */
+function hubKioskRecord(type,name,av){
+  var s=HUB_STATES[type]; if(!s) return;
+  var hid='h'+(++HUB_HIST_SEQ);
+  HUB_HISTORY.unshift({hid:hid,type:type,cls:s.cls,nm:name,av:av||'#5A48F5',
+    sub:s.hsub,src:'kiosk',srcDetail:'',t:'now',pending:!!(s.acts&&s.acts.length)});
+  if(typeof hubRenderHistory==='function' && document.getElementById('hubHistory')) hubRenderHistory();
+}
 hubRenderLive(); hubRenderHistory();
 updateDoorCount();
 /* start in auto · random mode by default */
 (function(){ var sel=document.getElementById('hubAutoSel'); if(sel){ sel.value='random'; hubSetAuto('random'); } })();
 
-/* Check In Hub is the default surface — scale its browser frame on load */
-scaleClient();
+/* kiosk init — render QR + keypad + roster once */
+kioskRenderQR(); kioskBuildKeypad(); kioskRenderRoster('');
+
+/* Web Setup is the default surface — scale its browser frame on load.
+   (the hub frame is scaled by surf() when its tab is opened) */
+scaleWeb();
 </script>
 </body>
 </html>
