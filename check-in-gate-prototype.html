@@ -1079,12 +1079,12 @@ button{font-family:var(--sans)}
   <h1>Check-in Gate <span class="pill">Interactive prototype</span></h1>
   <p>Tap inside the device to use it. In the scanner, <b>tap the frame</b> to simulate scanning the next member in the queue.</p>
   <div class="launch">
-    <button data-surf="client" onclick="surf('client',this)"><span class="dot"></span>Check In Hub</button>
+    <button class="on" data-surf="client" onclick="surf('client',this)"><span class="dot"></span>Check In Hub</button>
     <button data-surf="kiosk" onclick="surf('kiosk',this)"><span class="dot"></span>Self Check-In Kiosk</button>
+    <button data-surf="web" onclick="surf('web',this)"><span class="dot"></span>Web Settings</button>
     <button data-surf="owner" onclick="surf('owner',this)"><span class="dot"></span>Owner App</button>
     <button data-surf="member" onclick="surf('member',this)"><span class="dot"></span>Member App</button>
-    <button data-surf="setm" onclick="surf('setm',this)"><span class="dot"></span>Mobile Setup</button>
-    <button class="on" data-surf="web" onclick="surf('web',this)"><span class="dot"></span>Web Setup</button>
+    <button data-surf="setm" onclick="surf('setm',this)"><span class="dot"></span>Mobile Settings</button>
     <button data-surf="guest" onclick="surf('guest',this)"><span class="dot"></span>Confirmation Email</button>
     <button data-surf="plan" onclick="surf('plan',this)"><span class="dot"></span>Pricing Plan Setup</button>
   </div>
@@ -1666,7 +1666,7 @@ button{font-family:var(--sans)}
   </div>
 
   <!-- ============ SETUP WEB ============ -->
-  <div class="surface-stage on" id="surf-web">
+  <div class="surface-stage" id="surf-web">
     <div class="demo-switch" id="webViewSwitch">
       <span class="ds-label">View · demo</span>
       <button class="ds-btn"    data-wv="mobile"   onclick="setWebView('mobile',this)">Set up in mobile</button>
@@ -1750,7 +1750,7 @@ button{font-family:var(--sans)}
   </div>
 
   <!-- ============ CLIENT CHECK IN (centralized dashboard hub) ============ -->
-  <div class="surface-stage" id="surf-client">
+  <div class="surface-stage on" id="surf-client">
     <div class="scan-demo" id="hubScanDemo">
       <div class="sd-label">Simulate check in</div>
       <span class="hub-auto"><span class="hub-auto-t">Auto every</span>
@@ -3397,9 +3397,8 @@ updateDoorCount();
 /* kiosk init — render QR + keypad + roster once */
 kioskRenderQR(); kioskBuildKeypad(); kioskRenderRoster('');
 
-/* Web Setup is the default surface — scale its browser frame on load.
-   (the hub frame is scaled by surf() when its tab is opened) */
-scaleWeb();
+/* Check In Hub is the default surface — scale its browser frame on load. */
+scaleClient();
 </script>
 </body>
 </html>
