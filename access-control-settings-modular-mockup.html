@@ -157,6 +157,25 @@
     ]
   };
 
+  /* ---- Doors: named entrances staff pick when scanning ---- */
+  var WEB_DOORS=[
+    {name:'Front Entrance',loc:'Broadway studio'},
+    {name:'Studio B side door',loc:'Broadway studio'},
+    {name:'Pool gate',loc:'Broadway studio'}
+  ];
+  function renderDoors(){
+    var el=document.getElementById('doorsList'); if(!el) return;
+    el.innerHTML=WEB_DOORS.map(function(d,i){
+      return '<div class="srow"><div class="lock-tile" style="font-size:16px">🚪</div>'+
+        '<div class="it"><div class="itt">'+d.name+'</div><div class="itd">'+d.loc+'</div></div>'+
+        '<button class="btn ghost" onclick="renameDoor('+i+')">Rename</button>'+
+        '<button class="door-disconnect" style="margin-left:8px" onclick="removeDoor('+i+')">Remove</button></div>';
+    }).join('');
+  }
+  function addDoor(){ var n=prompt('Door name','New door'); if(n){ WEB_DOORS.push({name:n,loc:'Broadway studio'}); renderDoors(); } }
+  function renameDoor(i){ var n=prompt('Rename door',WEB_DOORS[i].name); if(n){ WEB_DOORS[i].name=n; renderDoors(); } }
+  function removeDoor(i){ WEB_DOORS.splice(i,1); renderDoors(); }
+
   function renderDoorHardware(){
     var el=document.getElementById('doorHardware'); if(!el) return;
     if(!KISI.connected){
@@ -247,7 +266,7 @@
   }
 
   function initFromUrl(){
-    renderMemTable(); renderDoorHardware();
+    renderMemTable(); renderDoorHardware(); renderDoors();
     // optional installed-apps preset from the URL (?installed=both|bookings|pp)
     var m = location.search.match(/[?&]installed=(both|bookings|pp)/);
     if(m){ setInstalled(m[1]); } else { applyFeature(); }
@@ -977,7 +996,14 @@
         </div>
       </div>
 
-      <!-- ============ 5. Door access ============ -->
+      <!-- ============ 5. Doors ============ -->
+      <div class="sec-head"><h2>Doors</h2></div>
+      <div class="sec-desc">Name the entrances at your location. Staff pick a door when they scan, and each check-in is logged to it.</div>
+      <div class="scard"><div id="doorsList"><!-- rendered by JS --></div>
+        <div class="srow"><button class="btn ghost" onclick="addDoor()">+ Add a door</button></div>
+      </div>
+
+      <!-- ============ 6. Door access ============ -->
       <div class="sec-head"><h2>Door access</h2></div>
       <div class="sec-desc">Unlock a physical door automatically for eligible members, by integrating an external provider like <b>Kisi</b>.</div>
       <div class="scard" id="doorHardware"><!-- rendered by JS: empty or connected --></div>
