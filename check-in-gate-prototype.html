@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Check-in Gate — Interactive Prototype</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@500;600;700;800&family=Wix+Madefor+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@500;600;700;800&family=Wix+Madefor+Text:wght@400;500;600;700&family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --b10:#116DFF;--b05:#0F62E6;--b20:#5899FF;--b40:#D3E4FF;--b50:#E8F1FF;
@@ -72,6 +72,14 @@ button{font-family:var(--sans)}
 .scan-demo .sd-btn.ok   .sd-dot{background:#25A55F}
 .scan-demo .sd-btn.warn .sd-dot{background:#F9AD4D}
 .scan-demo .sd-btn.err  .sd-dot{background:#E62214}
+/* Check-in Hub Kisi-tap panel: horizontal bar on top of the dashboard (desktop surface) */
+#hubScanDemo{position:static;transform:none;flex-direction:row;flex-wrap:wrap;align-items:center;width:auto;max-width:1180px;gap:7px;padding:8px 12px}
+#hubScanDemo .sd-label{padding:0 8px;flex:0 0 auto}
+#hubScanDemo .sd-btn{padding:7px 11px;font-size:12px}
+#hubScanDemo .hub-auto{flex:0 0 auto;padding:0 4px}
+#hubScanDemo .sd-sep{width:1px;height:22px;background:var(--line);flex:0 0 auto;margin:0 4px}
+#hubScanDemo.collapsed{padding:8px 12px}
+#hubScanDemo.collapsed .hub-auto,#hubScanDemo.collapsed .sd-sep{display:none}
 .hint b{color:var(--b10)}
 
 /* phone */
@@ -149,6 +157,14 @@ button{font-family:var(--sans)}
 @keyframes scan{0%,100%{top:10px}50%{top:228px}}
 .scan-qr{position:absolute;top:50%;left:50%;transform:translate(-50%,-54%);width:150px;height:150px;border-radius:8px;z-index:7;background:#fff;padding:8px;pointer-events:none}
 .scan-qr img{width:100%;height:100%;display:block}
+.scan-doorchip{position:absolute;left:50%;transform:translateX(-50%);bottom:166px;z-index:9;display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);color:#fff;font-size:13.5px;font-weight:600;padding:7px 14px;border-radius:999px;cursor:pointer;backdrop-filter:blur(4px);white-space:nowrap}
+.scan-doorchip:active{background:rgba(255,255,255,.26)}
+.door-opt{display:flex;align-items:center;gap:11px;padding:14px 4px;border-bottom:1px solid var(--line);cursor:pointer;font-size:16px;color:var(--d10)}
+.door-opt:last-child{border-bottom:none}
+.door-opt .di{width:34px;height:34px;border-radius:9px;background:var(--bg);display:grid;place-items:center;color:var(--d20);flex:0 0 34px}
+.door-opt .di svg{width:18px;height:18px}
+.door-opt .dn{flex:1}.door-opt .dn .dt{font-weight:600}.door-opt .dn .ds{font-size:13px;color:var(--d30);margin-top:1px}
+.door-opt .dck{color:var(--b10);visibility:hidden}.door-opt.sel .dck{visibility:visible}
 .scan-help{position:absolute;left:0;right:0;bottom:120px;z-index:8;text-align:center;color:#fff;font-size:14px;padding:0 30px}
 .scan-help small{display:block;opacity:.7;font-size:12px;margin-top:4px}
 .scan-actions{position:absolute;left:0;right:0;bottom:50px;z-index:8;display:flex;flex-direction:column;align-items:center;gap:14px}
@@ -699,6 +715,171 @@ button{font-family:var(--sans)}
 .wm-share{display:flex;gap:8px}
 .wm-share-in{flex:1;height:38px;border:1px solid #c5cad3;border-radius:8px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#9aa0ad}
 .wm-share-b{height:38px;padding:0 20px;border-radius:19px;border:none;background:#16213A;color:#fff;font-size:14px;font-weight:700;cursor:pointer}
+/* ===== Check-in Hub dashboard ===== */
+.hub{flex:1;overflow-y:auto;background:#f4f5f7;padding:14px 28px 50px;color:#16213A}
+.hub-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:20px}
+.hub-h1{font-family:var(--disp);font-size:25px;font-weight:800;margin:0}
+.hub-sub{display:flex;align-items:center;gap:10px;margin-top:8px;flex-wrap:wrap}
+.hub-pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#1F7A4D;background:#E3F4EA;border-radius:12px;padding:4px 10px}
+.hub-dot{width:7px;height:7px;border-radius:50%;background:#1F9D5B}
+.hub-sub-t{font-size:13.5px;color:#5b6478}
+.hub-setup{display:inline-flex;align-items:center;gap:7px;height:36px;padding:0 16px;border-radius:18px;border:1px solid #c5cad3;background:#fff;color:#16213A;font-size:14px;font-weight:600;cursor:pointer;flex:0 0 auto}
+.hub-filters{display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+.hub-ddwrap{position:relative}
+.hub-dd{height:40px;min-width:200px;border:1px solid #c5cad3;border-radius:8px;background:#fff;display:flex;align-items:center;gap:8px;padding:0 12px;font-size:14px;color:#16213A;cursor:pointer}
+.hub-dd.open{border-color:#2B5CE6;box-shadow:0 0 0 2px rgba(43,92,230,.18)}
+.hub-dd-lbl{font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:#868aa5}
+.hub-dd>span:nth-child(2){flex:1;font-weight:500}
+.hub-ddmenu{position:absolute;top:46px;left:0;min-width:230px;background:#fff;border:1px solid #e6e8ec;border-radius:8px;box-shadow:0 12px 30px rgba(0,6,36,.16);overflow:hidden;z-index:30;display:none}
+.hub-ddmenu.open{display:block}
+.hub-ddopt{display:flex;align-items:center;gap:10px;padding:11px 13px;font-size:14px;color:#16213A;cursor:pointer}
+.hub-ddopt:hover{background:#f6f8fb}
+.hub-ddopt.sel{background:#2B5CE6;color:#fff}
+.hub-ck{width:17px;height:17px;border-radius:4px;border:1.6px solid #c5cad3;flex:0 0 17px;display:grid;place-items:center;background:#fff}
+.hub-ddopt.on .hub-ck{background:#2B5CE6;border-color:#2B5CE6}
+.hub-ck svg{width:11px;height:11px}.hub-ddopt:not(.on) .hub-ck svg{display:none}
+.hub-manual{margin-left:auto;display:inline-flex;align-items:center;gap:7px;height:40px;padding:0 18px;border-radius:20px;border:none;background:#2B5CE6;color:#fff;font-size:14px;font-weight:600;cursor:pointer}
+/* ===== layout: gate full-width on top, history full-width below ===== */
+.hub-body{margin-top:18px;display:flex;flex-direction:column;gap:20px}
+.hub-body .hub-card{margin:0}
+.hub-card{background:#fff;border:1px solid #e6e8ec;border-radius:12px;overflow:hidden}
+.hub-card-h{display:flex;align-items:center;justify-content:space-between;padding:15px 18px;border-bottom:1px solid #eef0f3;font-size:15px;font-weight:700;color:#16213A}
+.hub-card-meta{font-size:12.5px;font-weight:500;color:#868aa5}
+.hub-live{display:inline-flex;align-items:center;gap:8px}
+.hub-live-dot{width:8px;height:8px;border-radius:50%;background:#1F9D5B;box-shadow:0 0 0 0 rgba(31,157,91,.5);animation:hubpulse 1.8s infinite}
+@keyframes hubpulse{0%{box-shadow:0 0 0 0 rgba(31,157,91,.5)}70%{box-shadow:0 0 0 7px rgba(31,157,91,0)}100%{box-shadow:0 0 0 0 rgba(31,157,91,0)}}
+/* gate header right cluster + auto toggle */
+.hub-gate-r{display:flex;align-items:center;gap:16px}
+.hub-auto{display:inline-flex;align-items:center;gap:8px}
+.hub-auto-t{font-size:12.5px;font-weight:600;color:#16213A}
+.hub-auto-sel{height:30px;border:1px solid var(--line);border-radius:8px;background:#fff;font-size:12.5px;font-weight:600;color:#16213A;padding:0 8px;cursor:pointer;font-family:inherit}
+.hub-tog{width:38px;height:22px;border-radius:12px;background:#cdd7e0;position:relative;cursor:pointer;transition:.15s;flex:0 0 38px}
+.hub-tog.on{background:#1F9D5B}
+.hub-tog i{position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.16s}
+.hub-tog.on i{left:18px}
+/* gate header right cluster + view-mode segmented control */
+.hub-hsearch{height:32px;border:1px solid var(--line);border-radius:8px;display:flex;align-items:center;gap:7px;padding:0 10px;background:#fff}
+.hub-hsearch input{border:none;outline:none;font-size:13px;color:#16213A;background:transparent;font-family:inherit;width:140px}
+.hub-modeseg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-left:6px}
+.hub-modebtn{width:32px;height:28px;border:none;background:#fff;color:#868aa5;cursor:pointer;display:grid;place-items:center;padding:0}
+.hub-modebtn+.hub-modebtn{border-left:1px solid var(--line)}
+.hub-modebtn.on{background:#2B5CE6;color:#fff}
+/* gate row — 4-per-row grid, wraps to more rows; liquid height */
+.hub-gate-row{padding:16px 18px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;align-items:stretch;max-height:1600px;overflow:hidden;
+  transition:max-height .5s cubic-bezier(.22,1.4,.4,1),padding .35s cubic-bezier(.22,1.4,.4,1),opacity .3s ease}
+.hub-gate-empty{grid-column:1/-1;min-height:118px;display:flex;align-items:center;justify-content:center;color:#9aa0ad;font-size:13.5px;text-align:center;line-height:1.5;transition:min-height .4s ease,opacity .3s ease}
+/* AUTO: collapse to a slim bar when empty (minimized), grow elastically with content */
+#hubGate[data-mode="auto"].is-empty .hub-gate-row{max-height:0;padding-top:0;padding-bottom:0;opacity:0}
+#hubGate[data-mode="auto"].is-empty .hub-card-h{border-bottom-color:transparent}
+/* fixed: cap height, scroll inside */
+#hubGate[data-mode="fixed"] .hub-gate-row{max-height:248px;overflow-y:auto}
+/* minimized: collapse the row entirely */
+#hubGate[data-mode="min"] .hub-gate-row{max-height:0;padding-top:0;padding-bottom:0;overflow:hidden;opacity:0}
+/* minimal live card: avatar-centric, no actions */
+.hub-res{position:relative;border:1px solid #e6e8ec;border-radius:12px;padding:18px 14px 16px;display:flex;flex-direction:column;align-items:center;text-align:center;background:#fff;overflow:hidden;animation:hubcardin .28s cubic-bezier(.34,1.2,.5,1) both}
+@keyframes hubcardin{from{opacity:0;transform:translateY(-14px) scale(.97)}to{opacity:1;transform:none}}
+/* exit animation */
+.hub-res.leaving{animation:hubcardout .22s ease forwards}
+@keyframes hubcardout{to{opacity:0;transform:scale(.94)}}
+.hub-res.ok{border-top:3px solid #1F9D5B}
+.hub-res.wn{border-top:3px solid #E8951C}
+.hub-res.er{border-top:3px solid #D7382B}
+.hub-res-avwrap{position:relative;margin-bottom:11px}
+.hub-res-av{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:20px;font-weight:700}
+.hub-res-badge{position:absolute;right:-3px;bottom:-3px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;border:2.5px solid #fff}
+.hub-res-badge svg{width:13px;height:13px}
+.hub-res-badge.ok{background:#1F9D5B;color:#fff}
+.hub-res-badge.wn{background:#E8951C;color:#fff}
+.hub-res-badge.er{background:#D7382B;color:#fff}
+.hub-res-nm{font-size:14px;font-weight:700;color:#16213A;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hub-res-h{font-size:13px;font-weight:700;margin-top:5px}
+.hub-res.ok .hub-res-h{color:#1F7A4D}.hub-res.wn .hub-res-h{color:#9A5B00}.hub-res.er .hub-res-h{color:#C0291F}
+.hub-res-info{font-size:12px;color:#5b6478;line-height:1.4;margin-top:4px;max-width:100%}
+/* source chip */
+.hub-src{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:700;color:#5b6478;background:#EEF1F6;border-radius:6px;padding:3px 7px;align-self:flex-start}
+.hub-src svg{width:12px;height:12px;flex:0 0 12px}
+.hub-res-reason{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;padding:4px 9px;border-radius:7px;margin-top:9px;align-self:flex-start}
+.hub-res-acts{display:flex;gap:7px;margin-top:11px;flex-wrap:wrap}
+.hub-res-x{position:absolute;top:8px;right:9px;cursor:pointer;color:#b6c1cd;font-size:17px;line-height:1}
+.hub-res-bar{position:absolute;left:0;bottom:0;height:3px;background:#dfe5eb;width:100%}
+.hub-res-bar i{display:block;height:100%;background:#2B5CE6;width:100%;transform-origin:left;animation:hubcountdown 10s linear forwards}
+@keyframes hubcountdown{from{transform:scaleX(1)}to{transform:scaleX(0)}}
+.hub-res.held .hub-res-bar{display:none}
+.hub-rbtn{height:30px;padding:0 12px;border-radius:15px;border:none;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap}
+.hub-rbtn.primary{background:#2B5CE6;color:#fff}
+.hub-rbtn.sec{background:#fff;border:1.5px solid #2B5CE6;color:#2B5CE6}
+.hub-rbtn.ghost{background:#fff;border:1px solid #c5cad3;color:#16213A}
+/* plan chooser (multiple credit plans / show all) */
+.hub-plans{margin-top:10px;display:flex;flex-direction:column;gap:7px}
+.hub-plan{display:flex;align-items:center;gap:10px;border:1px solid #e6e8ec;border-radius:9px;padding:9px 11px;cursor:pointer}
+.hub-plan:hover{border-color:#2B5CE6;background:#f7faff}
+.hub-plan .hp-ic{width:26px;height:26px;border-radius:7px;background:#EDEBFF;color:#5A48F5;display:grid;place-items:center;flex:0 0 26px}
+.hub-plan .hp-ic svg{width:15px;height:15px}
+.hub-plan .hp-t{flex:1;font-size:13px;font-weight:600;color:#16213A}
+.hub-plan .hp-s{font-size:12px;color:#5b6478}
+.hub-plan .hp-pick{font-size:12px;font-weight:700;color:#2B5CE6}
+/* history — WDS-style table, Cairo font */
+.hub-hist{overflow-x:auto}
+.wds-table{width:100%;border-collapse:collapse;font-family:'Cairo',var(--sans)}
+.wds-table thead th{text-align:left;font-size:12px;font-weight:700;color:#5b6478;text-transform:uppercase;letter-spacing:.03em;padding:11px 18px;background:#F7F8FA;border-bottom:1px solid #e6e8ec;white-space:nowrap}
+.wds-table tbody td{padding:13px 18px;border-bottom:1px solid #f1f2f5;font-size:13.5px;color:#16213A;vertical-align:middle}
+.wds-table tbody tr:last-child td{border-bottom:none}
+.wds-table tbody tr:hover{background:#fafbfc}
+.wds-table tr.pending{background:#FFFBF1}
+.wds-table tr.pending:hover{background:#FFF7E8}
+.wt-client{display:flex;align-items:center;gap:10px}
+.wt-av{width:30px;height:30px;border-radius:50%;flex:0 0 30px;display:grid;place-items:center;color:#fff;font-size:12px;font-weight:700}
+.wt-nm{font-weight:600;white-space:nowrap}
+.wt-result{display:inline-flex;align-items:center;gap:8px;font-weight:500}
+.wt-dot{width:8px;height:8px;border-radius:50%;flex:0 0 8px}
+.wt-dot.ok{background:#1F9D5B}.wt-dot.wn{background:#E8951C}.wt-dot.er{background:#D7382B}
+.wt-time{color:#868aa5;white-space:nowrap}
+.wt-mut{color:#c5cad3}
+.wt-actcol{white-space:nowrap}
+.hub-hacts{display:flex;gap:7px;flex-wrap:wrap}
+.hub-exp{max-height:340px;overflow-y:auto}
+.hub-hrow{display:flex;align-items:center;gap:12px;padding:12px 18px;border-bottom:1px solid #f1f2f5}
+.hub-hrow:last-child{border-bottom:none}
+.hub-hdot{width:9px;height:9px;border-radius:50%;flex:0 0 9px}
+.hub-hdot.ok{background:#1F9D5B}.hub-hdot.wn{background:#E8951C}.hub-hdot.er{background:#D7382B}
+.hub-hav{width:30px;height:30px;border-radius:50%;flex:0 0 30px;display:grid;place-items:center;color:#fff;font-size:12px;font-weight:700}
+.hub-hmain{flex:1;min-width:0}
+.hub-hnm{font-size:14px;font-weight:600;color:#16213A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hub-hsub{font-size:12px;color:#868aa5;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hub-hsrc{margin-top:5px}
+.hub-htime{font-size:12px;color:#9aa0ad;flex:0 0 auto;align-self:flex-start;margin-top:2px}
+.hub-hrow{align-items:flex-start}
+/* expected arrivals (by client) */
+.hub-erow{display:flex;align-items:center;gap:12px;padding:12px 18px;border-bottom:1px solid #f1f2f5}
+.hub-erow:last-child{border-bottom:none}
+.hub-emain{flex:1;min-width:0}
+.hub-enm{font-size:14px;font-weight:600;color:#16213A}
+.hub-esub{font-size:12px;color:#5b6478;margin-top:1px}
+.hub-echk{flex:0 0 auto;height:30px;padding:0 14px;border-radius:15px;border:1.5px solid #2B5CE6;background:#fff;color:#2B5CE6;font-size:12.5px;font-weight:600;cursor:pointer}
+.hub-echk:hover{background:#f0f5ff}
+/* manual check-in modal */
+.hub-modal{position:absolute;inset:0;z-index:200;display:none;align-items:stretch;justify-content:flex-end;background:rgba(0,6,36,.4)}
+.hub-modal.show{display:flex}
+.hub-modal-card{width:420px;max-width:92%;height:100%;background:#fff;box-shadow:-12px 0 40px rgba(0,6,36,.25);overflow:hidden;display:flex;flex-direction:column}
+.hub-modal-h{display:flex;align-items:center;justify-content:space-between;padding:18px 22px 14px;flex:0 0 auto}
+.hub-modal-h .t{font-size:18px;font-weight:700;font-family:var(--disp)}
+.hub-modal-h .x{cursor:pointer;color:#868aa5;font-size:22px;line-height:1}
+.hub-modal-b{padding:0 22px 8px;flex:1;min-height:0;display:flex;flex-direction:column}
+.hub-search{height:42px;border:1px solid #c5cad3;border-radius:8px;display:flex;align-items:center;gap:9px;padding:0 12px;color:#868aa5;font-size:14px}
+.hub-search input{flex:1;border:none;outline:none;font-size:14px;color:#16213A;background:transparent;font-family:inherit}
+.hub-mlist-grp{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#868aa5;padding:12px 4px 5px}
+.hub-mrow .hub-msvc{font-size:12px;color:#868aa5;margin-top:1px}
+.hub-mrow .hub-mchk{margin-left:auto;flex:0 0 auto;height:28px;padding:0 13px;border-radius:14px;border:1.5px solid #2B5CE6;background:#fff;color:#2B5CE6;font-size:12.5px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:5px}
+.hub-mrow .hub-mchk:hover{background:#f0f5ff}
+.hub-mrow .hub-mchk.done{background:#1F9D5B;border-color:#1F9D5B;color:#fff;cursor:default}
+.hub-mrow.done{opacity:.7}
+.hub-mlist{margin-top:12px;flex:1;min-height:0;overflow-y:auto}
+.hub-mrow{display:flex;align-items:center;gap:11px;padding:10px 4px;border-bottom:1px solid #f1f2f5;cursor:pointer}
+.hub-mrow:hover{background:#f6f8fb}
+.hub-mrow.leaving{animation:hubmrowout .26s ease forwards;overflow:hidden}
+@keyframes hubmrowout{0%{opacity:1;transform:translateX(0)}60%{opacity:0;transform:translateX(40px)}100%{opacity:0;transform:translateX(40px);max-height:0;padding-top:0;padding-bottom:0;margin:0;border-width:0}}
+.hub-mrow .hub-hav{flex:0 0 32px;width:32px;height:32px}
+.hub-modal-f{padding:14px 22px;display:flex;justify-content:flex-end;flex:0 0 auto;border-top:1px solid #f1f2f5}
 
 /* toast */
 #toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:#000624;color:#fff;font-size:13.5px;font-weight:500;padding:11px 18px;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:.25s;z-index:300;display:flex;align-items:center;gap:9px;max-width:90vw}
@@ -797,7 +978,8 @@ button{font-family:var(--sans)}
   <h1>Check-in Gate <span class="pill">Interactive prototype</span></h1>
   <p>Tap inside the device to use it. In the scanner, <b>tap the frame</b> to simulate scanning the next member in the queue.</p>
   <div class="launch">
-    <button class="on" data-surf="owner" onclick="surf('owner',this)"><span class="dot"></span>Owner App</button>
+    <button class="on" data-surf="client" onclick="surf('client',this)"><span class="dot"></span>Check In Hub</button>
+    <button data-surf="owner" onclick="surf('owner',this)"><span class="dot"></span>Owner App</button>
     <button data-surf="member" onclick="surf('member',this)"><span class="dot"></span>Member App</button>
     <button data-surf="setm" onclick="surf('setm',this)"><span class="dot"></span>Mobile Setup</button>
     <button data-surf="web" onclick="surf('web',this)"><span class="dot"></span>Web Setup</button>
@@ -810,7 +992,7 @@ button{font-family:var(--sans)}
 <div class="stage">
 
   <!-- ============ OWNER ============ -->
-  <div class="surface-stage on" id="surf-owner">
+  <div class="surface-stage" id="surf-owner">
     <div class="demo-switch" id="ownerStateSwitch">
       <span class="ds-label">Owner state · demo</span>
       <button class="ds-btn on" data-st="firsttime" onclick="setOwnerState('firsttime',this)">First time</button>
@@ -982,9 +1164,16 @@ button{font-family:var(--sans)}
           <div class="scan-window" onclick="doScan()"><span class="br tl"></span><span class="br tr"></span><span class="br bl"></span><span class="br brr"></span><span class="scanline"></span></div>
           <div class="scan-qr"><img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=0&data=WIX-PASS%7Cjims-gym" alt="" onerror="this.parentNode.style.background='repeating-conic-gradient(#000 0 25%,#fff 0 50%) 0 0/20px 20px'"></div>
           <div class="scan-nav"><span class="x" onclick="closeScanner()"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span><span class="t" id="o-scan-title">Scan QR code</span><span class="x" style="margin-left:auto" title="Check-in settings" onclick="openSettingsFromScan()"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.6 1.6 0 00-1.8-.3 1.6 1.6 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.6 1.6 0 00-1-1.5 1.6 1.6 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.6 1.6 0 00.3-1.8 1.6 1.6 0 00-1.5-1H3a2 2 0 110-4h.1a1.6 1.6 0 001.5-1 1.6 1.6 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.6 1.6 0 001.8.3H9a1.6 1.6 0 001-1.5V3a2 2 0 114 0v.1a1.6 1.6 0 001 1.5 1.6 1.6 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.6 1.6 0 00-.3 1.8V9a1.6 1.6 0 001.5 1H21a2 2 0 110 4h-.1a1.6 1.6 0 00-1.5 1z"/></svg></span></div>
+          <div class="scan-doorchip" onclick="openDoorPick()"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg><span id="o-door">Front Entrance</span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></div>
           <div class="scan-help">Point the camera at the member's pass<small>Tap the frame to scan</small></div>
           <div class="scan-actions"><span class="torch" onclick="this.classList.toggle('on')"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></svg></span><span class="text-btn" onclick="openManual()">Enter code manually</span></div>
         </div>
+        <div class="sheet-layer" id="o-doorpick"><div class="dim" onclick="closeDoorPick()"></div><div class="sheet">
+          <span class="grip"></span>
+          <h3 style="font-size:20px;margin:6px 0 4px">Which door are you at?</h3>
+          <p class="body" style="margin-bottom:10px">Check-ins you scan are logged at this door.</p>
+          <div id="o-door-list"></div>
+        </div></div>
         <div class="statusbar light" style="position:absolute;top:0;left:0;right:0;z-index:8"></div>
         <div class="verifying" id="o-verifying"><div class="spin"></div><span>Verifying…</span></div>
         <div class="sheet-layer" id="o-sheet"><div class="dim" onclick="hideSheet()"></div><div class="sheet" id="o-sheet-c"></div></div>
@@ -1227,8 +1416,9 @@ button{font-family:var(--sans)}
             </div>
           </div>
 
-          <div class="set-lead">Door access</div>
+          <div class="set-lead">Doors</div>
           <div class="set-group">
+            <div class="set-row tap" onclick="openMDoors()"><div class="txt"><div class="t">Set up doors</div><div class="s">Name the entrances staff pick when scanning</div></div><div class="val" style="color:#116DFF;font-weight:600"><span id="m-doorcount">3 doors</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#116DFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div></div>
             <div class="set-row tap" onclick="toast('Connecting to Kisi…')"><div class="txt"><div class="t">Door access (Kisi)</div><div class="s">Unlock the door automatically for eligible members</div></div><div class="val" style="color:#116DFF;font-weight:600">Connect<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#116DFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div></div>
           </div>
           <div style="height:20px"></div>
@@ -1241,6 +1431,13 @@ button{font-family:var(--sans)}
           <div class="opt-row" onclick="pickWindow('30 min before')"><span>30 min before</span><span class="ck">✓</span></div>
           <div class="opt-row sel" onclick="pickWindow('1 hr before')"><span>1 hr before</span><span class="ck">✓</span></div>
           <div class="opt-row" onclick="pickWindow('2 hr before')"><span>2 hr before</span><span class="ck">✓</span></div>
+        </div></div>
+        <!-- manage doors sheet -->
+        <div class="picker" id="s-doors"><div class="dim" onclick="closeMDoors()"></div><div class="sheet"><span class="grip"></span>
+          <h3 style="font-size:18px;margin:6px 0 4px">Doors</h3>
+          <div class="body" style="margin-bottom:10px">Name each entrance. Staff pick a door when they scan; check-ins are logged to it.</div>
+          <div id="m-door-list"></div>
+          <div class="set-row tap" style="padding:14px 0;color:var(--b10);font-weight:600" onclick="mAddDoor()"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" style="margin-right:8px"><path d="M12 5v14M5 12h14"/></svg>Add a door</div>
         </div></div>
         <div class="homebar"><i></i></div>
       </div>
@@ -1281,7 +1478,7 @@ button{font-family:var(--sans)}
           <div class="pp-side">
             <div class="pp-qa">Quick Actions <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></div>
             <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7M6 10v9h12v-9"/></svg>Home</div>
-            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M11 2.5l1.7 4.8 4.8 1.7-4.8 1.7L11 15.5 9.3 10.7 4.5 9z"/></svg>AI Agents<span class="pp-new">NEW</span><span class="pp-caret">›</span></div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M11 2.5l1.7 4.8 4.8 1.7-4.8 1.7L11 15.5 9.3 10.7 4.5 9z"/></svg>AI Agents<span class="pp-caret">›</span></div>
             <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></svg>Booking Calendar<span class="pp-caret">›</span></div>
             <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>Events<span class="pp-caret">›</span></div>
             <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Getting Paid<span class="pp-caret">›</span></div>
@@ -1324,6 +1521,150 @@ button{font-family:var(--sans)}
                 <div class="wm-div"></div>
                 <div class="wm-share-t">Share setup with your team</div>
                 <div class="wm-share"><div class="wm-share-in">Select or enter an email</div><button class="wm-share-b" onclick="toast('Shared')">Share</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ CLIENT CHECK IN (centralized dashboard hub) ============ -->
+  <div class="surface-stage on" id="surf-client">
+    <div class="scan-demo" id="hubScanDemo">
+      <div class="sd-label">Simulate check in</div>
+      <span class="hub-auto"><span class="hub-auto-t">Auto every</span>
+        <select class="hub-auto-sel" id="hubAutoSel" onchange="hubSetAuto(this.value)">
+          <option value="0">Off</option>
+          <option value="1">1 s</option>
+          <option value="5">5 s</option>
+          <option value="10">10 s</option>
+          <option value="random">Random</option>
+        </select>
+      </span>
+      <span class="sd-sep"></span>
+      <button class="sd-btn ok"   onclick="hubScan('ok')"><span class="sd-dot"></span>Approve · session check-in</button>
+      <button class="sd-btn ok"   onclick="hubScan('mActive')"><span class="sd-dot"></span>Approve · membership entry</button>
+      <button class="sd-btn ok"   onclick="hubScan('showAll')"><span class="sd-dot"></span>Active plans · show all</button>
+      <button class="sd-btn ok"   onclick="hubScan('credit')"><span class="sd-dot"></span>Credit plan · redeem</button>
+      <button class="sd-btn ok"   onclick="hubScan('multi')"><span class="sd-dot"></span>Multiple credit plans · choose</button>
+      <button class="sd-btn warn" onclick="hubScan('intake')"><span class="sd-dot"></span>Missing intake form</button>
+      <button class="sd-btn warn" onclick="hubScan('warn')"><span class="sd-dot"></span>Plan may be lapsed</button>
+      <button class="sd-btn warn" onclick="hubScan('mWindow')"><span class="sd-dot"></span>Outside access hours</button>
+      <button class="sd-btn err"  onclick="hubScan('mNone')"><span class="sd-dot"></span>Invalid / no membership</button>
+      <button class="sd-btn err"  onclick="hubScan('err')"><span class="sd-dot"></span>Not eligible</button>
+    </div>
+    <div class="browser" id="clientBrowser">
+      <div class="bro-bar"><div class="dots"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i></div><div class="bro-url"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#868AA5" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>jims-gym.manage.wix.com/dashboard/check-in</div></div>
+      <div class="pp-app">
+        <!-- top bar -->
+        <div class="pp-top">
+          <span class="pp-logo">WIX STUDIO</span>
+          <span class="pp-acct"><span class="pp-acct-av">RL</span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+          <span class="pp-site">Jim's Gym <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+          <span class="pp-nav-i">Explore <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+          <span class="pp-nav-i">Hire a Professional</span>
+          <span class="pp-nav-i">Help <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+          <span class="pp-upgrade">Upgrade</span>
+          <span class="pp-search"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#9aa0ad" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>Search for tools, apps, help &amp; more…</span>
+          <span class="pp-top-ai">✦ AI</span>
+        </div>
+        <div class="pp-main">
+          <!-- sidebar (Check in selected, replaces Events) -->
+          <div class="pp-side">
+            <div class="pp-qa">Quick Actions <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7M6 10v9h12v-9"/></svg>Home</div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M11 2.5l1.7 4.8 4.8 1.7-4.8 1.7L11 15.5 9.3 10.7 4.5 9z"/></svg>AI Agents<span class="pp-caret">›</span></div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></svg>Booking Calendar<span class="pp-caret">›</span></div>
+            <div class="pp-s-i on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/><circle cx="12" cy="15.5" r="1.4" fill="currentColor" stroke="none"/></svg>Check in<span class="pp-new">NEW</span></div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Getting Paid<span class="pp-caret">›</span></div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Sales<span class="pp-caret">›</span></div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 7l1.5 12h13L20 7M4 7l2-4h12l2 4"/></svg>Catalog<span class="pp-caret">›</span></div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Portfolio<span class="pp-caret">›</span></div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3 2.7-5 6-5s6 2 6 5M15 20c0-2 .5-3.5 1.5-4.5"/></svg>Groups<span class="pp-caret">›</span></div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Apps<span class="pp-badge">5</span><span class="pp-caret">›</span></div>
+            <div class="pp-s-i" style="margin-top:10px;border-top:1px solid #26262e;padding-top:14px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7M6 10v9h12v-9"/></svg>Site &amp; Mobile App<span class="pp-caret">›</span></div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-6 9 6v10a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>Marketing<span class="pp-caret">›</span></div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 8l9 6 9-6"/></svg>Inbox<span class="pp-caret">›</span></div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 00.3 1.8 2 2 0 11-2.8 2.8 1.6 1.6 0 00-1.8-.3 1.6 1.6 0 00-1 1.5 2 2 0 11-4 0 1.6 1.6 0 00-1-1.5 1.6 1.6 0 00-1.8.3 2 2 0 11-2.8-2.8 1.6 1.6 0 00.3-1.8 1.6 1.6 0 00-1.5-1 2 2 0 110-4 1.6 1.6 0 001.5-1 1.6 1.6 0 00-.3-1.8 2 2 0 112.8-2.8 1.6 1.6 0 001.8.3 1.6 1.6 0 001-1.5 2 2 0 114 0 1.6 1.6 0 001 1.5 1.6 1.6 0 001.8-.3 2 2 0 112.8 2.8 1.6 1.6 0 00-.3 1.8 1.6 1.6 0 001.5 1 2 2 0 110 4 1.6 1.6 0 00-1.5 1z"/></svg>Settings<span class="pp-caret">›</span></div>
+          </div>
+          <!-- content: centralized Check-in hub -->
+          <div class="pp-canvas">
+            <div id="clientHub" class="hub">
+
+              <!-- header -->
+              <div class="hub-head">
+                <div>
+                  <h1 class="hub-h1">Check-in &amp; Access</h1>
+                  <div class="hub-sub"><span class="hub-pill"><span class="hub-dot"></span>Kisi connected</span><span class="hub-sub-t">Clients tap the Kisi reader at the door — verdicts appear here live.</span></div>
+                </div>
+                <button class="hub-setup" onclick="surf('web',document.querySelector('.launch button[data-surf=web]'))"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 00.3 1.8 2 2 0 11-2.8 2.8 1.6 1.6 0 00-1.8-.3 1.6 1.6 0 00-1 1.5 2 2 0 11-4 0 1.6 1.6 0 00-1-1.5 1.6 1.6 0 00-1.8.3 2 2 0 11-2.8-2.8 1.6 1.6 0 00.3-1.8 1.6 1.6 0 00-1.5-1 2 2 0 110-4 1.6 1.6 0 001.5-1 1.6 1.6 0 00-.3-1.8 2 2 0 112.8-2.8 1.6 1.6 0 001.8.3 1.6 1.6 0 001-1.5 2 2 0 114 0 1.6 1.6 0 001 1.5 1.6 1.6 0 001.8-.3 2 2 0 112.8 2.8 1.6 1.6 0 00-.3 1.8 1.6 1.6 0 001.5 1 2 2 0 110 4 1.6 1.6 0 00-1.5 1z"/></svg>Check-in settings</button>
+              </div>
+
+              <!-- filters: location + doors -->
+              <div class="hub-filters">
+                <div class="hub-ddwrap">
+                  <div class="hub-dd" id="locDd" onclick="hubToggleDd('loc')"><span class="hub-dd-lbl">Location</span><span id="locVal">Broadway studio</span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#868aa5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></div>
+                  <div class="hub-ddmenu" id="locMenu">
+                    <div class="hub-ddopt sel" onclick="hubPickLoc('Broadway studio',this)">Broadway studio</div>
+                    <div class="hub-ddopt" onclick="hubPickLoc('Downtown studio',this)">Downtown studio</div>
+                  </div>
+                </div>
+                <div class="hub-ddwrap">
+                  <div class="hub-dd" id="doorDd" onclick="hubToggleDd('door')"><span class="hub-dd-lbl">Doors</span><span id="doorVal">All doors</span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#868aa5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></div>
+                  <div class="hub-ddmenu" id="doorMenu">
+                    <div class="hub-ddopt" data-door="Front Entrance" onclick="hubToggleDoor(this)"><span class="hub-ck"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span>Front Entrance</div>
+                    <div class="hub-ddopt" data-door="Studio B side door" onclick="hubToggleDoor(this)"><span class="hub-ck"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span>Studio B side door</div>
+                    <div class="hub-ddopt" data-door="Pool gate" onclick="hubToggleDoor(this)"><span class="hub-ck"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span>Pool gate</div>
+                  </div>
+                </div>
+                <button class="hub-manual" onclick="hubOpenManual()"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>Manual check-in</button>
+              </div>
+
+              <!-- body — sections rearranged per layout via #clientHub[data-layout] -->
+              <div class="hub-body">
+                <!-- at the gate now -->
+                <div class="hub-card hub-gate hb-gate" id="hubGate" data-mode="auto">
+                  <div class="hub-card-h"><span class="hub-live"><span class="hub-live-dot"></span>At the gate now</span>
+                    <span class="hub-gate-r">
+                      <span class="hub-card-meta" id="liveLoc">Broadway · all doors</span>
+                      <span class="hub-modeseg">
+                        <button class="hub-modebtn on" data-m="auto" onclick="hubSetMode('auto')" title="Auto-resize"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V5a1 1 0 011-1h3M16 4h3a1 1 0 011 1v3M20 16v3a1 1 0 01-1 1h-3M8 20H5a1 1 0 01-1-1v-3"/></svg></button>
+                        <button class="hub-modebtn" data-m="fixed" onclick="hubSetMode('fixed')" title="Fixed size"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="14" rx="2"/></svg></button>
+                        <button class="hub-modebtn" data-m="min" onclick="hubSetMode('min')" title="Minimize"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg></button>
+                      </span>
+                    </span>
+                  </div>
+                  <div id="hubLive" class="hub-gate-row"></div>
+                </div>
+                <!-- check-in history (full width) -->
+                <div class="hub-card hb-hist">
+                  <div class="hub-card-h"><span>Check-in history</span>
+                    <span class="hub-gate-r">
+                      <span class="hub-hsearch"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#868aa5" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="histSearch" placeholder="Search clients…" oninput="hubRenderHistory()"></span>
+                      <select class="hub-auto-sel" id="histDate" onchange="hubRenderHistory()">
+                        <option value="Today">Today</option>
+                        <option value="Yesterday">Yesterday</option>
+                        <option value="Wed, Jun 25">Wed, Jun 25</option>
+                        <option value="Tue, Jun 24">Tue, Jun 24</option>
+                        <option value="Mon, Jun 23">Mon, Jun 23</option>
+                      </select>
+                    </span>
+                  </div>
+                  <div id="hubHistory" class="hub-hist"></div>
+                </div>
+              </div>
+
+              <!-- manual check-in modal -->
+              <div class="hub-modal" id="hubManual" onclick="if(event.target===this)hubCloseManual()">
+                <div class="hub-modal-card">
+                  <div class="hub-modal-h"><span class="t">Manual check-in</span><span class="x" onclick="hubCloseManual()">×</span></div>
+                  <div class="hub-modal-b">
+                    <div class="hub-search"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#868aa5" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="hubSearch" placeholder="Search all clients by name…" oninput="hubRenderMlist(this.value)"></div>
+                    <div class="hub-mlist" id="hubMlist"></div>
+                  </div>
+                  <div class="hub-modal-f"><button class="hub-rbtn ghost" onclick="hubCloseManual()">Cancel</button></div>
+                </div>
               </div>
             </div>
           </div>
@@ -1517,7 +1858,7 @@ button{font-family:var(--sans)}
           <div class="pp-side">
             <div class="pp-qa">Quick Actions <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></div>
             <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7M6 10v9h12v-9"/></svg>Home</div>
-            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M11 2.5l1.7 4.8 4.8 1.7-4.8 1.7L11 15.5 9.3 10.7 4.5 9z"/></svg>AI Agents<span class="pp-new">NEW</span><span class="pp-caret">›</span></div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M11 2.5l1.7 4.8 4.8 1.7-4.8 1.7L11 15.5 9.3 10.7 4.5 9z"/></svg>AI Agents<span class="pp-caret">›</span></div>
             <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></svg>Booking Calendar<span class="pp-caret">›</span></div>
             <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>Events<span class="pp-caret">›</span></div>
             <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Getting Paid<span class="pp-caret">›</span></div>
@@ -1804,12 +2145,15 @@ function surf(name,btn){
   btn.classList.add('on');
   if(name==='web') scaleWeb();
   if(name==='plan') scalePlan();
+  if(name==='client') scaleClient();
   // owner demo panels — owner-state on home, scan-result on the scanner screen
   updateOwnerPanels();
   // member scan-result demo panel — only while the member surface shows the QR pass
   updateMScanDemo();
   // setup-mobile: swap installed-apps vs access-state switcher depending on the FTE screen
   updateFteSwitch();
+  // Kisi-tap demo panel — only on the Check In Hub
+  var hsd=document.getElementById('hubScanDemo'); if(hsd) hsd.style.display=(name==='client')?'flex':'none';
 }
 /* owner scan state — first time leads to setup, opted in opens the scanner */
 var OWNER = { optedIn:false };
@@ -2016,9 +2360,11 @@ function scaleBrowser(id){
 }
 function scaleWeb(){ scaleBrowser('webBrowser'); }
 function scalePlan(){ scaleBrowser('planBrowser'); }
+function scaleClient(){ scaleBrowser('clientBrowser'); }
 window.addEventListener('resize',function(){
   if(document.getElementById('surf-web').classList.contains('on'))scaleWeb();
   if(document.getElementById('surf-plan').classList.contains('on'))scalePlan();
+  if(document.getElementById('surf-client').classList.contains('on'))scaleClient();
 });
 
 /* ---------- pricing-plan: Services dropdown with QR check-in ---------- */
@@ -2095,6 +2441,41 @@ function checkInAll(){
   toast(n? n+' eligible client'+(n>1?'s':'')+' checked in':'Everyone eligible is already in',true);
 }
 
+/* ---------- doors (shared: owner scanner picker + settings) ---------- */
+var DOORS=[
+  {name:'Front Entrance',loc:'Broadway studio'},
+  {name:'Studio B side door',loc:'Broadway studio'},
+  {name:'Pool gate',loc:'Broadway studio'}
+];
+var CUR_DOOR='Front Entrance';
+function renderDoorPick(){
+  var el=document.getElementById('o-door-list'); if(!el) return;
+  el.innerHTML=DOORS.map(function(d){
+    return '<div class="door-opt'+(d.name===CUR_DOOR?' sel':'')+'" onclick="pickDoor(\''+d.name.replace(/\x27/g,"")+'\')">'+
+      '<span class="di"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg></span>'+
+      '<span class="dn"><span class="dt">'+d.name+'</span><span class="ds">'+d.loc+'</span></span>'+
+      '<svg class="dck" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div>';
+  }).join('');
+}
+function openDoorPick(){ renderDoorPick(); document.getElementById('o-doorpick').classList.add('show'); }
+function closeDoorPick(){ document.getElementById('o-doorpick').classList.remove('show'); }
+function pickDoor(name){ CUR_DOOR=name; var el=document.getElementById('o-door'); if(el) el.textContent=name; closeDoorPick(); toast('Door set · '+name); }
+/* settings: manage doors (mobile sheet) */
+function updateDoorCount(){ var el=document.getElementById('m-doorcount'); if(el) el.textContent=DOORS.length+' door'+(DOORS.length===1?'':'s'); }
+function renderMDoors(){
+  var el=document.getElementById('m-door-list'); if(!el) return;
+  el.innerHTML=DOORS.map(function(d,i){
+    return '<div class="door-opt" style="cursor:default">'+
+      '<span class="di"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg></span>'+
+      '<span class="dn"><span class="dt">'+d.name+'</span><span class="ds">'+d.loc+'</span></span>'+
+      '<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="#C0291F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="cursor:pointer" onclick="mRemoveDoor('+i+')"><path d="M5 7h14M10 7V5h4v2M6 7l1 13h10l1-13"/></svg></div>';
+  }).join('');
+}
+function openMDoors(){ renderMDoors(); document.getElementById('s-doors').classList.add('show'); }
+function closeMDoors(){ document.getElementById('s-doors').classList.remove('show'); }
+function mAddDoor(){ DOORS.push({name:'New door '+(DOORS.length+1),loc:'Broadway studio'}); renderMDoors(); updateDoorCount(); toast('Door added',true); }
+function mRemoveDoor(i){ DOORS.splice(i,1); renderMDoors(); updateDoorCount(); }
+
 /* ---------- owner: scanner ---------- */
 var SCAN={session:{title:'Scan QR code',queue:['ok','warn','err']},entry:{title:'Scan entry',queue:['autoSession','mActive','mWindow','mNone']}};
 var scanMode='session', qi=0, scanning=false;
@@ -2125,7 +2506,7 @@ var RESULTS={
      acts:'<button class="btn btn-primary" onclick="afterCheck(\'Tom Nguyen checked in\')">Check in anyway</button><button class="btn btn-sec" onclick="toast(\'Collecting payment…\')">Collect payment</button><button class="text-btn" onclick="hideSheet()">Don\'t check in</button>'},
  err:{cls:'er',icon:'<circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/>',sw:2.4,h:'Not eligible',b:'No booking or active plan found for this session.',
      reason:['var(--r-tint)','var(--r-text)','No records found · Sara Klein'],
-     acts:'<button class="btn btn-primary" onclick="toast(\'Drop-in sold · checked in\',true);hideSheet()">Sell a drop-in &amp; check in</button><button class="text-btn" onclick="hideSheet()">Scan next</button>'},
+     acts:'<button class="btn btn-primary" onclick="toast(\'Added to session · checked in\',true);hideSheet()">Add to session &amp; check in</button><button class="text-btn" onclick="hideSheet()">Scan next</button>'},
  autoSession:{cls:'ok',icon:'<path d="M5 13l4 4L19 7"/>',sw:3,h:'Checked in',b:'Maya has a class starting now — auto-checked into Vinyasa Flow.',
      reason:['var(--b40)','var(--b10)','Auto-matched to her booking'],
      mini:['MC','#51B77B','Maya Cohen','Vinyasa Flow · 9:00 AM'],
@@ -2140,7 +2521,7 @@ var RESULTS={
      acts:'<button class="btn btn-primary" onclick="afterCheck(\'Let in — outside-hours override logged\')">Let in anyway</button><button class="text-btn" onclick="hideSheet()">Don\'t let in</button>'},
  mNone:{cls:'er',icon:'<circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/>',sw:2.4,h:'No active membership',b:'Sara has no plan that grants entry.',
      reason:['var(--r-tint)','var(--r-text)','No membership found · Sara Klein'],
-     acts:'<button class="btn btn-primary" onclick="toast(\'Membership started · entry granted\',true);hideSheet()">Start a membership &amp; let in</button><button class="text-btn" onclick="hideSheet()">Scan next</button>'},
+     acts:'<button class="btn btn-primary" onclick="toast(\'Plan sold · entry granted\',true);hideSheet()">Sell a plan &amp; let in</button><button class="text-btn" onclick="hideSheet()">Scan next</button>'},
  intake:{cls:'wn',icon:'<path d="M14 3v4a1 1 0 001 1h4"/><path d="M17 21H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v11a2 2 0 01-2 2z"/><path d="M9 13h6M9 17h4"/>',sw:2.2,h:'Intake form needed',b:'Liam is eligible, but his liability waiver isn\'t signed.',
      reason:['var(--y-tint)','var(--y-text)','Liability Release · Not signed'],
      mini:['LB','#F9AD4D','Liam Brooks','Confirmed booking · Yoga Flow'],
@@ -2266,6 +2647,357 @@ document.querySelectorAll('.demo-switch .ds-label').forEach(function(lbl){
 document.querySelectorAll('.scan-demo .sd-label').forEach(function(lbl){
   lbl.addEventListener('click',function(){ lbl.parentNode.classList.toggle('collapsed'); });
 });
+
+/* ============================================================
+   Check-in Hub (desktop dashboard, Kisi-driven)
+   ============================================================ */
+var HUB_DOORS=[]; // empty = all doors
+function hubInitials(n){return n.split(' ').map(function(w){return w[0];}).slice(0,2).join('').toUpperCase();}
+/* check-in sources — entry isn't only via Kisi */
+var HUB_SOURCES={
+  kisi:{label:'Kisi',icon:'<rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/>'},
+  qr:{label:'QR scan',icon:'<rect x="3" y="4" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="6" rx="1"/><rect x="14" y="4" width="7" height="7" rx="1"/><path d="M14 15h3v5M20 14v6"/>'},
+  kiosk:{label:'Self check in',icon:'<rect x="6" y="3" width="12" height="18" rx="2"/><path d="M10 18h4"/>'},
+  manual:{label:'Manual',icon:'<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/>'}
+};
+var HUB_SRC_KEYS=['kisi','qr','kiosk'];           // sources an auto-tap can come from
+var HUB_STAFF=['Alex','Sam','Maya','Jordan'];     // who's scanning at the desk
+var HUB_DOORS_POOL=['Front Entrance','Studio B side door','Pool gate'];
+/* chip with per-instance detail: Kisi → door, QR/Manual → staff name */
+function hubSrcChip(src,detail){
+  var s=HUB_SOURCES[src]||HUB_SOURCES.kisi;
+  var txt=s.label+(detail?' · '+detail:'');
+  return '<span class="hub-src"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'+s.icon+'</svg>'+txt+'</span>';
+}
+function hubSrcDetail(src,door){
+  if(src==='kisi') return door||'';
+  if(src==='qr') return 'by '+HUB_STAFF[Math.floor(Math.random()*HUB_STAFF.length)];
+  if(src==='manual') return 'by '+HUB_STAFF[Math.floor(Math.random()*HUB_STAFF.length)];
+  return ''; // self check in: no detail
+}
+/* person pool + a sample door each tap comes through */
+var HUB_PEOPLE={
+  ok:{nm:'Rom Lampel',av:'#5A48F5',sub:'Vinyasa Flow · 9:00 AM',door:'Front Entrance'},
+  mActive:{nm:'Jordan Reyes',av:'#116DFF',sub:'Member since 2024',door:'Front Entrance'},
+  showAll:{nm:'Dana Avraham',av:'#1F9D5B',sub:'2 active plans',door:'Front Entrance'},
+  credit:{nm:'Maya Cohen',av:'#E8613C',sub:'10-Class Pack · 6 left',door:'Studio B side door'},
+  multi:{nm:'Noa Bar',av:'#9C1AB1',sub:'2 credit plans',door:'Front Entrance'},
+  intake:{nm:'Liam Brooks',av:'#F9AD4D',sub:'Confirmed booking · Yoga Flow',door:'Front Entrance'},
+  warn:{nm:'Tom Nguyen',av:'#F9AD4D',sub:'Monthly membership · payment due',door:'Pool gate'},
+  mWindow:{nm:'Aisha Patel',av:'#F9AD4D',sub:'Off-peak membership',door:'Pool gate'},
+  mNone:{nm:'Sara Klein',av:'#6B7280',sub:'No plan found',door:'Front Entrance'},
+  err:{nm:'Walk-in guest',av:'#6B7280',sub:'Unknown code',door:'Front Entrance'}
+};
+/* verdict definitions for the hub (mirrors owner-app states + plan variants) */
+var HUB_STATES={
+  ok:{cls:'ok',h:'Checked in',icon:'<path d="M5 13l4 4L19 7"/>',sw:3,info:'Vinyasa Flow · 9:00 AM',hsub:'Session check-in'},
+  mActive:{cls:'ok',h:'Welcome back',icon:'<path d="M5 13l4 4L19 7"/>',sw:3,info:'Unlimited membership',hsub:'Membership entry'},
+  showAll:{cls:'ok',h:'Active plans',icon:'<path d="M5 13l4 4L19 7"/>',sw:3,info:'Unlimited Monthly + 10-Class Pack',hsub:'Entry · 2 active plans'},
+  credit:{cls:'ok',h:'Credit redeemed',icon:'<path d="M5 13l4 4L19 7"/>',sw:3,info:'10-Class Pack · 5 left',hsub:'Credit redeemed · 5 left',
+      acts:[{l:'Undo',fn:'hubHistUndo'}]},
+  multi:{cls:'ok',h:'Choose a plan',icon:'<path d="M5 13l4 4L19 7"/>',sw:3,info:'2 credit plans · pick one',hsub:'Choose which plan to charge',
+      acts:[{l:'10-Class Pack',primary:1,fn:'hubHistCharge'},{l:'Drop-in 5-Pack',fn:'hubHistCharge'}]},
+  intake:{cls:'wn',h:'Intake form needed',icon:'<path d="M14 3v4a1 1 0 001 1h4"/><path d="M17 21H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v11a2 2 0 01-2 2z"/><path d="M9 13h6M9 17h4"/>',sw:2.2,info:'Waiver not signed · Yoga Flow',hsub:'Waiver not signed',
+      acts:[{l:'Send waiver',primary:1,fn:'hubHistWaiver'},{l:'Let in',fn:'hubHistLetIn'}]},
+  warn:{cls:'wn',h:'Plan may be lapsed',icon:'<path d="M12 3L2 21h20z"/><path d="M12 10v5"/><path d="M12 18h.01"/>',sw:2.4,info:'Monthly membership · payment due',hsub:'Payment due',
+      acts:[{l:'Let in',primary:1,fn:'hubHistLetIn'},{l:'Collect',fn:'hubHistCollect'}]},
+  mWindow:{cls:'wn',h:'Outside access hours',icon:'<path d="M12 3L2 21h20z"/><path d="M12 10v5"/><path d="M12 18h.01"/>',sw:2.4,info:'Off-peak · 10:00–16:00',hsub:'Outside access hours',
+      acts:[{l:'Let in',primary:1,fn:'hubHistLetIn'},{l:'Dismiss',fn:'hubHistDismiss'}]},
+  mNone:{cls:'er',h:'No active membership',icon:'<circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/>',sw:2.4,info:'No plan that grants entry',hsub:'No active membership',
+      acts:[{l:'Sell & let in',primary:1,fn:'hubHistSell'},{l:'Dismiss',fn:'hubHistDismiss'}]},
+  err:{cls:'er',h:'Not eligible',icon:'<circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/>',sw:2.4,info:'No booking or active plan',hsub:'Not eligible',
+      acts:[{l:'Add & let in',primary:1,fn:'hubHistAdd'},{l:'Dismiss',fn:'hubHistDismiss'}]}
+};
+var HUB_HISTORY=[
+  {cls:'ok',nm:'Ben Stiller',av:'#7B3FF2',sub:'Membership entry',src:'kisi',srcDetail:'Front Entrance',t:'9:02 AM'},
+  {cls:'ok',nm:'Carla Diaz',av:'#06BEE1',sub:'Pilates · session check-in',src:'qr',srcDetail:'by Alex',t:'8:58 AM'},
+  {cls:'wn',nm:'Tom Nguyen',av:'#F9AD4D',sub:'Let in · payment due',src:'manual',srcDetail:'by Sam',t:'8:51 AM'},
+  {cls:'ok',nm:'Diego Morales',av:'#F2542D',sub:'Credit redeemed · 4 left',src:'kiosk',t:'8:47 AM'}
+];
+/* static history for past dates (browse-only) */
+var HUB_HIST_PAST={
+  'Yesterday':[
+    {cls:'ok',nm:'Noa Bar',av:'#9C1AB1',sub:'Credit redeemed · 3 left',src:'kisi',srcDetail:'Front Entrance',t:'6:40 PM'},
+    {cls:'ok',nm:'Jordan Reyes',av:'#116DFF',sub:'Membership entry',src:'kiosk',t:'6:12 PM'},
+    {cls:'er',nm:'Walk-in guest',av:'#6B7280',sub:'Not let in',src:'kisi',srcDetail:'Pool gate',t:'5:55 PM'},
+    {cls:'ok',nm:'Maya Cohen',av:'#E8613C',sub:'Reformer Pilates · session check-in',src:'qr',srcDetail:'by Sam',t:'9:30 AM'},
+    {cls:'ok',nm:'Rom Lampel',av:'#5A48F5',sub:'Vinyasa Flow · session check-in',src:'kisi',srcDetail:'Front Entrance',t:'9:01 AM'}
+  ],
+  'Wed, Jun 25':[
+    {cls:'ok',nm:'Aisha Patel',av:'#9C1AB1',sub:'Off-peak entry',src:'kisi',srcDetail:'Front Entrance',t:'2:10 PM'},
+    {cls:'wn',nm:'Tom Nguyen',av:'#F9AD4D',sub:'Let in · payment due',src:'manual',srcDetail:'by Alex',t:'11:20 AM'},
+    {cls:'ok',nm:'Liam Brooks',av:'#1F9D5B',sub:'Yoga Flow · session check-in',src:'kiosk',t:'10:58 AM'}
+  ],
+  'Tue, Jun 24':[
+    {cls:'ok',nm:'Carla Diaz',av:'#06BEE1',sub:'Membership entry',src:'kisi',srcDetail:'Front Entrance',t:'7:45 AM'},
+    {cls:'ok',nm:'Diego Morales',av:'#F2542D',sub:'Credit redeemed · 6 left',src:'qr',srcDetail:'by Maya',t:'7:30 AM'}
+  ],
+  'Mon, Jun 23':[
+    {cls:'ok',nm:'Jordan Reyes',av:'#116DFF',sub:'Membership entry',src:'kisi',srcDetail:'Front Entrance',t:'8:05 PM'},
+    {cls:'er',nm:'Walk-in guest',av:'#6B7280',sub:'Not eligible · dismissed',src:'kisi',srcDetail:'Pool gate',t:'7:50 PM'}
+  ]
+};
+/* expected arrivals — by client, with the service they're booked for */
+var HUB_EXPECTED=[
+  {id:'e1',nm:'Rom Lampel',av:'#5A48F5',svc:'Vinyasa Flow',t:'9:00 AM'},
+  {id:'e2',nm:'Maya Cohen',av:'#E8613C',svc:'Reformer Pilates',t:'9:30 AM'},
+  {id:'e3',nm:'Jordan Reyes',av:'#116DFF',svc:'Open gym · membership',t:'10:00 AM'},
+  {id:'e4',nm:'Aisha Patel',av:'#9C1AB1',svc:'Off-peak entry',t:'10:15 AM'},
+  {id:'e5',nm:'Liam Brooks',av:'#1F9D5B',svc:'Yoga Flow',t:'11:00 AM'}
+];
+var HUB_CLIENTS=[
+  {nm:'Rom Lampel',av:'#5A48F5',sub:'Vinyasa Flow · 9:00 AM'},
+  {nm:'Maya Cohen',av:'#E8613C',sub:'10-Class Pack · 6 left'},
+  {nm:'Jordan Reyes',av:'#116DFF',sub:'Unlimited member'},
+  {nm:'Aisha Patel',av:'#9C1AB1',sub:'Off-peak membership'},
+  {nm:'Liam Brooks',av:'#1F9D5B',sub:'Yoga Flow · 11:00 AM'},
+  {nm:'Dana Avraham',av:'#1F9D5B',sub:'Unlimited member'},
+  {nm:'Noa Bar',av:'#06BEE1',sub:'Drop-in 5-Pack · 2 left'},
+  {nm:'Carlos Lampel',av:'#E8613C',sub:'Staff · instructor'},
+  {nm:'Ben Stiller',av:'#7B3FF2',sub:'Unlimited member'},
+  {nm:'Carla Diaz',av:'#06BEE1',sub:'10-Class Pack · 4 left'},
+  {nm:'Diego Morales',av:'#F2542D',sub:'Annual All-Access'},
+  {nm:'Sara Klein',av:'#6B7280',sub:'No active plan'},
+  {nm:'Tom Nguyen',av:'#F9AD4D',sub:'Monthly · payment due'},
+  {nm:'Riya Shah',av:'#06BEE1',sub:'Unlimited member'},
+  {nm:'Marco Rossi',av:'#E8613C',sub:'Monthly membership'},
+  {nm:'Elena Petrova',av:'#5A48F5',sub:'Annual All-Access'},
+  {nm:'Yuki Tanaka',av:'#1F9D5B',sub:'10-Class Pack · 9 left'},
+  {nm:'Omar Haddad',av:'#9C1AB1',sub:'Off-peak membership'}
+];
+/* ---- multi-card "at the gate" model ---- */
+var HUB_CARDS=[];           // up to 4 live cards
+var HUB_CARD_SEQ=0;
+var HUB_TIMERS={};          // id -> dismiss timeout
+function hubRenderLive(){
+  var el=document.getElementById('hubLive'); if(!el) return;
+  var gate=document.getElementById('hubGate');
+  if(gate) gate.classList.toggle('is-empty',!HUB_CARDS.length);
+  if(!HUB_CARDS.length){
+    el.innerHTML='<div class="hub-gate-empty">No one at the gate right now.<br>Kisi taps show up here, newest first.</div>';
+    return;
+  }
+  el.innerHTML=HUB_CARDS.map(function(c){return hubCardHtml(c);}).join('');
+}
+function hubCardHtml(c){
+  var r=HUB_STATES[c.type], p=c.person, id=c.id;
+  // minimal card: avatar (main) → result → plan/session info. No actions (those live in history).
+  var h='<div class="hub-res '+r.cls+'" id="hubc-'+id+'">'+
+    '<span class="hub-res-x" onclick="hubCardDismiss('+id+')">×</span>'+
+    '<div class="hub-res-avwrap"><span class="hub-res-av" style="background:'+p.av+'">'+hubInitials(p.nm)+
+      '<span class="hub-res-badge '+r.cls+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="'+r.sw+'" stroke-linecap="round" stroke-linejoin="round">'+r.icon+'</svg></span></span></div>'+
+    '<div class="hub-res-nm">'+p.nm+'</div>'+
+    '<div class="hub-res-h">'+r.h+'</div>'+
+    '<div class="hub-res-info">'+(r.info||p.sub)+'</div>';
+  if(!c.held) h+='<div class="hub-res-bar"><i></i></div>';
+  h+='</div>';
+  return h;
+}
+var HUB_HIST_SEQ=0;
+function hubAddCard(type,src){
+  src=src||HUB_SRC_KEYS[Math.floor(Math.random()*HUB_SRC_KEYS.length)];
+  var person=Object.assign({},HUB_PEOPLE[type]);
+  if(src==='kisi') person.door=HUB_DOORS_POOL[Math.floor(Math.random()*HUB_DOORS_POOL.length)]; // which door fired
+  var detail=hubSrcDetail(src,person.door);
+  var s=HUB_STATES[type];
+  var hid='h'+(++HUB_HIST_SEQ);
+  var c={id:++HUB_CARD_SEQ,hid:hid,type:type,src:src,srcDetail:detail,person:person,held:false,started:0};
+  HUB_CARDS.unshift(c);   // newest first (leftmost)
+  if(HUB_CARDS.length>12){ HUB_CARDS.pop(); }   // hard cap on visible cards
+  // entry lands in the history table at the same moment it appears at the gate
+  HUB_HISTORY.unshift({hid:hid,type:type,cls:s.cls,nm:person.nm,av:person.av,
+    sub:s.hsub,src:src,srcDetail:detail,t:'now',pending:!!(s.acts&&s.acts.length)});
+  hubRenderLive(); hubRenderHistory();
+  // 10s auto-dismiss (removes the gate card only — history row stays)
+  HUB_TIMERS[c.id]=setTimeout(function(){ hubCardDismiss(c.id); },10000);
+}
+function hubFindCard(id){ for(var i=0;i<HUB_CARDS.length;i++){ if(HUB_CARDS[i].id===id) return i; } return -1; }
+function hubCardDismiss(id){
+  var i=hubFindCard(id); if(i<0) return;
+  if(HUB_TIMERS[id]){ clearTimeout(HUB_TIMERS[id]); delete HUB_TIMERS[id]; }
+  // animate the card out, then remove from the gate (history row already exists)
+  var node=document.getElementById('hubc-'+id);
+  HUB_CARDS.splice(i,1);
+  if(node){ node.classList.add('leaving'); setTimeout(hubRenderLive,200); }
+  else hubRenderLive();
+}
+/* ---- history-row actions (actions moved off the cards) ---- */
+function hubHistFind(hid){ for(var i=0;i<HUB_HISTORY.length;i++){ if(HUB_HISTORY[i].hid===hid) return i; } return -1; }
+function hubHistResolve(hid,cls,sub){
+  var i=hubHistFind(hid); if(i<0) return; var r=HUB_HISTORY[i]; r.cls=cls; r.sub=sub; r.pending=false;
+  // if the matching card is still at the gate, clear it (decision made)
+  for(var k=0;k<HUB_CARDS.length;k++){ if(HUB_CARDS[k].hid===hid){ var cid=HUB_CARDS[k].id; if(HUB_TIMERS[cid]){clearTimeout(HUB_TIMERS[cid]);delete HUB_TIMERS[cid];} HUB_CARDS.splice(k,1); hubRenderLive(); break; } }
+  hubRenderHistory();
+}
+function hubHistLetIn(hid){ toast('Door unlocked',true); hubHistResolve(hid,'ok','Let in (override)'); }
+function hubHistWaiver(hid){ toast('Waiver link sent',true); hubHistResolve(hid,'wn','Waiver link sent'); }
+function hubHistCollect(hid){ toast('Collecting payment…'); hubHistResolve(hid,'wn','Payment requested'); }
+function hubHistSell(hid){ toast('Plan sold · entry granted',true); hubHistResolve(hid,'ok','Plan sold · let in'); }
+function hubHistAdd(hid){ toast('Added to session',true); hubHistResolve(hid,'ok','Added to session · let in'); }
+function hubHistDismiss(hid){ hubHistResolve(hid,'er','Not let in'); }
+function hubHistUndo(hid){ toast('Credit refunded'); hubHistResolve(hid,'wn','Credit refunded'); }
+function hubHistCharge(hid,plan){ toast('Charged '+plan+' · door unlocked',true); hubHistResolve(hid,'ok','Credit redeemed · '+plan); }
+function hubScan(type){
+  var btn=document.querySelector('.launch button[data-surf="client"]');
+  if(btn && !document.getElementById('surf-client').classList.contains('on')) surf('client',btn);
+  hubAddCard(type);
+}
+function hubSetMode(m){
+  document.getElementById('hubGate').setAttribute('data-mode',m);
+  document.querySelectorAll('#hubGate .hub-modebtn').forEach(function(b){b.classList.toggle('on',b.dataset.m===m);});
+}
+/* ---- auto mode: a random tap on a chosen cadence (off / 1s / 5s / 10s / random) ---- */
+var HUB_AUTO_TIMER=null, HUB_AUTO_RANDOM=false;
+var HUB_AUTO_POOL=['ok','mActive','showAll','credit','multi','intake','warn','mWindow','mNone','err'];
+function hubRandType(){ return HUB_AUTO_POOL[Math.floor(Math.random()*HUB_AUTO_POOL.length)]; }
+function hubAutoStop(){ if(HUB_AUTO_TIMER){ clearTimeout(HUB_AUTO_TIMER); clearInterval(HUB_AUTO_TIMER); HUB_AUTO_TIMER=null; } HUB_AUTO_RANDOM=false; }
+function hubAutoRandomTick(){ hubAddCard(hubRandType()); HUB_AUTO_TIMER=setTimeout(hubAutoRandomTick, Math.floor(Math.random()*15000)); }
+function hubSetAuto(val){
+  hubAutoStop();
+  if(val==='off'||val==='0'||!val) return;
+  if(val==='random'){ HUB_AUTO_RANDOM=true; hubAddCard(hubRandType()); HUB_AUTO_TIMER=setTimeout(hubAutoRandomTick, Math.floor(Math.random()*15000)); return; }
+  var sec=parseInt(val,10)||0;
+  if(sec>0){ hubAddCard(hubRandType()); HUB_AUTO_TIMER=setInterval(function(){ hubAddCard(hubRandType()); }, sec*1000); }
+}
+function hubRenderHistory(){
+  var el=document.getElementById('hubHistory'); if(!el) return;
+  var dateSel=document.getElementById('histDate'), date=dateSel?dateSel.value:'Today';
+  var q=(document.getElementById('histSearch')&&document.getElementById('histSearch').value||'').trim().toLowerCase();
+  var list=(date==='Today')?HUB_HISTORY:(HUB_HIST_PAST[date]||[]);
+  if(q) list=list.filter(function(r){return r.nm.toLowerCase().indexOf(q)>-1;});
+  var rows=list.map(function(r){
+    var who='<div class="wt-client"><span class="wt-av" style="background:'+r.av+'">'+hubInitials(r.nm)+'</span><span class="wt-nm">'+r.nm+'</span></div>';
+    var result='<span class="wt-result '+r.cls+'"><span class="wt-dot '+r.cls+'"></span>'+r.sub+'</span>';
+    var src=r.src?hubSrcChip(r.src,r.srcDetail):'<span class="wt-mut">—</span>';
+    var acts='<span class="wt-mut">—</span>';
+    if(r.pending){
+      var s=HUB_STATES[r.type];
+      acts='<div class="hub-hacts">'+(s.acts||[]).map(function(a){
+        var arg=a.fn==='hubHistCharge'?("'"+r.hid+"','"+a.l+"'"):("'"+r.hid+"'");
+        return '<button class="hub-rbtn '+(a.primary?'primary':'ghost')+'" onclick="'+a.fn+'('+arg+')">'+a.l+'</button>';
+      }).join('')+'</div>';
+    }
+    return '<tr class="'+(r.pending?'pending':'')+'"><td>'+who+'</td><td>'+result+'</td><td>'+src+'</td><td class="wt-time">'+r.t+'</td><td class="wt-actcol">'+acts+'</td></tr>';
+  }).join('');
+  if(!list.length) rows='<tr><td colspan="5" style="padding:26px;text-align:center;color:#9aa0ad">No check-ins'+(q?' match “'+q+'”':' on this date')+'.</td></tr>';
+  el.innerHTML='<table class="wds-table"><thead><tr><th>Client</th><th>Result</th><th>Source</th><th>Time</th><th>Actions</th></tr></thead><tbody>'+rows+'</tbody></table>';
+}
+function hubRenderExpected(){
+  var el=document.getElementById('hubExpected'); if(!el) return;
+  if(!HUB_EXPECTED.length){ el.innerHTML='<div class="hub-gate-empty" style="padding:24px">Everyone expected has checked in.</div>'; return; }
+  el.innerHTML=HUB_EXPECTED.map(function(e){
+    return '<div class="hub-erow"><span class="hub-hav" style="background:'+e.av+'">'+hubInitials(e.nm)+'</span><div class="hub-emain"><div class="hub-enm">'+e.nm+'</div><div class="hub-esub">'+e.svc+' · '+e.t+'</div></div><button class="hub-echk" onclick="hubExpectedCheckIn(\''+e.id+'\')">Check in</button></div>';
+  }).join('');
+}
+function hubExpectedCheckIn(id){
+  var i=-1; for(var k=0;k<HUB_EXPECTED.length;k++){ if(HUB_EXPECTED[k].id===id){i=k;break;} }
+  if(i<0) return;
+  var e=HUB_EXPECTED[i];
+  HUB_EXPECTED.splice(i,1);
+  HUB_HISTORY.unshift({cls:'ok',nm:e.nm,av:e.av,sub:e.svc+' · checked in',src:'manual',srcDetail:hubSrcDetail('manual'),t:'now'});
+  hubRenderHistory(); hubRenderExpected();
+  toast(e.nm+' checked in',true);
+}
+/* filters */
+function hubToggleDd(which){
+  var dd=document.getElementById(which==='loc'?'locDd':'doorDd');
+  var menu=document.getElementById(which==='loc'?'locMenu':'doorMenu');
+  var open=menu.classList.contains('open');
+  document.querySelectorAll('#clientHub .hub-ddmenu').forEach(function(m){m.classList.remove('open');});
+  document.querySelectorAll('#clientHub .hub-dd').forEach(function(d){d.classList.remove('open');});
+  if(!open){menu.classList.add('open');dd.classList.add('open');}
+}
+function hubPickLoc(name,el){
+  document.getElementById('locVal').textContent=name;
+  el.parentNode.querySelectorAll('.hub-ddopt').forEach(function(o){o.classList.remove('sel');});
+  el.classList.add('sel');
+  document.getElementById('locMenu').classList.remove('open');document.getElementById('locDd').classList.remove('open');
+  hubUpdateLoc();
+}
+function hubToggleDoor(el){
+  el.classList.toggle('on');
+  HUB_DOORS=[].slice.call(document.querySelectorAll('#doorMenu .hub-ddopt.on')).map(function(o){return o.dataset.door;});
+  document.getElementById('doorVal').textContent=HUB_DOORS.length?(HUB_DOORS.length===1?HUB_DOORS[0]:HUB_DOORS.length+' doors'):'All doors';
+  hubUpdateLoc();
+}
+function hubUpdateLoc(){
+  var loc=document.getElementById('locVal').textContent.replace(' studio','');
+  document.getElementById('liveLoc').textContent=loc+' · '+(HUB_DOORS.length?HUB_DOORS.length+' doors':'all doors');
+}
+/* manual check-in — all business clients (scrollable), about-to-arrive on top.
+   Checking a client animates the row out and removes them from the list. */
+function hubMrowHtml(c,svc){
+  var nm=c.nm.replace(/'/g,"\\'");
+  return '<div class="hub-mrow" data-nm="'+c.nm.replace(/"/g,'')+'">'+
+    '<span class="hub-hav" style="background:'+c.av+'">'+hubInitials(c.nm)+'</span>'+
+    '<div class="hub-hmain"><div class="hub-hnm">'+c.nm+'</div><div class="hub-msvc">'+(svc||c.sub||'')+'</div></div>'+
+    '<button class="hub-mchk" onclick="hubManualPick(\''+nm+'\')">Check in</button></div>';
+}
+/* unified roster: expected (with svc) first, then remaining clients — no dupes */
+function hubRoster(){
+  var seen={}, out=[];
+  HUB_EXPECTED.forEach(function(e){ if(!seen[e.nm]){seen[e.nm]=1; out.push({nm:e.nm,av:e.av,sub:e.svc+' · '+e.t,exp:true});} });
+  HUB_CLIENTS.forEach(function(c){ if(!seen[c.nm]){seen[c.nm]=1; out.push(c);} });
+  return out;
+}
+function hubRenderMlist(q){
+  q=(q||'').trim().toLowerCase();
+  var el=document.getElementById('hubMlist'); if(!el) return;
+  var roster=hubRoster();
+  if(q){
+    var matches=roster.filter(function(c){return c.nm.toLowerCase().indexOf(q)>-1;});
+    el.innerHTML = matches.length ? matches.map(function(c){return hubMrowHtml(c);}).join('')
+      : '<div class="hub-mlist-grp" style="color:#9aa0ad;text-transform:none">No clients match “'+q+'”.</div>';
+    return;
+  }
+  var exp=roster.filter(function(c){return c.exp;}), rest=roster.filter(function(c){return !c.exp;});
+  var html='';
+  if(exp.length){ html+='<div class="hub-mlist-grp">About to arrive</div>'; html+=exp.map(function(c){return hubMrowHtml(c);}).join(''); }
+  if(rest.length){ html+='<div class="hub-mlist-grp">All clients</div>'; html+=rest.map(function(c){return hubMrowHtml(c);}).join(''); }
+  el.innerHTML=html;
+}
+function hubOpenManual(){
+  var s=document.getElementById('hubSearch'); if(s) s.value='';
+  hubRenderMlist('');
+  document.getElementById('hubManual').classList.add('show');
+}
+function hubCloseManual(){ document.getElementById('hubManual').classList.remove('show'); }
+function hubManualPick(nm){
+  var row=document.querySelector('#hubMlist .hub-mrow[data-nm="'+nm.replace(/"/g,'')+'"]');
+  if(!row || row.classList.contains('checked')) return;   // guard against double-tap
+  var c=HUB_CLIENTS.filter(function(x){return x.nm===nm;})[0];
+  var e=HUB_EXPECTED.filter(function(x){return x.nm===nm;})[0];
+  var av=(c&&c.av)||(e&&e.av)||'#5A48F5';
+  var sub=e?(e.svc+' · checked in'):'Checked in';
+  HUB_HISTORY.unshift({cls:'ok',nm:nm,av:av,sub:sub,src:'manual',srcDetail:hubSrcDetail('manual'),t:'now'});
+  hubRenderHistory();
+  toast(nm+' checked in',true);
+  // flip the button to a green checkmark in place, hold 5s, then animate out & remove
+  row.classList.add('checked');
+  var btn=row.querySelector('.hub-mchk');
+  if(btn){ btn.classList.add('done'); btn.disabled=true; btn.innerHTML='<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>Checked in'; }
+  setTimeout(function(){
+    HUB_CLIENTS=HUB_CLIENTS.filter(function(x){return x.nm!==nm;});
+    HUB_EXPECTED=HUB_EXPECTED.filter(function(x){return x.nm!==nm;});
+    var s=document.getElementById('hubSearch');
+    if(row && row.parentNode){ row.classList.add('leaving'); setTimeout(function(){ hubRenderMlist(s?s.value:''); },280); }
+    else hubRenderMlist(s?s.value:'');
+  },1000);
+}
+/* close hub dropdowns on outside click */
+document.addEventListener('click',function(e){
+  if(!e.target.closest('#clientHub .hub-ddwrap')){
+    document.querySelectorAll('#clientHub .hub-ddmenu').forEach(function(m){m.classList.remove('open');});
+    document.querySelectorAll('#clientHub .hub-dd').forEach(function(d){d.classList.remove('open');});
+  }
+});
+hubRenderLive(); hubRenderHistory();
+updateDoorCount();
+/* start in auto · random mode by default */
+(function(){ var sel=document.getElementById('hubAutoSel'); if(sel){ sel.value='random'; hubSetAuto('random'); } })();
+
+/* Check In Hub is the default surface — scale its browser frame on load */
+scaleClient();
 </script>
 </body>
 </html>
