@@ -44,17 +44,28 @@ button{font-family:var(--sans)}
 .hint{color:var(--d30);font-size:13px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 16px;box-shadow:0 1px 3px rgba(11,17,40,.06)}
 /* demo state switcher — floats on the RIGHT side of the stage, same place as the scan-demo panel */
 .demo-switch{position:fixed;top:50%;right:24px;transform:translateY(-50%);z-index:60;display:flex;flex-direction:column;align-items:stretch;gap:7px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;box-shadow:0 12px 36px rgba(11,17,40,.18);width:248px}
-.demo-switch .ds-label{font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--d40);padding:2px 4px 5px}
+.demo-switch .ds-label{font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--d40);padding:2px 4px 5px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;user-select:none}
+.demo-switch .ds-label::after{content:"";width:8px;height:8px;border-right:2px solid var(--d40);border-bottom:2px solid var(--d40);transform:rotate(45deg);margin:-3px 4px 0 0;transition:transform .18s}
+.demo-switch.collapsed .ds-label::after{transform:rotate(-45deg);margin:0 4px 0 0}
+.demo-switch.collapsed{gap:0}
+.demo-switch.collapsed .ds-btn{display:none}
 .demo-switch .ds-btn{border:1px solid var(--line);background:#fff;border-radius:9px;padding:10px 12px;font-size:13px;font-weight:600;color:var(--d20);cursor:pointer;font-family:inherit;text-align:left}
 .demo-switch .ds-btn:hover{border-color:var(--b10)}
 .demo-switch .ds-btn.on{background:var(--b10);border-color:var(--b10);color:#fff}
+/* keep all demo switchers on the same standard blue, even inside surfaces that re-theme --b10 */
+#ownerStateSwitch .ds-btn.on{background:#116DFF;border-color:#116DFF}
+#ownerStateSwitch .ds-btn:hover{border-color:#116DFF}
 /* desktop (browser) surfaces: switchers as horizontal bars on top of the frame */
 #webStateSwitch,#webViewSwitch{position:static;transform:none;flex-direction:row;align-items:center;width:auto;gap:6px;padding:6px}
 #webStateSwitch .ds-label,#webViewSwitch .ds-label{padding:0 8px}
 #webStateSwitch .ds-btn,#webViewSwitch .ds-btn{padding:7px 12px;border-radius:8px;text-align:center}
 /* scan-result demo panel — floats beside the phone while the scanner is open */
 .scan-demo{position:fixed;top:50%;right:24px;transform:translateY(-50%);z-index:60;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 12px 36px rgba(11,17,40,.18);padding:12px;display:flex;flex-direction:column;gap:7px;width:248px}
-.scan-demo .sd-label{font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--d40);padding:2px 4px 5px}
+.scan-demo .sd-label{font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--d40);padding:2px 4px 5px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;user-select:none}
+.scan-demo .sd-label::after{content:"";width:8px;height:8px;border-right:2px solid var(--d40);border-bottom:2px solid var(--d40);transform:rotate(45deg);margin:-3px 4px 0 0;transition:transform .18s}
+.scan-demo.collapsed .sd-label::after{transform:rotate(-45deg);margin:0 4px 0 0}
+.scan-demo.collapsed{gap:0}
+.scan-demo.collapsed .sd-btn{display:none}
 .scan-demo .sd-btn{display:flex;align-items:center;gap:9px;text-align:left;border:1px solid var(--line);background:#fff;border-radius:9px;padding:10px 12px;font-size:13px;font-weight:600;color:var(--d10);cursor:pointer;font-family:inherit}
 .scan-demo .sd-btn:hover{background:#f5f7fb;border-color:#c7cdd8}
 .scan-demo .sd-dot{width:9px;height:9px;border-radius:50%;flex:0 0 9px}
@@ -1834,11 +1845,11 @@ function setFteAccess(state,btn){
   if(btn) btn.classList.add('on');
   var cta=document.getElementById('fte-cta'), lock=document.getElementById('fte-lock'), lt=document.getElementById('fte-lock-txt');
   if(state==='upgrade'){
-    cta.textContent='Upgrade to Business Premium';
+    cta.textContent='Upgrade';
     cta.style.background='#9610D9';
     lock.style.display='flex'; lt.textContent='Check-in & Access is part of the Business Premium plan.';
   } else if(state==='buy'){
-    cta.textContent='Add to plan · $10/month';
+    cta.textContent='Subscribe · $10/month';
     cta.style.background='#9610D9';
     lock.style.display='flex'; lt.textContent='Add Check-in & Access to your plan for $10/month.';
   } else {
@@ -1883,6 +1894,9 @@ function fteApplyChoices(){
 function fteDone(){ // apply choices and return to where we came from
   fteApplyChoices();
   toast('Check-in is on',true);
+  // completing the first-time flow flips the owner into the "already opted in" state
+  var optBtn=document.querySelector('#ownerStateSwitch [data-st="optedin"]');
+  if(optBtn) setOwnerState('optedin',optBtn);
   if(cameFromOwner){
     cameFromOwner=false;
     var btn=document.querySelector('.launch button[data-surf="owner"]');
@@ -2244,6 +2258,14 @@ renderMPlans();
 applyMob();
 /* show the owner-state panel on the default (owner home) screen */
 updateOwnerPanels();
+/* collapsible demo switchers — click the label to toggle (open by default) */
+document.querySelectorAll('.demo-switch .ds-label').forEach(function(lbl){
+  lbl.addEventListener('click',function(){ lbl.parentNode.classList.toggle('collapsed'); });
+});
+/* collapsible scan-result demo panels too */
+document.querySelectorAll('.scan-demo .sd-label').forEach(function(lbl){
+  lbl.addEventListener('click',function(){ lbl.parentNode.classList.toggle('collapsed'); });
+});
 </script>
 </body>
 </html>
