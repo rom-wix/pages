@@ -596,6 +596,8 @@ button{font-family:var(--sans)}
 .pp-s-i:hover{background:#22222b}
 .pp-s-i svg{width:18px;height:18px;flex:0 0 18px;opacity:.85}
 .pp-s-i.open{color:#fff;font-weight:600}
+.pp-s-i.on{background:#2a2a33;color:#fff;font-weight:600}
+.pp-s-i.on svg{opacity:1}
 .pp-s-i .pp-chev{margin-left:auto;width:14px;height:14px;opacity:.7}
 .pp-s-i .pp-caret,.pp-sub .pp-caret{margin-left:auto;opacity:.5;font-size:15px}
 .pp-new{margin-left:6px;background:#ffc233;color:#5A3A00;font-size:9px;font-weight:800;border-radius:4px;padding:1px 5px;letter-spacing:.03em}
@@ -2002,8 +2004,8 @@ button{font-family:var(--sans)}
                   <div class="setpg-tabs">
                     <button class="setpg-tab on" data-t="main" onclick="setTab('main')">Main</button>
                     <button class="setpg-tab" data-t="self" onclick="setTab('self')">Self check-in</button>
-                    <button class="setpg-tab" data-t="staff" onclick="setTab('staff')">Staff scan</button>
                     <button class="setpg-tab" data-t="hw" onclick="setTab('hw')">Hardware entry</button>
+                    <button class="setpg-tab" data-t="staff" onclick="setTab('staff')">Staff scan</button>
                   </div>
 
                   <!-- ===== TAB: MAIN ===== -->
@@ -2028,16 +2030,16 @@ button{font-family:var(--sans)}
                       <div class="set-intent-h"><span class="set-intent-t">Control who gets in</span><span class="set-intent-d">Check eligibility and let clients into your space.</span></div>
                       <div class="set-methods">
                         <div class="set-mcard">
-                          <div class="set-mic ic-staff"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="7.5" r="2.6"/><path d="M3.5 19a4 4 0 018 0"/><circle cx="16.5" cy="7.5" r="2.4"/><path d="M13 18.5a3.6 3.6 0 017 0"/><rect x="18" y="11.5" width="4" height="5.5" rx="1"/><path d="M14.2 5.8a2.4 2.4 0 014.6 0z"/><path d="M14.2 5.8h-1.5"/></svg></div>
-                          <div class="set-mt">Staff scan</div>
-                          <div class="set-md">Your team scans a client’s QR, sees their eligibility on the spot, and waves them in.</div>
-                          <a class="set-mlink" onclick="setTab('staff')">Set Up</a>
-                        </div>
-                        <div class="set-mcard">
                           <div class="set-mic ic-hw"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="8" r="2.6"/><path d="M2 20a4 4 0 018 0"/><rect x="13" y="7" width="5" height="10" rx="1.5"/><path d="M20 9a5 5 0 010 6M22 7.5a8 8 0 010 9" opacity=".75"/></svg></div>
                           <div class="set-mt">Hardware entry</div>
                           <div class="set-md">A connected device like a turnstile, gate or reader (e.g. Kisi) opens the door automatically for eligible clients.</div>
                           <a class="set-mlink" onclick="setTab('hw')">Set Up</a>
+                        </div>
+                        <div class="set-mcard">
+                          <div class="set-mic ic-staff"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="7.5" r="2.6"/><path d="M3.5 19a4 4 0 018 0"/><circle cx="16.5" cy="7.5" r="2.4"/><path d="M13 18.5a3.6 3.6 0 017 0"/><rect x="18" y="11.5" width="4" height="5.5" rx="1"/><path d="M14.2 5.8a2.4 2.4 0 014.6 0z"/><path d="M14.2 5.8h-1.5"/></svg></div>
+                          <div class="set-mt">Staff scan</div>
+                          <div class="set-md">Your team scans a client’s QR, sees their eligibility on the spot, and waves them in.</div>
+                          <a class="set-mlink" onclick="setTab('staff')">Set Up</a>
                         </div>
                       </div>
                     </div>
