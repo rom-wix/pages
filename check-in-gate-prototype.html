@@ -28,6 +28,8 @@ button{font-family:var(--sans)}
 .tb-in{max-width:1280px;margin:0 auto;padding:0 24px}
 .tb-in h1{font-family:var(--disp);font-size:21px;margin:0;letter-spacing:-.01em;display:flex;align-items:center;gap:10px}
 .tb-in h1 .pill{font-size:11px;font-weight:700;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.25);padding:3px 9px;border-radius:999px;letter-spacing:.04em}
+.exp-reset{margin-left:auto;font-family:var(--sans);font-size:12.5px;font-weight:600;color:#fff;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:9px;padding:7px 13px;cursor:pointer}
+.exp-reset:hover{background:rgba(255,255,255,.22)}
 .tb-in p{margin:5px 0 14px;opacity:.85;font-size:13px}
 .launch{display:flex;gap:6px;flex-wrap:wrap}
 .launch button{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);color:#fff;font-size:13.5px;font-weight:600;padding:9px 15px;border-radius:10px 10px 0 0;cursor:pointer;display:flex;align-items:center;gap:7px}
@@ -756,8 +758,14 @@ button{font-family:var(--sans)}
 .setpg-sec-d2{font-size:13px;color:#7a92a5;margin:0 0 14px}
 .setpg-foot{display:flex;justify-content:space-between;margin-top:28px}
 /* method cards on Main */
-.set-methods{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.set-methods{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.set-methods.one{grid-template-columns:1fr;max-width:calc(50% - 7px)}
 .set-mcard{background:#fff;border:1px solid #dfe5eb;border-radius:13px;padding:18px;display:flex;flex-direction:column}
+/* intent groups (Framing C: attendance vs access) */
+.set-intent{margin-bottom:22px}
+.set-intent-h{display:flex;align-items:baseline;gap:10px;margin-bottom:11px;flex-wrap:wrap}
+.set-intent-t{font-family:var(--disp);font-size:16px;font-weight:700;color:#162d3d}
+.set-intent-d{font-size:13px;color:#7a92a5}
 .set-mic{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;margin-bottom:13px}
 .set-mic svg{width:24px;height:24px}
 .set-mic.lg{width:58px;height:58px;border-radius:15px}.set-mic.lg svg{width:29px;height:29px}
@@ -940,7 +948,7 @@ button{font-family:var(--sans)}
 .static-qr{display:inline-block;background:#fff;border-radius:12px;padding:14px;line-height:0;box-shadow:0 4px 14px rgba(11,17,40,.08)}
 .static-qr-cap{font-size:13px;font-weight:700;color:#0c6dfd;margin-top:14px}
 .static-qr-biz{font-family:var(--disp);font-size:15px;font-weight:800;color:#162d3d;margin-top:6px}
-@media(max-width:1080px){.fte-hero{grid-template-columns:1fr}.set-methods{grid-template-columns:1fr}}
+@media(max-width:1080px){.fte-hero{grid-template-columns:1fr}.set-methods,.set-methods.one{grid-template-columns:1fr;max-width:none}}
 
 /* ===== Check-in Hub dashboard ===== */
 .hub{flex:1;overflow-y:auto;background:#f4f5f7;padding:14px 28px 50px;color:#16213A}
@@ -1304,7 +1312,7 @@ button{font-family:var(--sans)}
 <body>
 
 <div class="topbar"><div class="tb-in">
-  <h1>Check-in Gate <span class="pill">Interactive prototype</span></h1>
+  <h1>Check-in Gate <span class="pill">Interactive prototype</span><button class="exp-reset" onclick="resetParams()" title="Clear the link and return to the default screen">↺ Reset</button></h1>
   <p>Tap inside the device to use it. In the scanner, <b>tap the frame</b> to simulate scanning the next member in the queue.</p>
   <div class="launch">
     <button class="on" data-surf="web" onclick="surf('web',this)"><span class="dot"></span>Web Settings</button>
@@ -1847,7 +1855,7 @@ button{font-family:var(--sans)}
           <div class="save" onclick="setmSave()">Save</div>
         </div>
         <div class="scroll" style="background:var(--bg)">
-          <div class="gate-hero"><div class="ic"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/><circle cx="12" cy="15.5" r="1.4" fill="#fff" stroke="none"/></svg></div><div><div class="t">Check-in &amp; Access</div><div class="s">Decide who can enter — by booking or active plan</div></div></div>
+          <div class="gate-hero"><div class="ic"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/><circle cx="12" cy="15.5" r="1.4" fill="#fff" stroke="none"/></svg></div><div><div class="t">Check-in &amp; Entries</div><div class="s">Decide who can enter — by booking or active plan</div></div></div>
 
           <div class="set-lead">QR check-in</div>
           <div class="set-group">
@@ -1977,7 +1985,7 @@ button{font-family:var(--sans)}
                 <div class="setpg">
                   <div class="setpg-head">
                     <div>
-                      <h1 class="setpg-title">Check-in &amp; Access</h1>
+                      <h1 class="setpg-title">Check-in &amp; Entries</h1>
                       <div class="setpg-subt">Decide who can enter. Set up check-in methods, doors and the rules for each.</div>
                     </div>
                     <button class="set-btn primary" onclick="openHubFromSettings()">Check-in Dashboard</button>
@@ -1985,33 +1993,44 @@ button{font-family:var(--sans)}
                   <!-- tabs -->
                   <div class="setpg-tabs">
                     <button class="setpg-tab on" data-t="main" onclick="setTab('main')">Main</button>
-                    <button class="setpg-tab" data-t="staff" onclick="setTab('staff')">Staff check-in</button>
                     <button class="setpg-tab" data-t="self" onclick="setTab('self')">Self check-in</button>
-                    <button class="setpg-tab" data-t="hw" onclick="setTab('hw')">Hardware check-in</button>
+                    <button class="setpg-tab" data-t="staff" onclick="setTab('staff')">Staff entry</button>
+                    <button class="setpg-tab" data-t="hw" onclick="setTab('hw')">Hardware entry</button>
                   </div>
 
                   <!-- ===== TAB: MAIN ===== -->
                   <div class="setpg-body on" id="tab-main">
-                    <div class="setpg-sec-d">Choose how people check in, then set the rules that apply across every method.</div>
-                    <!-- 3 method cards -->
-                    <div class="set-methods">
-                      <div class="set-mcard">
-                        <div class="set-mic ic-staff"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="7.5" r="2.6"/><path d="M3.5 19a4 4 0 018 0"/><circle cx="16.5" cy="7.5" r="2.4"/><path d="M13 18.5a3.6 3.6 0 017 0"/><rect x="18" y="11.5" width="4" height="5.5" rx="1"/><path d="M14.2 5.8a2.4 2.4 0 014.6 0z"/><path d="M14.2 5.8h-1.5"/></svg></div>
-                        <div class="set-mt">Staff check-in</div>
-                        <div class="set-md">Your team scans a client’s QR from the Owner app and sees their eligibility on the spot.</div>
-                        <a class="set-mlink" onclick="setTab('staff')">Set Up</a>
+                    <div class="setpg-sec-d">Check-in does two jobs: it tells you who’s arrived, and it controls who gets in. Set up the methods you need for each.</div>
+
+                    <!-- Intent group 1: attendance -->
+                    <div class="set-intent">
+                      <div class="set-intent-h"><span class="set-intent-t">Know who’s here</span><span class="set-intent-d">Record that a client has arrived for their session.</span></div>
+                      <div class="set-methods one">
+                        <div class="set-mcard">
+                          <div class="set-mic ic-self"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="7" r="2.6"/><path d="M3 19a4 4 0 018 0"/><rect x="14" y="5" width="8" height="13" rx="2"/><rect x="16.5" y="8" width="3" height="3"/><path d="M17.5 15h1"/></svg></div>
+                          <div class="set-mt">Self check-in</div>
+                          <div class="set-md">Clients check themselves in at a kiosk or by scanning a QR with their phone. You see who’s arrived, no line at the desk.</div>
+                          <a class="set-mlink" onclick="setTab('self')">Set Up</a>
+                        </div>
                       </div>
-                      <div class="set-mcard">
-                        <div class="set-mic ic-self"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="7" r="2.6"/><path d="M3 19a4 4 0 018 0"/><rect x="14" y="5" width="8" height="13" rx="2"/><rect x="16.5" y="8" width="3" height="3"/><path d="M17.5 15h1"/></svg></div>
-                        <div class="set-mt">Self check-in</div>
-                        <div class="set-md">Clients check themselves in at a kiosk or by scanning a QR with their own phone.</div>
-                        <a class="set-mlink" onclick="setTab('self')">Set Up</a>
-                      </div>
-                      <div class="set-mcard">
-                        <div class="set-mic ic-hw"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="8" r="2.6"/><path d="M2 20a4 4 0 018 0"/><rect x="13" y="7" width="5" height="10" rx="1.5"/><path d="M20 9a5 5 0 010 6M22 7.5a8 8 0 010 9" opacity=".75"/></svg></div>
-                        <div class="set-mt">Hardware check-in</div>
-                        <div class="set-md">A connected device like a turnstile, gate or reader (e.g. Kisi) checks people in automatically.</div>
-                        <a class="set-mlink" onclick="setTab('hw')">Set Up</a>
+                    </div>
+
+                    <!-- Intent group 2: access -->
+                    <div class="set-intent">
+                      <div class="set-intent-h"><span class="set-intent-t">Control who gets in</span><span class="set-intent-d">Check eligibility and let clients into your space.</span></div>
+                      <div class="set-methods">
+                        <div class="set-mcard">
+                          <div class="set-mic ic-staff"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="7.5" r="2.6"/><path d="M3.5 19a4 4 0 018 0"/><circle cx="16.5" cy="7.5" r="2.4"/><path d="M13 18.5a3.6 3.6 0 017 0"/><rect x="18" y="11.5" width="4" height="5.5" rx="1"/><path d="M14.2 5.8a2.4 2.4 0 014.6 0z"/><path d="M14.2 5.8h-1.5"/></svg></div>
+                          <div class="set-mt">Staff entry</div>
+                          <div class="set-md">Your team scans a client’s QR, sees their eligibility on the spot, and waves them in.</div>
+                          <a class="set-mlink" onclick="setTab('staff')">Set Up</a>
+                        </div>
+                        <div class="set-mcard">
+                          <div class="set-mic ic-hw"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="8" r="2.6"/><path d="M2 20a4 4 0 018 0"/><rect x="13" y="7" width="5" height="10" rx="1.5"/><path d="M20 9a5 5 0 010 6M22 7.5a8 8 0 010 9" opacity=".75"/></svg></div>
+                          <div class="set-mt">Hardware entry</div>
+                          <div class="set-md">A connected device like a turnstile, gate or reader (e.g. Kisi) opens the door automatically for eligible clients.</div>
+                          <a class="set-mlink" onclick="setTab('hw')">Set Up</a>
+                        </div>
                       </div>
                     </div>
 
@@ -2042,7 +2061,7 @@ button{font-family:var(--sans)}
                   <!-- ===== TAB: STAFF ===== -->
                   <div class="setpg-body" id="tab-staff">
                     <div class="set-method-intro"><div class="set-mic ic-staff lg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="7.5" r="2.6"/><path d="M3.5 19a4 4 0 018 0"/><circle cx="16.5" cy="7.5" r="2.4"/><path d="M13 18.5a3.6 3.6 0 017 0"/><rect x="18" y="11.5" width="4" height="5.5" rx="1"/><path d="M14.2 5.8a2.4 2.4 0 014.6 0z"/><path d="M14.2 5.8h-1.5"/></svg></div>
-                      <div><div class="set-mi-t">Staff check-in</div><div class="set-mi-d">Your team scans a client’s QR code from the Wix Owner app and sees their booking, plan and waiver status on the spot. Works at the front desk or on the floor.</div></div></div>
+                      <div><div class="set-mi-t">Staff entry</div><div class="set-mi-d">Your team scans a client’s QR from the Wix Owner app, sees their eligibility on the spot, and lets them in. Works at the front desk or on the floor.</div></div></div>
                     <div class="set-rich-grid">
                       <!-- Show QR in the member app -->
                       <div class="set-rich">
@@ -2133,7 +2152,7 @@ button{font-family:var(--sans)}
                   <!-- ===== TAB: HARDWARE ===== -->
                   <div class="setpg-body" id="tab-hw">
                     <div class="set-method-intro"><div class="set-mic ic-hw lg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="8" r="2.6"/><path d="M2 20a4 4 0 018 0"/><rect x="13" y="7" width="5" height="10" rx="1.5"/><path d="M20 9a5 5 0 010 6M22 7.5a8 8 0 010 9" opacity=".75"/></svg></div>
-                      <div><div class="set-mi-t">Hardware check-in</div><div class="set-mi-d">Clients check themselves in through an integrated physical device like a turnstile, gate or reader (e.g. Kisi). It records the entry automatically.</div></div></div>
+                      <div><div class="set-mi-t">Hardware entry</div><div class="set-mi-d">A connected device like a turnstile, gate or reader (e.g. Kisi) opens automatically for eligible clients and logs the entry.</div></div></div>
                     <div id="hwBody"></div>
                     <div class="set-backrow"><a class="set-back" onclick="setTab('main')">← Back to Main</a></div>
                   </div>
@@ -2360,7 +2379,7 @@ button{font-family:var(--sans)}
               <!-- header -->
               <div class="hub-head">
                 <div>
-                  <h1 class="hub-h1">Check-in &amp; Access</h1>
+                  <h1 class="hub-h1">Check-in &amp; Entries</h1>
                   <div class="hub-sub"><span class="hub-sub-t">See and manage every check-in across your business, live.</span></div>
                 </div>
                 <button class="hub-setup" onclick="openCheckinSettings()"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 00.3 1.8 2 2 0 11-2.8 2.8 1.6 1.6 0 00-1.8-.3 1.6 1.6 0 00-1 1.5 2 2 0 11-4 0 1.6 1.6 0 00-1-1.5 1.6 1.6 0 00-1.8.3 2 2 0 11-2.8-2.8 1.6 1.6 0 00.3-1.8 1.6 1.6 0 00-1.5-1 2 2 0 110-4 1.6 1.6 0 001.5-1 1.6 1.6 0 00-.3-1.8 2 2 0 112.8-2.8 1.6 1.6 0 001.8.3 1.6 1.6 0 001-1.5 2 2 0 114 0 1.6 1.6 0 001 1.5 1.6 1.6 0 001.8-.3 2 2 0 112.8 2.8 1.6 1.6 0 00-.3 1.8 1.6 1.6 0 001.5 1 2 2 0 110 4 1.6 1.6 0 00-1.5 1z"/></svg>Check-in settings</button>
@@ -2959,11 +2978,11 @@ function setFteAccess(state,btn){
   if(state==='upgrade'){
     cta.textContent='Upgrade';
     cta.style.background='#9610D9';
-    lock.style.display='flex'; lt.textContent='Check-in & Access is part of the Business Premium plan.';
+    lock.style.display='flex'; lt.textContent='Check-in & Entries is part of the Business Premium plan.';
   } else if(state==='buy'){
     cta.textContent='Subscribe · $10/month';
     cta.style.background='#9610D9';
-    lock.style.display='flex'; lt.textContent='Add Check-in & Access to your plan for $10/month.';
+    lock.style.display='flex'; lt.textContent='Add Check-in & Entries to your plan for $10/month.';
   } else {
     cta.textContent='Set up check-in';
     cta.style.background='';
@@ -3450,7 +3469,7 @@ function webSetCrumb(view){
   if(view==='list'){
     c.innerHTML='<b>Settings</b>';
   } else {
-    c.innerHTML='<span class="web-crumb-link" onclick="webCrumbHome()">Settings</span> <span class="pp-crumb-sep">›</span> <b>Check-in &amp; Access</b>';
+    c.innerHTML='<span class="web-crumb-link" onclick="webCrumbHome()">Settings</span> <span class="pp-crumb-sep">›</span> <b>Check-in &amp; Entries</b>';
   }
 }
 // keep the prototype breadcrumb in sync with the iframe's current view
@@ -4331,13 +4350,14 @@ scaleWeb();
       var ss=document.querySelector('#vpSetM .scr.on'); var ssid=ss?ss.id.replace('s-',''):'main';
       if(ssid==='fte'||ssid==='fte2') s.screen=ssid;
     } else if(s.tab==='web'){
-      var onb=document.getElementById('web-view-onboarding');
-      s.view=(onb&&onb.style.display!=='none')?'onboarding':'settings';
-      if(s.view==='settings'){
-        var wb=document.querySelector('#webStateSwitch .ds-btn.on'); var wst=wb?wb.getAttribute('data-st'):'both';
-        if(wst&&wst!=='both') s.state=wst;
-      } else if(s.view==='onboarding'){
-        var s2=document.getElementById('fte-s2'); if(s2&&s2.classList.contains('on')) s.screen='settings';
+      // Web Settings: FTE intro (view=intro) vs the settings page (default).
+      var s1=document.getElementById('fte-s1');
+      if(s1 && s1.classList.contains('on')){ s.view='intro'; }
+      else {
+        // on the settings page — capture the active settings tab (main is default → omit)
+        var at=document.querySelector('#fte-s2 .setpg-tab.on');
+        var t=at?at.getAttribute('data-t'):'main';
+        if(t && t!=='main') s.settab=t;
       }
     }
     return s;
@@ -4387,13 +4407,16 @@ scaleWeb();
         if(s.screen==='fte'){ jump('vpSetM','s-fte'); }
         else if(s.screen==='fte2'){ jump('vpSetM','s-fte2'); }
       } else if(s.tab==='web'){
-        var vb=document.querySelector('#webViewSwitch .ds-btn[data-wv="'+(s.view||'settings')+'"]');
-        setWebView(s.view||'settings',vb);
-        if((s.view||'settings')==='settings' && s.state){
-          var sb=document.querySelector('#webStateSwitch .ds-btn[data-st="'+s.state+'"]');
-          setWebState(s.state,sb);
+        if(s.view==='intro'){
+          setWebView('onboarding',document.querySelector('#webViewSwitch [data-wv="onboarding"]'));
+          fteShow(1);   // FTE intro screen
+        } else {
+          // settings page (the new tabbed page)
+          setWebView('settings',document.querySelector('#webViewSwitch [data-wv="settings"]'));
+          fteShow(2);
+          var tab=s.settab||'main';
+          if(['main','self','staff','hw'].indexOf(tab)>-1) setTab(tab);
         }
-        if(s.view==='onboarding' && s.screen==='settings'){ fteShow(2); }
       }
     }catch(e){ if(window.console) console.log('applyState err',e.message); }
     building=false;
@@ -4407,10 +4430,16 @@ scaleWeb();
   window.KIOSK_LAST=null; window.MEMBER_LAST=null;
   var _kv=window.kioskVerdict; if(_kv) window.kioskVerdict=function(type,nm){ KIOSK_LAST=type; var r=_kv.apply(this,arguments); if(!building) syncURL(); return r; };
   var _mr=window.mShowResult; if(_mr) window.mShowResult=function(type){ MEMBER_LAST=type; var r=_mr.apply(this,arguments); if(!building) syncURL(); return r; };
-  ['surf','setOwnerState','openScanner','ownerScanTap','setMobState','setWebView','setWebState','webCrumbHome','hubSetMode','hubSetAuto','kioskGo','setFteAccess','jump','push','back','showPass','passDone','fteFinish','fteDone'].forEach(function(fn){ wrap(fn); });
+  ['surf','setOwnerState','openScanner','ownerScanTap','setMobState','setWebView','setWebState','webCrumbHome','hubSetMode','hubSetAuto','kioskGo','setFteAccess','jump','push','back','showPass','passDone','fteFinish','fteDone','setTab','fteShow','openCheckinSettings','openHubFromSettings'].forEach(function(fn){ wrap(fn); });
 
   /* ---- react to manual hash edits / back-forward ---- */
   window.addEventListener('hashchange',function(){ if(building) return; applyState(parseHash()); });
+
+  /* ---- Reset: clear all URL params and return to the default screen ---- */
+  window.resetParams=function(){
+    try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){ location.hash=''; }
+    location.reload();
+  };
 
   /* ---- apply the initial URL on load ---- */
   var initial=parseHash();
