@@ -714,6 +714,234 @@ button{font-family:var(--sans)}
 .wm-share{display:flex;gap:8px}
 .wm-share-in{flex:1;height:38px;border:1px solid #c5cad3;border-radius:8px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#9aa0ad}
 .wm-share-b{height:38px;padding:0 20px;border-radius:19px;border:none;background:#16213A;color:#fff;font-size:14px;font-weight:700;cursor:pointer}
+
+/* ===== Onboarding FTE + new 4-tab settings page (web) ===== */
+.fte-scroll{flex:1;overflow-y:auto;background:#f4f5f7}
+.fte-screen{display:none}
+.fte-screen.on{display:block;animation:ftefade .34s ease}
+@keyframes ftefade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.fte-nu{display:inline-block;font-size:11px;font-weight:800;background:#eeebff;color:#4a39d4;border-radius:6px;padding:3px 8px;letter-spacing:.03em}
+/* intro */
+.fte-hero{display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:center;padding:44px 40px;min-height:520px}
+.fte-h1{font-family:var(--disp);font-size:38px;font-weight:800;letter-spacing:-.5px;line-height:1.08;margin:14px 0 14px;color:#162d3d}
+.fte-lead{font-size:15.5px;line-height:1.55;color:#32536a;max-width:480px;margin:0}
+.fte-feat{display:flex;flex-direction:column;gap:10px;margin-top:24px}
+.fte-feat-i{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:600;color:#32536a}
+.fte-feat-i svg{width:18px;height:18px;color:#1f9d5b;flex:0 0 18px}
+.fte-cta-row{margin-top:30px;display:flex;align-items:center;gap:16px}
+.fte-dots{display:inline-flex;gap:6px}
+.fte-dots i{width:7px;height:7px;border-radius:50%;background:#aebdc9}
+.fte-dots i.on{background:#0c6dfd}
+.fte-hero-r{display:flex;justify-content:center}
+.fte-illo{background:linear-gradient(160deg,#eaf2ff,#f3eeff);border-radius:22px;padding:40px;box-shadow:0 18px 50px rgba(12,109,253,.12)}
+.fte-btn,.set-btn{font-family:var(--sans);font-size:14px;font-weight:600;border-radius:22px;padding:11px 22px;cursor:pointer;border:1px solid transparent;display:inline-flex;align-items:center;gap:8px}
+.fte-btn.lg{padding:13px 30px;font-size:15px}
+.fte-btn.primary,.set-btn.primary{background:#0c6dfd;color:#fff}
+.fte-btn.primary:hover,.set-btn.primary:hover{background:#0a5be0}
+.fte-btn svg{width:18px;height:18px}
+/* settings page */
+.setpg{padding:14px 28px 50px}
+.setpg-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:20px}
+.setpg-head .set-btn{flex:0 0 auto;margin-top:2px;height:36px;padding:0 18px}
+.setpg-title{font-family:var(--disp);font-size:25px;font-weight:800;letter-spacing:-.3px;margin:0;color:#162d3d}
+.setpg-subt{font-size:13.5px;color:#32536a;margin-top:5px;line-height:1.45}
+.setpg-tabs{display:flex;gap:4px;border-bottom:1px solid #dfe5eb;margin-bottom:22px}
+.setpg-tab{font-family:var(--sans);font-size:14px;font-weight:600;color:#4f6a7d;background:none;border:none;padding:12px 16px;cursor:pointer;border-bottom:2.5px solid transparent;margin-bottom:-1px}
+.setpg-tab:hover{color:#162d3d}
+.setpg-tab.on{color:#0c6dfd;border-bottom-color:#0c6dfd}
+.setpg-body{display:none}
+.setpg-body.on{display:block;animation:ftefade .28s ease}
+.setpg-sec-d{font-size:14px;color:#32536a;margin:0 0 18px;line-height:1.5}
+.setpg-sec-h{font-family:var(--disp);font-size:17px;font-weight:700;color:#162d3d;margin:30px 0 3px}
+.setpg-sec-d2{font-size:13px;color:#7a92a5;margin:0 0 14px}
+.setpg-foot{display:flex;justify-content:space-between;margin-top:28px}
+/* method cards on Main */
+.set-methods{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.set-mcard{background:#fff;border:1px solid #dfe5eb;border-radius:13px;padding:18px;display:flex;flex-direction:column}
+.set-mic{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;margin-bottom:13px}
+.set-mic svg{width:24px;height:24px}
+.set-mic.lg{width:58px;height:58px;border-radius:15px}.set-mic.lg svg{width:29px;height:29px}
+.ic-staff{background:#eaf2ff;color:#0c6dfd}.ic-self{background:#eeebff;color:#5a48f5}.ic-hw{background:#e3f6f6;color:#0ba5a5}
+.set-mt{font-family:var(--disp);font-size:16px;font-weight:700;color:#162d3d}
+.set-md{font-size:12.5px;color:#32536a;line-height:1.5;margin:6px 0 14px;flex:1}
+.set-mlink{font-size:13.5px;font-weight:600;color:#0c6dfd;cursor:pointer}
+.set-mlink:hover{text-decoration:underline}
+/* rich setting cards with illustration (staff check-in) */
+.set-rich-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.set-rich{background:#fff;border:1px solid #dfe5eb;border-radius:13px;overflow:hidden;display:flex;flex-direction:column}
+.set-rich-illo{padding:18px 18px 0}
+.set-rich-illo svg{width:100%;height:auto;display:block;border-radius:10px}
+.set-rich-b{padding:14px 18px 18px}
+.set-rich-h{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.set-rich-h .set-lt{font-size:15px}
+.set-rich-b .set-ld{margin-top:6px}
+@media(max-width:900px){.set-rich-grid{grid-template-columns:1fr}}
+/* shared settings card/rows */
+.set-card{background:#fff;border:1px solid #dfe5eb;border-radius:10px;overflow:hidden}
+.set-row{display:flex;align-items:flex-start;gap:16px;padding:15px 18px;border-bottom:1px solid #e9edf1}
+.set-row:last-child{border-bottom:none}
+.set-si{flex:1;min-width:0}
+.set-lt{font-size:14px;font-weight:600;color:#162d3d}
+.set-ld{font-size:12.5px;color:#32536a;margin-top:3px;line-height:1.45}
+.set-sv{flex:0 0 auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.set-chip{font-size:12px;font-weight:600;color:#32536a;background:#f0f4f7;border:1px solid #dfe5eb;border-radius:7px;padding:4px 9px}
+.set-chip .mut2{color:#aebdc9}
+.set-edit{color:#0c6dfd;font-size:13px;font-weight:600;cursor:pointer}
+.set-edit:hover{text-decoration:underline}
+.set-btn.ghost{background:#fff;border-color:#aebdc9;color:#162d3d}
+.set-btn.ghost:hover{background:#f6f8fa}
+.set-btn.sm{padding:8px 15px;font-size:13px;border-radius:18px}
+.set-tog{width:38px;height:22px;border-radius:12px;background:#cdd7e0;position:relative;flex:0 0 38px;cursor:pointer;transition:.16s}
+.set-tog::after{content:'';position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:.16s}
+.set-tog.on{background:#0c6dfd}.set-tog.on::after{left:18px}
+.set-pill{font-size:11px;font-weight:700;border-radius:11px;padding:3px 9px;background:#eef2f6;color:#5d7286;display:inline-flex;align-items:center;gap:5px}
+.set-pill::before{content:'';width:6px;height:6px;border-radius:50%;background:#9aaabb}
+.set-pill.on{background:#e6f6ee;color:#157a44}.set-pill.on::before{background:#1f9d5b}
+.set-soon{font-size:11px;font-weight:700;background:#eef2f6;color:#5d7286;border-radius:6px;padding:3px 8px}
+/* method tab intro */
+.set-method-intro{display:flex;gap:16px;align-items:flex-start;margin-bottom:18px}
+.set-mi-t{font-family:var(--disp);font-size:20px;font-weight:800;color:#162d3d}
+.set-mi-d{font-size:13.5px;color:#32536a;line-height:1.55;margin-top:5px;max-width:560px}
+.set-backrow{margin-top:16px}
+.set-back{font-size:13.5px;font-weight:600;color:#0c6dfd;cursor:pointer}
+.set-back:hover{text-decoration:underline}
+/* doors */
+.onb-door{display:flex;align-items:center;gap:11px;padding:10px 12px;border:1px solid #dfe5eb;border-radius:9px;margin-bottom:8px;background:#fafcff}
+.onb-door-tx{display:flex;flex-direction:column;flex:1}
+.onb-door-n{font-size:13.5px;font-weight:600;color:#162d3d}
+.onb-main{font-size:10px;font-weight:800;background:#eaf2ff;color:#0c6dfd;border-radius:5px;padding:1px 6px;letter-spacing:.03em;vertical-align:middle}
+.onb-door-l{font-size:12px;color:#7a92a5}
+/* kiosks (self check-in) */
+.kiosk-card{background:#fff;border:1px solid #dfe5eb;border-radius:11px;margin-bottom:10px;overflow:hidden}
+.kiosk-card.open{box-shadow:0 3px 12px rgba(12,109,253,.08);border-color:#bcd6ff}
+.kiosk-head{display:flex;align-items:center;gap:13px;padding:14px 16px;cursor:pointer}
+.kiosk-ic{width:40px;height:40px;border-radius:10px;background:#eeebff;color:#5a48f5;display:grid;place-items:center;flex:0 0 40px}
+.kiosk-ic svg{width:21px;height:21px}
+.kiosk-main{flex:1;min-width:0}
+.kiosk-nm{font-size:14.5px;font-weight:700;color:#162d3d}
+.kiosk-sub{font-size:12.5px;color:#7a92a5;margin-top:2px;display:flex;align-items:center;gap:5px}
+.kiosk-doorpin{color:#9aa0ad;flex:0 0 13px}
+.kiosk-cv{flex:0 0 18px;transition:transform .2s}
+.kiosk-body{border-top:1px solid #e9edf1;padding:2px 16px 6px}
+.kiosk-body .set-row{padding:13px 0}
+.kiosk-sel{font-family:var(--sans);font-size:13px;font-weight:600;color:#162d3d;border:1px solid #c5cad3;border-radius:8px;padding:7px 10px;background:#fff;cursor:pointer}
+.kiosk-nm-row{display:flex;align-items:center;gap:10px}
+.kiosk-rename{font-size:12.5px;font-weight:600;color:#0c6dfd;cursor:pointer}
+.kiosk-rename:hover{text-decoration:underline}
+.kiosk-nm-edit{display:flex;align-items:center;gap:9px}
+.kiosk-name-in{font-family:var(--sans);font-size:14px;font-weight:700;color:#162d3d;border:1px solid #c5cad3;border-radius:8px;padding:5px 9px;background:#fff;width:200px;max-width:42vw}
+.kiosk-name-in:focus{outline:none;border-color:#0c6dfd;box-shadow:0 0 0 3px rgba(12,109,253,.12)}
+.kiosk-rename-save{font-size:12.5px;font-weight:700;color:#0c6dfd;cursor:pointer}
+.kiosk-rename-save:hover{text-decoration:underline}
+.kiosk-remove{padding:12px 0 6px;border-top:1px solid #e9edf1;margin-top:2px}
+.kiosk-empty{background:#fff;border:1px dashed #c5cad3;border-radius:12px;padding:30px 22px;text-align:center;margin-bottom:10px}
+.kiosk-empty-ic{width:48px;height:48px;border-radius:12px;background:#eeebff;color:#5a48f5;display:grid;place-items:center;margin:0 auto 12px}
+.kiosk-empty-ic svg{width:24px;height:24px}
+.kiosk-empty-t{font-family:var(--disp);font-size:16px;font-weight:700;color:#162d3d}
+.kiosk-empty-d{font-size:13px;color:#7a92a5;line-height:1.5;max-width:380px;margin:5px auto 0}
+/* hardware check-in */
+.hw-empty{background:#fff;border:1px dashed #c5cad3;border-radius:12px;padding:32px 22px;text-align:center}
+.hw-empty-ic{width:52px;height:52px;border-radius:13px;background:#e3f6f6;color:#0ba5a5;display:grid;place-items:center;margin:0 auto 13px}
+.hw-empty-ic svg{width:26px;height:26px}
+.hw-providers{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+.hw-prov{display:flex;align-items:center;gap:13px;border:1px solid #dfe5eb;border-radius:11px;padding:14px 16px;cursor:pointer;transition:.15s}
+.hw-prov:hover{border-color:#9cc3ff;background:#f7faff}
+.hw-prov.soon{opacity:.6;cursor:default}
+.hw-prov.soon:hover{border-color:#dfe5eb;background:#fff}
+.hw-prov-logo,.hw-mini-logo{display:grid;place-items:center;color:#fff;font-family:var(--disp);font-weight:800;border-radius:9px}
+.hw-prov-logo{width:40px;height:40px;font-size:18px;flex:0 0 40px}
+.hw-mini-logo{width:22px;height:22px;font-size:11px;border-radius:6px;display:inline-grid;vertical-align:-5px;margin-right:4px}
+.hw-prov-tx{flex:1;min-width:0}
+.hw-prov-n{font-family:var(--disp);font-size:15px;font-weight:700;color:#162d3d;display:flex;align-items:center;gap:8px}
+.hw-prov-d{font-size:12.5px;color:#7a92a5;margin-top:2px}
+.hw-prov-cv{flex:0 0 18px;color:#9aa0ad}
+.hw-auth{text-align:center;padding:8px 0 4px}
+.hw-auth-logo{width:60px;height:60px;border-radius:15px;display:grid;place-items:center;color:#fff;font-family:var(--disp);font-weight:800;font-size:26px;margin:0 auto 14px}
+.hw-auth-t{font-family:var(--disp);font-size:19px;font-weight:800;color:#162d3d}
+.hw-auth-d{font-size:13.5px;color:#32536a;line-height:1.5;max-width:400px;margin:8px auto 0}
+.hw-auth-list{list-style:none;padding:0;margin:18px auto 0;max-width:300px;display:flex;flex-direction:column;gap:10px;text-align:left}
+.hw-auth-list li{display:flex;align-items:center;gap:10px;font-size:13.5px;color:#162d3d}
+.hw-auth-list li svg{width:17px;height:17px;color:#1f9d5b;flex:0 0 17px}
+/* map entrances modal */
+.map-list{display:flex;flex-direction:column;gap:9px;max-height:320px;overflow-y:auto}
+.map-row{display:grid;grid-template-columns:1fr auto 1.2fr;gap:11px;align-items:center}
+.map-door{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;color:#162d3d;min-width:0}
+.map-door span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.map-arrow{flex:0 0 16px}
+.map-sel{width:100%;height:38px;border:1px solid #c5cad3;border-radius:8px;padding:0 10px;font-family:var(--sans);font-size:13px;color:#162d3d;background:#fff;cursor:pointer}
+.map-sel.unset{color:#9aa0ad}
+/* custom provider webhook form */
+.hw-input{width:100%;height:42px;border:1px solid #c5cad3;border-radius:9px;padding:0 12px;font-family:var(--sans);font-size:14px;color:#162d3d;background:#fff}
+.hw-input:focus{outline:none;border-color:#0c6dfd;box-shadow:0 0 0 3px rgba(12,109,253,.12)}
+.hw-hook{border:1px solid #dfe5eb;border-radius:11px;padding:14px;margin-bottom:13px;background:#fafcff}
+.hw-hook-h{font-family:var(--disp);font-size:14px;font-weight:700;color:#162d3d;display:flex;align-items:center;gap:8px}
+.hw-hook-dir{font-size:10px;font-weight:800;letter-spacing:.06em;border-radius:5px;padding:2px 6px;color:#fff}
+.hw-hook-dir.out{background:#0c6dfd}.hw-hook-dir.in{background:#1f9d5b}
+.hw-hook-tag{margin-left:auto;font-size:11px;font-weight:600;color:#7a92a5}
+.hw-hook-d{font-size:12.5px;color:#32536a;line-height:1.45;margin:6px 0 10px}
+.hw-hook-field{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #dfe5eb;border-radius:8px;padding:8px 10px}
+.hw-hook-lab{font-size:11.5px;font-weight:700;color:#7a92a5;flex:0 0 auto}
+.hw-hook-val{flex:1;min-width:0;font-family:var(--mono,ui-monospace,Menlo,monospace);font-size:12.5px;color:#162d3d;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kiosk-sec-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:12px}
+.kiosk-sec-head>div{flex:1}
+.kiosk-sec-head .setpg-sec-d2{margin-bottom:0}
+.kiosk-sec-head>button{flex:0 0 auto;margin-top:6px}
+/* kiosk design modal */
+.dsn-field{margin-bottom:16px}
+.dsn-field>label{display:block;font-size:13px;font-weight:600;color:#32536a;margin-bottom:7px}
+.dsn-color{display:flex;align-items:center;border:1px solid #c5cad3;border-radius:9px;padding:0 10px 0 12px;height:42px}
+.dsn-color input[type=text]{flex:1;border:none;outline:none;font-family:var(--sans);font-size:14px;color:#162d3d;background:transparent}
+.dsn-sw{position:relative;width:24px;height:24px;border-radius:6px;border:1px solid rgba(0,0,0,.12);overflow:hidden;flex:0 0 24px}
+.dsn-sw input[type=color]{position:absolute;inset:-4px;width:140%;height:140%;border:none;padding:0;cursor:pointer;opacity:0}
+.dsn-sel{width:100%;height:42px;border:1px solid #c5cad3;border-radius:9px;padding:0 12px;font-family:var(--sans);font-size:14px;color:#162d3d;background:#fff;cursor:pointer}
+.dsn-logo{width:84px;height:84px;border:1.5px dashed #9cc3ff;border-radius:11px;background:#f3f8ff;display:grid;place-items:center;cursor:pointer;position:relative}
+.dsn-logo:hover{background:#e9f2ff}
+.dsn-logo.has{border-style:solid;border-color:#dfe5eb;background:#fff}
+.dsn-logo-img{font-family:var(--disp);font-weight:800;font-size:24px;color:#5a48f5}
+.dsn-logo-x{position:absolute;top:-7px;right:-7px;width:20px;height:20px;border-radius:50%;background:#162d3d;color:#fff;font-size:13px;display:grid;place-items:center;cursor:pointer}
+/* check-in window editor modal */
+#web-view-onboarding{position:relative}
+.onb-modal{position:absolute;inset:0;z-index:60;display:none;align-items:center;justify-content:center;background:rgba(12,28,45,.4)}
+.onb-modal.show{display:flex}
+.onb-modal-card{width:460px;max-width:92%;background:#fff;border-radius:14px;box-shadow:0 24px 60px rgba(11,17,40,.3);padding:24px}
+.onb-modal-h{display:flex;align-items:center;justify-content:space-between}
+.onb-modal-t{font-family:var(--disp);font-size:20px;font-weight:800;color:#162d3d}
+.onb-modal-x{cursor:pointer;color:#7a92a5;font-size:24px;line-height:1}
+.onb-modal-d{font-size:13.5px;color:#32536a;line-height:1.5;margin:8px 0 20px}
+.onb-win-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.onb-win-box{background:#f6f8fa;border:1px solid #dfe5eb;border-radius:11px;padding:14px}
+.onb-win-lab{font-size:12.5px;font-weight:700;color:#4f6a7d;margin-bottom:11px}
+.onb-stepper{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.onb-stepper button{width:34px;height:34px;border-radius:9px;border:1px solid #c5cad3;background:#fff;color:#162d3d;font-size:20px;font-weight:600;cursor:pointer;flex:0 0 34px;line-height:1}
+.onb-stepper button:hover{background:#eef2f6}
+.onb-win-val{text-align:center}
+.onb-win-val span:first-child{font-family:var(--disp);font-size:26px;font-weight:800;color:#162d3d}
+.onb-win-u{display:block;font-size:11px;color:#7a92a5;margin-top:1px}
+.onb-win-preset{display:flex;align-items:center;gap:8px;margin-top:16px;flex-wrap:wrap}
+.onb-win-preset-l{font-size:12px;font-weight:600;color:#7a92a5;margin-right:2px}
+.onb-chip-btn{font-family:var(--sans);font-size:12.5px;font-weight:600;color:#0c6dfd;background:#eaf2ff;border:1px solid #d6e6ff;border-radius:8px;padding:6px 11px;cursor:pointer}
+.onb-chip-btn:hover{background:#dceaff}
+.onb-modal-f{display:flex;justify-content:flex-end;gap:10px;margin-top:22px}
+/* pair-a-tablet modal */
+.pair-opts{display:grid;grid-template-columns:1fr auto 1fr;gap:18px;align-items:stretch}
+.pair-opt{display:flex;flex-direction:column}
+.pair-opt-h{font-family:var(--disp);font-size:15px;font-weight:700;color:#162d3d;display:flex;align-items:center;gap:9px}
+.pair-opt-n{width:22px;height:22px;border-radius:50%;background:#eaf2ff;color:#0c6dfd;font-size:12px;font-weight:800;display:grid;place-items:center;flex:0 0 22px}
+.pair-opt-d{font-size:12.5px;color:#7a92a5;line-height:1.45;margin:6px 0 12px}
+.pair-qr{align-self:flex-start;background:#fff;border:1px solid #dfe5eb;border-radius:12px;padding:10px;line-height:0}
+.pair-or{align-self:center;font-size:12px;font-weight:700;color:#9aa0ad;text-transform:uppercase}
+.pair-url-lab{font-size:11.5px;font-weight:700;color:#7a92a5;margin-bottom:5px}
+.pair-url{display:flex;align-items:center;gap:8px;background:#f6f8fa;border:1px solid #dfe5eb;border-radius:9px;padding:8px 10px;font-size:13px;font-weight:600;color:#162d3d;word-break:break-all}
+.pair-copy{margin-left:auto;flex:0 0 auto;font-family:var(--sans);font-size:11.5px;font-weight:700;color:#0c6dfd;background:#eaf2ff;border:1px solid #d6e6ff;border-radius:7px;padding:4px 9px;cursor:pointer}
+.pair-code-box{font-family:var(--disp);font-size:24px;font-weight:800;letter-spacing:.06em;color:#162d3d;background:#f6f8fa;border:1px solid #dfe5eb;border-radius:9px;padding:10px 12px;text-align:center}
+.pair-code-exp{font-size:11.5px;color:#9aa0ad;margin-top:6px}
+/* static QR print card */
+.static-qr-wrap{text-align:center;background:#f6f8fa;border:1px solid #dfe5eb;border-radius:14px;padding:26px}
+.static-qr{display:inline-block;background:#fff;border-radius:12px;padding:14px;line-height:0;box-shadow:0 4px 14px rgba(11,17,40,.08)}
+.static-qr-cap{font-size:13px;font-weight:700;color:#0c6dfd;margin-top:14px}
+.static-qr-biz{font-family:var(--disp);font-size:15px;font-weight:800;color:#162d3d;margin-top:6px}
+@media(max-width:1080px){.fte-hero{grid-template-columns:1fr}.set-methods{grid-template-columns:1fr}}
+
 /* ===== Check-in Hub dashboard ===== */
 .hub{flex:1;overflow-y:auto;background:#f4f5f7;padding:14px 28px 50px;color:#16213A}
 .hub-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:20px}
@@ -1079,13 +1307,13 @@ button{font-family:var(--sans)}
   <h1>Check-in Gate <span class="pill">Interactive prototype</span></h1>
   <p>Tap inside the device to use it. In the scanner, <b>tap the frame</b> to simulate scanning the next member in the queue.</p>
   <div class="launch">
-    <button class="on" data-surf="client" onclick="surf('client',this)"><span class="dot"></span>Check In Hub</button>
-    <button data-surf="kiosk" onclick="surf('kiosk',this)"><span class="dot"></span>Self Check-In Kiosk</button>
-    <button data-surf="web" onclick="surf('web',this)"><span class="dot"></span>Web Settings</button>
+    <button class="on" data-surf="web" onclick="surf('web',this)"><span class="dot"></span>Web Settings</button>
+    <button data-surf="client" onclick="surf('client',this)"><span class="dot"></span>Check In Dashboard</button>
+    <button data-surf="kiosk" onclick="surf('kiosk',this)"><span class="dot"></span>Kiosk</button>
     <button data-surf="owner" onclick="surf('owner',this)"><span class="dot"></span>Owner App</button>
     <button data-surf="member" onclick="surf('member',this)"><span class="dot"></span>Member App</button>
     <button data-surf="setm" onclick="surf('setm',this)"><span class="dot"></span>Mobile Settings</button>
-    <button data-surf="guest" onclick="surf('guest',this)"><span class="dot"></span>Confirmation Email</button>
+    <button data-surf="guest" onclick="surf('guest',this)"><span class="dot"></span>Email</button>
     <button data-surf="plan" onclick="surf('plan',this)"><span class="dot"></span>Pricing Plan Setup</button>
   </div>
 </div></div>
@@ -1423,7 +1651,7 @@ button{font-family:var(--sans)}
 
   <!-- ============ SELF CHECK-IN KIOSK ============ -->
   <div class="surface-stage" id="surf-kiosk">
-    <div class="scan-demo" id="kioskDemo">
+    <div class="scan-demo collapsed" id="kioskDemo">
       <span class="sd-label">Simulate check-in · demo</span>
       <button class="sd-btn ok"   onclick="kioskVerdict('ok')"><span class="sd-dot"></span>Eligible · session</button>
       <button class="sd-btn ok"   onclick="kioskVerdict('mActive')"><span class="sd-dot"></span>Membership entry</button>
@@ -1595,7 +1823,7 @@ button{font-family:var(--sans)}
         <div class="fte-cards">
           <div class="dcard">
             <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="4" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="6" rx="1"/><rect x="14" y="4" width="7" height="7" rx="1"/><path d="M14 15h3v5M20 14v6" stroke-linecap="round"/></svg></div>
-            <div class="tx"><div class="t">Show QR in the member app</div><div class="s">Members open their pass and show it at the door.</div></div>
+            <div class="tx"><div class="t">Show QR in the member app</div><div class="s">Members generate their QR in the Wix Spaces app and show it to a staff member.</div></div>
             <div class="toggle on" id="fte2-app" onclick="this.classList.toggle('on')"><i></i></div>
           </div>
           <div class="dcard m-bookings">
@@ -1623,7 +1851,7 @@ button{font-family:var(--sans)}
 
           <div class="set-lead">QR check-in</div>
           <div class="set-group">
-            <div class="set-row"><div class="txt"><div class="t">Show QR in the member app</div><div class="s">Members open their pass and show it at the door.</div></div><div class="toggle" id="m-qr" onclick="mToggleQR(this)"><i></i></div></div>
+            <div class="set-row"><div class="txt"><div class="t">Show QR in the member app</div><div class="s">Members generate their QR in the Wix Spaces app and show it to a staff member.</div></div><div class="toggle" id="m-qr" onclick="mToggleQR(this)"><i></i></div></div>
             <div class="set-row m-bookings"><div class="txt"><div class="t">Add QR to confirmation email</div><div class="s">So clients can check in without the member app.</div></div><div class="toggle" id="m-email-qr" onclick="mToggleEmail(this)"><i></i></div></div>
             <div class="set-row tap mqr m-bookings" onclick="openPicker()"><div class="txt"><div class="t">Check-in window</div></div><div class="val"><span id="s-window">1 hr before</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#B6C1CD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div></div>
             <div class="set-row mqr m-pp"><div class="txt"><div class="t">Deduct credits or restrict entry by plan</div><div class="s">Set up how plans work at check-in in Pricing Plans.</div><a class="m-managelink" style="display:inline-block;margin-top:8px" onclick="toast('Opening Pricing Plans')">Manage in Pricing Plans ↗</a></div></div>
@@ -1666,13 +1894,13 @@ button{font-family:var(--sans)}
   </div>
 
   <!-- ============ SETUP WEB ============ -->
-  <div class="surface-stage" id="surf-web">
-    <div class="demo-switch" id="webViewSwitch">
+  <div class="surface-stage on" id="surf-web">
+    <div class="demo-switch collapsed" id="webViewSwitch">
       <span class="ds-label">View · demo</span>
-      <button class="ds-btn"    data-wv="mobile"   onclick="setWebView('mobile',this)">Set up in mobile</button>
-      <button class="ds-btn on" data-wv="settings" onclick="setWebView('settings',this)">Settings page</button>
+      <button class="ds-btn on" data-wv="onboarding" onclick="setWebView('onboarding',this)">Onboarding</button>
+      <button class="ds-btn"    data-wv="settings" onclick="setWebView('settings',this)">Settings page</button>
     </div>
-    <div class="demo-switch" id="webStateSwitch">
+    <div class="demo-switch" id="webStateSwitch" style="display:none">
       <span class="ds-label">Installed apps · demo</span>
       <button class="ds-btn on" data-st="both"     onclick="setWebState('both',this)">Bookings + Pricing Plans</button>
       <button class="ds-btn"    data-st="bookings" onclick="setWebState('bookings',this)">Bookings only</button>
@@ -1700,7 +1928,7 @@ button{font-family:var(--sans)}
             <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7M6 10v9h12v-9"/></svg>Home</div>
             <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M11 2.5l1.7 4.8 4.8 1.7-4.8 1.7L11 15.5 9.3 10.7 4.5 9z"/></svg>AI Agents<span class="pp-caret">›</span></div>
             <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></svg>Booking Calendar<span class="pp-caret">›</span></div>
-            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>Events<span class="pp-caret">›</span></div>
+            <div class="pp-s-i on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/><circle cx="12" cy="15.5" r="1.4" fill="currentColor" stroke="none"/></svg>Check in<span class="pp-new">NEW</span></div>
             <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Getting Paid<span class="pp-caret">›</span></div>
             <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Sales<span class="pp-caret">›</span></div>
             <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 7l1.5 12h13L20 7M4 7l2-4h12l2 4"/></svg>Catalog<span class="pp-caret">›</span></div>
@@ -1710,39 +1938,356 @@ button{font-family:var(--sans)}
             <div class="pp-s-i" style="margin-top:10px;border-top:1px solid #26262e;padding-top:14px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7M6 10v9h12v-9"/></svg>Site &amp; Mobile App<span class="pp-caret">›</span></div>
             <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-6 9 6v10a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>Marketing<span class="pp-caret">›</span></div>
             <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 8l9 6 9-6"/></svg>Inbox<span class="pp-caret">›</span></div>
-            <div class="pp-s-i on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 00.3 1.8 2 2 0 11-2.8 2.8 1.6 1.6 0 00-1.8-.3 1.6 1.6 0 00-1 1.5 2 2 0 11-4 0 1.6 1.6 0 00-1-1.5 1.6 1.6 0 00-1.8.3 2 2 0 11-2.8-2.8 1.6 1.6 0 00.3-1.8 1.6 1.6 0 00-1.5-1 2 2 0 110-4 1.6 1.6 0 001.5-1 1.6 1.6 0 00-.3-1.8 2 2 0 112.8-2.8 1.6 1.6 0 001.8.3 1.6 1.6 0 001-1.5 2 2 0 114 0 1.6 1.6 0 001 1.5 1.6 1.6 0 001.8-.3 2 2 0 112.8 2.8 1.6 1.6 0 00-.3 1.8 1.6 1.6 0 001.5 1 2 2 0 110 4 1.6 1.6 0 00-1.5 1z"/></svg>Settings<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" style="margin-left:auto"><path d="M12 17.3l-6.2 3.7 1.6-7L2 9.2l7.1-.6L12 2l2.9 6.6 7.1.6-5.4 4.8 1.6 7z"/></svg></div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 00.3 1.8 2 2 0 11-2.8 2.8 1.6 1.6 0 00-1.8-.3 1.6 1.6 0 00-1 1.5 2 2 0 11-4 0 1.6 1.6 0 00-1-1.5 1.6 1.6 0 00-1.8.3 2 2 0 11-2.8-2.8 1.6 1.6 0 00.3-1.8 1.6 1.6 0 00-1.5-1 2 2 0 110-4 1.6 1.6 0 001.5-1 1.6 1.6 0 00-.3-1.8 2 2 0 112.8-2.8 1.6 1.6 0 001.8.3 1.6 1.6 0 001-1.5 2 2 0 114 0 1.6 1.6 0 001 1.5 1.6 1.6 0 001.8-.3 2 2 0 112.8 2.8 1.6 1.6 0 00-.3 1.8 1.6 1.6 0 001.5 1 2 2 0 110 4 1.6 1.6 0 00-1.5 1z"/></svg>Settings<span class="pp-caret">›</span></div>
           </div>
-          <!-- content: the real Check-in & Access settings (chrome stripped via embed=1) -->
-          <div class="pp-canvas" id="web-view-settings" style="display:flex">
-            <div class="pp-bar"><div class="pp-crumbs" id="web-crumbs"><span class="web-crumb-link" onclick="webCrumbHome()">Settings</span> <span class="pp-crumb-sep">›</span> <b>Check-in &amp; Access</b></div></div>
-            <iframe id="webFrame" title="Check-in &amp; Access settings" style="flex:1;width:100%;border:0;display:block;background:#f4f5f7"></iframe>
-          </div>
-          <!-- content: set up in the mobile app (Orion-style promo) -->
-          <div class="pp-canvas" id="web-view-mobile" style="display:none">
-            <div class="pp-bar"><div class="pp-crumbs"><span>Settings</span> <span class="pp-crumb-sep">›</span> <b>Check-in &amp; Access</b></div></div>
-            <div class="wm-wrap">
-              <div class="wm-bg"></div>
-              <div class="wm-left">
-                <div class="wm-brand"><span class="wm-lock"><svg viewBox="0 0 24 24" fill="none" stroke="#16213A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg></span>CHECK-IN &amp; ACCESS</div>
-                <h1 class="wm-h1">Run check-in<br>from your phone.</h1>
-                <p class="wm-lead">Scanning happens at the door — so check-in lives in the <b>Wix Owner app</b>. Install it to scan members in and out on the go.</p>
-                <ul class="wm-list">
-                  <li><b>Scan at the door:</b> Point your phone's camera at a member's QR to check them in.</li>
-                  <li><b>Instant verdict:</b> See booking, plan status, and intake forms the moment you scan.</li>
-                  <li><b>Works anywhere:</b> Front desk, studio floor, or pop-up — no extra hardware.</li>
-                </ul>
-                <p class="wm-foot-note">Set the rules here on web. Do the scanning on mobile.</p>
+          <!-- content: the new tabbed Check-in & Access settings page (hosts both "Settings page" and "Onboarding") -->
+          <div class="pp-canvas" id="web-view-onboarding" style="display:flex">
+            <div class="fte-scroll">
+
+              <!-- ===== FTE Screen 1 — intro (Concept 1) ===== -->
+              <div class="fte-screen on" id="fte-s1">
+                <div class="fte-hero">
+                  <div class="fte-hero-l">
+                    <div class="fte-nu">NEW</div>
+                    <h1 class="fte-h1">Decide who gets in.</h1>
+                    <p class="fte-lead">Check-in &amp; Access turns a booking or an active plan into a door decision — so the right people get in, the wrong ones get a friendly stop, and every arrival is logged. Pick how people check in and you’re live.</p>
+                    <div class="fte-feat">
+                      <div class="fte-feat-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Verify by booking or plan</div>
+                      <div class="fte-feat-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Three ways to check in</div>
+                      <div class="fte-feat-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Live entry history</div>
+                    </div>
+                    <div class="fte-cta-row"><button class="fte-btn primary lg" onclick="fteShow(2)">Start now <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
+                  </div>
+                  <div class="fte-hero-r"><div class="fte-illo">
+                    <svg viewBox="0 0 220 160" width="220" height="160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <defs><linearGradient id="fteg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7B6CF6"/><stop offset="1" stop-color="#0c6dfd"/></linearGradient></defs>
+                      <rect x="62" y="38" width="96" height="96" rx="14" fill="#fff" stroke="#d6e6ff" stroke-width="2"/>
+                      <g fill="#162d3d"><rect x="76" y="52" width="22" height="22" rx="3"/><rect x="122" y="52" width="22" height="22" rx="3"/><rect x="76" y="98" width="22" height="22" rx="3"/>
+                      <rect x="82" y="58" width="10" height="10" rx="1.5" fill="#fff"/><rect x="128" y="58" width="10" height="10" rx="1.5" fill="#fff"/><rect x="82" y="104" width="10" height="10" rx="1.5" fill="#fff"/>
+                      <rect x="122" y="100" width="8" height="8" rx="1"/><rect x="136" y="100" width="8" height="8" rx="1"/><rect x="122" y="114" width="8" height="8" rx="1"/><rect x="136" y="114" width="8" height="8" rx="1"/></g>
+                      <rect x="50" y="84" width="120" height="6" rx="3" fill="url(#fteg1)" opacity=".9"/>
+                      <circle cx="170" cy="40" r="16" fill="url(#fteg1)"/><path d="M164 40l4 4 8-8" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    </svg>
+                  </div></div>
+                </div>
               </div>
-              <div class="wm-card">
-                <div class="wm-card-h">Scan to get the Wix Owner app, or send the link to your phone.</div>
-                <div class="wm-qr"><img src="https://api.qrserver.com/v1/create-qr-code/?size=360x360&margin=0&data=WIX-OWNER-APP%7Cjims-gym%7Ccheck-in" alt="Get the app QR" onerror="this.closest('.wm-qr').classList.add('broken')"><div class="wm-qr-fb"></div></div>
-                <button class="wm-btn-dark" onclick="toast('Link sent to your phone',true)">Send Link to My Phone</button>
-                <div class="wm-altrow"><div class="wm-alt-t">Prefer the desktop dashboard?</div><a class="wm-alt-l" onclick="setWebView('settings',document.querySelector('#webViewSwitch [data-wv=settings]'))">Configure settings on web →</a></div>
-                <div class="wm-div"></div>
-                <div class="wm-share-t">Share setup with your team</div>
-                <div class="wm-share"><div class="wm-share-in">Select or enter an email</div><button class="wm-share-b" onclick="toast('Shared')">Share</button></div>
+
+              <!-- ===== FTE Screen 2 — the new 4-tab settings page ===== -->
+              <div class="fte-screen" id="fte-s2">
+                <div class="setpg">
+                  <div class="setpg-head">
+                    <div>
+                      <h1 class="setpg-title">Check-in &amp; Access</h1>
+                      <div class="setpg-subt">Decide who can enter — set up check-in methods, doors and the rules for each.</div>
+                    </div>
+                    <button class="set-btn primary" onclick="openHubFromSettings()">Check-in dashboard</button>
+                  </div>
+                  <!-- tabs -->
+                  <div class="setpg-tabs">
+                    <button class="setpg-tab on" data-t="main" onclick="setTab('main')">Main</button>
+                    <button class="setpg-tab" data-t="staff" onclick="setTab('staff')">Staff check-in</button>
+                    <button class="setpg-tab" data-t="self" onclick="setTab('self')">Self check-in</button>
+                    <button class="setpg-tab" data-t="hw" onclick="setTab('hw')">Hardware check-in</button>
+                  </div>
+
+                  <!-- ===== TAB: MAIN ===== -->
+                  <div class="setpg-body on" id="tab-main">
+                    <div class="setpg-sec-d">Choose how people check in, then set the rules that apply across every method.</div>
+                    <!-- 3 method cards -->
+                    <div class="set-methods">
+                      <div class="set-mcard">
+                        <div class="set-mic ic-staff"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="13" height="16" rx="2"/><path d="M7 8h5M7 12h5M7 16h3"/><circle cx="19" cy="9" r="3"/><path d="M19 12v3l2 1"/></svg></div>
+                        <div class="set-mt">Staff check-in</div>
+                        <div class="set-md">Your team scans a client’s QR from the Owner app and sees their eligibility on the spot.</div>
+                        <a class="set-mlink" onclick="setTab('staff')">Set up →</a>
+                      </div>
+                      <div class="set-mcard">
+                        <div class="set-mic ic-self"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M10 18h4"/></svg></div>
+                        <div class="set-mt">Self check-in</div>
+                        <div class="set-md">Clients check themselves in at a kiosk or by scanning a QR with their own phone.</div>
+                        <a class="set-mlink" onclick="setTab('self')">Set up →</a>
+                      </div>
+                      <div class="set-mcard">
+                        <div class="set-mic ic-hw"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="18" rx="1"/><rect x="14" y="3" width="7" height="18" rx="1"/><path d="M7 12h.01M17 12h.01"/></svg></div>
+                        <div class="set-mt">Hardware check-in</div>
+                        <div class="set-md">A connected device — turnstile, gate or reader (e.g. Kisi) — checks people in automatically.</div>
+                        <a class="set-mlink" onclick="setTab('hw')">Set up →</a>
+                      </div>
+                    </div>
+
+                    <!-- global settings -->
+                    <div class="setpg-sec-h">Global settings</div>
+                    <div class="setpg-sec-d2">These apply across every check-in method.</div>
+                    <div class="set-card">
+                      <div class="set-row">
+                        <div class="set-si"><div class="set-lt">Check-in window</div><div class="set-ld">How early and how late clients can check in around the session start time.</div></div>
+                        <div class="set-sv"><span class="set-chip" id="winChipOnb">15 min before <span class="mut2">→</span> 10 min after</span><span class="set-edit" onclick="openWinEditor()">Edit</span></div>
+                      </div>
+                      <div class="set-row" style="display:block">
+                        <div class="set-si"><div class="set-lt">Doors</div><div class="set-ld">One main door per location, picked when scanning and logged to entry history. Add more entrances as needed.</div></div>
+                        <div id="onbDoors" style="margin-top:12px"></div>
+                        <button class="set-btn ghost sm" style="margin-top:10px" onclick="onbAddDoor()">+ Add a door</button>
+                      </div>
+                      <div class="set-row">
+                        <div class="set-si"><div class="set-lt">Plans &amp; credits</div><div class="set-ld">Choose which Pricing Plans grant entry and how credits are used at check-in.</div></div>
+                        <div class="set-sv"><button class="set-btn ghost sm" onclick="toast('Opens Pricing Plans')">Manage plans ↗</button></div>
+                      </div>
+                      <div class="set-row">
+                        <div class="set-si"><div class="set-lt">Intake forms</div><div class="set-ld">Collect waivers; a client’s signed / expired / missing status shows at check-in.</div></div>
+                        <div class="set-sv"><button class="set-btn ghost sm" onclick="toast('Opens Intake Forms')">Set up &amp; manage ↗</button></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- ===== TAB: STAFF ===== -->
+                  <div class="setpg-body" id="tab-staff">
+                    <div class="set-method-intro"><div class="set-mic ic-staff lg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="13" height="16" rx="2"/><path d="M7 8h5M7 12h5M7 16h3"/><circle cx="19" cy="9" r="3"/><path d="M19 12v3l2 1"/></svg></div>
+                      <div><div class="set-mi-t">Staff check-in</div><div class="set-mi-d">Your team scans a client’s QR code from the Wix Owner app and sees their booking, plan and waiver status on the spot — works at the front desk or on the floor.</div></div></div>
+                    <div class="set-rich-grid">
+                      <!-- Show QR in the member app -->
+                      <div class="set-rich">
+                        <div class="set-rich-illo">
+                          <svg viewBox="0 0 180 130" width="180" height="130" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="0" y="0" width="180" height="130" rx="12" fill="#eef3fb"/>
+                            <rect x="58" y="20" width="64" height="100" rx="11" fill="#0e1430"/>
+                            <rect x="63" y="25" width="54" height="90" rx="7" fill="#fff"/>
+                            <rect x="78" y="31" width="24" height="4" rx="2" fill="#d6e0ec"/>
+                            <g fill="#162d3d">
+                              <rect x="73" y="44" width="13" height="13" rx="2"/><rect x="94" y="44" width="13" height="13" rx="2"/><rect x="73" y="65" width="13" height="13" rx="2"/>
+                              <rect x="76" y="47" width="7" height="7" rx="1" fill="#fff"/><rect x="97" y="47" width="7" height="7" rx="1" fill="#fff"/><rect x="76" y="68" width="7" height="7" rx="1" fill="#fff"/>
+                              <rect x="94" y="63" width="4" height="4"/><rect x="101" y="63" width="4" height="4"/><rect x="94" y="70" width="4" height="4"/><rect x="101" y="70" width="4" height="4"/>
+                            </g>
+                            <rect x="73" y="86" width="34" height="5" rx="2.5" fill="#0c6dfd"/>
+                            <rect x="78" y="95" width="24" height="4" rx="2" fill="#cdd7e0"/>
+                            <circle cx="132" cy="40" r="15" fill="#0c6dfd"/><path d="M126 40l4 4 8-8" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                        </div>
+                        <div class="set-rich-b">
+                          <div class="set-rich-h"><div class="set-lt">Show QR in the member app</div><span class="set-tog" onclick="onbFlip(this)"></span></div>
+                          <div class="set-ld">Members generate their QR in the Wix Spaces app and show it to a staff member to scan.</div>
+                        </div>
+                      </div>
+                      <!-- Add QR to confirmation email -->
+                      <div class="set-rich">
+                        <div class="set-rich-illo">
+                          <svg viewBox="0 0 180 130" width="180" height="130" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="0" y="0" width="180" height="130" rx="12" fill="#eef3fb"/>
+                            <rect x="30" y="24" width="120" height="82" rx="9" fill="#fff" stroke="#dbe3ee" stroke-width="1.5"/>
+                            <path d="M30 33a9 9 0 019-9h102a9 9 0 019 9v2l-60 30L30 35z" fill="#0c6dfd" opacity=".12"/>
+                            <rect x="42" y="40" width="50" height="5" rx="2.5" fill="#162d3d"/>
+                            <rect x="42" y="51" width="74" height="4" rx="2" fill="#cdd7e0"/>
+                            <rect x="42" y="60" width="60" height="4" rx="2" fill="#cdd7e0"/>
+                            <rect x="42" y="72" width="28" height="28" rx="4" fill="#f0f4f8"/>
+                            <g fill="#162d3d">
+                              <rect x="47" y="77" width="7" height="7" rx="1"/><rect x="58" y="77" width="7" height="7" rx="1"/><rect x="47" y="88" width="7" height="7" rx="1"/>
+                              <rect x="58" y="88" width="3" height="3"/><rect x="63" y="88" width="3" height="3"/><rect x="58" y="93" width="3" height="3"/>
+                            </g>
+                            <rect x="78" y="78" width="32" height="4" rx="2" fill="#162d3d"/>
+                            <rect x="78" y="86" width="26" height="3.5" rx="2" fill="#cdd7e0"/>
+                            <rect x="78" y="93" width="20" height="3.5" rx="2" fill="#cdd7e0"/>
+                          </svg>
+                        </div>
+                        <div class="set-rich-b">
+                          <div class="set-rich-h"><div class="set-lt">Add QR to confirmation email</div><span class="set-tog" onclick="onbFlip(this)"></span></div>
+                          <div class="set-ld">The booking confirmation email includes a QR — so clients can check in without the member app.</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="set-backrow"><a class="set-back" onclick="setTab('main')">← Back to Main</a></div>
+                  </div>
+
+                  <!-- ===== TAB: SELF ===== -->
+                  <div class="setpg-body" id="tab-self">
+                    <div class="set-method-intro"><div class="set-mic ic-self lg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M10 18h4"/></svg></div>
+                      <div><div class="set-mi-t">Self check-in</div><div class="set-mi-d">Clients check in on a reception tablet (kiosk) or by scanning a QR code with their own phone — no line at the desk.</div></div></div>
+                    <!-- Kiosks — one per door, add more -->
+                    <div class="kiosk-sec-head">
+                      <div><div class="setpg-sec-h" style="margin-top:4px">Kiosks</div>
+                      <div class="setpg-sec-d2">Set up a self check-in tablet for each entrance. Every kiosk is tied to a door and can have its own settings.</div></div>
+                      <button class="set-btn ghost sm" id="kioskDesignBtn" style="display:none" onclick="openKioskDesign()"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;vertical-align:-2px"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="6.5" cy="11.5" r="2.5"/><circle cx="17.5" cy="14.5" r="2.5"/><path d="M3 21c0-3 2-5 5-5"/></svg>Customize design</button>
+                    </div>
+                    <div id="kioskList"></div>
+                    <button class="set-btn ghost sm" id="kioskAddBtn" style="margin-top:4px" onclick="onbAddKiosk()">+ Add a kiosk</button>
+
+                    <!-- Static QR — printed code clients scan with their own phone -->
+                    <div class="setpg-sec-h">Static QR</div>
+                    <div class="setpg-sec-d2">A fixed QR code you print and post at your entrance. Clients scan it with their own phone, sign in, and check in — no tablet needed.</div>
+                    <div class="set-card">
+                      <div class="set-row">
+                        <div class="set-si"><div class="set-lt">Enable static QR check-in</div><div class="set-ld">Show a printable code clients can scan to check in from their phone.</div></div>
+                        <div class="set-sv"><span class="set-tog" id="staticQrTog" onclick="onbToggleStaticQR(this)"></span></div>
+                      </div>
+                      <div class="set-row" id="staticQrRow" style="display:none">
+                        <div class="set-si"><div class="set-lt">Your check-in code</div><div class="set-ld">Scans to <span id="staticQrUrl">jims-gym.com/checkin</span>. Clients sign in there to confirm it’s them.</div></div>
+                        <div class="set-sv"><span class="set-edit" onclick="openStaticQR()">View &amp; print</span></div>
+                      </div>
+                      <div class="set-row" id="staticQrSigninRow" style="display:none">
+                        <div class="set-si"><div class="set-lt">Require sign-in</div><div class="set-ld">Clients log in to their member account so the check-in is tied to them.</div></div>
+                        <div class="set-sv"><span class="set-tog on" onclick="onbFlip(this)"></span></div>
+                      </div>
+                    </div>
+
+                    <div class="set-backrow"><a class="set-back" onclick="setTab('main')">← Back to Main</a></div>
+                  </div>
+
+                  <!-- ===== TAB: HARDWARE ===== -->
+                  <div class="setpg-body" id="tab-hw">
+                    <div class="set-method-intro"><div class="set-mic ic-hw lg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="18" rx="1"/><rect x="14" y="3" width="7" height="18" rx="1"/><path d="M7 12h.01M17 12h.01"/></svg></div>
+                      <div><div class="set-mi-t">Hardware check-in</div><div class="set-mi-d">Clients check themselves in through an integrated physical device — a turnstile, gate or reader (e.g. Kisi) — which records the entry automatically.</div></div></div>
+                    <div id="hwBody"></div>
+                    <div class="set-backrow"><a class="set-back" onclick="setTab('main')">← Back to Main</a></div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Check-in window editor (overlays the settings page) -->
+            <div class="onb-modal" id="onbWinModal">
+              <div class="onb-modal-card">
+                <div class="onb-modal-h"><div class="onb-modal-t">Check-in window</div><span class="onb-modal-x" onclick="closeWinEditor()">×</span></div>
+                <div class="onb-modal-d">How early and how late clients can check in around the session start time. Outside this window, the kiosk and pass show the opening/closing time instead.</div>
+                <div class="onb-win-grid">
+                  <div class="onb-win-box">
+                    <div class="onb-win-lab">Open check-in</div>
+                    <div class="onb-stepper"><button onclick="winStep('before',-5)">−</button><div class="onb-win-val"><span id="winBeforeVal">15</span><span class="onb-win-u">min before</span></div><button onclick="winStep('before',5)">+</button></div>
+                  </div>
+                  <div class="onb-win-box">
+                    <div class="onb-win-lab">Close check-in</div>
+                    <div class="onb-stepper"><button onclick="winStep('after',-5)">−</button><div class="onb-win-val"><span id="winAfterVal">10</span><span class="onb-win-u">min after</span></div><button onclick="winStep('after',5)">+</button></div>
+                  </div>
+                </div>
+                <div class="onb-modal-f"><button class="set-btn ghost" onclick="closeWinEditor()">Cancel</button><button class="set-btn primary" onclick="saveWinEditor()">Save</button></div>
               </div>
             </div>
+
+            <!-- Pair-a-tablet flow (overlays the settings page) -->
+            <div class="onb-modal" id="onbPairModal">
+              <div class="onb-modal-card" style="width:520px">
+                <div class="onb-modal-h"><div class="onb-modal-t">Pair a tablet</div><span class="onb-modal-x" onclick="closePairModal()">×</span></div>
+                <div class="onb-modal-d">Connect the tablet you’ll use at <b id="pairDoor">the entrance</b>. No sign-in needed — it links straight to this door.</div>
+                <div class="pair-opts">
+                  <!-- Option A: scan to pair -->
+                  <div class="pair-opt">
+                    <div class="pair-opt-h"><span class="pair-opt-n">1</span> Scan to pair</div>
+                    <div class="pair-opt-d">Point the tablet’s camera at this code — it pairs automatically.</div>
+                    <div class="pair-qr" id="pairQR"></div>
+                  </div>
+                  <div class="pair-or">or</div>
+                  <!-- Option B: manual -->
+                  <div class="pair-opt">
+                    <div class="pair-opt-h"><span class="pair-opt-n">2</span> Enter manually</div>
+                    <div class="pair-opt-d">On the tablet’s browser, go to this link, then type the code.</div>
+                    <div class="pair-url-lab">Open on the tablet</div>
+                    <div class="pair-url"><span id="pairUrl">jims-gym.com/kiosk</span><button class="pair-copy" onclick="copyPairUrl()">Copy</button></div>
+                    <div class="pair-url-lab" style="margin-top:12px">Pairing code</div>
+                    <div class="pair-code-box" id="pairCode">472915</div>
+                  </div>
+                </div>
+                <div class="onb-modal-f"><button class="set-btn ghost" onclick="closePairModal()">Cancel</button><button class="set-btn primary" onclick="confirmPair()">Done</button></div>
+              </div>
+            </div>
+
+            <!-- Kiosk design (shared across all kiosks) -->
+            <div class="onb-modal" id="onbDesignModal">
+              <div class="onb-modal-card" style="width:460px">
+                <div class="onb-modal-h"><div class="onb-modal-t">Kiosk design</div><span class="onb-modal-x" onclick="closeKioskDesign()">×</span></div>
+                <div class="onb-modal-d">Customize how every kiosk looks. All your kiosks share the same design.</div>
+                <div class="dsn-field">
+                  <label>Text color</label>
+                  <div class="dsn-color"><input type="text" value="#000000" id="dsnText" oninput="dsnSync('dsnText')"><span class="dsn-sw" id="dsnTextSw" style="background:#000000"><input type="color" value="#000000" oninput="dsnPick('dsnText',this.value)"></span></div>
+                </div>
+                <div class="dsn-field">
+                  <label>Background color</label>
+                  <div class="dsn-color"><input type="text" value="#ffffff" id="dsnBg" oninput="dsnSync('dsnBg')"><span class="dsn-sw" id="dsnBgSw" style="background:#ffffff"><input type="color" value="#ffffff" oninput="dsnPick('dsnBg',this.value)"></span></div>
+                </div>
+                <div class="dsn-field">
+                  <label>Button color</label>
+                  <div class="dsn-color"><input type="text" value="#000000" id="dsnBtn" oninput="dsnSync('dsnBtn')"><span class="dsn-sw" id="dsnBtnSw" style="background:#000000"><input type="color" value="#000000" oninput="dsnPick('dsnBtn',this.value)"></span></div>
+                </div>
+                <div class="dsn-field">
+                  <label>Button style</label>
+                  <select class="dsn-sel" id="dsnBtnStyle"><option>Square</option><option>Rounded</option><option>Pill</option></select>
+                </div>
+                <div class="dsn-field">
+                  <label>Logo</label>
+                  <div class="dsn-logo" id="dsnLogo" onclick="dsnAddLogo()"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#0c6dfd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></div>
+                </div>
+                <div class="onb-modal-f"><button class="set-btn ghost" onclick="closeKioskDesign()">Cancel</button><button class="set-btn primary" onclick="saveKioskDesign()">Save design</button></div>
+              </div>
+            </div>
+
+            <!-- Hardware: connect a provider (2-step flow) -->
+            <div class="onb-modal" id="onbHwModal">
+              <div class="onb-modal-card" style="width:500px">
+                <div class="onb-modal-h"><div class="onb-modal-t" id="hwModalT">Connect a provider</div><span class="onb-modal-x" onclick="closeHwModal()">×</span></div>
+                <!-- step 1: choose provider -->
+                <div id="hwStep1">
+                  <div class="onb-modal-d">Connect a door-access provider so eligible members can open a turnstile, gate or reader — and each entry is logged as a check-in.</div>
+                  <div class="hw-providers" id="hwProviders"></div>
+                </div>
+                <!-- step 2: authorize -->
+                <div id="hwStep2" style="display:none">
+                  <div class="hw-auth">
+                    <div class="hw-auth-logo" id="hwAuthLogo">K</div>
+                    <div class="hw-auth-t">Connect to <span id="hwAuthName">Kisi</span></div>
+                    <div class="hw-auth-d">You’ll be taken to <span id="hwAuthName2">Kisi</span> to authorize access, then brought back here. Your doors and readers sync automatically.</div>
+                    <ul class="hw-auth-list">
+                      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Sync your doors &amp; readers</li>
+                      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Unlock only for eligible members</li>
+                      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Log every entry as a check-in</li>
+                    </ul>
+                  </div>
+                  <div class="onb-modal-f"><button class="set-btn ghost" onclick="hwBack()">← Back</button><button class="set-btn primary" onclick="hwAuthorize()">Authorize &amp; connect</button></div>
+                </div>
+                <!-- step 3: custom provider via webhooks -->
+                <div id="hwStep3" style="display:none">
+                  <div class="onb-modal-d">Connect any access hardware using webhooks — Wix calls your system to unlock, and your system calls Wix to log each entry.</div>
+                  <div class="dsn-field">
+                    <label>Provider name</label>
+                    <input class="hw-input" id="cwName" placeholder="e.g. My turnstile system" value="Custom provider">
+                  </div>
+                  <div class="hw-hook">
+                    <div class="hw-hook-h"><span class="hw-hook-dir out">OUT</span> Unlock webhook <span class="hw-hook-tag">you provide</span></div>
+                    <div class="hw-hook-d">Wix sends a signed POST here when an eligible member checks in, so your hardware opens the door.</div>
+                    <input class="hw-input" id="cwUnlock" placeholder="https://your-system.com/unlock">
+                  </div>
+                  <div class="hw-hook">
+                    <div class="hw-hook-h"><span class="hw-hook-dir in">IN</span> Entry webhook <span class="hw-hook-tag">use in your system</span></div>
+                    <div class="hw-hook-d">Call this URL from your hardware when someone enters — Wix logs it as a check-in.</div>
+                    <div class="hw-hook-field"><span class="hw-hook-val" id="cwEntryUrl">https://www.wixapis.com/checkin/v1/entry/ak_2f9c…</span><button class="pair-copy" onclick="cwCopy('cwEntryUrl')">Copy</button></div>
+                    <div class="hw-hook-field" style="margin-top:8px"><span class="hw-hook-lab">Signing secret</span><span class="hw-hook-val" id="cwSecret">whsec_8Kd2…aF1</span><button class="pair-copy" onclick="cwCopy('cwSecret')">Copy</button></div>
+                  </div>
+                  <div class="onb-modal-f"><button class="set-btn ghost" onclick="hwBack()">← Back</button><button class="set-btn primary" onclick="cwConnect()">Connect</button></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Hardware: map entrances to readers/gates -->
+            <div class="onb-modal" id="onbMapModal">
+              <div class="onb-modal-card" style="width:500px">
+                <div class="onb-modal-h"><div class="onb-modal-t">Map entrances</div><span class="onb-modal-x" onclick="closeMapModal()">×</span></div>
+                <div class="onb-modal-d">Match each of your doors to a reader or gate from <b id="mapProvider">Kisi</b>. Members are only let through mapped entrances.</div>
+                <div class="map-list" id="mapList"></div>
+                <div class="onb-modal-f"><button class="set-btn ghost" onclick="closeMapModal()">Cancel</button><button class="set-btn primary" onclick="saveMap()">Save mapping</button></div>
+              </div>
+            </div>
+
+            <!-- Static QR — view & print -->
+            <div class="onb-modal" id="onbStaticModal">
+              <div class="onb-modal-card" style="width:480px">
+                <div class="onb-modal-h"><div class="onb-modal-t">Your check-in code</div><span class="onb-modal-x" onclick="closeStaticQR()">×</span></div>
+                <div class="onb-modal-d">Print this and post it at your entrance. Clients scan it with their phone’s camera, sign in to their member account, and check in — no tablet or app needed.</div>
+                <div class="static-qr-wrap">
+                  <div class="static-qr" id="staticQRImg"></div>
+                  <div class="static-qr-cap">jims-gym.com/checkin</div>
+                  <div class="static-qr-biz">Jim's Gym · Check in here</div>
+                </div>
+                <div class="onb-modal-f"><button class="set-btn ghost" onclick="closeStaticQR()">Close</button><button class="set-btn primary" onclick="toast('Printable PDF downloaded',true)">Download to print</button></div>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
@@ -1750,8 +2295,8 @@ button{font-family:var(--sans)}
   </div>
 
   <!-- ============ CLIENT CHECK IN (centralized dashboard hub) ============ -->
-  <div class="surface-stage on" id="surf-client">
-    <div class="scan-demo" id="hubScanDemo">
+  <div class="surface-stage" id="surf-client">
+    <div class="scan-demo collapsed" id="hubScanDemo">
       <div class="sd-label">Simulate check in</div>
       <span class="hub-auto"><span class="hub-auto-t">Auto every</span>
         <select class="hub-auto-sel" id="hubAutoSel" onchange="hubSetAuto(this.value)">
@@ -1816,9 +2361,9 @@ button{font-family:var(--sans)}
               <div class="hub-head">
                 <div>
                   <h1 class="hub-h1">Check-in &amp; Access</h1>
-                  <div class="hub-sub"><span class="hub-pill"><span class="hub-dot"></span>Kisi connected</span><span class="hub-sub-t">See and manage every check-in across your business, live.</span></div>
+                  <div class="hub-sub"><span class="hub-sub-t">See and manage every check-in across your business, live.</span></div>
                 </div>
-                <button class="hub-setup" onclick="surf('web',document.querySelector('.launch button[data-surf=web]'))"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 00.3 1.8 2 2 0 11-2.8 2.8 1.6 1.6 0 00-1.8-.3 1.6 1.6 0 00-1 1.5 2 2 0 11-4 0 1.6 1.6 0 00-1-1.5 1.6 1.6 0 00-1.8.3 2 2 0 11-2.8-2.8 1.6 1.6 0 00.3-1.8 1.6 1.6 0 00-1.5-1 2 2 0 110-4 1.6 1.6 0 001.5-1 1.6 1.6 0 00-.3-1.8 2 2 0 112.8-2.8 1.6 1.6 0 001.8.3 1.6 1.6 0 001-1.5 2 2 0 114 0 1.6 1.6 0 001 1.5 1.6 1.6 0 001.8-.3 2 2 0 112.8 2.8 1.6 1.6 0 00-.3 1.8 1.6 1.6 0 001.5 1 2 2 0 110 4 1.6 1.6 0 00-1.5 1z"/></svg>Check-in settings</button>
+                <button class="hub-setup" onclick="openCheckinSettings()"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 00.3 1.8 2 2 0 11-2.8 2.8 1.6 1.6 0 00-1.8-.3 1.6 1.6 0 00-1 1.5 2 2 0 11-4 0 1.6 1.6 0 00-1-1.5 1.6 1.6 0 00-1.8.3 2 2 0 11-2.8-2.8 1.6 1.6 0 00.3-1.8 1.6 1.6 0 00-1.5-1 2 2 0 110-4 1.6 1.6 0 001.5-1 1.6 1.6 0 00-.3-1.8 2 2 0 112.8-2.8 1.6 1.6 0 001.8.3 1.6 1.6 0 001-1.5 2 2 0 114 0 1.6 1.6 0 001 1.5 1.6 1.6 0 001.8-.3 2 2 0 112.8 2.8 1.6 1.6 0 00-.3 1.8 1.6 1.6 0 001.5 1 2 2 0 110 4 1.6 1.6 0 00-1.5 1z"/></svg>Check-in settings</button>
               </div>
 
               <!-- filters: location + doors -->
@@ -2549,14 +3094,352 @@ function setWebState(state,btn){
   webSetCrumb('detail');
 }
 function setWebView(view,btn){
-  var settings=document.getElementById('web-view-settings'), mobile=document.getElementById('web-view-mobile');
-  if(settings) settings.style.display=(view==='settings')?'flex':'none';
-  if(mobile) mobile.style.display=(view==='mobile')?'flex':'none';
+  // The new tabbed page IS the settings page. "Settings page" shows it directly;
+  // "Onboarding" shows the FTE intro first, then the same page.
+  var onb=document.getElementById('web-view-onboarding');
+  if(onb) onb.style.display='flex'; // the new page hosts both views
   document.querySelectorAll('#webViewSwitch .ds-btn').forEach(function(b){b.classList.remove('on');});
   if(btn) btn.classList.add('on');
-  // installed-apps switcher only matters for the settings view
-  var sw=document.getElementById('webStateSwitch'); if(sw) sw.style.display=(view==='settings')?'flex':'none';
+  var sw=document.getElementById('webStateSwitch'); if(sw) sw.style.display='none';
+  if(view==='onboarding') fteShow(1);   // intro → settings
+  else fteShow(2);                       // straight to the settings page
 }
+/* ---------- Onboarding FTE: intro screen → settings page ----------
+   FTE screen 1 = intro; screen 2 = the main settings page (NOT a wizard
+   step). The settings page replaces the old settings page. */
+function fteShow(n){
+  var s1=document.getElementById('fte-s1'), s2=document.getElementById('fte-s2');
+  if(s1) s1.classList.toggle('on', n===1);
+  if(s2) s2.classList.toggle('on', n===2);
+  if(n===2){ setTab('main'); onbRenderDoors(); onbRenderKiosks(); renderHw(); }
+  // the switcher reflects where you are: intro = Onboarding, settings page = Settings page
+  var wv=n===2?'settings':'onboarding';
+  document.querySelectorAll('#webViewSwitch .ds-btn').forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-wv')===wv); });
+}
+/* Hub "Check-in settings" → straight to the settings page (screen 2), skipping the intro */
+function openCheckinSettings(){
+  var wb=document.querySelector('.launch button[data-surf="web"]');
+  surf('web',wb);
+  setWebView('onboarding',document.querySelector('#webViewSwitch [data-wv="onboarding"]'));
+  fteShow(2);
+}
+/* Settings page → the Check In Hub dashboard */
+function openHubFromSettings(){
+  var cb=document.querySelector('.launch button[data-surf="client"]');
+  if(cb) surf('client',cb);
+}
+function setTab(t){
+  document.querySelectorAll('#fte-s2 .setpg-tab').forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-t')===t); });
+  document.querySelectorAll('#fte-s2 .setpg-body').forEach(function(b){ b.classList.remove('on'); });
+  var el=document.getElementById('tab-'+t); if(el) el.classList.add('on');
+  var sc=document.querySelector('#web-view-onboarding .fte-scroll'); if(sc) sc.scrollTop=0;
+}
+function onbFlip(el){ el.classList.toggle('on'); }
+/* Doors — one main door per location, can add more */
+var ONB_DOORS=[{name:'Front Entrance',loc:'Broadway studio',main:true}];
+function onbRenderDoors(){
+  var host=document.getElementById('onbDoors'); if(!host) return;
+  host.innerHTML=ONB_DOORS.map(function(d,i){
+    return '<div class="onb-door"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#7a92a5" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="1"/><path d="M15 12h.01"/></svg>'+
+      '<div class="onb-door-tx"><span class="onb-door-n">'+d.name+(d.main?' <span class="onb-main">Main</span>':'')+'</span><span class="onb-door-l">'+d.loc+'</span></div>'+
+      (d.main?'':'<span class="set-edit" onclick="onbRemoveDoor('+i+')">Remove</span>')+'</div>';
+  }).join('');
+}
+function onbAddDoor(){ var n=prompt('Door name','Side door'); if(n){ ONB_DOORS.push({name:n,loc:'Broadway studio',main:false}); onbRenderDoors(); onbRenderKiosks(); renderHw(); } }
+function onbRemoveDoor(i){ ONB_DOORS.splice(i,1); onbRenderDoors(); onbRenderKiosks(); renderHw(); }
+
+/* Self check-in — multiple kiosks, one per door, each with its own settings */
+var ONB_KIOSKS=[];   // no kiosks by default — owner adds them
+var KIOSK_SEQ=0;
+function onbRenderKiosks(){
+  var host=document.getElementById('kioskList'); if(!host) return;
+  var addBtn=document.getElementById('kioskAddBtn');
+  var designBtn=document.getElementById('kioskDesignBtn');
+  if(designBtn) designBtn.style.display=ONB_KIOSKS.length?'':'none';   // shared design only once a kiosk exists
+  if(!ONB_KIOSKS.length){
+    host.innerHTML='<div class="kiosk-empty">'+
+      '<div class="kiosk-empty-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M10 18h4"/></svg></div>'+
+      '<div class="kiosk-empty-t">No kiosks yet</div>'+
+      '<div class="kiosk-empty-d">Add a self check-in tablet for an entrance. Each kiosk is tied to a door and has its own settings.</div>'+
+      '<button class="set-btn primary sm" style="margin-top:16px" onclick="onbAddKiosk()">Add a kiosk</button>'+
+    '</div>';
+    if(addBtn) addBtn.style.display='none';   // the in-empty-state button is the only entry point
+    return;
+  }
+  if(addBtn) addBtn.style.display='';          // show the standalone "add" once kiosks exist
+  host.innerHTML=ONB_KIOSKS.map(function(k){
+    var expanded = k.open;
+    var head='<div class="kiosk-head" onclick="onbToggleKiosk('+k.id+')">'+
+      '<div class="kiosk-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M10 18h4"/></svg></div>'+
+      '<div class="kiosk-main">'+
+        (k.editing
+          ? '<div class="kiosk-nm-edit"><input class="kiosk-name-in" id="kioskNameIn'+k.id+'" value="'+k.name.replace(/"/g,'&quot;')+'" onclick="event.stopPropagation()" onkeydown="if(event.key===\'Enter\')onbKioskNameSave('+k.id+')"><span class="kiosk-rename-save" onclick="event.stopPropagation();onbKioskNameSave('+k.id+')">Save</span></div>'
+          : '<div class="kiosk-nm-row"><span class="kiosk-nm">'+k.name+'</span><span class="kiosk-rename" onclick="event.stopPropagation();onbKioskRename('+k.id+')">Rename</span></div>')+
+        '<div class="kiosk-sub"><svg class="kiosk-doorpin" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="1"/><path d="M15 12h.01"/></svg>'+k.door+' · '+(k.paired?(k.device):'Not paired')+'</div></div>'+
+      '<span class="set-pill'+(k.paired?' on':'')+'">'+(k.paired?'Paired':'Not paired')+'</span>'+
+      '<svg class="kiosk-cv" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#7a92a5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate('+(expanded?'180deg':'0')+')"><path d="M6 9l6 6 6-6"/></svg>'+
+      '</div>';
+    if(!expanded) return '<div class="kiosk-card" data-kid="'+k.id+'">'+head+'</div>';
+    var doorOpts=ONB_DOORS.map(function(d){return '<option value="'+d.name+'"'+(d.name===k.door?' selected':'')+'>'+d.name+'</option>';}).join('')+'<option disabled>──────────</option><option value="__add">+ Add a door…</option>';
+    var body='<div class="kiosk-body">'+
+      '<div class="set-row"><div class="set-si"><div class="set-lt">Door</div><div class="set-ld">Which entrance this kiosk checks people in for.</div></div><div class="set-sv"><select class="kiosk-sel" onchange="onbKioskDoor('+k.id+',this.value)">'+doorOpts+'</select></div></div>'+
+      '<div class="set-row"><div class="set-si"><div class="set-lt">Paired tablet</div><div class="set-ld">'+(k.paired?k.device:'No device paired yet.')+'</div></div><div class="set-sv">'+(k.paired?'<span class="set-edit" onclick="onbKioskUnpair('+k.id+')">Unpair</span>':'<button class="set-btn ghost sm" onclick="onbKioskPair('+k.id+')">Pair a tablet</button>')+'</div></div>'+
+      '<div class="set-row"><div class="set-si"><div class="set-lt">Find by name</div><div class="set-ld">Clients tap their name from today’s list.</div></div><div class="set-sv"><span class="set-tog'+(k.methods.name?' on':'')+'" onclick="onbKioskMethod('+k.id+',\'name\')"></span></div></div>'+
+      '<div class="set-row"><div class="set-si"><div class="set-lt">Enter details</div><div class="set-ld">Member ID, phone or email.</div></div><div class="set-sv"><span class="set-tog'+(k.methods.details?' on':'')+'" onclick="onbKioskMethod('+k.id+',\'details\')"></span></div></div>'+
+      '<div class="set-row"><div class="set-si"><div class="set-lt">Scan with phone</div><div class="set-ld">Show a QR; clients sign in on their own device.</div></div><div class="set-sv"><span class="set-tog'+(k.methods.qr?' on':'')+'" onclick="onbKioskMethod('+k.id+',\'qr\')"></span></div></div>'+
+      '<div class="kiosk-remove"><span class="set-edit" style="color:#c0291f" onclick="onbRemoveKiosk('+k.id+')">Remove this kiosk</span></div>'+
+      '</div>';
+    return '<div class="kiosk-card open" data-kid="'+k.id+'">'+head+body+'</div>';
+  }).join('');
+}
+function onbToggleKiosk(id){ ONB_KIOSKS.forEach(function(k){ if(k.id===id) k.open=!k.open; }); onbRenderKiosks(); }
+function onbKioskRename(id){
+  ONB_KIOSKS.forEach(function(k){ k.editing=(k.id===id); });
+  onbRenderKiosks();
+  var inp=document.getElementById('kioskNameIn'+id); if(inp){ inp.focus(); inp.select(); }
+}
+function onbKioskNameSave(id){
+  var k=onbK(id); if(!k) return;
+  var inp=document.getElementById('kioskNameIn'+id);
+  if(inp){ var v=inp.value.trim(); if(v) k.name=v; }
+  k.editing=false;
+  onbRenderKiosks();
+}
+function onbKioskDoor(id,door){
+  var k=onbK(id); if(!k) return;
+  if(door==='__add'){
+    var n=prompt('New door name','Side door');
+    if(n){
+      // add the door (unless it already exists) and assign it to this kiosk
+      if(!ONB_DOORS.some(function(d){return d.name===n;})) ONB_DOORS.push({name:n,loc:'Broadway studio',main:false});
+      k.door=n; onbRenderDoors();
+    }
+    onbRenderKiosks(); // re-render either way (reset the select if cancelled)
+    return;
+  }
+  k.door=door; onbRenderKiosks();
+}
+function onbKioskMethod(id,m){ var k=onbK(id); if(!k) return; k.methods[m]=!k.methods[m]; if(!k.methods.name&&!k.methods.details&&!k.methods.qr){k.methods[m]=true;toast('Keep at least one way to check in');} onbRenderKiosks(); }
+/* reusable pseudo-QR → SVG markup (seed varies the pattern, size in px) */
+function qrSVG(seed,size){
+  var N=25,cell=Math.floor(size/N),grid=[],s7=(seed&&seed.length)||3;
+  for(var y=0;y<N;y++){grid[y]=[];for(var x=0;x<N;x++){grid[y][x]=((x*7+y*13+x*y*3+s7*x)%5===0)?1:0;}}
+  function finder(ox,oy){ for(var y=0;y<7;y++)for(var x=0;x<7;x++){var on=(x===0||x===6||y===0||y===6)||(x>=2&&x<=4&&y>=2&&y<=4);grid[oy+y][ox+x]=on?1:0;} }
+  finder(0,0); finder(N-7,0); finder(0,N-7);
+  for(var k=0;k<8;k++){ if(grid[7])grid[7][k]=0; if(grid[k])grid[k][7]=0; if(grid[7])grid[7][N-1-k]=0; if(grid[k])grid[k][N-8]=0; if(grid[N-8])grid[N-8][k]=0; if(grid[N-1-k])grid[N-1-k][7]=0; }
+  var sz=N*cell,out='<svg width="'+sz+'" height="'+sz+'" viewBox="0 0 '+sz+' '+sz+'" xmlns="http://www.w3.org/2000/svg"><rect width="'+sz+'" height="'+sz+'" fill="#fff"/>';
+  for(var yy=0;yy<N;yy++)for(var xx=0;xx<N;xx++){ if(grid[yy][xx]) out+='<rect x="'+(xx*cell)+'" y="'+(yy*cell)+'" width="'+cell+'" height="'+cell+'" fill="#0e1430"/>'; }
+  return out+'</svg>';
+}
+/* Pair-a-tablet modal */
+var PAIR_KIOSK=null;
+var PAIR_CODES=['472915','318640','205877','961304','549128'];
+function onbKioskPair(id){
+  PAIR_KIOSK=id; var k=onbK(id); if(!k) return;
+  document.getElementById('pairDoor').textContent=k.door;
+  document.getElementById('pairUrl').textContent='jims-gym.com/kiosk';
+  // Option 1: QR encodes URL + code, so scanning pairs automatically
+  document.getElementById('pairQR').innerHTML=qrSVG('kiosk-'+id,180);
+  // Option 2: the same code, typed manually on the tablet (no Wix login)
+  document.getElementById('pairCode').textContent=PAIR_CODES[id%PAIR_CODES.length];
+  document.getElementById('onbPairModal').classList.add('show');
+}
+function closePairModal(){ document.getElementById('onbPairModal').classList.remove('show'); PAIR_KIOSK=null; }
+function copyPairUrl(){ var u=document.getElementById('pairUrl').textContent; if(navigator.clipboard){navigator.clipboard.writeText(u);} toast('Link copied',true); }
+function confirmPair(){
+  var k=onbK(PAIR_KIOSK); if(k){ k.paired=true; k.device='iPad · '+k.door; }
+  closePairModal(); onbRenderKiosks(); toast('Tablet paired',true);
+}
+/* Static QR — printed code clients scan with their own phone */
+function onbToggleStaticQR(el){
+  el.classList.toggle('on');
+  var on=el.classList.contains('on');
+  ['staticQrRow','staticQrSigninRow'].forEach(function(id){ var r=document.getElementById(id); if(r){ r.style.display=on?'':'none'; } });
+}
+function openStaticQR(){
+  document.getElementById('staticQRImg').innerHTML=qrSVG('checkin-static',200);
+  document.getElementById('onbStaticModal').classList.add('show');
+}
+function closeStaticQR(){ document.getElementById('onbStaticModal').classList.remove('show'); }
+/* Kiosk design — shared across all kiosks */
+function openKioskDesign(){ document.getElementById('onbDesignModal').classList.add('show'); }
+function closeKioskDesign(){ document.getElementById('onbDesignModal').classList.remove('show'); }
+function dsnSync(id){ var v=document.getElementById(id).value; var sw=document.getElementById(id+'Sw'); if(sw)sw.style.background=v; }
+function dsnPick(id,val){ document.getElementById(id).value=val; var sw=document.getElementById(id+'Sw'); if(sw)sw.style.background=val; }
+function dsnAddLogo(){ var el=document.getElementById('dsnLogo'); el.classList.add('has'); el.innerHTML='<span class="dsn-logo-img">JG</span><span class="dsn-logo-x" onclick="event.stopPropagation();dsnRemoveLogo()">×</span>'; }
+function dsnRemoveLogo(){ var el=document.getElementById('dsnLogo'); el.classList.remove('has'); el.innerHTML='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#0c6dfd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>'; }
+function saveKioskDesign(){ closeKioskDesign(); toast('Kiosk design saved',true); }
+
+/* ---------- Hardware check-in: connect a provider ---------- */
+var HW_PROVIDERS=[
+  {key:'kisi',name:'Kisi',logo:'K',color:'#16a34a',desc:'Cloud access control — readers, turnstiles & gates.',ready:true},
+  {key:'brivo',name:'Brivo',logo:'B',color:'#2b5ce6',desc:'Access control & video.',ready:false},
+  {key:'salto',name:'SALTO',logo:'S',color:'#e8951c',desc:'Smart locks & wall readers.',ready:false},
+  {key:'openpath',name:'Openpath',logo:'O',color:'#7b3ff2',desc:'Mobile & touchless access.',ready:false},
+  {key:'custom',name:'Custom provider',logo:'+',color:'#4f6a7d',desc:'Connect any hardware with webhooks.',ready:true,custom:true}
+];
+var HW={conns:[], picked:null};   // conns = list of connected providers, each with its own settings
+var HW_SEQ=0;
+function renderHw(){
+  var host=document.getElementById('hwBody'); if(!host) return;
+  if(!HW.conns.length){
+    // empty state — connect a provider
+    host.innerHTML='<div class="hw-empty">'+
+      '<div class="hw-empty-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="18" rx="1"/><rect x="14" y="3" width="7" height="18" rx="1"/><path d="M7 12h.01M17 12h.01"/></svg></div>'+
+      '<div class="kiosk-empty-t">No hardware connected</div>'+
+      '<div class="kiosk-empty-d">Connect a door-access provider like Kisi so eligible members can open a turnstile, gate or reader — each entry is logged as a check-in.</div>'+
+      '<button class="set-btn primary sm" style="margin-top:16px" onclick="openHwModal()">Connect a provider</button>'+
+    '</div>';
+    return;
+  }
+  host.innerHTML=HW.conns.map(function(c){
+    var p=HW_PROVIDERS.filter(function(x){return x.key===c.provider;})[0];
+    var nm=c.name||p.name;
+    var head='<div class="kiosk-head" onclick="hwToggle('+c.id+')">'+
+      '<span class="hw-mini-logo" style="width:40px;height:40px;font-size:18px;border-radius:10px;flex:0 0 40px;background:'+p.color+'">'+p.logo+'</span>'+
+      '<div class="kiosk-main"><div class="kiosk-nm">'+nm+'</div><div class="kiosk-sub">'+(c.provider==='custom'?'Custom · webhooks':c.mapped+' of '+c.doors+' entrances mapped')+'</div></div>'+
+      '<span class="set-pill on">Connected</span>'+
+      '<svg class="kiosk-cv" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#7a92a5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate('+(c.open?'180deg':'0')+')"><path d="M6 9l6 6 6-6"/></svg>'+
+    '</div>';
+    if(!c.open) return '<div class="kiosk-card" data-hwid="'+c.id+'">'+head+'</div>';
+    var body='<div class="kiosk-body">'+
+      '<div class="set-row"><div class="set-si"><div class="set-lt">Connection</div><div class="set-ld">'+(c.provider==='custom'?'Connected via webhooks.':'Doors and readers synced from '+nm+'.')+'</div></div><div class="set-sv"><span class="set-pill on">Connected</span><span class="set-edit" onclick="hwDisconnect('+c.id+')">Disconnect</span></div></div>'+
+      '<div class="set-row"><div class="set-si"><div class="set-lt">Mapped entrances</div><div class="set-ld">Match each door to a reader or gate.</div></div><div class="set-sv"><span class="set-chip">'+c.mapped+' of '+c.doors+' mapped</span><span class="set-edit" onclick="openMapModal('+c.id+')">Map</span></div></div>'+
+      '<div class="set-row"><div class="set-si"><div class="set-lt">Log entry as check-in</div><div class="set-ld">Each unlock records attendance automatically.</div></div><div class="set-sv"><span class="set-tog'+(c.logEntry?' on':'')+'" onclick="hwToggleLog('+c.id+',this)"></span></div></div>'+
+    '</div>';
+    return '<div class="kiosk-card open" data-hwid="'+c.id+'">'+head+body+'</div>';
+  }).join('')+
+  '<button class="set-btn ghost sm" style="margin-top:4px" onclick="openHwModal()">+ Connect a provider</button>';
+}
+function hwC(id){ return HW.conns.filter(function(c){return c.id===id;})[0]; }
+function hwToggle(id){ var c=hwC(id); if(c) c.open=!c.open; renderHw(); }
+function hwToggleLog(id,el){ var c=hwC(id); if(c){ c.logEntry=!c.logEntry; } el.classList.toggle('on'); }
+function openHwModal(){
+  HW.picked=null;
+  document.getElementById('hwStep1').style.display='';
+  document.getElementById('hwStep2').style.display='none';
+  document.getElementById('hwStep3').style.display='none';
+  document.getElementById('hwModalT').textContent='Connect a provider';
+  document.getElementById('hwProviders').innerHTML=HW_PROVIDERS.map(function(p){
+    // the same provider (and custom) can be connected multiple times — only "coming soon" is disabled
+    var count=HW.conns.filter(function(c){return c.provider===p.key;}).length;
+    var tag=count?' <span class="set-pill on" style="font-size:10px">'+count+' connected</span>':(p.ready?'':' <span class="set-soon">Coming soon</span>');
+    return '<div class="hw-prov'+(p.ready?'':' soon')+'"'+(p.ready?' onclick="hwPick(\''+p.key+'\')"':'')+'>'+
+      '<span class="hw-prov-logo" style="background:'+p.color+'">'+p.logo+'</span>'+
+      '<div class="hw-prov-tx"><div class="hw-prov-n">'+p.name+tag+'</div><div class="hw-prov-d">'+p.desc+'</div></div>'+
+      (p.ready?'<svg class="hw-prov-cv" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#7a92a5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>':'')+
+    '</div>';
+  }).join('');
+  document.getElementById('onbHwModal').classList.add('show');
+}
+function closeHwModal(){ document.getElementById('onbHwModal').classList.remove('show'); }
+function hwPick(key){
+  HW.picked=key; var p=HW_PROVIDERS.filter(function(x){return x.key===key;})[0];
+  document.getElementById('hwStep1').style.display='none';
+  if(p.custom){
+    // custom provider → webhook setup
+    document.getElementById('hwModalT').textContent='Connect a custom provider';
+    document.getElementById('hwStep3').style.display='';
+    document.getElementById('hwStep2').style.display='none';
+    return;
+  }
+  document.getElementById('hwAuthLogo').textContent=p.logo;
+  document.getElementById('hwAuthLogo').style.background=p.color;
+  document.getElementById('hwAuthName').textContent=p.name;
+  document.getElementById('hwAuthName2').textContent=p.name;
+  document.getElementById('hwModalT').textContent='Connect '+p.name;
+  document.getElementById('hwStep2').style.display='';
+  document.getElementById('hwStep3').style.display='none';
+}
+function hwBack(){
+  document.getElementById('hwStep2').style.display='none';
+  document.getElementById('hwStep3').style.display='none';
+  document.getElementById('hwStep1').style.display='';
+  document.getElementById('hwModalT').textContent='Connect a provider';
+}
+function cwCopy(id){ var v=document.getElementById(id).textContent; if(navigator.clipboard){navigator.clipboard.writeText(v);} toast('Copied',true); }
+function cwConnect(){
+  var name=(document.getElementById('cwName').value||'Custom provider').trim();
+  HW.conns.push({id:++HW_SEQ,provider:'custom',name:name,mapped:0,doors:ONB_DOORS.length,logEntry:true,open:true});
+  closeHwModal(); renderHw(); toast(name+' connected',true);
+}
+function hwAuthorize(){
+  var p=HW_PROVIDERS.filter(function(x){return x.key===HW.picked;})[0];
+  var n=HW.conns.filter(function(c){return c.provider===HW.picked;}).length;
+  HW.conns.push({id:++HW_SEQ,provider:HW.picked,name:n?(p.name+' ('+(n+1)+')'):'',mapped:3,doors:4,logEntry:true,open:true});
+  closeHwModal(); renderHw(); toast(p.name+' connected · doors synced',true);
+}
+function hwDisconnect(id){ if(confirm('Disconnect this provider? Its hardware check-in will stop.')){ HW.conns=HW.conns.filter(function(c){return c.id!==id;}); renderHw(); } }
+/* Map entrances modal — match each door to a reader/gate from the provider */
+var MAP_CONN=null;
+var HW_READERS=['Reader · Lobby A','Turnstile · North','Gate · Pool','Reader · Studio B','Reader · Back'];
+function openMapModal(connId){
+  MAP_CONN=connId; var c=hwC(connId); if(!c) return;
+  var p=HW_PROVIDERS.filter(function(x){return x.key===c.provider;})[0];
+  document.getElementById('mapProvider').textContent=p.name;
+  // seed a default mapping per door (first N doors get a reader)
+  if(!c.map){ c.map={}; ONB_DOORS.forEach(function(d,i){ c.map[d.name]=(i<c.mapped)?HW_READERS[i%HW_READERS.length]:''; }); }
+  renderMapList();
+  document.getElementById('onbMapModal').classList.add('show');
+}
+function renderMapList(){
+  var c=hwC(MAP_CONN); if(!c) return;
+  var host=document.getElementById('mapList');
+  host.innerHTML=ONB_DOORS.map(function(d){
+    var sel=c.map[d.name]||'';
+    var opts='<option value="">Not mapped</option>'+HW_READERS.map(function(r){return '<option'+(r===sel?' selected':'')+'>'+r+'</option>';}).join('');
+    return '<div class="map-row">'+
+      '<div class="map-door"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#7a92a5" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="1"/><path d="M15 12h.01"/></svg><span>'+d.name+'</span></div>'+
+      '<svg class="map-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#c5cad3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'+
+      '<select class="map-sel'+(sel?'':' unset')+'" onchange="mapSet(\''+d.name.replace(/'/g,"\\'")+'\',this.value)">'+opts+'</select>'+
+    '</div>';
+  }).join('');
+}
+function mapSet(door,reader){ var c=hwC(MAP_CONN); if(c){ c.map[door]=reader; renderMapList(); } }
+function closeMapModal(){ document.getElementById('onbMapModal').classList.remove('show'); }
+function saveMap(){
+  var c=hwC(MAP_CONN); if(c){ c.mapped=ONB_DOORS.filter(function(d){return c.map[d.name];}).length; c.doors=ONB_DOORS.length; }
+  closeMapModal(); renderHw(); toast('Entrances mapped',true);
+}
+function onbKioskUnpair(id){ var k=onbK(id); if(k){ k.paired=false; } onbRenderKiosks(); }
+function onbAddKiosk(){
+  KIOSK_SEQ++;
+  // suggest a door not yet used, else the main one
+  var used=ONB_KIOSKS.map(function(k){return k.door;});
+  var free=ONB_DOORS.filter(function(d){return used.indexOf(d.name)<0;})[0];
+  var door=free?free.name:ONB_DOORS[0].name;
+  ONB_KIOSKS.push({id:KIOSK_SEQ,name:'Kiosk '+KIOSK_SEQ,door:door,paired:false,device:'',methods:{name:true,details:true,qr:true},open:true});
+  onbRenderKiosks();
+}
+function onbRemoveKiosk(id){ ONB_KIOSKS=ONB_KIOSKS.filter(function(k){return k.id!==id;}); onbRenderKiosks(); }
+function onbK(id){ return ONB_KIOSKS.filter(function(k){return k.id===id;})[0]; }
+
+/* Check-in window editor */
+var WIN={before:15,after:10,draft:{before:15,after:10}};
+function openWinEditor(){
+  WIN.draft={before:WIN.before,after:WIN.after};
+  winRender();
+  document.getElementById('onbWinModal').classList.add('show');
+}
+function closeWinEditor(){ document.getElementById('onbWinModal').classList.remove('show'); }
+function winStep(which,delta){
+  WIN.draft[which]=Math.max(0,Math.min(which==='before'?180:120, WIN.draft[which]+delta));
+  winRender();
+}
+function winPreset(b,a){ WIN.draft.before=b; WIN.draft.after=a; winRender(); }
+function winRender(){
+  var bv=document.getElementById('winBeforeVal'), av=document.getElementById('winAfterVal');
+  if(bv) bv.textContent=WIN.draft.before; if(av) av.textContent=WIN.draft.after;
+}
+function winLabel(m){ if(m>=60){ var h=m/60; return (h===Math.floor(h)?h:h.toFixed(1))+' hr'; } return m+' min'; }
+function saveWinEditor(){
+  WIN.before=WIN.draft.before; WIN.after=WIN.draft.after;
+  var chip=document.getElementById('winChipOnb');
+  if(chip) chip.innerHTML=winLabel(WIN.before)+' before <span class="mut2">→</span> '+winLabel(WIN.after)+' after';
+  closeWinEditor();
+  toast('Check-in window updated',true);
+}
+
 /* breadcrumb: clicking "Settings" goes to the main Settings page (list view in the iframe) */
 function webCrumbHome(){
   acFrameSrc("view=list&installed=both&embed=1");
@@ -3406,11 +4289,11 @@ function acFrameSrc(qs){ var f=document.getElementById("webFrame"); if(!f) retur
   f.src=doc+"#"+(qs||"view=detail&installed=both&embed=1");
 }
 
-/* build the embedded settings frame once on load */
-acFrameSrc("view=detail&installed=both&embed=1");
+/* initialize the new tabbed settings page (Main tab + doors + kiosks) on load */
+setTab('main'); onbRenderDoors(); onbRenderKiosks(); renderHw();
 
-/* Check In Hub is the default surface — scale its browser frame on load. */
-scaleClient();
+/* Web Settings (FTE) is the default surface — scale its browser frame on load. */
+scaleWeb();
 
 /* ============================================================
    Deep-link URL routing — every page + state lives in the hash,
@@ -3448,11 +4331,13 @@ scaleClient();
       var ss=document.querySelector('#vpSetM .scr.on'); var ssid=ss?ss.id.replace('s-',''):'main';
       if(ssid==='fte'||ssid==='fte2') s.screen=ssid;
     } else if(s.tab==='web'){
-      var mob=document.getElementById('web-view-mobile');
-      s.view=(mob&&mob.style.display!=='none')?'mobile':'settings';
+      var onb=document.getElementById('web-view-onboarding');
+      s.view=(onb&&onb.style.display!=='none')?'onboarding':'settings';
       if(s.view==='settings'){
         var wb=document.querySelector('#webStateSwitch .ds-btn.on'); var wst=wb?wb.getAttribute('data-st'):'both';
         if(wst&&wst!=='both') s.state=wst;
+      } else if(s.view==='onboarding'){
+        var s2=document.getElementById('fte-s2'); if(s2&&s2.classList.contains('on')) s.screen='settings';
       }
     }
     return s;
@@ -3508,6 +4393,7 @@ scaleClient();
           var sb=document.querySelector('#webStateSwitch .ds-btn[data-st="'+s.state+'"]');
           setWebState(s.state,sb);
         }
+        if(s.view==='onboarding' && s.screen==='settings'){ fteShow(2); }
       }
     }catch(e){ if(window.console) console.log('applyState err',e.message); }
     building=false;
@@ -3522,26 +4408,6 @@ scaleClient();
   var _kv=window.kioskVerdict; if(_kv) window.kioskVerdict=function(type,nm){ KIOSK_LAST=type; var r=_kv.apply(this,arguments); if(!building) syncURL(); return r; };
   var _mr=window.mShowResult; if(_mr) window.mShowResult=function(type){ MEMBER_LAST=type; var r=_mr.apply(this,arguments); if(!building) syncURL(); return r; };
   ['surf','setOwnerState','openScanner','ownerScanTap','setMobState','setWebView','setWebState','webCrumbHome','hubSetMode','hubSetAuto','kioskGo','setFteAccess','jump','push','back','showPass','passDone','fteFinish','fteDone'].forEach(function(fn){ wrap(fn); });
-
-  /* ---- floating "Copy link" control ---- */
-  var bar=document.createElement('div');
-  bar.id='deeplinkBar';
-  bar.innerHTML='<button id="dlCopy" title="Copy a link to this exact screen">🔗 Copy link</button><span id="dlHint"></span>';
-  document.body.appendChild(bar);
-  var style=document.createElement('style');
-  style.textContent='#deeplinkBar{position:fixed;left:18px;bottom:18px;z-index:400;display:flex;align-items:center;gap:9px}'+
-    '#dlCopy{background:#000624;color:#fff;border:none;border-radius:10px;padding:9px 14px;font-size:12.5px;font-weight:600;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.3);font-family:var(--sans)}'+
-    '#dlCopy:hover{background:#16213A}'+
-    '#dlHint{font-size:11.5px;color:#fff;background:rgba(31,157,91,.95);padding:5px 10px;border-radius:8px;opacity:0;transition:.2s;pointer-events:none}'+
-    '#dlHint.show{opacity:1}';
-  document.head.appendChild(style);
-  function fullLink(){ return location.origin+location.pathname+location.search+toHash(readState()); }
-  document.getElementById('dlCopy').addEventListener('click',function(){
-    var link=fullLink();
-    var done=function(){ var h=document.getElementById('dlHint'); h.textContent='Link copied'; h.classList.add('show'); setTimeout(function(){h.classList.remove('show');},1600); };
-    if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(link).then(done,done); }
-    else { var t=document.createElement('textarea'); t.value=link; document.body.appendChild(t); t.select(); try{document.execCommand('copy');}catch(e){} document.body.removeChild(t); done(); }
-  });
 
   /* ---- react to manual hash edits / back-forward ---- */
   window.addEventListener('hashchange',function(){ if(building) return; applyState(parseHash()); });
