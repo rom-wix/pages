@@ -310,6 +310,18 @@ button{font-family:var(--sans)}
 .pass-bright{display:inline-flex;align-items:center;gap:7px;margin-top:16px;color:var(--accent);font-size:13px;font-weight:600;cursor:pointer}
 .pass-hint{font-size:12px;color:#849AA9;margin-top:6px}
 .m-btn{height:48px;border-radius:24px;background:var(--accent);color:#fff;border:none;font-size:16px;font-weight:600;width:100%;cursor:pointer}
+/* member App check-in — home-screen row + location permission dialog */
+.ms-checkin-btn{background:#5A48F5;border-color:#5A48F5;color:#fff}
+.geo-overlay{position:absolute;inset:0;z-index:60;display:none;align-items:center;justify-content:center;background:rgba(10,16,30,.45);padding:0 26px}
+.geo-overlay.show{display:flex}
+.geo-dialog{background:#f2f2f4;border-radius:16px;width:100%;max-width:280px;padding:20px 20px 0;text-align:center;overflow:hidden;box-shadow:0 18px 50px rgba(0,0,0,.35)}
+.geo-dialog-ic{width:52px;height:52px;border-radius:14px;background:#eeebff;display:grid;place-items:center;margin:0 auto 12px}
+.geo-dialog-t{font-size:15px;font-weight:700;color:#162d3d;line-height:1.3}
+.geo-dialog-d{font-size:12.5px;color:#5B6478;line-height:1.45;margin:8px 0 16px}
+.geo-dialog-row{display:flex;margin:0 -20px;border-top:1px solid #dcdce1}
+.geo-deny,.geo-allow{flex:1;height:46px;border:none;background:transparent;font-size:15px;font-weight:600;cursor:pointer;font-family:var(--sans)}
+.geo-deny{color:#5B6478;border-right:1px solid #dcdce1}
+.geo-allow{color:#5A48F5;font-weight:700}
 .bright-flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:50;transition:opacity .25s}
 .bright-flash.on{opacity:.55}
 .placeholder{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#849AA9;padding:30px;text-align:center;background:#F0F1F5}
@@ -439,6 +451,16 @@ button{font-family:var(--sans)}
 .ms-tab.on{color:#3A6BD4}
 .ms-tab.on:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2.5px;background:#3A6BD4;border-radius:2px}
 .ms-about{font-size:13.5px;color:#3B3F4D;line-height:1.5;margin-top:18px}
+.ms-checkin{margin-top:18px;background:#f5f3ff;border:1px solid #e3ddff;border-radius:16px;padding:15px 16px}
+.ms-ci-top{display:flex;align-items:center;justify-content:space-between}
+.ms-ci-lbl{font-size:11.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#7a6ff0}
+.ms-ci-live{font-size:11.5px;font-weight:600;color:#1F9D5B;display:inline-flex;align-items:center;gap:5px}
+.ms-ci-dot{width:6px;height:6px;border-radius:50%;background:#1F9D5B}
+.ms-ci-row{display:flex;align-items:center;gap:12px;margin:11px 0 13px}
+.ms-ci-ic{width:42px;height:42px;border-radius:11px;background:#fff;display:grid;place-items:center;flex:0 0 42px}
+.ms-ci-svc{font-family:var(--disp);font-size:17px;font-weight:800;color:#16213A}
+.ms-ci-meta{font-size:12.5px;color:#5B7AA8;margin-top:2px}
+.ms-ci-btn{width:100%;height:44px;border-radius:22px;background:#5A48F5;color:#fff;border:none;font-size:15px;font-weight:700;cursor:pointer}
 .ms-touch{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:18px;padding-bottom:14px;border-bottom:1px solid var(--line)}
 .ms-th{font-size:15px;font-weight:700;color:#16213A}
 .ms-ts{font-size:12.5px;color:#5B6478;margin-top:2px}
@@ -1322,7 +1344,7 @@ button{font-family:var(--sans)}
 <body>
 
 <div class="topbar"><div class="tb-in">
-  <h1>Check-in Gate <span class="pill">Interactive prototype</span><button class="exp-reset" onclick="resetParams()" title="Clear the link and return to the default screen">↺ Reset</button></h1>
+  <h1>Check-in Gate<button class="exp-reset" onclick="resetParams()" title="Clear the link and return to the default screen">↺ Reset</button></h1>
   <p>Tap inside the device to use it. In the scanner, <b>tap the frame</b> to simulate scanning the next member in the queue.</p>
   <div class="launch">
     <button class="on" data-surf="web" onclick="surf('web',this)"><span class="dot"></span>Web Settings</button>
@@ -1610,6 +1632,10 @@ button{font-family:var(--sans)}
             </div>
             <div class="ms-about">Jim's Gym is where you can share posts, stay updated and chat with others in my community.</div>
             <div class="ms-touch">
+              <div><div class="ms-th">Check in</div><div class="ms-ts">Vinyasa Flow · Today, 9:00 AM</div></div>
+              <button class="ms-msg ms-checkin-btn" onclick="mAppCheckIn()">Check in</button>
+            </div>
+            <div class="ms-touch">
               <div><div class="ms-th">Get in Touch</div><div class="ms-ts">Jim's Gym</div></div>
               <button class="ms-msg" onclick="toast('Message')">Message</button>
             </div>
@@ -1653,6 +1679,16 @@ button{font-family:var(--sans)}
         <div class="homebar light"><i></i></div>
       </div>
 
+      <!-- location permission dialog (overlays the home screen) -->
+      <div class="geo-overlay" id="mGeoOverlay">
+        <div class="geo-dialog">
+          <div class="geo-dialog-ic"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#5A48F5" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-5.5 7-11a7 7 0 10-14 0c0 5.5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></div>
+          <div class="geo-dialog-t">Allow “Wix Spaces” to use your location?</div>
+          <div class="geo-dialog-d">Jim's Gym uses your location to confirm you’re at the business location. It’s only used at check-in.</div>
+          <div class="geo-dialog-row"><button class="geo-deny" onclick="mAppResult('denied')">Don’t allow</button><button class="geo-allow" onclick="mAppResult('geoResolve')">Allow once</button></div>
+        </div>
+      </div>
+
     </div></div></div>
 
     <!-- demo: member scan-result trigger panel -->
@@ -1664,6 +1700,14 @@ button{font-family:var(--sans)}
       <button class="sd-btn warn" onclick="mTriggerScan('intake')"><span class="sd-dot"></span>Intake form needed</button>
       <button class="sd-btn err"  onclick="mTriggerScan('mNone')"><span class="sd-dot"></span>No active membership</button>
       <button class="sd-btn err"  onclick="mTriggerScan('err')"><span class="sd-dot"></span>Not eligible</button>
+    </div>
+
+    <!-- demo: app check-in flow trigger panel -->
+    <div class="scan-demo" id="mAppDemo" style="display:none">
+      <div class="sd-label">Simulate app check-in</div>
+      <button class="sd-btn ok"   onclick="mAppResult('success')"><span class="sd-dot"></span>Allowed · in range · checked in</button>
+      <button class="sd-btn err"  onclick="mAppResult('out')"><span class="sd-dot"></span>Allowed · out of range</button>
+      <button class="sd-btn err"  onclick="mAppResult('denied')"><span class="sd-dot"></span>Location not allowed</button>
     </div>
   </div>
 
@@ -2139,6 +2183,19 @@ button{font-family:var(--sans)}
                     <button class="set-btn ghost sm" id="kioskAddBtn" style="margin-top:4px" onclick="onbAddKiosk()">+ Add a Kiosk</button>
 
                     <!-- Static QR — printed code clients scan with their own phone -->
+                    <div class="setpg-sec-h">Member app check-in</div>
+                    <div class="setpg-sec-d2">Members check themselves in from the Wix Spaces app, without scanning anything at the door.</div>
+                    <div class="set-card">
+                      <div class="set-row">
+                        <div class="set-si"><div class="set-lt">Check in from the member app</div><div class="set-ld">Members open the app and tap to check in for their session.</div></div>
+                        <div class="set-sv"><span class="set-tog" id="mAppTog" onclick="onbToggleMApp(this)"></span></div>
+                      </div>
+                      <div class="set-row" id="mAppGeoRow" style="display:none">
+                        <div class="set-si"><div class="set-lt">Require location check</div><div class="set-ld">Members must be at your business location to check in. The app confirms their location first.</div></div>
+                        <div class="set-sv"><span class="set-tog" id="mAppGeoTog" onclick="onbToggleMAppGeo(this)"></span></div>
+                      </div>
+                    </div>
+
                     <div class="setpg-sec-h">Static QR</div>
                     <div class="setpg-sec-d2">A fixed QR code you print and post at your entrance. Clients scan it with their own phone, sign in, and check in. No tablet needed.</div>
                     <div class="set-card">
@@ -2813,10 +2870,16 @@ var stacks={};
 function curScr(vp){return vp.querySelector('.scr.on');}
 /* member scan-demo panel — visible only while the member surface shows the QR pass screen */
 function updateMScanDemo(){
-  var msd=document.getElementById('mScanDemo'); if(!msd) return;
+  // one context-aware demo panel per screen (no view switcher)
+  var msd=document.getElementById('mScanDemo'); var mad=document.getElementById('mAppDemo');
   var onMember=document.getElementById('surf-member').classList.contains('on');
+  // QR-pass demo: only while the QR pass is open
   var onPass=document.getElementById('m-pass').classList.contains('on');
-  msd.style.display=(onMember && onPass)?'flex':'none';
+  if(msd) msd.style.display=(onMember && onPass)?'flex':'none';
+  // app-check-in demo: while the location permission dialog is up
+  var ov=document.getElementById('mGeoOverlay');
+  var geoOpen=ov&&ov.classList.contains('show');
+  if(mad) mad.style.display=(onMember && geoOpen)?'flex':'none';
 }
 /* owner demo panels (both float on the right): owner-state on the HOME screen, scan-result on the SCANNER screen */
 function updateOwnerPanels(){
@@ -2897,7 +2960,14 @@ var MRESULTS={
  mNone:{cls:'er',accent:'#D7382B',accentDk:'#B82C20',icon:'<circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/>',sw:2.4,h:'No active membership',
      b:'No plan that grants entry was found.<br>Speak to staff to start a membership.'},
  err:{cls:'er',accent:'#D7382B',accentDk:'#B82C20',icon:'<circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/>',sw:2.4,h:'Not eligible',
-     b:'No booking or active plan found for this session.'}
+     b:'No booking or active plan found for this session.'},
+ /* app check-in outcomes */
+ appSuccess:{cls:'ok',accent:'#3B8332',accentDk:'#2C6627',icon:'<path d="M5 13l4 4L19 7"/>',sw:3,h:"You're checked in",
+     b:'Checked in to <b>Vinyasa Flow</b><br>Today · 9:00 AM · Broadway studio'},
+ appOut:{cls:'er',accent:'#D7382B',accentDk:'#B82C20',icon:'<path d="M12 21s7-5.5 7-11a7 7 0 10-14 0c0 5.5 7 11 7 11z"/><path d="M9.5 9.5l5 5M14.5 9.5l-5 5"/>',sw:2.2,h:'You’re too far away',
+     b:'You need to be at <b>Broadway studio</b> to check in.<br>Get closer, or ask staff to check you in.'},
+ appDenied:{cls:'er',accent:'#D7382B',accentDk:'#B82C20',icon:'<path d="M12 21s7-5.5 7-11a7 7 0 10-14 0c0 5.5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/>',sw:2.2,h:'Location needed',
+     b:'Turn on location access to check in from the app.<br>Or show your QR pass to staff instead.'}
 };
 function mTriggerScan(type){
   var btn=document.querySelector('.launch button[data-surf="member"]');
@@ -2927,6 +2997,24 @@ function mShowResult(type){
   to.classList.remove('left','right');to.classList.add('on');
   stacks['vpMember']=['m-result'];
   updateMScanDemo();
+}
+
+/* ---------- member: App check-in flow (self check-in from the app) ---------- */
+function mAppCheckIn(){
+  // demo: open the location permission dialog right on the home screen (geo enforcement on)
+  var o=document.getElementById('mGeoOverlay'); if(o) o.classList.add('show');
+  updateMScanDemo();
+}
+function mAppResult(type){
+  var o=document.getElementById('mGeoOverlay'); if(o) o.classList.remove('show');
+  updateMScanDemo();
+  if(type==='geoResolve'){
+    // "Allow once" tapped → resolve to in-range success in the demo
+    setTimeout(function(){ mAppResult('success'); }, 350);
+    return;
+  }
+  var map={success:'appSuccess',out:'appOut',denied:'appDenied'};
+  mShowResult(map[type]||'appSuccess');
 }
 
 /* ---------- surface switch ---------- */
@@ -3285,6 +3373,14 @@ function onbToggleStaticQR(el){
   var on=el.classList.contains('on');
   ['staticQrRow','staticQrSigninRow'].forEach(function(id){ var r=document.getElementById(id); if(r){ r.style.display=on?'':'none'; } });
 }
+/* Member app check-in — with optional geo enforcement */
+function onbToggleMApp(el){
+  el.classList.toggle('on');
+  var on=el.classList.contains('on');
+  var geoRow=document.getElementById('mAppGeoRow'); if(geoRow) geoRow.style.display=on?'':'none';
+  if(!on){ var g=document.getElementById('mAppGeoTog'); if(g) g.classList.remove('on'); }  // turning the method off resets the geo toggle
+}
+function onbToggleMAppGeo(el){ el.classList.toggle('on'); }
 function openStaticQR(){
   document.getElementById('staticQRImg').innerHTML=qrSVG('checkin-static',200);
   document.getElementById('onbStaticModal').classList.add('show');
