@@ -54,8 +54,9 @@
 
   /* the opt-in GV helper — collapsed by default */
   .helper{margin-top:14px;border:1px dashed var(--ln);border-radius:8px;padding:13px 16px}
-  .helper .q{font-size:13px;color:var(--mut)}
+  .helper .q{font-size:13px;color:var(--mut);line-height:1.45}
   .helper .q b{color:var(--ink);font-weight:600}
+  .helper .q .qh{display:block;margin-bottom:2px}
   .helper .reveal{display:inline-block;margin-top:7px;font-size:14px;font-weight:600;color:var(--blue-dk);background:none;border:none;cursor:pointer;padding:0}
   .helper .reveal:hover{text-decoration:underline}
 
@@ -100,6 +101,46 @@
 
   .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;font-size:14px;padding:11px 20px;border-radius:8px;opacity:0;transition:.25s;pointer-events:none;z-index:10}
   .toast.show{opacity:1}
+
+  /* ---- Setup Guide wizard ---- */
+  .wiz{width:520px;max-width:100%;background:#fff;border-radius:8px;box-shadow:0 10px 40px rgba(0,0,0,.25);transform:translateY(8px);transition:.2s;display:flex;flex-direction:column;max-height:88vh}
+  .scrim.show .wiz{transform:none}
+  .wiz-head{display:flex;align-items:flex-start;justify-content:space-between;padding:22px 24px 4px}
+  .wiz-head h2{font-size:20px;font-weight:700}
+  .wiz-head .sub{font-size:13px;color:var(--mut);margin-top:3px}
+  .wiz-body{padding:14px 24px 8px;overflow:auto}
+  .wiz-q{font-size:14px;color:var(--mut);margin-bottom:6px}
+  .wiz-qh{font-size:12px;color:var(--mut);margin-bottom:12px}
+  .opt{border:1.5px solid var(--fieldBd);border-radius:8px;padding:12px 16px;margin-bottom:10px;cursor:pointer;display:flex;gap:11px;align-items:flex-start;transition:.12s}
+  .opt:hover{border-color:var(--blue)}
+  .opt.sel{border-color:var(--blue);background:var(--blueBg)}
+  .opt .radio{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--fieldBd);flex-shrink:0;margin-top:1px;position:relative}
+  .opt.sel .radio{border-color:var(--blue)}
+  .opt.sel .radio::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--blue)}
+  .opt .ttl{font-size:14px;font-weight:600}
+  .opt .desc{font-size:12px;color:var(--mut);margin-top:2px}
+  .wiz-note{background:var(--blueBg);border:1px solid #b3deff;border-radius:8px;padding:11px 14px;font-size:13px;line-height:1.45;margin-top:6px}
+  .wiz-note.ok{background:#eafaf0;border-color:#b6ecc9}
+  .num-strip{background:#f7f9fb;border:1px solid var(--ln);border-radius:8px;padding:12px 14px;display:flex;align-items:center;gap:12px;margin-bottom:14px}
+  .num-strip .k{font-size:12px;color:var(--mut)}
+  .num-strip .v{font-size:15px;font-weight:700}
+  .num-strip button{margin-left:auto;font-size:12px;font-weight:600;color:var(--blue-dk);background:#fff;border:1px solid var(--fieldBd);border-radius:16px;padding:6px 13px;cursor:pointer}
+  .wiz-steps{list-style:none;counter-reset:w;margin:2px 0 4px}
+  .wiz-steps li{position:relative;padding:0 0 15px 34px;font-size:14px;line-height:1.5}
+  .wiz-steps li::before{counter-increment:w;content:counter(w);position:absolute;left:0;top:-1px;width:22px;height:22px;border-radius:50%;background:var(--ink);color:#fff;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;font-family:'Wix Madefor Display'}
+  .wiz-steps li:not(:last-child)::after{content:"";position:absolute;left:10px;top:24px;bottom:1px;width:2px;background:var(--ln)}
+  .wiz-steps .snote{font-size:12.5px;color:var(--mut);margin-top:3px}
+  .wiz-steps code{background:#eef1f4;border-radius:4px;padding:1px 6px;font-family:'Wix Madefor Display',monospace;font-size:13px}
+  .wiz-deact{font-size:13px;color:var(--ink);margin-top:4px}
+  .wiz-foot{display:flex;align-items:center;gap:10px;padding:14px 24px;border-top:1px solid var(--ln);margin-top:8px}
+  .wiz-foot .portal{margin-right:auto;font-size:13px;font-weight:600;color:var(--blue-dk);text-decoration:none;display:inline-flex;align-items:center;gap:4px}
+  .wiz-foot .portal:empty{display:none}
+  .wiz-code{border:1px solid #b3deff;background:var(--blueBg);border-radius:8px;padding:13px 15px;margin-top:9px}
+  .wiz-code .cap{font-size:12.5px;color:var(--mut);margin-bottom:9px}
+  .wiz-code .code-row{display:flex;align-items:center;gap:10px}
+  .wiz-code .code-val{font-family:'Wix Madefor Display',monospace;font-size:24px;font-weight:700;letter-spacing:5px;background:#fff;border:1px solid var(--fieldBd);border-radius:8px;padding:6px 16px;min-width:150px;text-align:center}
+  .wiz-code .code-val.empty{color:var(--mut);letter-spacing:0;font-size:14px;font-weight:500;font-family:'Wix Madefor Text';display:flex;align-items:center;gap:8px;justify-content:flex-start}
+  .wiz-code-hint{font-size:12.5px;color:var(--mut);margin-top:9px;line-height:1.45}
 </style>
 
 <!-- ============ MAIN SETTINGS SCREEN (general, provider-agnostic) ============ -->
@@ -138,12 +179,12 @@
       <div class="blk-title">Call forwarding</div>
       <div class="fwd">
         <p>Route calls from your existing number to your agent. Follow the setup guide for provider-specific instructions.</p>
-        <button class="btn pri" onclick="toast('Opening setup guide…')">Open Setup Guide</button>
+        <button class="btn pri" onclick="openWiz()">Open Setup Guide</button>
 
         <!-- Opt-in entry point: only users who proactively need it -->
         <div class="helper">
-          <div class="q"><b>Does your provider need to verify Alfred’s number?</b> Some providers (like Google Voice) send a code to it before they’ll forward calls.</div>
-          <button class="reveal" onclick="openGV()">Get my verification code →</button>
+          <div class="q"><b class="qh">Connecting a Google Voice number?</b>Google Voice texts a code to verify this number before it forwards calls.</div>
+          <button class="reveal" onclick="openGV()">Get verification code →</button>
         </div>
       </div>
 
@@ -169,16 +210,16 @@
 <div class="scrim" id="gv">
   <div class="gv">
     <div class="gv-head">
-      <h2>Get your verification code</h2>
+      <h2>Google Voice verification code</h2>
       <button class="x" onclick="closeGV()">✕</button>
     </div>
     <div class="gv-body">
-      <div class="gv-sub">Add Alfred’s number to your provider and it sends a verification code to that number. Alfred catches the code and shows it here, so you can paste it back into your provider.</div>
+      <div class="gv-sub">Google Voice texts a code to this number to confirm you own it. It shows here the moment it arrives, so you can copy it back into Google Voice.</div>
 
       <ol class="steps">
-        <li>Add Alfred’s number as a forwarding or linked number: <b>+1 (947) 837-8716</b>.<div class="eg">In Google Voice: Settings → Linked numbers → New linked number</div></li>
-        <li>Once your provider sends the code, it appears below.</li>
-        <li>Enter the code in your provider to finish connecting.</li>
+        <li>In Google Voice, add this number as a linked number: <b>+1 (947) 837-8716</b>.<div class="eg">In Google Voice: Settings → Linked numbers → New linked number</div></li>
+        <li>Google Voice texts a code to this number. It shows below in a few seconds.</li>
+        <li>Copy the code into Google Voice to finish.</li>
       </ol>
 
       <div class="code-block">
@@ -190,11 +231,30 @@
             Copy
           </button>
         </div>
-        <div class="code-hint" id="hint">This usually takes a few seconds. Keep this window open. Nothing yet? Resend the code from your provider.</div>
+        <div class="code-hint" id="hint">This usually takes a few seconds. Keep this window open. Nothing yet? Resend the code from Google Voice.</div>
       </div>
     </div>
     <div class="gv-foot">
       <button class="btn ghost" onclick="closeGV()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SETUP GUIDE WIZARD ============ -->
+<div class="scrim" id="wiz">
+  <div class="wiz">
+    <div class="wiz-head">
+      <div>
+        <h2>Set up call forwarding</h2>
+        <div class="sub">Route your business calls to your agent’s number, +1 (947) 837-8716.</div>
+      </div>
+      <button class="x" onclick="closeWiz()">✕</button>
+    </div>
+    <div class="wiz-body" id="wizBody"></div>
+    <div class="wiz-foot">
+      <a class="portal" id="wizPortal" target="_blank" rel="noopener"></a>
+      <button class="btn ghost" id="wizBack" onclick="wizBack()" style="display:none">Back</button>
+      <button class="btn pri" id="wizNext" onclick="wizNext()" disabled>Next</button>
     </div>
   </div>
 </div>
@@ -219,23 +279,284 @@
     const c=document.getElementById('code');
     c.classList.add('empty');c.innerHTML="<span class='spin'></span> Waiting for code";
     document.getElementById('copy').style.display='none';
-    document.getElementById('hint').textContent="This usually takes a few seconds. Keep this window open. Nothing yet? Resend the code from your provider.";
+    document.getElementById('hint').textContent="This usually takes a few seconds. Keep this window open. Nothing yet? Resend the code from Google Voice.";
   }
   function receiveCode(){
     document.getElementById('cap').textContent = "Your verification code";
     const c=document.getElementById('code');
     c.classList.remove('empty');c.textContent=CODE;
     document.getElementById('copy').style.display='inline-flex';
-    document.getElementById('hint').innerHTML="Didn’t get it? Resend the code from your provider and the new one shows here.";
+    document.getElementById('hint').innerHTML="Didn’t get it? Resend the code from Google Voice and the new one shows here.";
   }
   function copyCode(){
     navigator.clipboard && navigator.clipboard.writeText(CODE.replace(/\s/g,''));
-    toast('Code copied — paste it in your provider');
+    toast('Code copied — paste it in Google Voice');
   }
   let tt;
   function toast(msg){
     const t=document.getElementById('toast');
     t.textContent=msg;t.classList.add('show');
     clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2200);
+  }
+
+  /* ================= SETUP GUIDE WIZARD =================
+     Ported from wix-private/alfred CallForwardingModal.tsx (commit 6e5da8d).
+     Flow: type → (cell only) forwarding-type → provider → instructions.  */
+  const NUM = "+1 (947) 837-8716";        // formatted, for display
+  const RAW = "+19478378716";             // E.164, for dial codes
+  const DIG = "9478378716";               // digits only (8x8)
+
+  const PROVIDERS = {
+    cell: ['AT&T','T-Mobile','Verizon'],
+    landline: ['AT&T Home','Verizon Fios','Xfinity','CenturyLink','Other'],
+    voip: ['Vonage','Ooma','Google Voice','RingCentral','8x8','Grasshopper']
+  };
+  const PORTAL_ONLY = new Set(['Google Voice','RingCentral','8x8','Grasshopper']);
+
+  // Real copy from messages_en.json
+  function instructions(type, provider, fwd){
+    if(type==='cell'){
+      if(provider==='AT&T'||provider==='T-Mobile'){
+        return fwd==='always' ? {
+          steps:[{l:"Open your phone's dialer app."},
+                 {l:`Dial <code>**21*${RAW}#</code>, then tap Call.`},
+                 {l:"Wait for a confirmation."},
+                 {l:"All incoming calls are now forwarded to your agent."}],
+          deactivate:"To turn this off, dial ##21#, then tap Call."
+        } : {
+          steps:[{l:"Open your phone's dialer app."},
+                 {l:`Dial <code>**004*${RAW}#</code>, then tap Call.`,n:"Calls are forwarded to your agent when you're busy, do not answer, or have no signal."},
+                 {l:"Wait for a confirmation."},
+                 {l:"Your calls are now forwarded to your agent when you're unavailable."}],
+          deactivate:"To turn this off, dial ##004#, then tap Call."
+        };
+      }
+      if(provider==='Verizon'){
+        return fwd==='always' ? {
+          steps:[{l:"Open your phone's dialer app."},
+                 {l:`Dial <code>*72${RAW}</code>, then tap Call.`},
+                 {l:"Wait for a confirmation."},
+                 {l:"All incoming calls are now forwarded to your agent."}],
+          deactivate:"To turn this off, dial *73, then tap Call."
+        } : {
+          steps:[{l:"Open your phone's dialer app."},
+                 {l:`Dial <code>*71${RAW}</code>, then tap Call.`,n:"Calls are forwarded when you're busy or do not answer."},
+                 {l:"Wait for a confirmation."},
+                 {l:"Your calls are now forwarded to your agent when you're unavailable."}],
+          deactivate:"To turn this off, dial *73, then tap Call."
+        };
+      }
+    }
+    if(type==='landline'){
+      if(provider==='Xfinity') return {
+        steps:[{l:"Pick up your landline phone."},
+               {l:`Dial *72, wait for a dial tone, then dial ${NUM}.`},
+               {l:"A courtesy call is placed to your agent's number. Answer it to activate call forwarding."},
+               {l:"Wait for a confirmation."}],
+        deactivate:"To turn this off, pick up your phone and dial *73."
+      };
+      if(provider==='CenturyLink') return {
+        steps:[{l:"Pick up your landline phone."},
+               {l:"Dial *72 and wait for a stutter tone, then a regular dial tone."},
+               {l:`Dial ${NUM} and wait for the call to be answered.`},
+               {l:"Wait for a confirmation."}],
+        deactivate:"To turn this off, pick up your phone and dial *73.",
+        note:"If your number is private or unlisted, dial *82 before *72 to temporarily unblock caller ID."
+      };
+      if(provider==='Verizon Fios') return {
+        steps:[{l:"Pick up your landline phone."},
+               {l:"Dial *72 and wait for two short tones."},
+               {l:`Dial ${NUM}.`},
+               {l:"Forwarding activates when the call is answered."}],
+        deactivate:"To turn this off, pick up your phone and dial *73."
+      };
+      return { // AT&T Home / Other
+        steps:[{l:"Pick up your landline phone."},
+               {l:"Dial *72 and wait for a dial tone."},
+               {l:`Dial ${NUM} and wait for the call to be answered.`},
+               {l:"Wait for a confirmation."}],
+        deactivate:"To turn this off, pick up your phone and dial *73."
+      };
+    }
+    if(type==='voip'){
+      if(provider==='Vonage') return {
+        steps:[{l:"Pick up your Vonage phone."},
+               {l:`Dial *72 and wait for a dial tone, then enter ${NUM} and press 1 to confirm.`},
+               {l:"Your calls are now forwarded to your agent."}],
+        deactivate:"To turn this off, dial *73.",
+        note:"You can also configure this in the Vonage account portal under My Numbers.",
+        portalUrl:"https://app.vonage.com/login", portalLabel:"Open Vonage Portal"
+      };
+      if(provider==='Ooma') return {
+        steps:[{l:"Pick up your Ooma phone."},
+               {l:"Dial *72 and wait for a prompt."},
+               {l:`Dial ${NUM}# to set the forwarding destination.`},
+               {l:"Your calls are now forwarded to your agent."}],
+        deactivate:"To turn this off, dial *73. To toggle using the last saved number, dial *74."
+      };
+      if(provider==='Google Voice') return {
+        steps:[{l:"Open Google Voice (voice.google.com or the mobile app)."},
+               {l:"Go to Settings (gear icon)."},
+               {l:"Under Linked numbers, click New linked number."},
+               {l:`Enter ${NUM}.`},
+               {l:"When Google Voice asks for a verification code, don’t check your phone. It’s texted to Alfred’s number and shows below. Copy it into Google Voice.",code:true},
+               {l:"Turn the linked number on."}],
+        portalUrl:"https://voice.google.com", portalLabel:"Open Google Voice"
+      };
+      if(provider==='RingCentral') return {
+        steps:[{l:"Open the RingCentral app (desktop or mobile)."},
+               {l:"Click your profile picture, then select Settings."},
+               {l:"Go to Phone > Call Handling & Forwarding."},
+               {l:"Select Forward to external number."},
+               {l:`Enter ${NUM}.`},
+               {l:"Click Save."}],
+        portalUrl:"https://app.ringcentral.com", portalLabel:"Open RingCentral"
+      };
+      if(provider==='8x8') return {
+        steps:[{l:"Log in to the 8x8 Admin Console."},
+               {l:"Click Users, then click Edit (pencil icon) next to your extension."},
+               {l:"Select Call forwarding rules."},
+               {l:"Click Edit next to the scenario you want (Always, No Answer, or Busy)."},
+               {l:`Choose Forward Directly To and enter <code>+1${DIG}</code>.`},
+               {l:"Save the user profile."}],
+        portalUrl:"https://admin.8x8.com", portalLabel:"Open 8x8 Admin Console"
+      };
+      if(provider==='Grasshopper') return {
+        steps:[{l:"Sign in to your Grasshopper account (grasshopper.com)."},
+               {l:"Go to Settings > Call Forwarding > Extensions."},
+               {l:"Click Edit next to the extension you want to use."},
+               {l:`Enter ${NUM} as the forwarding destination.`},
+               {l:"Choose your rule: Always Forward, Forward on No Answer, or Forward When Busy."},
+               {l:"Click Save."}],
+        note:"You can also do this in the Grasshopper mobile app under settings for your business number.",
+        portalUrl:"https://portal.us.grasshopper.com/login.aspx", portalLabel:"Open Grasshopper"
+      };
+    }
+    // default fallback
+    return {
+      steps:[{l:"Open your phone's dialer app."},
+             {l:`Try dialing: <code>*72${RAW}</code> then tap Call`},
+             {l:`If that doesn't work, try: <code>**21*${RAW}#</code> then tap Call`},
+             {l:"If neither works, log into your phone provider's portal and look for Call Forwarding settings"}],
+      note:`If prompted, enter Alfred's number: ${NUM}`
+    };
+  }
+
+  // Wizard state
+  let wStep='type', wType=null, wFwd=null, wProv=null, wPend=null;
+
+  function openWiz(){ wStep='type'; wType=wFwd=wProv=wPend=null; document.getElementById('wiz').classList.add('show'); renderWiz(); }
+  function closeWiz(){ clearTimeout(wizCodeTimer); document.getElementById('wiz').classList.remove('show'); }
+
+  function pick(v){ wPend=v; renderWiz(); }
+
+  function wizNext(){
+    if(wStep==='instructions'){ closeWiz(); toast('Call forwarding set up'); return; }
+    if(wStep==='type'){ wType=wPend; wPend=null; wStep = wType==='cell' ? 'fwd' : 'provider'; }
+    else if(wStep==='fwd'){ wFwd=wPend; wPend=null; wStep='provider'; }
+    else if(wStep==='provider'){ wProv=wPend; wPend=null; wStep='instructions'; }
+    renderWiz();
+  }
+  function wizBack(){
+    clearTimeout(wizCodeTimer);
+    if(wStep==='fwd'){ wStep='type'; wPend=wType; }
+    else if(wStep==='provider'){ wPend=null; wStep = wType==='cell' ? 'fwd' : 'type'; if(wStep==='fwd') wPend=wFwd; else wPend=wType; }
+    else if(wStep==='instructions'){ wStep='provider'; wPend=wProv; }
+    renderWiz();
+  }
+
+  function optRow(val,title,desc){
+    const sel = wPend===val ? ' sel' : '';
+    return `<div class="opt${sel}" onclick="pick('${val.replace(/'/g,"\\'")}')">`
+         + `<div class="radio"></div><div><div class="ttl">${title}</div>`
+         + (desc?`<div class="desc">${desc}</div>`:'') + `</div></div>`;
+  }
+
+  /* Inline verification code, surfaced right inside the Google Voice step */
+  let wizCodeTimer;
+  function inlineCodeBlock(){
+    return `<div class="wiz-code" id="wizCode">
+        <div class="cap" id="wizCodeCap">Waiting for the code from Google Voice…</div>
+        <div class="code-row">
+          <div class="code-val empty" id="wizCodeVal"><span class="spin"></span> Waiting for the code…</div>
+          <button class="copy-btn" id="wizCodeCopy" style="display:none"
+            onclick="navigator.clipboard&&navigator.clipboard.writeText('${CODE.replace(/\s/g,'')}');toast('Code copied. Paste it in Google Voice.')">Copy</button>
+        </div>
+        <div class="wiz-code-hint" id="wizCodeHint">Google Voice texts it to Alfred’s number. It usually arrives in a few seconds.</div>
+      </div>`;
+  }
+  function startWizCode(){
+    clearTimeout(wizCodeTimer);
+    wizCodeTimer = setTimeout(()=>{
+      const cap=document.getElementById('wizCodeCap');
+      const val=document.getElementById('wizCodeVal');
+      const copy=document.getElementById('wizCodeCopy');
+      const hint=document.getElementById('wizCodeHint');
+      if(!val) return; // user navigated away
+      cap.textContent="Your verification code";
+      val.classList.remove('empty'); val.textContent=CODE;
+      copy.style.display='inline-flex';
+      hint.innerHTML="Copy this code into Google Voice to finish. Didn’t get it? Resend it from Google Voice and the new code shows here.";
+    }, 3000);
+  }
+
+  function renderWiz(){
+    const body=document.getElementById('wizBody');
+    const back=document.getElementById('wizBack');
+    const next=document.getElementById('wizNext');
+    const portal=document.getElementById('wizPortal');
+    portal.textContent=''; portal.removeAttribute('href');
+    back.style.display = wStep==='type' ? 'none' : 'inline-block';
+
+    if(wStep==='type'){
+      body.innerHTML = `<div class="wiz-q">What type of phone do you currently use for business calls?</div>`
+        + optRow('cell','Mobile phone','e.g., AT&T, T‑Mobile, Verizon')
+        + optRow('landline','Landline','e.g., AT&T Home, Verizon Fios, Xfinity, CenturyLink')
+        + optRow('voip','VoIP service','e.g., Vonage, Ooma, Google Voice, RingCentral, 8x8, Grasshopper');
+      next.textContent='Next'; next.disabled = !wPend;
+    }
+    else if(wStep==='fwd'){
+      body.innerHTML = `<div class="wiz-q">When do you want calls forwarded to your agent?</div>`
+        + optRow('always','Always','Forward every incoming call to your agent.')
+        + optRow('conditional',"When you're unavailable","Calls are forwarded to your agent when you're busy, do not answer, or have no signal.")
+        + `<div class="wiz-note">You can change this at any time in settings.</div>`;
+      next.textContent='Next'; next.disabled = !wPend;
+    }
+    else if(wStep==='provider'){
+      const q = wType==='landline' ? 'Select your landline provider'
+              : wType==='voip' ? 'Select your VoIP provider'
+              : 'Who is your mobile provider?';
+      let html = `<div class="wiz-q">${q}</div>`;
+      if(wType==='cell') html += `<div class="wiz-qh">Don't see your provider? Select AT&T, it works for most carriers.</div>`;
+      html += PROVIDERS[wType].map(p=>optRow(p,p,'')).join('');
+      body.innerHTML = html;
+      next.textContent='Next'; next.disabled = !wPend;
+    }
+    else { // instructions
+      const ins = instructions(wType,wProv,wFwd);
+      const isPortal = wType==='voip' && PORTAL_ONLY.has(wProv);
+      const intro = isPortal ? `Follow these steps in the ${wProv} app or portal.`
+                             : `Follow these steps on your phone to forward calls to your agent.`;
+      let html = `<div class="wiz-q">${intro}</div>`;
+      // show the number strip for non-portal flows (dialer codes reference it)
+      if(!isPortal){
+        html += `<div class="num-strip"><div><div class="k">Number to enter (Alfred’s number)</div><div class="v">${NUM}</div></div>`
+              + `<button onclick="navigator.clipboard&&navigator.clipboard.writeText('${NUM}');toast('Number copied')">Copy</button></div>`;
+      }
+      html += `<ul class="wiz-steps">` + ins.steps.map(s=>{
+        let inner = s.l;
+        if(s.n) inner += `<div class="snote">${s.n}</div>`;
+        if(s.code) inner += inlineCodeBlock();
+        return `<li>${inner}</li>`;
+      }).join('') + `</ul>`;
+      if(ins.note) html += `<div class="wiz-note">${ins.note}</div>`;
+      if(ins.deactivate) html += `<div class="wiz-deact">${ins.deactivate}</div>`;
+      html += `<div class="wiz-note ok">Test it by calling your business number. Your agent should answer.</div>`;
+      body.innerHTML = html;
+      if(ins.portalUrl){ portal.textContent = (ins.portalLabel||'Open portal')+' ↗'; portal.href=ins.portalUrl; }
+      next.textContent='Done'; next.disabled=false;
+      // If this step surfaces the verification code, start "catching" it now.
+      if(ins.steps.some(s=>s.code)) startWizCode();
+    }
   }
 </script>
