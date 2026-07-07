@@ -40,11 +40,11 @@ button{font-family:var(--sans)}
 .exp-reset:hover{background:rgba(255,255,255,.22)}
 .tb-in p{margin:5px 0 14px;opacity:.85;font-size:13px}
 .launch{display:flex;gap:6px;flex-wrap:wrap}
-.launch button{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);color:#fff;font-size:13.5px;font-weight:600;padding:9px 15px;border-radius:10px 10px 0 0;cursor:pointer;display:flex;align-items:center;gap:7px}
+.launch button{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);color:#fff;font-size:13.5px;font-weight:600;padding:9px 13px;border-radius:10px 10px 0 0;cursor:pointer;display:flex;align-items:center}
+.launch button svg{width:17px;height:17px;flex:0 0 auto}
+.launch button .lbl{max-width:62px;opacity:.75;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;margin-left:8px;transition:max-width .28s ease,opacity .18s ease}
+.launch button:hover .lbl,.launch button.on .lbl{max-width:170px;opacity:1}
 .launch button.on{background:#eef2f8;color:var(--b10);border-color:#eef2f8}
-.launch button .dot{width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.8}
-.launch button .wip{font-size:9px;font-weight:800;letter-spacing:.04em;line-height:1;padding:2px 5px;border-radius:5px;background:#FFC233;color:#5A3A00}
-.launch button.on .wip{background:#FFC233;color:#5A3A00}
 
 /* stage */
 .stage{background:#eef2f8;min-height:calc(100vh - 118px);padding:34px 16px 60px;display:flex;justify-content:center;align-items:flex-start}
@@ -751,6 +751,94 @@ button{font-family:var(--sans)}
 .ae-time-in{border:1px solid #c5cad3;border-radius:6px;padding:5px 11px;font-size:13px;color:#16213A;background:#fff}
 .ae-dash{color:#868aa5}
 .ae-day.off .ae-time,.ae-day.off .ae-day-lbl{opacity:.45}
+/* ===== Apple Wallet flow ===== */
+.wal-scroll{flex:1;overflow-y:auto;background:#F0F1F5}
+.wal-scroll::-webkit-scrollbar{width:0}
+/* generic Wix-branded pass card (used across app + wallet) */
+.wpass{position:relative;border-radius:16px;overflow:hidden;color:#fff;box-shadow:0 10px 30px rgba(11,17,40,.22);background:linear-gradient(150deg,#1B2A6B 0%,#116DFF 60%,#3B8DFF 100%)}
+.wpass.evt{background:linear-gradient(150deg,#5A48F5 0%,#8A3BE0 100%)}
+.wpass-top{display:flex;align-items:center;gap:9px;padding:15px 16px 10px}
+.wpass-logo{font-family:var(--disp);font-weight:800;font-size:14px;letter-spacing:.02em}
+.wpass-logo b{opacity:.9;font-weight:600}
+.wpass-kind{margin-left:auto;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:rgba(255,255,255,.2);border-radius:5px;padding:3px 7px}
+.wpass-primary{padding:2px 16px 14px}
+.wpass-plabel{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;opacity:.7}
+.wpass-pval{font-size:20px;font-weight:800;font-family:var(--disp);line-height:1.15}
+.wpass-fields{display:flex;padding:0 16px 14px;gap:22px}
+.wpass-f .l{font-size:9.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;opacity:.7}
+.wpass-f .v{font-size:13px;font-weight:600;margin-top:2px}
+.wpass-strip{height:74px;background:linear-gradient(120deg,rgba(255,255,255,.14),rgba(255,255,255,0));display:flex;align-items:center;gap:12px;padding:0 16px;border-top:1px solid rgba(255,255,255,.14);border-bottom:1px solid rgba(255,255,255,.14)}
+.wpass-strip .ico{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.16);display:grid;place-items:center;flex:0 0 40px}
+.wpass-qrz{background:#fff;padding:14px;display:flex;flex-direction:column;align-items:center;gap:8px}
+.wpass-qrz .qr-box{width:150px;height:150px;margin:0}
+.wpass-qrz .ser{font-size:10px;color:#849AA9;font-family:ui-monospace,Menlo,monospace}
+/* generic entry-point cards / prompt sheets */
+.wal-hd{padding:18px 18px 6px}
+.wal-hd .t{font-size:20px;font-weight:800;font-family:var(--disp);color:#162D3D}
+.wal-hd .s{font-size:13.5px;color:#5B6478;margin-top:4px;line-height:1.45}
+.wal-pad{padding:16px 18px 24px}
+.wal-sec-l{font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#849AA9;margin:20px 4px 8px}
+/* the official "Add to Apple Wallet" button */
+.awbtn{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;height:50px;background:#000;color:#fff;border:none;border-radius:9px;font-size:16px;font-weight:600;cursor:pointer;font-family:var(--sans);margin-top:16px}
+.awbtn svg{width:22px;height:22px}
+.awbtn.sm{height:42px;font-size:14px;border-radius:8px;margin-top:12px}
+/* list rows (profile / settings entry point) */
+.wal-row{display:flex;align-items:center;gap:13px;background:#fff;border-radius:12px;padding:15px 15px;cursor:pointer}
+.wal-row+.wal-row{margin-top:10px}
+.wal-row .ic{width:38px;height:38px;border-radius:10px;background:#EEF2FF;display:grid;place-items:center;color:#116DFF;flex:0 0 38px}
+.wal-row .tx{flex:1;min-width:0}
+.wal-row .tx b{font-size:14.5px;color:#162D3D;font-weight:600}
+.wal-row .tx span{display:block;font-size:12.5px;color:#5B6478;margin-top:2px}
+.wal-row .chev{color:#B6C1CD}
+/* push / lock-screen notification */
+#w-push .statusbar{position:absolute;top:0;left:0;right:0;z-index:10}
+#w-push .statusbar>span:first-child{visibility:hidden}
+.wal-lock{position:absolute;inset:0;background:linear-gradient(160deg,#1c2340,#3a2a63 60%,#6b3f8f);display:flex;flex-direction:column;color:#fff;z-index:5}
+.wal-lock-time{text-align:center;margin-top:52px}
+.wal-lock-time .h{font-size:76px;font-weight:700;letter-spacing:-.02em;line-height:1;font-family:var(--disp)}
+.wal-lock-time .d{font-size:17px;font-weight:600;opacity:.9;margin-top:4px}
+.wal-noti{margin:auto 12px 0;background:rgba(255,255,255,.16);backdrop-filter:blur(14px);border-radius:18px;padding:13px 14px;display:flex;gap:12px;align-items:flex-start;cursor:pointer}
+.wal-noti .ni{width:38px;height:38px;border-radius:9px;background:#fff;display:grid;place-items:center;flex:0 0 38px}
+.wal-noti .nb{flex:1;min-width:0}
+.wal-noti .nt{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;opacity:.95}
+.wal-noti .nt .app{margin-left:auto;font-weight:600;opacity:.7;font-size:11px}
+.wal-noti .nh{font-size:13.5px;font-weight:700;margin-top:4px}
+.wal-noti .np{font-size:13px;opacity:.92;margin-top:2px;line-height:1.35}
+.wal-noti-mail .ni{background:#fff}
+.wal-noti-sub{margin:8px 12px 0;text-align:center;font-size:12px;opacity:.7}
+/* email nudge */
+.wal-mail{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 4px 16px rgba(11,17,40,.1)}
+.wal-mail-hd{padding:14px 16px;border-bottom:1px solid var(--line);font-size:13px;color:#5B6478}
+.wal-mail-hd b{color:#162D3D;font-size:15px;display:block;margin-bottom:3px}
+.wal-mail-bd{padding:20px 18px;text-align:center}
+.wal-mail-bd .mh{font-size:18px;font-weight:800;font-family:var(--disp);color:#162D3D}
+.wal-mail-bd .mp{font-size:13.5px;color:#5B6478;line-height:1.5;margin:8px 0 4px}
+/* native Apple Wallet add-pass sheet */
+.wal-sheet-scrim{position:absolute;inset:0;background:rgba(0,0,0,.35);z-index:70;display:none;align-items:flex-end}
+.wal-sheet-scrim.show{display:flex}
+.wal-sheet{background:#F2F2F7;width:100%;border-radius:14px 14px 0 0;max-height:92%;display:flex;flex-direction:column;animation:walUp .34s cubic-bezier(.36,.66,.04,1)}
+@keyframes walUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.wal-sheet-bar{display:flex;align-items:center;padding:14px 16px;border-bottom:1px solid #d9d9de}
+.wal-sheet-bar .cancel{font-size:16px;color:#007AFF;cursor:pointer}
+.wal-sheet-bar .ttl{flex:1;text-align:center;font-size:16px;font-weight:700;color:#000;margin-right:44px}
+.wal-sheet-bar .add{font-size:16px;font-weight:700;color:#007AFF;cursor:pointer}
+.wal-sheet-body{padding:20px 18px 26px;overflow-y:auto}
+.wal-sheet-body::-webkit-scrollbar{width:0}
+.wal-sheet-issuer{text-align:center;font-size:13px;color:#6b6b70;margin-top:14px}
+.wal-adding{position:absolute;inset:0;background:#000;z-index:80;display:none;flex-direction:column;align-items:center;justify-content:center;gap:22px;color:#fff}
+.wal-adding.show{display:flex}
+.wal-spin{width:46px;height:46px;border-radius:50%;border:3px solid rgba(255,255,255,.25);border-top-color:#fff;animation:walSpin .8s linear infinite}
+@keyframes walSpin{to{transform:rotate(360deg)}}
+.wal-adding .msg{font-size:16px;font-weight:600}
+/* in-Wallet app view */
+.wal-app{flex:1;display:flex;flex-direction:column;background:#000;color:#fff;overflow:hidden}
+.wal-app-hd{padding:6px 20px 10px;display:flex;align-items:center}
+.wal-app-hd .wt{font-size:30px;font-weight:800;font-family:var(--disp)}
+.wal-app-hd .plus{margin-left:auto;width:32px;height:32px;border-radius:50%;background:#1c1c1e;display:grid;place-items:center;font-size:22px;color:#fff}
+.wal-stack{flex:1;overflow-y:auto;padding:6px 16px 20px;position:relative}
+.wal-stack::-webkit-scrollbar{width:0}
+.wal-added-toast{margin:2px 4px 14px;background:#1c1c1e;border-radius:10px;padding:10px 13px;font-size:13px;color:#30d158;display:flex;align-items:center;gap:8px}
+.wal-tap-hint{text-align:center;font-size:12px;color:#8e8e93;margin-top:14px}
 /* setup-web: "set up in mobile" promo (Orion-style) */
 .wm-wrap{flex:1;position:relative;overflow:hidden;display:flex;gap:30px;padding:46px 48px;align-items:center}
 .wm-bg{position:absolute;inset:0;z-index:0;background:
@@ -1385,14 +1473,15 @@ button{font-family:var(--sans)}
   <h1>Check-in Gate<button class="exp-reset" onclick="resetParams()" title="Clear the link and return to the default screen">↺ Reset</button></h1>
   <p>Tap inside the device to use it. In the scanner, <b>tap the frame</b> to simulate scanning the next member in the queue.</p>
   <div class="launch">
-    <button class="on" data-surf="web" onclick="surf('web',this)"><span class="dot"></span>Web Settings</button>
-    <button data-surf="client" onclick="surf('client',this)"><span class="dot"></span>Check In Dashboard</button>
-    <button data-surf="kiosk" onclick="surf('kiosk',this)"><span class="dot"></span>Kiosk</button>
-    <button data-surf="owner" onclick="surf('owner',this)"><span class="dot"></span>Owner App</button>
-    <button data-surf="member" onclick="surf('member',this)"><span class="dot"></span>Member App</button>
-    <button data-surf="setm" onclick="surf('setm',this)"><span class="dot"></span>Mobile Settings</button>
-    <button data-surf="guest" onclick="surf('guest',this)"><span class="dot"></span>Email</button>
-    <button data-surf="plan" onclick="surf('plan',this)"><span class="dot"></span>Pricing Plan Setup</button>
+    <button class="on" data-surf="web" title="Web Settings" onclick="surf('web',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a13.8 13.8 0 014.2 9A13.8 13.8 0 0112 21a13.8 13.8 0 01-4.2-9A13.8 13.8 0 0112 3z"/></svg><span class="lbl">Web Settings</span></button>
+    <button data-surf="client" title="Check In Dashboard" onclick="surf('client',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg><span class="lbl">Check In Dashboard</span></button>
+    <button data-surf="kiosk" title="Kiosk" onclick="surf('kiosk',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M18 12h.01"/></svg><span class="lbl">Kiosk</span></button>
+    <button data-surf="owner" title="Owner App" onclick="surf('owner',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M12 18h.01"/></svg><span class="lbl">Owner App</span></button>
+    <button data-surf="member" title="Member App" onclick="surf('member',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg><span class="lbl">Member App</span></button>
+    <button data-surf="setm" title="Mobile Settings" onclick="surf('setm',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg><span class="lbl">Mobile Settings</span></button>
+    <button data-surf="guest" title="Email" onclick="surf('guest',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><span class="lbl">Email</span></button>
+    <button data-surf="plan" title="Pricing Plan Setup" onclick="surf('plan',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4L12 22 2 12V2h10l8.6 8.6a2 2 0 010 2.8z"/><circle cx="7" cy="7" r="1.5"/></svg><span class="lbl">Pricing Plan Setup</span></button>
+    <button data-surf="wallet" title="Apple Wallet" onclick="surf('wallet',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg><span class="lbl">Apple Wallet</span></button>
   </div>
 </div></div>
 
@@ -3066,6 +3155,142 @@ button{font-family:var(--sans)}
     </div>
   </div>
 
+  <!-- ============ APPLE WALLET FLOW ============ -->
+  <div class="surface-stage" id="surf-wallet">
+    <div class="demo-switch" id="walEntrySwitch" style="display:none">
+      <span class="ds-label">Wallet entry point · demo</span>
+      <button class="ds-btn on" data-we="pass"     onclick="walEntry('pass',this)">From QR pass screen</button>
+      <button class="ds-btn"    data-we="purchase" onclick="walEntry('purchase',this)">After purchase</button>
+      <button class="ds-btn"    data-we="profile"  onclick="walEntry('profile',this)">Profile / home</button>
+      <button class="ds-btn"    data-we="push"     onclick="walEntry('push',this)">Push notification</button>
+      <button class="ds-btn"    data-we="email"    onclick="walEntry('email',this)">Email nudge</button>
+    </div>
+    <div class="phone member"><div class="screen"><div class="notch"></div><div class="viewport" id="vpWallet">
+
+      <!-- ===== w-pass: entry point 1 — QR pass screen with Add to Wallet ===== -->
+      <div class="scr on" id="w-pass">
+        <div class="statusbar light"></div>
+        <div class="m-header" style="padding:6px 16px 14px"><div class="top" style="padding-top:0"><span style="cursor:pointer;display:grid;place-items:center;width:30px;height:30px" onclick="walEntry('profile')"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></span><span style="flex:1;text-align:center;font-size:17px;font-weight:700;margin-right:30px">Entry pass</span></div></div>
+        <div class="pass-wrap" style="background:#F0F1F5">
+          <div class="pass-card">
+            <div><div class="pname">Rom Lampel</div><div class="pplan">Jim's Gym · Standard Plan</div><span class="m-chip active" style="margin-top:10px;display:inline-flex"><span class="d" style="background:#3B8332"></span>Active member</span></div>
+            <div class="qr-box"><img src="https://api.qrserver.com/v1/create-qr-code/?size=440x440&margin=0&data=WIX-PASS%7Cmember%3Arom-lampel%7Csite%3Ajims-gym%7Cplan%3Astandard" alt="entry QR" onerror="this.closest('.qr-box').classList.add('broken')"><div class="qr-fallback"></div></div>
+            <div><div class="valid">Show this to staff to check in</div><div class="pid">Member · #M-4471</div></div>
+            <button class="awbtn sm" onclick="walAdd('membership')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 12.9c-.03-2.4 1.96-3.55 2.05-3.61-1.12-1.64-2.86-1.86-3.48-1.89-1.48-.15-2.89.87-3.64.87-.75 0-1.91-.85-3.14-.83-1.62.02-3.11.94-3.94 2.39-1.68 2.92-.43 7.25 1.21 9.62.8 1.16 1.75 2.46 3 2.41 1.2-.05 1.66-.78 3.11-.78 1.45 0 1.86.78 3.14.75 1.29-.02 2.11-1.18 2.9-2.35.91-1.35 1.29-2.65 1.31-2.72-.03-.01-2.51-.97-2.53-3.83zM14.7 5.9c.66-.8 1.11-1.92.99-3.03-.95.04-2.11.63-2.79 1.43-.61.71-1.15 1.85-1.01 2.94 1.06.08 2.14-.54 2.81-1.34z"/></svg>Add to Apple Wallet</button>
+            <div class="pass-hint" style="margin-top:10px">Auto-refreshes every 60 sec for security</div>
+          </div>
+        </div>
+        <div class="appnav"><div class="tab" onclick="walEntry('profile')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7M6 10v9h12v-9"/></svg>My Sites</div><div class="tab" onclick="toast('Chat')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8 8 0 01-11.7 7L4 20l1.5-4.3A8 8 0 1121 11.5z"/></svg>Chat</div><div class="tab on" onclick="walEntry('profile')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg>My Profile</div></div>
+        <div class="homebar"><i></i></div>
+      </div>
+
+      <!-- ===== w-purchase: entry point 2 — one-time prompt after purchase ===== -->
+      <div class="scr" id="w-purchase">
+        <div class="statusbar"></div>
+        <div class="wal-scroll">
+          <div style="padding:26px 22px 8px;text-align:center">
+            <div style="width:60px;height:60px;border-radius:50%;background:#EBFBEE;display:grid;place-items:center;margin:0 auto 14px"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#1F9254" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div>
+            <div style="font-size:21px;font-weight:800;font-family:var(--disp);color:#162D3D">You're all set!</div>
+            <div style="font-size:13.5px;color:#5B6478;margin-top:6px;line-height:1.5">Your <b>Standard Plan</b> at Jim's Gym is active.<br>Add your pass to Apple Wallet for one-tap entry.</div>
+          </div>
+          <div class="wal-pad">
+            <div class="wpass" style="margin-top:8px" id="wp-preview-purchase">
+              <div class="wpass-top"><span class="wpass-logo">Wix <b>Pass</b></span><span class="wpass-kind">Membership</span></div>
+              <div class="wpass-primary"><div class="wpass-plabel">Member</div><div class="wpass-pval">Rom Lampel</div></div>
+              <div class="wpass-fields"><div class="wpass-f"><div class="l">Plan</div><div class="v">Standard Plan</div></div><div class="wpass-f"><div class="l">Site</div><div class="v">Jim's Gym</div></div></div>
+            </div>
+            <button class="awbtn" onclick="walAdd('membership')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 12.9c-.03-2.4 1.96-3.55 2.05-3.61-1.12-1.64-2.86-1.86-3.48-1.89-1.48-.15-2.89.87-3.64.87-.75 0-1.91-.85-3.14-.83-1.62.02-3.11.94-3.94 2.39-1.68 2.92-.43 7.25 1.21 9.62.8 1.16 1.75 2.46 3 2.41 1.2-.05 1.66-.78 3.11-.78 1.45 0 1.86.78 3.14.75 1.29-.02 2.11-1.18 2.9-2.35.91-1.35 1.29-2.65 1.31-2.72-.03-.01-2.51-.97-2.53-3.83zM14.7 5.9c.66-.8 1.11-1.92.99-3.03-.95.04-2.11.63-2.79 1.43-.61.71-1.15 1.85-1.01 2.94 1.06.08 2.14-.54 2.81-1.34z"/></svg>Add to Apple Wallet</button>
+            <div style="text-align:center;margin-top:12px"><span style="font-size:14px;color:#116DFF;font-weight:600;cursor:pointer" onclick="walEntry('profile')">Maybe later</span></div>
+          </div>
+        </div>
+        <div class="homebar"><i></i></div>
+      </div>
+
+      <!-- ===== w-profile: entry point 3 — persistent option on profile/home ===== -->
+      <div class="scr" id="w-profile">
+        <div class="statusbar light"></div>
+        <div class="m-header" style="padding:6px 16px 18px"><div class="top" style="padding-top:0"><span style="flex:1;text-align:center;font-size:17px;font-weight:700">My Profile</span></div>
+          <div style="display:flex;align-items:center;gap:12px;margin-top:8px"><span style="width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.22);display:grid;place-items:center;font-weight:800;font-size:16px">RL</span><div><div style="font-size:16px;font-weight:700">Rom Lampel</div><div style="font-size:12.5px;opacity:.85">Jim's Gym · Standard Plan</div></div></div>
+        </div>
+        <div class="wal-scroll">
+          <div class="wal-pad">
+            <div class="wal-sec-l">My passes</div>
+            <div class="wal-row" onclick="walShowPass()"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="4" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="6" rx="1"/><rect x="14" y="4" width="7" height="7" rx="1"/><path d="M14 15h3v5M20 14v6" stroke-linecap="round"/></svg></span><div class="tx"><b>Entry pass</b><span>Standard Plan · view QR code</span></div><svg class="chev" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div>
+            <div class="wal-row" onclick="walAdd('membership')"><span class="ic" style="background:#111;color:#fff"><svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M17.05 12.9c-.03-2.4 1.96-3.55 2.05-3.61-1.12-1.64-2.86-1.86-3.48-1.89-1.48-.15-2.89.87-3.64.87-.75 0-1.91-.85-3.14-.83-1.62.02-3.11.94-3.94 2.39-1.68 2.92-.43 7.25 1.21 9.62.8 1.16 1.75 2.46 3 2.41 1.2-.05 1.66-.78 3.11-.78 1.45 0 1.86.78 3.14.75 1.29-.02 2.11-1.18 2.9-2.35.91-1.35 1.29-2.65 1.31-2.72-.03-.01-2.51-.97-2.53-3.83zM14.7 5.9c.66-.8 1.11-1.92.99-3.03-.95.04-2.11.63-2.79 1.43-.61.71-1.15 1.85-1.01 2.94 1.06.08 2.14-.54 2.81-1.34z"/></svg></span><div class="tx"><b>Add membership to Apple Wallet</b><span>One-tap entry from your lock screen</span></div><svg class="chev" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div>
+            <div class="wal-sec-l">Upcoming bookings</div>
+            <div class="wal-row" onclick="walAdd('booking')"><span class="ic" style="background:#F3EEFF;color:#5A48F5"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></svg></span><div class="tx"><b>Pilates · Tomorrow 22:00</b><span>Add booking pass to Apple Wallet</span></div><svg class="chev" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div>
+          </div>
+        </div>
+        <div class="appnav"><div class="tab" onclick="toast('My Sites')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7M6 10v9h12v-9"/></svg>My Sites</div><div class="tab" onclick="toast('Chat')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8 8 0 01-11.7 7L4 20l1.5-4.3A8 8 0 1121 11.5z"/></svg>Chat</div><div class="tab on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg>My Profile</div></div>
+        <div class="homebar"><i></i></div>
+      </div>
+
+      <!-- ===== w-push: entry point 4a — push / lock-screen nudge ===== -->
+      <div class="scr" id="w-push">
+        <div class="statusbar light"></div>
+        <div class="wal-lock">
+          <div class="wal-lock-time"><div class="d">Monday, July 7</div><div class="h">9:41</div></div>
+          <div class="wal-noti" onclick="walAdd('membership')">
+            <span class="ni"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#116DFF" stroke-width="2" stroke-linejoin="round"><rect x="3" y="4" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="6" rx="1"/><rect x="14" y="4" width="7" height="7" rx="1"/><path d="M14 15h3v5M20 14v6" stroke-linecap="round"/></svg></span>
+            <div class="nb"><div class="nt">WIX SPACES<span class="app">now</span></div><div class="nh">Skip the front desk 👋</div><div class="np">Add your Jim's Gym pass to Apple Wallet for one-tap entry. Tap to add.</div></div>
+          </div>
+          <div class="wal-noti-sub">Tap the notification to add your pass</div>
+          <div style="height:20px"></div>
+        </div>
+        <div class="homebar light"><i></i></div>
+      </div>
+
+      <!-- ===== w-email: entry point 4b — email nudge ===== -->
+      <div class="scr" id="w-email">
+        <div class="statusbar"></div>
+        <div class="wal-scroll">
+          <div class="wal-hd"><div class="t">Inbox</div></div>
+          <div class="wal-pad" style="padding-top:6px">
+            <div class="wal-mail">
+              <div class="wal-mail-hd"><b>Your Jim's Gym pass is ready</b>Jim's Gym &lt;hello@jimsgym.com&gt; · to you</div>
+              <div class="wal-mail-bd">
+                <div class="wpass" style="max-width:250px;margin:0 auto 18px">
+                  <div class="wpass-top"><span class="wpass-logo">Wix <b>Pass</b></span><span class="wpass-kind">Membership</span></div>
+                  <div class="wpass-primary"><div class="wpass-plabel">Member</div><div class="wpass-pval">Rom Lampel</div></div>
+                  <div class="wpass-fields"><div class="wpass-f"><div class="l">Plan</div><div class="v">Standard Plan</div></div></div>
+                </div>
+                <div class="mh">Enter with your phone</div>
+                <div class="mp">Add your membership pass to Apple Wallet and breeze through the door — no app needed.</div>
+                <button class="awbtn" onclick="walAdd('membership')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 12.9c-.03-2.4 1.96-3.55 2.05-3.61-1.12-1.64-2.86-1.86-3.48-1.89-1.48-.15-2.89.87-3.64.87-.75 0-1.91-.85-3.14-.83-1.62.02-3.11.94-3.94 2.39-1.68 2.92-.43 7.25 1.21 9.62.8 1.16 1.75 2.46 3 2.41 1.2-.05 1.66-.78 3.11-.78 1.45 0 1.86.78 3.14.75 1.29-.02 2.11-1.18 2.9-2.35.91-1.35 1.29-2.65 1.31-2.72-.03-.01-2.51-.97-2.53-3.83zM14.7 5.9c.66-.8 1.11-1.92.99-3.03-.95.04-2.11.63-2.79 1.43-.61.71-1.15 1.85-1.01 2.94 1.06.08 2.14-.54 2.81-1.34z"/></svg>Add to Apple Wallet</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="homebar"><i></i></div>
+      </div>
+
+      <!-- ===== w-wallet: in-Wallet app view (result) ===== -->
+      <div class="scr" id="w-wallet">
+        <div class="statusbar light"></div>
+        <div class="wal-app">
+          <div class="wal-app-hd"><span class="wt">Wallet</span><span class="plus">+</span></div>
+          <div class="wal-stack">
+            <div class="wal-added-toast"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#30d158" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg><span id="wal-added-label">Membership pass added</span></div>
+            <div id="wal-cards"></div>
+            <div class="wal-tap-hint">Tap a pass to show its code · surfaces on your lock screen near the venue</div>
+          </div>
+        </div>
+        <div class="homebar light"><i></i></div>
+      </div>
+
+      <!-- ===== native Apple Wallet add-pass sheet (overlay) ===== -->
+      <div class="wal-sheet-scrim" id="walSheet">
+        <div class="wal-sheet">
+          <div class="wal-sheet-bar"><span class="cancel" onclick="walCloseSheet()">Cancel</span><span class="ttl">Add Pass</span><span class="add" onclick="walConfirmAdd()">Add</span></div>
+          <div class="wal-sheet-body" id="walSheetBody"><!-- pass preview injected --></div>
+        </div>
+      </div>
+      <!-- adding spinner (overlay) -->
+      <div class="wal-adding" id="walAdding"><div class="wal-spin"></div><div class="msg">Adding to Apple Wallet…</div></div>
+
+    </div></div></div>
+  </div>
+
 </div>
 
 <div id="toast"></div>
@@ -3269,6 +3494,8 @@ function surf(name,btn){
   var hsd=document.getElementById('hubScanDemo'); if(hsd) hsd.style.display=(name==='client')?'flex':'none';
   // plan-state switcher — only on the Pricing Plan Setup surface
   var pss=document.getElementById('planStateSwitch'); if(pss) pss.style.display=(name==='plan')?'flex':'none';
+  // wallet entry-point switcher — only on the Apple Wallet surface
+  var wes=document.getElementById('walEntrySwitch'); if(wes) wes.style.display=(name==='wallet')?'flex':'none';
 }
 /* pricing-plan state: current "Gym one pass" vs full "Standard Plan" with Arrival & Entry */
 function setPlanState(state,btn){
@@ -3283,6 +3510,66 @@ function setPlanState(state,btn){
     : 'roml07-cartqa.manage.wix.com/dashboard/pricing-plans/edit';
   document.getElementById('planBrowser').setAttribute('data-ps',state);
   scalePlan();
+}
+/* ---------- Apple Wallet flow ---------- */
+var WAL={added:{membership:false,booking:false},pending:null};
+var WAL_ENTRY_SCR={pass:'w-pass',purchase:'w-purchase',profile:'w-profile',push:'w-push',email:'w-email'};
+/* generic Wix-branded pass markup used inside the add-sheet and the Wallet stack */
+function walPassHTML(kind){
+  if(kind==='booking'){
+    return '<div class="wpass evt">'
+      +'<div class="wpass-top"><span class="wpass-logo">Wix <b>Pass</b></span><span class="wpass-kind">Booking</span></div>'
+      +'<div class="wpass-primary"><div class="wpass-plabel">Session</div><div class="wpass-pval">Pilates</div></div>'
+      +'<div class="wpass-fields"><div class="wpass-f"><div class="l">When</div><div class="v">Tue · 22:00</div></div><div class="wpass-f"><div class="l">With</div><div class="v">Carlos Lampel</div></div><div class="wpass-f"><div class="l">Where</div><div class="v">Jim\'s Gym</div></div></div>'
+      +'<div class="wpass-strip"><span class="ico"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></svg></span><div><div style="font-size:13px;font-weight:700">Doors open 21:45</div><div style="font-size:12px;opacity:.85">Show at studio entrance</div></div></div>'
+      +'<div class="wpass-qrz"><div class="qr-box"><img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=0&data=WIX-BOOKINGS-PASS%7Cmember%3Arom-lampel%7Csite%3Ajims-gym%7Cbooking%3Apilates-2200" alt="QR" onerror="this.closest(\'.qr-box\').classList.add(\'broken\')"><div class="qr-fallback"></div></div><div class="ser">#BK-90213</div></div>'
+      +'</div>';
+  }
+  return '<div class="wpass">'
+    +'<div class="wpass-top"><span class="wpass-logo">Wix <b>Pass</b></span><span class="wpass-kind">Membership</span></div>'
+    +'<div class="wpass-primary"><div class="wpass-plabel">Member</div><div class="wpass-pval">Rom Lampel</div></div>'
+    +'<div class="wpass-fields"><div class="wpass-f"><div class="l">Plan</div><div class="v">Standard Plan</div></div><div class="wpass-f"><div class="l">Status</div><div class="v">Active</div></div><div class="wpass-f"><div class="l">Site</div><div class="v">Jim\'s Gym</div></div></div>'
+    +'<div class="wpass-strip"><span class="ico"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="1.5"/><circle cx="15.5" cy="12" r="1"/></svg></span><div><div style="font-size:13px;font-weight:700">Opens: Main entrance · Gym floor</div><div style="font-size:12px;opacity:.85">Mon–Sat · unlimited entry</div></div></div>'
+    +'<div class="wpass-qrz"><div class="qr-box"><img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=0&data=WIX-PASS%7Cmember%3Arom-lampel%7Csite%3Ajims-gym%7Cplan%3Astandard" alt="QR" onerror="this.closest(\'.qr-box\').classList.add(\'broken\')"><div class="qr-fallback"></div></div><div class="ser">#M-4471</div></div>'
+    +'</div>';
+}
+/* switch which entry-point screen is shown (also drives the demo switcher chips) */
+function walEntry(which,btn){
+  var scr=WAL_ENTRY_SCR[which]||'w-pass';
+  jump('vpWallet',scr);
+  document.querySelectorAll('#walEntrySwitch .ds-btn').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-we')===which);});
+}
+function walShowPass(){ jump('vpWallet','w-pass'); }
+/* tap an "Add to Apple Wallet" button → open the native add-pass sheet with the right pass */
+function walAdd(kind){
+  WAL.pending=kind;
+  document.getElementById('walSheetBody').innerHTML=walPassHTML(kind)
+    +'<div class="wal-sheet-issuer">Issued by Wix · '+(kind==='booking'?'Event pass':'Membership')+'</div>';
+  document.getElementById('walSheet').classList.add('show');
+}
+function walCloseSheet(){ document.getElementById('walSheet').classList.remove('show'); }
+/* confirm "Add" → brief spinner → land in the Wallet app with the pass added */
+function walConfirmAdd(){
+  var kind=WAL.pending||'membership';
+  walCloseSheet();
+  var sp=document.getElementById('walAdding'); sp.classList.add('show');
+  setTimeout(function(){
+    sp.classList.remove('show');
+    WAL.added[kind]=true;
+    walRenderWallet(kind);
+    jump('vpWallet','w-wallet');
+    syncURL&&syncURL();
+  },1100);
+}
+/* render the Wallet stack from whatever passes have been added */
+function walRenderWallet(justAdded){
+  var wrap=document.getElementById('wal-cards'); if(!wrap) return;
+  var html='';
+  if(WAL.added.membership) html+='<div style="margin-bottom:14px">'+walPassHTML('membership')+'</div>';
+  if(WAL.added.booking)    html+='<div style="margin-bottom:14px">'+walPassHTML('booking')+'</div>';
+  wrap.innerHTML=html;
+  var lbl=document.getElementById('wal-added-label');
+  if(lbl) lbl.textContent=(justAdded==='booking'?'Booking pass added':'Membership pass added');
 }
 /* ---------- Services and usage (full-plan benefit, unchecked by default) ---------- */
 function suToggleBenefit(){
@@ -4700,7 +4987,7 @@ scaleWeb();
    Static-host safe (uses location.hash, not the query string).
    ============================================================ */
 (function(){
-  var SURFACES=['client','kiosk','web','owner','member','setm','guest','plan'];
+  var SURFACES=['client','kiosk','web','owner','member','setm','guest','plan','wallet'];
   var VERDICTS=['ok','mActive','showAll','credit','multi','intake','warn','mWindow','mNone','err'];
   var MEMBER_RESULTS=['ok','mActive','mWindow','intake','mNone','err'];
   var building=false;            // guard against feedback loops while applying URL
@@ -4732,6 +5019,12 @@ scaleWeb();
       // Pricing Plan Setup: current (default) vs full "Arrival & Entry" state
       var pb=document.getElementById('planBrowser');
       var ps=pb&&pb.getAttribute('data-ps'); if(ps&&ps!=='current') s.pstate=ps;
+    } else if(s.tab==='wallet'){
+      // Apple Wallet: active entry-point screen (pass is default) + which passes added
+      var ws=document.querySelector('#vpWallet .scr.on'); var wsid=ws?ws.id.replace('w-',''):'pass';
+      if(wsid!=='pass') s.wscreen=wsid;
+      var added=[]; if(WAL.added.membership) added.push('m'); if(WAL.added.booking) added.push('b');
+      if(added.length) s.wadded=added.join('');
     } else if(s.tab==='web'){
       // Web Settings: FTE intro (view=intro) vs the settings page (default).
       var s1=document.getElementById('fte-s1');
@@ -4757,6 +5050,7 @@ scaleWeb();
     var h=toHash(readState());
     if(h!==location.hash){ try{ history.replaceState(null,'',location.pathname+location.search+h); }catch(e){ location.hash=h; } }
   }
+  window.syncURL=syncURL;   // exposed so deferred callbacks (e.g. Wallet add spinner) can re-sync
 
   /* ---- parse the hash ---- */
   function parseHash(){
@@ -4793,6 +5087,11 @@ scaleWeb();
         var pstate=(s.pstate==='full')?'full':'current';
         var psb=document.querySelector('#planStateSwitch .ds-btn[data-ps="'+pstate+'"]');
         setPlanState(pstate,psb);
+      } else if(s.tab==='wallet'){
+        if(s.wadded){ WAL.added.membership=s.wadded.indexOf('m')>-1; WAL.added.booking=s.wadded.indexOf('b')>-1; walRenderWallet(); }
+        var wsc=s.wscreen||'pass';
+        if(wsc==='wallet'){ jump('vpWallet','w-wallet'); }
+        else { var ent=Object.keys(WAL_ENTRY_SCR).indexOf(wsc)>-1?wsc:'pass'; walEntry(ent); }
       } else if(s.tab==='web'){
         if(s.view==='intro'){
           setWebView('onboarding',document.querySelector('#webViewSwitch [data-wv="onboarding"]'));
@@ -4817,7 +5116,7 @@ scaleWeb();
   window.KIOSK_LAST=null; window.MEMBER_LAST=null;
   var _kv=window.kioskVerdict; if(_kv) window.kioskVerdict=function(type,nm){ KIOSK_LAST=type; var r=_kv.apply(this,arguments); if(!building) syncURL(); return r; };
   var _mr=window.mShowResult; if(_mr) window.mShowResult=function(type){ MEMBER_LAST=type; var r=_mr.apply(this,arguments); if(!building) syncURL(); return r; };
-  ['surf','setPlanState','setOwnerState','openScanner','ownerScanTap','setMobState','setWebView','setWebState','webCrumbHome','hubSetMode','hubSetAuto','kioskGo','setFteAccess','jump','push','back','showPass','passDone','fteFinish','fteDone','setTab','fteShow','openCheckinSettings','openHubFromSettings'].forEach(function(fn){ wrap(fn); });
+  ['surf','setPlanState','walEntry','walShowPass','walConfirmAdd','setOwnerState','openScanner','ownerScanTap','setMobState','setWebView','setWebState','webCrumbHome','hubSetMode','hubSetAuto','kioskGo','setFteAccess','jump','push','back','showPass','passDone','fteFinish','fteDone','setTab','fteShow','openCheckinSettings','openHubFromSettings'].forEach(function(fn){ wrap(fn); });
 
   /* ---- react to manual hash edits / back-forward ---- */
   window.addEventListener('hashchange',function(){ if(building) return; applyState(parseHash()); });
