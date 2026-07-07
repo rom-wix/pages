@@ -713,6 +713,44 @@ button{font-family:var(--sans)}
 .pp-pv-cycle{font-size:15px;font-weight:700;color:#16213A;margin-top:2px}
 .pp-pv-valid{font-size:13px;color:#5b6478;margin-top:8px}
 .pp-pv-btn{margin:18px auto 0;background:#2B5CE6;color:#fff;border:none;border-radius:18px;padding:9px 0;width:160px;font-size:14px;font-weight:600;cursor:pointer}
+.pp-pv-feats{margin-top:20px;padding-top:18px;border-top:1px solid #eef0f3;display:flex;flex-direction:column;gap:9px;font-size:13.5px;color:#16213A}
+.pp-pv-feat-door{display:flex;align-items:center;justify-content:center;gap:6px;color:#2B5CE6;font-weight:600}
+/* full-plan condensed fields */
+.pp-field{margin-top:14px}
+.pp-req{color:#e2452d}
+.pp-input{height:38px;border:1px solid #c5cad3;border-radius:6px;display:flex;align-items:center;padding:0 12px;font-size:14px;color:#16213A;background:#fff}
+.pp-input-multi{height:auto;min-height:38px;padding:9px 12px;color:#5b6478;align-items:flex-start}
+.pp-price-opt{display:flex;gap:12px;align-items:flex-start;border:1px solid #e6e8ec;border-radius:8px;padding:13px 15px;margin-top:10px;cursor:pointer}
+.pp-price-opt.sel{background:#eef2fb;border-color:#c9d8fb}
+.pp-radio{width:18px;height:18px;border-radius:50%;border:1.6px solid #c5cad3;flex:0 0 18px;margin-top:2px;position:relative;background:#fff}
+.pp-radio.on{border-color:#2B5CE6}
+.pp-radio.on::after{content:"";position:absolute;inset:3px;border-radius:50%;background:#2B5CE6}
+.pp-chip{display:inline-flex;align-items:center;gap:6px;background:#eef2fb;border:1px solid #d3e0fb;border-radius:6px;padding:3px 9px;font-size:13px;color:#16213A}
+.pp-chip-x{color:#868aa5;font-size:15px}
+/* Arrival and Entry section */
+#ae-benefit .pp-b-t{display:flex;align-items:center;gap:8px}
+.pp-tog.on{background:#2B5CE6}.pp-tog.on i{left:auto;right:2px}
+.ae-tog{cursor:pointer;flex:0 0 34px}
+.ae-tog-sm{width:34px;height:20px;cursor:pointer;flex:0 0 34px}
+.ae-door{display:flex;align-items:center;gap:12px;padding:12px 4px;cursor:pointer;color:#16213A}
+.ae-door+.ae-door{border-top:1px solid #f1f2f5}
+.ae-door-chk{width:20px;height:20px;border-radius:5px;border:1.5px solid #c5cad3;flex:0 0 20px;display:grid;place-items:center;background:#fff}
+.ae-door.on .ae-door-chk{background:#2B5CE6;border-color:#2B5CE6}
+.ae-door-chk svg{width:13px;height:13px}.ae-door:not(.on) .ae-door-chk svg{display:none}
+.ae-door-ic{width:30px;height:30px;border-radius:7px;background:#f0f2f6;display:grid;place-items:center;color:#595d70;flex:0 0 30px}
+.ae-door-ic svg{width:17px;height:17px}
+.ae-door.on .ae-door-ic{background:#eef2fb;color:#2B5CE6}
+.ae-door-tx{display:flex;flex-direction:column;line-height:1.35}
+.ae-door-tx b{font-size:14px;font-weight:600}
+.ae-door-tx span{font-size:12.5px;color:#868aa5}
+.ae-lim-opt{cursor:pointer}
+.ae-day{display:flex;align-items:center;gap:14px;padding:11px 2px}
+.ae-day+.ae-day{border-top:1px solid #f1f2f5}
+.ae-day-lbl{width:78px;font-size:13.5px;font-weight:600;color:#16213A;flex:0 0 78px}
+.ae-time{display:flex;align-items:center;gap:8px;margin-left:auto}
+.ae-time-in{border:1px solid #c5cad3;border-radius:6px;padding:5px 11px;font-size:13px;color:#16213A;background:#fff}
+.ae-dash{color:#868aa5}
+.ae-day.off .ae-time,.ae-day.off .ae-day-lbl{opacity:.45}
 /* setup-web: "set up in mobile" promo (Orion-style) */
 .wm-wrap{flex:1;position:relative;overflow:hidden;display:flex;gap:30px;padding:46px 48px;align-items:center}
 .wm-bg{position:absolute;inset:0;z-index:0;background:
@@ -2689,9 +2727,14 @@ button{font-family:var(--sans)}
 
   <!-- ============ PRICING PLAN SETUP ============ -->
   <div class="surface-stage" id="surf-plan">
-    <div class="browser" id="planBrowser">
-      <div class="bro-bar"><div class="dots"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i></div><div class="bro-url"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#868AA5" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>roml07-cartqa.manage.wix.com/dashboard/pricing-plans/edit</div></div>
-      <div class="pp-app">
+    <div class="demo-switch" id="planStateSwitch" style="display:none">
+      <span class="ds-label">Plan setup · demo</span>
+      <button class="ds-btn on" data-ps="current" onclick="setPlanState('current',this)">Current — Gym one pass</button>
+      <button class="ds-btn"    data-ps="full"    onclick="setPlanState('full',this)">With Arrival &amp; Entry</button>
+    </div>
+    <div class="browser" id="planBrowser" data-ps="current">
+      <div class="bro-bar" id="planBroUrl"><div class="dots"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i></div><div class="bro-url"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#868AA5" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg><span id="planBroUrlText">roml07-cartqa.manage.wix.com/dashboard/pricing-plans/edit</span></div></div>
+      <div class="pp-app pp-state pp-state-current">
         <!-- top bar -->
         <div class="pp-top">
           <span class="pp-logo">WIX STUDIO</span>
@@ -2828,6 +2871,191 @@ button{font-family:var(--sans)}
                     <div class="pp-pv-cycle">Every month</div>
                     <div class="pp-pv-valid">Valid for 12 months</div>
                     <button class="pp-pv-btn">Select</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========= FULL PLAN STATE (Standard Plan + Arrival and Entry) ========= -->
+      <div class="pp-app pp-state pp-state-full" style="display:none">
+        <!-- top bar -->
+        <div class="pp-top">
+          <span class="pp-logo">WIX STUDIO</span>
+          <span class="pp-acct"><span class="pp-acct-av">RL</span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+          <span class="pp-site">Jim's Gym <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+          <span class="pp-nav-i">Explore <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+          <span class="pp-nav-i">Hire a Professional</span>
+          <span class="pp-nav-i">Help <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+          <span class="pp-upgrade">Upgrade</span>
+          <span class="pp-search"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#9aa0ad" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>Search for tools, apps, help &amp; more…</span>
+          <span class="pp-top-ai">✦ AI</span>
+        </div>
+        <div class="pp-main">
+          <!-- sidebar -->
+          <div class="pp-side">
+            <div class="pp-qa">Quick Actions <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7M6 10v9h12v-9"/></svg>Home</div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></svg>Booking Calendar<span class="pp-caret">›</span></div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>Events<span class="pp-caret">›</span></div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Getting Paid<span class="pp-caret">›</span></div>
+            <div class="pp-s-i open"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 7l1.5 12h13L20 7M4 7l2-4h12l2 4"/></svg>Catalog<svg class="pp-chev" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></div>
+            <div class="pp-sub">Store Products<span class="pp-caret">›</span></div>
+            <div class="pp-sub">Booking Services</div>
+            <div class="pp-sub on">Pricing Plans<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" style="margin-left:auto"><path d="M12 17.3l-6.2 3.7 1.6-7L2 9.2l7.1-.6L12 2l2.9 6.6 7.1.6-5.4 4.8 1.6 7z"/></svg></div>
+            <div class="pp-sub">Donations</div>
+            <div class="pp-sub">Gift Cards</div>
+            <div class="pp-sub">Discounts<span class="pp-caret">›</span></div>
+            <div class="pp-s-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Apps<span class="pp-badge">5</span><span class="pp-caret">›</span></div>
+          </div>
+          <!-- content -->
+          <div class="pp-canvas">
+            <div class="pp-bar">
+              <div class="pp-crumbs"><span>Pricing Plans</span> <span class="pp-crumb-sep">›</span> <b>Standard Plan</b></div>
+              <div class="pp-bar-actions"><button class="pp-cancel">Cancel</button><button class="pp-save">Save</button></div>
+            </div>
+            <div class="pp-content">
+              <div class="pp-col-main">
+
+                <!-- ===== Benefits ===== -->
+                <div class="pp-card">
+                  <div class="pp-card-h">
+                    <div>
+                      <div class="pp-h2">Benefits</div>
+                      <div class="pp-desc">Connect and manage benefits for this plan.</div>
+                    </div>
+                    <a class="pp-link">How to connect more benefits</a>
+                  </div>
+
+                  <!-- renew cadence -->
+                  <div class="pp-field" style="margin-top:18px">
+                    <div class="pp-lbl">How often limited benefits renew <span class="pp-req">*</span></div>
+                    <div class="pp-select" style="color:#16213A">Same as billing cycle<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#868aa5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></div>
+                  </div>
+
+                  <!-- Services and usage (unchecked by default) -->
+                  <div class="pp-benefit alt" id="su-benefit">
+                    <div class="pp-chk" id="su-chk" onclick="suToggleBenefit()"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div>
+                    <div class="pp-b-body">
+                      <div class="pp-b-t">Services and usage</div>
+                      <div class="pp-b-s">Give access to services as part of a membership or a package.</div>
+
+                      <div id="su-config" style="display:none">
+                        <div class="pp-q">What type of plan is this?</div>
+                        <div class="pp-types">
+                          <div class="pp-type sel"><div class="pp-type-t">Session-based</div><div class="pp-type-s">Give clients an amount of sessions to use across a combination of selected services.</div></div>
+                          <div class="pp-type"><div class="pp-type-t">Credit-based</div><div class="pp-type-s">Give clients credits to spend, and decide how much each service is worth.</div></div>
+                        </div>
+
+                        <div class="pp-q">What's in this plan?</div>
+                        <div class="pp-inner">
+                          <div class="pp-lbl">Services</div>
+                          <div class="pp-select" style="color:#16213A"><span class="pp-chip">Specialty Treatments <span class="pp-chip-x">×</span></span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#868aa5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:auto"><path d="M6 9l6 6 6-6"/></svg></div>
+                          <div class="pp-two">
+                            <div><div class="pp-lbl">How many session can be booked?</div><div class="pp-select" style="color:#16213A">Limited amount<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#868aa5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                            <div><div class="pp-lbl">Total</div><div class="pp-stepper wide"><span>10</span><span class="pp-step-ar"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="#595d70" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="#595d70" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></div></div>
+                          </div>
+                          <div class="pp-roll"><span class="pp-tog"><i></i></span>Roll over unused sessions to the next renewal period.</div>
+                        </div>
+                        <div class="pp-addset"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Add Another Set of Services</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- ===== NEW: Arrival and Entry ===== -->
+                  <div class="pp-benefit" id="ae-benefit">
+                    <div class="pp-chk on" id="ae-chk" onclick="aeToggleBenefit()"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div>
+                    <div class="pp-b-body">
+                      <div class="pp-b-t">Arrival and Entry <span class="pp-new">NEW</span></div>
+                      <div class="pp-b-s">Use this plan to grant members entry through doors at your business. Set which doors it opens, and when.</div>
+
+                      <div id="ae-config">
+                        <!-- doors -->
+                        <div class="pp-q">Which doors does this plan open?</div>
+                        <div class="pp-inner">
+                          <div class="ae-door on" onclick="aeToggleDoor(this)">
+                            <span class="ae-door-chk"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span>
+                            <span class="ae-door-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="1.5"/><circle cx="15.5" cy="12" r="1"/></svg></span>
+                            <span class="ae-door-tx"><b>Main entrance</b><span>Front-desk turnstile</span></span>
+                          </div>
+                          <div class="ae-door on" onclick="aeToggleDoor(this)">
+                            <span class="ae-door-chk"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span>
+                            <span class="ae-door-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="1.5"/><circle cx="15.5" cy="12" r="1"/></svg></span>
+                            <span class="ae-door-tx"><b>Gym floor</b><span>Ground level</span></span>
+                          </div>
+                          <div class="ae-door" onclick="aeToggleDoor(this)">
+                            <span class="ae-door-chk"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span>
+                            <span class="ae-door-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="1.5"/><circle cx="15.5" cy="12" r="1"/></svg></span>
+                            <span class="ae-door-tx"><b>Pool &amp; spa</b><span>Lower level</span></span>
+                          </div>
+                        </div>
+
+                        <!-- how many entries -->
+                        <div class="pp-q">How many entries does this plan allow?</div>
+                        <div class="pp-types">
+                          <div class="pp-type ae-lim-opt sel" data-lim="unlimited" onclick="aePickLimit(this)"><div class="pp-type-t">Unlimited</div><div class="pp-type-s">Members can enter as often as they like while the plan is active.</div></div>
+                          <div class="pp-type ae-lim-opt" data-lim="limited" onclick="aePickLimit(this)"><div class="pp-type-t">Limited</div><div class="pp-type-s">Cap the number of entries per renewal period.</div></div>
+                        </div>
+                        <div class="pp-two" id="ae-limit-row" style="display:none">
+                          <div>
+                            <div class="pp-lbl">Entries per period</div>
+                            <div class="pp-stepper"><span id="ae-limit-n">12</span><span class="pp-step-ar"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="#595d70" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="#595d70" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></div>
+                          </div>
+                        </div>
+
+                        <!-- day & time limits -->
+                        <div class="pp-q" style="display:flex;align-items:center;gap:10px">Limit access to certain days and times<span class="pp-tog ae-tog" id="ae-hours-tog" onclick="aeToggleHours()"><i></i></span></div>
+                        <div class="pp-b-s" style="margin-top:-4px">When off, this plan opens the selected doors any time they're operating.</div>
+
+                        <div class="pp-inner" id="ae-hours" style="display:none;margin-top:12px">
+                          <div class="ae-day">
+                            <span class="ae-day-lbl">Mon–Fri</span>
+                            <span class="pp-tog on ae-tog-sm" onclick="aeToggleDay(this)"><i></i></span>
+                            <span class="ae-time"><span class="ae-time-in">6:00 AM</span><span class="ae-dash">–</span><span class="ae-time-in">10:00 PM</span></span>
+                          </div>
+                          <div class="ae-day">
+                            <span class="ae-day-lbl">Saturday</span>
+                            <span class="pp-tog on ae-tog-sm" onclick="aeToggleDay(this)"><i></i></span>
+                            <span class="ae-time"><span class="ae-time-in">8:00 AM</span><span class="ae-dash">–</span><span class="ae-time-in">8:00 PM</span></span>
+                          </div>
+                          <div class="ae-day off">
+                            <span class="ae-day-lbl">Sunday</span>
+                            <span class="pp-tog ae-tog-sm" onclick="aeToggleDay(this)"><i></i></span>
+                            <span class="ae-time"><span class="ae-time-in">Closed</span></span>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- events memberships -->
+                  <div class="pp-benefit alt">
+                    <div class="pp-chk"></div>
+                    <div class="pp-b-body"><div class="pp-b-t">Events Memberships</div><div class="pp-b-s">Add ticket discount and ticket limit for your events.</div></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- plan preview -->
+              <div class="pp-col-side">
+                <div class="pp-pv-h">Plan preview</div>
+                <div class="pp-pv-s">See how your plan will appear online. <span class="pp-info">ⓘ</span></div>
+                <div class="pp-pv-wrap">
+                  <div class="pp-pv-card">
+                    <div class="pp-pv-img"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="#bcd3f0" stroke-width="1.6"><circle cx="8" cy="8" r="2.2"/><path d="M3 18l5-5 4 3 3-3 6 6"/></svg></div>
+                    <div class="pp-pv-name">Standard Plan</div>
+                    <div class="pp-pv-price"><span class="pp-cur">$</span><span class="pp-amt">90</span></div>
+                    <div class="pp-pv-cycle">Every month</div>
+                    <button class="pp-pv-btn">Select</button>
+                    <div class="pp-pv-feats">
+                      <div>All facility access</div>
+                      <div>Enhanced discounts</div>
+                      <div>Wellness workshops</div>
+                      <div class="pp-pv-feat-door"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#2B5CE6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="1.5"/><circle cx="15.5" cy="12" r="1"/></svg>Door access included</div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -3039,6 +3267,51 @@ function surf(name,btn){
   updateFteSwitch();
   // Kisi-tap demo panel — only on the Check In Hub
   var hsd=document.getElementById('hubScanDemo'); if(hsd) hsd.style.display=(name==='client')?'flex':'none';
+  // plan-state switcher — only on the Pricing Plan Setup surface
+  var pss=document.getElementById('planStateSwitch'); if(pss) pss.style.display=(name==='plan')?'flex':'none';
+}
+/* pricing-plan state: current "Gym one pass" vs full "Standard Plan" with Arrival & Entry */
+function setPlanState(state,btn){
+  document.querySelectorAll('#planStateSwitch .ds-btn').forEach(function(b){b.classList.remove('on');});
+  if(btn) btn.classList.add('on');
+  var full=(state==='full');
+  document.querySelectorAll('#surf-plan .pp-state-current').forEach(function(e){e.style.display=full?'none':'flex';});
+  document.querySelectorAll('#surf-plan .pp-state-full').forEach(function(e){e.style.display=full?'flex':'none';});
+  var url=document.getElementById('planBroUrlText');
+  if(url) url.textContent=full
+    ? 'jims-gym.manage.wix.com/dashboard/pricing-plans/standard-plan/edit'
+    : 'roml07-cartqa.manage.wix.com/dashboard/pricing-plans/edit';
+  document.getElementById('planBrowser').setAttribute('data-ps',state);
+  scalePlan();
+}
+/* ---------- Services and usage (full-plan benefit, unchecked by default) ---------- */
+function suToggleBenefit(){
+  var chk=document.getElementById('su-chk'); var cfg=document.getElementById('su-config'); var wrap=document.getElementById('su-benefit');
+  var on=chk.classList.toggle('on');
+  cfg.style.display=on?'block':'none';
+  wrap.classList.toggle('alt',!on);
+}
+/* ---------- Arrival and Entry (full-plan benefit) ---------- */
+function aeToggleBenefit(){
+  var chk=document.getElementById('ae-chk'); var cfg=document.getElementById('ae-config');
+  var on=chk.classList.toggle('on');
+  cfg.style.display=on?'block':'none';
+}
+function aeToggleDoor(el){ el.classList.toggle('on'); }
+function aePickLimit(el){
+  document.querySelectorAll('.ae-lim-opt').forEach(function(o){o.classList.remove('sel');});
+  el.classList.add('sel');
+  var row=document.getElementById('ae-limit-row');
+  row.style.display=(el.dataset.lim==='limited')?'flex':'none';
+}
+function aeToggleHours(){
+  var tog=document.getElementById('ae-hours-tog'); var box=document.getElementById('ae-hours');
+  var on=tog.classList.toggle('on');
+  box.style.display=on?'block':'none';
+}
+function aeToggleDay(el){
+  var on=el.classList.toggle('on');
+  var day=el.closest('.ae-day'); if(day) day.classList.toggle('off',!on);
 }
 /* owner scan state — first time leads to setup, opted in opens the scanner */
 var OWNER = { optedIn:false };
@@ -4455,6 +4728,10 @@ scaleWeb();
       var st=MOB.bookings&&MOB.pp?'both':(MOB.bookings?'bookings':'pp'); if(st!=='both') s.state=st;
       var ss=document.querySelector('#vpSetM .scr.on'); var ssid=ss?ss.id.replace('s-',''):'main';
       if(ssid==='fte'||ssid==='fte2') s.screen=ssid;
+    } else if(s.tab==='plan'){
+      // Pricing Plan Setup: current (default) vs full "Arrival & Entry" state
+      var pb=document.getElementById('planBrowser');
+      var ps=pb&&pb.getAttribute('data-ps'); if(ps&&ps!=='current') s.pstate=ps;
     } else if(s.tab==='web'){
       // Web Settings: FTE intro (view=intro) vs the settings page (default).
       var s1=document.getElementById('fte-s1');
@@ -4512,6 +4789,10 @@ scaleWeb();
         setMobState(s.state||'both',mb);
         if(s.screen==='fte'){ jump('vpSetM','s-fte'); }
         else if(s.screen==='fte2'){ jump('vpSetM','s-fte2'); }
+      } else if(s.tab==='plan'){
+        var pstate=(s.pstate==='full')?'full':'current';
+        var psb=document.querySelector('#planStateSwitch .ds-btn[data-ps="'+pstate+'"]');
+        setPlanState(pstate,psb);
       } else if(s.tab==='web'){
         if(s.view==='intro'){
           setWebView('onboarding',document.querySelector('#webViewSwitch [data-wv="onboarding"]'));
@@ -4536,7 +4817,7 @@ scaleWeb();
   window.KIOSK_LAST=null; window.MEMBER_LAST=null;
   var _kv=window.kioskVerdict; if(_kv) window.kioskVerdict=function(type,nm){ KIOSK_LAST=type; var r=_kv.apply(this,arguments); if(!building) syncURL(); return r; };
   var _mr=window.mShowResult; if(_mr) window.mShowResult=function(type){ MEMBER_LAST=type; var r=_mr.apply(this,arguments); if(!building) syncURL(); return r; };
-  ['surf','setOwnerState','openScanner','ownerScanTap','setMobState','setWebView','setWebState','webCrumbHome','hubSetMode','hubSetAuto','kioskGo','setFteAccess','jump','push','back','showPass','passDone','fteFinish','fteDone','setTab','fteShow','openCheckinSettings','openHubFromSettings'].forEach(function(fn){ wrap(fn); });
+  ['surf','setPlanState','setOwnerState','openScanner','ownerScanTap','setMobState','setWebView','setWebState','webCrumbHome','hubSetMode','hubSetAuto','kioskGo','setFteAccess','jump','push','back','showPass','passDone','fteFinish','fteDone','setTab','fteShow','openCheckinSettings','openHubFromSettings'].forEach(function(fn){ wrap(fn); });
 
   /* ---- react to manual hash edits / back-forward ---- */
   window.addEventListener('hashchange',function(){ if(building) return; applyState(parseHash()); });
