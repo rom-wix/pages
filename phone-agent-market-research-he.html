@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>סוכני טלפון מבוססי AI — מחקר שוק (יולי 2026)</title>
+<style>
+  :root {
+    color-scheme: light;
+    --page: #f9f9f7;
+    --surface: #fcfcfb;
+    --ink: #0b0b0b;
+    --ink-2: #52514e;
+    --muted: #898781;
+    --grid: #e1e0d9;
+    --baseline: #c3c2b7;
+    --border: rgba(11,11,11,0.10);
+    --accent: #2a78d6;
+    --bar-published: #2a78d6;
+    --bar-reported: #86b6ef;
+    --chip: #eef3fb;
+    --good: #006300;
+    --warn-bg: #fdf6e7;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --page: #0d0d0d;
+      --surface: #1a1a19;
+      --ink: #ffffff;
+      --ink-2: #c3c2b7;
+      --muted: #898781;
+      --grid: #2c2c2a;
+      --baseline: #383835;
+      --border: rgba(255,255,255,0.10);
+      --accent: #3987e5;
+      --bar-published: #3987e5;
+      --bar-reported: #6da7ec;
+      --chip: #1f2733;
+      --good: #0ca30c;
+      --warn-bg: #2a2416;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --page: #0d0d0d;
+    --surface: #1a1a19;
+    --ink: #ffffff;
+    --ink-2: #c3c2b7;
+    --muted: #898781;
+    --grid: #2c2c2a;
+    --baseline: #383835;
+    --border: rgba(255,255,255,0.10);
+    --accent: #3987e5;
+    --bar-published: #3987e5;
+    --bar-reported: #6da7ec;
+    --chip: #1f2733;
+    --good: #0ca30c;
+    --warn-bg: #2a2416;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--page);
+    color: var(--ink);
+    font: 15px/1.65 "Segoe UI", system-ui, -apple-system, sans-serif;
+  }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 32px 20px 80px; }
+  header.hero { padding: 28px 0 8px; }
+  h1 { font-size: 28px; line-height: 1.3; margin: 0 0 8px; }
+  .sub { color: var(--ink-2); max-width: 76ch; margin: 0 0 4px; }
+  .meta { color: var(--muted); font-size: 13px; }
+  nav.toc { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0 8px; }
+  nav.toc a {
+    font-size: 13px; text-decoration: none; color: var(--ink-2);
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 5px 11px; border-radius: 999px;
+  }
+  nav.toc a:hover { color: var(--accent); border-color: var(--accent); }
+  h2 { font-size: 20px; margin: 44px 0 6px; }
+  h2 .num { color: var(--muted); font-weight: 600; margin-left: 6px; }
+  h3 { font-size: 16px; margin: 22px 0 6px; }
+  .lede { color: var(--ink-2); margin: 0 0 14px; max-width: 80ch; }
+  section { scroll-margin-top: 16px; }
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px 18px; margin: 12px 0;
+  }
+  /* KPI tiles */
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin: 14px 0; }
+  .tile { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+  .tile .label { font-size: 13px; color: var(--ink-2); }
+  .tile .value { font-size: 24px; font-weight: 600; margin: 2px 0; }
+  .tile .note { font-size: 12px; color: var(--muted); }
+  /* Tables */
+  .scroll { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); margin: 12px 0; }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; min-width: 720px; }
+  th, td { text-align: right; vertical-align: top; padding: 9px 12px; border-top: 1px solid var(--grid); }
+  thead th { border-top: none; font-size: 12px; letter-spacing: 0.02em; color: var(--muted); background: var(--surface); }
+  td strong { font-weight: 600; }
+  td .d { color: var(--ink-2); }
+  .num-col { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  /* Inline bits */
+  a { color: var(--accent); }
+  .pill { display: inline-block; font-size: 11.5px; padding: 1px 8px; border-radius: 999px; background: var(--chip); color: var(--ink-2); white-space: nowrap; }
+  .flag { display: inline-block; font-size: 11.5px; padding: 1px 8px; border-radius: 999px; background: var(--warn-bg); color: var(--ink-2); }
+  ul.tight { margin: 8px 0; padding-right: 20px; }
+  ul.tight li { margin: 5px 0; }
+  ul.tight li::marker { color: var(--muted); }
+  .refline { font-size: 12.5px; color: var(--muted); margin-top: 8px; }
+  .refline a { color: var(--muted); }
+  .refline a:hover { color: var(--accent); }
+  /* Takeaways */
+  ol.takeaways { margin: 12px 0; padding-right: 22px; }
+  ol.takeaways li { margin: 9px 0; max-width: 82ch; }
+  ol.takeaways b { font-weight: 600; }
+  /* Chart */
+  .chart-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px 14px; margin: 14px 0; }
+  .chart-title { font-weight: 600; margin: 0 0 2px; }
+  .chart-sub { font-size: 13px; color: var(--ink-2); margin: 0 0 12px; }
+  .legend { display: flex; gap: 16px; font-size: 12.5px; color: var(--ink-2); margin: 0 0 12px; }
+  .legend .key { display: inline-flex; align-items: center; gap: 6px; }
+  .legend .sw { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+  .row { display: grid; grid-template-columns: 150px 1fr; align-items: center; gap: 10px; padding: 3px 0; border-radius: 6px; cursor: default; }
+  .row:hover { background: color-mix(in srgb, var(--accent) 7%, transparent); }
+  .row .name { font-size: 13px; color: var(--ink-2); text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .row .track { position: relative; height: 22px; }
+  .row .bar {
+    position: absolute; right: 0; top: 2px; height: 18px;
+    background: var(--bar-published);
+    border-radius: 4px 0 0 4px;
+  }
+  .row .bar.reported { background: var(--bar-reported); }
+  .row:hover .bar { filter: brightness(1.08); }
+  .row .val { position: absolute; top: 1px; font-size: 12.5px; color: var(--ink-2); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .chart-note { font-size: 12px; color: var(--muted); margin-top: 10px; }
+  #tooltip {
+    position: fixed; z-index: 50; pointer-events: none; display: none;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+    padding: 8px 11px; font-size: 12.5px; max-width: 290px;
+  }
+  #tooltip .t-val { font-weight: 600; font-size: 14px; }
+  #tooltip .t-note { color: var(--ink-2); margin-top: 2px; }
+  /* Profiles */
+  details.profile { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin: 10px 0; padding: 0; }
+  details.profile summary {
+    cursor: pointer; padding: 13px 16px; font-weight: 600; list-style: none;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+  }
+  details.profile summary::-webkit-details-marker { display: none; }
+  details.profile summary::before { content: "◂"; color: var(--muted); font-weight: 400; }
+  details.profile[open] summary::before { content: "▾"; }
+  details.profile summary .tag { font-weight: 400; font-size: 12.5px; color: var(--muted); }
+  details.profile .body { padding: 0 18px 14px; border-top: 1px solid var(--grid); }
+  details.profile .body p { margin: 10px 0 4px; }
+  .kv { margin: 8px 0; font-size: 13.5px; }
+  .kv b { font-weight: 600; }
+  .grp-title { margin: 26px 0 4px; font-size: 13px; letter-spacing: 0.03em; color: var(--muted); }
+  footer { margin-top: 56px; font-size: 12.5px; color: var(--muted); border-top: 1px solid var(--grid); padding-top: 14px; }
+  @media (max-width: 640px) {
+    .row { grid-template-columns: 110px 1fr; }
+    h1 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>סוכני טלפון מבוססי AI לעסקים קטנים ובינוניים — מחקר שוק</h1>
+  <p class="sub">מיפוי תחרותי לקראת המהלך העצמאי של אלפרד (Alfred): מי השחקנים בתחום סוכני הטלפון, עם מה הם משתלבים, אילו פעולות הם מבצעים בפועל, איך הם מתמחרים, והיכן נמצא המרחב הפנוי בשוק.</p>
+  <p class="meta">נחקר ביולי 2026 · מעל 25 מוצרים, עמודי תמחור רשמיים נשלפו ישירות · נתונים המסומנים <span class="flag">מדווח</span> מגיעים ממקורות צד שלישי, לא מעמודים רשמיים · מסמך עבודה פנימי</p>
+  <nav class="toc">
+    <a href="#tldr">תמצית</a>
+    <a href="#market">השוק</a>
+    <a href="#map">מפת קטגוריות</a>
+    <a href="#landscape">טבלת מתחרים</a>
+    <a href="#pricing">תמחור</a>
+    <a href="#integrations">אינטגרציות ופעולות</a>
+    <a href="#verticals">אנכיים (Verticals)</a>
+    <a href="#churn">למה לקוחות נוטשים</a>
+    <a href="#distribution">ערוצי הפצה</a>
+    <a href="#alfred">השלכות עבור אלפרד</a>
+    <a href="#profiles">פרופילי חברות</a>
+    <a href="#method">שיטת המחקר</a>
+  </nav>
+</header>
+
+<!-- ============ TLDR ============ -->
+<section id="tldr">
+  <h2><span class="num">1</span>תמצית — שבע תובנות מרכזיות</h2>
+  <ol class="takeaways">
+    <li><b>הקטגוריה אמיתית, צעירה, וממומנת היטב.</b> סוכני קול מבוססי AI: שוק בסדר גודל של מיליארדי דולרים בודדים, צומח בכ־30 עד 45 אחוז בשנה; 2.1 מיליארד דולר בהשקעות הון סיכון ב־2024; החד־קרן הראשון בתחום ה־SMB נטבע באפריל 2026 (Avoca, שירותי בית, שווי מיליארד דולר).</li>
+    <li><b>פיצ'רים בסיסיים כבר התכנסו לסטנדרט אחיד.</b> מענה 24/7, קביעת תורים, איסוף לידים, שאלות נפוצות, העברת שיחה, מעקב ב־SMS, חסימת ספאם, דו־לשוניות — לכולם יש את זה. גם הטכנולוגיה הקולית עצמה הפכה למוצר סחורה (Vapi, Retell, שיחות SIP של OpenAI).</li>
+    <li><b>החפיר האמיתי הוא עומק הפעולה בתוך מערכת הליבה של הלקוח.</b> המנצחים משלימים עסקאות בפועל: Slang קובעת הזמנות ב־OpenTable, Loman מזינה הזמנות משולמות ל־Toast, Numa קובעת תורי שירות במערכת ה־DMS של הסוכנות, Podium קובעת ללוח השיבוץ. "אנחנו עונים לשיחות" זו לא הצעת ערך בת־הגנה; "אנחנו כותבים את ההזמנה/התשלום למערכת שלכם" כן.</li>
+    <li><b>התמחור התכנס לחבילות חודשיות שטוחות (49 עד 299 דולר) עבור SMB אופקי;</b> ספקים אנכיים מתמחים גובים פי 3 עד 10 יותר (399 עד 599 דולר לסניף) בזכות בעלות על תהליך העבודה. לקוחות מעדיפים מסגור של "עובד AI" שטוח על פני תמחור לפי דקה. תמחור לפי תוצאה (תשלום לכל תור שנקבע) הוא מרחב פנוי לגמרי — אף אחד לא מפרסם אותו.</li>
+    <li><b>הפצה מנצחת מוצר בזנב הארוך.</b> מסלול הרישוי מחדש של סוכנויות ב־GoHighLevel (סיטונאי 0.13 דולר לדקה שנמכר בקמעונאות ב־200 עד 500 דולר לחודש) ותוכניות תיוג לבן מזיזים נפח עצום. חנויות אפליקציות (Square, Shopify, HubSpot) מציגות רישומים אך עדיין ללא מוביל קטגוריה ברור.</li>
+    <li><b>התזה החוצה־פלטפורמות של אלפרד מאומתת על ידי פערים בולטים.</b> ל־GoDaddy, Squarespace, Thryv, Birdeye ו־Square (בתחום התורים) <i>אין</i> סוכן קולי שיחתי — ושחקנים עצמאיים כבר מוכרים "את סוכן הטלפון עבור [פלטפורמה]" לתוך הפערים האלה. רק RingCentral AIR מפעיל כיום מהלך אמיתי חוצה־פלטפורמות.</li>
+    <li><b>אמון הוא זירת הקרב של הנטישה.</b> כאחד מכל חמישה מתקשרים מנתק כשהוא מבין שמדובר ב־AI; רק 21 אחוז מהלקוחות "מרוצים מאוד". הסכמי שירות להעברה לנציג אנושי, התרעות על שיחות דחופות, דיווחי דיוק, וחיוב שקוף — כל אלה בידול שאף אחד עדיין לא בעל אותו.</li>
+  </ol>
+</section>
+
+<!-- ============ MARKET ============ -->
+<section id="market">
+  <h2><span class="num">2</span>השוק במבט־על</h2>
+  <p class="lede">הגדרות האנליסטים שונות מאוד זו מזו — יש להתייחס לגדלים כטריאנגולציה. המסגור החזק יותר עבור מוצר SMB הוא בעיית השיחה שלא נענתה וההוצאה על פקידת קבלה אנושית שהיא מחליפה.</p>
+  <div class="tiles">
+    <div class="tile"><div class="label">שוק סוכני הקול מבוססי AI כיום</div><div class="value">2.4 עד 7.6 מיליארד דולר</div><div class="note">← 47 עד 79 מיליארד דולר עד 2034, קצב צמיחה שנתי של כ־30 עד 45 אחוז (Market.us, Research Intelo)</div></div>
+    <div class="tile"><div class="label">שיחות ל־SMB שלא נענות</div><div class="value">כ־62 אחוז</div><div class="note">אמת מידה שפורסמה על ידי ספקים, חוזרת בהרחבה</div></div>
+    <div class="tile"><div class="label">מתקשרים שהוחמצו ולא חוזרים לחייג</div><div class="value">85 אחוז</div><div class="note">כ־86 אחוז לא ישאירו הודעה קולית</div></div>
+    <div class="tile"><div class="label">עלות פקידת קבלה אנושית</div><div class="value">37 אלף דולר לשנה</div><div class="note">חציון בארה"ב (BLS 2024) — נקודת העוגן של כל ספק</div></div>
+    <div class="tile"><div class="label">לקוחות "מרוצים מאוד" מסוכני קול</div><div class="value">21 אחוז</div><div class="note">סקר Deepgram/Opus 2025; 84 אחוז עדיין מגדילים תקציבים</div></div>
+    <div class="tile"><div class="label">השקעות הון סיכון בקול AI, 2024</div><div class="value">2.1 מיליארד דולר</div><div class="note">CB Insights; עוד כ־500 מיליון דולר ברבעון הראשון של 2025</div></div>
+  </div>
+  <p class="refline">מקורות:
+    <a href="https://market.us/report/voice-ai-agents-market/">Market.us</a> ·
+    <a href="https://researchintelo.com/report/voice-ai-agent-market">Research Intelo</a> ·
+    <a href="https://www.marketsandmarkets.com/Market-Reports/ai-agents-market-15761548.html">MarketsandMarkets</a> ·
+    <a href="https://www.ambscallcenter.com/blog/business-phone-stats">Ambs</a> ·
+    <a href="https://www.getaira.io/blog/missed-business-calls-statistics">Aira</a> ·
+    <a href="https://ainora.lt/blog/missed-call-statistics-small-business-2026">Ainora</a> ·
+    <a href="https://www.bls.gov/ooh/office-and-administrative-support/receptionists.htm">BLS</a> ·
+    <a href="https://deepgram.com/2025-state-of-voice-ai-report">Deepgram 2025</a> ·
+    <a href="https://www.cbinsights.com/research/report/ai-trends-2025/">CB Insights</a>
+  </p>
+</section>
+
+<!-- ============ CATEGORY MAP ============ -->
+<section id="map">
+  <h2><span class="num">3</span>מפת קטגוריות</h2>
+  <p class="lede">חמישה מגזרים. אלפרד העצמאי יתחרה בעיקר במגזר א', ישאל את ספר המשחק של מגזר ג', ויתבדל ממגזר ב' לפי היקף הפעולות בפלטפורמה.</p>
+  <div class="scroll"><table>
+    <thead><tr><th>מגזר</th><th>את מי הם משרתים</th><th>דוגמאות</th><th>רלוונטיות לאלפרד</th></tr></thead>
+    <tbody>
+      <tr><td><strong>א. פקידות קבלה מוכנות לשימוש עבור SMB</strong></td><td>כל עסק קטן; שירות עצמי</td><td>Goodcall, Rosie, Smith.ai (היברידי אדם+AI), Dialzara, My AI Front Desk, Simple Phones, Phonely, Echowin, Voctiv</td><td>תחרות ישירה — המגזר הליבתי של אלפרד</td></tr>
+      <tr><td><strong>ב. ספקים אנכיים מתמחים</strong></td><td>תעשייה אחת, תהליך עבודה עמוק</td><td>Slang.ai ו־Loman (מסעדות), Numa ו־Toma (רכב), Avoca ו־Sameday (שירותי בית), Assort Health (בריאות), Sonant (ביטוח)</td><td>קובע את הרף ל"פעולות לכל אינטגרציה"; הוכחה לתמחור פרימיום</td></tr>
+      <tr><td><strong>ג. סוכנים משובצי־פלטפורמה</strong></td><td>הלקוחות של הפלטפורמה עצמה</td><td>Podium AI Employee, GoHighLevel Voice AI, Jobber Receptionist, Housecall Pro CSR AI, סוכני קול של ServiceTitan, Yelp Host, הזמנות קוליות ב־Square, RingCentral AIR, GoTo</td><td>מה שאלפרד הוא היום בתוך Wix; RingCentral AIR הוא התקדים ל"יציאה עצמאית"</td></tr>
+      <tr><td><strong>ד. פלטפורמות תשתית קול</strong></td><td>מפתחים, סוכנויות</td><td>Vapi, Retell, Bland, Synthflow, ElevenLabs Agents, Twilio, OpenAI Realtime/SIP</td><td>הופך את הטכנולוגיה למוצר סחורה; מפעיל אלפי מוכרים חוזרים; שכבת בנייה אפשרית</td></tr>
+      <tr><td><strong>ה. AI למוקדי שירות ארגוניים</strong></td><td>מותגים גדולים, מוקדים טלפוניים</td><td>Sierra (שווי 15.8 מיליארד דולר), Parloa, PolyAI, NiCE/Cognigy</td><td>רק תקרת פיצ'רים; לא משרת עסקים עם פחות מ־50 עובדים</td></tr>
+    </tbody>
+  </table></div>
+  <p class="refline">ראוי לציון: שבעה ספקי UCaaS/CCaaS השיקו פקידות קבלה מבוססות GenAI רק ברבעון הראשון של 2025 (<a href="https://www.nojitter.com/ai-automation/ai-receptionists-enter-the-digital-workforce">No Jitter</a>) · Curious Thing — הגנרליסט האופקי הזול — קרסה לכינוס נכסים ב־2025 (<a href="https://www.innovationaus.com/sydney-voice-ai-startup-finds-buyer-after-collapse/">InnovationAus</a>).</p>
+</section>
+
+<!-- ============ LANDSCAPE TABLE ============ -->
+<section id="landscape">
+  <h2><span class="num">4</span>נוף התחרות</h2>
+  <p class="lede">השחקנים המרכזיים במבט־על. מחיר כניסה = החבילה הזולה ביותר בתשלום הכוללת קול. פירוט מלא לכל חברה תחת <a href="#profiles">פרופילי חברות</a>.</p>
+  <div class="scroll"><table>
+    <thead><tr><th>חברה</th><th>מגזר</th><th class="num-col">מחיר כניסה</th><th>מודל תמחור</th><th>האינטגרציות העמוקות ביותר (פעולה)</th><th>אנכיים</th><th>היקף / מימון</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Goodcall</strong></td><td>SMB מוכן לשימוש</td><td class="num-col">79 דולר/חודש</td><td>שטוח לפי סוכן, דקות ללא הגבלה, מספר לקוחות ייחודיים מוגבל</td><td>ServiceTitan (בדיקת לקוח/עבודה בזמן אמת), חיפוש CRM ב־Zapier באמצע שיחה, ידע מ־Yelp</td><td>שירותי בית, רפואת שיניים, מספרות</td><td>מעל 42 אלף עסקים (נטען) · גיוס ראשוני 4 מיליון דולר</td></tr>
+      <tr><td><strong>Rosie</strong></td><td>SMB מוכן לשימוש</td><td class="num-col">49 דולר/חודש</td><td>חבילות שטוחות + דקות (250 עד 2,000)</td><td>Google Calendar/Calendly/Acuity (קביעת תור ישירה), Zapier</td><td>מעל 27 עמודי תעשייה (שיווק בלבד)</td><td>מעל 2,000 עסקים (נטען) · פועל על גבי Bland</td></tr>
+      <tr><td><strong>Smith.ai</strong></td><td>היברידי אדם+AI</td><td class="num-col">0 / 150 דולר</td><td>לפי שיחה (2 עד 3 דולר AI; 8.50 עד 11.50 דולר אדם) + עמלות לפי פעולה</td><td>Salesforce, HubSpot, Clio (קליטת תיקים משפטיים), Acuity (קביעת תור + תשלום)</td><td>משפטים (העמוק ביותר), שירותי בית, בריאות</td><td>מעל 5,000 עסקים · כ־27 מיליון דולר הכנסות · פועלת מאז 2015</td></tr>
+      <tr><td><strong>Phonely</strong></td><td>מוכן לשימוש ← שוק עסקי גדול</td><td class="num-col">0 / 50 דולר</td><td>חבילות לפי דקה (חריגה 0.25 עד 0.30 דולר)</td><td>דחיפה ל־HubSpot/Salesforce, כתיבה ליומן Google/Outlook</td><td>13 תבניות (ביטוח, משפטים, נדל"ן…)</td><td>מעל 10 אלף לקוחות (נטען) · גיוס סבב A של 22 מיליון דולר לפי שווי כ־100 מיליון דולר</td></tr>
+      <tr><td><strong>My AI Front Desk</strong></td><td>מוכן לשימוש + תיוג לבן</td><td class="num-col">99 דולר/חודש</td><td>קרדיטים (קול כ־0.25 דולר לדקה בחריגה)</td><td>HubSpot, GoHighLevel, כתיבה ליומן Google/Outlook, webhooks</td><td>ניהול נכסים, טיפול נפשי, משפטים</td><td>ממומן עצמאית · תוכנית המכירה החוזרת היא הדגל</td></tr>
+      <tr><td><strong>Simple Phones</strong></td><td>מוכן לשימוש (קונסיירז')</td><td class="num-col">97 דולר/חודש</td><td>לפי שיחה (100 שיחות כלולות)</td><td>מותאם אישית: הצוות מחבר כל CRM; Zapier/webhooks</td><td>ללא הגדרה רשמית</td><td>ממומן עצמאית, טביעת רגל מינימלית</td></tr>
+      <tr><td><strong>Echowin</strong></td><td>בונה + תיוג לבן</td><td class="num-col">כ־50 דולר/חודש <span class="flag">מדווח</span></td><td>ארנק קרדיטים (כ־0.13 עד 0.23 דולר לדקה)</td><td>Zapier/Make, API ציבורי, CRM מובנה</td><td>סוכנויות כ"אנכי"</td><td>ממומן עצמאית · כ־1.1 מיליון דולר הכנסה שנתית</td></tr>
+      <tr><td><strong>Voctiv</strong></td><td>מוכן לשימוש (מוטה אפליקציה)</td><td class="num-col">7 עד 30 דולר/חודש</td><td>מנוי בחנות אפליקציות</td><td>קביעת תור ביומן; ארגוני: Avaya/Genesys</td><td>עסק זעיר / עצמאי</td><td>"18 עד 30 אלף עסקים" (טענות לא עקביות)</td></tr>
+      <tr><td><strong>Slang.ai</strong></td><td>אנכי: מסעדות</td><td class="num-col">399 דולר/סניף</td><td>שטוח לפי סניף + תוספות</td><td>OpenTable/SevenRooms/Yelp/Fishbowl (קביעה ושינוי הזמנות), Tripleseat</td><td>מסעדות (הזמנת שולחן; ללא הזמנת אוכל טלפונית)</td><td>מעל 2,000 סניפים · 68 מיליון דולר (סבב B פברואר 2026)</td></tr>
+      <tr><td><strong>Loman.ai</strong></td><td>אנכי: מסעדות</td><td class="num-col">כ־199 דולר/חודש <span class="flag">מדווח</span></td><td>שטוח, "ללא עמלות לפי דקה"</td><td>Toast/Square/Clover/SpotOn/Olo + 30 מערכות קופה (מזינה הזמנות בתשלום), OpenTable</td><td>מסעדות עתירות הזמנות (פיצה, מזון מהיר)</td><td>גיוס ראשוני 3.5 מיליון דולר (2025) · הוקמה ב־2024</td></tr>
+      <tr><td><strong>Numa</strong></td><td>אנכי: רכב</td><td class="num-col">200 עד 400 דולר <span class="flag">מדווח</span></td><td>לפי סוכנות; אפשרות תשלום לפי תור שנקבע</td><td>מערכות DMS של CDK/Reynolds/Tekion/Xtime (קביעת תורי שירות עם לוגיקת רכב חלופי)</td><td>סוכנויות רכב (תפעול קבוע)</td><td>מעל 1,300 סוכנויות · 48 מיליון דולר</td></tr>
+      <tr><td><strong>Avoca</strong></td><td>אנכי: שירותי בית</td><td class="num-col">1,000 עד 3,500 דולר <span class="flag">מדווח</span></td><td>נמדד לפי דקה, הצעת מחיר בלבד</td><td>מוסמכת ServiceTitan (קביעת עבודות ללוח השיבוץ), Housecall Pro, FieldRoutes, Google LSA</td><td>מיזוג אוויר/אינסטלציה, שוק בינוני ומעלה</td><td>מעל 800 לקוחות · גיוס 125 מיליון דולר לפי שווי מיליארד דולר (אפריל 2026)</td></tr>
+      <tr><td><strong>Sameday</strong></td><td>אנכי: שירותי בית</td><td class="num-col">449 דולר/חודש</td><td>שטוח + חבילות דקות</td><td>ServiceTitan (כרטיסי חירום, מנויים), Jobber, Housecall Pro, FieldRoutes, Service Fusion</td><td>בעלי מקצוע; מסגור כסוכן <i>מכירות</i> AI</td><td>YC מחזור חורף 2023 · מימון קטן</td></tr>
+      <tr><td><strong>Podium AI Employee</strong></td><td>משובץ־פלטפורמה</td><td class="num-col">תוספת 99 עד 399 דולר <span class="flag">מדווח</span></td><td>תוספת שטוחה לא שקופה על חבילות מ־399 דולר ומעלה</td><td>פלטפורמה מובנית + CDK/Reynolds, ServiceTitan, Shopify (קביעה ללוח שיבוץ, הצעות מחיר מהיסטוריית שירות)</td><td>רכב, שירותי בית, מרפאות אסתטיקה ("מערכת הפעלה AI")</td><td>מעל 10 אלף סניפים על Jerry · הכנסות AI +300 אחוז שנה מול שנה</td></tr>
+      <tr><td><strong>GoHighLevel</strong></td><td>פלטפורמה + מסלול סוכנויות</td><td class="num-col">97 דולר/חודש</td><td>0.13 דולר לדקה סיטונאי או 97 דולר ללא הגבלה; חיוב חוזר עם תוספת מחיר לסוכנויות</td><td>CRM/יומן/תהליכי עבודה מובנים (מעגל סגור)</td><td>אופקי; 341 סוכני קול בחנות האפליקציות שלה</td><td>"מעניקה כוח ל־2 מיליון עסקים" · הושקה נובמבר 2024</td></tr>
+      <tr><td><strong>Jobber Receptionist</strong></td><td>משובץ־פלטפורמה</td><td class="num-col">29 דולר/חודש</td><td>30 שיחות כלולות, 0.79 דולר לנוספת; חינם בתוכנית Plus</td><td>מובנה ב־Jobber (יוצר בקשות, קובע ביקורים)</td><td>שירותי בית</td><td>זמין לכלל ציבור אוגוסט 2025 · מעל 200 אלף שיחות</td></tr>
+      <tr><td><strong>Housecall Pro CSR AI</strong></td><td>משובץ־פלטפורמה</td><td class="num-col">200 עד 500 דולר <span class="flag">מדווח</span></td><td>תוספת, פנייה למכירות</td><td>מובנה ב־HCP (קביעת תור מודעת לפריטים ממחירון), נפילה לאדם דרך HCP Assist</td><td>שירותי בית</td><td>טוענת להחזר השקעה פי 42</td></tr>
+      <tr><td><strong>RingCentral AIR</strong></td><td>פלטפורמה ← עצמאי</td><td class="num-col">49 עד 59 דולר/חודש</td><td>שטוח כולל כ־100 דקות</td><td>"עובד עם כל מערכת טלפון" — נמכר גם מחוץ לבסיס הלקוחות של RingCentral</td><td>אופקי</td><td>התקדים החוצה־פלטפורמות (פברואר 2025)</td></tr>
+      <tr><td><strong>Yelp Host</strong></td><td>משובץ־פלטפורמה</td><td class="num-col">149 דולר/חודש</td><td>שטוח (99 דולר עם Guest Manager)</td><td>Yelp Guest Manager (הזמנות/רשימת המתנה)</td><td>מסעדות</td><td>הושק ב־2025</td></tr>
+    </tbody>
+  </table></div>
+  <p class="refline">נמצא גם במעקב: Dialzara (29 דולר/חודש, 60 דקות), Verizon Business Assistant (35 דולר/חודש, טקסט קודם), GoTo Connect AI Receptionist, Toma (רכב, גיוס 17 מיליון דולר מ־a16z), Assort Health (בריאות, 120 מיליון דולר), SoundHound (איחוד מסעדות), Moneypenny (ותיקה אנושית שמוסיפה AI). קישורים בפרופילים ובשיטת המחקר.</p>
+</section>
+
+<!-- ============ PRICING ============ -->
+<section id="pricing">
+  <h2><span class="num">5</span>תמחור</h2>
+
+  <div class="chart-card">
+    <p class="chart-title">מחיר כניסה חודשי, החבילה הזולה ביותר בתשלום הכוללת קול (דולר)</p>
+    <p class="chart-sub">מודלי היחידה שונים (דקות, שיחות, שיחות־שיח, ללא הגבלה) — רחפו מעל עמודה כדי לראות מה כלול.</p>
+    <div class="legend">
+      <span class="key"><span class="sw" style="background:var(--bar-published)"></span>מחיר רשמי</span>
+      <span class="key"><span class="sw" style="background:var(--bar-reported)"></span>מדווח (לא בעמוד תמחור רשמי)</span>
+    </div>
+    <div id="chart"></div>
+    <p class="chart-note">העמודה של Avoca קוצצה ב־1,000 דולר (טווח מדווח 1,000 עד 3,500 דולר/חודש). קיימות חבילות חינמיות ב־Smith.ai (25 שיחות לחודש) וב־Phonely (100 דקות לחודש). נתונים: עמודי תמחור רשמיים, יולי 2026; נתונים מדווחים לפי מקורות צד שלישי המצוינים בפרופילים.</p>
+  </div>
+
+  <h3>חמישה מודלי יחידה</h3>
+  <div class="scroll"><table>
+    <thead><tr><th>מודל</th><th>מי משתמש בו</th><th>טווח</th><th>איך לקרוא את זה</th></tr></thead>
+    <tbody>
+      <tr><td><strong>חבילות שטוחות + דקות</strong></td><td>Rosie, Phonely, Sameday, Dialzara, My AI Front Desk, RingCentral AIR</td><td class="num-col">29 עד 449 דולר/חודש, חריגה 0.25 עד 0.48 דולר/דקה</td><td>ברירת המחדל ההולכת ומתכנסת ב־SMB — צפויה, בשירות עצמי</td></tr>
+      <tr><td><strong>לפי שיחה / שיחת־שיח</strong></td><td>Smith.ai (2 עד 3 דולר AI, 8.50 דולר ומעלה אדם), Simple Phones (0.97 דולר), Jobber (0.79 דולר)</td><td class="num-col">0.79 עד 11.50 דולר ליחידה</td><td>מטאפורת שירות מענה מיושנת; מוסיף לתלונות החיוב של Smith.ai</td></tr>
+      <tr><td><strong>"עובד AI" שטוח, ללא הגבלה</strong></td><td>Goodcall (לפי סוכן + תקרת לקוחות ייחודיים), GHL (97 דולר ללא הגבלה בכניסה), Loman ("ללא עמלות לפי דקה")</td><td class="num-col">79 עד 249 דולר/חודש</td><td>המסגור שהלקוחות אוהבים — משווה מול העסקת עובד ב־37 אלף דולר לשנה, לא מול טלפוניה</td></tr>
+      <tr><td><strong>פרימיום אנכי לפי סניף</strong></td><td>Slang (399 עד 599 דולר), Yelp Host (149 דולר), Numa (לפי סוכנות)</td><td class="num-col">149 עד 599 דולר/סניף</td><td>פי 3 עד 10 מהתמחור האופקי, מוצדק על ידי פעולות במערכת הליבה</td></tr>
+      <tr><td><strong>מבוסס תוצאה</strong></td><td>אפשרות התשלום לכל תור־שנקבע של Numa (שיעורים לא מפורסמים); עמלת פעולת קביעת התור של Smith.ai בסך 1.50 דולר</td><td class="num-col">—</td><td><b>מרחב פנוי:</b> אף ספק מרכזי לא מפרסם תמחור רשמי לפי תור שנקבע</td></tr>
+    </tbody>
+  </table></div>
+
+  <ul class="tight">
+    <li><b>המרווחים רחבים:</b> עלות הבסיס היא כ־0.05 עד 0.25 דולר לדקה (Vapi 0.05 דולר, Retell 0.07 עד 0.31 דולר, GHL סיטונאי 0.13 דולר) ← מרווח גולמי של כ־70 עד 90 אחוז במחירי המחירון הטיפוסיים.</li>
+    <li><b>חבילות חינמיות הופכות לסטנדרט:</b> Smith.ai 25 שיחות לחודש, Phonely 100 דקות לחודש לתמיד, Echowin בנייה ובדיקה חינמית, ניסיונות של 7 עד 14 יום במקומות אחרים. גם חבילת ה־AI Site Chat החינמית של Wix (50 שיחות חינם בחודש) מתאימה לדפוס הזה.</li>
+    <li><b>דמי הקמה נדירים</b> בשירות עצמי (חריגה: Smith.ai Outreach ב־750 דולר); שחקנים אנכיים/ארגוניים מסתירים את דמי ההקמה בתהליך ההטמעה (Avoca: 4 עד 12 שבועות).</li>
+    <li><b>אטימות בחיוב היא גורם נטישה:</b> ארנקי קרדיט, ערימת עמלות תוספת לפי פעולה (Smith.ai מדווח על 30 עד 60 אחוז מעל מחיר המדף), שדרוגי מדרגה אוטומטיים (Rosie), חיובים לאחר ביטול (תלונות BBB נגד Podium).</li>
+  </ul>
+  <p class="refline">מקורות:
+    <a href="https://www.goodcall.com/pricing">Goodcall</a> ·
+    <a href="https://heyrosie.com/pricing">Rosie</a> ·
+    <a href="https://smith.ai/pricing/ai-receptionist">Smith.ai</a> ·
+    <a href="https://www.phonely.ai/pricing">Phonely</a> ·
+    <a href="https://www.slang.ai/pricing">Slang</a> ·
+    <a href="https://www.gosameday.com/pricing">Sameday</a> ·
+    <a href="https://www.myaifrontdesk.com/pricing">MAFD</a> ·
+    <a href="https://www.simplephones.ai/">Simple Phones</a> ·
+    <a href="https://dialzara.com/pricing">Dialzara</a> ·
+    <a href="https://vapi.ai/pricing">Vapi</a> ·
+    <a href="https://www.retellai.com/pricing">Retell</a> ·
+    <a href="https://netpartners.marketing/gohighlevel-voice-ai-conversation-ai-pricing-2026/">ניתוח תמחור GHL</a> ·
+    <a href="https://www.sympana.com/blog/gohighlevel-voice-ai-pricing-real-total-cost-breakdown-2026">פירוט עלויות Sympana</a>
+  </p>
+</section>
+
+<!-- ============ INTEGRATIONS ============ -->
+<section id="integrations">
+  <h2><span class="num">6</span>אינטגרציות ופעולות</h2>
+  <p class="lede">מה שהסוכן יכול <i>לעשות</i> דרך כל אינטגרציה חשוב יותר מקיר הלוגואים. הדפוס החוזר: קריאת הקשר לפני/במהלך השיחה, כתיבת העסקה אחריה.</p>
+  <div class="scroll"><table>
+    <thead><tr><th>קטגוריית אינטגרציה</th><th>פעולות טיפוסיות שהסוכן מבצע</th><th>מי עושה זאת הכי עמוק</th><th>סטטוס</th></tr></thead>
+    <tbody>
+      <tr><td><strong>יומנים / קביעת תורים</strong><br><span class="d">Google Calendar, Calendly, Acuity, Outlook, Cal.com</span></td><td>בדיקת זמינות אמיתית באמצע השיחה ← הצעת חלונות זמן ← כתיבת התור ישירות (לא קישור בטקסט)</td><td>Rosie, My AI Front Desk, Phonely, Smith.ai</td><td><span class="pill">סטנדרט בסיסי</span></td></tr>
+      <tr><td><strong>Zapier / Make / webhooks</strong></td><td>דחיפת אירועי שיחה, תמלולים, לידים ל־5 עד 9 אלף אפליקציות; בדיקת CRM בשיחה נכנסת ("חיפוש לקוח" של Goodcall)</td><td>כולם — פתח המילוט האוניברסלי</td><td><span class="pill">סטנדרט בסיסי</span></td></tr>
+      <tr><td><strong>CRM</strong><br><span class="d">HubSpot, Salesforce, Clio, מערכות AMS</span></td><td>יצירת ליד/איש קשר עם היסטוריית שיחה; זיהוי מתקשרים חוזרים; רישום שיחה + תקציר</td><td>Smith.ai (SF/HubSpot/Clio מובנה), Phonely, MAFD</td><td><span class="pill">מצופה</span></td></tr>
+      <tr><td><strong>פלטפורמות הזמנות</strong><br><span class="d">OpenTable, SevenRooms, Yelp, Fishbowl</span></td><td>קביעה/שינוי/ביטול הזמנות, תיעוד בקשות מיוחדות, זיהוי VIP, קביעת תור חוזר בין סניפים</td><td>Slang.ai (4 פלטפורמות, כתיבה מובנית)</td><td><span class="pill">חפיר אנכי</span></td></tr>
+      <tr><td><strong>קופה / הזמנות</strong><br><span class="d">Toast, Square, Clover, SpotOn, Olo, Aloha</span></td><td>קבלת הזמנה טלפונית מלאה עם תוספות ← הזנה לקופה ← קליטת תשלום בכרטיס ← מכירה נוספת</td><td>Loman (מעל 8 מערכות קופה), הזמנה קולית של Square (מחסנית משלה)</td><td><span class="pill">חפיר אנכי</span></td></tr>
+      <tr><td><strong>ניהול שירות שטח</strong><br><span class="d">ServiceTitan, Jobber, Housecall Pro, FieldRoutes</span></td><td>יצירת עבודה מסווגת נכון בלוח השיבוץ עם זמינות טכנאי + חלון הגעה; כרטיסי חירום עם דגלי עדיפות; מכירת מנויים</td><td>Avoca (מוסמכת ST), Sameday (5 מערכות FSM), Podium</td><td><span class="pill">חפיר אנכי</span></td></tr>
+      <tr><td><strong>מערכות DMS לרכב</strong><br><span class="d">CDK, Reynolds, Tekion, Xtime</span></td><td>שליפת הקשר לקוח/רכב/הזמנת תיקון; קביעת תורי שירות עם העדפות רכב חלופי/הסעה; החזרת רשומות למערכת</td><td>Numa (כיסוי DMS של כ־90 אחוז), Toma</td><td><span class="pill">חפיר אנכי</span></td></tr>
+      <tr><td><strong>תשלומים</strong><br><span class="d">Stripe, Shift4, מסלולי פלטפורמה</span></td><td>קליטת כרטיס אשראי בטלפון; גביית מקדמות; גביה בשיחות חיוב</td><td>Loman (Premium), Smith.ai (תוספת דולר לשיחה), Podium</td><td><span class="pill">גורם בידול</span></td></tr>
+      <tr><td><strong>שיווק / ביקורות / LSA</strong></td><td>קליטת לידים מ־Google LSA; הפעלת קמפיינים; מענה לביקורות</td><td>Avoca (LSA), Podium, Birdeye (טקסט בלבד)</td><td><span class="pill">מתפתח</span></td></tr>
+    </tbody>
+  </table></div>
+  <ul class="tight">
+    <li><b>כמעט לאף אחד אין API ציבורי נקי.</b> Zapier הוא פתרון הגיבוי האוניברסלי; Echowin ו־Phonely (Pro) הם החריגים. API/SDK מתועד היטב לביצוע פעולות יהיה חריג במגזר א'.</li>
+    <li><b>ספקי פלטפורמה מתעדים אינטגרציות למערכות של מתחרים כמהלכי SEO</b> — Goodcall מפעילה עמודי נחיתה של "סוכן הטלפון עבור Birdeye / Thryv / Square Appointments" שמכוונים לפלטפורמות שחסרות קול.</li>
+  </ul>
+  <p class="refline">מקורות: <a href="https://zapier.com/apps/goodcall/integrations">Goodcall ב־Zapier</a> · <a href="https://smith.ai/integrations">מדריך Smith.ai</a> · <a href="https://www.myaifrontdesk.com/integrations">אינטגרציות MAFD</a> · <a href="https://support.opentable.com/s/article/slangai?language=en_US">OpenTable×Slang</a> · <a href="https://loman.ai/">רשימת קופות Loman</a> · <a href="https://www.numa.com/blog/numa-dealership-integrations-dms-scheduler-crm">מדריך DMS של Numa</a> · <a href="https://www.gosameday.com/integration/servicetitan">Sameday×ServiceTitan</a> · <a href="https://www.goodcall.com/business-productivity-ai/birdeye">Goodcall-for-Birdeye</a></p>
+</section>
+
+<!-- ============ VERTICALS ============ -->
+<section id="verticals">
+  <h2><span class="num">7</span>אנכיים — מתחומים מכוסים ולא מכוסים</h2>
+  <p class="lede">"פתרון אנכי" נע בין עמודי נחיתה שיווקיים (רדוד) לגישת כתיבה מובנית למערכת הליבה של האנכי (עמוק). העומק הוא מה שמזכה בתמחור פרימיום.</p>
+  <div class="scroll"><table>
+    <thead><tr><th>אנכי</th><th>מתמחים</th><th>מה הפתרון האנכי מכיל בפועל</th><th>עוצמה</th></tr></thead>
+    <tbody>
+      <tr><td><strong>מסעדות</strong></td><td>Slang (הזמנות שולחן), Loman (הזמנות אוכל), SoundHound, Yelp Host, הזמנה קולית של Square</td><td>כתיבה לפלטפורמת הזמנות; הזמנת אוכל מודעת לתפריט עם תוספות; תשלומים טלפוניים; מדדי כיסאות/גודל חשבון; ניתוב אירועים פרטיים</td><td>צפוף, ממומן היטב; מתפצל לנישות הזמנת־שולחן מול הזמנת־אוכל</td></tr>
+      <tr><td><strong>שירותי בית / בעלי מקצוע</strong></td><td>Avoca (מיליארד דולר), Sameday, Goodcall, Rosie; מובנה בפלטפורמה: Jobber, Housecall Pro, ServiceTitan, Podium "Larry"</td><td>קביעת עבודות ללוח שיבוץ עם זמינות טכנאי; מיון חירום עם דגלי עדיפות; מכירת מנויים; חידוש הצעות מחיר שלא נסגרו; אימון נציגי שירות</td><td>המגזר החם ביותר — חד־קרן נטבע; מערכות FSM הופכות את המענה הבסיסי למוצר סחורה</td></tr>
+      <tr><td><strong>סוכנויות רכב</strong></td><td>Numa, Toma, Podium "Jerry"</td><td>סנכרון דו־כיווני עם DMS; שיבוץ מסלול שירות עם לוגיקת רכב חלופי; מעקב CSI; כרייה של עבודה שנדחתה</td><td>ממומן (a16z, Mitsui); צד השירות בשל, צד המכירות פתוח</td></tr>
+      <tr><td><strong>בריאות / רפואת שיניים</strong></td><td>Assort Health (120 מיליון דולר), Smith.ai, MAFD (מערכת ניהול קליניקה)</td><td>אינטגרציית EHR, קביעת תורי מטופלים, שכבות עמידה ב־HIPAA</td><td>ממומן; העמידה הרגולטורית היא המחסום</td></tr>
+      <tr><td><strong>משפטים</strong></td><td>Smith.ai (אינטגרציית Clio, בדיקות ניגוד עניינים)</td><td>תהליכי קליטת לקוחות, רשומות תיק/איש קשר, בדיקות ניגוד עניינים</td><td>בבעלות היברידית אדם+AI; אין מתמחה AI טהור</td></tr>
+      <tr><td><strong>ביטוח</strong></td><td>Sonant (עברה לתחום)</td><td>כתיבה למערכות AMS (EZLynx, Applied Epic…), קליטת הצעות מחיר</td><td>מוקדם; שחקן יחיד בשלב זרע</td></tr>
+      <tr><td><strong>יופי / בריאות / כושר</strong></td><td><b>לא נמצא מתמחה ממומן</b> — רק עמודי נחיתה כלליים (Rosie, מספרות Goodcall) ו־Podium "Avery" למרפאות אסתטיקה</td><td>—</td><td><span class="flag">מרחב פנוי</span> — עתיר תורים, כאב מקדמות/אי־הגעה, בסיס משתמשי Wix Bookings</td></tr>
+      <tr><td><strong>פגישות מקצועיות</strong><br><span class="d">יועצים, מורים פרטיים, סטודיואים, צלמים</span></td><td><b>לא נמצא מתמחה</b></td><td>—</td><td><span class="flag">מרחב פנוי</span> — תואם את פרופיל היוצר העצמאי של Wix</td></tr>
+    </tbody>
+  </table></div>
+  <p class="refline">סיפור אזהרה: השחקן האופקי־זול־רדוד (Curious Thing, 24 עד 99 דולר/חודש, webhooks בלבד) קרס ב־2025 בעוד כל מתמחה אנכי לעיל גייס הון חדש בין אוקטובר 2024 לפברואר 2026.</p>
+</section>
+
+<!-- ============ CHURN ============ -->
+<section id="churn">
+  <h2><span class="num">8</span>למה לקוחות מאמצים — ולמה הם נוטשים</h2>
+  <div class="card">
+    <b>אימוץ:</b> חרדה מהכנסה שאבדה עקב שיחות שהוחמצו (62 אחוז לא נענות / 85 אחוז לא חוזרים לחייג) · 49 עד 299 דולר לחודש לעומת מעל 3,000 דולר לחודש לעובד אנושי · כיסוי מחוץ לשעות פעילות · סינון ספאם. מבחן שדה עצמאי בן 30 יום: 214 שיחות ← 89 הזמנות/חזרות שיחה שנקלטו, 3,465 ליש"ט הכנסה מיוחסת מול 172 ליש"ט עלות.
+  </div>
+  <ul class="tight">
+    <li><b>דחיית קול סינתטי על ידי מתקשרים</b> — כאחד מכל חמישה מתקשרים ניתק תוך 10 שניות מרגע שהבין שמדובר ב־AI; העמדת פנים שמדובר באדם רק החמירה את המצב.</li>
+    <li><b>זיהוי שגוי</b> — 68 אחוז ממשתמשי הקול־AI הקבועים מציינים אותו כתלונה המרכזית שלהם.</li>
+    <li><b>כשלים בשיחות דחופות/רגשיות</b> — קריאות חירום שנשארות לא נקראות בלוחות מחוונים; מתקשרים במצוקה מסרבים לדבר עם תוכנה.</li>
+    <li><b>קביעת תור ללא הקשר</b> — משתמשי Jobber מדווחים על תורים שנקבעו "בלי מושג לשם מה" (חסרה לוגיקת שאלות חובה).</li>
+    <li><b>הפתעות בחיוב</b> — ערימת עמלות תוספת לפי פעולה (Smith.ai +30 עד 60 אחוז מעל מחיר המדף), פקיעת קרדיטים, שדרוגי מדרגה אוטומטיים, חיובים לאחר ביטול (BBB נגד Podium).</li>
+    <li><b>נטל ההקמה</b> — עיצוב תהליך השיחה הוא עבודה אמיתית; לקוחות מזלזלים בהיקפו.</li>
+  </ul>
+  <p class="lede"><b>מנופי שימור שהוכחו בשטח:</b> גילוי מראש שמדובר ב־AI, העברה לאדם תוך פחות מ־15 שניות, התרעה על פריטים דחופים, סקירת תמלול יומית. רק 21 אחוז מהלקוחות "מרוצים מאוד" — האיכות היא החולשה הפתוחה.</p>
+  <p class="refline">מקורות: <a href="https://www.lilachbullock.com/ai-phone-receptionist-30-day-test/">מבחן שדה של 30 יום</a> · <a href="https://www.getnextphone.com/blog/ai-receptionist-troubleshooting-misunderstandings">NextPhone/CTA</a> · <a href="https://www.bbb.org/us/ut/lehi/profile/computer-software-developers/podium-1166-90023083/customer-reviews">BBB נגד Podium</a> · <a href="https://ie.trustpilot.com/review/smith.ai">Smith.ai ב־Trustpilot</a> · <a href="https://community.getjobber.com/discussions/operations-forum/jobber-ai-receptionist/2735/replies/3705">קהילת Jobber</a> · <a href="https://deepgram.com/2025-state-of-voice-ai-report">Deepgram</a></p>
+</section>
+
+<!-- ============ DISTRIBUTION ============ -->
+<section id="distribution">
+  <h2><span class="num">9</span>ערוצי הפצה</h2>
+  <div class="scroll"><table>
+    <thead><tr><th>ערוץ</th><th>איך זה עובד</th><th>עדות</th></tr></thead>
+    <tbody>
+      <tr><td><strong>צמיחה מונעת מוצר, שירות עצמי</strong></td><td>תמחור מפורסם + חבילת חינם/ניסיון</td><td>Rosie, Phonely (100 דקות חינם), Dialzara, Retell</td></tr>
+      <tr><td><strong>סוכנות / תיוג לבן</strong> <span class="pill">הכי לא־מוערך</span></td><td>דקות סיטונאי או מושבים ללא הגבלה שנמכרים מחדש תחת מותג הסוכנות עם חיוב תוספת מחיר אוטומטי</td><td>GHL: 0.13 דולר/דקה או 97 דולר/חודש סיטונאי ← 200 עד 500 דולר/חודש קמעונאי, אלפי סוכנויות; MAFD כ־55 דולר/פקידה סיטונאי (מדווח) ← 250 עד 650 דולר קמעונאי; Synthflow, Echowin</td></tr>
+      <tr><td><strong>חנויות אפליקציות</strong></td><td>Square, Shopify, HubSpot</td><td>רישומים קיימים (RingOwl, Marlie, Call Agent AI…) — <b>אין עדיין מוביל קטגוריה</b></td></tr>
+      <tr><td><strong>איגוד עם טלקום / UCaaS</strong></td><td>פקידת קבלה כפיצ'ר בתוכנית טלפון</td><td>RingCentral AIR 49 עד 59 דולר (נמכר גם באופן עצמאי), GoTo, Verizon 35 דולר/חודש, גל Zoom/Webex</td></tr>
+      <tr><td><strong>שיבוץ ב־SaaS אנכי</strong></td><td>פיצ'ר מובנה בפלטפורמה (אנלוגיה: אלפרד בתוך Wix)</td><td>Jobber, ServiceTitan, Yelp, Housecall Pro, Podium</td></tr>
+      <tr><td><strong>שותפות / מונע אקוסיסטם</strong></td><td>רשתות זכיינות, BPO, איגודי סחר</td><td>Avoca דרך Nexstar/1-800-GOT-JUNK; לקוחות ה־BPO של Phonely השקיעו בסבב שלה</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ============ ALFRED ============ -->
+<section id="alfred">
+  <h2><span class="num">10</span>השלכות עבור אלפרד העצמאי</h2>
+  <p class="lede">השערות המבוססות על הממצאים שלעיל — לצורך דיון, לא החלטות.</p>
+
+  <h3>מיצוב</h3>
+  <ul class="tight">
+    <li><b>"פקידת הקבלה מבוססת ה־AI שעובדת עם המחסנית הקיימת שלכם."</b> העמדה היחידה שרק שחקן אחד תופס בה כיום (RingCentral AIR) עם ביקוש מוכח: שחקנים עצמאיים כבר מוכרים לתוך הפערים ש־GoDaddy/Squarespace/Thryv/Birdeye/Square השאירו פתוחים.</li>
+    <li><b>למכור פעולות, לא מענה.</b> קטלוגי פעולות לפי פלטפורמה ("ב־Wix: קובע תורים, גובה תשלומים, בודק הזמנות; ב־Square: …") משקפים את מה שמזכה שחקנים אנכיים בתמחור פי 3 עד 10. העומק המובנה של Wix הופך להדגמת ההוכחה־לעומק עבור כל פלטפורמה אחרת.</li>
+    <li><b>לבעול אמון כמערך פיצ'רים:</b> גילוי מראש שמדובר ב־AI, העברה לאדם תוך פחות מ־15 שניות, התרעה על שיחות דחופות, לוח מחוונים לדיוק, חיוב שקוף עם ביטול עצמי. אלה תואמים אחד־לאחד את גורמי הנטישה המתועדים, ואף אחד לא משווק אותם.</li>
+  </ul>
+
+  <h3>לוגיקת מפת דרכים לאינטגרציות</h3>
+  <ul class="tight">
+    <li><b>סטנדרט בסיסי בהשקה:</b> כתיבת קביעת תור ישירה ל־Google Calendar/Calendly, Zapier + webhooks, HubSpot, העברה/ניוד מספר, מעקב ב־SMS.</li>
+    <li><b>גל הבידול (לבחור לפי אנכי היעד):</b> Square/Toast (הזמנות + תשלומים), OpenTable/SevenRooms (הזמנות שולחן), Jobber/Housecall Pro/ServiceTitan (עבודות), Shopify (סטטוס הזמנה, איפה שאשכול חנויות האפליקציות חלש).</li>
+    <li><b>תשלומים/מקדמות בטלפון</b> נדירים ובני מונטיזציה — מסלולי התשלום העצמאיים של Wix הם יתרון לא הוגן בתוך הפלטפורמה; Stripe מכסה את המקרה מחוץ לפלטפורמה.</li>
+    <li>לשגר <b>API ציבורי לפעולות</b> — כמעט לאף אחד במגזר א' אין כזה; זה מזמין את הפלטפורמות שחסרות קול להשתלב <i>לכיוון</i> אלפרד.</li>
+  </ul>
+
+  <h3>השערות תמחור</h3>
+  <ul class="tight">
+    <li><b>מפורסם, שטוח, שירות עצמי:</b> חבילת חינם (כ־25 שיחות או כ־100 דקות — תקדים Smith.ai/Phonely, תואם ל־DNA החינמי של Wix AI Site Chat) ← חבילת ליבה 49 עד 99 דולר/חודש עם מכסה נדיבה ← חבילת פרימיום 149 עד 299 דולר/חודש שמגבילה <i>פעולות</i> בפלטפורמה (תשלומים, הזמנות, כתיבה עמוקה למערכות FSM) ולא דקות.</li>
+    <li><b>לבדוק את שכבת התוצאה:</b> תשלום לפי תור־שנקבע מאומת על ידי הפסיכולוגיה של הלקוחות (Numa חלוצה בכך, Smith.ai גובה 1.50 דולר לתור) אך לא מפורסם בשום מקום — מרחב פנוי אמיתי עם מרווח של כ־70 עד 90 אחוז מתחתיו.</li>
+    <li><b>לבנות את מסלול הסוכנויות מוקדם:</b> תמחור סיטונאי + חיוב חוזר אוטומטי עם תוספת מחיר (מודל GHL) מתאים לתנועת השותפים/הסוכנויות הקיימת של Wix וזו הדרך שבה הזנב הארוך באמת מופץ.</li>
+  </ul>
+
+  <h3>כניסה אנכית</h3>
+  <ul class="tight">
+    <li>להתחיל היכן שאין מתמחה ממומן ול־Wix כבר יש בסיס מותקן: <b>יופי/בריאות, כושר, פגישות מקצועיות</b> — עתירי תורים, כאב מקדמות/אי־הגעה, פרופיל יוצר עצמאי.</li>
+    <li>להימנע מכניסה חזיתית למסעדות/שירותי בית/רכב בשלב זה — צפוף, ממומן, עם שחקנים ותיקים בעלי אינטגרציה עמוקה.</li>
+  </ul>
+
+  <h3>סיכונים</h3>
+  <ul class="tight">
+    <li><b>הפיכה למוצר סחורה מלמטה:</b> Vapi/Retell/OpenAI SIP מאפשרים לכל אחד לשגר פקידת קבלה; אלפי מוכרי תיוג לבן ב־GHL דוחסים מחירים בקצה התחתון.</li>
+    <li><b>איגוד מלמעלה:</b> כל ספקי ה־UCaaS השיקו פקידת קבלה ב־2025; סוכנים מובנים בפלטפורמה (Jobber ב־29 דולר, חינם ב־Plus) הופכים את המענה הבסיסי למוצר סחורה בתוך הבסיסים שלהם.</li>
+    <li><b>רף האיכות:</b> שיעור הניתוק של אחד מכל חמישה מתקשרים על קול AI הוא תקרת האימוץ — איכות הקול/ההשהיה וחוויית ההעברה לאדם קובעים את השימור יותר מפיצ'רים.</li>
+    <li><b>לא נצפו יציאות מיזוגים ורכישות</b> עבור פקידות קבלה מוכנות לשימוש ל־SMB בין 2024 ל־2026 — פלטפורמות בונות במקום לרכוש; הערך העצמאי חייב לנבוע מבעלות על לקוחות, לא מאופציונליות של רכישה.</li>
+  </ul>
+</section>
+
+<!-- ============ PROFILES ============ -->
+<section id="profiles">
+  <h2><span class="num">11</span>פרופילי חברות</h2>
+  <p class="lede">פירוט קומפקטי לכל חברה עם מקורות. לחצו להרחבה.</p>
+
+  <p class="grp-title">פקידות קבלה מוכנות לשימוש עבור SMB</p>
+
+  <details class="profile"><summary>Goodcall <span class="tag">מוכן לשימוש · 79 עד 249 דולר/חודש שטוח · "נולדה ב־Google"</span></summary><div class="body">
+    <div class="kv"><b>מיצוב:</b> AI טלפוני אגנטי בשירות עצמי לעסקים מקומיים ועד ארגונים. הוקמה ב־2021 (בוגרי Google), גיוס ראשוני 4 מיליון דולר + שותפות עם Yelp. טוענת למעל 42 אלף עסקים, מעל 60 מיליון אינטראקציות.</div>
+    <div class="kv"><b>פיצ'רים:</b> מענה 24/7, שיחות מקבילות ללא הגבלה, קביעת תורים, קליטת לידים ל־SMS/אימייל/Sheets/CRM, אוטומציות שיחה "Logic Flows" (מנוף מדרגה: 1/3/25), אנליטיקה, סינון ספאם, 6 קולות. ללא שיחות יוצאות.</div>
+    <div class="kv"><b>אינטגרציות/פעולות:</b> Zapier ("חיפוש לקוח" ב־CRM באמצע שיחה, טריגרים ל־Flow/Call Complete); API של ServiceTitan (סטטוס לקוח/עבודה בזמן אמת במהלך שיחות); עמודי Jobber, Housecall Pro; סנכרון ידע מ־Yelp.</div>
+    <div class="kv"><b>תמחור:</b> 79 / 129 / 249 דולר לכל סוכן לחודש — דקות ללא הגבלה, נמדד לפי לקוחות ייחודיים (100/250/500, חריגה 0.50 דולר). ניסיון חינם.</div>
+    <div class="kv"><b>אנכיים:</b> עמודי נחיתה (מיזוג אוויר, רפואת שיניים, מספרות, מסעדות) + אינטגרציות FSM; ללא מוצר אנכי ארוז.</div>
+    <div class="kv"><b>שימו לב:</b> ביקורות צד־שלישי חלשות (כ־3.5 ב־G2 / 2.6 ב־Trustpilot דרך ריכוזים); תלונות על קול סינתטי והשהיה; זחילת חריגה בחודשים עמוסים.</div>
+    <p class="refline"><a href="https://www.goodcall.com/pricing">תמחור</a> · <a href="https://www.goodcall.com/voice-ai/ai-receptionist">פיצ'רים</a> · <a href="https://zapier.com/apps/goodcall/integrations">Zapier</a> · <a href="https://www.goodcall.com/business-productivity-ai/servicetitan">ServiceTitan</a> · <a href="https://techcrunch.com/2021/09/01/goodcall-picks-up-4m-yelp-partnership-to-answer-merchant-inbound-calls">TechCrunch</a> · <a href="https://www.ringly.io/blog/ai-phone-support-reviews">ריכוז ביקורות</a></p>
+  </div></details>
+
+  <details class="profile"><summary>Rosie (heyrosie.com) <span class="tag">מוכן לשימוש · חבילות 49 עד 299 דולר/חודש · פועל על Bland</span></summary><div class="body">
+    <div class="kv"><b>מיצוב:</b> "שירות המענה מבוסס ה־AI הקל ביותר לעסק קטן"; הוקמה ב־2024 על ידי Jordan Gal; טוענת למעל 2,000 עסקים, 3.1 מיליון שיחות. "השותפה הבלעדית לעסקים קטנים" של Bland מאז נובמבר 2025.</div>
+    <div class="kv"><b>פיצ'רים:</b> מתאמנת אוטומטית מהאתר שלכם, תרחישי הודעה, קביעת תור ישירה ליומן (מ־Scale ומעלה), העברות שיחה חמות/מדורגות, שליחת קישורים בטקסט באמצע שיחה, זיהוי ספאם, אנגלית/ספרדית, אפליקציות iOS/Android, ווידג'ט צ'אט חינמי.</div>
+    <div class="kv"><b>אינטגרציות/פעולות:</b> Google Calendar/Calendly/Acuity/Appointlet — OAuth, בודקת זמינות, קובעת ישירות. Zapier (טריגרים לקביעת תור/שיחה). ללא CRM מובנה, ללא API ציבורי.</div>
+    <div class="kv"><b>תמחור:</b> 49 דולר/250 דקות · 149 דולר/1,000 · 299 דולר/2,000. ללא שיעור חריגה מפורסם (שדרוג מדרגה אוטומטי). ניסיון של 7 ימים.</div>
+    <div class="kv"><b>אנכיים:</b> מעל 27 עמודי תעשייה, ללא עומק מוצר לפי אנכי.</div>
+    <div class="kv"><b>שימו לב:</b> כמעט אין ביקורות צד־שלישי מאומתות; מתקשה בשיחות מורכבות/רגשיות; אטימות בחריגה.</div>
+    <p class="refline"><a href="https://heyrosie.com/pricing">תמחור</a> · <a href="https://heyrosie.com/blog/rosie-can-book-appointments-directly-into-your-calendar">קביעת תור ביומן</a> · <a href="https://heyrosie.com/blog/rosie-now-powered-by-bland-2-0">שותפות עם Bland</a> · <a href="https://zapier.com/apps/rosie/integrations">Zapier</a> · <a href="https://serviceagent.ai/blogs/rosie-ai-pricing/">ניתוח תמחור</a></p>
+  </div></details>
+
+  <details class="profile"><summary>Smith.ai <span class="tag">היברידי אדם+AI · לפי שיחה · עמוק במשפטים · מאז 2015</span></summary><div class="body">
+    <div class="kv"><b>מיצוב:</b> פקידת קבלה מבוססת AI מגובה מעל 500 נציגים חיים בצפון אמריקה — הנפילה היחידה לאדם בקנה מידה. מעל 5,000 עסקים, כ־27 מיליון דולר הכנסות; היסטורית כ־80 אחוז משרדי עורכי דין.</div>
+    <div class="kv"><b>פיצ'רים:</b> סינון לידים, קביעת תורים, קליטת לקוחות, גביית תשלום (דולר לשיחה), "קמפיינים יוצאים", חסימת ספאם (מאגר של 20 מיליון שיחות רובוט), העברות חמות, אנגלית/ספרדית בכל החבילות, אנליטיקה עם ציוני איכות שיחה.</div>
+    <div class="kv"><b>אינטגרציות/פעולות:</b> Salesforce/HubSpot מובנה (ליד + היסטוריה), Clio Grow/Manage (קליטת תיקים משפטיים, בדיקות ניגוד עניינים כתוספת), Acuity (קביעה + תשלום + טפסים), AccuLynx, Angi, CallRail; מעל 5,000 דרך Zapier/Make.</div>
+    <div class="kv"><b>תמחור:</b> AI: 25 שיחות חינם לחודש ← 150 דולר/75 שיחות (2 דולר לשיחה) ← 500 דולר/300. אדם: 300 דולר/30 שיחות + עמלות לפי פעולה (1.50 דולר קביעת תור, 0.50 דולר SMS…). Outreach: החל מ־600 דולר/חודש + 750 דולר הקמה.</div>
+    <div class="kv"><b>שימו לב:</b> תלונות החיוב הקולניות ביותר בקטגוריה — ערימת עמלות תוספת (מדווח 30 עד 60 אחוז מעל מחיר המדף), העברות אדם→AI לא מורשות שמנפחות את החשבון, חיובים לאחר ביטול (ציון "F" ב־BBB).</div>
+    <p class="refline"><a href="https://smith.ai/pricing/ai-receptionist">תמחור AI</a> · <a href="https://smith.ai/pricing">תמחור אדם</a> · <a href="https://smith.ai/integrations">אינטגרציות</a> · <a href="https://serviceagent.ai/blogs/smith-ai-pricing/">תלונות חיוב</a> · <a href="https://getlatka.com/companies/smithai">הכנסות</a></p>
+  </div></details>
+
+  <details class="profile"><summary>Phonely <span class="tag">מוכן לשימוש ← ארגוני · חבילת חינם + 50 דולר/חודש · גיוס סבב A של 22 מיליון דולר</span></summary><div class="body">
+    <div class="kv"><b>מיצוב:</b> AI קולי אומני־ערוצי שעובר משלב פקידת קבלה ל־SMB לכיוון מוקדים טלפוניים. מגובה YC; גיוס סבב A של 22 מיליון דולר לפי שווי של כ־100 מיליון דולר (Base10, יולי 2026); טוענת למעל 10 אלף לקוחות, 120 אלף שיחות ביום. עומדת בתקני SOC 2, HIPAA, PCI.</div>
+    <div class="kv"><b>פיצ'רים:</b> שיחות נכנסות ויוצאות (API), קביעת תור בזמן אמת, SMS מבוסס AI, מעל 100 שפות / מעל 1,000 קולות / שכפול קול, אנליטיקת רגש, בדיקות A/B, בדיקת סימולציית שיחה לפני עלייה לאוויר.</div>
+    <div class="kv"><b>אינטגרציות/פעולות:</b> דחיפה ל־HubSpot/Salesforce, כתיבה ישירה ליומן Google/Outlook, Airtable, Slack, Zapier; SIP בחבילת Enterprise.</div>
+    <div class="kv"><b>תמחור:</b> חינם 100 דקות לחודש לתמיד ← 50 דולר/250 דקות (חריגה 0.25 דולר) ← 150 דולר/750 (0.30 דולר) ← Enterprise "כבר החל מ־0.05 דולר לדקה".</div>
+    <div class="kv"><b>אנכיים:</b> כ־13 תבניות ציבוריות (הסמכת ביטוח, קבלה למשרד עורכי דין, נדל"ן, מרפאות, סולארי, בנייה…).</div>
+    <div class="kv"><b>שימו לב:</b> G2 כ־4.2; דווח על ביצועים משתנים בשעות שיא.</div>
+    <p class="refline"><a href="https://www.phonely.ai/pricing">תמחור</a> · <a href="https://www.phonely.ai/template">תבניות</a> · <a href="https://www.startupdaily.net/topic/funding/y-combinator-backed-ai-call-receptionist-raises-22-million-series-a/">סבב A</a></p>
+  </div></details>
+
+  <details class="profile"><summary>My AI Front Desk ("Frontdesk") <span class="tag">מוכן לשימוש + דגל תיוג לבן · 99 דולר/חודש קרדיטים</span></summary><div class="body">
+    <div class="kv"><b>מיצוב:</b> חבילת קול/SMS/אימייל/צ'אט אגנטית; הוקמה ב־2023, ממומנת עצמאית; דחיפה חזקה לסוכנויות/מוכרים חוזרים בנוסף לאנכיים ניהול נכסים וטיפול נפשי.</div>
+    <div class="kv"><b>אינטגרציות/פעולות:</b> 12 רשמיות — HubSpot (לידים + היסטוריה), GoHighLevel, כתיבה ישירה ליומן Google/Outlook, Cal.com, Zapier, webhooks, Twilio, Slack, Stripe (כולל תשלומי מוכר חוזר); טוענת לתמיכה במערכות PMS/EHR (Yardi, AppFolio, SimplePractice, Jane…).</div>
+    <div class="kv"><b>תמחור:</b> 20 דולר בסיסי (ללא קול) · 99 דולר "עסק בקופסה" (200 דקות קול; חריגת קרדיט כ־0.25 דולר לדקה) · ארגוני מותאם אישית. ניסיון של 7 ימים.</div>
+    <div class="kv"><b>תיוג לבן:</b> מיתוג מחדש מלא, תת־חשבונות ללא הגבלה, תמחור פר־לקוח, חיוב חוזר ב־Stripe בלחיצה אחת; סיטונאי כ־55 דולר/פקידה (מדווח) נמכר מחדש ב־250 עד 650 דולר/חודש.</div>
+    <div class="kv"><b>שימו לב:</b> Trustpilot 3.6 (15 ביקורות), תלונות חיוב ניסיון, ללא הסמכות עמידה; בסיס אמון דק לעומת הטענות.</div>
+    <p class="refline"><a href="https://www.myaifrontdesk.com/pricing">תמחור</a> · <a href="https://www.myaifrontdesk.com/white-label">תיוג לבן</a> · <a href="https://www.myaifrontdesk.com/integrations">אינטגרציות</a> · <a href="https://www.trustpilot.com/review/www.myaifrontdesk.com">Trustpilot</a></p>
+  </div></details>
+
+  <details class="profile"><summary>Simple Phones · Echowin · Voctiv <span class="tag">זנב ארוך — שלושה ניסויי הפצה</span></summary><div class="body">
+    <div class="kv"><b>Simple Phones:</b> סוכן קונסיירז' "עשה־איתך", 97 דולר/חודש ל־100 שיחות (מודל לפי שיחה), מעל 19 שפות, מעל 25 מדינות, חיווט CRM מותאם אישית, webhooks. טביעת רגל ביקורות כמעט אפסית, מייסד אנונימי. <a href="https://www.simplephones.ai/">אתר</a></div>
+    <div class="kv"><b>Echowin:</b> בונה סוכן ללא קוד + CRM מובנה, קול/צ'אט/SMS/Discord, מעל 30 שפות עם החלפה באמצע שיחה, API ציבורי; ארנק קרדיט כ־0.13 עד 0.23 דולר לדקה (מדווח); תיוג לבן היסטורית 999 דולר/חודש — דוגמת שותף: 47 לקוחות, 12.4 אלף דולר הכנסה חודשית. ממומן עצמאית כ־1.1 מיליון דולר הכנסה שנתית. <a href="https://echo.win/">אתר</a> · <a href="https://www.trillet.ai/blogs/echowin-vs-trillet-comparison">תמחור דרך מתחרה</a></div>
+    <div class="kv"><b>Voctiv:</b> עוזר שיחות AI מבוסס חנות אפליקציות תחילה לעסקים זעירים (1.99 עד 14.99 דולר לשבוע, רכישות באפליקציה 6.99 עד 29.99 דולר לחודש) + צד ארגוני טלקום/מוקד (Avaya/Genesys). דירוג 4.4 כוכבים ב־Apple, 3.5 ב־Google; התאמה אישית מוגבלת. <a href="https://voctiv.com/">אתר</a> · <a href="https://apps.apple.com/us/app/voctiv-ai-call-assistant/id1670873736">App Store</a></div>
+  </div></details>
+
+  <p class="grp-title">ספקים אנכיים מתמחים</p>
+
+  <details class="profile"><summary>Slang.ai <span class="tag">מסעדות · 399 עד 599 דולר/סניף · גיוס 68 מיליון דולר</span></summary><div class="body">
+    <div class="kv"><b>מיצוב:</b> "מארח־על AI" למסעדות שירות מלא/יוקרה — הזמנות ופניות אורחים, במפורש <b>לא</b> הזמנת אוכל טלפונית. מעל 2,000 סניפים, מעל 25 מיליון שיחות, סבב B בפברואר 2026.</div>
+    <div class="kv"><b>אינטגרציות/פעולות:</b> קובעת/משנה הזמנות ב־OpenTable, SevenRooms, Yelp, Fishbowl; מתעדת בקשות מיוחדות; ניתוב VIP; תוספת Tripleseat לאירועים פרטיים (199 דולר/חודש); קביעת תור חוזר בין סניפים. ללא Zapier/API ציבורי.</div>
+    <div class="kv"><b>תמחור:</b> 399 דולר Core / 599 דולר Premium לסניף; דו־לשוניות +99 דולר. שטוח, ללא לפי־דקה.</div>
+    <div class="kv"><b>שימו לב:</b> מפעילים מופתעים שהיא לא קולטת הזמנות אוכל (התלונה המובילה); G2 4.4.</div>
+    <p class="refline"><a href="https://www.slang.ai/pricing">תמחור</a> · <a href="https://www.prnewswire.com/news-releases/slang-ai-raises-36m-series-b-to-scale-ai-for-guest-communications-across-every-restaurant-302695306.html">סבב B</a> · <a href="https://support.opentable.com/s/article/slangai?language=en_US">תיעוד OpenTable</a> · <a href="https://www.g2.com/products/slang-ai/reviews">G2</a></p>
+  </div></details>
+
+  <details class="profile"><summary>Loman.ai <span class="tag">מסעדות · הזמנות טלפוניות לקופה · גיוס ראשוני 3.5 מיליון דולר</span></summary><div class="body">
+    <div class="kv"><b>מיצוב:</b> הצד המנוגד ל־Slang בנושא הזמנת אוכל — קולטת הזמנות טלפוניות מלאות עם תוספות, מזינה לקופה, קולטת תשלום בכרטיס, מוכרת תוספות. הוקמה ב־2024; "עשרות מיליוני דולרים בנפח הזמנות" בשנה הראשונה.</div>
+    <div class="kv"><b>אינטגרציות/פעולות:</b> מזינה הזמנות ישירות ל־Toast, Square, Clover, SpotOn, Shift4, Aloha, Olo (+ טוענת ל־30 מערכות קופה נוספות); קובעת שולחנות דרך OpenTable; תפריטים/כללים יורשים מהקופה.</div>
+    <div class="kv"><b>תמחור:</b> פנייה למכירות; כ־199 דולר/חודש ללא הגבלה (מדווח); "ללא עמלות לפי דקה".</div>
+    <div class="kv"><b>שימו לב:</b> צעירה, מימון דל, נפח ביקורות נמוך (G2 כ־4.6, 23 ביקורות); האיכות תלויה בנתוני הקופה.</div>
+    <p class="refline"><a href="https://loman.ai/">אתר</a> · <a href="https://venturebeat.com/business/loman-ai-raises-3-5-million-to-transform-restaurant-operations-with-voice-ai">גיוס זרע</a> · <a href="https://loman.ai/blog/loman-ai-review-pricing-features">בלוג תמחור עצמי</a></p>
+  </div></details>
+
+  <details class="profile"><summary>Numa <span class="tag">סוכנויות רכב · עמוק ב־DMS · 48 מיליון דולר · מעל 1,300 סוכנויות</span></summary><div class="body">
+    <div class="kv"><b>מיצוב:</b> "מערכת הפעלה AI לסוכנויות רכב," ממוקדת במחלקות שירות. עברה מאופקי לאנכי — תקדים מלמד. סבב B של 32 מיליון דולר (Gradient של Google, Mitsui).</div>
+    <div class="kv"><b>אינטגרציות/פעולות:</b> כיסוי DMS של כ־90 אחוז — CDK, Reynolds (דו־כיווני), Tekion, Xtime: קובעת תורי שירות עם העדפות תחבורה (רכב חלופי/הסעה) וקיבולת בזמן אמת; שולפת הקשר לקוח/רכב/הזמנת תיקון; מכרה עבודה שנדחתה; מעקב סנטימנט LiveCSI.</div>
+    <div class="kv"><b>תמחור:</b> פנייה למכירות בלבד; כ־200 עד 400 דולר לסוכנות (מדווח); אפשרות ראשונה בתעשייה של <b>תשלום לפי תור־AI־שנקבע</b> (שיעורים לא מפורסמים).</div>
+    <p class="refline"><a href="https://www.numa.com">אתר</a> · <a href="https://www.numa.com/blog/numa-dealership-integrations-dms-scheduler-crm">אינטגרציות DMS</a> · <a href="https://techcrunch.com/2024/10/01/numa-is-bringing-ai-and-automation-to-car-dealerships/">סבב B</a> · ראו גם: Toma — גיוס 17 מיליון דולר מ־a16z (<a href="https://techcrunch.com/2025/06/05/tomas-ai-voice-agents-have-taken-off-at-car-dealerships-and-attracted-funding-from-a16z/">TechCrunch</a>)</p>
+  </div></details>
+
+  <details class="profile"><summary>Avoca ו־Sameday <span class="tag">שירותי בית · החד־קרן וסוכן המכירות</span></summary><div class="body">
+    <div class="kv"><b>Avoca:</b> "משרד קדמי AI" עבור קבלנים בשוק בינוני ומעלה (מיזוג אוויר תחילה). גיוס 125 מיליון דולר, <b>שווי מיליארד דולר באפריל 2026</b> (Meritech, General Catalyst, Kleiner); מעל 800 לקוחות; "בדרך להזמין עבודות בהיקף מיליארד דולר ב־2026". שלושה עמודי תווך: Convert (נציג שירות נכנס), Nurture (חידוש יוצא של הצעות מחיר שלא נסגרו, מהירות ליד תוך פחות מ־15 שניות), Coach (ניקוד שיחות AI לנציגי שירות אנושיים). מוסמכת ServiceTitan: קובעת עבודות מסווגות נכון ללוח השיבוץ. פנייה למכירות בלבד, מדווח 1,000 עד 3,500 דולר/חודש, נמדד לפי דקה; הטמעה של 4 עד 12 שבועות. <a href="https://www.avoca.ai/">אתר</a> · <a href="https://www.prnewswire.com/news-releases/avoca-raises-125m-at-1b-valuation-to-power-americas-services-economy-with-ai-302753962.html">סבב מיליארד דולר</a> · <a href="https://serviceagent.ai/blogs/avoca-ai-pricing/">תמחור מדווח</a></div>
+    <div class="kv"><b>Sameday:</b> סוכן <i>מכירות</i> AI לבעלי מקצוע — מנהל משא ומתן על תוכניות תשלום, מוכר מנויים, יוצר כרטיסי חירום עם דגלי עדיפות ב־ServiceTitan; גם FieldRoutes, Service Fusion, Jobber, Housecall Pro. תמחור מפורסם: 449 דולר/500 דקות, 789 דולר/1,000 דקות. מחזור YC חורף 2023, מימון קטן; טוענת ל"1.25 מיליארד דולר הכנסות שנמכרו". <a href="https://www.gosameday.com/pricing">תמחור</a> · <a href="https://www.gosameday.com/integration/servicetitan">פעולות ST</a></div>
+    <div class="kv"><b>הערת מגזר:</b> אף אחד בפועל לא מחייב לפי תור שנקבע — סיפור הערך הוא לפי עבודה, אבל המדידה היא לפי דקה. פלטפורמות FSM (להלן) הופכות את שכבת המענה הבסיסית תחת שתיהן למוצר סחורה.</div>
+  </div></details>
+
+  <p class="grp-title">סוכנים משובצי־פלטפורמה (האנלוגים של אלפרד)</p>
+
+  <details class="profile"><summary>Podium "AI Employee" <span class="tag">ספר המשחק של הסוכן הדגל · תוספת שטוחה לא שקופה</span></summary><div class="body">
+    <div class="kv"><b>מה זה:</b> פלטפורמת תקשורת (100 אלף לקוחות) שהפכה את סוכן ה־AI שלה לדגל: Jerry (רכב/מיזוג אוויר/מרפאות אסתטיקה, על GPT-5.1), Larry (שירותי בית), Avery (אסתטיקה "מערכת הפעלה AI" המשלבת EMR + תקשורת + שיווק). מעל 10 אלף סניפים, הכנסות AI +300 אחוז שנה מול שנה; מחקר מקרה של OpenAI טוען לעלייה של 30 אחוז בהכנסות.</div>
+    <div class="kv"><b>פעולות:</b> קביעה ללוח שיבוץ עם זמינות טכנאי אמיתית, הצעת מחיר מהיסטוריית שירות, מכירת מנויים, מענה לביקורות; DMS (CDK/Reynolds), ServiceTitan, Housecall Pro, Shopify.</div>
+    <div class="kv"><b>תמחור:</b> לא שקוף — חבילות בסיס כ־399 עד 599 דולר + תוספת AI 99 עד 399 דולר (מדווח); תלונות BBB על חוזים/ביטול.</div>
+    <p class="refline"><a href="https://www.podium.com/product/ai-employee">מוצר</a> · <a href="https://openai.com/index/podium/">מחקר מקרה OpenAI</a> · <a href="https://www.quo.com/blog/podium-pricing/">ניתוח תמחור</a> · <a href="https://www.bbb.org/us/ut/lehi/profile/computer-software-developers/podium-1166-90023083/customer-reviews">BBB</a></p>
+  </div></details>
+
+  <details class="profile"><summary>GoHighLevel Voice AI <span class="tag">מודל התמחור של מסלול הסוכנויות שכדאי ללמוד</span></summary><div class="body">
+    <div class="kv"><b>מה זה:</b> פלטפורמת תיוג לבן ("מעניקה כוח ל־2 מיליון עסקים") שה"עובד AI" שלה מנובמבר 2024 משלב Voice AI (נכנס+יוצא) עם קשירת CRM/יומן/תהליכי עבודה על טלפוניה מובנית.</div>
+    <div class="kv"><b>מנגנון תמחור:</b> 0.13 דולר לדקה סיטונאי לתשלום־לפי־שימוש, או 97 דולר/חודש ללא הגבלה לתת־חשבון; בחבילת 497 דולר סוכנויות מחייבות מחדש עם תוספת מחיר עצמאית, מחויב אוטומטית — סוכנויות מוכרות בקמעונאות ב־1 עד 3 דולר לדקה או 200 עד 500 דולר/חודש שטוח. אלפי סוכנויות = סטארט־אפים עצמאיים לקול AI על גבי מסילות GHL; חנות האפליקציות שלה סופרת 341 סוכני קול.</div>
+    <p class="refline"><a href="https://www.newswire.com/news/highlevel-unveils-new-ai-employee-to-revolutionize-business-automation-22467082">השקה</a> · <a href="https://netpartners.marketing/gohighlevel-voice-ai-conversation-ai-pricing-2026/">0.13 דולר לדקה</a> · <a href="https://hlgrowthpartner.com/post/gohighlevel-rebilling-markup-sms-email-ai">מנגנון חיוב חוזר</a></p>
+  </div></details>
+
+  <details class="profile"><summary>מובנה ב־FSM: Jobber · Housecall Pro · ServiceTitan <span class="tag">הופכים את המענה הבסיסי למוצר סחורה</span></summary><div class="body">
+    <div class="kv"><b>Jobber Receptionist</b> (זמין לכלל הציבור אוגוסט 2025): עונה לשיחות + טקסטים, קובעת ליומן Jobber לפי כללי זמינות, מתאימה מתקשר לפרופילי לקוח. <b>29 דולר/חודש כולל 30 שיחות, 0.79 דולר לנוספת; חינם בתוכנית Plus (599 דולר)</b>. תלונות משתמשים: קובעת תור בלי לתעד פרטי עבודה; לא מסוגלת לענות על שאלות טכניות. <a href="https://help.getjobber.com/hc/en-us/articles/25315927533847-Receptionist-powered-by-Jobber-AI">מסמך עזרה</a> · <a href="https://www.prnewswire.com/news-releases/jobber-launches-ai-powered-receptionist-to-answer-calls-and-texts-for-busy-home-service-businesses-302531125.html">השקה</a></div>
+    <div class="kv"><b>Housecall Pro CSR AI:</b> חבר צוות AI בתשלום; קביעת תור מודעת לפריטים ממחירון בית העסק עצמו; נפילה לאדם דרך HCP Assist. פנייה למכירות; מדווח 200 עד 500 דולר/חודש. <a href="https://www.housecallpro.com/features/ai-team/csr-ai/">מוצר</a></div>
+    <div class="kv"><b>ServiceTitan</b> משגרת סוכני קול מובנים למוקד שירות (חבילת Pro). <a href="https://www.servicetitan.com/features/pro/contact-center/voice-agents">מוצר</a></div>
+  </div></details>
+
+  <details class="profile"><summary>הפערים: GoDaddy · Squarespace · Thryv · Birdeye · Square <span class="tag">אין סוכן קולי שיחתי — עדות למרחב פנוי</span></summary><div class="body">
+    <div class="kv"><b>GoDaddy:</b> ל־Airo.ai (נובמבר 2025) יש שישה סוכנים — כולם בצד טקסט/משימות (תיבת שיחות, תורים מקוונים, דומיינים). ללא מענה קולי. <a href="https://www.prnewswire.com/news-releases/godaddy-accelerates-airoai-momentum-with-new-ai-agents-for-small-business-growth-302625778.html">הודעה לעיתונות</a></div>
+    <div class="kv"><b>Squarespace:</b> ה־AI הוא לעיצוב/תוכן בלבד; ל־Acuity Scheduling אין שכבת קול. <a href="https://support.squarespace.com/hc/en-us/articles/16282290976013-Using-Squarespace-AI">תיעוד</a></div>
+    <div class="kv"><b>Thryv:</b> מעל 100 אלף מנויי SaaS לאחר רכישת Keap; ה־AI הוא לרשתות חברתיות/מוניטין/תובנות — שיחות עדיין הולכות לתא קולי. <a href="https://www.thryv.com/">אתר</a></div>
+    <div class="kv"><b>Birdeye:</b> "פקידת קבלה" = תא קולי + חזרה בטקסט, לא שיחתית; מהמרת על שיווק אגנטי במקום. <a href="https://birdeye.com/blog/virtual-receptionist-call-answering/">תיעוד</a></div>
+    <div class="kv"><b>Square:</b> העוזר הוא SMS בלבד; AI קולי הוא רק לקליטת הזמנות מזון ("לא מאומן לענות על סוגי שאלות אחרים"). מערכת האקולוגית של תורים מושארת לצדדים שלישיים. <a href="https://squareup.com/help/us/en/article/8568-take-orders-with-ai-powered-voice-ordering">תיעוד</a></div>
+    <div class="kv"><b>עדות לכך שהפער בר־מונטיזציה:</b> Goodcall מפעילה עמודי נחיתה ייעודיים "סוכן טלפון עבור Birdeye/Thryv/Square Appointments"; RingCentral AIR עברה לגמרי לפלטפורמה־אגנוסטית ב־49 עד 59 דולר/חודש. <a href="https://www.ringcentral.com/us/en/blog/ringcentral-air-everywhere-ai-receptionist-for-any-phone-system/">AIR Everywhere</a></div>
+  </div></details>
+
+  <p class="grp-title">שחקני הקשר</p>
+
+  <details class="profile"><summary>תשתית קול וארגונים (הקשר) <span class="tag">למה שכבת הטכנולוגיה היא מוצר סחורה</span></summary><div class="body">
+    <div class="kv"><b>תשתית:</b> Vapi ב־0.05 דולר לדקה, שווי 500 מיליון דולר, ניצחה את Amazon Ring מול מעל 40 מתחרים (<a href="https://techcrunch.com/2026/05/12/vapi-hits-500m-valuation-as-amazon-ring-chose-its-ai-platform-over-40-rivals/">TC</a>); Retell 60 מיליון דולר הכנסה שנתית, +650 אחוז שנה מול שנה (<a href="https://sacra.com/research/retell-ai-60m-yr-up-650-yoy/">Sacra</a>); Bland 65 מיליון דולר סה"כ (מפעילה את Rosie); Synthflow 30 מיליון דולר, תיוג לבן לסוכנויות; ElevenLabs Agents מעל 330 מיליון דולר הכנסה שנתית, שווי 11 מיליארד דולר (<a href="https://www.cnbc.com/2026/02/04/nvidia-backed-ai-startup-elevenlabs-11-billion-valuation.html">CNBC</a>); OpenAI Realtime עם שיחות SIP + הפחתת מחיר של 20 אחוז (<a href="https://openai.com/index/introducing-gpt-realtime/">OpenAI</a>).</div>
+    <div class="kv"><b>תקרת הארגונים:</b> Sierra 950 מיליון דולר גיוס לפי שווי 15.8 מיליארד דולר; Parloa 3 מיליארד דולר; NiCE רכשה את Cognigy תמורת 955 מיליון דולר (כ־25 פי הכנסה). מאמת את הקטגוריה; לא רלוונטי לעסקים קטנים מ־50 עובדים.</div>
+    <div class="kv"><b>סיפור אזהרה:</b> Curious Thing (אופקי, 24 עד 99 דולר/חודש, שטחי ברמת webhook) נכנסה לכינוס נכסים במרץ 2025; הנכסים נספגו על ידי MaxContact (<a href="https://www.innovationaus.com/sydney-voice-ai-startup-finds-buyer-after-collapse/">InnovationAus</a>).</div>
+  </div></details>
+</section>
+
+<!-- ============ METHOD ============ -->
+<section id="method">
+  <h2><span class="num">12</span>שיטת המחקר והערות מקורות</h2>
+  <ul class="tight">
+    <li>שישה מסלולי מחקר מקבילים (פקידות קבלה ליבתיות ל־SMB · מתמחים אנכיים · זנב ארוך · סוכנים משובצי־פלטפורמה · מגזר שירותי בית · נוף השוק), יולי 2026.</li>
+    <li>תמחור ופיצ'רים מעמודי תמחור/פיצ'רים רשמיים שנשלפו ישירות במידת האפשר; נתונים המסומנים <span class="flag">מדווח</span> מסמנים נתונים ממקורות צד שלישי (ספקים בהצעת מחיר בלבד, עמודים חסומי JS).</li>
+    <li>נתוני ביקורות באופן חלקי דרך ריכוזי צד שלישי מכיוון ש־G2/Trustpilot/Capterra חוסמים זחילה; Reddit לא היה ניתן לזחילה. השוואות שנכתבו על ידי מתחרים מסומנות בפרופילים.</li>
+    <li>טענות היקף ("42 אלף עסקים", "מעל 2 מיליון שיחות") מפורסמות על ידי הספקים ואינן מבוקרות אלא אם צוין אחרת.</li>
+    <li>סתירות ידועות נשארו גלויות במקום נפתרות: סך המימון הכולל של Goodcall (4 מיליון דולר מול 8 מיליון דולר), סך המימון של Smith.ai (12 עד 13 מיליון דולר מול 27 מיליון דולר), מחיר תוספת Jobber (29 דולר לפי שימוש מול 99 דולר שטוח), היסטוריית תמחור Loman.</li>
+  </ul>
+</section>
+
+<footer>
+  הוכן עבור גילוי המוצר העצמאי של אלפרד · פרויקט Creator Kit <code>projects/services/alfred-standalone</code> · הערות מחקר גולמיות עם קישורי מקור מלאים לכל טענה זמינות בקבצי מחקר הסשן.
+</footer>
+
+</div>
+
+<div id="tooltip" role="status"></div>
+
+<script>
+(function () {
+  var data = [
+    { name: "Jobber Receptionist", price: 29, reported: false, note: "כולל 30 שיחות, 0.79 דולר לנוספת; חינם בתוכנית Plus (599 דולר/חודש)" },
+    { name: "Dialzara", price: 29, reported: false, note: "כולל 60 דקות; עד 349 דולר ל־1,000 דקות; חריגה 0.35 עד 0.48 דולר/דקה" },
+    { name: "Rosie", price: 49, reported: false, note: "כולל 250 דקות; 149 דולר/1,000 · 299 דולר/2,000" },
+    { name: "RingCentral AIR", price: 49, reported: false, note: "49 עד 59 דולר/חודש כולל כ־100 דקות; עובד עם כל מערכת טלפון" },
+    { name: "Phonely", price: 50, reported: false, note: "250 דקות, חריגה 0.25 דולר/דקה; חבילת חינם: 100 דקות/חודש לתמיד" },
+    { name: "Goodcall", price: 79, reported: false, note: "לכל סוכן, דקות ללא הגבלה; 100 לקוחות ייחודיים/חודש, חריגה 0.50 דולר" },
+    { name: "GoHighLevel AI Employee", price: 97, reported: false, note: "שיחות נכנסות ללא הגבלה לתת־חשבון; או 0.13 דולר/דקה לפי שימוש" },
+    { name: "Simple Phones", price: 97, reported: false, note: "100 שיחות כלולות — מודל לפי שיחה" },
+    { name: "My AI Front Desk", price: 99, reported: false, note: "\"עסק בקופסה\": 200 דקות קול + קרדיטים SMS/צ'אט" },
+    { name: "Yelp Host", price: 149, reported: false, note: "99 דולר/חודש עבור לקוחות Yelp Guest Manager" },
+    { name: "Smith.ai AI Receptionist", price: 150, reported: false, note: "75 שיחות (כ־2 דולר/שיחה); חבילת חינם: 25 שיחות/חודש" },
+    { name: "Loman.ai", price: 199, reported: true, note: "מדווח כ־199 דולר/חודש ללא הגבלה; תמחור רשמי הוא פנייה למכירות" },
+    { name: "Numa", price: 300, reported: true, note: "מדווח 200 עד 400 דולר/סוכנות; הצעת מחיר בלבד, אפשרות תשלום לפי תור שנקבע" },
+    { name: "Housecall Pro CSR AI", price: 350, reported: true, note: "מדווח 200 עד 500 דולר/חודש; תוספת, פנייה למכירות" },
+    { name: "Slang.ai", price: 399, reported: false, note: "לפי סניף; Premium 599 דולר; דו־לשוניות +99 דולר, אירועים פרטיים +199 דולר" },
+    { name: "Sameday", price: 449, reported: false, note: "500 דקות; Scale 789 דולר/1,000 דקות" },
+    { name: "Podium (חבילה + AI)", price: 500, reported: true, note: "חבילת בסיס כ־399 דולר + תוספת AI Employee 99 עד 399 דולר (מדווח); הצעת מחיר בלבד" },
+    { name: "Avoca", price: 1000, reported: true, note: "מדווח 1,000 עד 3,500 דולר/חודש, נמדד לפי דקה; הצעת מחיר בלבד, שוק בינוני ומעלה" }
+  ];
+  var max = 1000;
+  var chart = document.getElementById("chart");
+  var tip = document.getElementById("tooltip");
+
+  data.forEach(function (d) {
+    var row = document.createElement("div");
+    row.className = "row";
+    row.tabIndex = 0;
+
+    var name = document.createElement("div");
+    name.className = "name";
+    name.textContent = d.name;
+
+    var track = document.createElement("div");
+    track.className = "track";
+
+    var bar = document.createElement("div");
+    bar.className = "bar" + (d.reported ? " reported" : "");
+    var pct = Math.min(d.price / max, 1) * 82;
+    bar.style.width = pct + "%";
+
+    var val = document.createElement("div");
+    val.className = "val";
+    val.style.right = "calc(" + pct + "% + 8px)";
+    val.textContent = "$" + d.price.toLocaleString() + (d.price >= max ? "+" : "") + (d.reported ? " *" : "");
+
+    track.appendChild(bar);
+    track.appendChild(val);
+    row.appendChild(name);
+    row.appendChild(track);
+    chart.appendChild(row);
+
+    function show(e) {
+      tip.replaceChildren();
+      var v = document.createElement("div");
+      v.className = "t-val";
+      v.textContent = d.name + " — $" + d.price.toLocaleString() + (d.price >= max ? "+" : "") + "/חודש" + (d.reported ? " (מדווח)" : "");
+      var n = document.createElement("div");
+      n.className = "t-note";
+      n.textContent = d.note;
+      tip.appendChild(v);
+      tip.appendChild(n);
+      tip.style.display = "block";
+      position(e);
+    }
+    function position(e) {
+      var x = (e && e.clientX != null) ? e.clientX : row.getBoundingClientRect().left + 160;
+      var y = (e && e.clientY != null) ? e.clientY : row.getBoundingClientRect().top;
+      var pad = 14;
+      var w = tip.offsetWidth, h = tip.offsetHeight;
+      var left = x + pad, top = y + pad;
+      if (left + w > window.innerWidth - 8) left = x - w - pad;
+      if (top + h > window.innerHeight - 8) top = y - h - pad;
+      tip.style.left = left + "px";
+      tip.style.top = top + "px";
+    }
+    function hide() { tip.style.display = "none"; }
+
+    row.addEventListener("pointermove", show);
+    row.addEventListener("pointerleave", hide);
+    row.addEventListener("focus", function () { show(null); });
+    row.addEventListener("blur", hide);
+  });
+})();
+</script>
+</body>
+</html>
