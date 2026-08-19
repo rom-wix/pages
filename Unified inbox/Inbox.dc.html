@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Text:wght@400;500;600;700&family=Wix+Madefor+Display:wght@500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: 'Wix Madefor Text', system-ui, sans-serif; color: #151414; background: #fff; -webkit-font-smoothing: antialiased; }
+  button { font-family: inherit; }
+  a { color: #116dff; text-decoration: none; }
+  a:hover { color: #0c5ce0; text-decoration: underline; }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb { background: #d9d9d9; border-radius: 8px; border: 3px solid #fff; }
+</style>
+</helmet>
+
+<div style="display:grid;grid-template-columns:248px 1fr;grid-template-rows:52px 1fr;height:100vh;background:#f4f3f3;font-size:14px">
+  <div style="grid-column:1 / -1;display:flex;align-items:center;gap:20px;padding:0 20px;border-bottom:1px solid #e5e5e5;background:#fff">
+    <span style="font-family:'Wix Madefor Display',sans-serif;font-size:15px;font-weight:800;letter-spacing:-.2px">WIX<span style="font-weight:500"> STUDIO</span></span>
+    <span style="width:22px;height:22px;border-radius:6px;background:#fbd8f0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#151414">P</span>
+    <span style="display:flex;align-items:center;gap:5px;font-size:14px;font-weight:500">Parky Spa <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="2.4" stroke-linecap="round"><path d="M6 9l6 6 6-6"></path></svg></span>
+    <span style="display:flex;align-items:center;gap:5px;font-size:14px;color:#3b3939">Resources <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#3b3939" stroke-width="2.4" stroke-linecap="round"><path d="M6 9l6 6 6-6"></path></svg></span>
+    <span style="display:flex;align-items:center;gap:5px;font-size:14px;color:#3b3939">Help <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#3b3939" stroke-width="2.4" stroke-linecap="round"><path d="M6 9l6 6 6-6"></path></svg></span>
+    <div style="flex:1;display:flex;justify-content:center">
+      <div style="display:flex;align-items:center;gap:8px;width:min(420px,100%);border:1px solid #dedede;border-radius:20px;padding:6px 14px;color:#8a8888">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8a8888" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.6-3.6"></path></svg>
+        <span style="font-size:13.5px">Search for tools, apps, help &amp; more...</span>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px">
+      <span style="width:26px;height:26px;border-radius:50%;background:#e8e6f8"></span>
+      <span style="display:flex;align-items:center;gap:7px;border:1px solid #151414;border-radius:20px;padding:5px 13px;font-size:13.5px;font-weight:600"><span style="width:15px;height:15px;border-radius:50%;background:#151414"></span>Ask Aria</span>
+    </div>
+  </div>
+  <div style="border-right:1px solid #e5e5e5;background:#fff;padding:14px 12px;overflow-y:auto;display:flex;flex-direction:column;gap:2px">
+    <div style="display:flex;align-items:center;gap:9px;padding:7px 10px;color:#151414;font-size:13.5px;font-weight:500">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.8"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v4l3 2"></path></svg>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.8"><rect x="4" y="4" width="6" height="6"></rect><rect x="14" y="4" width="6" height="6"></rect><rect x="4" y="14" width="6" height="6"></rect><rect x="14" y="14" width="6" height="6"></rect></svg>
+      Quick Actions
+    </div>
+    <div style="height:1px;background:#eceaea;margin:8px 4px"></div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:14px;font-weight:500;color:#151414"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-6 8 6v8H4z"></path></svg>Home</div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:14px;font-weight:500;color:#151414"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l1.8 4.2L18 10l-4.2 1.8L12 16l-1.8-4.2L6 10l4.2-1.8z"></path></svg>AI Agents</div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:14px;font-weight:500;color:#151414"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="2"></rect><path d="M4 10h16M9 3v4M15 3v4"></path></svg>Booking Calendar<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8a8888" stroke-width="2.2" stroke-linecap="round" style="margin-left:auto"><path d="M9 6l6 6-6 6"></path></svg></div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:14px;font-weight:500;color:#151414"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="2"></rect><path d="M8 12h8M8 16h5"></path></svg>Events<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8a8888" stroke-width="2.2" stroke-linecap="round" style="margin-left:auto"><path d="M9 6l6 6-6 6"></path></svg></div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:14px;font-weight:500;color:#151414"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v8M9.5 10.5h5M9.5 13.5h5"></path></svg>Sales<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8a8888" stroke-width="2.2" stroke-linecap="round" style="margin-left:auto"><path d="M9 6l6 6-6 6"></path></svg></div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:14px;font-weight:500;color:#151414"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8l8-4 8 4v8l-8 4-8-4z"></path><path d="M4 8l8 4 8-4"></path></svg>Catalog<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8a8888" stroke-width="2.2" stroke-linecap="round" style="margin-left:auto"><path d="M9 6l6 6-6 6"></path></svg></div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:14px;font-weight:500;color:#151414"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="7" height="7"></rect><rect x="13" y="4" width="7" height="7"></rect><rect x="4" y="13" width="7" height="7"></rect><rect x="13" y="13" width="7" height="7"></rect></svg>Apps<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8a8888" stroke-width="2.2" stroke-linecap="round" style="margin-left:auto"><path d="M9 6l6 6-6 6"></path></svg></div>
+    <div style="height:1px;background:#eceaea;margin:8px 4px"></div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:14px;font-weight:500;color:#151414"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="13" height="10" rx="1.5"></rect><rect x="16" y="10" width="5" height="9" rx="1.5"></rect></svg>Site &amp; Mobile App<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8a8888" stroke-width="2.2" stroke-linecap="round" style="margin-left:auto"><path d="M9 6l6 6-6 6"></path></svg></div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:14px;font-weight:500;color:#151414"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h4l8-4v14l-8-4H4z"></path></svg>Marketing<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8a8888" stroke-width="2.2" stroke-linecap="round" style="margin-left:auto"><path d="M9 6l6 6-6 6"></path></svg></div>
+    <div onClick="{{ goInbox }}" style="{{ navInbox }}">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16v12H4z"></path><path d="M4 9l8 5 8-5"></path></svg>Inbox
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5c5a5a" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="margin-left:auto"><path d="M12 4l2.4 5 5.6.7-4 3.8 1 5.5-5-2.8-5 2.8 1-5.5-4-3.8 5.6-.7z"></path></svg>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:14px;font-weight:500;color:#151414"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="8" r="3.4"></circle><path d="M4 20c0-3.3 2.7-6 6-6M16 13l4 4M20 13l-4 4"></path></svg>Customers &amp; Leads<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8a8888" stroke-width="2.2" stroke-linecap="round" style="margin-left:auto"><path d="M9 6l6 6-6 6"></path></svg></div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:14px;font-weight:500;color:#151414"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3l-2 8h5l-6 10 2-8H7z"></path></svg>Automations</div>
+    <div style="height:1px;background:#eceaea;margin:8px 4px"></div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:14px;font-weight:500;color:#151414"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.8"></circle><path d="M19.2 14.4l1.7 1a8.6 8.6 0 000-4.8l-1.7 1a7.4 7.4 0 000 2.8zM14.4 19.2l1 1.7a8.6 8.6 0 01-4.8 0l1-1.7a7.4 7.4 0 002.8 0zM4.8 9.6l-1.7-1a8.6 8.6 0 000 4.8l1.7-1a7.4 7.4 0 000-2.8zM9.6 4.8l-1-1.7a8.6 8.6 0 014.8 0l-1 1.7a7.4 7.4 0 00-2.8 0zM17.6 6.4l2-.5a8.6 8.6 0 00-3.5-3.5l-.5 2a7.4 7.4 0 012 2zM6.4 17.6l-.5 2a8.6 8.6 0 01-3.5-3.5l2-.5a7.4 7.4 0 012 2zM17.6 17.6l.5 2a8.6 8.6 0 003.5-3.5l-2-.5a7.4 7.4 0 01-2 2zM6.4 6.4l-2-.5a8.6 8.6 0 013.5-3.5l.5 2a7.4 7.4 0 01-2 2z"></path></svg>Settings</div>
+  </div>
+  <div style="display:flex;flex-direction:column;min-width:0;min-height:0;background:#f4f3f3">
+    <sc-if value="{{ viewInbox }}" hint-placeholder-val="{{ true }}">
+      <div style="flex:1;display:flex;flex-direction:column;min-width:0;min-height:0;position:relative;background:#fff">
+
+    <div style="display:flex;align-items:center;gap:14px;padding:12px 20px;border-bottom:1px solid #e5e5e5">
+      <h1 style="font-family:'Wix Madefor Display',sans-serif;font-size:20px;font-weight:700;margin:0">Inbox</h1>
+      <div style="flex:1"></div>
+      <div style="position:relative">
+        <button onClick="{{ toggleSettings }}" style="display:flex;align-items:center;gap:7px;font-size:14px;font-weight:600;color:#151414;background:#fff;border:1px solid #dedede;border-radius:8px;padding:7px 15px;cursor:pointer" style-hover="background:#f8f6f6">Settings <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="2.4" stroke-linecap="round"><path d="M6 9l6 6 6-6"></path></svg></button>
+        <sc-if value="{{ settingsOpen }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;right:0;top:calc(100% + 6px);width:268px;background:#fff;border:1px solid #e5e5e5;border-radius:10px;box-shadow:0 12px 32px rgba(21,20,20,.16);padding:6px;z-index:70">
+            <button onClick="{{ restartFte }}" style="display:flex;align-items:center;gap:10px;width:100%;text-align:left;font-family:inherit;font-size:14px;font-weight:500;color:#151414;background:none;border:none;padding:9px 12px;border-radius:6px;cursor:pointer" style-hover="background:#f4f3f3"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4.5c2.6-1.2 5-1 5-1s.2 2.4-1 5c-1 2.2-3 4.3-5.2 5.8l-3.6-3.6c1.5-2.2 3.6-4.2 5.8-5.2z"></path><path d="M10.7 10.7l-3-1 2-2 2.6.3M13.3 13.3l1 3 2-2-.3-2.6"></path><path d="M4 20l2-2M4 17.5l1 1M6.5 20l1 1"></path></svg>Set up your Inbox</button>
+            <div style="height:1px;background:#eceaea;margin:6px 4px"></div>
+            <button onClick="{{ goChannels }}" style="display:flex;align-items:center;gap:10px;width:100%;text-align:left;font-family:inherit;font-size:14px;font-weight:500;color:#151414;background:none;border:none;padding:9px 12px;border-radius:6px;cursor:pointer" style-hover="background:#f4f3f3"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="8" r="3.2"></circle><path d="M4 19c0-3.3 2.7-6 6-6M17 6v6M14 9h6"></path></svg>Communication Channels</button>
+            <button onClick="{{ goSettings }}" style="display:flex;align-items:center;gap:10px;width:100%;text-align:left;font-family:inherit;font-size:14px;font-weight:500;color:#151414;background:none;border:none;padding:9px 12px;border-radius:6px;cursor:pointer" style-hover="background:#f4f3f3"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M12 4v3M12 17v3M4 12h3M17 12h3"></path></svg>Inbox Settings</button>
+          </div>
+        </sc-if>
+      </div>
+      <button style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:#151414;background:#fff;border:1px solid #151414;border-radius:8px;padding:7px 15px;cursor:pointer" style-hover="background:#f8f6f6">New Message <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19h4l10-10-4-4L5 15z"></path></svg></button>
+    </div>
+
+    <sc-if value="{{ justEnabled }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 20px;background:#e6f4ec;border-bottom:1px solid #cbe7d6;font-size:13.5px;color:#194b31">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1a6b3f" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"></path></svg>
+        <span>Your AI agent is on. It answers calls at <strong style="font-weight:600">+1 (947) 837-8716</strong> and replies in Wix Smart Chat.</span>
+        <button onClick="{{ goChannels }}" style="font-family:inherit;background:none;border:none;font-size:13.5px;font-weight:600;color:#194b31;cursor:pointer;text-decoration:underline;padding:0">Forward calls from your existing number</button>
+        <button onClick="{{ dismissEnabled }}" style="margin-left:auto;background:none;border:none;cursor:pointer;color:#5c7a68;font-size:15px;line-height:1;padding:2px 4px">&times;</button>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ creditNotice }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 20px;background:#fef6e7;border-bottom:1px solid #f6e3bd;font-size:13.5px;color:#3b3939">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#a2670a" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5M12 16.2v.1"></path></svg>
+        <span><strong style="font-weight:600">75 AI credits</strong> remaining. Your agent uses credits on every channel it handles.</span>
+        <a style="font-weight:600;cursor:pointer">Get more credits</a>
+        <button onClick="{{ dismissCredit }}" style="margin-left:auto;background:none;border:none;cursor:pointer;color:#8a8888;font-size:15px;line-height:1;padding:2px 4px">&times;</button>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ fte }}" hint-placeholder-val="{{ false }}">
+      <div style="flex:1;min-height:0;overflow-y:auto;background:#fff">
+        <div style="max-width:840px;margin:0 auto;padding:40px 28px 60px">
+          <span style="display:inline-flex;align-items:center;font-size:11.5px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#fff;background:#f0a64b;padding:4px 10px;border-radius:5px">New</span>
+          <h2 style="font-family:'Wix Madefor Display',sans-serif;font-size:32px;font-weight:700;margin:14px 0 8px;line-height:1.15;max-width:600px">Let an AI agent answer while you work</h2>
+          <p style="margin:0 0 24px;font-size:15.5px;color:#5c5a5a;line-height:1.55;max-width:600px">It picks up calls, replies in chat and WhatsApp, books appointments and saves leads. Every conversation lands here, in one thread per customer.</p>
+
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+            <button onClick="{{ enableAgent }}" style="background:#2f5dff;color:#fff;border:none;border-radius:8px;padding:11px 24px;font-size:15px;font-weight:600;cursor:pointer" style-hover="background:#1f4ce6">Turn on the AI agent</button>
+            <button onClick="{{ skipFte }}" style="background:#fff;border:1px solid #151414;border-radius:8px;padding:11px 22px;font-size:15px;font-weight:600;cursor:pointer" style-hover="background:#f8f6f6">Explore a sample inbox</button>
+          </div>
+          <div style="font-size:13px;color:#8a8888;margin-top:11px">Comes with 300 AI credits. You can pause the agent at any time.</div>
+
+          <div style="border:1px solid #e5e5e5;border-radius:14px;margin-top:34px;overflow:hidden">
+            <div style="display:flex;align-items:center;gap:9px;padding:11px 16px;background:#fafafa;border-bottom:1px solid #e5e5e5">
+              <span style="width:8px;height:8px;border-radius:50%;background:#e62214"></span>
+              <span style="width:8px;height:8px;border-radius:50%;background:#f9ad4d"></span>
+              <span style="width:8px;height:8px;border-radius:50%;background:#1a6b3f"></span>
+              <span style="font-size:12px;font-weight:600;color:#8a8888;margin-left:6px">A missed call, handled</span>
+            </div>
+            <div style="padding:20px 22px;display:flex;flex-direction:column;gap:14px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <span style="width:30px;height:30px;border-radius:50%;background:#eceafd;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#4b42c9" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h3l2 5-2 1a9 9 0 004 4l1-2 5 2v3a2 2 0 01-2 2A15 15 0 014 6a2 2 0 012-2z"></path></svg></span>
+                <div style="min-width:0">
+                  <div style="font-size:14px;font-weight:600">Incoming call answered by your AI agent</div>
+                  <div style="font-size:12.5px;color:#5c5a5a">Tuesday, 9:14 AM · 1:22 min</div>
+                </div>
+              </div>
+              <div style="font-size:14px;line-height:1.55;color:#3b3939;background:#f8f7fe;border-radius:10px;padding:13px 15px">“Something came up Thursday, can I move my massage?” — the agent verified her, offered the open slots and moved the appointment to Wednesday at 4:00 PM.</div>
+              <div style="display:flex;flex-wrap:wrap;gap:7px">
+                <sc-for list="{{ fteChips }}" as="c" hint-placeholder-count="3">
+                  <span style="display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:500;background:#f4f3f3;border-radius:16px;padding:5px 11px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1a6b3f" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"></path></svg>{{ c.label }}</span>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:32px">
+            <sc-for list="{{ fteSteps }}" as="s" hint-placeholder-count="3">
+              <div style="border:1px solid #e5e5e5;border-radius:12px;padding:18px">
+                <span style="{{ s.numStyle }}">{{ s.num }}</span>
+                <div style="font-size:14.5px;font-weight:600;margin-top:12px">{{ s.name }}</div>
+                <div style="font-size:13px;color:#5c5a5a;line-height:1.5;margin-top:4px">{{ s.desc }}</div>
+                <button onClick="{{ s.go }}" style="background:none;border:none;padding:10px 0 0;font-family:inherit;font-size:13px;font-weight:600;color:#2f5dff;cursor:pointer" style-hover="text-decoration:underline">{{ s.cta }}</button>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ notFte }}" hint-placeholder-val="{{ true }}">
+    <div style="flex:1;display:grid;grid-template-columns:{{ paneCols }};min-height:0;overflow-x:auto">
+
+      <div style="border-right:1px solid #e5e5e5;display:flex;flex-direction:column;min-height:0">
+        <div style="display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid #f0eeee">
+          <span style="width:15px;height:15px;border:1.5px solid #b3b1b1;border-radius:3px;flex-shrink:0"></span>
+          <div style="position:relative">
+            <button onClick="{{ toggleFilter }}" style="display:flex;align-items:center;gap:6px;font-size:15px;font-weight:600;color:#151414;background:none;border:none;padding:0;cursor:pointer">{{ filterLabel }} <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="2.4" stroke-linecap="round"><path d="M6 9l6 6 6-6"></path></svg></button>
+            <sc-if value="{{ filterOpen }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute;left:0;top:calc(100% + 8px);width:250px;max-height:380px;overflow-y:auto;background:#fff;border:1px solid #e5e5e5;border-radius:10px;box-shadow:0 12px 32px rgba(21,20,20,.16);padding:6px;z-index:60">
+                <sc-for list="{{ viewFilters }}" as="f" hint-placeholder-count="10">
+                  <sc-if value="{{ f.divider }}" hint-placeholder-val="{{ false }}"><div style="height:1px;background:#eceaea;margin:6px 8px"></div></sc-if>
+                  <sc-if value="{{ f.item }}" hint-placeholder-val="{{ true }}">
+                    <button onClick="{{ f.pick }}" style="{{ f.style }}">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="{{ f.fill }}" stroke="{{ f.stroke }}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="{{ f.icon }}"></path></svg>{{ f.label }}
+                    </button>
+                  </sc-if>
+                </sc-for>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+        <div style="display:flex;gap:6px;padding:0 16px 11px;flex-wrap:wrap">
+          <sc-for list="{{ chanChips }}" as="ch" hint-placeholder-count="5">
+            <button onClick="{{ ch.pick }}" style="{{ ch.style }}">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="{{ ch.stroke }}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="{{ ch.icon }}"></path></svg>{{ ch.label }}
+            </button>
+          </sc-for>
+        </div>
+        <div style="flex:1;overflow-y:auto;min-height:0">
+          <sc-if value="{{ noneShown }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:34px 22px;text-align:center;font-size:13.5px;color:#8a8888">No conversations on this channel.</div>
+          </sc-if>
+          <sc-for list="{{ convList }}" as="c" hint-placeholder-count="7">
+            <div onClick="{{ c.pick }}" style="{{ c.rowStyle }}">
+              <div style="position:relative;flex-shrink:0">
+                <div style="{{ c.avStyle }}">{{ c.initials }}</div>
+                <div style="{{ c.chanStyle }}"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="{{ c.chanIcon }}"></path></svg></div>
+              </div>
+              <div style="flex:1;min-width:0">
+                <div style="display:flex;align-items:baseline;gap:8px">
+                  <span style="{{ c.nameStyle }}">{{ c.name }}</span>
+                  <span style="margin-left:auto;font-size:12.5px;color:#8a8888;white-space:nowrap">{{ c.when }}</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:6px;margin-top:3px">
+                  <span style="{{ c.previewStyle }}">{{ c.preview }}</span>
+                  <sc-if value="{{ c.follow }}" hint-placeholder-val="{{ false }}"><span style="width:7px;height:7px;border-radius:50%;background:#e62214;flex-shrink:0"></span></sc-if>
+                </div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;min-width:0;min-height:0">
+        <div style="display:flex;align-items:center;gap:12px;padding:11px 18px;border-bottom:1px solid #f0eeee">
+          <div style="{{ hdrAvStyle }}">{{ hdrInitials }}</div>
+          <div style="min-width:0">
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="font-size:15.5px;font-weight:600">{{ hdrName }}</span>
+              <sc-if value="{{ isCall }}" hint-placeholder-val="{{ true }}">
+                <span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:#4b42c9;background:#eceafd;padding:2px 8px;border-radius:4px;white-space:nowrap"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#4b42c9" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l1.8 4.2L18 10l-4.2 1.8L12 16l-1.8-4.2L6 10l4.2-1.8z"></path></svg>Handled by AI</span>
+              </sc-if>
+            </div>
+            <div style="font-size:13px;color:#5c5a5a;margin-top:1px">{{ hdrSub }}</div>
+          </div>
+          <div style="flex:1"></div>
+          <div style="display:flex;align-items:center;gap:4px">
+            <button onClick="{{ toggleContact }}" style="{{ contactBtnStyle }}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="8" r="3.4"></circle><path d="M4 20c0-3.3 2.7-6 6-6M16 13l4 4M20 13l-4 4"></path></svg></button>
+            <button onClick="{{ toggleFollow }}" style="{{ flagBtnStyle }}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4v16M6 5h11l-2 4 2 4H6"></path></svg></button>
+            <button style="background:none;border:none;padding:6px;border-radius:6px;cursor:pointer;color:#3b3939" style-hover="background:#f4f3f3"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16v4H4zM6 10v9h12v-9M10 14h4"></path></svg></button>
+            <button style="background:none;border:none;padding:6px;border-radius:6px;cursor:pointer;color:#3b3939" style-hover="background:#f4f3f3"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 12h.01M12 12h.01M18 12h.01"></path></svg></button>
+          </div>
+        </div>
+
+        <div style="flex:1;overflow-y:auto;min-height:0;padding:20px 26px;background:#fff">
+          <div style="max-width:660px;margin:0 auto;display:flex;flex-direction:column;gap:16px">
+            <sc-for list="{{ thread }}" as="m" hint-placeholder-count="3">
+
+              <sc-if value="{{ m.isDate }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;align-items:center;gap:12px;color:#a3a1a1;font-size:11.5px;letter-spacing:.4px;text-transform:uppercase"><span style="flex:1;height:1px;background:#eceaea"></span>{{ m.text }}<span style="flex:1;height:1px;background:#eceaea"></span></div>
+              </sc-if>
+
+              <sc-if value="{{ m.isCall }}" hint-placeholder-val="{{ true }}">
+                <div style="border:1px solid #e5e5e5;border-radius:12px;overflow:hidden">
+                  <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:#f8f7fe;border-bottom:1px solid #eceafd">
+                    <span style="width:28px;height:28px;border-radius:50%;background:#eceafd;color:#4b42c9;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4b42c9" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h3l2 5-2 1a9 9 0 004 4l1-2 5 2v3a2 2 0 01-2 2A15 15 0 014 6a2 2 0 012-2z"></path></svg></span>
+                    <div style="flex:1;min-width:0">
+                      <div style="font-size:14.5px;font-weight:600">{{ m.title }}</div>
+                      <div style="font-size:12.5px;color:#5c5a5a;margin-top:1px">{{ m.meta }}</div>
+                    </div>
+                  </div>
+                  <div style="padding:14px 16px 16px">
+                    <div style="font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#8a8888">Summary</div>
+                    <div style="font-size:14px;line-height:1.55;color:#151414;margin-top:6px">{{ m.summary }}</div>
+
+                    <div style="font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#8a8888;margin-top:16px">What the agent did</div>
+                    <div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:8px">
+                      <sc-for list="{{ m.did }}" as="d" hint-placeholder-count="2">
+                        <span style="display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:500;color:#151414;background:#f4f3f3;border-radius:16px;padding:5px 11px">
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1a6b3f" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"></path></svg>{{ d.label }}
+                        </span>
+                      </sc-for>
+                    </div>
+
+                    <sc-if value="{{ m.hasLink }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex;align-items:center;gap:10px;border:1px solid #e5e5e5;border-radius:9px;padding:11px 13px;margin-top:14px">
+                        <span style="width:30px;height:30px;border-radius:7px;background:#eef2ff;color:#2f5dff;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2f5dff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="14" rx="2"></rect><path d="M4 10h16M9 3v4M15 3v4"></path></svg></span>
+                        <div style="flex:1;min-width:0">
+                          <div style="font-size:13.5px;font-weight:600">{{ m.linkTitle }}</div>
+                          <div style="font-size:12.5px;color:#5c5a5a">{{ m.linkSub }}</div>
+                        </div>
+                        <a style="font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap">{{ m.linkCta }}</a>
+                      </div>
+                    </sc-if>
+
+                    <button onClick="{{ m.toggleTranscript }}" style="display:flex;align-items:center;gap:6px;background:none;border:none;padding:0;margin-top:16px;font-size:13px;font-weight:600;color:#2f5dff;cursor:pointer">{{ m.trLabel }} <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2f5dff" stroke-width="2.4" stroke-linecap="round" style="{{ m.trCaret }}"><path d="M6 9l6 6 6-6"></path></svg></button>
+                    <sc-if value="{{ m.trOpen }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex;flex-direction:column;gap:11px;border-top:1px solid #f0eeee;margin-top:13px;padding-top:14px">
+                        <sc-for list="{{ m.lines }}" as="l" hint-placeholder-count="4">
+                          <div style="display:flex;gap:10px">
+                            <span style="{{ l.whoStyle }}">{{ l.who }}</span>
+                            <span style="font-size:13.5px;line-height:1.5;color:#3b3939">{{ l.text }}</span>
+                          </div>
+                        </sc-for>
+                      </div>
+                    </sc-if>
+                  </div>
+                </div>
+              </sc-if>
+
+              <sc-if value="{{ m.isText }}" hint-placeholder-val="{{ false }}">
+                <div style="{{ m.wrapStyle }}">
+                  <div style="{{ m.bubbleStyle }}">
+                    <div style="font-size:14px;line-height:1.5">{{ m.text }}</div>
+                    <div style="display:flex;align-items:center;gap:6px;margin-top:7px;font-size:11.5px;color:#8a8888">{{ m.via }}</div>
+                  </div>
+                </div>
+              </sc-if>
+
+              <sc-if value="{{ m.isEvent }}" hint-placeholder-val="{{ false }}">
+                <div style="{{ m.wrapStyle }}">
+                  <div style="display:inline-flex;align-items:center;gap:9px;border:1px solid #e5e5e5;border-radius:9px;padding:10px 14px;font-size:11.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#3b3939">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3b3939" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"></rect><path d="M9 8h6M9 12h6M9 16h3"></path></svg>{{ m.text }}
+                  </div>
+                </div>
+              </sc-if>
+
+            </sc-for>
+
+            <sc-if value="{{ showFollowBar }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;align-items:center;gap:12px;border:1px solid #f6d9d6;background:#fdf3f2;border-radius:10px;padding:11px 14px">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c4151c" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5M12 16.2v.1"></path></svg>
+                <span style="flex:1;font-size:13.5px;color:#3b3939">Your AI agent flagged this call for follow-up. {{ followWhy }}</span>
+                <button onClick="{{ resolveFollow }}" style="background:#fff;border:1px solid #dedede;border-radius:8px;padding:6px 13px;font-size:13px;font-weight:600;color:#151414;cursor:pointer;white-space:nowrap" style-hover="background:#f8f6f6">Mark as done</button>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+
+        <div style="padding:14px 26px 18px;border-top:1px solid #f0eeee">
+          <div style="max-width:660px;margin:0 auto;border:1px solid #dedede;border-radius:10px;padding:11px 14px 9px">
+            <div style="display:flex;align-items:center;gap:7px;font-size:13px;color:#5c5a5a">Message via: <span style="font-weight:600;color:#116dff;display:inline-flex;align-items:center;gap:4px;cursor:pointer">{{ channelName }} <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#116dff" stroke-width="2.6" stroke-linecap="round"><path d="M6 9l6 6 6-6"></path></svg></span></div>
+            <div style="font-size:14px;color:#a3a1a1;padding:12px 0 14px">Type your message...</div>
+            <div style="display:flex;align-items:center;gap:14px">
+              <button style="background:none;border:none;padding:0;cursor:pointer;color:#116dff"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></button>
+              <button style="background:none;border:none;padding:0;cursor:pointer;color:#3b3939"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v10H9l-5 4z"></path></svg></button>
+              <button style="background:none;border:none;padding:0;cursor:pointer;color:#3b3939"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v8M9.6 10.4h4.8M9.6 13.6h4.8"></path></svg></button>
+              <button style="background:none;border:none;padding:0;cursor:pointer;color:#3b3939"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M17 8l-7 7a3 3 0 004 4l7-7a5 5 0 00-7-7l-7 7a7 7 0 0010 10"></path></svg></button>
+              <button style="margin-left:auto;background:#eceaea;color:#8a8888;border:none;border-radius:8px;padding:7px 20px;font-size:13.5px;font-weight:600;cursor:default">Send</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <sc-if value="{{ contactOpen }}" hint-placeholder-val="{{ true }}">
+        <div style="border-left:1px solid #e5e5e5;overflow-y:auto;min-height:0">
+          <div style="display:flex;justify-content:flex-end;gap:6px;padding:10px 12px 0">
+            <button onClick="{{ toggleContact }}" style="background:none;border:none;padding:4px;cursor:pointer;color:#5c5a5a;font-size:16px;line-height:1">&times;</button>
+          </div>
+          <div style="padding:2px 18px 18px">
+            <span style="display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#1a6b3f;background:#e6f4ec;padding:3px 8px;border-radius:4px">{{ contactKind }}</span>
+            <div style="display:flex;gap:12px;margin-top:12px">
+              <div style="{{ contactAvStyle }}">{{ hdrInitials }}</div>
+              <div style="min-width:0">
+                <div style="font-family:'Wix Madefor Display',sans-serif;font-size:17px;font-weight:700">{{ hdrName }}</div>
+                <div style="font-size:13px;color:#3b3939;margin-top:3px">{{ contactPhone }}</div>
+                <div style="font-size:13px;color:#3b3939">{{ contactEmail }}</div>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:16px">
+              <div style="display:flex;flex-direction:column;align-items:center;gap:6px;border:1px solid #e5e5e5;border-radius:8px;padding:10px 4px;cursor:pointer" style-hover="background:#fafafa"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h3l2 5-2 1a9 9 0 004 4l1-2 5 2v3a2 2 0 01-2 2A15 15 0 014 6a2 2 0 012-2z"></path></svg><span style="font-size:11.5px;font-weight:500">Call back</span></div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:6px;border:1px solid #e5e5e5;border-radius:8px;padding:10px 4px;cursor:pointer" style-hover="background:#fafafa"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="14" rx="2"></rect><path d="M4 10h16M9 3v4M15 3v4"></path></svg><span style="font-size:11.5px;font-weight:500">Book</span></div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:6px;border:1px solid #e5e5e5;border-radius:8px;padding:10px 4px;cursor:pointer" style-hover="background:#fafafa"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"></path><path d="M8 9h8"></path></svg><span style="font-size:11.5px;font-weight:500">Send link</span></div>
+            </div>
+          </div>
+
+          <div style="border-top:1px solid #eceaea;padding:14px 18px">
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="font-size:14px;font-weight:600">Calls with your AI agent</span>
+              <span style="font-size:12.5px;color:#8a8888">{{ callCount }}</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:2px;margin-top:10px">
+              <sc-for list="{{ callHistory }}" as="h" hint-placeholder-count="3">
+                <div style="display:flex;align-items:flex-start;gap:9px;padding:7px 0">
+                  <span style="width:7px;height:7px;border-radius:50%;background:#c9c7c7;margin-top:6px;flex-shrink:0"></span>
+                  <div style="min-width:0">
+                    <div style="font-size:13.5px;font-weight:500">{{ h.about }}</div>
+                    <div style="font-size:12.5px;color:#8a8888;margin-top:1px">{{ h.when }}</div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <sc-for list="{{ panelSections }}" as="p" hint-placeholder-count="6">
+            <div style="display:flex;align-items:center;gap:8px;border-top:1px solid #eceaea;padding:15px 18px;font-size:14px;font-weight:600;cursor:pointer" style-hover="background:#fafafa">
+              {{ p.name }}
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5c5a5a" stroke-width="2.2" stroke-linecap="round" style="margin-left:auto"><path d="M6 9l6 6 6-6"></path></svg>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+    </div>
+    </sc-if>
+  </div>
+    </sc-if>
+    <sc-if value="{{ viewChannels }}" hint-placeholder-val="{{ false }}">
+      <div style="flex:1;min-height:0;overflow-y:auto;padding:24px 28px 60px">
+    <div style="max-width:1080px;margin:0 auto">
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:7px;font-size:13.5px;color:#5c5a5a"><span onClick="{{ goInbox }}" style="cursor:pointer">Inbox</span> <span style="color:#c4c2c2">/</span> <span style="color:#151414">Communication Channels</span></div>
+        <button onClick="{{ goInbox }}" style="margin-left:auto;display:inline-flex;align-items:center;gap:7px;font-family:inherit;font-size:13.5px;font-weight:600;color:#151414;background:#fff;border:1px solid #dedede;border-radius:8px;padding:7px 15px;cursor:pointer" style-hover="background:#f8f6f6"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 6l-6 6 6 6"></path></svg>Back to Inbox</button>
+      </div>
+      <h1 style="font-family:'Wix Madefor Display',sans-serif;font-size:28px;font-weight:700;margin:14px 0 6px">Communication Channels</h1>
+      <p style="margin:0 0 22px;font-size:14.5px;color:#5c5a5a">Manage the channels you use to talk with customers and leads, and choose where your AI agent replies. <a style="cursor:pointer">Learn more</a></p>
+
+      <div style="background:#fff;border-radius:12px;padding:24px 26px 22px;margin-bottom:20px">
+        <div style="display:flex;align-items:flex-start;gap:14px">
+          <div style="flex:1;min-width:0">
+            <h2 style="font-family:'Wix Madefor Display',sans-serif;font-size:18px;font-weight:700;margin:0 0 5px">Phone</h2>
+            <p style="margin:0;font-size:14px;color:#5c5a5a">Take calls on a business number. Your AI agent can answer, handle the request and log the call in Inbox.</p>
+          </div>
+          <span style="font-size:11px;font-weight:600;color:#1a6b3f;background:#e6f4ec;padding:3px 9px;border-radius:4px;white-space:nowrap;margin-top:3px">Connected</span>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:14px;border:1px solid #e5e5e5;border-radius:10px;padding:14px 16px;margin-top:18px">
+          <span style="width:34px;height:34px;border-radius:8px;background:#eceafd;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#4b42c9" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h3l2 5-2 1a9 9 0 004 4l1-2 5 2v3a2 2 0 01-2 2A15 15 0 014 6a2 2 0 012-2z"></path></svg></span>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:13px;color:#5c5a5a">Your agent’s number</div>
+            <div style="font-size:15.5px;font-weight:700;margin-top:1px">+1 (947) 837-8716</div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:13px;color:#1a6b3f;margin-top:3px"><span style="width:7px;height:7px;border-radius:50%;background:#1a6b3f"></span>Active</div>
+          </div>
+          <button style="background:#fff;border:1px solid #dedede;border-radius:8px;padding:7px 15px;font-size:13.5px;font-weight:600;cursor:pointer" style-hover="background:#f8f6f6">Pause</button>
+          <button style="background:#fff;border:1px solid #e5a3a3;color:#c4151c;border-radius:8px;padding:7px 15px;font-size:13.5px;font-weight:600;cursor:pointer" style-hover="background:#fdf3f2">Disconnect Number</button>
+        </div>
+
+        <div style="border:1px solid #e5e5e5;border-radius:10px;padding:15px 16px;margin-top:12px">
+          <div style="font-size:14.5px;font-weight:600">Call forwarding</div>
+          <div style="font-size:13px;color:#5c5a5a;margin-top:2px;line-height:1.5;max-width:620px">Route calls from your existing number to your agent. The setup guide has the steps for your provider.</div>
+          <div style="display:flex;align-items:center;gap:14px;margin-top:13px;flex-wrap:wrap">
+            <button style="background:#fff;border:1px solid #dedede;border-radius:8px;padding:7px 15px;font-size:13.5px;font-weight:600;color:#151414;cursor:pointer" style-hover="background:#f8f6f6">Open Setup Guide</button>
+            <span style="font-size:13px;color:#8a8888">Connecting a Google Voice number? <a style="cursor:pointer;font-weight:600">Get verification code</a></span>
+          </div>
+        </div>
+
+        <div style="border:1px solid #e5e5e5;border-radius:10px;padding:15px 16px;margin-top:12px">
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+              <div style="font-size:14.5px;font-weight:600">How the agent handles calls</div>
+              <button onClick="{{ goSettings }}" style="margin-left:auto;background:#151414;border:none;border-radius:8px;padding:8px 18px;font-size:13.5px;font-weight:600;color:#fff;cursor:pointer;white-space:nowrap" style-hover="background:#3b3939">Agent settings</button>
+            </div>
+            <div style="font-size:13px;color:#5c5a5a;margin-top:2px;line-height:1.5">It greets the caller, answers from your knowledge and takes the actions you allow. Everything it does appears in Inbox.</div>
+
+            <sc-if value="{{ agentOn }}" hint-placeholder-val="{{ true }}">
+              <div style="margin-top:16px">
+                <div style="font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#8a8888">When it picks up</div>
+                <div style="display:flex;background:#f3f1f1;border:1px solid #dedede;border-radius:18px;padding:3px;gap:2px;margin-top:8px;width:fit-content;max-width:100%;flex-wrap:wrap">
+                  <sc-for list="{{ whenOpts }}" as="w" hint-placeholder-count="3">
+                    <button onClick="{{ w.pick }}" style="{{ w.style }}">{{ w.label }}</button>
+                  </sc-for>
+                </div>
+                <div style="font-size:12.5px;color:#8a8888;margin-top:8px">{{ whenNote }}</div>
+
+                <div style="display:flex;flex-direction:column;gap:12px;margin-top:18px">
+                  <sc-for list="{{ phoneOpts }}" as="o" hint-placeholder-count="3">
+                    <div onClick="{{ o.toggle }}" style="display:flex;align-items:flex-start;gap:10px;cursor:pointer">
+                      <div style="{{ o.track }}"><span style="{{ o.knob }}"></span></div>
+                      <div style="min-width:0">
+                        <div style="font-size:13.5px;font-weight:600">{{ o.name }}</div>
+                        <div style="font-size:12.5px;color:#8a8888;margin-top:1px;line-height:1.45">{{ o.desc }}</div>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+
+                <div style="border:1px solid #e5e5e5;border-radius:9px;padding:13px 15px;margin-top:18px">
+                  <div style="display:flex;align-items:baseline;gap:8px">
+                    <span style="font-size:13.5px;font-weight:600">AI credits</span>
+                    <span style="margin-left:auto;font-size:13px;color:#5c5a5a">75 of 300 remaining</span>
+                  </div>
+                  <div style="height:6px;border-radius:6px;background:#eceaea;margin-top:9px;overflow:hidden"><span style="display:block;height:100%;width:25%;background:#f9ad4d;border-radius:6px"></span></div>
+                  <div style="display:flex;align-items:center;gap:10px;margin-top:10px">
+                    <span style="font-size:12.5px;color:#8a8888">Credits are shared across every channel the agent works on. When they run out, calls go to voicemail.</span>
+                    <a style="font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;margin-left:auto">Get more credits</a>
+                  </div>
+                </div>
+
+                <div style="display:flex;align-items:center;gap:10px;background:#f5f8ff;border:1px solid #dbe6ff;border-radius:9px;padding:11px 14px;margin-top:14px">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2f5dff" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5M12 8v.1"></path></svg>
+                  <span style="font-size:13px;color:#3b3939">What the agent can do and how it sounds is set once for every channel in Inbox Settings.</span>
+                  <a onClick="{{ goSettings }}" style="font-size:13px;font-weight:600;white-space:nowrap;margin-left:auto;cursor:pointer">Open Inbox Settings</a>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:#fff;border-radius:12px;padding:24px 26px 20px;margin-bottom:20px">
+        <h2 style="font-family:'Wix Madefor Display',sans-serif;font-size:18px;font-weight:700;margin:0 0 5px">Email channels</h2>
+        <p style="margin:0 0 16px;font-size:14px;color:#5c5a5a">Manage all email communication with your site visitors and customers directly in Wix Inbox.</p>
+        <div style="display:flex;align-items:center;gap:12px;border:1px solid #dbe6ff;background:#f5f8ff;border-radius:9px;padding:11px 14px;margin-bottom:18px">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2f5dff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h4l8-4v14l-8-4H4z"></path></svg>
+          <span style="font-size:13.5px;color:#3b3939">Build trust with a professional email at your custom domain.</span>
+          <button style="margin-left:auto;background:#fff;border:1px solid #116dff;color:#116dff;border-radius:8px;padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap" style-hover="background:#f0f4ff">Get Business Email</button>
+        </div>
+        <sc-for list="{{ emailChannels }}" as="c" hint-placeholder-count="3">
+          <div style="{{ c.rowStyle }}">
+            <span style="{{ c.iconStyle }}">{{ c.mark }}</span>
+            <div style="flex:1;min-width:0">
+              <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap">
+                <span style="font-size:15px;font-weight:600">{{ c.name }}</span>
+                <sc-if value="{{ c.connected }}" hint-placeholder-val="{{ false }}"><span style="font-size:11px;font-weight:600;color:#1a6b3f;background:#e6f4ec;padding:2px 8px;border-radius:4px">Connected</span></sc-if>
+              </div>
+              <div style="font-size:13.5px;color:#5c5a5a;margin-top:3px;line-height:1.5;max-width:640px">{{ c.desc }}</div>
+            </div>
+            <button style="{{ c.btnStyle }}">{{ c.cta }}</button>
+          </div>
+        </sc-for>
+        <div style="font-size:13.5px;color:#5c5a5a;padding-top:16px">Need to connect a different email provider? <a style="cursor:pointer">Request an integration</a></div>
+      </div>
+
+      <div style="background:#fff;border-radius:12px;padding:24px 26px 22px">
+        <h2 style="font-family:'Wix Madefor Display',sans-serif;font-size:18px;font-weight:700;margin:0 0 5px">Direct message channels</h2>
+        <p style="margin:0 0 6px;font-size:14px;color:#5c5a5a">Communicate with your visitors via all of their channels, all from within Wix Inbox.</p>
+        <sc-for list="{{ dmChannels }}" as="c" hint-placeholder-count="4">
+          <div style="{{ c.rowStyle }}">
+            <span style="{{ c.iconStyle }}">{{ c.mark }}</span>
+            <div style="flex:1;min-width:0">
+              <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap">
+                <span style="font-size:15px;font-weight:600">{{ c.name }}</span>
+                <sc-if value="{{ c.connected }}" hint-placeholder-val="{{ true }}"><span style="font-size:11px;font-weight:600;color:#1a6b3f;background:#e6f4ec;padding:2px 8px;border-radius:4px">Connected</span></sc-if>
+              </div>
+              <div style="font-size:13.5px;color:#5c5a5a;margin-top:3px;line-height:1.5;max-width:640px">{{ c.desc }}</div>
+              <sc-if value="{{ c.connected }}" hint-placeholder-val="{{ true }}">
+                <div onClick="{{ c.toggleAi }}" style="display:inline-flex;align-items:center;gap:8px;margin-top:10px;cursor:pointer">
+                  <div style="{{ c.track }}"><span style="{{ c.knob }}"></span></div>
+                  <span style="{{ c.aiLabelStyle }}">{{ c.aiLabel }}</span>
+                </div>
+              </sc-if>
+            </div>
+            <button style="{{ c.btnStyle }}">{{ c.cta }}</button>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+    </sc-if>
+    <sc-if value="{{ viewSettings }}" hint-placeholder-val="{{ false }}">
+      <div style="flex:1;min-height:0;overflow-y:auto;padding:24px 28px 60px">
+    <div style="max-width:1080px;margin:0 auto">
+      <div style="display:flex;align-items:center;gap:7px;font-size:13.5px;color:#5c5a5a"><span onClick="{{ goInbox }}" style="cursor:pointer">Inbox</span> <span style="color:#c4c2c2">/</span> <span style="color:#151414">Inbox Settings</span></div>
+      <div style="display:flex;align-items:flex-start;gap:16px;margin:14px 0 22px">
+        <div style="flex:1;min-width:0">
+          <h1 style="font-family:'Wix Madefor Display',sans-serif;font-size:28px;font-weight:700;margin:0 0 6px">Inbox Settings</h1>
+          <p style="margin:0;font-size:14.5px;color:#5c5a5a">Manage how you send and receive Inbox messages, what your AI agent handles, and who sees them.</p>
+        </div>
+        <button onClick="{{ goInbox }}" style="display:inline-flex;align-items:center;gap:7px;font-family:inherit;font-size:13.5px;font-weight:600;color:#151414;background:#fff;border:1px solid #dedede;border-radius:8px;padding:7px 15px;cursor:pointer;white-space:nowrap" style-hover="background:#f8f6f6"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 6l-6 6 6 6"></path></svg>Back to Inbox</button>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:20px;background:#fff;border-radius:12px;padding:22px 26px;margin-bottom:18px">
+        <div style="flex:1;min-width:0">
+          <h2 style="font-family:'Wix Madefor Display',sans-serif;font-size:18px;font-weight:700;margin:0 0 5px">Connect communication channels</h2>
+          <p style="margin:0 0 14px;font-size:14px;color:#5c5a5a">Phone, email, chat and social — all in one Inbox, and all available to your AI agent.</p>
+          <div style="display:flex;align-items:center;gap:16px">
+            <button onClick="{{ goChannels }}" style="background:#151414;color:#fff;border:none;border-radius:8px;padding:9px 20px;font-size:14px;font-weight:600;white-space:nowrap;cursor:pointer" style-hover="background:#3b3939">Connect Channels</button>
+            <a style="font-size:14px;font-weight:600;cursor:pointer">Learn more</a>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:-6px;flex-shrink:0">
+          <sc-for list="{{ channelDots }}" as="d" hint-placeholder-count="4">
+            <span style="{{ d.style }}">{{ d.mark }}</span>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap">
+        <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4">
+          <button onClick="{{ t.pick }}" style="{{ t.style }}">{{ t.label }}<sc-if value="{{ t.isNew }}" hint-placeholder-val="{{ false }}"><span style="font-size:10px;font-weight:700;letter-spacing:.3px;color:#151414;background:#fbd8a0;padding:2px 6px;border-radius:4px;margin-left:8px">New</span></sc-if></button>
+        </sc-for>
+      </div>
+
+      <sc-if value="{{ tabAgent }}" hint-placeholder-val="{{ true }}">
+        <div style="background:#fff;border-radius:12px;padding:24px 26px;margin-bottom:18px">
+          <div style="display:flex;align-items:flex-start;gap:14px">
+            <div style="flex:1;min-width:0">
+              <h2 style="font-family:'Wix Madefor Display',sans-serif;font-size:18px;font-weight:700;margin:0 0 5px">Your AI agent</h2>
+              <p style="margin:0;font-size:14px;color:#5c5a5a;max-width:640px;line-height:1.55">One agent works across every connected channel. It answers in your words, takes the actions you allow, and hands the conversation to you when it can’t help.</p>
+            </div>
+            <div onClick="{{ toggleAgent }}" style="{{ agentTrack }}"><span style="{{ agentKnob }}"></span></div>
+          </div>
+
+          <div style="font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#8a8888;margin-top:22px">Where it replies</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin-top:10px">
+            <sc-for list="{{ agentChannels }}" as="c" hint-placeholder-count="4">
+              <div onClick="{{ c.toggle }}" style="{{ c.cardStyle }}">
+                <span style="{{ c.iconStyle }}">{{ c.mark }}</span>
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:13.5px;font-weight:600">{{ c.name }}</div>
+                  <div style="font-size:12px;color:#8a8888;margin-top:1px">{{ c.state }}</div>
+                </div>
+                <div style="{{ c.track }}"><span style="{{ c.knob }}"></span></div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="font-size:12.5px;color:#8a8888;margin-top:10px">Channels are connected in <a onClick="{{ goChannels }}" style="cursor:pointer">Communication Channels</a>.</div>
+        </div>
+
+        <div style="background:#fff;border-radius:12px;padding:24px 26px;margin-bottom:18px">
+          <h2 style="font-family:'Wix Madefor Display',sans-serif;font-size:18px;font-weight:700;margin:0 0 5px">Personality</h2>
+          <p style="margin:0 0 20px;font-size:14px;color:#5c5a5a">How the agent introduces itself and sounds to customers.</p>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px">
+            <div>
+              <div style="font-size:13.5px;font-weight:600;margin-bottom:7px">Name customers hear</div>
+              <div style="border:1px solid #dedede;border-radius:8px;padding:10px 13px;font-size:14px;background:#fff">Robin from Parky Spa</div>
+              <div style="font-size:12.5px;color:#8a8888;margin-top:7px">Used on calls and in chat. It always says it’s an assistant, not a person.</div>
+            </div>
+            <div>
+              <div style="font-size:13.5px;font-weight:600;margin-bottom:7px">Voice <span style="font-weight:400;color:#8a8888">· phone only</span></div>
+              <div style="display:flex;background:#f3f1f1;border:1px solid #dedede;border-radius:18px;padding:3px;gap:2px;width:fit-content">
+                <sc-for list="{{ voices }}" as="v" hint-placeholder-count="3">
+                  <button onClick="{{ v.pick }}" style="{{ v.style }}">{{ v.label }}</button>
+                </sc-for>
+              </div>
+              <button style="display:flex;align-items:center;gap:7px;background:none;border:none;padding:9px 0 0;font-size:13px;font-weight:600;color:#2f5dff;cursor:pointer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2f5dff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4l12 8-12 8z"></path></svg>Hear a sample</button>
+            </div>
+          </div>
+
+          <div style="margin-top:22px">
+            <div style="font-size:13.5px;font-weight:600;margin-bottom:7px">Tone</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px">
+              <sc-for list="{{ tones }}" as="t" hint-placeholder-count="4">
+                <button onClick="{{ t.pick }}" style="{{ t.style }}">{{ t.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="margin-top:22px">
+            <div style="font-size:13.5px;font-weight:600;margin-bottom:7px">Opening line</div>
+            <div style="border:1px solid #dedede;border-radius:8px;padding:12px 14px;font-size:14px;line-height:1.55;color:#3b3939;max-width:720px">{{ greeting }}</div>
+            <div style="font-size:12.5px;color:#8a8888;margin-top:7px">On chat and WhatsApp the same line is sent as the first message.</div>
+          </div>
+
+          <div style="margin-top:22px">
+            <div style="font-size:13.5px;font-weight:600;margin-bottom:3px">Hand over to a person when the customer says</div>
+            <div style="font-size:12.5px;color:#8a8888;margin-bottom:9px">The agent stops, takes a message and flags the conversation for follow-up.</div>
+            <div style="display:flex;flex-wrap:wrap;gap:7px">
+              <sc-for list="{{ keywords }}" as="k" hint-placeholder-count="5">
+                <span style="display:inline-flex;align-items:center;gap:7px;font-size:13px;background:#f4f3f3;border-radius:16px;padding:6px 12px">{{ k.word }}<span onClick="{{ k.remove }}" style="cursor:pointer;color:#8a8888;font-size:14px;line-height:1">&times;</span></span>
+              </sc-for>
+              <button style="font-size:13px;font-weight:600;color:#2f5dff;background:none;border:1px dashed #c9d6ff;border-radius:16px;padding:6px 13px;cursor:pointer">+ Add word</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#fff;border-radius:12px;padding:24px 26px;margin-bottom:18px">
+          <div style="display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap">
+            <div style="flex:1;min-width:0">
+              <h2 style="font-family:'Wix Madefor Display',sans-serif;font-size:18px;font-weight:700;margin:0 0 5px">Actions</h2>
+              <p style="margin:0;font-size:14px;color:#5c5a5a;max-width:660px;line-height:1.55">Choose what your agent can do for customers on any channel. Before an action marked <span style="font-size:10.5px;font-weight:600;color:#2f5dff;background:#eef2ff;padding:1px 3px 1px 6px;border-radius:4px;white-space:nowrap">Verified caller</span>, the agent sends a one-time code by SMS or email and waits for the customer to read it back.</p>
+            </div>
+            <button onClick="{{ turnAllOn }}" style="{{ turnAllStyle }}">{{ turnAllLabel }}</button>
+          </div>
+          <div style="border:1px solid #e5e5e5;border-radius:8px;margin-top:16px">
+            <sc-for list="{{ actGroups }}" as="g" hint-placeholder-count="6">
+              <div style="{{ g.headStyle }}">
+                <span style="font-size:12px;font-weight:700;color:#151414">{{ g.name }}</span>
+                <span style="flex:1"></span>
+                <button onClick="{{ g.toggle }}" style="font-family:inherit;font-size:12.5px;font-weight:600;background:none;border:none;padding:2px;cursor:pointer;color:#2f5dff;white-space:nowrap" style-hover="text-decoration:underline">{{ g.toggleLabel }}</button>
+              </div>
+              <sc-for list="{{ g.items }}" as="k" hint-placeholder-count="2">
+                <div onClick="{{ k.toggle }}" style="display:flex;align-items:flex-start;gap:9px;padding:9px 14px;border-top:1px solid #f3f1f1;cursor:pointer" style-hover="background:#fafafa">
+                  <div style="{{ k.track }}"><span style="{{ k.knob }}"></span></div>
+                  <div style="flex:1;min-width:0">
+                    <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap">
+                      <span style="{{ k.nameStyle }}">{{ k.name }}</span>
+                      <sc-if value="{{ k.auth }}" hint-placeholder-val="{{ false }}"><span style="font-size:10.5px;font-weight:600;color:#2f5dff;background:#eef2ff;padding:2px 7px;border-radius:4px;white-space:nowrap">Verified caller</span></sc-if>
+                    </div>
+                    <div style="{{ k.descStyle }}">{{ k.desc }}</div>
+                  </div>
+                </div>
+              </sc-for>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="background:#fff;border-radius:12px;padding:24px 26px">
+          <h2 style="font-family:'Wix Madefor Display',sans-serif;font-size:18px;font-weight:700;margin:0 0 5px">Knowledge</h2>
+          <p style="margin:0 0 16px;font-size:14px;color:#5c5a5a">What the agent reads before it answers. The same sources are used on every channel.</p>
+          <div style="border:1px solid #e5e5e5;border-radius:8px">
+            <sc-for list="{{ sources }}" as="k" hint-placeholder-count="4">
+              <div style="{{ k.rowStyle }}">
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:13.5px;font-weight:600">{{ k.name }}</div>
+                  <div style="font-size:12.5px;color:#8a8888;margin-top:1px">{{ k.meta }}</div>
+                </div>
+                <span style="{{ k.statusStyle }}">{{ k.status }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <button style="margin-top:14px;background:#fff;border:1px solid #151414;border-radius:8px;padding:8px 18px;font-size:13.5px;font-weight:600;cursor:pointer" style-hover="background:#f8f6f6">Add knowledge</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ tabEmail }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#fff;border-radius:12px;padding:24px 26px">
+          <h2 style="font-family:'Wix Madefor Display',sans-serif;font-size:18px;font-weight:700;margin:0 0 5px">Outgoing email settings</h2>
+          <p style="margin:0 0 22px;font-size:14px;color:#5c5a5a">Customize the emails you send from Wix Inbox, whether you write them or the agent does. <a style="cursor:pointer">Learn more</a></p>
+          <div style="display:grid;grid-template-columns:minmax(280px,1fr) minmax(240px,340px);gap:34px;align-items:start">
+            <div>
+              <div style="font-size:13.5px;font-weight:600;margin-bottom:7px">Subject line</div>
+              <div style="border:1px solid #dedede;border-radius:8px;padding:10px 13px;font-size:14px;background:#fafafa;color:#3b3939">Parky Spa sent you a new message</div>
+              <div style="font-size:13.5px;font-weight:600;margin:20px 0 9px">Sender identity</div>
+              <div style="display:flex;flex-direction:column;gap:11px">
+                <sc-for list="{{ senders }}" as="o" hint-placeholder-count="3">
+                  <div onClick="{{ o.pick }}" style="display:flex;align-items:center;gap:10px;cursor:pointer">
+                    <span style="{{ o.dotStyle }}"></span>
+                    <span style="font-size:14px">{{ o.label }}</span>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="border:1px solid #dedede;border-radius:8px;padding:10px 13px;font-size:14px;background:#fafafa;color:#3b3939;margin-top:12px">Rom Lampel</div>
+            </div>
+            <div style="background:#f4f3f3;border-radius:10px;padding:20px">
+              <div style="background:#fff;border-radius:8px;padding:18px">
+                <div style="font-family:'Wix Madefor Display',sans-serif;font-size:15px;font-weight:700">Parky Spa sent you a new message</div>
+                <div style="display:flex;align-items:center;gap:9px;margin-top:14px">
+                  <span style="width:28px;height:28px;border-radius:50%;background:#dbe6ff"></span>
+                  <span style="font-size:13.5px;font-weight:600">Rom Lampel</span>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:8px;margin-top:16px">
+                  <span style="height:8px;width:38%;border-radius:4px;background:#eceaea"></span>
+                  <span style="height:8px;width:82%;border-radius:4px;background:#eceaea"></span>
+                  <span style="height:8px;width:90%;border-radius:4px;background:#eceaea"></span>
+                  <span style="height:8px;width:64%;border-radius:4px;background:#eceaea"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ tabPeople }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#fff;border-radius:12px;padding:24px 26px">
+          <h2 style="font-family:'Wix Madefor Display',sans-serif;font-size:18px;font-weight:700;margin:0 0 5px">Inbox collaborators</h2>
+          <p style="margin:0 0 18px;font-size:14px;color:#5c5a5a">Who can see conversations and pick them up from the agent.</p>
+          <div style="border:1px solid #e5e5e5;border-radius:8px">
+            <sc-for list="{{ people }}" as="p" hint-placeholder-count="3">
+              <div style="{{ p.rowStyle }}">
+                <span style="{{ p.avStyle }}">{{ p.initials }}</span>
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:13.5px;font-weight:600">{{ p.name }}</div>
+                  <div style="font-size:12.5px;color:#8a8888;margin-top:1px">{{ p.email }}</div>
+                </div>
+                <span style="font-size:13px;color:#5c5a5a">{{ p.role }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ tabSpam }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#fff;border-radius:12px;padding:24px 26px">
+          <h2 style="font-family:'Wix Madefor Display',sans-serif;font-size:18px;font-weight:700;margin:0 0 5px">Spam detection</h2>
+          <p style="margin:0 0 18px;font-size:14px;color:#5c5a5a">Filter junk before it reaches your Inbox, and before the agent spends credits on it.</p>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <sc-for list="{{ spamOpts }}" as="o" hint-placeholder-count="3">
+              <div onClick="{{ o.toggle }}" style="display:flex;align-items:flex-start;gap:10px;cursor:pointer">
+                <div style="{{ o.track }}"><span style="{{ o.knob }}"></span></div>
+                <div style="min-width:0">
+                  <div style="font-size:13.5px;font-weight:600">{{ o.name }}</div>
+                  <div style="font-size:12.5px;color:#8a8888;margin-top:1px;line-height:1.45">{{ o.desc }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+    </sc-if>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+
+  SKILLS = [
+    { id: 'sms', name: 'Text a link', group: 'General', auth: false, read: 'Sends the customer a link to any page on your site.' },
+    { id: 'bookcreate', name: 'Book an appointment', group: 'Bookings', auth: false, read: 'Books the customer into an appointment, class or course.' },
+    { id: 'bookinfo', name: 'Share appointment details', group: 'Bookings', auth: true, read: 'Reads out their upcoming appointments.' },
+    { id: 'bookresched', name: 'Reschedule an appointment', group: 'Bookings', auth: true, read: 'Moves their appointment to a new time.' },
+    { id: 'bookcancel', name: 'Cancel an appointment', group: 'Bookings', auth: true, read: 'Cancels their appointment.' },
+    { id: 'planinfo', name: 'Share plan details', group: 'Pricing Plans', auth: true, read: 'Reads out their sessions left and renewal date.' },
+    { id: 'planmanage', name: 'Renew or pause a plan', group: 'Pricing Plans', auth: true, read: 'Renews or pauses their plan.' },
+    { id: 'orderinfo', name: 'Check order status', group: 'Stores', auth: false, read: 'Reads out an order status, tracking and delivery date.' },
+    { id: 'ordermanage', name: 'Cancel or return an order', group: 'Stores', auth: true, read: 'Cancels their order or starts a return.' },
+    { id: 'leadinfo', name: 'Save a new lead', group: 'Forms', auth: false, read: 'Saves the customer\u2019s name, contact details and why they got in touch.' },
+    { id: 'formfill', name: 'Fill in a form', group: 'Forms', auth: false, read: 'Fills in one of your forms with their answers.' },
+    { id: 'invoiceinfo', name: 'Send an invoice', group: 'Payments', auth: true, read: 'Emails or texts them a copy of an invoice.' },
+    { id: 'collectpay', name: 'Collect a payment', group: 'Payments', auth: true, read: 'Sends them a link to pay an open invoice.' }
+  ];
+
+  TABS = [
+    { id: 'agent', label: 'AI agent', isNew: true },
+    { id: 'email', label: 'Email template' },
+    { id: 'people', label: 'Inbox collaborators' },
+    { id: 'spam', label: 'Spam detection' }
+  ];
+
+  AGENT_CHANNELS = [
+    { id: 'phone', name: 'Phone', mark: '\u260e', color: '#4b42c9', bg: '#eceafd' },
+    { id: 'chat', name: 'Wix Smart Chat', mark: '\u2726', color: '#116dff', bg: '#e8f0fe' },
+    { id: 'whatsapp', name: 'WhatsApp Business', mark: '\u25cf', color: '#25d366', bg: '#e7f8ee' },
+    { id: 'email', name: 'Email', mark: '@', color: '#5c5a5a', bg: '#f0eeee' }
+  ];
+
+  SOURCES = [
+    { name: 'Site pages', meta: '14 pages \u00b7 synced 2 hours ago', status: 'Live' },
+    { name: 'Services and prices', meta: 'From Booking Calendar \u00b7 22 services', status: 'Live' },
+    { name: 'Opening hours and location', meta: 'From your business info', status: 'Live' },
+    { name: 'Treatment FAQ.pdf', meta: 'Uploaded Jul 2, 2026 \u00b7 3 pages', status: 'Live' }
+  ];
+
+  PEOPLE = [
+    { name: 'Rom Lampel', email: 'rom@parkyspa.com', role: 'Owner', initials: 'RL' },
+    { name: 'Maya Levi', email: 'maya@parkyspa.com', role: 'Can reply', initials: 'ML' },
+    { name: 'Noa Shani', email: 'noa@parkyspa.com', role: 'Can view', initials: 'NS' }
+  ];
+
+  SPAM = [
+    { id: 'auto', name: 'Move suspected spam out of Inbox', desc: 'Filtered conversations sit in a separate folder for 30 days.' },
+    { id: 'silent', name: 'Don\u2019t let the agent reply to filtered conversations', desc: 'Saves credits on junk calls and messages.' },
+    { id: 'block', name: 'Block repeat spam numbers', desc: 'After three filtered calls, the number stops reaching you.' }
+  ];
+
+  state = {
+    view: 'inbox', fte: true, justEnabled: false,
+    sel: 'michal', settingsOpen: false, filterOpen: false, filter: 'All conversations', chan: 'all',
+    contactOpen: true, trOpen: {}, creditNotice: true, resolved: {}, flagged: {},
+    when: 'always', opts: { transcribe: true, voicemail: true, handoff: true },
+    agentOn: true, on: { phone: true, chat: true, whatsapp: false, email: false },
+    tab: 'agent', voice: 'Female', tone: 'Calm',
+    words: ['manager', 'refund', 'complaint', 'human', 'lawyer'],
+    sender: 'Sender name',
+    spam: { auto: true, silent: true, block: false },
+    lv: { sms: 'read', bookcreate: 'read', leadinfo: 'read', formfill: 'read', orderinfo: 'read' }
+  };
+
+  toggle(on, size) {
+    const w = size === 'lg' ? 40 : 30, h = size === 'lg' ? 22 : 17, k = size === 'lg' ? 18 : 13;
+    return {
+      track: 'position:relative;width:' + w + 'px;height:' + h + 'px;flex-shrink:0;margin-top:2px;border-radius:' + h + 'px;cursor:pointer;transition:background .15s;background:' + (on ? '#2f5dff' : '#c4c2c2'),
+      knob: 'position:absolute;width:' + k + 'px;height:' + k + 'px;background:#fff;border-radius:50%;top:2px;left:2px;transition:transform .15s;transform:translateX(' + (on ? (w - k - 4) + 'px' : '0px') + ')'
+    };
+  }
+
+  toggleSm(on) { return this.toggle(on); }
+
+  go(view) { this.setState({ view, settingsOpen: false, filterOpen: false, fte: view === 'inbox' ? this.state.fte : false }); }
+
+  componentDidMount() {
+    this.readUrl();
+    this._pop = () => this.readUrl();
+    window.addEventListener('popstate', this._pop);
+  }
+
+  componentWillUnmount() { window.removeEventListener('popstate', this._pop); }
+
+  componentDidUpdate() { this.writeUrl(); }
+
+  readUrl() {
+    let q;
+    try { q = new URLSearchParams(location.search); } catch (e) { return; }
+    const next = {};
+    const view = q.get('view');
+    if (['inbox', 'channels', 'settings'].indexOf(view) > -1) { next.view = view; next.fte = false; }
+    if (q.get('setup') === '1' && !next.view) { next.view = 'inbox'; next.fte = true; }
+    if (q.get('setup') === '0') next.fte = false;
+    const tab = q.get('tab');
+    if (['agent', 'email', 'people', 'spam'].indexOf(tab) > -1) { next.tab = tab; next.view = next.view || 'settings'; next.fte = false; }
+    const conv = q.get('conversation');
+    if (conv && this.CONV.some(c => c.id === conv)) { next.sel = conv; next.fte = false; }
+    const chan = q.get('channel');
+    if (chan && this.CHANNELS.some(c => c.id === chan)) { next.chan = chan; }
+    const filter = q.get('filter');
+    if (filter) {
+      const f = this.VIEW_FILTERS.filter(x => !x.divider && x.label.toLowerCase().replace(/ /g, '-') === filter)[0];
+      if (f) next.filter = f.label;
+    }
+    if (Object.keys(next).length) this.setState(next);
+  }
+
+  writeUrl() {
+    let q;
+    try { q = new URLSearchParams(location.search); } catch (e) { return; }
+    const s = this.state;
+    const set = (k, v) => { if (v === null || v === undefined) q.delete(k); else q.set(k, v); };
+    set('view', s.view !== 'inbox' ? s.view : null);
+    set('setup', s.fte && s.view === 'inbox' ? '1' : null);
+    set('tab', s.view === 'settings' && s.tab !== 'agent' ? s.tab : null);
+    set('conversation', s.view === 'inbox' && !s.fte && s.sel !== 'michal' ? s.sel : null);
+    set('channel', s.chan && s.chan !== 'all' ? s.chan : null);
+    set('filter', s.filter && s.filter !== 'All conversations' ? s.filter.toLowerCase().replace(/ /g, '-') : null);
+    const str = q.toString();
+    const url = location.pathname + (str ? '?' + str : '') + location.hash;
+    if (url !== location.pathname + location.search + location.hash) history.replaceState(null, '', url);
+  }
+
+  navVals() {
+    const v = this.state.view;
+    const s = this.state;
+    return {
+      fte: !!s.fte, notFte: !s.fte,
+      fteChips: [{ label: 'Verified the caller' }, { label: 'Rescheduled the appointment' }, { label: 'Texted the confirmation' }],
+      fteSteps: [
+        { num: '1', name: 'Connect your channels', desc: 'Phone, chat, WhatsApp and email all land in this Inbox.', cta: 'Open Communication Channels', go: () => this.go('channels') },
+        { num: '2', name: 'Choose what it can do', desc: 'From answering questions to booking, rescheduling and taking payments.', cta: 'See the actions', go: () => this.go('settings') },
+        { num: '3', name: 'Give it your voice', desc: 'Set the name, tone and opening line customers hear.', cta: 'Set the personality', go: () => this.go('settings') }
+      ].map(st => Object.assign({}, st, { numStyle: 'display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:#eceafd;color:#4b42c9;font-size:13px;font-weight:700' })),
+      enableAgent: () => this.setState({ fte: false, agentOn: true, justEnabled: true }),
+      skipFte: () => this.setState({ fte: false }),
+      justEnabled: !!s.justEnabled,
+      dismissEnabled: () => this.setState({ justEnabled: false }),
+      restartFte: () => this.setState({ fte: true, view: 'inbox', settingsOpen: false }),
+      viewInbox: v === 'inbox', viewChannels: v === 'channels', viewSettings: v === 'settings',
+      navInbox: 'display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:14px;cursor:pointer;color:#151414;font-weight:600;background:#f0eeee',
+      goInbox: () => this.go('inbox'),
+      goChannels: () => this.go('channels'),
+      goSettings: () => this.go('settings')
+    };
+  }
+
+  renderVals() {
+    return Object.assign({}, this.navVals(), this.inboxVals(), this.channelVals(), this.settingsVals());
+  }
+
+
+  CONV = [
+    { id: 'rom', name: 'Rom Lampel', initials: 'RL', when: 'Aug 3', preview: 'AI call \u00b7 Booking request', channel: 'phone', call: true,
+      follow: true, followWhy: 'The caller asked for a call back on weekday afternoons.',
+      sub: 'Aug 3, 2026 \u00b7 5:29 PM \u00b7 1:18 min \u00b7 054-922-6155', kind: 'Site member', phone: '054-922-6155', email: 'rom.lampel@gmail.com',
+      channelName: 'SMS',
+      history: [{ about: 'Booking request', when: 'Aug 3, 2026 \u00b7 1:18 min' }, { about: 'Complaint \u00b7 cancelled treatment', when: 'Jul 20, 2026 \u00b7 2:11 min' }, { about: 'General inquiry', when: 'Jun 8, 2026 \u00b7 0:41 min' }],
+      thread: [
+        { isDate: true, text: 'Aug 3, 2026' },
+        { isCall: true, title: 'Incoming call answered by your AI agent', meta: '5:29 PM \u00b7 1:18 min \u00b7 Neutral',
+          summary: 'Asked about massage treatments and prices, then asked for the treatments page. The agent texted the link and took a call-back preference, but the caller did not want to book on the call.',
+          did: [{ label: 'Texted the treatments page' }, { label: 'Saved a new lead' }, { label: 'Flagged for follow-up' }],
+          hasLink: true, linkTitle: 'Lead saved: Rom Lampel', linkSub: 'Massage treatments \u00b7 prefers weekday afternoons', linkCta: 'View contact',
+          lines: [
+            { who: 'Caller', text: 'Hi, do you do deep tissue massage?' },
+            { who: 'Agent', text: 'We do \u2014 60 and 90 minute deep tissue treatments, starting at 320. Would you like me to book one for you?' },
+            { who: 'Caller', text: 'Not yet. Can you send me the page so I can look at the options?' },
+            { who: 'Agent', text: 'Sent to this number. When is a good time for the team to call you back?' },
+            { who: 'Caller', text: 'Weekday afternoons work best.' }
+          ] }
+      ] },
+    { id: 'michal', name: 'Michal Barak', initials: 'MB', when: 'Aug 5', preview: 'AI call \u00b7 Rescheduled to Aug 12', channel: 'phone', call: true,
+      follow: false, sub: 'Phone, WhatsApp, Email \u00b7 050-664-1187', kind: 'Site member', phone: '050-664-1187', email: 'michal.barak@gmail.com',
+      channelName: 'WhatsApp',
+      history: [{ about: 'Reschedule \u00b7 handled by AI', when: 'Aug 5, 2026 \u00b7 1:22 min' }, { about: 'Plan renewal question', when: 'Jul 11, 2026 \u00b7 2:04 min' }],
+      thread: [
+        { isDate: true, text: 'Jul 9, 2026' },
+        { isEvent: true, text: 'Received your email campaign', mine: false },
+        { isText: true, text: 'Hi! Saw the email about the new membership. Does it include the sauna?', via: 'WhatsApp \u00b7 Michal', mine: false },
+        { isText: true, text: 'Hi Michal \u2014 yes, all treatments plus sauna access on weekdays.', via: 'You \u00b7 WhatsApp', mine: true },
+        { isDate: true, text: 'Jul 11, 2026' },
+        { isCall: true, title: 'Incoming call answered by your AI agent', meta: '2:48 PM \u00b7 2:04 min \u00b7 Neutral',
+          summary: 'Asked what her membership covers and when it renews. The agent verified her by code, read out her plan and remaining sessions, and confirmed the renewal date.',
+          did: [{ label: 'Verified the caller' }, { label: 'Shared plan details' }],
+          hasLink: true, linkTitle: 'Monthly Wellness \u00b7 4 of 6 sessions left', linkSub: 'Renews Aug 11, 2026', linkCta: 'View plan',
+          lines: [
+            { who: 'Caller', text: 'How many sessions do I have left this month?' },
+            { who: 'Agent', text: 'I have sent a code to this number \u2014 can you read it back?' },
+            { who: 'Caller', text: '7 1 4 3 8 2.' },
+            { who: 'Agent', text: 'Thanks Michal. You have four of six sessions left, and the plan renews on August 11.' }
+          ] },
+        { isDate: true, text: 'Jul 28, 2026' },
+        { isEvent: true, text: 'Invoice #0000912 paid', mine: false },
+        { isText: true, text: 'Thanks for the receipt \u2014 all good on my end.', via: 'Email \u00b7 michal.barak@gmail.com', mine: false },
+        { isDate: true, text: 'Aug 5, 2026' },
+        { isCall: true, title: 'Incoming call answered by your AI agent', meta: '9:14 AM \u00b7 1:22 min \u00b7 Positive',
+          summary: 'Wanted to move Thursday\u2019s massage. The agent verified her, offered the open slots and rescheduled to Aug 12 at 4:00 PM, then texted the new confirmation.',
+          did: [{ label: 'Verified the caller' }, { label: 'Rescheduled an appointment' }, { label: 'Texted the confirmation' }],
+          hasLink: true, linkTitle: 'Deep Tissue Massage \u00b7 60 min', linkSub: 'Moved to Wed, Aug 12, 2026 at 4:00 PM \u00b7 with Noa', linkCta: 'View booking',
+          lines: [
+            { who: 'Caller', text: 'Something came up Thursday, can I move my massage?' },
+            { who: 'Agent', text: 'Of course. Reading back the code I just sent will let me open your bookings.' },
+            { who: 'Caller', text: '2 9 0 5 5 1.' },
+            { who: 'Agent', text: 'I have Wednesday the 12th at four, or Friday at eleven.' },
+            { who: 'Caller', text: 'Wednesday at four is perfect.' },
+            { who: 'Agent', text: 'Moved. The new confirmation is on its way by text.' }
+          ] },
+        { isText: true, text: 'Got the text, thank you! See you Wednesday.', via: 'WhatsApp \u00b7 Michal', mine: false }
+      ] },
+    { id: 'dana', name: 'Dana Oren', initials: 'DO', when: 'Jul 16', preview: 'AI call \u00b7 Booked a facial', channel: 'phone', call: true,
+      follow: false, sub: 'Jul 16, 2026 \u00b7 11:12 AM \u00b7 1:39 min \u00b7 053-441-9028', kind: 'Site member', phone: '053-441-9028', email: 'dana.oren@gmail.com',
+      channelName: 'SMS',
+      history: [{ about: 'Booking request \u00b7 facial', when: 'Jul 16, 2026 \u00b7 1:39 min' }, { about: 'Opening hours', when: 'May 2, 2026 \u00b7 0:33 min' }],
+      thread: [
+        { isDate: true, text: 'Jul 16, 2026' },
+        { isCall: true, title: 'Incoming call answered by your AI agent', meta: '11:12 AM \u00b7 1:39 min \u00b7 Positive',
+          summary: 'Wanted a facial on Thursday morning. The agent confirmed her as a member, booked the 10:00 slot with Maya and texted the confirmation.',
+          did: [{ label: 'Verified the caller' }, { label: 'Booked an appointment' }, { label: 'Texted the confirmation' }],
+          hasLink: true, linkTitle: 'Signature Facial \u00b7 60 min', linkSub: 'Thu, Jul 23, 2026 at 10:00 AM \u00b7 with Maya', linkCta: 'View booking',
+          lines: [
+            { who: 'Caller', text: 'I would like a facial on Thursday morning if you have anything.' },
+            { who: 'Agent', text: 'I can check that. I have just sent a six digit code to this number \u2014 can you read it back to me?' },
+            { who: 'Caller', text: '4 0 2 9 1 7.' },
+            { who: 'Agent', text: 'Thanks Dana. Thursday at 10 with Maya is free. Shall I book it?' },
+            { who: 'Caller', text: 'Yes please.' },
+            { who: 'Agent', text: 'Booked. Confirmation is on its way by text.' }
+          ] }
+      ] },
+    { id: 'betty', name: 'Betty', initials: 'B', when: 'Jul 23', preview: 'AI call \u00b7 Gift card not working', channel: 'phone', call: true,
+      follow: true, followWhy: 'The agent could not resolve a gift card problem at checkout.',
+      sub: 'Jul 23, 2026 \u00b7 10:36 AM \u00b7 1:04 min \u00b7 052-332-3769', kind: 'Contact', phone: '052-332-3769', email: '\u2014',
+      channelName: 'SMS',
+      history: [{ about: 'Support \u00b7 gift card', when: 'Jul 23, 2026 \u00b7 1:04 min' }],
+      thread: [
+        { isDate: true, text: 'Jul 23, 2026' },
+        { isCall: true, title: 'Incoming call answered by your AI agent', meta: '10:36 AM \u00b7 1:04 min \u00b7 Neutral',
+          summary: 'A gift card was rejected at checkout. This is outside what the agent can handle, so it took her details and promised a call back in the morning.',
+          did: [{ label: 'Saved a new lead' }, { label: 'Took a message' }, { label: 'Flagged for follow-up' }],
+          hasLink: false,
+          lines: [
+            { who: 'Caller', text: 'My gift card is not working on the site.' },
+            { who: 'Agent', text: 'Sorry about that. I cannot check gift cards myself, but I can pass this to the team. What is the best number for you?' },
+            { who: 'Caller', text: 'This one. Mornings are best.' },
+            { who: 'Agent', text: 'Noted \u2014 someone will call you tomorrow morning.' }
+          ] }
+      ] },
+    { id: 'carlos', name: 'Carlos Lampel', initials: 'C', when: 'May 6', preview: 'You: Hi Carlos, we\u2019re open until 2pm on...', channel: 'whatsapp', call: false,
+      follow: false, sub: 'WhatsApp \u00b7 052-487-956', kind: 'Site member', phone: '052-487-956', email: 'carloslampel1@gmail.com',
+      channelName: 'WhatsApp',
+      history: [{ about: 'Order status', when: 'Apr 2, 2026 \u00b7 0:58 min' }],
+      thread: [
+        { isDate: true, text: 'May 6, 2026' },
+        { isEvent: true, text: 'Received your email campaign', mine: false },
+        { isText: true, text: 'Hi, is the studio open on Friday?', via: 'WhatsApp', mine: false },
+        { isText: true, text: 'Hi Carlos, we\u2019re open until 2pm on Friday.', via: 'You \u00b7 WhatsApp', mine: true }
+      ] },
+    { id: 'visitor', name: 'Visitor #7789', initials: 'V', when: '8/30/25', preview: 'Form Submitted via Chat', channel: 'chat', call: false,
+      follow: false, sub: 'Wix Chat \u00b7 no contact details', kind: 'Visitor', phone: '\u2014', email: '\u2014',
+      channelName: 'Wix Chat',
+      history: [],
+      thread: [
+        { isDate: true, text: 'Aug 30, 2025' },
+        { isText: true, text: 'Hello, do you have availability today?', via: 'Wix Chat', mine: false },
+        { isEvent: true, text: 'Form sent via chat', mine: true },
+        { isText: true, text: 'Name: Carlito \u00b7 Email: carloslampel1@gmail.com', via: 'Form submitted via chat', mine: false }
+      ] },
+    { id: 'orly', name: 'Orly', initials: 'O', when: '2/14/24', preview: 'Quote #0000002 Accepted', channel: 'email', call: false,
+      follow: false, sub: 'Email \u00b7 orly@parkyspa.com', kind: 'Contact', phone: '\u2014', email: 'orly@parkyspa.com',
+      channelName: 'Email',
+      history: [],
+      thread: [
+        { isDate: true, text: 'Feb 14, 2024' },
+        { isEvent: true, text: 'Quote #0000002 accepted', mine: false }
+      ] }
+  ];
+
+  CHAN = {
+    phone: { bg: '#4b42c9', icon: 'M6 4h3l2 5-2 1a9 9 0 004 4l1-2 5 2v3a2 2 0 01-2 2A15 15 0 014 6a2 2 0 012-2z' },
+    whatsapp: { bg: '#25d366', icon: 'M4 20l1.4-4A8 8 0 1112 20H4z' },
+    chat: { bg: '#116dff', icon: 'M4 5h16v10H9l-5 4z' },
+    email: { bg: '#8a8888', icon: 'M4 6h16v12H4zM4 8l8 5 8-5' }
+  };
+
+  AV = ['#f0623c', '#4b42c9', '#1a6b3f', '#c8a23a', '#2f5dff', '#8a5cf6'];
+
+  VIEW_FILTERS = [
+    { label: 'All conversations', icon: 'M4 6h16v12H4zM4 9l8 5 8-5' },
+    { label: 'Unread', icon: 'M4 6h16v12H4zM4 8l8 5 8-5' },
+    { label: 'Starred', icon: 'M12 4l2.4 5 5.6.7-4 3.8 1 5.5-5-2.8-5 2.8 1-5.5-4-3.8 5.6-.7z' },
+    { divider: true },
+    { label: 'Unassigned', icon: 'M10 11a3.4 3.4 0 100-6.8A3.4 3.4 0 0010 11zM4 20c0-3.3 2.7-6 6-6M16 13l4 4M20 13l-4 4' },
+    { label: 'Assigned', icon: 'M10 11a3.4 3.4 0 100-6.8A3.4 3.4 0 0010 11zM4 20c0-3.3 2.7-6 6-6h2c3.3 0 6 2.7 6 6' },
+    { label: 'Assigned to me', icon: 'M11 11a3.4 3.4 0 100-6.8A3.4 3.4 0 0011 11zM5 20c0-3.3 2.7-6 6-6M21 17h-6M18 14l-3 3 3 3' },
+    { divider: true },
+    { label: 'High', icon: 'M6 4v16M6 5h11l-2 4 2 4H6z', color: '#e62214', fill: '#e62214' },
+    { label: 'Medium', icon: 'M6 4v16M6 5h11l-2 4 2 4H6z', color: '#f9ad4d', fill: '#f9ad4d' },
+    { label: 'Low', icon: 'M6 4v16M6 5h11l-2 4 2 4H6z', color: '#151414', fill: '#151414' },
+    { divider: true },
+    { label: 'Spam', icon: 'M9 3h6l6 6v6l-6 6H9l-6-6V9zM12 8v5M12 16v.1' }
+  ];
+
+  CHANNELS = [
+    { id: 'all', label: 'All channels', icon: 'M4 7h16M4 12h16M4 17h10' },
+    { id: 'phone', label: 'Phone', icon: 'M6 4h3l2 5-2 1a9 9 0 004 4l1-2 5 2v3a2 2 0 01-2 2A15 15 0 014 6a2 2 0 012-2z' },
+    { id: 'whatsapp', label: 'WhatsApp', icon: 'M4 20l1.4-4A8 8 0 1112 20H4z' },
+    { id: 'email', label: 'Email', icon: 'M4 6h16v12H4zM4 8l8 5 8-5' },
+    { id: 'chat', label: 'Chat', icon: 'M4 5h16v10H9l-5 4z' }
+  ];
+
+  CONV_CHANNELS = { michal: ['phone', 'whatsapp', 'email'], carlos: ['whatsapp', 'email'], visitor: ['chat'], orly: ['email'] };
+
+  channelsOf(c) { return this.CONV_CHANNELS[c.id] || [c.channel]; }
+
+
+  toggleSm(on) {
+    return {
+      track: 'position:relative;width:30px;height:17px;flex-shrink:0;margin-top:2px;border-radius:17px;cursor:pointer;transition:background .15s;background:' + (on ? '#2f5dff' : '#c4c2c2'),
+      knob: 'position:absolute;width:13px;height:13px;background:#fff;border-radius:50%;top:2px;left:2px;transition:transform .15s;transform:translateX(' + (on ? '13px' : '0px') + ')'
+    };
+  }
+
+  inboxVals() {
+    const s = this.state;
+    const conv = this.CONV.filter(c => c.id === s.sel)[0] || this.CONV[0];
+    const flagged = s.flagged[conv.id] !== undefined ? s.flagged[conv.id] : conv.follow;
+
+    const filterOf = (label) => {
+      if (label === 'Calls with your AI agent') return this.CONV.filter(c => c.call);
+      if (label === 'Needs follow-up') return this.CONV.filter(c => (s.flagged[c.id] !== undefined ? s.flagged[c.id] : c.follow) && !s.resolved[c.id]);
+      if (label === 'Unassigned') return this.CONV.filter(c => !c.call);
+      return this.CONV;
+    };
+    const chan = s.chan || 'all';
+    const inChan = (c) => chan === 'all' || this.channelsOf(c).indexOf(chan) > -1;
+    const shown = filterOf(s.filter).filter(inChan);
+
+
+    return {
+      paneCols: s.contactOpen ? '324px minmax(460px,1fr) 300px' : '324px minmax(460px,1fr)',
+      creditNotice: s.creditNotice && !s.fte && !s.justEnabled,
+      dismissCredit: () => this.setState({ creditNotice: false }),
+
+      settingsOpen: s.settingsOpen,
+      toggleSettings: () => this.setState({ settingsOpen: !s.settingsOpen, filterOpen: false }),
+
+      filterLabel: s.filter,
+      viewFilters: this.VIEW_FILTERS.map(f => {
+        if (f.divider) return { divider: true, item: false };
+        const on = s.filter === f.label;
+        return {
+          divider: false, item: true, label: f.label, icon: f.icon,
+          stroke: f.color || '#151414', fill: f.fill || 'none',
+          style: 'display:flex;align-items:center;gap:11px;width:100%;text-align:left;font-family:inherit;font-size:14px;font-weight:' + (on ? '600' : '500') + ';border:none;padding:9px 11px;border-radius:6px;cursor:pointer;background:' + (on ? '#f0eeee' : 'none') + ';color:#151414',
+          pick: () => this.setState({ filter: f.label, filterOpen: false })
+        };
+      }),
+      filterOpen: s.filterOpen,
+      toggleFilter: () => this.setState({ filterOpen: !s.filterOpen, settingsOpen: false }),
+      filters: [].map(label => ({
+        label, count: filterOf(label).length,
+        style: 'display:flex;align-items:center;gap:8px;width:100%;text-align:left;font-family:inherit;font-size:13.5px;background:' + (s.filter === label ? '#f0f4ff' : 'none') + ';border:none;padding:8px 11px;border-radius:6px;cursor:pointer;font-weight:' + (s.filter === label ? '600' : '500') + ';color:#151414',
+        pick: () => this.setState({ filter: label, filterOpen: false })
+      })),
+
+      chanChips: this.CHANNELS.map(ch => {
+        const on = chan === ch.id;
+        const n = ch.id === 'all' ? filterOf(s.filter).length : filterOf(s.filter).filter(c => this.channelsOf(c).indexOf(ch.id) > -1).length;
+        return {
+          label: ch.label, icon: ch.icon, count: n,
+          style: 'display:inline-flex;align-items:center;gap:6px;font-family:inherit;font-size:12.5px;font-weight:600;white-space:nowrap;border-radius:16px;padding:5px 11px;cursor:pointer;border:1px solid ' + (on ? '#151414' : '#dedede') + ';background:' + (on ? '#151414' : '#fff') + ';color:' + (on ? '#fff' : n ? '#3b3939' : '#a9a7a7'),
+          stroke: on ? '#fff' : n ? '#3b3939' : '#a9a7a7',
+          pick: () => this.setState({ chan: ch.id, filterOpen: false })
+        };
+      }),
+      noneShown: shown.length === 0,
+      convList: shown.map((c, i) => {
+        const on = c.id === s.sel;
+        const ch = this.CHAN[c.channel];
+        const follow = (s.flagged[c.id] !== undefined ? s.flagged[c.id] : c.follow) && !s.resolved[c.id];
+        return {
+          name: c.name, initials: c.initials, when: c.when, preview: c.preview, follow,
+          chanIcon: ch.icon,
+          rowStyle: 'display:flex;gap:12px;padding:14px 16px;cursor:pointer;align-items:center;border-bottom:1px solid #f0eeee;background:' + (on ? '#eaf2ff' : '#fff'),
+          avStyle: 'width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600;color:#fff;background:' + this.AV[i % this.AV.length],
+          chanStyle: 'position:absolute;right:-2px;bottom:-2px;width:16px;height:16px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;background:' + ch.bg,
+          nameStyle: 'font-size:14.5px;font-weight:' + (on ? '700' : '600') + ';color:#151414;overflow:hidden;text-overflow:ellipsis;white-space:nowrap',
+          previewStyle: 'font-size:13px;color:' + (follow ? '#3b3939' : '#5c5a5a') + ';overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0',
+          pick: () => this.setState({ sel: c.id })
+        };
+      }),
+
+      hdrName: conv.name,
+      hdrInitials: conv.initials,
+      hdrSub: conv.sub,
+      isCall: !!conv.call,
+      hdrAvStyle: 'width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13.5px;font-weight:600;color:#fff;flex-shrink:0;background:' + this.AV[this.CONV.map(c => c.id).indexOf(conv.id) % this.AV.length],
+      contactAvStyle: 'width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:600;color:#fff;flex-shrink:0;background:' + this.AV[this.CONV.map(c => c.id).indexOf(conv.id) % this.AV.length],
+
+      contactOpen: s.contactOpen,
+      toggleContact: () => this.setState({ contactOpen: !s.contactOpen }),
+      contactBtnStyle: 'background:' + (s.contactOpen ? '#f0eeee' : 'none') + ';border:none;padding:6px;border-radius:6px;cursor:pointer;color:#3b3939',
+      flagBtnStyle: 'background:none;border:none;padding:6px;border-radius:6px;cursor:pointer;color:' + (flagged && !s.resolved[conv.id] ? '#c4151c' : '#3b3939'),
+      toggleFollow: () => this.setState({ flagged: Object.assign({}, s.flagged, { [conv.id]: !flagged }), resolved: Object.assign({}, s.resolved, { [conv.id]: false }) }),
+
+      thread: conv.thread.map((m, mi) => ({
+        isDate: !!m.isDate, isCall: !!m.isCall, isText: !!m.isText, isEvent: !!m.isEvent,
+        trOpen: !!(s.trOpen || {})[conv.id + '-' + mi],
+        trLabel: (s.trOpen || {})[conv.id + '-' + mi] ? 'Hide transcript' : 'Read the transcript',
+        trCaret: 'transition:transform .15s;transform:rotate(' + ((s.trOpen || {})[conv.id + '-' + mi] ? '180deg' : '0deg') + ')',
+        toggleTranscript: () => { const k = conv.id + '-' + mi; const n = Object.assign({}, s.trOpen || {}); n[k] = !n[k]; this.setState({ trOpen: n }); },
+        text: m.text, title: m.title, meta: m.meta, summary: m.summary, via: m.via,
+        did: m.did || [], hasLink: !!m.hasLink, linkTitle: m.linkTitle, linkSub: m.linkSub, linkCta: m.linkCta,
+        lines: (m.lines || []).map(l => ({
+          who: l.who, text: l.text,
+          whoStyle: 'flex-shrink:0;width:52px;font-size:12px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;padding-top:2px;color:' + (l.who === 'Agent' ? '#4b42c9' : '#8a8888')
+        })),
+        wrapStyle: 'display:flex;justify-content:' + (m.mine ? 'flex-end' : 'flex-start'),
+        bubbleStyle: 'max-width:78%;border-radius:12px;padding:11px 14px;background:' + (m.mine ? '#eaf2ff' : '#f4f3f3')
+      })),
+
+      showFollowBar: !!conv.call && flagged && !s.resolved[conv.id],
+      followWhy: conv.followWhy || '',
+      resolveFollow: () => this.setState({ resolved: Object.assign({}, s.resolved, { [conv.id]: true }) }),
+
+      channelName: conv.channelName,
+      contactKind: conv.kind,
+      contactPhone: conv.phone,
+      contactEmail: conv.email,
+      callCount: conv.history.length ? conv.history.length + ' calls' : 'No calls yet',
+      callHistory: conv.history,
+      panelSections: ['Contact info', 'Bookings', 'Purchase stats', 'Notes', 'Tasks', 'Attachments'].map(name => ({ name }))
+    };
+  }
+
+  WHEN = [
+    { id: 'always', label: 'Every call', note: 'The agent picks up on the first ring, every time.' },
+    { id: 'noanswer', label: 'When no one answers', note: 'Rings the forwarding number for 20 seconds first, then the agent picks up.' },
+    { id: 'hours', label: 'Outside business hours', note: 'The agent covers evenings, weekends and holidays.' }
+  ];
+
+  PHONE_OPTS = [
+    { id: 'transcribe', name: 'Record and transcribe calls', desc: 'Keeps a recording and a written transcript on the conversation in Inbox.' },
+    { id: 'voicemail', name: 'Fall back to voicemail', desc: 'If the agent can\u2019t help or credits run out, the caller can leave a message.' },
+    { id: 'handoff', name: 'Offer to reach a person', desc: 'Callers can ask for a human; the agent takes a message and flags it for follow-up.' }
+  ];
+
+  EMAIL = [
+    { id: 'gmail', name: 'Gmail', mark: 'M', color: '#ea4335', bg: '#fdeceb', desc: 'View and reply to Wix Inbox messages directly from your Gmail account.', connected: false, cta: 'Set Up' },
+    { id: 'outlook', name: 'Outlook', mark: 'O', color: '#0f6cbd', bg: '#e8f1fb', desc: 'View and reply to Wix Inbox messages directly from your Outlook account.', connected: false, cta: 'Set Up' },
+    { id: 'preset', name: 'Preset email', mark: '@', color: '#5c5a5a', bg: '#f0eeee', desc: 'Until you connect another account, Wix Inbox messages are sent from a generic address, e.g. 7abj3x1b-a5z5-937...@crm.wix.com.', connected: true, cta: 'Manage' }
+  ];
+
+  DM = [
+    { id: 'chat', name: 'Wix Smart Chat', mark: '\u2726', color: '#4b42c9', bg: '#eceafd', desc: 'Supports online visitors 24/7, with your AI agent replying first and a handover to you at any point.', connected: true, cta: 'Manage' },
+    { id: 'facebook', name: 'Facebook', mark: 'f', color: '#1877f2', bg: '#e8f0fe', desc: 'View and reply to Facebook messages directly from your Inbox.', connected: false, cta: 'Set Up' },
+    { id: 'whatsapp', name: 'WhatsApp Business', mark: '\u25cf', color: '#25d366', bg: '#e7f8ee', desc: 'View and reply to WhatsApp Business messages from your Inbox.', connected: true, cta: 'Manage' },
+    { id: 'instagram', name: 'Instagram Business', mark: '\u25ce', color: '#c13584', bg: '#fbe9f4', desc: 'View and reply to Instagram Business messages from your Inbox.', connected: false, cta: 'Set Up' }
+  ];
+
+
+
+  row(c, last) {
+    return {
+      name: c.name, desc: c.desc, connected: c.connected, cta: c.cta, mark: c.mark,
+      rowStyle: 'display:flex;align-items:flex-start;gap:14px;padding:18px 0' + (last ? '' : ';border-bottom:1px solid #f0eeee'),
+      iconStyle: 'width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;flex-shrink:0;color:' + c.color + ';background:' + c.bg,
+      btnStyle: c.connected
+        ? 'background:#fff;border:1px solid #dedede;border-radius:8px;padding:7px 18px;font-size:13.5px;font-weight:600;color:#151414;cursor:pointer;white-space:nowrap;flex-shrink:0'
+        : 'background:#151414;border:none;border-radius:8px;padding:8px 20px;font-size:13.5px;font-weight:600;color:#fff;cursor:pointer;white-space:nowrap;flex-shrink:0'
+    };
+  }
+
+  channelVals() {
+    const s = this.state;
+    const when = this.WHEN.filter(w => w.id === s.when)[0] || this.WHEN[0];
+    const seg = (on) => 'white-space:nowrap;font-family:inherit;font-size:12.5px;font-weight:600;padding:6px 14px;border-radius:16px;cursor:pointer;border:none;background:' + (on ? '#fff' : 'transparent') + ';color:' + (on ? '#151414' : '#5c5a5a') + ';box-shadow:' + (on ? '0 1px 3px rgba(21,20,20,.16)' : 'none');
+
+    return {
+      whenOpts: this.WHEN.map(w => ({ label: w.label, style: seg(s.when === w.id), pick: () => this.setState({ when: w.id }) })),
+      whenNote: when.note,
+
+      phoneOpts: this.PHONE_OPTS.map(o => {
+        const on = !!s.opts[o.id];
+        const t = this.toggle(on);
+        return { name: o.name, desc: o.desc, track: t.track, knob: t.knob,
+          toggle: () => this.setState({ opts: Object.assign({}, s.opts, { [o.id]: !on }) }) };
+      }),
+
+      emailChannels: this.EMAIL.map((c, i) => this.row(c, i === this.EMAIL.length - 1)),
+
+      dmChannels: this.DM.map((c, i) => {
+        const base = this.row(c, i === this.DM.length - 1);
+        const on = !!s.on[c.id];
+        const t = this.toggle(on);
+        return Object.assign(base, {
+          track: t.track, knob: t.knob,
+          aiLabel: on ? 'AI agent replies here' : 'AI agent is off for this channel',
+          aiLabelStyle: 'font-size:13px;font-weight:600;color:' + (on ? '#151414' : '#8a8888'),
+          toggleAi: () => this.setState({ on: Object.assign({}, s.on, { [c.id]: !on }) })
+        });
+      })
+    };
+  }
+    settingsVals() {
+    const s = this.state;
+    const lv = s.lv;
+    const setLv = (id, v) => this.setState({ lv: Object.assign({}, lv, { [id]: v }) });
+    const allOn = this.SKILLS.every(k => (lv[k.id] || 'off') !== 'off');
+    const tAgent = this.toggle(s.agentOn, 'lg');
+    const seg = (on) => 'white-space:nowrap;font-family:inherit;font-size:12.5px;font-weight:600;padding:6px 16px;border-radius:16px;cursor:pointer;border:none;background:' + (on ? '#fff' : 'transparent') + ';color:' + (on ? '#151414' : '#5c5a5a') + ';box-shadow:' + (on ? '0 1px 3px rgba(21,20,20,.16)' : 'none');
+    const chip = (on) => 'white-space:nowrap;font-family:inherit;font-size:13px;font-weight:600;padding:7px 15px;border-radius:18px;cursor:pointer;border:1px solid ' + (on ? '#2f5dff' : '#dedede') + ';background:' + (on ? '#eef2ff' : '#fff') + ';color:' + (on ? '#2f5dff' : '#3b3939');
+    const groupNames = [];
+    this.SKILLS.forEach(k => { if (groupNames.indexOf(k.group) < 0) groupNames.push(k.group); });
+
+    return {
+
+      tabs: this.TABS.map(t => ({
+        label: t.label, isNew: !!t.isNew,
+        style: 'display:inline-flex;align-items:center;font-family:inherit;font-size:14px;font-weight:600;border:none;border-radius:8px;padding:9px 16px;cursor:pointer;background:' + (s.tab === t.id ? '#eceaea' : 'transparent') + ';color:#151414',
+        pick: () => this.setState({ tab: t.id })
+      })),
+      tabAgent: s.tab === 'agent', tabEmail: s.tab === 'email', tabPeople: s.tab === 'people', tabSpam: s.tab === 'spam',
+
+      channelDots: this.AGENT_CHANNELS.map((c, i) => ({
+        mark: c.mark,
+        style: 'width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;border:2px solid #fff;margin-left:' + (i ? '-10px' : '0') + ';color:' + c.color + ';background:' + c.bg
+      })),
+
+      agentTrack: tAgent.track, agentKnob: tAgent.knob,
+      toggleAgent: () => this.setState({ agentOn: !s.agentOn }),
+
+      agentChannels: this.AGENT_CHANNELS.map(c => {
+        const on = s.agentOn && !!s.on[c.id];
+        const t = this.toggle(on);
+        return {
+          name: c.name, mark: c.mark, track: t.track, knob: t.knob,
+          state: on ? 'Replies first' : 'You reply',
+          cardStyle: 'display:flex;align-items:center;gap:11px;border:1px solid ' + (on ? '#c9d6ff' : '#e5e5e5') + ';border-radius:10px;padding:12px 13px;cursor:pointer;background:' + (on ? '#f8fbff' : '#fff'),
+          iconStyle: 'width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;color:' + c.color + ';background:' + c.bg,
+          toggle: () => this.setState({ on: Object.assign({}, s.on, { [c.id]: !s.on[c.id] }) })
+        };
+      }),
+
+      voices: ['Female', 'Male', 'Neutral'].map(label => ({ label, style: seg(s.voice === label), pick: () => this.setState({ voice: label }) })),
+      tones: ['Calm', 'Friendly', 'Professional', 'Brief'].map(label => ({ label, style: chip(s.tone === label), pick: () => this.setState({ tone: label }) })),
+      greeting: 'Hi, this is Robin, the assistant at Parky Spa. I can book treatments, check your appointments or take a message. How can I help?',
+      keywords: s.words.map(word => ({ word, remove: () => this.setState({ words: s.words.filter(w => w !== word) }) })),
+
+      turnAllLabel: allOn ? 'Turn off all actions' : 'Turn on all actions',
+      turnAllStyle: 'font-family:inherit;font-size:13px;font-weight:600;background:none;border:none;padding:4px 2px;white-space:nowrap;cursor:pointer;color:#2f5dff',
+      turnAllOn: () => { const n = {}; this.SKILLS.forEach(k => { n[k.id] = allOn ? 'off' : 'read'; }); this.setState({ lv: n }); },
+
+      actGroups: groupNames.map((gn, gi) => {
+        const all = this.SKILLS.filter(k => k.group === gn);
+        const gOn = all.every(k => (lv[k.id] || 'off') !== 'off');
+        return {
+          name: gn,
+          headStyle: 'display:flex;align-items:center;gap:8px;padding:9px 14px;background:#fafafa;' + (gi ? 'border-top:1px solid #e5e5e5' : 'border-radius:7px 7px 0 0'),
+          toggleLabel: gOn ? 'Turn off' : 'Turn on',
+          toggle: (e) => { e.stopPropagation(); const n = Object.assign({}, lv); all.forEach(k => { n[k.id] = gOn ? 'off' : 'read'; }); this.setState({ lv: n }); },
+          items: all.map(k => {
+            const on = (lv[k.id] || 'off') !== 'off';
+            const t = this.toggle(on);
+            return {
+              name: k.name, desc: k.read, auth: !!k.auth, track: t.track, knob: t.knob,
+              nameStyle: 'font-size:13.5px;font-weight:600;color:' + (on ? '#151414' : '#6b6969'),
+              descStyle: 'font-size:12.5px;line-height:1.4;margin-top:1px;color:' + (on ? '#8a8888' : '#a9a7a7'),
+              toggle: () => setLv(k.id, on ? 'off' : 'read')
+            };
+          })
+        };
+      }),
+
+      sources: this.SOURCES.map((k, i) => ({
+        name: k.name, meta: k.meta, status: k.status,
+        rowStyle: 'display:flex;align-items:center;gap:12px;padding:12px 14px' + (i ? ';border-top:1px solid #f3f1f1' : ''),
+        statusStyle: 'font-size:11px;font-weight:600;color:#1a6b3f;background:#e6f4ec;padding:3px 9px;border-radius:4px;white-space:nowrap'
+      })),
+
+      senders: ['Sender name', 'Business or website name', 'Sender name + business name'].map(label => ({
+        label,
+        dotStyle: 'width:16px;height:16px;border-radius:50%;flex-shrink:0;border:' + (s.sender === label ? '5px solid #116dff' : '1.5px solid #c4c2c2'),
+        pick: () => this.setState({ sender: label })
+      })),
+
+      people: this.PEOPLE.map((p, i) => ({
+        name: p.name, email: p.email, role: p.role, initials: p.initials,
+        rowStyle: 'display:flex;align-items:center;gap:12px;padding:13px 14px' + (i ? ';border-top:1px solid #f3f1f1' : ''),
+        avStyle: 'width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:600;color:#fff;flex-shrink:0;background:' + ['#f0623c', '#4b42c9', '#1a6b3f'][i % 3]
+      })),
+
+      spamOpts: this.SPAM.map(o => {
+        const on = !!s.spam[o.id];
+        const t = this.toggle(on);
+        return { name: o.name, desc: o.desc, track: t.track, knob: t.knob,
+          toggle: () => this.setState({ spam: Object.assign({}, s.spam, { [o.id]: !on }) }) };
+      })
+    };
+  }
+}
+</script>
+</body>
+</html>
