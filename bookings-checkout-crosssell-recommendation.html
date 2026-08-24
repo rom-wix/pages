@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Service cross-sell in cart &amp; checkout — product recommendation</title>
+<style>
+  :root{
+    --bg:#ffffff; --fg:#16181d; --muted:#5f6672; --line:#e4e7ec; --line2:#f0f2f5;
+    --accent:#2b5cff; --accent-soft:#eef2ff;
+    --ok:#0f7b4f; --ok-bg:#e6f5ee;
+    --warn:#96631a; --warn-bg:#fdf3e0;
+    --bad:#a3364a; --bad-bg:#fdedf0;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--fg);
+    font:15px/1.62 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased}
+  .wrap{max-width:1120px;margin:0 auto;padding:48px 28px 96px}
+  header.hero{border-bottom:1px solid var(--line);padding-bottom:26px;margin-bottom:34px}
+  .eyebrow{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);font-weight:650}
+  h1{font-size:33px;line-height:1.2;margin:10px 0 12px;letter-spacing:-.02em}
+  .sub{color:var(--muted);font-size:16px;max-width:80ch;margin:0}
+  .meta{margin-top:16px;font-size:13px;color:var(--muted);display:flex;gap:18px;flex-wrap:wrap}
+  .meta b{color:var(--fg);font-weight:600}
+  h2{font-size:23px;letter-spacing:-.015em;margin:54px 0 6px;padding-top:8px}
+  h2 .num{color:var(--accent);font-variant-numeric:tabular-nums;margin-right:10px;font-size:16px;vertical-align:2px}
+  h3{font-size:16.5px;margin:32px 0 8px;letter-spacing:-.01em}
+  h4{font-size:14px;margin:22px 0 6px;letter-spacing:.01em}
+  .lede{color:var(--muted);margin:0 0 20px;max-width:82ch}
+  p{max-width:84ch}
+  a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(43,92,255,.28)}
+  a:hover{border-bottom-color:var(--accent)}
+  code{font-family:var(--mono);font-size:12.5px;background:#f4f5f8;padding:1.5px 5px;border-radius:5px}
+
+  table{border-collapse:collapse;width:100%;font-size:13.4px;margin-top:14px}
+  th{text-align:left;padding:10px 12px;background:#f7f8fa;border-bottom:1px solid var(--line);
+    font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:650}
+  td{padding:11px 12px;border-bottom:1px solid var(--line2);vertical-align:top}
+  tr:last-child td{border-bottom:0}
+  .tw{border:1px solid var(--line);border-radius:10px;overflow:auto}
+
+  .pill{display:inline-block;padding:3px 9px;border-radius:100px;font-size:11.5px;font-weight:650;white-space:nowrap}
+  .pill.ok{background:var(--ok-bg);color:var(--ok)}
+  .pill.warn{background:var(--warn-bg);color:var(--warn)}
+  .pill.bad{background:var(--bad-bg);color:var(--bad)}
+  .pill.neu{background:#f1f3f6;color:#5f6672}
+
+  .callout{border-left:3px solid var(--accent);background:var(--accent-soft);padding:14px 18px;
+    border-radius:0 8px 8px 0;margin:20px 0;font-size:14.2px}
+  .callout.w{border-left-color:#c9922b;background:#fdf6e8}
+  .callout.d{border-left-color:#b4485c;background:#fdeef1}
+  .callout b{font-weight:660}
+
+  ul.tight{margin:10px 0 0;padding-left:20px;max-width:84ch}
+  ul.tight li{margin-bottom:9px}
+  ol.tight{margin:10px 0 0;padding-left:20px;max-width:84ch}
+  ol.tight li{margin-bottom:9px}
+
+  .phase{border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:16px 0;background:#fff}
+  .phase .ph{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+  .phase .pn{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+  .phase h3{margin:0;font-size:17px}
+  .phase .why{color:var(--muted);font-size:13.5px;margin:8px 0 0}
+  .kv{display:grid;grid-template-columns:120px 1fr;gap:6px 14px;font-size:13.4px;margin-top:12px}
+  .kv dt{color:var(--muted);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.04em;padding-top:2px}
+  .kv dd{margin:0}
+
+  .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-top:18px}
+  .box{border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+  .box h4{margin-top:0}
+
+  .flow{border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-top:16px}
+  .flow .step{display:grid;grid-template-columns:170px 1fr;gap:16px;padding:14px 18px;border-bottom:1px solid var(--line2);font-size:13.6px}
+  .flow .step:last-child{border-bottom:0}
+  .flow .step .s{font-weight:660;font-size:13.5px}
+  .flow .step .s small{display:block;font-weight:450;color:var(--muted);font-size:11.5px;margin-top:3px;letter-spacing:.02em;text-transform:uppercase}
+  .flow .step.hi{background:#f7f9ff}
+
+  footer{margin-top:62px;padding-top:22px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+  @media (max-width:760px){.wrap{padding:28px 16px 64px}h1{font-size:26px}.kv{grid-template-columns:1fr}.flow .step{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div class="eyebrow">Product recommendation</div>
+  <h1>Cross-selling services in cart and checkout</h1>
+  <p class="sub">What to build, in what order, and why — grounded in a 44-platform competitive benchmark and in what Wix Bookings already ships today. Scope is services only: recommending <em>other bookable services</em>, not products or plans.</p>
+  <div class="meta">
+    <span><b>Scope</b> Services only</span>
+    <span><b>Shape</b> MVP + roadmap</span>
+    <span><b>Companion</b> 44-platform market research</span>
+    <span><b>Date</b> 24 August 2026</span>
+  </div>
+</header>
+
+<!-- ===================== 1. REFRAME ===================== -->
+<section>
+<h2><span class="num">01</span>Start here: the feature you're describing isn't add-ons</h2>
+<p class="lede">Wix Bookings shipped per-service <b>Add-Ons</b> in 2025. Before designing anything, it's worth being precise about what that already covers and what it doesn't — because the gap is narrower and more interesting than "we need add-ons".</p>
+
+<div class="tw">
+<table>
+<thead><tr><th style="width:230px">Capability</th><th style="width:120px">Status today</th><th>Detail</th></tr></thead>
+<tbody>
+<tr>
+  <td><b>Per-service priced extras</b></td>
+  <td><span class="pill ok">Ships</span></td>
+  <td>Add-Ons: reusable add-ons organised into per-service groups. Max <b>3 groups × 7 add-ons</b> for appointments, 1 group for classes. Each carries a price and <em>either</em> additional time <em>or</em> quantity — not both. Shown <b>before</b> the client picks a time, with duration and cost folded into the displayed total.</td>
+</tr>
+<tr>
+  <td><b>Several services, one appointment</b></td>
+  <td><span class="pill ok">Ships</span></td>
+  <td>Multi-service appointments: client picks a service, taps <b>+ Add Service</b>, up to <b>5</b>. Same date and location, sessions run back-to-back, availability computed as the intersection. Client picks staff per service — same-staff-for-all is an open request.</td>
+</tr>
+<tr>
+  <td><b>Services + products, one checkout</b></td>
+  <td><span class="pill ok">Ships</span></td>
+  <td>The Bookings cart is the shared Wix eCommerce cart. Bookings and Stores check out together.</td>
+</tr>
+<tr>
+  <td><b>Recommending other services</b></td>
+  <td><span class="pill bad">Missing</span></td>
+  <td><code>+ Add Service</code> is a blank button. Nothing suggests <em>which</em> service. Add-Ons only surface extras attached to a service the client already chose.</td>
+</tr>
+<tr>
+  <td><b>Anything at the cart stage</b></td>
+  <td><span class="pill bad">Missing</span></td>
+  <td>Once a booking is in the cart it is inert. Add-ons can't be edited there — though the Add-Ons API explicitly lists <em>"modify add-ons in eCommerce carts"</em> as an intended use case, so the platform already anticipates this.</td>
+</tr>
+<tr>
+  <td><b>Anything at the checkout step</b></td>
+  <td><span class="pill bad">Missing</span></td>
+  <td>No native cross-sell block — but <b>10 checkout site-plugin slots exist</b>, including <code>checkout:summary:lineItems:after</code> and <code>checkout:summary:totalsBreakdown:before</code>. The anchors are already there.</td>
+</tr>
+<tr>
+  <td><b>Post-purchase offer</b></td>
+  <td><span class="pill bad">Missing</span></td>
+  <td>Thank-You Page and Side Cart slots exist. Nothing uses them for Bookings.</td>
+</tr>
+<tr>
+  <td><b>Curated bundles</b></td>
+  <td><span class="pill bad">Missing</span></td>
+  <td>"Custom service bundles are not currently available" — open feature request.</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="callout">
+<b>So the real gap is three things, not one:</b> (1) nothing <em>recommends</em> a service — the merchant configures extras, but the platform never suggests a service the client didn't think of; (2) the cart and checkout are dead surfaces where competitors put their second and third offer; (3) there's no post-purchase offer at all, which the benchmark data says is the highest-return, lowest-risk surface of the lot.
+</div>
+
+<p>There is also an existing third-party app — <b>Service Upsell Guru</b> — doing a narrow version of this: merchant maps trigger services to upsell services, and the app renders them in an "Added to Cart Modal". Notably it only offers services <b>available within 2 hours of the selected slot</b>. That constraint is not an implementation shortcut. It's the whole problem, and it's the subject of the next section.</p>
+</section>
+
+<!-- ===================== 2. THE CORE PROBLEM ===================== -->
+<section>
+<h2><span class="num">02</span>Why services are hard to add at checkout</h2>
+<p class="lede">Every e-commerce cross-sell pattern assumes the added item needs no decisions. A service breaks that assumption, and this single fact explains almost every design choice in the competitive set.</p>
+
+<p>Adding a product to a cart is one click. Adding a <em>service</em> requires resolving four things: <b>a staff member, a date, a time, and availability that still exists at the moment of payment.</b> That's not an upsell — that's a second booking flow, and you'd be asking the client to run it while their card is half-entered.</p>
+
+<p>This is why the dominant pattern across appointment platforms is an interstitial <b>after service selection and before time-slot selection</b> — Fresha, Timely, Phorest, Boulevard and SimplyBook.me all put it there. It's the last moment where you can change the duration of the appointment without invalidating a choice the client has already made. SimplyBook.me documents the failure mode explicitly: on templates where the add-on step falls <em>after</em> time selection, an incompatible combination throws a booking error at the client.</p>
+
+<h3>The four mechanics that actually work</h3>
+<p>Across the whole benchmark, only four ways of adding a service late in the flow hold up. They are not equally good and they belong on different surfaces.</p>
+
+<div class="tw">
+<table>
+<thead><tr><th style="width:34px">#</th><th style="width:190px">Mechanic</th><th>How it works</th><th style="width:130px">Where it can safely live</th></tr></thead>
+<tbody>
+<tr>
+  <td><b>A</b></td>
+  <td><b>Extend the appointment</b><br><span class="pill ok" style="margin-top:5px">Recommended MVP</span></td>
+  <td>The suggested service is appended <b>back-to-back</b> to the booking already in the cart — same date, same location, immediately after the existing end time. Reuses the multi-service appointment machinery that already ships. Only offered if the following block is genuinely free. The client makes <b>zero</b> new scheduling decisions; they see a new end time.</td>
+  <td>Cart · Checkout summary</td>
+</tr>
+<tr>
+  <td><b>B</b></td>
+  <td><b>Nearby-slot booking</b></td>
+  <td>The service is offered at a slot near — but not adjacent to — the existing booking. Client accepts one pre-computed option ("2:30pm, right after your cut"). This is what Service Upsell Guru does with its 2-hour window. Broader reach than A, but it introduces a real scheduling decision, so it's a worse fit for the payment step.</td>
+  <td>Cart · Booking flow</td>
+</tr>
+<tr>
+  <td><b>C</b></td>
+  <td><b>Zero-duration service</b><br><span class="pill ok" style="margin-top:5px">Checkout-safe</span></td>
+  <td>A service that consumes no calendar time and therefore needs no slot at all — patch test, aftercare kit fulfilled at the visit, digital follow-up, gratuity-style items. Boulevard and Phorest both make 0-minute services a first-class type precisely so they can be sold late. <b>This is the only category that belongs on the payment screen.</b></td>
+  <td>Checkout · Post-purchase</td>
+</tr>
+<tr>
+  <td><b>D</b></td>
+  <td><b>Separate booking</b></td>
+  <td>The added service becomes its own booking rather than joining the original. Bókun does exactly this — its post-purchase "Upsell" sends the customer into a fresh checkout and explicitly does <em>not</em> modify the original reservation. Zero risk to the primary conversion, but it's a new transaction.</td>
+  <td>Post-purchase only</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="callout w">
+<b>The rule that makes all four safe: silently filter, never fail.</b> Compute real availability <em>before</em> deciding whether to render the offer. An offer that can't be fulfilled must simply not appear. The inverse lesson is Checkfront's, which is severe by design: if a <em>required</em> upsell is unavailable, Checkfront makes the <b>parent product unbookable</b>. That's the right instinct applied to a required item — and the same instinct applied to an optional one means: don't show it.
+</div>
+
+<div class="callout d">
+<b>Do not put a duration-carrying service on the payment screen.</b> It is the one thing the benchmark is unanimous about. Checkfront states the rule outright — at checkout, offer only low-consideration items (gratuity, small gear, parking), because <em>"the guest has made their decision, so asking them to make another big one can increase abandonment."</em> Airlines are the conspicuous exception, and they are currently under UK CMA investigation for drip pricing.
+</div>
+</section>
+
+<!-- ===================== 3. SURFACES ===================== -->
+<section>
+<h2><span class="num">03</span>What goes on each surface</h2>
+<p class="lede">Four offer moments, each with a different job. The mistake to avoid is treating them as one feature with a placement setting — they carry different mechanics, different limits and different risk.</p>
+
+<div class="flow">
+  <div class="step hi">
+    <div class="s">1 · Booking flow<small>After service, before time</small></div>
+    <div><b>Highest-value services go here.</b> Today <code>+ Add Service</code> is a blank button; make it a recommendation. Show 2–3 suggested services alongside it, with price and added duration, and keep <b>Skip</b> as a visible first-class action (Timely titles this screen "Enhance your experience" and pairs <em>Add</em> with <em>Skip this step</em>).<br><br>This is the only surface where a service of <em>any</em> duration is safe, because the slot hasn't been chosen yet. It should carry your most valuable recommendations, not your leftovers.</div>
+  </div>
+  <div class="step">
+    <div class="s">2 · Cart<small>Before checkout begins</small></div>
+    <div><b>"Add to your booking" block.</b> Mechanic A (extend) and C (zero-duration). Max 2–3 offers. Each shows the resulting new end time inline — <em>"adds 20 min · your appointment now ends 3:20pm"</em> — so the consequence is visible before the tap.<br><br>Also the natural home for <b>editing add-ons already in the cart</b>, which the Add-Ons API already names as an intended use case. That's the cheapest possible first win.</div>
+  </div>
+  <div class="step">
+    <div class="s">3 · Checkout summary<small>Payment step</small></div>
+    <div><b>Zero-duration only. Max 1–2. Secondary buttons only.</b> Anchor to <code>checkout:summary:lineItems:after</code> — Shopify's equivalent guidance is to sit the offer just outside the order summary so line items and money lines stay scannable together, and to treat the offer as <b>secondary content</b>.<br><br>No success toast: the summary updating <em>is</em> the confirmation. Watch the collapsed-summary problem on mobile — Shopify documents that a collapsed order summary hides the offer entirely until expanded.</div>
+  </div>
+  <div class="step hi">
+    <div class="s">4 · Thank-you + email<small>Post-purchase</small></div>
+    <div><b>The highest-return, lowest-risk surface, and you have nothing here today.</b> Revinate's 2026 benchmark found the confirmation email produced <b>$86 of upsell revenue per booking versus $82</b> from the pre-arrival email — post-purchase out-earns the "better" moment. And because the sale is already banked, there is <b>no conversion risk at all</b>.<br><br>Mechanic A (extend, if the slot is still free) or D (separate booking). This is also where "book your next appointment" belongs, which is a retention lever as much as a revenue one.</div>
+  </div>
+</div>
+
+<div class="callout">
+<b>If you only ship two surfaces, ship 1 and 4.</b> Surface 1 is where the money is and the machinery already half-exists. Surface 4 costs you nothing in conversion risk and the benchmark says it out-earns the surfaces everyone obsesses over. The cart and checkout blocks are the interesting design work, but they are not where the first dollar comes from.
+</div>
+</section>
+
+<!-- ===================== 4. RECOMMENDATION ENGINE ===================== -->
+<section>
+<h2><span class="num">04</span>Where to recommend from — the actual opportunity</h2>
+<p class="lede">Across 15 appointment-booking platforms, <b>zero</b> use algorithmic recommendation. Every single one is a merchant-curated per-service list. Meanwhile the e-commerce cohort has been running cart-content recommenders for years and publishes 10–27% AOV lifts for it. That gap is the most defensible thing in this whole space.</p>
+
+<div class="grid2">
+  <div class="box">
+    <h4><span class="pill neu">V1</span> &nbsp;Merchant-curated pairs</h4>
+    <p style="font-size:13.6px;margin:8px 0 0">Merchant links services to services, the way Boulevard, Timely and Phorest do. <b>Extend the existing Add-Ons manager rather than building a second config surface</b> — merchants should not have to learn two mental models for "things that get suggested".</p>
+    <p style="font-size:13.6px;margin:10px 0 0">Table stakes. Ships the feature. Differentiates nothing.</p>
+  </div>
+  <div class="box">
+    <h4><span class="pill ok">V2</span> &nbsp;Learn from the merchant's own history</h4>
+    <p style="font-size:13.6px;margin:8px 0 0"><em>"Clients who booked a colour also booked a treatment within 30 days."</em> Plain co-occurrence over the site's own booking history — no ML required, fully explainable to the merchant, and it works from day one on any site with reasonable volume.</p>
+    <p style="font-size:13.6px;margin:10px 0 0">This is the zero-of-fifteen gap. It is also the answer to the real adoption problem: most small merchants will never curate a good pairing list.</p>
+  </div>
+  <div class="box">
+    <h4><span class="pill ok">V3</span> &nbsp;Vertical benchmarks across Wix</h4>
+    <p style="font-size:13.6px;margin:8px 0 0"><em>"Salons like yours pair these two."</em> Cross-site co-occurrence by vertical, used to seed sites with too little history for V2 — the cold-start solution.</p>
+    <p style="font-size:13.6px;margin:10px 0 0">No competitor can do this. Fresha and Booksy have marketplace scale but not Wix's breadth of verticals; Boulevard and Phorest have neither. This is the part that is genuinely hard to copy.</p>
+  </div>
+</div>
+
+<div class="callout">
+<b>Always leave the merchant an override.</b> Every algorithmic suggestion should be visible in the merchant dashboard as a concrete pairing they can pin, edit or kill — not a black box. The reason is commercial, not technical: a merchant who doesn't trust the suggestions turns the feature off, and you never get the data to improve it.
+</div>
+
+<h3>The adoption lever nobody talks about: starter packs</h3>
+<p>Oaky ships a <b>Deal Library of 100+ pre-built offers in 25+ languages</b> so the merchant never configures an upsell from a blank page. ServiceTitan ships proposal templates for the same reason. Given Wix's long tail of very small businesses, the difference between "configure your cross-sells" and <em>"here are 8 pairings that work for hair salons"</em> is plausibly the difference between single-digit and majority merchant adoption. Ship vertical packs — hair, nails, beauty, massage &amp; spa, personal training, pet grooming, photography, tutoring, home services — with the feature, not after it.</p>
+
+<p>One more merchant-side idea worth stealing: Duve's config builder shows the merchant a <b>live guest-side preview</b> while they configure. Cheap to build, and it directly addresses the hesitation of switching on something that appears in your own checkout.</p>
+</section>
+
+<!-- ===================== 5. GUARDRAILS ===================== -->
+<section>
+<h2><span class="num">05</span>Guardrails</h2>
+<p class="lede">These are drawn from published platform limits and from convergent practice across independent vendors — not from taste. Where four unrelated companies land on the same number, that number is doing real work.</p>
+
+<div class="tw">
+<table>
+<thead><tr><th style="width:210px">Rule</th><th style="width:100px">Limit</th><th>Where it comes from</th></tr></thead>
+<tbody>
+<tr><td><b>Cap offers per surface</b></td><td>2–3 cart<br>1–2 checkout</td><td>Shopify caps pre-purchase product offers at <b>2</b> — "more than two can overwhelm customers". Checkfront advises 3–4 in flow; FareHarbor "three or less" combos; XolaBot shows max 3; Phorest documents ~5 from ≤2 categories.</td></tr>
+<tr><td><b>Never pre-check a box</b></td><td>—</td><td>Checkfront names pre-checked boxes as an anti-pattern that "can burn trust… may run afoul of consumer protection rules". The UK CMA opened a drip-pricing investigation into Ryanair in June 2026 over adjacent behaviour. Use <b>"Recommended" badging</b> instead — ServiceTitan's approach, which gets most of the lift with none of the exposure.</td></tr>
+<tr><td><b>Secondary buttons only</b></td><td>—</td><td>Shopify reserves primary buttons for actions that progress checkout (Pay now, Next step). An add-to-order button competing visually with Pay now is a conversion bug, not a growth tactic.</td></tr>
+<tr><td><b>No success toast</b></td><td>—</td><td>Shopify: the item appearing in the order summary <em>is</em> the confirmation. An extra banner adds a dismissal step at the worst possible moment.</td></tr>
+<tr><td><b>Price the offer sensibly</b></td><td>10–25% of base</td><td>Checkfront's published guidance. Above that it stops reading as an add-on and starts reading as a second purchase decision.</td></tr>
+<tr><td><b>Suppress if already chosen</b></td><td>—</td><td>XolaBot suppresses its upsell entirely if any add-on is already in the cart, and fires only once — exit the modal and it never returns. Restraint as a feature.</td></tr>
+<tr><td><b>Silently filter unavailable</b></td><td>—</td><td>Resolve availability before rendering. A cross-sell that 404s on the slot is worse than no cross-sell.</td></tr>
+<tr><td><b>Watch mobile summary collapse</b></td><td>—</td><td>Shopify documents that a collapsed order summary hides the offer until expanded. Verify how Wix's checkout summary behaves on mobile before choosing the slot.</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<!-- ===================== 6. PHASING ===================== -->
+<section>
+<h2><span class="num">06</span>Phasing</h2>
+<p class="lede">Ordered by value-per-unit-of-risk, not by ambition. Each phase is independently shippable and independently measurable.</p>
+
+<div class="phase">
+  <div class="ph"><span class="pn">Phase 0</span><h3>Make add-ons editable in the cart</h3><span class="pill ok">Smallest useful thing</span></div>
+  <p class="why">The Add-Ons API already names <em>"modify add-ons in eCommerce carts"</em> as an intended use case, so the platform has anticipated this. It delivers a literal reading of "more to add in cart" with no new concepts, no recommendation logic and no scheduling risk — and it establishes the cart as a live surface, which every later phase depends on.</p>
+  <dl class="kv">
+    <dt>Mechanic</dt><dd>Existing add-ons only — already scoped to the booking, availability already resolved</dd>
+    <dt>Surface</dt><dd>Cart</dd>
+    <dt>Risk</dt><dd>Low. Re-validate duration-carrying add-ons against the held slot; drop the offer if it no longer fits.</dd>
+    <dt>Proves</dt><dd>Whether clients engage with a cart-stage offer at all, before you invest in recommendations.</dd>
+  </dl>
+</div>
+
+<div class="phase">
+  <div class="ph"><span class="pn">Phase 1</span><h3>Suggested services in the booking flow</h3><span class="pill ok">Where the money is</span></div>
+  <p class="why">Turn <code>+ Add Service</code> from a blank button into a recommendation. Merchant-curated pairs (V1), 2–3 suggestions, explicit Skip, shown after service selection and before time — the placement five independent competitors converged on. This is the highest-value surface because it's the only one where a service of any duration is safe.</p>
+  <dl class="kv">
+    <dt>Mechanic</dt><dd>Any duration — slot not yet chosen. Lands as a normal multi-service appointment.</dd>
+    <dt>Surface</dt><dd>Booking flow</dd>
+    <dt>Reuses</dt><dd>Multi-service appointments (max 5, back-to-back, same date/location) and the Add-Ons config surface</dd>
+    <dt>Watch</dt><dd>The 5-service ceiling, and that multi-service currently ignores custom booking forms and isn't in the native mobile apps.</dd>
+  </dl>
+</div>
+
+<div class="phase">
+  <div class="ph"><span class="pn">Phase 2</span><h3>Post-purchase offer</h3><span class="pill ok">Zero conversion risk</span></div>
+  <p class="why">Thank-you page and confirmation email. Revinate's benchmark has the confirmation email out-earning the pre-arrival email ($86 vs $82 per booking), and because the sale is banked there is no downside to test against. You have nothing on this surface today and the slots already exist.</p>
+  <dl class="kv">
+    <dt>Mechanic</dt><dd>A — extend, if the slot is still free · D — separate booking otherwise</dd>
+    <dt>Surface</dt><dd>Thank-You Page slot + confirmation email</dd>
+    <dt>Bonus</dt><dd>Natural home for "book your next appointment" — a retention lever, not just AOV</dd>
+    <dt>Watch</dt><dd>Frequency. One offer, once. This surface is also the merchant's brand voice.</dd>
+  </dl>
+</div>
+
+<div class="phase">
+  <div class="ph"><span class="pn">Phase 3</span><h3>Cart &amp; checkout cross-sell block</h3><span class="pill warn">The real feature</span></div>
+  <p class="why">"Add to your booking" in the cart (mechanics A and C, showing the new end time inline), and a tightly capped zero-duration-only block at the checkout summary. This is the literal brief, and it's deliberately third — by now you have engagement data from Phase 0, a curated pairing corpus from Phase 1, and a risk-free baseline from Phase 2 to compare against.</p>
+  <dl class="kv">
+    <dt>Mechanic</dt><dd>Cart: A + C · Checkout: C only</dd>
+    <dt>Surface</dt><dd>Cart page · <code>checkout:summary:lineItems:after</code></dd>
+    <dt>Prereq</dt><dd>Zero-duration services as a first-class type, if they aren't already — this is what makes the checkout step safe</dd>
+    <dt>Guardrail</dt><dd>Cart→order completion rate, with a tolerance agreed <em>before</em> the test starts</dd>
+  </dl>
+</div>
+
+<div class="phase">
+  <div class="ph"><span class="pn">Phase 4</span><h3>Automatic recommendations</h3><span class="pill ok">The differentiator</span></div>
+  <p class="why">V2 co-occurrence over the merchant's own booking history, with V3 vertical benchmarks for cold start. Zero of fifteen competitors do this. It's also the only realistic answer to the long-tail merchant who will never build a pairing list by hand — and by this phase you have Phase 1's curated data as both a training signal and a quality baseline.</p>
+  <dl class="kv">
+    <dt>Approach</dt><dd>Plain co-occurrence first. Explainable beats clever — the merchant has to trust it enough to leave it on.</dd>
+    <dt>Surface</dt><dd>All of the above</dd>
+    <dt>Must have</dt><dd>Visible, editable, pinnable suggestions in the dashboard. Never a black box.</dd>
+  </dl>
+</div>
+
+<p style="margin-top:22px"><b>Ship alongside Phase 1, not later:</b> vertical starter packs and the live guest-side preview in the merchant config. Both are adoption features, and adoption is the binding constraint on everything downstream — an unconfigured cross-sell engine generates no data for Phase 4.</p>
+</section>
+
+<!-- ===================== 7. METRICS ===================== -->
+<section>
+<h2><span class="num">07</span>How to measure it</h2>
+<p class="lede">Get this wrong and you will kill a winning feature. It has already happened elsewhere in the benchmark.</p>
+
+<div class="callout w">
+<b>The cautionary tale.</b> The one genuine A/B test in the entire research — an airline bundle grid versus an à-la-carte page — lost <b>1% of conversion</b> while gaining <b>14% AOV</b> and <b>13% per-session value</b>. Under a conversion-rate guardrail it would have been switched off. Agree the primary metric and the conversion tolerance <em>before</em> the experiment runs, not after you see the numbers.
+</div>
+
+<div class="tw">
+<table>
+<thead><tr><th style="width:150px">Metric</th><th style="width:100px">Role</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td><b>Revenue per booking session</b></td><td><span class="pill ok">Primary</span></td><td>Per-session value, not per-order. This is the metric that would have saved the airline test.</td></tr>
+<tr><td><b>Attach rate by surface</b></td><td><span class="pill neu">Diagnostic</span></td><td>Segment by surface and by mechanic. Benchmarks to aim at: ~16% take rate is where two independent e-commerce vendors land on post-purchase; 5–12% is the hospitality pre-arrival range; Peek Pro claims ~9% order-revenue lift from in-flow add-ons.</td></tr>
+<tr><td><b>Cart → order completion</b></td><td><span class="pill warn">Guardrail</span></td><td>Not the primary metric. Set an explicit tolerance up front — a small, funded conversion cost may be the correct trade.</td></tr>
+<tr><td><b>Offer suppression rate</b></td><td><span class="pill neu">Health</span></td><td>How often an offer is computed but withheld for unavailability. High rates mean the pairing logic is fighting the calendar and Phase 3's mechanic A needs loosening toward B.</td></tr>
+<tr><td><b>Merchant adoption</b></td><td><span class="pill ok">Leading</span></td><td>Share of eligible sites with ≥1 pairing configured. If starter packs work, this moves first and everything else follows. If it stalls, no downstream metric will save the feature.</td></tr>
+<tr><td><b>Rebook rate</b></td><td><span class="pill neu">Secondary</span></td><td>Specific to Phase 2. The post-purchase surface is partly a retention lever and shouldn't be judged on AOV alone.</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<!-- ===================== 8. NOT TO BUILD ===================== -->
+<section>
+<h2><span class="num">08</span>What not to build</h2>
+<ul class="tight">
+  <li><b>Duration-carrying services on the payment screen.</b> The single clearest finding in the research. Restrict the checkout step to zero-duration items and you keep the surface without the abandonment risk or the slot-validation nightmare.</li>
+  <li><b>A second configuration surface.</b> Cross-sell pairings belong inside the existing Add-Ons manager. Two places to configure "things that get suggested" is how a feature dies of merchant confusion.</li>
+  <li><b>Bidding or dynamic pricing.</b> UpsellGuru's bid-for-upgrade and Oracle Nor1's perishable pricing work because a hotel room is perishable inventory with a marginal cost near zero. A stylist's hour is not the same asset, and the mechanic doesn't transfer.</li>
+  <li><b>Cross-merchant cross-sell.</b> FareHarbor's Cross-Sell Combos and Bókun's Marketplace upsell work because those are supplier networks. A Wix site is one business. Recommending another merchant's service inside a merchant's own checkout is a different — and much larger — product decision.</li>
+  <li><b>A "we'll schedule it later" credit.</b> It removes all the slot math, which is why it's tempting. It also creates an unfulfilled obligation, a support surface, and a refund question. If you want deferred value, that's a packages/plans feature, not a cross-sell one.</li>
+  <li><b>Aggressive sequencing.</b> The airline pattern — selling the same item 3–5 times at different prices across the funnel — genuinely works and is genuinely under-copied. It is also exactly what the UK CMA is currently investigating Ryanair for. The structural idea worth taking is that <em>offer</em> and <em>product</em> should be separate objects, so a second, cheaper nudge is possible later. Taking the frequency with it is not worth the exposure.</li>
+</ul>
+</section>
+
+<!-- ===================== 9. OPEN QUESTIONS ===================== -->
+<section>
+<h2><span class="num">09</span>Open questions for the team</h2>
+<ol class="tight">
+  <li><b>Do zero-duration services exist as a first-class type today?</b> Phase 3's checkout block depends on it entirely. Boulevard and Phorest both treat 0-minute services as a distinct type precisely so they can be sold late in the flow. If Wix doesn't have it, that's the prerequisite ticket.</li>
+  <li><b>Does a held cart hold the slot?</b> Everything hinges on this. If the slot isn't reserved while the client is in checkout, mechanic A needs re-validation at payment and a graceful failure path. GetYourGuide's reservation hold defaults to 60 minutes — worth knowing what Wix's equivalent is.</li>
+  <li><b>Is the 5-service ceiling on multi-service appointments a hard constraint?</b> Phase 1 recommendations sit under it. Not necessarily a problem, but it should be a deliberate limit rather than an inherited one.</li>
+  <li><b>Native mobile apps.</b> Add-ons, multi-service and the cart are all documented as unavailable in the Wix mobile apps. If a meaningful share of bookings come through those, the roadmap needs a parallel track — or an explicit decision to accept web-only.</li>
+  <li><b>Build native, or extend Service Upsell Guru's model?</b> A third-party app already occupies part of this space. Worth a deliberate call on whether the native feature supersedes it, and what that means for merchants already using it.</li>
+  <li><b>Do you want the multi-service same-staff constraint fixed first?</b> Clients currently pick staff per service. For a cross-sell like "add a blow-dry after your cut", "same person, right after" is very likely the offer people actually want — and it's an open feature request today.</li>
+  <li><b>Custom booking forms.</b> Multi-service appointments currently fall back to the default form. If Phase 1 pushes more bookings down the multi-service path, more merchants lose their custom forms as a side effect.</li>
+</ol>
+</section>
+
+<footer>
+  <b>Sources.</b> Wix current-state claims are drawn from the Wix Help Center and dev.wix.com — service add-ons, multi-service appointments, the Bookings cart, checkout site-plugin slots, and the Service Upsell Guru app article. Competitive claims and all quantitative benchmarks are carried over from the companion 44-platform market research, where each is individually sourced and marked for reliability. Figures attributed to vendors are vendor-reported and should be read as directional; the Shopify limits and the airline A/B test are the two authoritative data points in this document.
+  <div style="margin-top:14px">
+    <a href="https://support.wix.com/en/article/wix-bookings-creating-and-managing-service-add-ons">Wix — Creating and managing service add-ons</a> ·
+    <a href="https://support.wix.com/en/article/wix-bookings-scheduling-and-managing-multi-service-appointments">Wix — Multi-service appointments</a> ·
+    <a href="https://support.wix.com/en/article/wix-bookings-adding-a-cart-to-your-site">Wix — Adding a cart</a> ·
+    <a href="https://dev.wix.com/docs/api-reference/business-solutions/bookings/services/add-ons/introduction">Wix — Add-Ons API</a> ·
+    <a href="https://dev.wix.com/docs/build-apps/develop-your-app/extensions/site-extensions/site-plugins/supported-wix-app-pages/wix-e-commerce/wix-e-commerce-checkout-page">Wix — Checkout page slots</a> ·
+    <a href="https://support.wix.com/en/article/wix-bookings-increasing-bookings-with-the-service-upsell-guru-app">Wix — Service Upsell Guru</a>
+  </div>
+</footer>
+
+</div>
+</body>
+</html>

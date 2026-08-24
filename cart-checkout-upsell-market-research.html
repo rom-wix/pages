@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cross-sell &amp; Upsell in Cart and Checkout — Booking Platform Market Research</title>
+<style>
+  :root{
+    --bg:#ffffff; --fg:#16181d; --muted:#5f6672; --line:#e4e7ec; --line2:#f0f2f5;
+    --accent:#2b5cff; --accent-soft:#eef2ff;
+    --yes:#0f7b4f; --yes-bg:#e6f5ee;
+    --partial:#96631a; --partial-bg:#fdf3e0;
+    --no:#a3364a; --no-bg:#fdedf0;
+    --unk:#5f6672; --unk-bg:#f1f3f6;
+    --radius:10px;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--fg);
+    font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1280px; margin:0 auto; padding:48px 28px 96px}
+  header.hero{border-bottom:1px solid var(--line); padding-bottom:28px; margin-bottom:36px}
+  .eyebrow{font-size:12px; letter-spacing:.09em; text-transform:uppercase; color:var(--accent); font-weight:650}
+  h1{font-size:34px; line-height:1.2; margin:10px 0 12px; letter-spacing:-.02em}
+  .sub{color:var(--muted); font-size:16px; max-width:78ch; margin:0}
+  .meta{margin-top:18px; font-size:13px; color:var(--muted); display:flex; gap:18px; flex-wrap:wrap}
+  .meta b{color:var(--fg); font-weight:600}
+
+  h2{font-size:23px; letter-spacing:-.015em; margin:52px 0 6px; padding-top:8px}
+  h2 .num{color:var(--accent); font-variant-numeric:tabular-nums; margin-right:10px; font-size:16px; vertical-align:2px}
+  h3{font-size:16px; margin:30px 0 8px; letter-spacing:-.01em}
+  .lede{color:var(--muted); margin:0 0 22px; max-width:82ch}
+  p{max-width:82ch}
+  a{color:var(--accent); text-decoration:none; border-bottom:1px solid rgba(43,92,255,.28)}
+  a:hover{border-bottom-color:var(--accent)}
+
+  /* Key findings cards */
+  .cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:14px; margin:24px 0 8px}
+  .card{border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px; background:#fff}
+  .card .k{font-size:27px; font-weight:680; letter-spacing:-.02em; line-height:1.15}
+  .card .t{font-size:13.5px; color:var(--muted); margin-top:6px}
+  .card .s{font-size:11.5px; color:#8b919c; margin-top:9px}
+
+  /* Filters */
+  .toolbar{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin:22px 0 14px;
+    padding:12px 14px; border:1px solid var(--line); border-radius:var(--radius); background:#fcfcfd}
+  .toolbar label{font-size:12px; color:var(--muted); font-weight:600; letter-spacing:.02em}
+  .toolbar select, .toolbar input{
+    font:inherit; font-size:13.5px; padding:6px 9px; border:1px solid var(--line);
+    border-radius:7px; background:#fff; color:var(--fg)}
+  .toolbar input{min-width:210px}
+  .count{margin-left:auto; font-size:12.5px; color:var(--muted); font-variant-numeric:tabular-nums}
+
+  /* Table */
+  .tablewrap{border:1px solid var(--line); border-radius:var(--radius); overflow:auto; max-height:none}
+  table{border-collapse:collapse; width:100%; font-size:13.2px; min-width:1080px}
+  thead th{
+    position:sticky; top:0; z-index:2; background:#f7f8fa; text-align:left;
+    padding:11px 12px; font-size:11.5px; letter-spacing:.05em; text-transform:uppercase;
+    color:var(--muted); font-weight:650; border-bottom:1px solid var(--line); white-space:nowrap}
+  tbody td{padding:12px; border-bottom:1px solid var(--line2); vertical-align:top}
+  tbody tr:last-child td{border-bottom:0}
+  tbody tr:hover{background:#fbfcfe}
+  td.name{font-weight:640; white-space:nowrap}
+  td.name .cat{display:block; font-weight:450; color:var(--muted); font-size:11.5px; margin-top:2px; letter-spacing:.02em}
+  .term{font-family:var(--mono); font-size:12px; background:#f4f5f8; padding:2px 6px; border-radius:5px; display:inline-block}
+  .pill{display:inline-block; padding:3px 9px; border-radius:100px; font-size:11.5px; font-weight:650; white-space:nowrap; letter-spacing:.01em}
+  .pill.yes{background:var(--yes-bg); color:var(--yes)}
+  .pill.partial{background:var(--partial-bg); color:var(--partial)}
+  .pill.no{background:var(--no-bg); color:var(--no)}
+  .pill.unk{background:var(--unk-bg); color:var(--unk)}
+  .refs{display:flex; flex-direction:column; gap:3px}
+  .refs a{font-size:12px; border-bottom:none; text-decoration:underline; text-decoration-color:rgba(43,92,255,.3); text-underline-offset:2px}
+  .refs .kind{font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:#98a0ad; margin-right:5px; font-weight:650}
+
+  /* Gallery */
+  .gal{display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:18px; margin-top:20px}
+  figure{margin:0; border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; background:#fff; display:flex; flex-direction:column}
+  figure .imgbox{background:#f6f7f9; display:flex; align-items:center; justify-content:center; min-height:150px; overflow:hidden}
+  figure img{width:100%; display:block; object-fit:contain; max-height:420px}
+  figure .fallback{display:none; padding:26px 16px; text-align:center; font-size:12.5px; color:var(--muted)}
+  figure.broken .imgbox{display:none}
+  figure.broken .fallback{display:block}
+  figcaption{padding:12px 14px; font-size:12.5px; color:var(--muted); border-top:1px solid var(--line2); flex:1}
+  figcaption b{display:block; color:var(--fg); font-size:13px; margin-bottom:3px; font-weight:640}
+  figcaption a{font-size:11.5px}
+
+  /* Callouts */
+  .callout{border-left:3px solid var(--accent); background:var(--accent-soft); padding:14px 18px; border-radius:0 8px 8px 0; margin:20px 0; font-size:14px}
+  .callout b{font-weight:660}
+  .warn{border-left-color:#c9922b; background:#fdf6e8}
+
+  ul.tight{margin:10px 0 0; padding-left:20px; max-width:82ch}
+  ul.tight li{margin-bottom:9px}
+
+  .datatable{width:100%; border-collapse:collapse; font-size:13.2px; margin-top:16px; min-width:0}
+  .datatable th{text-align:left; padding:9px 12px; background:#f7f8fa; border-bottom:1px solid var(--line); font-size:11.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted)}
+  .datatable td{padding:10px 12px; border-bottom:1px solid var(--line2); vertical-align:top}
+  .datatable td.fig{font-weight:660; white-space:nowrap}
+  .rel{font-size:10.5px; padding:2px 7px; border-radius:100px; background:#f1f3f6; color:#5f6672; font-weight:650; white-space:nowrap}
+  .rel.hard{background:#e6f5ee; color:#0f7b4f}
+  .rel.vendor{background:#fdf3e0; color:#96631a}
+
+  footer{margin-top:64px; padding-top:22px; border-top:1px solid var(--line); font-size:12.5px; color:var(--muted)}
+  .srcgrid{columns:2; column-gap:34px; font-size:12.5px; margin-top:12px}
+  .srcgrid a{display:block; margin-bottom:5px; break-inside:avoid}
+  @media (max-width:760px){ .wrap{padding:28px 16px 64px} h1{font-size:26px} .srcgrid{columns:1} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div class="eyebrow">Market research · Competitive benchmark</div>
+  <h1>Cross-sell &amp; upsell of additional services in cart and checkout</h1>
+  <p class="sub">How 40+ booking platforms, service marketplaces, hospitality vendors and e-commerce checkouts let a customer add more services after they've chosen the first one — what they call it, where they put it, who configures it, and what it earns.</p>
+  <div class="meta">
+    <span><b>Prepared for</b> Wix Bookings — cart &amp; checkout upsell</span>
+    <span><b>Date</b> 18 August 2026</span>
+    <span><b>Platforms reviewed</b> 44</span>
+    <span><b>Sources</b> 190+ help articles, docs, filings and case studies</span>
+  </div>
+</header>
+
+<!-- ============================= TL;DR ============================= -->
+<section>
+<h2><span class="num">01</span>What the market actually does</h2>
+<p class="lede">Five things are true across every category, and they contradict some common assumptions about putting an upsell in the checkout.</p>
+
+<div class="cards">
+  <div class="card">
+    <div class="k">Almost nobody</div>
+    <div class="t">puts service add-ons at the <em>payment</em> step. The dominant pattern is an <b>interstitial right after service selection, before time-slot selection</b>.</div>
+    <div class="s">Fresha · Timely · Phorest · Boulevard · SimplyBook.me</div>
+  </div>
+  <div class="card">
+    <div class="k">Duration</div>
+    <div class="t">is what forces that placement. If an add-on adds minutes, it must be chosen <b>before</b> the slot is picked or the booking breaks.</div>
+    <div class="s">SimplyBook.me documents this failure mode explicitly</div>
+  </div>
+  <div class="card">
+    <div class="k">3–4 max</div>
+    <div class="t">Independent vendors converge on the same cap for in-flow options. Shopify caps pre-purchase offers at <b>2</b>.</div>
+    <div class="s">Checkfront · FareHarbor · Xola · Shopify · Phorest</div>
+  </div>
+  <div class="card">
+    <div class="k">0 of 15</div>
+    <div class="t">appointment-booking platforms use <b>algorithmic</b> recommendation. All are merchant-curated per-service lists.</div>
+    <div class="s">Only Zenoti's "Realtime Recos" even hints at it</div>
+  </div>
+  <div class="card">
+    <div class="k">+13%</div>
+    <div class="t">per-session value from a bundle grid, at a cost of <b>−1% conversion</b>. Measure per-session value, not conversion rate.</div>
+    <div class="s">Airline A/B test, Diggintravel</div>
+  </div>
+  <div class="card">
+    <div class="k">Products ≠ add-ons</div>
+    <div class="t">Timely and Phorest <b>explicitly exclude retail products</b> from service add-ons; Fresha's add-ons are services-only in practice. Vagaro is the exception — everything lands in one cart.</div>
+    <div class="s">A real fork in the product model</div>
+  </div>
+</div>
+
+<div class="callout">
+<b>The headline tension.</b> Half the category believes an in-cart upsell cannibalises booking conversion — Duve says so outright (<em>"you don't want to distract travelers… let the travelers choose you first"</em>), Bókun's "Upsell" deliberately creates a <em>separate</em> booking rather than touching the original, and Checkfront advises putting only low-consideration items at checkout. But the numbers don't support the fear: Revinate finds the post-purchase confirmation email out-earns pre-arrival email ($86 vs $82 per booking), and the airline bundle-grid test raised per-session value 13% while costing 1% of conversion. The resolution isn't "don't upsell at checkout" — it's <b>put high-consideration items immediately after commitment, keep low-consideration items in the cart, and measure per-session value.</b>
+</div>
+</section>
+
+<!-- ============================= MAIN TABLE ============================= -->
+<section>
+<h2><span class="num">02</span>Comparison table</h2>
+<p class="lede">Filter by category or by whether the platform supports adding services inside the cart/checkout. Every row links to the primary source that documents the behaviour.</p>
+
+<div class="toolbar">
+  <label for="fcat">Category</label>
+  <select id="fcat">
+    <option value="">All categories</option>
+    <option>Appointments &amp; services</option>
+    <option>Tours &amp; activities software</option>
+    <option>Travel marketplaces</option>
+    <option>Hospitality upsell vendors</option>
+    <option>Restaurants</option>
+    <option>Home &amp; field services</option>
+    <option>E-commerce benchmark</option>
+  </select>
+  <label for="fsup">In-cart support</label>
+  <select id="fsup">
+    <option value="">Any</option>
+    <option value="yes">Yes</option>
+    <option value="partial">Partial</option>
+    <option value="no">No / post-booking only</option>
+    <option value="unk">Unconfirmed</option>
+  </select>
+  <input id="fq" type="search" placeholder="Search platform, term, pattern…">
+  <span class="count" id="count"></span>
+</div>
+
+<div class="tablewrap">
+<table id="t">
+<thead>
+<tr>
+  <th>Platform</th>
+  <th>Add services in cart / checkout?</th>
+  <th>What they call it</th>
+  <th>Where in the flow</th>
+  <th>Configured by</th>
+  <th>Notable mechanics</th>
+  <th>Reference</th>
+</tr>
+</thead>
+<tbody>
+
+<!-- ===== APPOINTMENTS & SERVICES ===== -->
+<tr data-cat="Appointments &amp; services" data-sup="yes">
+  <td class="name">Fresha<span class="cat">Appointments &amp; services</span></td>
+  <td><span class="pill yes">Yes</span></td>
+  <td><span class="term">Service add-ons</span> <span class="term">add-on group</span></td>
+  <td>Dedicated step in the booking flow <b>after service selection</b> — online booking and staff calendar. Editable post-booking from the appointment panel.</td>
+  <td>Merchant. Reusable <b>add-on groups</b> linked to many services, not one list per service.</td>
+  <td>Merchant-authored prompt per group ("Choose your hair conditioner"). Min / max / quantity limits. Adds price <em>and</em> duration. <code>Hide from online booking</code> makes a group staff-only. Services only — no retail products. Revenue tracked as its own type in reporting.</td>
+  <td class="refs">
+    <a href="https://www.fresha.com/help-center/knowledge-base/catalog/101649-create-service-add-ons"><span class="kind">Help</span>Create service add-ons</a>
+    <a href="https://www.fresha.com/help-center/knowledge-base/catalog/101256-create-service-bundles"><span class="kind">Help</span>Service bundles</a>
+  </td>
+</tr>
+
+<tr data-cat="Appointments &amp; services" data-sup="yes">
+  <td class="name">Vagaro<span class="cat">Appointments &amp; services</span></td>
+  <td><span class="pill yes">Yes</span></td>
+  <td><span class="term">Add-Ons</span> <span class="term">Shopping Cart</span></td>
+  <td><b>The only appointment platform with an explicit cart model.</b> Shown during online booking, then auto-dropped into the <b>Shopping Cart at Checkout</b>; staff can add/reprice/discount any add-on at the checkout screen.</td>
+  <td>Merchant. Per-service assignment <em>plus</em> a global "All Add-Ons" list staff can pull from at checkout.</td>
+  <td>Cart line carries the code <code>addon</code>; staff can override price or apply a discount via the ⋯ menu. Existing services/classes can be converted into add-ons. <b>Customers cannot remove an add-on themselves after booking</b> — the business must. Works on web, phone, tablet and Pay Desk hardware.</td>
+  <td class="refs">
+    <a href="https://support.vagaro.com/hc/en-us/articles/10796001356571-Apply-Add-ons-When-Booking-or-Checking-Out"><span class="kind">Help</span>Apply Add-ons when booking or checking out</a>
+    <a href="https://support.vagaro.com/hc/en-us/articles/10796001646235-Create-Add-Ons-for-Services-Classes"><span class="kind">Help</span>Create Add-Ons</a>
+    <a href="https://www.youtube.com/watch?v=lTFSmD-s67s"><span class="kind">Video</span>Vagaro add-ons walkthrough</a>
+  </td>
+</tr>
+
+<tr data-cat="Appointments &amp; services" data-sup="yes">
+  <td class="name">Boulevard<span class="cat">Appointments &amp; services</span></td>
+  <td><span class="pill yes">Yes</span></td>
+  <td><span class="term">Add-On Services</span> <span class="term">Service Modifiers</span></td>
+  <td>Framed explicitly as upsell: <em>"presented at booking as an upsell after a compatible service has already been selected."</em> Client picks service → add-ons → <em>then</em> provider. Also addable at <b>checkout</b> via Edit service → Add-ons → + Add.</td>
+  <td>Merchant, per base service. Business-level by default with <b>per-location overrides</b> (alias + description).</td>
+  <td>Provider list is <b>filtered to staff who can perform base + add-on</b>. "Add-On Service Only" flag hides a service from the main menu. 0-minute add-ons render white/outlined on the calendar. Not supported in the Boulevard Professional mobile app. Add-ons exposed in the Client API.</td>
+  <td class="refs">
+    <a href="https://support.boulevard.io/en/articles/6584601-add-on-services"><span class="kind">Help</span>Add-On Services</a>
+    <a href="https://support.boulevard.io/en/articles/10414719-add-and-edit-services-at-checkout"><span class="kind">Help</span>Add and edit services at checkout</a>
+    <a href="https://developers.joinblvd.com/2020-01/client-api/guides/booking-an-appointment"><span class="kind">Docs</span>Client API — booking an appointment</a>
+  </td>
+</tr>
+
+<tr data-cat="Appointments &amp; services" data-sup="yes">
+  <td class="name">Timely<span class="cat">Appointments &amp; services</span></td>
+  <td><span class="pill yes">Yes</span></td>
+  <td><span class="term">Timely add-ons</span> <span class="term">"Enhance your experience"</span></td>
+  <td><b>Dedicated interstitial page</b> titled "Enhance your experience", between service selection and staff/date/time. One round of recommendations, de-duplicated against services already chosen. <b>Online booking only</b> — not staff-side.</td>
+  <td>Merchant, per-service list built from the existing menu. Manual, not algorithmic.</td>
+  <td>Explicit <b>Add / Skip this step</b> affordance. Recommended max <b>10 add-ons per service</b>. Everything lands as a single multi-service booking. No product add-ons and no zero-duration add-ons — time-based services only. Price cannot be overridden when shown as an add-on. VIP-only add-ons supported.</td>
+  <td class="refs">
+    <a href="https://help.gettimely.com/hc/en-gb/articles/38752687637271-Introduction-Timely-add-ons"><span class="kind">Help</span>Introduction: Timely add-ons</a>
+    <a href="https://vimeo.com/1174577595"><span class="kind">Video</span>Client-side add-on experience</a>
+    <a href="https://vimeo.com/1175018539"><span class="kind">Video</span>Configuring add-ons</a>
+  </td>
+</tr>
+
+<tr data-cat="Appointments &amp; services" data-sup="yes">
+  <td class="name">Phorest<span class="cat">Appointments &amp; services</span></td>
+  <td><span class="pill yes">Yes</span></td>
+  <td><span class="term">Add-on services</span> <span class="term">Linked Addons</span></td>
+  <td>After the primary service is selected — online booking, in-house desktop (primary services labelled <b>"With add-ons"</b>) and PhorestGo (services show an <b>"Add-On"</b> label).</td>
+  <td>Merchant, per primary service. Multi-location managed in Chain Library with per-location overrides.</td>
+  <td><b>Documents a norm of ~5 suggested add-ons from no more than 2 categories</b> — "more than that might make things a bit overwhelming for your clients and slow down your team's booking process." Zero-minute add-ons render as a red banner on the existing appointment. No retail product add-ons. Cannot combine with packages, offers, courses, memberships or group bookings. Display order is not configurable.</td>
+  <td class="refs">
+    <a href="https://support.phorest.com/hc/en-us/articles/34677418988050-How-do-I-create-Add-On-services-and-how-do-they-work"><span class="kind">Help</span>How do I create Add-On services?</a>
+    <a href="https://support.phorest.com/hc/en-us/articles/4407009396754-What-is-Expert-Recommendations-and-how-do-I-use-it"><span class="kind">Help</span>Expert Recommendations</a>
+  </td>
+</tr>
+
+<tr data-cat="Appointments &amp; services" data-sup="yes">
+  <td class="name">Acuity / Squarespace<span class="cat">Appointments &amp; services</span></td>
+  <td><span class="pill yes">Yes</span></td>
+  <td><span class="term">Add-ons</span> <span class="term">"Add to Appointment"</span></td>
+  <td><b>Inline on the same booking screen</b> — an "Add to Appointment" section sitting directly <em>above</em> the calendar and staff selector. Not a step, not a modal. Clients can skip it.</td>
+  <td>Merchant. A <b>global add-on library</b>, each item checkbox-mapped to the appointment types it applies to.</td>
+  <td>Checkbox list. Price delta <em>and</em> time delta, and <b>both can be negative</b> — an add-on can reduce price or duration. $0 / 0-min allowed. Multiplies across recurring appointments and multi-spot class bookings. Affects group-class price but not duration. Explicit <b>Admin-only</b> setting for staff-only add-ons.</td>
+  <td class="refs">
+    <a href="https://help.acuityscheduling.com/hc/en-us/articles/16676886445837-Using-Acuity-Scheduling-add-ons"><span class="kind">Help</span>Using Acuity Scheduling add-ons</a>
+    <a href="https://help.acuityscheduling.com/hc/en-us/articles/47267214786061-Expand-appointment-descriptions-and-add-ons-on-your-scheduling-page"><span class="kind">Help</span>Expanding add-ons on the scheduling page</a>
+  </td>
+</tr>
+
+<tr data-cat="Appointments &amp; services" data-sup="yes">
+  <td class="name">SimplyBook.me<span class="cat">Appointments &amp; services</span></td>
+  <td><span class="pill yes">Yes</span></td>
+  <td><span class="term">Service Add-Ons</span> <span class="term">paid attributes</span></td>
+  <td><b>Placement varies by template — the clearest documented statement of the duration trade-off in the whole market.</b> On modern/flexible timelines the add-on step comes <b>before</b> time selection so availability reflects the added duration. On class timelines it comes <b>after</b> — and if the combination no longer fits, the client gets a booking error.</td>
+  <td>Merchant. Central Manage → Service Add-ons list, mapped to services via a "Connected services" tab.</td>
+  <td>Checkbox list with <b>image + description + price</b>, optional duration. Add-ons can be <b>pre-selected by default</b> (client can uncheck). With Group Bookings, quantity multiplies by participant count. Requires the paid "Accept Payments" feature. <code>[attributes]</code> variable injects selections into email/SMS.</td>
+  <td class="refs">
+    <a href="https://help.simplybook.me/index.php?title=Service_Add-Ons_custom_feature"><span class="kind">Help</span>Service Add-Ons custom feature</a>
+    <a href="https://www.youtube.com/watch?v=3eF7QMk-BoA"><span class="kind">Video</span>Service add-ons demo</a>
+  </td>
+</tr>
+
+<tr data-cat="Appointments &amp; services" data-sup="yes">
+  <td class="name">Booksy<span class="cat">Appointments &amp; services</span></td>
+  <td><span class="pill yes">Yes</span></td>
+  <td><span class="term">Add-ons</span> <span class="term">Combo Services</span></td>
+  <td>Selected with the booking on the provider's Booksy profile; lands on the confirmation and affects the charged total.</td>
+  <td>Merchant. Central Add-ons list under Services Setup, then "make available online and assign them to services".</td>
+  <td>An add-on <b>can raise price without changing duration, and vice-versa</b> (has its own FAQ). Whether an add-on can be booked standalone is constrained. Add-ons are included in <b>Boost commission</b> calculations. Combo Services is the separate bundle primitive.</td>
+  <td class="refs">
+    <a href="https://support.booksy.com/hc/en-us/articles/16538268814738-How-do-I-set-up-Add-ons"><span class="kind">Help</span>How do I set up Add-ons?</a>
+    <a href="https://support.booksy.com/hc/en-us/articles/16538231444114-Can-an-Add-on-increase-the-price-of-a-service-without-impacting-the-duration-And-vice-versa"><span class="kind">Help</span>Price vs duration behaviour</a>
+    <a href="https://support.booksy.com/hc/en-us/articles/16538245194002-What-are-Combo-Services-and-why-should-I-use-them"><span class="kind">Help</span>Combo Services</a>
+  </td>
+</tr>
+
+<tr data-cat="Appointments &amp; services" data-sup="yes">
+  <td class="name">Mindbody<span class="cat">Appointments &amp; services</span></td>
+  <td><span class="pill yes">Yes</span></td>
+  <td><span class="term">appointment add-ons</span> <span class="term">multi-service booking</span></td>
+  <td>Marketed as add-on booking in the Mindbody app, branded app and branded web, "available during their booking and checkout flow", plus multi-service booking on branded web. Staff-side cart on the Retail screen handles services + products + memberships in one transaction.</td>
+  <td>Merchant. <span class="pill unk" style="font-size:10.5px">config detail unconfirmed</span></td>
+  <td>Detailed mechanics could not be verified — the Mindbody help centre is a client-rendered Salesforce shell that returns no body to automated fetching. Only one add-on article appears in the indexed sitemap.</td>
+  <td class="refs">
+    <a href="https://support.mindbodyonline.com/s/article/How-to-book-and-cancel-appointment-add-ons?language=en_US"><span class="kind">Help</span>Book and cancel appointment add-ons</a>
+    <a href="https://www.mindbodyonline.com/business/education/blog/mindbody-appointments"><span class="kind">Blog</span>Appointments: the updates you've been waiting for</a>
+    <a href="https://support.mindbodyonline.com/s/article/201067363-Selling-to-existing-clients-new-clients-and-walk-in-clients?language=en_US"><span class="kind">Help</span>Using the cart to sell products and services</a>
+  </td>
+</tr>
+
+<tr data-cat="Appointments &amp; services" data-sup="yes">
+  <td class="name">Zenoti<span class="cat">Appointments &amp; services</span></td>
+  <td><span class="pill yes">Yes</span></td>
+  <td><span class="term">Upsell Add-ons</span> <span class="term">Realtime Recos</span></td>
+  <td>Filed under <b>Zenoti Driven Growth → Realization</b> — i.e. add-ons are positioned as a named revenue lever alongside dynamic pricing and peak-day premium, not as a scheduling detail. Also ships Abandoned Cart Reminders and an Abandoned Cart Checkout Reminder.</td>
+  <td>Merchant + <b>"Realtime Recos"</b> is the only feature name in the appointment category that hints at algorithmic recommendation.</td>
+  <td>Article bodies could not be retrieved (the Paligo doc portal inlines a ~2,000-item nav tree ahead of the content). Titles and URLs confirmed. Highest likelihood of a published revenue-lift figure given the "Realization" framing.</td>
+  <td class="refs">
+    <a href="https://help.zenoti.com/en/zenoti-driven-growth/realization/upsell-add-ons.html"><span class="kind">Docs</span>Upsell Add-ons</a>
+    <a href="https://help.zenoti.com/en/zenoti-driven-growth/realization/realtime-recos.html"><span class="kind">Docs</span>Realtime Recos</a>
+    <a href="https://help.zenoti.com/en/configuration/marketing-configurations/abandoned-cart-checkout-reminder.html"><span class="kind">Docs</span>Abandoned Cart Checkout Reminder</a>
+  </td>
+</tr>
+
+<tr data-cat="Appointments &amp; services" data-sup="yes">
+  <td class="name">GlossGenius<span class="cat">Appointments &amp; services</span></td>
+  <td><span class="pill yes">Yes</span></td>
+  <td><span class="term">Service Add-Ons</span></td>
+  <td>Article title confirmed; placement unconfirmed.</td>
+  <td>Merchant. <span class="pill unk" style="font-size:10.5px">unconfirmed</span></td>
+  <td>Help centre runs on Elevio and returns a JS shell to automated fetching. Needs a browser session to verify.</td>
+  <td class="refs">
+    <a href="https://support.glossgenius.com/en/articles/738-how-to-create-service-add-ons"><span class="kind">Help</span>How to create Service Add-Ons</a>
+  </td>
+</tr>
+
+<tr data-cat="Appointments &amp; services" data-sup="partial">
+  <td class="name">Setmore<span class="cat">Appointments &amp; services</span></td>
+  <td><span class="pill partial">Partial</span></td>
+  <td><span class="term">Provide multiple services</span> <span class="term">cart</span></td>
+  <td>Booking Page only. <em>"As customers go through the booking flow, the feature prompts them to add more services if needed"</em> — customers add multiple services to a <b>cart</b>. You cannot book multiple services from the staff calendar.</td>
+  <td>Merchant, but only as a <b>global on/off switch</b>. No per-service targeting and no recommendation logic at all.</td>
+  <td>There is no per-service add-on object — this is multi-service stacking, not an upsell surface. Known rough edge Setmore documents: <b>one confirmation email per service</b>, with only a vague commitment to "refine or update the feature in a future development cycle". Mutually exclusive with "Skip the staff". Classes unsupported.</td>
+  <td class="refs">
+    <a href="https://support.setmore.com/en/articles/490980-how-to-let-customers-book-multiple-services-in-one-appointment"><span class="kind">Help</span>Book multiple services in one appointment</a>
+  </td>
+</tr>
+
+<tr data-cat="Appointments &amp; services" data-sup="unk">
+  <td class="name">Square Appointments<span class="cat">Appointments &amp; services</span></td>
+  <td><span class="pill unk">Unconfirmed</span></td>
+  <td>—</td>
+  <td>The product overview lists no add-on / extras / recommended-services capability. Closest adjacent features: pre-paid packages, and <em>"sell products to enhance services — ring up products and services in the same transaction"</em> — i.e. <b>product attach at POS, not a service add-on step in client booking</b>.</td>
+  <td>—</td>
+  <td>Square's help centre resisted automated access. Treat as unconfirmed rather than a confirmed "No".</td>
+  <td class="refs"><a href="https://squareup.com/us/en/appointments"><span class="kind">Product</span>Square Appointments overview</a></td>
+</tr>
+
+<tr data-cat="Appointments &amp; services" data-sup="unk">
+  <td class="name">Treatwell<span class="cat">Appointments &amp; services</span></td>
+  <td><span class="pill unk">Unconfirmed</span></td>
+  <td>—</td>
+  <td>No partner-side (Treatwell Connect) help centre reachable; the consumer care portal is a client-rendered Salesforce shell.</td>
+  <td>—</td>
+  <td>Needs a browser session or a partner login to verify.</td>
+  <td class="refs"><a href="https://customercare.treatwell.com/s/?language=en_GB"><span class="kind">Help</span>Treatwell customer care</a></td>
+</tr>
+
+<tr data-cat="Appointments &amp; services" data-sup="no">
+  <td class="name">Calendly<span class="cat">Appointments &amp; services</span></td>
+  <td><span class="pill no">No</span></td>
+  <td>—</td>
+  <td>No cart, no add-on, no extras, no cross-sell step anywhere in the booking flow. One event type per booking.</td>
+  <td>—</td>
+  <td>The whole Payments category is Stripe/PayPal, meeting packages, payment links and invoices. Useful as a boundary case: pure scheduling tools have no upsell surface at all.</td>
+  <td class="refs">
+    <a href="https://calendly.com/help"><span class="kind">Help</span>Calendly Help Center (category map)</a>
+    <a href="https://calendly.com/help/how-to-sell-services-using-meeting-packages-and-payment-links"><span class="kind">Help</span>Selling services with meeting packages</a>
+  </td>
+</tr>
+
+<!-- ===== TOURS & ACTIVITIES ===== -->
+<tr data-cat="Tours &amp; activities software" data-sup="yes">
+  <td class="name">Checkfront<span class="cat">Tours &amp; activities software</span></td>
+  <td><span class="pill yes">Yes</span></td>
+  <td><span class="term">Upsells</span></td>
+  <td>In-flow at item selection, plus the back-office Add Item modal. <b>Publishes explicit placement doctrine: "one offer in the flow, one at checkout, everything else after the booking"</b> — with checkout reserved for low-consideration items only (gratuity, small gear, parking), because "the guest has made their decision". <span class="pill unk" style="font-size:10.5px">blog is JS-walled — quotes captured, page not re-verifiable by fetch</span></td>
+  <td>Operator only. No algorithmic recommendation, no marketplace cross-sell.</td>
+  <td><b>The richest configuration model found anywhere.</b> An upsell <em>is a product</em>, so it carries full inventory and availability. Opt-in: preselected / optional / <b>required</b> — and if a required upsell is unavailable, <b>the parent product becomes unavailable too</b>. Price: full / free / <b>% of parent</b>. Date restrictions with relative offsets both directions. "Inherit parent guest types" caps quantity to party size. Nested upsells not supported.</td>
+  <td class="refs">
+    <a href="https://support.checkfront.com/hc/en-us/articles/19868202623772-Adding-upsells-to-your-products"><span class="kind">Help</span>Adding upsells to your products</a>
+    <a href="https://www.checkfront.com/blog/add-ons-selling-beyond-the-booking/"><span class="kind">Guide</span>Add-ons: selling beyond the booking</a>
+    <a href="https://support.checkfront.com/hc/en-us/articles/19868280874012-Managing-upsells-for-your-product"><span class="kind">Help</span>Managing upsells</a>
+  </td>
+</tr>
+
+<tr data-cat="Tours &amp; activities software" data-sup="yes">
+  <td class="name">FareHarbor<span class="cat">Tours &amp; activities software</span></td>
+  <td><span class="pill yes">Yes</span></td>
+  <td><span class="term">custom fields</span> <span class="term">Combos</span> <span class="term">Packages</span></td>
+  <td>Three mechanisms. Priced <b>custom fields inline on the book form</b>; <b>Combos as a true interstitial</b> — timing stated precisely: <em>"once the customer has filled out their booking information for their first item, but before they have inputted their payment details"</em>; and Packages that must be bought together.</td>
+  <td>Operator. <b>Cross-Sell Combos is genuine cross-operator cross-sell in one checkout</b> — but bilateral: "FareHarbor does not facilitate partnerships."</td>
+  <td>Recommends <b>"three or less" combo options</b> — <em>"any more can increase booking fatigue which will hurt conversions."</em> (A ≤6 custom-fields guideline appears in the SSO-gated help centre and could not be verified.) Trip Protection is delivered as a checkbox that FareHarbor explicitly recommends be <b>auto-selected</b> — and it generated $10.1M for operators in 2025.</td>
+  <td class="refs">
+    <a href="https://fareharbor.com/blog/maximize-sales-and-customer-satisfaction-introducing-fareharbor-combos/"><span class="kind">Blog</span>Introducing FareHarbor Combos</a>
+    <a href="https://fareharbor.com/blog/cross-selling-fareharbor-combos/"><span class="kind">Blog</span>Cross-selling with Combos</a>
+    <a href="https://fareharbor.com/customer-stories/how-one-business-made-100k-through-retail-sales-using-combos/"><span class="kind">Case</span>$100k from one Combo bundle</a>
+  </td>
+</tr>
+
+<tr data-cat="Tours &amp; activities software" data-sup="yes">
+  <td class="name">Xola<span class="cat">Tours &amp; activities software</span></td>
+  <td><span class="pill yes">Yes</span></td>
+  <td><span class="term">Add-ons</span> <span class="term">XolaBot Upsell</span></td>
+  <td>Two layers. Add-ons render <b>inline during checkout</b> — or, if Target Audience is "Ask each attendee", in the questionnaire section <b>once per attendee</b>. Separately, XolaBot fires an <b>interstitial upsell screen after the customer clicks Continue</b>, before payment.</td>
+  <td>Operator-selected with a light recommendation wrapper; operator ticks which add-ons to upsell and drags them into order.</td>
+  <td>Add-on types: Quantity (scales), Checkbox, Dropdown — the latter two priced flat or as <b>% of the reservation total</b>. XolaBot constraints that shape the UX: <b>max 3 add-ons shown; suppressed entirely if any add-on is already in the cart; one shot only</b> (exiting the modal means it never returns); <b>does not work on mobile</b>.</td>
+  <td class="refs">
+    <a href="https://support.xola.com/xolabot-upsell-add-ons"><span class="kind">Help</span>XolaBot Upsell Add-Ons</a>
+    <a href="https://support.xola.com/xolabot-upsell-packages"><span class="kind">Help</span>XolaBot Upsell Packages</a>
+    <a href="https://support.xola.com/product-experiences-set-up"><span class="kind">Help</span>Add-on types &amp; target audience</a>
+  </td>
+</tr>
+
+<tr data-cat="Tours &amp; activities software" data-sup="yes">
+  <td class="name">Rezdy<span class="cat">Tours &amp; activities software</span></td>
+  <td><span class="pill yes">Yes</span></td>
+  <td><span class="term">Extras</span> <span class="term">Upsells</span></td>
+  <td>In-flow, plus a deliberate second placement: <em>"Upsells are positioned <b>below the Item/Order Totals on the right</b> so that the checkout flow is not impacted."</em> A sticky right-rail block rather than an interstitial.</td>
+  <td>Operator. Global Extras library + per-product opt-in. Separately, Rezdy Marketplace is real cross-operator resale — but as products, not extras.</td>
+  <td>Three quantity modes: <b>Customer's choice / Per Order / Per Quantity</b>. Extras carry description, image, and limited availability per session (Fixed Dates &amp; Times only). Checkout is <b>dynamic</b> — customers can edit quantities and price options on the checkout page, built after data showed many customers going back to step one to fix mistakes. Checkout height reduced ~25%.</td>
+  <td class="refs">
+    <a href="https://support.rezdy.com/hc/en-us/articles/19867826235420-How-To-Set-Up-an-Extra"><span class="kind">Help</span>How to set up an Extra</a>
+    <a href="https://support.rezdy.com/hc/en-us/articles/19867826365852-The-Updated-Checkout-Flow"><span class="kind">Help</span>The updated checkout flow</a>
+  </td>
+</tr>
+
+<tr data-cat="Tours &amp; activities software" data-sup="yes">
+  <td class="name">Peek Pro<span class="cat">Tours &amp; activities software</span></td>
+  <td><span class="pill yes">Yes</span></td>
+  <td><span class="term">Add-ons</span> <span class="term">Bundles</span></td>
+  <td>Add-ons in the online booking flow ("pre-experience upselling") and in POS. Bundles ship in three configurations — <b>Optional Upsell Bundle</b>, <b>Combo Bundle with Discounted Pricing</b>, <b>Required Combo Bundle</b> — per Peek's help-centre article titles <span class="pill unk" style="font-size:10.5px">bodies SSO-gated</span></td>
+  <td>Operator. Cross-operator distribution exists as a reseller/affiliate channel, not in-cart.</td>
+  <td>Peek Protect (trip protection) as a checkbox at checkout; gift cards in-flow; tips at POS or post-experience; Abandoned Bookings SMS/email recovery. Publishes a single lift figure — add-ons "boost revenue from orders by an average of 9%". <b>No bundle-specific lift figure appears on Peek's public pages.</b></td>
+  <td class="refs">
+    <a href="https://www.peekpro.com/product/grow-revenue"><span class="kind">Product</span>Grow revenue — add-ons &amp; bundles</a>
+    <a href="https://www.peekpro.com/blog/the-5-ingredients-of-an-optimal-tour-and-activity-checkout-flow"><span class="kind">Blog</span>5 ingredients of an optimal checkout flow</a>
+  </td>
+</tr>
+
+<tr data-cat="Tours &amp; activities software" data-sup="partial">
+  <td class="name">Bókun<span class="cat">Tours &amp; activities software</span></td>
+  <td><span class="pill partial">Extras yes / Upsell no</span></td>
+  <td><span class="term">Extras</span> <span class="term">Upsell</span></td>
+  <td><b>The clearest case of two architecturally separate features that shouldn't be conflated.</b> <b>Extras</b> = in-cart, pre-payment, shown in the <em>first step</em> of booking. <b>Upsell</b> = post-purchase only: products appear below the booking receipt, and selecting one <em>"directs the traveller to your booking engine to complete a <b>new checkout</b>… The selected product is not added to the traveller's original reservation."</em></td>
+  <td>Operator. Upsell lists are coarse-grained — you pick a whole product list, "it's not possible to hand-pick products" — and the list <b>can include other suppliers' Marketplace products</b>.</td>
+  <td>Extras: max units per booking = No maximum / <b>Maximum by participant</b> / Custom. Optional or <b>preselected (always included)</b>; included in price or priced separately; "priced per person" checkbox. Extras carry their own <b>Commission Group</b>. Photo shown next to the extra at checkout and in the post-booking portal.</td>
+  <td class="refs">
+    <a href="https://docs.bokun.io/en/articles/138-how-to-add-extras-to-experiences"><span class="kind">Docs</span>How to add Extras to experiences</a>
+    <a href="https://docs.bokun.io/en/articles/305-booking-channels-how-to-upsell-your-products-online"><span class="kind">Docs</span>How to upsell your products online</a>
+    <a href="https://www.bokun.io/upsell-post-checkout-and-boost-your-online-sales"><span class="kind">Product</span>Upsell post-checkout</a>
+  </td>
+</tr>
+
+<!-- ===== TRAVEL MARKETPLACES ===== -->
+<tr data-cat="Travel marketplaces" data-sup="yes">
+  <td class="name">GetYourGuide<span class="cat">Travel marketplaces</span></td>
+  <td><span class="pill yes">Yes</span></td>
+  <td><span class="term">Add-ons</span> <span class="term">Extras (DE)</span></td>
+  <td><b>The outlier that places add-ons deliberately after commitment.</b> GYG's own help text: <em>"Add-ons are extras that the customer <b>can only see and select once they have added the product to their shopping cart</b>."</em> Plus a cancellation-policy upgrade at the checkout step.</td>
+  <td>Supplier — but <b>only via a connected reservation system</b>. "Can I add new Add-ons manually? <b>No</b>."</td>
+  <td>Six fixed add-on categories: <code>FOOD, DRINKS, SAFETY, TRANSPORT, DONATION, OTHERS</code> — a constrained taxonomy is exactly what lets Regiondo and TourCMS auto-map add-ons in. GYG actively <b>deprecates manual add-ons</b> because they aren't passed via API, so bookings never reach the supplier's system. Reservation hold defaults to 60 minutes.</td>
+  <td class="refs">
+    <a href="https://supply.getyourguide.support/hc/en-us/articles/14150029353629-Connecting-a-product-that-has-add-ons"><span class="kind">Help</span>Connecting a product that has add-ons</a>
+    <a href="https://supply.getyourguide.support/hc/en-us/articles/22094855151645-Setting-up-Add-ons-over-API"><span class="kind">Help</span>Setting up Add-ons over API</a>
+    <a href="https://support.tourcms.com/hc/en-us/articles/39396869672209-GetYourGuide-Addons"><span class="kind">Help</span>TourCMS: the six add-on categories</a>
+  </td>
+</tr>
+
+<tr data-cat="Travel marketplaces" data-sup="yes">
+  <td class="name">Klook<span class="cat">Travel marketplaces</span></td>
+  <td><span class="pill yes">Yes</span></td>
+  <td><span class="term">[Add-ons]</span> <span class="term">Packages</span> <span class="term">Combo</span></td>
+  <td><b>Before commitment — the exact opposite of GetYourGuide.</b> Add-ons live on the product page as sibling SKUs, filtered by a tab row (<code>All | Water park ticket | Add-ons package</code>), with SKUs literally named <code>[Add-ons] Food and Beverage</code>.</td>
+  <td>Merchant SKUs in the Klook Merchant Portal + Klook-curated Passes and Combos + an algorithmic "You might also like…" carousel.</td>
+  <td><b>The single most directly copyable pattern found:</b> on pass products, a stack of <b>cascading optional radio-lists with an explicit <code>None</code> default and "(Optional)" in the label</b> — "Add a premium experience or tour (Optional)" → None / 1 Premium / 2 Premium. Add-on cards look identical to the main product, lowering perceived friction. One cart across multiple destinations, single checkout.</td>
+  <td class="refs">
+    <a href="https://www.klook.com/activity/85772-columbia-pictures-aquaverse-admission-ticket/"><span class="kind">Live</span>Aquaverse — [Add-ons] SKU + tab pattern</a>
+    <a href="https://www.klook.com/en-US/activity/69622-singapore-attractions-pass/"><span class="kind">Live</span>Klook Pass — cascading "(Optional)" selectors</a>
+    <a href="https://mysupport.roller.software/hc/en-us/articles/13921390938255-ROLLER-Klook-integration"><span class="kind">Help</span>ROLLER × Klook merchant config</a>
+  </td>
+</tr>
+
+<tr data-cat="Travel marketplaces" data-sup="yes">
+  <td class="name">Airlines (combined)<span class="cat">Travel marketplaces</span></td>
+  <td><span class="pill yes">Yes — extensively</span></td>
+  <td><span class="term">ancillaries</span> <span class="term">bundles</span> <span class="term">Travel Extras</span></td>
+  <td>A <b>10-stage funnel</b>: fare anchor → fare-family grid → downsell modal → seat map → seat-decline modal → bags page → extras interstitial → third-party cross-sell page → <b>"last chance" upsells stacked above the Pay button</b> → post-purchase (thank-you modal, email, manage-booking, check-in, onboard).</td>
+  <td>All three coexist: airline-configured fare families (targetable by market, channel, time of day), algorithmic dynamic ancillary pricing, and third-party marketplaces (CarTrawler supplies 70+ airlines).</td>
+  <td><b>The structural insight that matters most for a cart feature:</b> the same item is sold <b>3–5 times at different prices at different moments</b>. Ryanair sells "Priority &amp; 2 Cabin Bags" inside the Regular bundle (€35), standalone after you decline it (€24), again at checkout as "last chance", and again at check-in. <b>Model an ancillary as multiple offer moments with independent prices, not one SKU with one price.</b> Caution: the UK CMA opened a drip-pricing investigation into Ryanair in June 2026.</td>
+  <td class="refs">
+    <a href="https://upsell.com/blog/upsell-funnel"><span class="kind">Teardown</span>The Ryanair upsell funnel — full screenshot set</a>
+    <a href="https://ideaworkscompany.com/wp-content/uploads/2025/11/Press-Release-197-Global-Estimate-2025.pdf"><span class="kind">Data</span>IdeaWorks Global Estimate 2025 (PDF)</a>
+    <a href="https://diggintravel.com/airline-branded-fares-upsell-case-study/"><span class="kind">Data</span>Diggintravel branded-fares A/B test</a>
+    <a href="https://blog.osull.com/2026/07/27/euro-budget-airline-ux-dark-patterns-showdown-2026/"><span class="kind">Teardown</span>Euro budget airline dark patterns 2026</a>
+  </td>
+</tr>
+
+<tr data-cat="Travel marketplaces" data-sup="partial">
+  <td class="name">Expedia / Hotels.com<span class="cat">Travel marketplaces</span></td>
+  <td><span class="pill partial">Partial</span></td>
+  <td><span class="term">Packages</span> <span class="term">package rates</span></td>
+  <td>The cross-sell primitive is the <b>Package</b> — a multi-line-item bundle (air + hotel + car + tickets) priced at a discount, sold at search and in the shopping path. "Add a car / add a flight" steps exist; no confirmed dedicated add-ons interstitial.</td>
+  <td><b>Hybrid, and unusually, partly paid.</b> Package rates are merchant-configured in Partner Central; package assembly is marketplace-side; and merchandising position is influenced by <b>TravelAds sponsored listings</b>.</td>
+  <td>Expedia's own package data: guests who book packages <em>"stay longer, book earlier, and cancel less."</em> Hawaiian Airlines saw +24% package conversion in 3 months on the White Label Travel Platform.</td>
+  <td class="refs">
+    <a href="https://partner.expediagroup.com/en-us/resources/case-studies/hawaiian-airlines-boosts-loyalty-member-package-revenue"><span class="kind">Case</span>Hawaiian Airlines — +24% / +34%</a>
+    <a href="https://partner.expediagroup.com/en-us/resources/case-studies/disney-resorts-attract-guests-with-packages-and-ad-campaigns"><span class="kind">Case</span>Disney resorts — packages + ads</a>
+  </td>
+</tr>
+
+<tr data-cat="Travel marketplaces" data-sup="no">
+  <td class="name">Booking.com<span class="cat">Travel marketplaces</span></td>
+  <td><span class="pill no">No — post-booking</span></td>
+  <td><span class="term">Attractions</span> <span class="term">attached product</span></td>
+  <td>Arival's reporting on Booking's strategy, drawn from an interview with its MD of Attractions: experiences function as an attached product with accommodation at the core, and are <b>surfaced after an accommodation booking is made — typically through post-booking emails or in-app prompts</b>. Not an interstitial, not in-cart. <span class="pill unk" style="font-size:10.5px">Arival's characterisation, not a direct quote</span></td>
+  <td>Marketplace-wide, platform-curated, algorithmic (destination + dates + inventory). Supply is partner-led — Viator, TUI Musement, Klook, and the FareHarbor Distribution Network (150,000+ attractions from Sept 2025).</td>
+  <td><b>The most important admission in this research:</b> Booking acknowledges that attach rates — the share of accommodation bookings converting into experience bookings — <em>"remain relatively low."</em> Even the best-resourced marketplace in travel has not made post-booking cross-sell work well. Genius loyalty, not a cart, is the connective tissue.</td>
+  <td class="refs">
+    <a href="https://arival.travel/article/bookings-quiet-return-to-tours-attractions/"><span class="kind">Analysis</span>Booking's quiet return to tours &amp; attractions</a>
+    <a href="https://news.booking.com/bookingcom-further-expands-attractions-and-activities-offerings-through-new-global-integration-with-fareharbor/"><span class="kind">Press</span>FareHarbor integration</a>
+  </td>
+</tr>
+
+<tr data-cat="Travel marketplaces" data-sup="no">
+  <td class="name">Airbnb<span class="cat">Travel marketplaces</span></td>
+  <td><span class="pill no">No — post-booking</span></td>
+  <td><span class="term">Services</span> <span class="term">Experiences</span></td>
+  <td>No add-on step in the stay checkout at all. The <b>Trips tab is the entire monetisation surface</b>, with a deliberate card order: reservation → <b>row of paid partner offers</b> (car rental, transfer, luggage storage) → itinerary/check-in details → "Services for your trip" tiles. <b>Paid offers sit above check-in details.</b> Visible gaps in the itinerary are the sales trigger.</td>
+  <td>Marketplace-wide, Airbnb-curated, <b>deliberately not host-configured</b>. Services are on by default in every home; the host can only opt <em>out</em>, and earns nothing on a service booking.</td>
+  <td>Terminology is capitalised product nouns — never "add-ons" or "extras". Partner brands render <b>anonymously</b>: category + provider count, no supplier logo. Also uses a full-screen homepage interstitial with a data-sharing consent gate, and host-sent service recommendation cards in messaging schedulable to fire "at key moments, like after a booking".</td>
+  <td class="refs">
+    <a href="https://news.airbnb.com/airbnb-2025-summer-release/"><span class="kind">Press</span>2025 Summer Release — Services launch</a>
+    <a href="https://www.airbnb.com/help/article/3876"><span class="kind">Help</span>Add a service to your home reservation</a>
+    <a href="https://www.rentalscaleup.com/airbnb-experiences-our-cross-selling-screenshots-explain-the-tripadvisor-viator-deal/"><span class="kind">Teardown</span>Cross-selling screenshots explained</a>
+  </td>
+</tr>
+
+<tr data-cat="Travel marketplaces" data-sup="no">
+  <td class="name">Viator / Tripadvisor<span class="cat">Travel marketplaces</span></td>
+  <td><span class="pill no">No add-on primitive</span></td>
+  <td><span class="term">product options</span> <span class="term">booking questions</span></td>
+  <td>Extras are modelled either as a priced <b>product option</b> (variant) or as an entirely separate product. There <em>is</em> a genuine interstitial between cart and payment — <b>"Finalize the itinerary"</b> — but <b>no evidence Viator merchandises anything there</b>. A wasted surface.</td>
+  <td>Supplier-configured options; Viator-configured distribution and merchandising. Special Offers / Accelerate are supplier-funded net-rate reductions bought in exchange for merchandising advantage.</td>
+  <td>The Merchant API docs state plainly: <em>"the Viator API is both stateless and does not include services for managing a customer's shopping cart… this functionality must be fully managed on the merchant's side."</em> Real cross-sell is distribution, not in-cart.</td>
+  <td class="refs">
+    <a href="https://agentcenter.viator.com/resources/making-a-booking/"><span class="kind">Docs</span>Making a booking — cart &amp; "Finalize the itinerary"</a>
+    <a href="https://docs.viator.com/partner-api/merchant/technical/"><span class="kind">Docs</span>Merchant Partner API — no cart service</a>
+  </td>
+</tr>
+
+<!-- ===== HOSPITALITY VENDORS ===== -->
+<tr data-cat="Hospitality upsell vendors" data-sup="yes">
+  <td class="name">Hotelchamp<span class="cat">Hospitality upsell vendors</span></td>
+  <td><span class="pill yes">Yes — true in-cart</span></td>
+  <td><span class="term">Dynamic upselling</span></td>
+  <td>The only hospitality vendor found doing genuine in-cart add-ons at time of booking: <em>"increase order value with smart, relevant upsells <b>based on your guests' selected rate</b>."</em></td>
+  <td>Merchant, keyed to the selected rate.</td>
+  <td>Notable as the counter-example to the entire hospitality cohort, which has standardised on post-booking.</td>
+  <td class="refs"><a href="https://www.hotelchamp.com/product/booking-engine"><span class="kind">Product</span>Hotelchamp booking engine</a></td>
+</tr>
+
+<tr data-cat="Hospitality upsell vendors" data-sup="partial">
+  <td class="name">Oracle Nor1<span class="cat">Hospitality upsell vendors</span></td>
+  <td><span class="pill partial">Partial</span></td>
+  <td><span class="term">standby upgrade</span> <span class="term">attribute-based selling</span></td>
+  <td>Booking engine → pre-arrival → OPERA Cloud mobile check-in ("in-path upselling") → front desk. The <b>AI-priced, non-bidding</b> pole of the market.</td>
+  <td>Algorithmic pricing ("perishable price").</td>
+  <td>Sells upgrades <em>and room attributes</em> (high floor, view, renovated) as separate sellable units — attribute-based selling. Radisson Americas: 17% average incremental revenue over booked rate per transaction.</td>
+  <td class="refs"><a href="https://www.oracle.com/hospitality/nor1-hotel-upsell/"><span class="kind">Product</span>Oracle Nor1 hotel upsell</a></td>
+</tr>
+
+<tr data-cat="Hospitality upsell vendors" data-sup="no">
+  <td class="name">Duve<span class="cat">Hospitality upsell vendors</span></td>
+  <td><span class="pill no">No — deliberately</span></td>
+  <td><span class="term">Upsells</span> <span class="term">Smart Tools</span></td>
+  <td>States the anti-in-cart position outright: <em>"You don't want to distract travelers with too many questions or add further decision making to the booking process, as it might hurt your conversion rate. Let the travelers choose you first."</em> Instead: <b>Room Upgrade is step 3 of online check-in</b>, plus a <b>"last-minute upsell page"</b> ending both the pre-check-in and pre-checkout wizards, plus 3 email surfaces.</td>
+  <td>Merchant + declarative rules (not ML): targets on in-house, arrival date, <b>booking source (OTA vs direct)</b>, birthdate, <b>prior purchases</b>, membership, stay count, rate plan, VIP code.</td>
+  <td><b>No unified multi-item cart for upsells</b> — each item is its own order. Pricing can be a <b>"% of accommodation"</b> computed live off the PMS folio. Three booking modes: Instant / Require Approval / <b>Guest Bidding</b>. Publishes unusually candid check-in funnel drop-off data.</td>
+  <td class="refs">
+    <a href="https://duve.com/upselling-and-cross-selling-in-hospitality/"><span class="kind">Guide</span>Upselling and cross-selling in hospitality</a>
+    <a href="https://helpcenter.duve.com/hc/en-us/articles/28051780546717-Upsell-Conditions"><span class="kind">Help</span>Upsell Conditions</a>
+    <a href="https://duve.com/how-to-build-an-online-check-in-flow-guests-actually-complete/"><span class="kind">Data</span>Check-in funnel drop-off by screen</a>
+  </td>
+</tr>
+
+<tr data-cat="Hospitality upsell vendors" data-sup="no">
+  <td class="name">Oaky (Plusgrade)<span class="cat">Hospitality upsell vendors</span></td>
+  <td><span class="pill no">No — pre-arrival</span></td>
+  <td><span class="term">Deals</span> <span class="term">Deal Library</span></td>
+  <td>Three products, none inside the booking engine: <b>Pre-Stay Upsell</b> (two pre-arrival emails, reaches OTA bookers via "OTA Access"), <b>Front Desk Upsell</b> (agent-facing at check-in), <b>In-Stay Upsell</b> (QR + messaging).</td>
+  <td>Merchant catalog + rules-based segmentation + <b>genuinely dynamic room-upgrade pricing</b> (rate-shopping input from Duetto/OTA Insight).</td>
+  <td><b>Deal Library of 100+ pre-built offers in 25+ languages</b> — the merchant never starts from a blank page. That template library is arguably the most transferable idea here. Front desk includes gamification and a leaderboard. A/B test on 400,000 guests drove +75% room-upgrade revenue.</td>
+  <td class="refs">
+    <a href="https://oaky.com/en/results"><span class="kind">Data</span>Oaky results</a>
+    <a href="https://oaky.com/en/products/pre-stay-upsell"><span class="kind">Product</span>Pre-Stay Upsell</a>
+    <a href="https://hoteltechreport.com/success-stories/revenue-management/oaky/pillows-grand-hotel-reylof"><span class="kind">Case</span>Pillows Grand Hotel — 23% conversion</a>
+  </td>
+</tr>
+
+<tr data-cat="Hospitality upsell vendors" data-sup="no">
+  <td class="name">Canary Technologies<span class="cat">Hospitality upsell vendors</span></td>
+  <td><span class="pill no">No — check-in wizard</span></td>
+  <td><span class="term">Canary Upsells</span> <span class="term">Dynamic Upsells</span></td>
+  <td>Post-booking → pre-arrival messaging → <b>inside the mobile check-in wizard, between ID upload and card capture</b> → in-stay AI chat → checkout. "Dynamic" means timing/placement, not dynamic pricing.</td>
+  <td>Merchant catalog + <b>AI-selected moment</b>: "offers are intelligently and automatically presented to guests at key moments of high buyer intent."</td>
+  <td>No app, no login — a personalised deep link opens a mobile card catalog. Purchases are <b>requests</b> that staff approve or deny. Best datapoint in the cohort: at The LINE SF, <b>AI/conversational upsells convert 4× higher than link-based</b> and account for 65% of that hotel's early check-in revenue.</td>
+  <td class="refs">
+    <a href="https://www.canarytechnologies.com/products/hotel-upsells"><span class="kind">Product</span>Canary hotel upsells</a>
+    <a href="https://www.canarytechnologies.com/customers/the-line-sf"><span class="kind">Case</span>The LINE SF — 4× conversational lift</a>
+  </td>
+</tr>
+
+<tr data-cat="Hospitality upsell vendors" data-sup="no">
+  <td class="name">UpsellGuru<span class="cat">Hospitality upsell vendors</span></td>
+  <td><span class="pill no">No — pre-arrival</span></td>
+  <td><span class="term">Bid-for-Upgrade</span></td>
+  <td>Pre-arrival, on-arrival (front desk), in-stay + digital guest directory.</td>
+  <td>Three pricing models simultaneously: <b>guest-named-price auto-confirmed inside preset floor/ceiling</b>, fixed, and dynamic (rate-shopper + PMS).</td>
+  <td>The purest bidding UX in the category: a −/+ stepper on "Daily Additional Amount", a vertical price ladder with a <b>PRICE GRAPH and DEMAND %</b> indicator. Agent side has a leaderboard and a personal commission panel — <b>commission and gamification are baked into the UI</b>. St. Ermin's splits ~30% pre-arrival / <b>70% on-arrival</b> — a useful counterweight to "email is where the money is".</td>
+  <td class="refs">
+    <a href="https://upsellguru.com/driving-profitability-through-personalized-upselling-althoffhotels-success-with-upsellguru/"><span class="kind">Case</span>Althoff — 5–8% pre-arrival conversion</a>
+    <a href="https://upsellguru.com/a-recipe-for-success-st-ermins-hotels-upselling-journey-with-upsellguru/"><span class="kind">Case</span>St. Ermin's — 30/70 split</a>
+  </td>
+</tr>
+
+<!-- ===== RESTAURANTS ===== -->
+<tr data-cat="Restaurants" data-sup="yes">
+  <td class="name">OpenTable<span class="cat">Restaurants</span></td>
+  <td><span class="pill yes">Yes</span></td>
+  <td><span class="term">Experiences</span> <span class="term">Add-ons</span></td>
+  <td>Two constructs. <b>Experiences</b> are the merchandised unit, surfaced on search results pages <b>directly under the reservation timeslot</b>. <b>Add-ons</b> are true optional extras selected <b>inside the booking flow, before payment</b> — wine pairings, truffle supplements, premium menu options.</td>
+  <td>Merchant-configured, marketplace-distributed. No algorithmic add-on recommendation. Built in a linear 10-step wizard (step 7 = "Select optional add-ons").</td>
+  <td>Experiences can be made <b>mandatory</b> for all guests or for a specific party size at chosen times. Product copy reads literally: <em>"Add-ons and upsells — offer extras like wine pairings or premium menu options to increase spend."</em> Staff can also apply add-ons to an existing reservation.</td>
+  <td class="refs">
+    <a href="https://www.opentable.com/restaurant-solutions/products/features/experiences/"><span class="kind">Product</span>Experiences — with all three headline stats</a>
+    <a href="https://www.opentable.com/restaurant-solutions/resources/how-to-set-up-opentable-experience/"><span class="kind">Guide</span>The 10-step setup wizard incl. add-ons</a>
+    <a href="https://www.youtube.com/watch?v=SR7nw6sZuPg"><span class="kind">Video</span>Create an Experience</a>
+  </td>
+</tr>
+
+<tr data-cat="Restaurants" data-sup="yes">
+  <td class="name">Resy / Tock<span class="cat">Restaurants</span></td>
+  <td><span class="pill yes">Yes — scoped</span></td>
+  <td><span class="term">Add-on Items</span></td>
+  <td>Attach to exactly two carriers: <b>prepaid reservations</b> and <b>event tickets</b>. Guests select them at time of booking, alongside the prepayment. No post-booking or pre-arrival add-on email found.</td>
+  <td>100% merchant-configured. No algorithmic recommendation, no cross-venue cross-sell. Items live in an <b>Item Library</b>; Item Categories currently only work for prepaid reservations.</td>
+  <td>Katherine Nomura, GM and partner of Senia (Honolulu), frames the mental model well: <em>"Having additional items available for guests when they're making a reservation or buying a ticket makes it so easy for customers to add something extra to their basket. <b>It's like placing candy near the cash register in a grocery store.</b>"</em> Live examples: wine pairings, A5 Wagyu supplement, all-you-can-drink on a pig-feast ticket, pastry boxes.</td>
+  <td class="refs">
+    <a href="https://blog.resy.com/for-restaurants/see-how-these-restaurants-use-add-on-items-to-increase-their-earnings/"><span class="kind">Blog</span>How restaurants use Add-On Items</a>
+    <a href="https://resy.com/join/experiences/"><span class="kind">Product</span>Go beyond reservations</a>
+  </td>
+</tr>
+
+<!-- ===== HOME & FIELD SERVICES ===== -->
+<tr data-cat="Home &amp; field services" data-sup="yes">
+  <td class="name">Jobber<span class="cat">Home &amp; field services</span></td>
+  <td><span class="pill yes">Yes</span></td>
+  <td><span class="term">Optional Line Items</span></td>
+  <td>At the <b>quote-approval stage</b> — the field-service analogue of a cart. Client opens the quote in Client Hub, ticks/unticks optional items, approves. Selections carry through to the PDF and the converted job.</td>
+  <td>100% merchant. The pro ticks a "Mark as optional" checkbox per line item. No algorithm.</td>
+  <td>Three transferable mechanics: <b>pre-selected defaults</b> ("set up a recommended assortment without locking the client into more than they want"), <b>live total recalculation</b> as items are toggled, and <b>deposit recalculation</b> — a percentage deposit updates as the client adds or removes items. Deselected items render greyed with a "Not included" label rather than disappearing.</td>
+  <td class="refs">
+    <a href="https://help.getjobber.com/en/articles/optional-line-items-on-quotes/"><span class="kind">Help</span>Optional line items on quotes</a>
+  </td>
+</tr>
+
+<tr data-cat="Home &amp; field services" data-sup="yes">
+  <td class="name">ServiceTitan<span class="cat">Home &amp; field services</span></td>
+  <td><span class="pill yes">Yes</span></td>
+  <td><span class="term">Good-Better-Best</span> <span class="term">proposal templates</span></td>
+  <td>Technician presents side-by-side options on-site in the Field Mobile App, customer selects, signs, and the estimate branches to sold-now / sold-later / not-sold-follow-up.</td>
+  <td>Merchant-configured structure + <b>algorithmic pricing</b> — Dynamic Pricing rules adjust numbers by region, season and business unit; member vs non-member pricing renders automatically.</td>
+  <td><b>The single most transferable distinction in this report:</b> ServiceTitan documents two explicit sell modes — <b>Progressive</b> ("each option builds on the previous one") and <b>Additive</b> ("each option is independent; customers can buy any combination. Useful when offering optional add-ons alongside a base repair"). Plus a <b>"Recommended" flag</b> to draw attention, and colour-coded option labels. Their own doc asserts customers pick the middle option most often — so structure the middle tier as what you most want to sell.</td>
+  <td class="refs">
+    <a href="https://help.servicetitan.com/docs/estimates-and-proposals-in-servicetitan-max.md"><span class="kind">Docs</span>Estimates and proposals</a>
+  </td>
+</tr>
+
+<tr data-cat="Home &amp; field services" data-sup="yes">
+  <td class="name">Housecall Pro<span class="cat">Home &amp; field services</span></td>
+  <td><span class="pill yes">Yes</span></td>
+  <td><span class="term">Sales Proposal Tool</span></td>
+  <td>Inside estimates, web and mobile. Tech taps <b>Present</b> to open a "visually optimized proposal view for a side-by-side comparison of options."</td>
+  <td>Merchant, built from saved templates or from scratch on site.</td>
+  <td><b>Multi-option acceptance</b> is supported — the customer can approve more than one option, so add-ons can be accepted alongside a chosen tier. Financing (Wisetack) is positioned explicitly as an upsell enabler to "reduce sticker shock". Per-option expiration dates and visibility controls.</td>
+  <td class="refs">
+    <a href="https://help.housecallpro.com/en/articles/7216553-sales-proposal-tool"><span class="kind">Help</span>Sales Proposal Tool</a>
+  </td>
+</tr>
+
+<tr data-cat="Home &amp; field services" data-sup="unk">
+  <td class="name">Urban Company<span class="cat">Home &amp; field services</span></td>
+  <td><span class="pill unk">Unconfirmed</span></td>
+  <td><span class="term">Bundles</span> (signal only)</td>
+  <td>Homepage markup surfaces "Bundles in Dubai / Sharjah / Abu Dhabi" links pointing at maid-service pages — a real signal that UC merchandises Bundles as a product concept.</td>
+  <td>—</td>
+  <td>The site and help centre are fully client-rendered; no in-cart add-on recommender, naming or attach-rate figure could be verified without a browser session or the mobile app. <b>Worth a manual walkthrough</b> — UC is the platform most anecdotally associated with aggressive in-cart service recommendations.</td>
+  <td class="refs"><a href="https://www.urbancompany.com/"><span class="kind">Live</span>Urban Company</a></td>
+</tr>
+
+<tr data-cat="Home &amp; field services" data-sup="unk">
+  <td class="name">Thumbtack · Angi · TaskRabbit · Rover<span class="cat">Home &amp; field services</span></td>
+  <td><span class="pill unk">Unconfirmed</span></td>
+  <td>—</td>
+  <td>All four render content client-side and returned no usable content to automated fetching. Rover's help centre yielded zero matches for "add-on", so the feature may be named something else entirely.</td>
+  <td>—</td>
+  <td>Needs a browser session. Incidental finding: Jobber ships native integrations with both Angi Leads and Thumbtack, so marketplace lead → field-service quote with optional line items is already a wired path.</td>
+  <td class="refs">
+    <a href="https://help.getjobber.com/en/articles/jobber-and-thumbtack-integration/"><span class="kind">Help</span>Jobber × Thumbtack integration</a>
+  </td>
+</tr>
+
+<!-- ===== E-COMMERCE BENCHMARK ===== -->
+<tr data-cat="E-commerce benchmark" data-sup="yes">
+  <td class="name">Shopify Checkout<span class="cat">E-commerce benchmark</span></td>
+  <td><span class="pill yes">Yes</span></td>
+  <td><span class="term">product offer</span></td>
+  <td>Two products. <b>Pre-purchase</b> offers render via checkout UI extensions — Shopify's own recommended placement is <code>ORDER_SUMMARY4</code>, <em>"outside the order summary"</em> because a product offer is <b>secondary content</b>. <b>Post-purchase</b> offers appear after the order is confirmed but before the thank-you page.</td>
+  <td>App-provided, merchant-positioned in the checkout editor. Pre-purchase extensions on the information/shipping/payment steps are <b>Shopify Plus only</b>.</td>
+  <td><b>The clearest published UX ruleset in existence.</b> Max <b>2</b> pre-purchase offers ("more than two can overwhelm customers"). Max <b>3</b> post-purchase offers accepted per checkout. <b>Secondary buttons only</b> — primary buttons are reserved for Pay now / Next step. <b>No success banner on add</b> — the order summary updating <em>is</em> the confirmation. Documented mobile risk: the order summary is collapsed by default, so the offer isn't visible until expanded.</td>
+  <td class="refs">
+    <a href="https://shopify.dev/docs/apps/build/checkout/product-offers/ux-for-pre-purchase-product-offers"><span class="kind">Docs</span>UX for pre-purchase product offers</a>
+    <a href="https://shopify.dev/docs/apps/build/checkout/product-offers/ux-for-post-purchase-product-offers"><span class="kind">Docs</span>UX for post-purchase product offers</a>
+    <a href="https://shopify.dev/docs/api/checkout-ui-extensions/latest/targets"><span class="kind">Docs</span>Checkout UI extension targets</a>
+  </td>
+</tr>
+
+<tr data-cat="E-commerce benchmark" data-sup="yes">
+  <td class="name">Rebuy<span class="cat">E-commerce benchmark</span></td>
+  <td><span class="pill yes">Yes</span></td>
+  <td><span class="term">Smart Cart</span> <span class="term">Checkout Extensions</span> <span class="term">Post-Purchase Offers</span></td>
+  <td>The only vendor publishing <b>placement-segmented</b> results across all three stages — cart, checkout and post-purchase — which makes it the closest thing to an A/B comparison of the placements.</td>
+  <td>Algorithmic recommendation engine, merchant-tuned. Up to 40 simultaneous post-purchase flows with upsell → downsell branching.</td>
+  <td>Cart-stage lifts cluster around <b>10–18% AOV</b>; checkout-stage around <b>15–27% AOV</b>; post-purchase converts around <b>16%</b>. Rebuy's own framing of why post-purchase wins: <em>"post-purchase offers appear after checkout, so they never interfere with the original sale. More revenue, same conversion rate."</em></td>
+  <td class="refs">
+    <a href="https://www.rebuyengine.com/product/checkout-extensions"><span class="kind">Product</span>Checkout Extensions — 15–27% AOV cases</a>
+    <a href="https://www.rebuyengine.com/product/post-purchase"><span class="kind">Product</span>Post-Purchase Offers — 16.25% conversion</a>
+    <a href="https://www.rebuyengine.com/product/smart-cart"><span class="kind">Product</span>Smart Cart</a>
+  </td>
+</tr>
+
+<tr data-cat="E-commerce benchmark" data-sup="yes">
+  <td class="name">Zipify OCU<span class="cat">E-commerce benchmark</span></td>
+  <td><span class="pill yes">Yes</span></td>
+  <td><span class="term">One Click Upsell</span></td>
+  <td>Spans every placement: product page, pre-purchase popup, slide-cart drawer, in-checkout (Plus only), post-purchase page, thank-you page, plus downsells.</td>
+  <td>Merchant-configured funnels with built-in split testing.</td>
+  <td>Publishes a blended <b>16.2% average conversion rate</b> across its offers — which is the most useful single take-rate benchmark available, and lands within 0.05pt of Rebuy's independently reported 16.25% post-purchase figure. Both are vendor-reported.</td>
+  <td class="refs">
+    <a href="https://zipify.com/apps/ocu/"><span class="kind">Product</span>Zipify OneClickUpsell</a>
+    <a href="https://apps.shopify.com/zipify-oneclickupsell"><span class="kind">Reviews</span>Shopify App Store listing</a>
+  </td>
+</tr>
+
+</tbody>
+</table>
+</div>
+</section>
+
+<!-- ============================= PATTERNS ============================= -->
+<section>
+<h2><span class="num">03</span>The four placement schools</h2>
+<p class="lede">Strip away the branding and every implementation lands in one of four buckets. They are not equally good, and the choice is largely determined by whether your add-ons carry duration.</p>
+
+<h3>A · Interstitial step after service selection, before time (dominant)</h3>
+<p>Fresha, Timely, Phorest, Boulevard and SimplyBook.me all put a dedicated screen between "which service" and "when". Timely titles it <b>"Enhance your experience"</b> with explicit <b>Add / Skip this step</b> buttons. This exists because add-ons that add minutes must be known before availability is computed — SimplyBook.me documents the failure mode plainly: on templates where the add-on step comes after slot selection, an incompatible combination throws a booking error.</p>
+
+<h3>B · Inline on the service-selection screen</h3>
+<p>Acuity puts an "Add to Appointment" checkbox list directly above the calendar, on the same page. Lower friction, no extra step, but far less prominent — and it competes for attention with the calendar itself.</p>
+
+<h3>C · Cart / checkout stage</h3>
+<p>Vagaro is the only appointment platform with a real cart model: add-ons flow into the Shopping Cart and remain editable at the POS checkout screen. In tours &amp; activities the pattern is more mature — FareHarbor's Combos interstitial fires <em>after booking details, before payment details</em>; Xola's XolaBot injects a modal after "Continue"; Rezdy deliberately puts upsells in the sticky right rail <b>below the order total</b> "so that the checkout flow is not impacted".</p>
+
+<h3>D · Post-purchase / post-booking</h3>
+<p>The entire hospitality vendor cohort lives here, and Bókun's "Upsell" goes furthest — it creates an entirely <b>separate booking</b> rather than modifying the original. Revinate's benchmark suggests this is not the consolation prize it looks like: the confirmation email produced <b>$86 of upsell revenue per booking versus $82</b> from the pre-arrival email.</p>
+
+<div class="callout warn">
+<b>The pattern nobody uses, and why it matters.</b> Almost no service-booking platform puts add-ons on the <em>payment</em> screen. Checkfront states the rule explicitly: at checkout, offer only low-consideration items — gratuity, small gear, parking — because <em>"the guest has made their decision, so asking them to make another big one can increase abandonment."</em> Airlines are the conspicuous exception, and they are currently under UK CMA investigation for it.
+</div>
+</section>
+
+<!-- ============================= GALLERY ============================= -->
+<section>
+<h2><span class="num">04</span>Screenshots</h2>
+<p class="lede">Live screenshots pulled from each platform's own documentation. Images load from the vendors' CDNs — a few may fail if a help centre rotates its asset URLs; the caption link always goes to the source article.</p>
+
+<h3>Appointment &amp; services booking</h3>
+<div class="gal" id="gal1">
+  <figure>
+    <div class="imgbox"><img loading="lazy" src="https://support.phorest.com/hc/article_attachments/34699353423506" alt="Phorest online booking add-on list"></div>
+    <div class="fallback">Image unavailable — open the source article below.</div>
+    <figcaption><b>Phorest — client-facing online booking</b>The linked add-on list shown after the primary service is chosen. Phorest recommends ~5 add-ons from no more than 2 categories. <a href="https://support.phorest.com/hc/en-us/articles/34677418988050-How-do-I-create-Add-On-services-and-how-do-they-work">Source</a></figcaption>
+  </figure>
+  <figure>
+    <div class="imgbox"><img loading="lazy" src="https://help.acuityscheduling.com/hc/article_attachments/29499052341517" alt="Acuity Add to Appointment section above the calendar"></div>
+    <div class="fallback">Image unavailable — open the source article below.</div>
+    <figcaption><b>Acuity — "Add to Appointment", inline</b>The checkbox list sits directly above the staff selector and calendar on the same booking screen. No extra step. <a href="https://help.acuityscheduling.com/hc/en-us/articles/16676886445837-Using-Acuity-Scheduling-add-ons">Source</a></figcaption>
+  </figure>
+  <figure>
+    <div class="imgbox"><img loading="lazy" src="https://help.simplybook.me/images/9/98/Service_add_ons_with_duration_client_side.png" alt="SimplyBook.me client-side add-on step"></div>
+    <div class="fallback">Image unavailable — open the source article below.</div>
+    <figcaption><b>SimplyBook.me — client-side add-on step</b>Image + description + price per add-on, with duration. On modern templates this step precedes time selection so availability accounts for the added minutes. <a href="https://help.simplybook.me/index.php?title=Service_Add-Ons_custom_feature">Source</a></figcaption>
+  </figure>
+  <figure>
+    <div class="imgbox"><img loading="lazy" src="https://support.vagaro.com/hc/article_attachments/52657835865755" alt="Vagaro add-on selector"></div>
+    <div class="fallback">Image unavailable — open the source article below.</div>
+    <figcaption><b>Vagaro — Add-On selector</b>Two tabs: "Assigned to Service" and "All Add-Ons". Staff can pull any add-on from the global list at checkout. <a href="https://support.vagaro.com/hc/en-us/articles/10796001356571-Apply-Add-ons-When-Booking-or-Checking-Out">Source</a></figcaption>
+  </figure>
+  <figure>
+    <div class="imgbox"><img loading="lazy" src="https://support.vagaro.com/hc/article_attachments/52657821484699" alt="Vagaro add-on line item in the shopping cart"></div>
+    <div class="fallback">Image unavailable — open the source article below.</div>
+    <figcaption><b>Vagaro — add-on inside the Shopping Cart</b>The add-on lands as its own cart line carrying the code <code>addon</code>; staff can reprice or discount it via the ⋯ menu. <a href="https://support.vagaro.com/hc/en-us/articles/10796001356571-Apply-Add-ons-When-Booking-or-Checking-Out">Source</a></figcaption>
+  </figure>
+  <figure>
+    <div class="imgbox"><img loading="lazy" src="https://images.fresha.com/fresha-cms/Group_199_f2edb55a7b.jpg" alt="Fresha mobile add-on flow"></div>
+    <div class="fallback">Image unavailable — open the source article below.</div>
+    <figcaption><b>Fresha — add-on group on mobile</b>Each group carries a merchant-authored prompt ("Choose your hair conditioner") plus min/max/quantity limits. <a href="https://www.fresha.com/help-center/knowledge-base/catalog/101649-create-service-add-ons">Source</a></figcaption>
+  </figure>
+  <figure>
+    <div class="imgbox"><img loading="lazy" src="https://images.fresha.com/fresha-cms/Group_491_647247497a.jpg" alt="Fresha add-on group configuration"></div>
+    <div class="fallback">Image unavailable — open the source article below.</div>
+    <figcaption><b>Fresha — add-on group configuration</b>Reusable groups linked to many services, with additional price, additional duration, tax and commission settings per option. <a href="https://www.fresha.com/help-center/knowledge-base/catalog/101649-create-service-add-ons">Source</a></figcaption>
+  </figure>
+  <figure>
+    <div class="imgbox"><img loading="lazy" src="https://support.phorest.com/hc/article_attachments/34682797374610" alt="Phorest Linked Addons configuration tab"></div>
+    <div class="fallback">Image unavailable — open the source article below.</div>
+    <figcaption><b>Phorest — "Linked Addons" configuration</b>Add-ons are linked per primary service; multi-location chains manage centrally with per-location overrides. <a href="https://support.phorest.com/hc/en-us/articles/34677418988050-How-do-I-create-Add-On-services-and-how-do-they-work">Source</a></figcaption>
+  </figure>
+</div>
+
+<h3>Tours, activities &amp; experiences</h3>
+<div class="gal">
+  <figure>
+    <div class="imgbox"><img loading="lazy" src="https://support.xola.com/hs-fs/hubfs/Add%20on%20Upsell-1.gif" alt="Xola add-on upsell modal in a live checkout"></div>
+    <div class="fallback">Image unavailable — open the source article below.</div>
+    <figcaption><b>Xola — the upsell modal, live</b>Animated capture of XolaBot firing after "Continue", before payment. Max 3 add-ons, one shot only, suppressed if anything is already in the cart. <a href="https://support.xola.com/xolabot-upsell-add-ons">Source</a></figcaption>
+  </figure>
+  <figure>
+    <div class="imgbox"><img loading="lazy" src="https://support.checkfront.com/hc/article_attachments/19868202552732" alt="Checkfront Add Upsell modal"></div>
+    <div class="fallback">Image unavailable — open the source article below.</div>
+    <figcaption><b>Checkfront — the Add Upsell modal</b>The most complete configuration model found: opt-in (preselected / optional / required), price (full / free / % of parent), date restrictions with relative offsets, time-adjustment, guest-type inheritance. <a href="https://support.checkfront.com/hc/en-us/articles/19868202623772-Adding-upsells-to-your-products">Source</a></figcaption>
+  </figure>
+  <figure>
+    <div class="imgbox"><img loading="lazy" src="https://support.checkfront.com/hc/article_attachments/19868064012700" alt="Checkfront upsell preselected in the booking flow"></div>
+    <div class="fallback">Image unavailable — open the source article below.</div>
+    <figcaption><b>Checkfront — preselected optional upsell</b>"Picnic Basket" shown preselected as an optional add-on in the guest flow. Note Checkfront elsewhere warns pre-checked boxes "can burn trust". <a href="https://support.checkfront.com/hc/en-us/articles/19868280874012-Managing-upsells-for-your-product">Source</a></figcaption>
+  </figure>
+  <figure>
+    <div class="imgbox"><img loading="lazy" src="https://support.rezdy.com/hc/article_attachments/19867793357212" alt="Rezdy checkout with upsells in the right rail"></div>
+    <div class="fallback">Image unavailable — open the source article below.</div>
+    <figcaption><b>Rezdy — upsells in the sticky right rail</b>Deliberately placed <em>below</em> the Item/Order Totals "so that the checkout flow is not impacted" — non-blocking, not an interstitial. <a href="https://support.rezdy.com/hc/en-us/articles/19867826365852-The-Updated-Checkout-Flow">Source</a></figcaption>
+  </figure>
+  <figure>
+    <div class="imgbox"><img loading="lazy" src="https://cdn.prod.website-files.com/63c9874aa33ce9a6f0ab0e91/69cd303fcb6dcbe325a684bb_AddonNEW1%20(1).png" alt="Peek Pro add-ons and bundles"></div>
+    <div class="fallback">Image unavailable — open the source article below.</div>
+    <figcaption><b>Peek Pro — add-ons &amp; bundles</b>In-flow "pre-experience upselling", which Peek claims "boosts revenue from orders by an average of 9%". Bundles ship in optional-upsell, discounted-combo and required-combo variants, but carry no published lift figure. <a href="https://www.peekpro.com/product/grow-revenue">Source</a></figcaption>
+  </figure>
+  <figure>
+    <div class="imgbox"><img loading="lazy" src="https://fareharbor.com/wp-content/uploads/2024/04/IMG_7125.png" alt="FareHarbor Combos in a live booking flow"></div>
+    <div class="fallback">Image unavailable — open the source article below.</div>
+    <figcaption><b>FareHarbor — Combos</b>The interstitial fires after booking details but before payment details. Max 3 combo options recommended, to limit "booking fatigue and cart abandonment". <a href="https://fareharbor.com/blog/maximize-sales-and-customer-satisfaction-introducing-fareharbor-combos/">Source</a></figcaption>
+  </figure>
+  <figure>
+    <div class="imgbox"><img loading="lazy" src="https://support.regiondo.com/hc/article_attachments/27413550398236" alt="GetYourGuide add-on type dropdown"></div>
+    <div class="fallback">Image unavailable — open the source article below.</div>
+    <figcaption><b>GetYourGuide — the six-category add-on taxonomy</b>FOOD, DRINKS, SAFETY, TRANSPORT, DONATION, OTHERS. A fixed taxonomy is what makes channel-manager auto-mapping possible. <a href="https://support.regiondo.com/hc/en-us/articles/27413550404892-GetYourGuide-Connecting-Merchandise-Add-Ons">Source</a></figcaption>
+  </figure>
+  <figure>
+    <div class="imgbox"><img loading="lazy" src="https://support.rezdy.com/hc/article_attachments/19867720518684" alt="Rezdy per-product extras selection"></div>
+    <div class="fallback">Image unavailable — open the source article below.</div>
+    <figcaption><b>Rezdy — per-product Extras selection</b>A global Extras library, opted into per product, with three quantity modes: Customer's choice / Per Order / Per Quantity. <a href="https://support.rezdy.com/hc/en-us/articles/19867758422300-Product-Extras-tab">Source</a></figcaption>
+  </figure>
+</div>
+
+<h3>Travel &amp; hospitality</h3>
+<div class="gal">
+  <figure>
+    <div class="imgbox"><img loading="lazy" src="https://cdn.prod.website-files.com/62d0341d687fc5fc25e03d0f/6824b883b0b9427a86610aaa_AD_4nXeHWmRWz-okSNWq0Jb0tEV_weplkIyhU8RD0me-lZgU5812vQxFqpo6BvcZQnd_dfV2v5VjVISHl5Tn1yN_6FqElGdE67_Rn2U5wGnhK4Qpl9fxR6NcqJwAwGweaUhZzW3PuCgfeA.png" alt="Ryanair checkout upsells stacked above the Pay button"></div>
+    <div class="fallback">Image unavailable — open the source article below.</div>
+    <figcaption><b>Ryanair — "last chance" upsells above the Pay button</b>The rare case of upsells on the payment screen itself. Note the forced opt-out on insurance — the exact class of behaviour the UK CMA is now investigating. <a href="https://upsell.com/blog/upsell-funnel">Source</a></figcaption>
+  </figure>
+  <figure>
+    <div class="imgbox"><img loading="lazy" src="https://cdn.prod.website-files.com/62d0341d687fc5fc25e03d0f/6824b88415bc8c0d16034981_AD_4nXfmdqrHH9iR2vpNAcMZuQBHHK28D_S-HNfgzfd13GZQPt65RvFGcCfxQi9pQ-5XVmWcqGlqLTJNrF-MnbZyixKKRIcA1m2O_chRjWIz1dWkJj7aYxHAqAhJJYVRICMyW9tN8HcnRg.png" alt="Ryanair downsell modal"></div>
+    <div class="fallback">Image unavailable — open the source article below.</div>
+    <figcaption><b>Ryanair — the downsell modal</b>"REGULAR is ideal for your trip!" fires immediately after the customer declines the bundle. The same item is then sold again standalone, and again at checkout. <a href="https://upsell.com/blog/upsell-funnel">Source</a></figcaption>
+  </figure>
+  <figure>
+    <div class="imgbox"><img loading="lazy" src="https://diggintravel.com/wp-content/uploads/2017/10/Vehicle-rent-bundle-display-and-upsell.png" alt="Winning bundle grid variant from an A/B test"></div>
+    <div class="fallback">Image unavailable — open the source article below.</div>
+    <figcaption><b>The winning variant — bundle grid</b>Against an à-la-carte control this lost 1% conversion but gained 14% AOV and 13% per-session value. The reason to measure per-session value. <a href="https://diggintravel.com/airline-branded-fares-upsell-case-study/">Source</a></figcaption>
+  </figure>
+  <figure>
+    <div class="imgbox"><img loading="lazy" src="https://news.airbnb.com/wp-content/uploads/sites/4/2025/05/Trips-tab-US.jpg" alt="Airbnb Trips tab with services and experiences"></div>
+    <div class="fallback">Image unavailable — open the source article below.</div>
+    <figcaption><b>Airbnb — the Trips tab</b>The entire cross-sell surface. Paid partner offers sit <em>above</em> check-in details; gaps in the itinerary are the sales trigger. Nothing appears in the stay checkout. <a href="https://news.airbnb.com/airbnb-2025-summer-release/">Source</a></figcaption>
+  </figure>
+  <figure>
+    <div class="imgbox"><img loading="lazy" src="https://helpcenter.duve.com/hc/article_attachments/7804567966749" alt="Duve custom product builder with live guest-side preview"></div>
+    <div class="fallback">Image unavailable — open the source article below.</div>
+    <figcaption><b>Duve — upsell builder with live guest preview</b>The merchant sees exactly what the guest will see, side by side, while configuring. A strong argument for building the preview pane into the merchant flow. <a href="https://helpcenter.duve.com/hc/en-us/articles/7804665477917-Upsells-How-to-create-Custom-Services">Source</a></figcaption>
+  </figure>
+  <figure>
+    <div class="imgbox"><img loading="lazy" src="https://colossal-caracara.transforms.svdcdn.com/staging/home/deal-library-cards.webp" alt="Oaky Deal Library card grid"></div>
+    <div class="fallback">Image unavailable — open the source article below.</div>
+    <figcaption><b>Oaky — the Deal Library</b>100+ pre-built offers in 25+ languages. The merchant never configures an upsell from a blank page — arguably the most transferable idea in the hospitality cohort. <a href="https://oaky.com/en">Source</a></figcaption>
+  </figure>
+  <figure>
+    <div class="imgbox"><img loading="lazy" src="https://blog.resy.com/wp-content/uploads/2022/09/Gravitas-add-ons-800x517.webp" alt="Resy add-on items at Gravitas, Washington DC"></div>
+    <div class="fallback">Image unavailable — open the source article below.</div>
+    <figcaption><b>Resy — Add-on Items in a live checkout</b>Premium beverage pairing and an A5 Wagyu supplement, selected inside the prepaid reservation flow. Senia's GM: <em>"like placing candy near the cash register."</em> <a href="https://blog.resy.com/for-restaurants/see-how-these-restaurants-use-add-on-items-to-increase-their-earnings/">Source</a></figcaption>
+  </figure>
+  <figure>
+    <div class="imgbox"><img loading="lazy" src="https://upsellguru.com/wp-content/uploads/2024/11/email-templates.png" alt="UpsellGuru pre-arrival email deal cards"></div>
+    <div class="fallback">Image unavailable — open the source article below.</div>
+    <figcaption><b>UpsellGuru — pre-arrival deal cards</b>The bid-for-upgrade model. Guest names a price inside a preset floor and ceiling; anything above the floor auto-confirms. <a href="https://upsellguru.com/pre-arrival-upselling/">Source</a></figcaption>
+  </figure>
+</div>
+
+<h3>E-commerce &amp; field-service benchmarks</h3>
+<div class="gal">
+  <figure>
+    <div class="imgbox"><img loading="lazy" src="https://shopify-assets.shopifycdn.com/shopifycloud/shopify-dev/production/assets/assets/images/apps/checkout/ux-guidelines/ux-product-offer-placement-DdkLqPKe.png" alt="Shopify recommended product offer placement"></div>
+    <div class="fallback">Image unavailable — open the source article below.</div>
+    <figcaption><b>Shopify — recommended offer placement</b>Below the order summary, not inside it: a product offer is <b>secondary content</b>, and the summary's line items and money lines should stay scannable together. <a href="https://shopify.dev/docs/apps/build/checkout/product-offers/ux-for-pre-purchase-product-offers">Source</a></figcaption>
+  </figure>
+  <figure>
+    <div class="imgbox"><img loading="lazy" src="https://shopify-assets.shopifycdn.com/shopifycloud/shopify-dev/production/assets/assets/images/apps/checkout/ux-guidelines/ux-guidelines-max-prod-offers-CyJ3VvZl.png" alt="Shopify maximum two product offers rule"></div>
+    <div class="fallback">Image unavailable — open the source article below.</div>
+    <figcaption><b>Shopify — "only show two product offers at a time"</b>"Adding more than two offers can overwhelm customers, making it difficult for them to choose a product." <a href="https://shopify.dev/docs/apps/build/checkout/product-offers/ux-for-pre-purchase-product-offers">Source</a></figcaption>
+  </figure>
+  <figure>
+    <div class="imgbox"><img loading="lazy" src="https://shopify-assets.shopifycdn.com/shopifycloud/shopify-dev/production/assets/assets/images/api/cross-sells/post-purchase-animation-BpQ7Cf_F.gif" alt="Shopify post-purchase offer animation"></div>
+    <div class="fallback">Image unavailable — open the source article below.</div>
+    <figcaption><b>Shopify — post-purchase offer</b>Appears after the order is confirmed but before the thank-you page. Accept button text is fixed by Shopify: <code>Pay now • [total]</code>. Max 3 accepted per checkout. <a href="https://shopify.dev/docs/apps/build/checkout/product-offers/ux-for-post-purchase-product-offers">Source</a></figcaption>
+  </figure>
+  <figure>
+    <div class="imgbox"><img loading="lazy" src="https://help.getjobber.com/_astro/27894965208215.fWb8_rn1_oiQ4I.webp" alt="Jobber client selecting optional line items"></div>
+    <div class="fallback">Image unavailable — open the source article below.</div>
+    <figcaption><b>Jobber — optional line items, client side</b>Toggling items recalculates the total live — and recalculates a percentage deposit with it. Pre-selected defaults act as a "recommended assortment". <a href="https://help.getjobber.com/en/articles/optional-line-items-on-quotes/">Source</a></figcaption>
+  </figure>
+  <figure>
+    <div class="imgbox"><img loading="lazy" src="https://cdn.document360.io/961862ab-d0f2-4d91-bb62-a62ee8184eff/Images/Documentation/estimates-and-proposals-in-servicetitan-max-image-l6r2peuh.png" alt="ServiceTitan good-better-best side by side options"></div>
+    <div class="fallback">Image unavailable — open the source article below.</div>
+    <figcaption><b>ServiceTitan — Good-Better-Best</b>Two documented sell modes: <b>Progressive</b> (each tier includes the last) and <b>Additive</b> (independent options, any combination) — the cleanest articulation of bundle vs add-on semantics found. <a href="https://help.servicetitan.com/docs/estimates-and-proposals-in-servicetitan-max.md">Source</a></figcaption>
+  </figure>
+  <figure>
+    <div class="imgbox"><img loading="lazy" src="https://cdn.shopify.com/app-store/listing_images/aabc0942fb57526ee1fe892775edab52/desktop_screenshot/CPnZ-JqTm4EDEAE=.png" alt="Zipify OCU pre-purchase in-cart upsell"></div>
+    <div class="fallback">Image unavailable — open the source article below.</div>
+    <figcaption><b>Zipify OCU — pre-purchase in-cart upsell</b>Same vendor runs cart, checkout and post-purchase placements, reporting a blended 16.2% take rate across all of them. <a href="https://apps.shopify.com/zipify-oneclickupsell">Source</a></figcaption>
+  </figure>
+</div>
+</section>
+
+<!-- ============================= BENCHMARKS ============================= -->
+<section>
+<h2><span class="num">05</span>Benchmark data</h2>
+<p class="lede">Every hard number found, with a reliability marker. Read the vendor-reported figures as directional only — no methodology, no control group, obvious selection bias. The platform-limit rows are authoritative.</p>
+
+<table class="datatable">
+<thead><tr><th style="width:130px">Figure</th><th>What it measures</th><th style="width:180px">Source</th><th style="width:100px">Reliability</th></tr></thead>
+<tbody>
+<tr><td class="fig">&gt;50% / ~45%</td><td>Share of air travellers buying add-ons vs base fare only. <b>The only credible industry-wide attach figure that exists in any category.</b></td><td><a href="https://ideaworkscompany.com/wp-content/uploads/2025/11/Press-Release-197-Global-Estimate-2025.pdf">IdeaWorks PR 197, Nov 2025</a></td><td><span class="rel hard">Industry</span></td></tr>
+<tr><td class="fig">+50%</td><td>Spend per guest on Experience covers vs standard covers — OpenTable POS data, 2025 US</td><td><a href="https://www.opentable.com/restaurant-solutions/products/features/experiences/">OpenTable</a></td><td><span class="rel vendor">First-party</span></td></tr>
+<tr><td class="fig">+15–30%</td><td>Average booking value for tour operators who sell add-ons well vs those selling the experience alone. On a $200 booking, $30–60 extra. <b>Caveat:</b> the source blog is behind a JavaScript wall and could not be re-fetched for verification — treat as a captured vendor claim.</td><td><a href="https://www.checkfront.com/blog/add-ons-selling-beyond-the-booking/">Checkfront, Jun 2026</a></td><td><span class="rel vendor">Vendor · unverified</span></td></tr>
+<tr><td class="fig">+19%</td><td>Increase in bookings containing 2+ items, after introducing the Combos interstitial between booking details and payment</td><td><a href="https://fareharbor.com/blog/maximize-sales-and-customer-satisfaction-introducing-fareharbor-combos/">FareHarbor</a></td><td><span class="rel vendor">Vendor</span></td></tr>
+<tr><td class="fig">−1% / +14% / +13%</td><td>Bundle grid vs à-la-carte page: conversion / AOV / <b>per-session value</b>. The clearest argument for changing your success metric.</td><td><a href="https://diggintravel.com/airline-branded-fares-upsell-case-study/">Diggintravel A/B test</a></td><td><span class="rel hard">A/B test</span></td></tr>
+<tr><td class="fig">16.2% / 16.25%</td><td>Blended upsell take rate (Zipify, all placements) and post-purchase conversion (Rebuy, Momofuku). Two independent vendors landing within 0.05pt.</td><td><a href="https://zipify.com/apps/ocu/">Zipify</a> · <a href="https://www.rebuyengine.com/product/post-purchase">Rebuy</a></td><td><span class="rel vendor">Vendor</span></td></tr>
+<tr><td class="fig">15% / 27% / 27%</td><td>AOV lift from <b>checkout-stage</b> offers (Guru Nanda, MaryRuth Organics, Cabau Lifestyle)</td><td><a href="https://www.rebuyengine.com/product/checkout-extensions">Rebuy Checkout Extensions</a></td><td><span class="rel vendor">Vendor</span></td></tr>
+<tr><td class="fig">10–18.65%</td><td>AOV lift from <b>cart-stage</b> recommendation widgets (DIME Beauty, Momofuku, Manssion)</td><td><a href="https://www.rebuyengine.com/">Rebuy Smart Cart</a></td><td><span class="rel vendor">Vendor</span></td></tr>
+<tr><td class="fig">$86 vs $82</td><td>Upsell revenue per booking from the <b>confirmation email</b> (67.3% open) vs the pre-arrival email (57.7% open, 2.5% conversion). Post-purchase out-earns pre-arrival.</td><td><a href="https://www.revinate.com/hospitality-report/email-channel-global/">Revinate 2026 Benchmark</a></td><td><span class="rel hard">Benchmark</span></td></tr>
+<tr><td class="fig">4×</td><td>How much better AI/conversational upsells convert than link-based ones — and they account for 65% of that hotel's early check-in revenue</td><td><a href="https://www.canarytechnologies.com/customers/the-line-sf">Canary / The LINE SF</a></td><td><span class="rel vendor">Case study</span></td></tr>
+<tr><td class="fig">5–8%</td><td>Pre-arrival upsell conversion (portfolio average vs top properties), at ~85% profit flow-through</td><td><a href="https://upsellguru.com/driving-profitability-through-personalized-upselling-althoffhotels-success-with-upsellguru/">UpsellGuru / Althoff</a></td><td><span class="rel vendor">Case study</span></td></tr>
+<tr><td class="fig">8–12%</td><td>Upsell conversion portfolio-wide across 1,050+ properties (offers sent during online check-in)</td><td><a href="https://duve.com/customized-upsells-platform-for-hotels/">Duve</a></td><td><span class="rel vendor">Vendor</span></td></tr>
+<tr><td class="fig">45% / 30%</td><td>Share of attribute-based-selling buyers purchasing <b>2+ features</b>; share of upsell revenue coming from <em>within the already-booked room type</em>. Argues strongly for stacking multiple small add-ons over one big upgrade.</td><td><a href="https://www.prweb.com/releases/roomdex-announces-new-attribute-based-selling-abs-revenue-performance-results-827615757.html">ROOMDEX</a></td><td><span class="rel vendor">Vendor</span></td></tr>
+<tr><td class="fig">70% / 30%</td><td>Split of upsell revenue on-arrival vs pre-arrival at St. Ermin's (331 rooms, £83 average per night, £48k/month). A counterweight to email-first thinking.</td><td><a href="https://upsellguru.com/a-recipe-for-success-st-ermins-hotels-upselling-journey-with-upsellguru/">UpsellGuru</a></td><td><span class="rel vendor">Case study</span></td></tr>
+<tr><td class="fig">+9%</td><td>Order revenue lift from in-flow "pre-experience upselling" add-ons. (Peek's public pages carry no separate bundle-lift figure; adjacent published numbers are +18% abandoned-booking recapture and 33% waitlist conversion.)</td><td><a href="https://www.peekpro.com/product/grow-revenue">Peek Pro</a></td><td><span class="rel vendor">Vendor</span></td></tr>
+<tr><td class="fig">$10.1M</td><td>Trip Protection revenue generated for operators in 2025 — delivered as a single checkbox that FareHarbor recommends be auto-selected</td><td><a href="https://fareharbor.com/blog/boost-your-earning-potential-with-effective-upselling-techniques/">FareHarbor</a></td><td><span class="rel vendor">Vendor</span></td></tr>
+<tr><td class="fig">26.7% / 23.8% / 17.5%</td><td>Share of upsell <b>revenue</b> by category: wellness &amp; spa / room upgrades / restaurant. Flowers + kids' activities + car &amp; bike rental combined = 1.2%. The best public data on <em>what actually sells</em>.</td><td><a href="https://insights.ehotelier.com/insights/2020/02/04/best-upselling-bets-research-shows-what-guests-spend-extra-on/">GuestJoy, n≈1,000 hotels, 25 countries</a></td><td><span class="rel hard">Survey</span></td></tr>
+<tr><td class="fig">"relatively low"</td><td>Booking.com's own characterisation of accommodation → experience attach rates. Even the best-resourced marketplace in travel has not solved post-booking cross-sell.</td><td><a href="https://arival.travel/article/bookings-quiet-return-to-tours-attractions/">Arival, quoting Booking.com</a></td><td><span class="rel hard">On record</span></td></tr>
+<tr><td class="fig">~31% / ~70%</td><td>Check-in funnel drop-off: share of <em>all</em> drop-off occurring on the welcome page, and cumulative drop-off by screen 3. Unusually candid, and directly transferable to any multi-step booking flow.</td><td><a href="https://duve.com/how-to-build-an-online-check-in-flow-guests-actually-complete/">Duve</a></td><td><span class="rel vendor">Vendor</span></td></tr>
+<tr><td class="fig">max 2 / max 3</td><td>Shopify's hard platform limits: 2 pre-purchase product offers shown at once; 3 post-purchase offers accepted per checkout; ≤2s network budget; $0.50 minimum order value.</td><td><a href="https://shopify.dev/docs/apps/build/checkout/product-offers">Shopify docs</a></td><td><span class="rel hard">Official</span></td></tr>
+<tr><td class="fig">3–4 / ≤6 / ~5</td><td>Convergent in-flow option caps across independent vendors: Checkfront 3–4, FareHarbor 3 combos and ≤6 custom fields, XolaBot 3, Phorest ~5 from ≤2 categories, Timely ≤10.</td><td>Multiple vendors</td><td><span class="rel hard">Convergent</span></td></tr>
+<tr><td class="fig">10–25%</td><td>Recommended add-on price as a share of the base service price</td><td><a href="https://www.checkfront.com/blog/add-ons-selling-beyond-the-booking/">Checkfront</a></td><td><span class="rel vendor">Guidance</span></td></tr>
+</tbody>
+</table>
+
+<div class="callout warn">
+<b>Two numbers to be careful with.</b> A widely-circulated claim that Klook's add-ons lift AOV by ~18% traces back to an AI content farm and should be treated as fabricated. And Canary's own site quotes its headline upsell lift as both 200% and 250% on different pages. Neither number was used above.
+</div>
+</section>
+
+<!-- ============================= IMPLICATIONS ============================= -->
+<section>
+<h2><span class="num">06</span>What this implies for the feature</h2>
+
+<ul class="tight">
+  <li><b>Decide the duration question first — it determines placement, not the other way round.</b> If add-on services consume calendar time, the picker must come before slot selection, and you inherit the whole SimplyBook.me failure mode when it doesn't. If you want add-ons genuinely <em>in</em> the cart and at checkout, the cleanest path is Boulevard's and Phorest's: support <b>0-minute add-ons</b> as a first-class type, and reserve those for the checkout surface.</li>
+
+  <li><b>Support all three quantity semantics from day one, because everyone retrofits them.</b> Rezdy calls them <em>Per Order / Per Quantity / Customer's choice</em>; Bókun <em>No maximum / Maximum by participant / Custom</em>; Checkfront gets there via "inherit parent guest types"; Xola crosses Quantity/Checkbox/Dropdown with "ask organizer only / ask each attendee". Four independent products, same three modes.</li>
+
+  <li><b>Model an add-on as multiple offer moments, not one SKU with one price.</b> This is the airline lesson and it's the single most under-copied idea in the service-booking category. Ryanair sells the same bag allowance at four different prices at four different moments. You don't need dark patterns to use the structure — but a data model where "offer" is separate from "product" is what makes a second, cheaper checkout-stage nudge possible at all.</li>
+
+  <li><b>Ship a template library, not an empty configuration screen.</b> Oaky's Deal Library (100+ pre-built offers in 25+ languages) and ServiceTitan's proposal templates both exist because merchants don't reliably invent good add-ons. Given Wix's long tail of small businesses, the difference between "configure your add-ons" and "here are 12 add-ons that work for hair salons" is likely the difference between 5% and 50% merchant adoption.</li>
+
+  <li><b>Give the merchant a live guest-side preview.</b> Duve's builder shows the merchant exactly what the client will see while they configure. Cheap to build, and it directly addresses the trust problem of a merchant enabling something that appears in their own checkout.</li>
+
+  <li><b>Copy Klook's cascading "(Optional)" selector with an explicit <code>None</code> default.</b> It is the most directly transferable client-facing pattern found — it makes skipping a first-class, visible choice rather than an omission, which is both better UX and safer ground given the CMA's current drip-pricing scrutiny.</li>
+
+  <li><b>Do not pre-check boxes.</b> Checkfront names this as an anti-pattern that "can burn trust… may run afoul of consumer protection rules." SimplyBook.me and Bókun both permit pre-selection, and FareHarbor recommends auto-selecting trip protection — but the regulatory direction of travel is clearly against it. Pre-<em>highlighting</em> (ServiceTitan's "Recommended" flag, Jobber's recommended assortment) achieves most of the lift without the exposure.</li>
+
+  <li><b>Decide early whether products can be add-ons.</b> Timely (<em>"Can I offer product add-ons? Not at this stage"</em>) and Phorest (<em>"Retail Add-ons are currently not supported"</em>) both rule it out explicitly; Fresha's are services-only in practice. Vagaro doesn't rule it out, and that's precisely why it has a real cart. If the goal is "more services in cart and checkout" you can start services-only — but the cart abstraction you build now determines whether products can join later without a rewrite.</li>
+
+  <li><b>Constrain the add-on taxonomy if distribution matters.</b> GetYourGuide's six fixed categories are what let Regiondo and TourCMS auto-map inventory in. Free-text types make every future integration bespoke.</li>
+
+  <li><b>Instrument per-session value, not conversion rate.</b> The one real A/B test in this research would have been killed by a conversion-rate guardrail while creating 13% more value per session. Set the success metric before shipping the experiment.</li>
+</ul>
+
+<h3>Nobody is doing this — the open space</h3>
+<p>Across 15 appointment-booking platforms, <b>zero</b> use algorithmic recommendation. Every implementation is a merchant-curated per-service list. Zenoti's "Realtime Recos" is the only feature name that even gestures at it, and its documentation could not be retrieved. Meanwhile the e-commerce cohort (Rebuy, Zipify) has been running recommendation engines against cart contents for years and publishes 10–27% AOV lifts for it. If there's a differentiated position available in service-booking upsell, "the add-ons suggest themselves, correctly, without the merchant configuring anything" is it.</p>
+</section>
+
+<!-- ============================= GAPS ============================= -->
+<section>
+<h2><span class="num">07</span>Research gaps</h2>
+<p class="lede">Honest accounting of what couldn't be verified, and why. Most of these are blocked by client-rendered help centres that return empty pages to automated fetching — they resolve with a browser session, not more searching.</p>
+<ul class="tight">
+  <li><b>Urban Company</b> — the highest-value remaining gap. Anecdotally the most aggressive in-cart service recommender in the market; site and help centre are fully client-rendered. Only signal recovered: it merchandises "Bundles". <em>Needs a manual walkthrough of the app.</em></li>
+  <li><b>Mindbody, Zenoti, GlossGenius, Treatwell</b> — add-on features confirmed to exist, mechanics unverifiable. Salesforce / Paligo / Elevio portals all return loading shells. Zenoti is the most interesting of the four given its "Realization" revenue framing.</li>
+  <li><b>Square Appointments</b> — no add-on capability found on the product overview, but the help centre resisted access. Treat as unconfirmed rather than a "No".</li>
+  <li><b>Booking.com partner side</b> — room-upgrade and property-configured "extra services" mechanics on the extranet. <code>partner.booking.com</code> returns an empty body on every fetch.</li>
+  <li><b>Thumbtack, Angi, TaskRabbit, Rover, Amazon</b> — all client-rendered or actively blocking. Rover's help centre returned zero matches for "add-on", so the feature may exist under another name.</li>
+  <li><b>Peek Pro and FareHarbor help-centre internals</b> — both sit behind SSO/sign-in walls; the public blog and product pages were the only accessible sources.</li>
+</ul>
+<p style="margin-top:14px"><b>To close these:</b> a browser session against the six client-rendered help centres, plus a manual walkthrough of Urban Company, Booksy and Mindbody's live consumer booking flows, would fill essentially every remaining gap. That's roughly half a day of work and would add the client-facing screenshots this report is thinnest on.</p>
+</section>
+
+<footer>
+  <b>Method.</b> Four parallel research passes across appointment booking, tours &amp; activities, travel &amp; hospitality, home services and e-commerce checkout, followed by an independent verification pass that re-fetched 25 of the most load-bearing sources and checked each attached claim against them. Roughly 300 pages fetched; every URL cited was either returned in a search result or successfully retrieved. Vendor-published figures are labelled as such, and nothing has been reconstructed from memory. Where a page is client-rendered, gated or JavaScript-walled, that is stated inline rather than filled in — the affected sources are Checkfront's blog, Peek Pro's and FareHarbor's help centres, Bókun's docs body, and the Mindbody / Zenoti / GlossGenius / Treatwell / Square help centres.
+  <div class="srcgrid" style="margin-top:20px">
+    <a href="https://www.fresha.com/help-center/knowledge-base/catalog/101649-create-service-add-ons">Fresha — Create service add-ons</a>
+    <a href="https://support.vagaro.com/hc/en-us/articles/10796001356571-Apply-Add-ons-When-Booking-or-Checking-Out">Vagaro — Add-ons when booking or checking out</a>
+    <a href="https://support.boulevard.io/en/articles/6584601-add-on-services">Boulevard — Add-On Services</a>
+    <a href="https://help.gettimely.com/hc/en-gb/articles/38752687637271-Introduction-Timely-add-ons">Timely — Introduction to add-ons</a>
+    <a href="https://support.phorest.com/hc/en-us/articles/34677418988050-How-do-I-create-Add-On-services-and-how-do-they-work">Phorest — Add-On services</a>
+    <a href="https://help.acuityscheduling.com/hc/en-us/articles/16676886445837-Using-Acuity-Scheduling-add-ons">Acuity — Using add-ons</a>
+    <a href="https://help.simplybook.me/index.php?title=Service_Add-Ons_custom_feature">SimplyBook.me — Service Add-Ons</a>
+    <a href="https://support.booksy.com/hc/en-us/articles/16538268814738-How-do-I-set-up-Add-ons">Booksy — How do I set up Add-ons</a>
+    <a href="https://support.mindbodyonline.com/s/article/How-to-book-and-cancel-appointment-add-ons?language=en_US">Mindbody — Appointment add-ons</a>
+    <a href="https://help.zenoti.com/en/zenoti-driven-growth/realization/upsell-add-ons.html">Zenoti — Upsell Add-ons</a>
+    <a href="https://support.setmore.com/en/articles/490980-how-to-let-customers-book-multiple-services-in-one-appointment">Setmore — Multiple services in one appointment</a>
+    <a href="https://calendly.com/help">Calendly — Help Center</a>
+    <a href="https://support.checkfront.com/hc/en-us/articles/19868202623772-Adding-upsells-to-your-products">Checkfront — Adding upsells</a>
+    <a href="https://www.checkfront.com/blog/add-ons-selling-beyond-the-booking/">Checkfront — Add-ons: selling beyond the booking</a>
+    <a href="https://fareharbor.com/blog/maximize-sales-and-customer-satisfaction-introducing-fareharbor-combos/">FareHarbor — Introducing Combos</a>
+    <a href="https://support.xola.com/xolabot-upsell-add-ons">Xola — XolaBot Upsell Add-Ons</a>
+    <a href="https://support.rezdy.com/hc/en-us/articles/19867826365852-The-Updated-Checkout-Flow">Rezdy — The updated checkout flow</a>
+    <a href="https://www.peekpro.com/product/grow-revenue">Peek Pro — Grow revenue</a>
+    <a href="https://docs.bokun.io/en/articles/138-how-to-add-extras-to-experiences">Bókun — How to add Extras</a>
+    <a href="https://supply.getyourguide.support/hc/en-us/articles/14150029353629-Connecting-a-product-that-has-add-ons">GetYourGuide — Products with add-ons</a>
+    <a href="https://www.klook.com/en-US/activity/69622-singapore-attractions-pass/">Klook — Pass with cascading optional selectors</a>
+    <a href="https://arival.travel/article/bookings-quiet-return-to-tours-attractions/">Arival — Booking.com's return to attractions</a>
+    <a href="https://news.airbnb.com/airbnb-2025-summer-release/">Airbnb — 2025 Summer Release</a>
+    <a href="https://upsell.com/blog/upsell-funnel">Upsell.com — The Ryanair upsell funnel</a>
+    <a href="https://ideaworkscompany.com/wp-content/uploads/2025/11/Press-Release-197-Global-Estimate-2025.pdf">IdeaWorks — Global Estimate 2025</a>
+    <a href="https://diggintravel.com/airline-branded-fares-upsell-case-study/">Diggintravel — Branded fares A/B test</a>
+    <a href="https://oaky.com/en/results">Oaky — Results</a>
+    <a href="https://upsellguru.com/driving-profitability-through-personalized-upselling-althoffhotels-success-with-upsellguru/">UpsellGuru — Althoff case study</a>
+    <a href="https://www.canarytechnologies.com/customers/the-line-sf">Canary — The LINE SF</a>
+    <a href="https://duve.com/upselling-and-cross-selling-in-hospitality/">Duve — Upselling &amp; cross-selling</a>
+    <a href="https://www.revinate.com/hospitality-report/email-channel-global/">Revinate — 2026 Hospitality Benchmark</a>
+    <a href="https://insights.ehotelier.com/insights/2020/02/04/best-upselling-bets-research-shows-what-guests-spend-extra-on/">GuestJoy — What guests spend extra on</a>
+    <a href="https://www.opentable.com/restaurant-solutions/products/features/experiences/">OpenTable — Experiences</a>
+    <a href="https://blog.resy.com/for-restaurants/see-how-these-restaurants-use-add-on-items-to-increase-their-earnings/">Resy — Add-On Items</a>
+    <a href="https://help.getjobber.com/en/articles/optional-line-items-on-quotes/">Jobber — Optional line items on quotes</a>
+    <a href="https://help.servicetitan.com/docs/estimates-and-proposals-in-servicetitan-max.md">ServiceTitan — Estimates and proposals</a>
+    <a href="https://help.housecallpro.com/en/articles/7216553-sales-proposal-tool">Housecall Pro — Sales Proposal Tool</a>
+    <a href="https://shopify.dev/docs/apps/build/checkout/product-offers/ux-for-pre-purchase-product-offers">Shopify — Pre-purchase offer UX</a>
+    <a href="https://shopify.dev/docs/apps/build/checkout/product-offers/ux-for-post-purchase-product-offers">Shopify — Post-purchase offer UX</a>
+    <a href="https://www.rebuyengine.com/product/checkout-extensions">Rebuy — Checkout Extensions</a>
+    <a href="https://zipify.com/apps/ocu/">Zipify — OneClickUpsell</a>
+    <a href="https://www.prweb.com/releases/roomdex-announces-new-attribute-based-selling-abs-revenue-performance-results-827615757.html">ROOMDEX — Attribute-based selling results</a>
+    <a href="https://www.oracle.com/hospitality/nor1-hotel-upsell/">Oracle Nor1 — Hotel upsell</a>
+    <a href="https://www.hotelchamp.com/product/booking-engine">Hotelchamp — Booking engine</a>
+    <a href="https://partner.expediagroup.com/en-us/resources/case-studies/hawaiian-airlines-boosts-loyalty-member-package-revenue">Expedia — Hawaiian Airlines case study</a>
+    <a href="https://agentcenter.viator.com/resources/making-a-booking/">Viator — Making a booking</a>
+  </div>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  var rows = Array.prototype.slice.call(document.querySelectorAll('#t tbody tr'));
+  var fcat = document.getElementById('fcat');
+  var fsup = document.getElementById('fsup');
+  var fq   = document.getElementById('fq');
+  var cnt  = document.getElementById('count');
+
+  function norm(s){ return (s||'').replace(/&amp;/g,'&').toLowerCase().trim(); }
+
+  function apply(){
+    var c = norm(fcat.value), s = fsup.value, q = norm(fq.value);
+    var shown = 0;
+    rows.forEach(function(r){
+      var rc = norm(r.getAttribute('data-cat'));
+      var rs = r.getAttribute('data-sup');
+      var txt = norm(r.textContent);
+      var ok = (!c || rc === c) && (!s || rs === s) && (!q || txt.indexOf(q) !== -1);
+      r.style.display = ok ? '' : 'none';
+      if(ok) shown++;
+    });
+    cnt.textContent = shown + ' of ' + rows.length + ' platforms';
+  }
+
+  fcat.addEventListener('change', apply);
+  fsup.addEventListener('change', apply);
+  fq.addEventListener('input', apply);
+  apply();
+
+  // Hide gracefully if a vendor CDN rotates an asset URL
+  document.querySelectorAll('figure img').forEach(function(img){
+    img.addEventListener('error', function(){
+      var fig = img.closest('figure');
+      if(fig) fig.classList.add('broken');
+    });
+  });
+})();
+</script>
+</body>
+</html>
