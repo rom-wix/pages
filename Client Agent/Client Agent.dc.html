@@ -1,0 +1,1705 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Text:wght@400;500;600;700&amp;family=Wix+Madefor+Display:wght@500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: 'Wix Madefor Text', system-ui, sans-serif; color: #151414; background: #fff; -webkit-font-smoothing: antialiased; }
+  button { font-family: inherit; }
+  a { color: #116dff; text-decoration: none; }
+  a:hover { color: #0c5ce0; text-decoration: underline; }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb { background: #d9d9d9; border-radius: 8px; border: 3px solid #fff; }
+</style>
+</helmet>
+
+<div style="display:grid;grid-template-columns:248px 1fr;grid-template-rows:52px 1fr;height:100vh;background:#f4f3f3;font-size:14px">
+  <div style="grid-column:1 / -1;display:flex;align-items:center;gap:20px;padding:0 20px;border-bottom:1px solid #e5e5e5;background:#fff">
+    <span style="font-family:'Wix Madefor Display',sans-serif;font-size:15px;font-weight:800;letter-spacing:-.2px">WIX<span style="font-weight:500"> STUDIO</span></span>
+    <span style="width:22px;height:22px;border-radius:6px;background:#fbd8f0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#151414">P</span>
+    <span style="display:flex;align-items:center;gap:5px;font-size:14px;font-weight:500">Parky Spa <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="2.4" stroke-linecap="round"><path d="M6 9l6 6 6-6"></path></svg></span>
+    <span style="display:flex;align-items:center;gap:5px;font-size:14px;color:#3b3939">Resources <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#3b3939" stroke-width="2.4" stroke-linecap="round"><path d="M6 9l6 6 6-6"></path></svg></span>
+    <span style="display:flex;align-items:center;gap:5px;font-size:14px;color:#3b3939">Help <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#3b3939" stroke-width="2.4" stroke-linecap="round"><path d="M6 9l6 6 6-6"></path></svg></span>
+    <div style="flex:1;display:flex;justify-content:center">
+      <div style="display:flex;align-items:center;gap:8px;width:min(420px,100%);border:1px solid #dedede;border-radius:20px;padding:6px 14px;color:#8a8888">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8a8888" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.6-3.6"></path></svg>
+        <span style="font-size:13.5px">Search for tools, apps, help &amp; more...</span>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px">
+      <span style="width:26px;height:26px;border-radius:50%;background:#e8e6f8"></span>
+      <span style="display:flex;align-items:center;gap:7px;border:1px solid #151414;border-radius:20px;padding:5px 13px;font-size:13.5px;font-weight:600"><span style="width:15px;height:15px;border-radius:50%;background:#151414"></span>Ask Aria</span>
+    </div>
+  </div>
+
+  <div style="border-right:1px solid #e5e5e5;background:#fff;padding:14px 12px;overflow-y:auto;display:flex;flex-direction:column;gap:2px">
+    <div style="display:flex;align-items:center;gap:9px;padding:7px 10px;color:#151414;font-size:13.5px;font-weight:500">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.8"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v4l3 2"></path></svg>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.8"><rect x="4" y="4" width="6" height="6"></rect><rect x="14" y="4" width="6" height="6"></rect><rect x="4" y="14" width="6" height="6"></rect><rect x="14" y="14" width="6" height="6"></rect></svg>
+      Quick Actions
+    </div>
+    <div style="height:1px;background:#eceaea;margin:8px 4px"></div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:14px;font-weight:500;color:#151414"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-6 8 6v8H4z"></path></svg>Home</div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:14px;font-weight:500;color:#151414"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l1.8 4.2L18 10l-4.2 1.8L12 16l-1.8-4.2L6 10l4.2-1.8z"></path></svg>AI Agents<span style="font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#151414;background:#fbd8a0;padding:2px 7px;border-radius:4px;margin-left:auto">New</span></div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:14px;font-weight:500;color:#151414"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="2"></rect><path d="M4 10h16M9 3v4M15 3v4"></path></svg>Booking Calendar<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8a8888" stroke-width="2.2" stroke-linecap="round" style="margin-left:auto"><path d="M9 6l6 6-6 6"></path></svg></div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:14px;font-weight:500;color:#151414"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="2"></rect><path d="M8 12h8M8 16h5"></path></svg>Events<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8a8888" stroke-width="2.2" stroke-linecap="round" style="margin-left:auto"><path d="M9 6l6 6-6 6"></path></svg></div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:14px;font-weight:500;color:#151414"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v8M9.5 10.5h5M9.5 13.5h5"></path></svg>Sales<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8a8888" stroke-width="2.2" stroke-linecap="round" style="margin-left:auto"><path d="M9 6l6 6-6 6"></path></svg></div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:14px;font-weight:500;color:#151414"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8l8-4 8 4v8l-8 4-8-4z"></path><path d="M4 8l8 4 8-4"></path></svg>Catalog<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8a8888" stroke-width="2.2" stroke-linecap="round" style="margin-left:auto"><path d="M9 6l6 6-6 6"></path></svg></div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:14px;font-weight:500;color:#151414"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="7" height="7"></rect><rect x="13" y="4" width="7" height="7"></rect><rect x="4" y="13" width="7" height="7"></rect><rect x="13" y="13" width="7" height="7"></rect></svg>Apps<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8a8888" stroke-width="2.2" stroke-linecap="round" style="margin-left:auto"><path d="M9 6l6 6-6 6"></path></svg></div>
+    <div style="height:1px;background:#eceaea;margin:8px 4px"></div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:14px;font-weight:500;color:#151414"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="13" height="10" rx="1.5"></rect><rect x="16" y="10" width="5" height="9" rx="1.5"></rect></svg>Site &amp; Mobile App<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8a8888" stroke-width="2.2" stroke-linecap="round" style="margin-left:auto"><path d="M9 6l6 6-6 6"></path></svg></div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:14px;font-weight:500;color:#151414"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h4l8-4v14l-8-4H4z"></path></svg>Marketing<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8a8888" stroke-width="2.2" stroke-linecap="round" style="margin-left:auto"><path d="M9 6l6 6-6 6"></path></svg></div>
+    <div onClick="{{ goInbox }}" style="{{ navInbox }}">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16v12H4z"></path><path d="M4 9l8 5 8-5"></path></svg>Inbox
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5c5a5a" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="margin-left:auto"><path d="M12 4l2.4 5 5.6.7-4 3.8 1 5.5-5-2.8-5 2.8 1-5.5-4-3.8 5.6-.7z"></path></svg>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:14px;font-weight:500;color:#151414"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="8" r="3.4"></circle><path d="M4 20c0-3.3 2.7-6 6-6M16 13l4 4M20 13l-4 4"></path></svg>Customers &amp; Leads<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8a8888" stroke-width="2.2" stroke-linecap="round" style="margin-left:auto"><path d="M9 6l6 6-6 6"></path></svg></div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:14px;font-weight:500;color:#151414"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3l-2 8h5l-6 10 2-8H7z"></path></svg>Automations</div>
+    <div style="height:1px;background:#eceaea;margin:8px 4px"></div>
+    <div onClick="{{ goBookings }}" style="{{ navSettings }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M12 4v3M12 17v3M4 12h3M17 12h3"></path></svg>Settings</div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;min-width:0;min-height:0;background:#f4f3f3">
+
+    <sc-if value="{{ viewInbox }}" hint-placeholder-val="{{ true }}">
+      <div data-screen-label="Inbox" style="flex:1;display:flex;flex-direction:column;min-width:0;min-height:0;position:relative;background:#fff">
+
+        <div style="display:flex;align-items:center;gap:14px;padding:12px 20px;border-bottom:1px solid #e5e5e5">
+          <h1 style="font-family:'Wix Madefor Display',sans-serif;font-size:20px;font-weight:700;margin:0">Inbox</h1>
+          <div style="flex:1"></div>
+          <button onClick="{{ goAgent }}" style="display:flex;align-items:center;gap:7px;font-size:14px;font-weight:600;color:#151414;background:#fff;border:1px solid #dedede;border-radius:8px;padding:7px 15px;cursor:pointer" style-hover="background:#f8f6f6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4b42c9" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l1.8 4.2L18 10l-4.2 1.8L12 16l-1.8-4.2L6 10l4.2-1.8z"></path></svg>Client Agent</button>
+          <button style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:#151414;background:#fff;border:1px solid #151414;border-radius:8px;padding:7px 15px;cursor:pointer" style-hover="background:#f8f6f6">New Message <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19h4l10-10-4-4L5 15z"></path></svg></button>
+        </div>
+
+        <sc-if value="{{ setupBanner }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;align-items:center;gap:10px;padding:9px 20px;background:#f5f3fe;border-bottom:1px solid #e3dffb;font-size:13.5px;color:#2d2a5e">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#4b42c9" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l1.8 4.2L18 10l-4.2 1.8L12 16l-1.8-4.2L6 10l4.2-1.8z"></path></svg>
+            <span><strong style="font-weight:600">New</strong> — Your Client Agent can now handle clients before and after every session: reminders, RSVP, reschedule, payment, feedback and reviews.</span>
+            <button onClick="{{ openWizard }}" style="font-family:inherit;background:none;border:none;font-size:13.5px;font-weight:600;color:#4b42c9;cursor:pointer;text-decoration:underline;padding:0">Set it up</button>
+            <button onClick="{{ dismissBanner }}" style="margin-left:auto;background:none;border:none;cursor:pointer;color:#8a86b8;font-size:15px;line-height:1;padding:2px 4px">×</button>
+          </div>
+        </sc-if>
+        <sc-if value="{{ onBanner }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;align-items:center;gap:10px;padding:9px 20px;background:#e6f4ec;border-bottom:1px solid #cbe7d6;font-size:13.5px;color:#194b31">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1a6b3f" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"></path></svg>
+            <span>The Client Agent is on. It sends reminders <strong style="font-weight:600">{{ reminderTimingLabel }}</strong> and follows up <strong style="font-weight:600">{{ timingLabel }}</strong> the session ends.</span>
+            <button onClick="{{ goAgent }}" style="font-family:inherit;background:none;border:none;font-size:13.5px;font-weight:600;color:#194b31;cursor:pointer;text-decoration:underline;padding:0">Manage</button>
+            <button onClick="{{ dismissBanner }}" style="margin-left:auto;background:none;border:none;cursor:pointer;color:#5c7a68;font-size:15px;line-height:1;padding:2px 4px">×</button>
+          </div>
+        </sc-if>
+
+        <div style="flex:1;display:grid;grid-template-columns:{{ paneCols }};min-height:0;overflow-x:auto">
+          <div style="border-right:1px solid #e5e5e5;display:flex;flex-direction:column;min-height:0">
+            <div style="display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid #f0eeee">
+              <span style="width:15px;height:15px;border:1.5px solid #b3b1b1;border-radius:3px;flex-shrink:0"></span>
+              <div style="position:relative">
+                <button onClick="{{ toggleFilter }}" style="display:flex;align-items:center;gap:6px;font-size:15px;font-weight:600;color:#151414;background:none;border:none;padding:0;cursor:pointer">{{ filterLabel }} <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="2.4" stroke-linecap="round"><path d="M6 9l6 6 6-6"></path></svg></button>
+                <sc-if value="{{ filterOpen }}" hint-placeholder-val="{{ false }}">
+                  <div style="position:absolute;left:0;top:calc(100% + 8px);width:260px;background:#fff;border:1px solid #e5e5e5;border-radius:10px;box-shadow:0 12px 32px rgba(21,20,20,.16);padding:6px;z-index:60">
+                    <sc-for list="{{ viewFilters }}" as="f" hint-placeholder-count="3">
+                      <button onClick="{{ f.pick }}" style="{{ f.style }}">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="{{ f.icon }}"></path></svg>{{ f.label }}
+                        <span style="margin-left:auto;font-size:12.5px;color:#8a8888">{{ f.count }}</span>
+                      </button>
+                    </sc-for>
+                  </div>
+                </sc-if>
+              </div>
+            </div>
+            <div style="display:flex;gap:6px;padding:11px 16px;flex-wrap:wrap">
+              <sc-for list="{{ chanChips }}" as="ch" hint-placeholder-count="5">
+                <button onClick="{{ ch.pick }}" style="{{ ch.style }}">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="{{ ch.stroke }}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="{{ ch.icon }}"></path></svg>{{ ch.label }}
+                </button>
+              </sc-for>
+            </div>
+            <div style="flex:1;overflow-y:auto;min-height:0;border-top:1px solid #f0eeee">
+              <sc-if value="{{ noneShown }}" hint-placeholder-val="{{ false }}">
+                <div style="padding:34px 22px;text-align:center;font-size:13.5px;color:#8a8888">No conversations here.</div>
+              </sc-if>
+              <sc-for list="{{ convList }}" as="c" hint-placeholder-count="7">
+                <div onClick="{{ c.pick }}" style="{{ c.rowStyle }}">
+                  <div style="position:relative;flex-shrink:0">
+                    <div style="{{ c.avStyle }}">{{ c.initials }}</div>
+                    <div style="{{ c.chanStyle }}"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="{{ c.chanIcon }}"></path></svg></div>
+                  </div>
+                  <div style="flex:1;min-width:0">
+                    <div style="display:flex;align-items:baseline;gap:8px">
+                      <span style="{{ c.nameStyle }}">{{ c.name }}</span>
+                      <span style="margin-left:auto;font-size:12.5px;color:#8a8888;white-space:nowrap">{{ c.when }}</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:6px;margin-top:3px">
+                      <span style="{{ c.previewStyle }}">{{ c.preview }}</span>
+                      <sc-if value="{{ c.follow }}" hint-placeholder-val="{{ false }}"><span style="width:7px;height:7px;border-radius:50%;background:#e62214;flex-shrink:0"></span></sc-if>
+                    </div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;min-width:0;min-height:0">
+            <div style="display:flex;align-items:center;gap:12px;padding:11px 18px;border-bottom:1px solid #f0eeee">
+              <div style="{{ hdrAvStyle }}" data-x="hdrav">{{ hdrInitials }}</div>
+              <div style="min-width:0" data-x="hdrname">
+                <div style="display:flex;align-items:center;gap:8px">
+                  <span style="font-size:15.5px;font-weight:600">{{ hdrName }}</span>
+                  <sc-if value="{{ isAgent }}" hint-placeholder-val="{{ true }}">
+                    <span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:#4b42c9;background:#eceafd;padding:2px 8px;border-radius:4px;white-space:nowrap"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#4b42c9" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l1.8 4.2L18 10l-4.2 1.8L12 16l-1.8-4.2L6 10l4.2-1.8z"></path></svg>Handled by Client Agent</span>
+                  </sc-if>
+                </div>
+                <div style="font-size:13px;color:#5c5a5a;margin-top:1px">{{ hdrSub }}</div>
+              </div>
+              <div style="flex:1"></div>
+              <div style="display:flex;align-items:center;gap:4px">
+                <button onClick="{{ toggleContact }}" style="{{ contactBtnStyle }}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="8" r="3.4"></circle><path d="M4 20c0-3.3 2.7-6 6-6M16 13l4 4M20 13l-4 4"></path></svg></button>
+                <button onClick="{{ toggleFollow }}" style="{{ flagBtnStyle }}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4v16M6 5h11l-2 4 2 4H6"></path></svg></button>
+                <button style="background:none;border:none;padding:6px;border-radius:6px;cursor:pointer;color:#3b3939" style-hover="background:#f4f3f3"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 12h.01M12 12h.01M18 12h.01"></path></svg></button>
+              </div>
+            </div>
+
+            <div style="flex:1;overflow-y:auto;min-height:0;padding:20px 26px;background:#fff">
+              <div style="max-width:660px;margin:0 auto;display:flex;flex-direction:column;gap:16px">
+                <sc-for list="{{ thread }}" as="m" hint-placeholder-count="4">
+
+                  <sc-if value="{{ m.isDate }}" hint-placeholder-val="{{ false }}">
+                    <div style="display:flex;align-items:center;gap:12px;color:#a3a1a1;font-size:11.5px;letter-spacing:.4px;text-transform:uppercase"><span style="flex:1;height:1px;background:#eceaea"></span>{{ m.text }}<span style="flex:1;height:1px;background:#eceaea"></span></div>
+                  </sc-if>
+
+                  <sc-if value="{{ m.isCard }}" hint-placeholder-val="{{ true }}">
+                    <div style="border:1px solid #e5e5e5;border-radius:12px;overflow:hidden">
+                      <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:#f8f7fe;border-bottom:1px solid #eceafd">
+                        <span style="width:28px;height:28px;border-radius:50%;background:#eceafd;color:#4b42c9;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4b42c9" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="{{ m.iconPath }}"></path></svg></span>
+                        <div style="flex:1;min-width:0">
+                          <div style="font-size:14.5px;font-weight:600">{{ m.title }}</div>
+                          <div style="font-size:12.5px;color:#5c5a5a;margin-top:1px">{{ m.meta }}</div>
+                        </div>
+                      </div>
+                      <div style="padding:14px 16px 16px">
+                        <div style="font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#8a8888">Summary</div>
+                        <div style="font-size:14px;line-height:1.55;color:#151414;margin-top:6px">{{ m.summary }}</div>
+
+                        <sc-if value="{{ m.hasRating }}" hint-placeholder-val="{{ false }}">
+                          <div style="display:flex;align-items:center;gap:9px;margin-top:12px">
+                            <span style="font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#8a8888">Feedback</span>
+                            <span style="{{ m.ratingStyle }}">{{ m.rating }}</span>
+                            <span style="font-size:13px;color:#5c5a5a;font-style:italic">{{ m.quote }}</span>
+                          </div>
+                        </sc-if>
+
+                        <div style="font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#8a8888;margin-top:16px">What the agent did</div>
+                        <div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:8px">
+                          <sc-for list="{{ m.did }}" as="d" hint-placeholder-count="2">
+                            <span style="display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:500;color:#151414;background:#f4f3f3;border-radius:16px;padding:5px 11px">
+                              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1a6b3f" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"></path></svg>{{ d.label }}
+                            </span>
+                          </sc-for>
+                        </div>
+
+                        <sc-if value="{{ m.hasLink }}" hint-placeholder-val="{{ false }}">
+                          <div style="display:flex;align-items:center;gap:10px;border:1px solid #e5e5e5;border-radius:9px;padding:11px 13px;margin-top:14px">
+                            <span style="width:30px;height:30px;border-radius:7px;background:#eef2ff;color:#2f5dff;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2f5dff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="14" rx="2"></rect><path d="M4 10h16M9 3v4M15 3v4"></path></svg></span>
+                            <div style="flex:1;min-width:0">
+                              <div style="font-size:13.5px;font-weight:600">{{ m.linkTitle }}</div>
+                              <div style="font-size:12.5px;color:#5c5a5a">{{ m.linkSub }}</div>
+                            </div>
+                            <a style="font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap">{{ m.linkCta }}</a>
+                          </div>
+                        </sc-if>
+
+                        <sc-if value="{{ m.hasLines }}" hint-placeholder-val="{{ false }}">
+                          <button onClick="{{ m.toggleTranscript }}" style="display:flex;align-items:center;gap:6px;background:none;border:none;padding:0;margin-top:16px;font-size:13px;font-weight:600;color:#2f5dff;cursor:pointer">{{ m.trLabel }} <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2f5dff" stroke-width="2.4" stroke-linecap="round" style="{{ m.trCaret }}"><path d="M6 9l6 6 6-6"></path></svg></button>
+                          <sc-if value="{{ m.trOpen }}" hint-placeholder-val="{{ false }}">
+                            <div style="display:flex;flex-direction:column;gap:11px;border-top:1px solid #f0eeee;margin-top:13px;padding-top:14px">
+                              <sc-for list="{{ m.lines }}" as="l" hint-placeholder-count="4">
+                                <div style="display:flex;gap:10px">
+                                  <span style="{{ l.whoStyle }}">{{ l.who }}</span>
+                                  <span style="font-size:13.5px;line-height:1.5;color:#3b3939">{{ l.text }}</span>
+                                </div>
+                              </sc-for>
+                            </div>
+                          </sc-if>
+                        </sc-if>
+                      </div>
+                    </div>
+                  </sc-if>
+
+                  <sc-if value="{{ m.isText }}" hint-placeholder-val="{{ false }}">
+                    <div style="{{ m.wrapStyle }}">
+                      <div style="{{ m.bubbleStyle }}">
+                        <div style="font-size:14px;line-height:1.5">{{ m.text }}</div>
+                        <div style="display:flex;align-items:center;gap:6px;margin-top:7px;font-size:11.5px;color:#8a8888">{{ m.via }}</div>
+                      </div>
+                    </div>
+                  </sc-if>
+
+                  <sc-if value="{{ m.isEvent }}" hint-placeholder-val="{{ false }}">
+                    <div style="{{ m.wrapStyle }}">
+                      <div style="display:inline-flex;align-items:center;gap:9px;border:1px solid #e5e5e5;border-radius:9px;padding:10px 14px;font-size:11.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#3b3939">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3b3939" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"></rect><path d="M9 8h6M9 12h6M9 16h3"></path></svg>{{ m.text }}
+                      </div>
+                    </div>
+                  </sc-if>
+
+                </sc-for>
+
+                <sc-if value="{{ showFollowBar }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;align-items:center;gap:12px;border:1px solid #f6d9d6;background:#fdf3f2;border-radius:10px;padding:11px 14px">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c4151c" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5M12 16.2v.1"></path></svg>
+                    <span style="flex:1;font-size:13.5px;color:#3b3939">The Client Agent flagged this for your attention. {{ followWhy }}</span>
+                    <button onClick="{{ resolveFollow }}" style="background:#fff;border:1px solid #dedede;border-radius:8px;padding:6px 13px;font-size:13px;font-weight:600;color:#151414;cursor:pointer;white-space:nowrap" style-hover="background:#f8f6f6">Mark as done</button>
+                  </div>
+                </sc-if>
+              </div>
+            </div>
+
+            <div style="padding:14px 26px 18px;border-top:1px solid #f0eeee">
+              <div style="max-width:660px;margin:0 auto;border:1px solid #dedede;border-radius:10px;padding:11px 14px 9px">
+                <div style="display:flex;align-items:center;gap:7px;font-size:13px;color:#5c5a5a">Message via: <span style="font-weight:600;color:#116dff;display:inline-flex;align-items:center;gap:4px;cursor:pointer">{{ channelName }} <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#116dff" stroke-width="2.6" stroke-linecap="round"><path d="M6 9l6 6 6-6"></path></svg></span></div>
+                <div style="font-size:14px;color:#a3a1a1;padding:12px 0 14px">Type your message...</div>
+                <div style="display:flex;align-items:center;gap:14px">
+                  <button style="background:none;border:none;padding:0;cursor:pointer;color:#116dff"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></button>
+                  <button style="background:none;border:none;padding:0;cursor:pointer;color:#3b3939"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v10H9l-5 4z"></path></svg></button>
+                  <button style="background:none;border:none;padding:0;cursor:pointer;color:#3b3939"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M17 8l-7 7a3 3 0 004 4l7-7a5 5 0 00-7-7l-7 7a7 7 0 0010 10"></path></svg></button>
+                  <button style="margin-left:auto;background:#eceaea;color:#8a8888;border:none;border-radius:8px;padding:7px 20px;font-size:13.5px;font-weight:600;cursor:default">Send</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <sc-if value="{{ contactOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="border-left:1px solid #e5e5e5;overflow-y:auto;min-height:0">
+              <div style="display:flex;justify-content:flex-end;gap:6px;padding:10px 12px 0">
+                <button onClick="{{ toggleContact }}" style="background:none;border:none;padding:4px;cursor:pointer;color:#5c5a5a;font-size:16px;line-height:1">×</button>
+              </div>
+              <div style="padding:2px 18px 18px">
+                <span style="display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#1a6b3f;background:#e6f4ec;padding:3px 8px;border-radius:4px">{{ contactKind }}</span>
+                <div style="display:flex;gap:12px;margin-top:12px">
+                  <div style="{{ contactAvStyle }}">{{ hdrInitials }}</div>
+                  <div style="min-width:0">
+                    <div style="font-family:'Wix Madefor Display',sans-serif;font-size:17px;font-weight:700">{{ hdrName }}</div>
+                    <div style="font-size:13px;color:#3b3939;margin-top:3px">{{ contactPhone }}</div>
+                    <div style="font-size:13px;color:#3b3939">{{ contactEmail }}</div>
+                  </div>
+                </div>
+              </div>
+              <div style="border-top:1px solid #eceaea;padding:14px 18px">
+                <div style="display:flex;align-items:center;gap:8px">
+                  <span style="font-size:14px;font-weight:600">Handled by Client Agent</span>
+                  <span style="font-size:12.5px;color:#8a8888">{{ fuCount }}</span>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:2px;margin-top:10px">
+                  <sc-for list="{{ fuHistory }}" as="h" hint-placeholder-count="2">
+                    <div style="display:flex;align-items:flex-start;gap:9px;padding:7px 0">
+                      <span style="width:7px;height:7px;border-radius:50%;background:#c9c7c7;margin-top:6px;flex-shrink:0"></span>
+                      <div style="min-width:0">
+                        <div style="font-size:13.5px;font-weight:500">{{ h.about }}</div>
+                        <div style="font-size:12.5px;color:#8a8888;margin-top:1px">{{ h.when }}</div>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+              <sc-for list="{{ panelSections }}" as="p" hint-placeholder-count="6">
+                <div style="display:flex;align-items:center;gap:8px;border-top:1px solid #eceaea;padding:15px 18px;font-size:14px;font-weight:600;cursor:pointer" style-hover="background:#fafafa">
+                  {{ p.name }}
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5c5a5a" stroke-width="2.2" stroke-linecap="round" style="margin-left:auto"><path d="M6 9l6 6 6-6"></path></svg>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ viewBookings }}" hint-placeholder-val="{{ false }}">
+      <div data-screen-label="Booking Settings" style="flex:1;min-height:0;overflow-y:auto;padding:24px 28px 60px">
+        <div style="max-width:1080px;margin:0 auto">
+          <div style="display:flex;align-items:center;gap:7px;font-size:13.5px;color:#5c5a5a"><span style="cursor:pointer">Settings</span> <span style="color:#c4c2c2">/</span> <span style="color:#151414">Booking Settings</span></div>
+          <h1 style="font-family:'Wix Madefor Display',sans-serif;font-size:28px;font-weight:700;margin:14px 0 6px">Booking Settings</h1>
+          <p style="margin:0 0 20px;font-size:14.5px;color:#5c5a5a">Set up your business to take bookings exactly how and when you'd like.</p>
+
+
+          <div style="display:flex;align-items:center;gap:18px;background:#f8f7fe;border:1px solid #e3dffb;border-radius:12px;padding:20px 24px;margin-bottom:26px">
+            <span style="width:44px;height:44px;border-radius:12px;background:#eceafd;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4b42c9" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l1.8 4.2L18 10l-4.2 1.8L12 16l-1.8-4.2L6 10l4.2-1.8z"></path></svg></span>
+            <div style="flex:1;min-width:0">
+              <div style="display:flex;align-items:center;gap:9px">
+                <span style="font-family:'Wix Madefor Display',sans-serif;font-size:17px;font-weight:700">Let your Client Agent handle every session, start to finish</span>
+                <span style="font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#151414;background:#fbd8a0;padding:2px 7px;border-radius:4px">New</span>
+              </div>
+              <div style="font-size:14px;color:#5c5a5a;margin-top:4px;line-height:1.5;max-width:640px">It reminds clients before their session, takes RSVPs, reschedules or cancels, and collects payment if needed. After the session it follows up for feedback, asks happy clients for a review, rebooks the next visit and settles unpaid sessions. Every conversation lands in your Inbox.</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;flex-shrink:0">
+              <a style="font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap">Learn more</a>
+              <button onClick="{{ openWizard }}" style="background:#151414;color:#fff;border:none;border-radius:8px;padding:10px 22px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap" style-hover="background:#3b3939">{{ bookingsCta }}</button>
+            </div>
+          </div>
+
+          <div style="font-size:15px;font-weight:600;margin-bottom:10px">Bookings Setup</div>
+          <div style="background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 1px 2px rgba(21,20,20,.05)">
+            <sc-for list="{{ bookingRows }}" as="r" hint-placeholder-count="7">
+              <div onClick="{{ r.click }}" style="{{ r.rowStyle }}">
+                <div style="flex:1;min-width:0">
+                  <div style="display:flex;align-items:center;gap:9px">
+                    <span style="font-size:15px;font-weight:600">{{ r.name }}</span>
+                    <sc-if value="{{ r.isNew }}" hint-placeholder-val="{{ false }}"><span style="font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#151414;background:#fbd8a0;padding:2px 7px;border-radius:4px">New</span></sc-if>
+                  </div>
+                  <div style="font-size:13.5px;color:#5c5a5a;margin-top:3px">{{ r.desc }}</div>
+                </div>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8a8888" stroke-width="2.2" stroke-linecap="round" style="flex-shrink:0"><path d="M9 6l6 6-6 6"></path></svg>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="font-size:15px;font-weight:600;margin:26px 0 10px">Online Bookings</div>
+          <div style="background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 1px 2px rgba(21,20,20,.05)">
+            <sc-for list="{{ onlineRows }}" as="r" hint-placeholder-count="3">
+              <div onClick="{{ r.click }}" style="{{ r.rowStyle }}">
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:15px;font-weight:600">{{ r.name }}</div>
+                  <div style="font-size:13.5px;color:#5c5a5a;margin-top:3px">{{ r.desc }}</div>
+                </div>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8a8888" stroke-width="2.2" stroke-linecap="round" style="flex-shrink:0"><path d="M9 6l6 6-6 6"></path></svg>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="font-size:15px;font-weight:600;margin:26px 0 10px">Integrations</div>
+          <div style="background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 1px 2px rgba(21,20,20,.05)">
+            <sc-for list="{{ integrationRows }}" as="r" hint-placeholder-count="2">
+              <div onClick="{{ r.click }}" style="{{ r.rowStyle }}">
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:15px;font-weight:600">{{ r.name }}</div>
+                  <div style="font-size:13.5px;color:#5c5a5a;margin-top:3px">{{ r.desc }}</div>
+                </div>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8a8888" stroke-width="2.2" stroke-linecap="round" style="flex-shrink:0"><path d="M9 6l6 6-6 6"></path></svg>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ viewWizard }}" hint-placeholder-val="{{ false }}">
+      <div data-screen-label="Setup wizard" style="flex:1;min-height:0;overflow-y:auto;padding:30px 28px 60px">
+        <div style="max-width:720px;margin:0 auto">
+          <div style="display:flex;align-items:center;gap:12px">
+            <span style="width:36px;height:36px;border-radius:10px;background:#eceafd;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4b42c9" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l1.8 4.2L18 10l-4.2 1.8L12 16l-1.8-4.2L6 10l4.2-1.8z"></path></svg></span>
+            <div style="flex:1;min-width:0">
+              <h1 style="font-family:'Wix Madefor Display',sans-serif;font-size:22px;font-weight:700;margin:0">Set up your Client Agent</h1>
+              <div style="font-size:13px;color:#8a8888;margin-top:2px">{{ wizStepLabel }}</div>
+            </div>
+            <button onClick="{{ wizClose }}" style="background:none;border:none;cursor:pointer;color:#8a8888;font-size:20px;line-height:1;padding:4px 6px">×</button>
+          </div>
+          <div style="display:flex;gap:6px;margin:18px 0 24px">
+            <sc-for list="{{ wizDots }}" as="d" hint-placeholder-count="4">
+              <span style="{{ d.style }}"></span>
+            </sc-for>
+          </div>
+
+          <sc-if value="{{ wiz1 }}" hint-placeholder-val="{{ true }}">
+            <div style="background:#fff;border-radius:12px;padding:24px 26px">
+              <h2 style="font-family:'Wix Madefor Display',sans-serif;font-size:18px;font-weight:700;margin:0 0 5px">Where should the agent reach out?</h2>
+              <p style="margin:0 0 18px;font-size:14px;color:#5c5a5a;line-height:1.55;max-width:600px">Used for reminders before a session and follow-ups after. The Client Agent tries the first channel, waits, then moves to the next one if there's no reply. Drag the activated channels to reorder them.</p>
+              <div style="border:1px solid #e5e5e5;border-radius:10px;overflow:hidden">
+                <sc-for list="{{ wizChans }}" as="c" hint-placeholder-count="5">
+                  <div style="{{ c.rowStyle }}" draggable="{{ c.canDrag }}" onDragStart="{{ c.dragStart }}" onDragOver="{{ c.dragOver }}" onDragEnd="{{ c.dragEnd }}" onDrop="{{ c.dragEnd }}">
+                    <span style="{{ c.gripStyle }}" title="Drag to reorder"><svg width="10" height="16" viewBox="0 0 10 16" fill="currentColor"><circle cx="2.5" cy="3" r="1.35"></circle><circle cx="7.5" cy="3" r="1.35"></circle><circle cx="2.5" cy="8" r="1.35"></circle><circle cx="7.5" cy="8" r="1.35"></circle><circle cx="2.5" cy="13" r="1.35"></circle><circle cx="7.5" cy="13" r="1.35"></circle></svg></span>
+                    <span style="{{ c.prioStyle }}">{{ c.prio }}</span>
+                    <span style="{{ c.iconStyle }}">{{ c.mark }}</span>
+                    <div style="flex:1;min-width:0">
+                      <div style="font-size:14px;font-weight:600">{{ c.name }}</div>
+                      <div style="font-size:12.5px;color:#8a8888;margin-top:1px;line-height:1.45">{{ c.desc }}</div>
+                    </div>
+                    <button style="font-family:inherit;background:none;border:none;padding:0 4px;font-size:12.5px;font-weight:600;color:#116dff;cursor:pointer;flex-shrink:0">{{ c.manageLabel }}</button>
+                    <button onClick="{{ c.toggle }}" style="{{ c.track }}"><span style="{{ c.knob }}"></span></button>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="margin-top:20px">
+                <div style="font-size:13.5px;font-weight:600;margin-bottom:8px">Wait before trying the next channel</div>
+                <div style="display:flex;background:#f3f1f1;border:1px solid #dedede;border-radius:18px;padding:3px;gap:2px;width:fit-content">
+                  <sc-for list="{{ waitOpts }}" as="w" hint-placeholder-count="3">
+                    <button onClick="{{ w.pick }}" style="{{ w.style }}">{{ w.label }}</button>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="display:flex;align-items:flex-start;gap:9px;margin-top:18px;font-size:12.5px;color:#8a8888;line-height:1.5">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8a8888" stroke-width="1.8" stroke-linecap="round" style="flex-shrink:0;margin-top:2px"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5M12 8v.1"></path></svg>
+                <span>Every conversation the agent handles uses AI credits. The longer the conversation runs, the more credits it uses. <a href="https://support.wix.com/en/article/about-ai-credits" target="_blank" rel="noopener" style="color:#116dff;font-weight:600;text-decoration:none">Learn more about AI credits</a></span>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ wiz2 }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#fff;border-radius:12px;padding:24px 26px">
+              <h2 style="font-family:'Wix Madefor Display',sans-serif;font-size:18px;font-weight:700;margin:0 0 5px">Which sessions?</h2>
+              <p style="margin:0 0 18px;font-size:14px;color:#5c5a5a">Pick the services the Client Agent covers. You’ll set the timing with the actions in the next step.</p>
+              <div style="border:1px solid #e5e5e5;border-radius:10px;overflow:hidden">
+                <sc-for list="{{ serviceRows }}" as="sv" hint-placeholder-count="4">
+                  <div style="{{ sv.rowStyle }}">
+                    <div style="flex:1;min-width:0">
+                      <div style="font-size:14px;font-weight:600">{{ sv.name }}</div>
+                      <div style="font-size:12.5px;color:#8a8888;margin-top:1px">{{ sv.meta }}</div>
+                    </div>
+                    <button onClick="{{ sv.toggle }}" style="{{ sv.track }}"><span style="{{ sv.knob }}"></span></button>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:14px;margin-top:20px">
+                <div onClick="{{ toggleQuiet }}" style="display:flex;align-items:flex-start;gap:10px;cursor:pointer">
+                  <div style="{{ quietTrack }}"><span style="{{ quietKnob }}"></span></div>
+                  <div style="min-width:0">
+                    <div style="display:flex;align-items:center;gap:10px">
+                      <span style="font-size:13.5px;font-weight:600">Quiet hours</span>
+                      <button onClick="{{ openQuiet }}" style="font-family:inherit;background:none;border:none;padding:0;font-size:12.5px;font-weight:600;color:#116dff;cursor:pointer">Edit</button>
+                    </div>
+                    <div style="font-size:12.5px;color:#8a8888;margin-top:1px;line-height:1.45">{{ quietDesc }}</div>
+                  </div>
+                </div>
+                <div onClick="{{ toggleSkip }}" style="display:flex;align-items:flex-start;gap:10px;cursor:pointer">
+                  <div style="{{ skipTrack }}"><span style="{{ skipKnob }}"></span></div>
+                  <div style="min-width:0">
+                    <div style="font-size:13.5px;font-weight:600">One conversation per client</div>
+                    <div style="font-size:12.5px;color:#8a8888;margin-top:1px;line-height:1.45">A client with several sessions gets one thread covering all of them, instead of a separate message per booking. Retries on the next channel still follow your wait time.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ wiz3 }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#fff;border-radius:12px;padding:24px 26px">
+              <h2 style="font-family:'Wix Madefor Display',sans-serif;font-size:18px;font-weight:700;margin:0 0 5px">When, and what can it do?</h2>
+              <p style="margin:0 0 16px;font-size:14px;color:#5c5a5a;max-width:620px;line-height:1.55">Choose when the agent reaches out before and after a session, and what it can do at each point.</p>
+              <div style="border:1px solid #e5e5e5;border-radius:8px">
+                <sc-for list="{{ actGroups }}" as="g" hint-placeholder-count="3">
+                  <div style="{{ g.headStyle }}">
+                    <span style="font-size:12px;font-weight:700;color:#151414">{{ g.name }}</span>
+                    <span style="margin-left:auto;display:flex;align-items:center;gap:9px;flex-wrap:wrap">
+                      <span style="font-size:12.5px;color:#5c5a5a">{{ g.timingLabel }}</span>
+                      <span style="display:flex;background:#f3f1f1;border:1px solid #dedede;border-radius:18px;padding:3px;gap:2px">
+                        <sc-for list="{{ g.timingOpts }}" as="w" hint-placeholder-count="3">
+                          <button onClick="{{ w.pick }}" style="{{ w.style }}">{{ w.label }}</button>
+                        </sc-for>
+                      </span>
+                    </span>
+                  </div>
+                  <sc-for list="{{ g.items }}" as="k" hint-placeholder-count="2">
+                    <div onClick="{{ k.toggle }}" style="display:flex;align-items:flex-start;gap:9px;padding:9px 14px;border-top:1px solid #f3f1f1;cursor:pointer" style-hover="background:#fafafa">
+                      <div style="{{ k.track }}"><span style="{{ k.knob }}"></span></div>
+                      <div style="flex:1;min-width:0">
+                        <span style="{{ k.nameStyle }}">{{ k.name }}</span>
+                        <div style="{{ k.descStyle }}">{{ k.desc }}</div>
+                      </div>
+                    </div>
+                  </sc-for>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ wiz4 }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#fff;border-radius:12px;padding:24px 26px">
+              <h2 style="font-family:'Wix Madefor Display',sans-serif;font-size:18px;font-weight:700;margin:0 0 5px">Review and turn on</h2>
+              <p style="margin:0 0 16px;font-size:14px;color:#5c5a5a">Here's what the agent will do around every session.</p>
+              <div style="border:1px solid #e5e5e5;border-radius:10px;overflow:hidden">
+                <sc-for list="{{ wizSummary }}" as="r" hint-placeholder-count="4">
+                  <div style="{{ r.rowStyle }}">
+                    <span style="width:120px;flex-shrink:0;font-size:12.5px;font-weight:600;color:#8a8888">{{ r.label }}</span>
+                    <span style="font-size:13.5px;color:#151414">{{ r.value }}</span>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="margin-top:20px">
+                <div style="font-size:13.5px;font-weight:600;margin-bottom:9px">How hands-on do you want to be?</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                  <sc-for list="{{ approvalOpts }}" as="o" hint-placeholder-count="2">
+                    <div onClick="{{ o.pick }}" style="{{ o.style }}">
+                      <span style="{{ o.dotStyle }}"></span>
+                      <div style="min-width:0">
+                        <div style="font-size:13.5px;font-weight:600">{{ o.label }}</div>
+                        <div style="font-size:12.5px;color:#8a8888;margin-top:2px;line-height:1.45">{{ o.desc }}</div>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;border:1px solid #e5e5e5;border-radius:10px;padding:13px 15px;margin-top:20px">
+                <span style="width:30px;height:30px;border-radius:7px;background:#eceafd;color:#4b42c9;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#4b42c9" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 3L10 14M21 3l-7 18-3-7-8-3z"></path></svg></span>
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:13.5px;font-weight:600">Try it on yourself first</div>
+                  <div style="font-size:12.5px;color:#8a8888;margin-top:1px">{{ testNote }}</div>
+                  <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+                    <sc-for list="{{ testBtns }}" as="b" hint-placeholder-count="2">
+                      <button onClick="{{ b.send }}" style="{{ b.style }}">{{ b.label }}</button>
+                    </sc-for>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+
+          <div style="display:flex;align-items:center;gap:10px;margin-top:20px">
+            <button onClick="{{ wizBack }}" style="background:#fff;border:1px solid #dedede;border-radius:8px;padding:10px 20px;font-size:14px;font-weight:600;color:#151414;cursor:pointer" style-hover="background:#f8f6f6">{{ wizBackLabel }}</button>
+            <div style="flex:1"></div>
+            <sc-if value="{{ wizNotLast }}" hint-placeholder-val="{{ true }}">
+              <button onClick="{{ wizNext }}" style="background:#151414;color:#fff;border:none;border-radius:8px;padding:10px 26px;font-size:14px;font-weight:600;cursor:pointer" style-hover="background:#3b3939">Next</button>
+            </sc-if>
+            <sc-if value="{{ wizLast }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ wizFinish }}" style="background:#151414;color:#fff;border:none;border-radius:8px;padding:10px 26px;font-size:14px;font-weight:600;cursor:pointer" style-hover="background:#3b3939">Turn on Client Agent</button>
+            </sc-if>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ viewAgent }}" hint-placeholder-val="{{ false }}">
+      <div data-screen-label="Session follow-ups settings" style="flex:1;min-height:0;overflow-y:auto;padding:24px 28px 60px">
+        <div style="max-width:1080px;margin:0 auto">
+          <div style="display:flex;align-items:center;gap:7px;font-size:13.5px;color:#5c5a5a"><span onClick="{{ goInbox }}" style="cursor:pointer">Inbox</span> <span style="color:#c4c2c2">/</span> <span style="cursor:pointer">Inbox Settings</span> <span style="color:#c4c2c2">/</span> <span style="color:#151414">Client Agent</span></div>
+
+          <sc-if value="{{ justOn }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;align-items:center;gap:10px;margin-top:14px;padding:10px 16px;background:#e6f4ec;border:1px solid #cbe7d6;border-radius:10px;font-size:13.5px;color:#194b31">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1a6b3f" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"></path></svg>
+              <span>The Client Agent is on. It starts with the next session that's booked.</span>
+              <button onClick="{{ dismissJustOn }}" style="margin-left:auto;background:none;border:none;cursor:pointer;color:#5c7a68;font-size:15px;line-height:1;padding:2px 4px">×</button>
+            </div>
+          </sc-if>
+
+          <div style="display:flex;align-items:flex-start;gap:16px;margin:14px 0 20px">
+            <span style="width:44px;height:44px;border-radius:12px;background:#eceafd;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:3px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4b42c9" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l1.8 4.2L18 10l-4.2 1.8L12 16l-1.8-4.2L6 10l4.2-1.8z"></path></svg></span>
+            <div style="flex:1;min-width:0">
+              <div style="display:flex;align-items:center;gap:10px">
+                <h1 style="font-family:'Wix Madefor Display',sans-serif;font-size:28px;font-weight:700;margin:0">Client Agent</h1>
+                <span style="{{ statusChip }}">{{ statusLabel }}</span>
+              </div>
+              <p style="margin:6px 0 0;font-size:14.5px;color:#5c5a5a;max-width:680px;line-height:1.55">Before a session, it sends reminders, takes RSVPs, reschedules and collects payment. After it ends, it follows up for feedback and takes the actions you allow. Every conversation appears in your Inbox — jump in and take over anytime.</p>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;flex-shrink:0;margin-top:6px">
+              <button onClick="{{ goInboxFu }}" style="background:#fff;border:1px solid #dedede;border-radius:8px;padding:8px 16px;font-size:13.5px;font-weight:600;color:#151414;cursor:pointer;white-space:nowrap" style-hover="background:#f8f6f6">View in Inbox</button>
+              <div onClick="{{ toggleFu }}" style="{{ fuTrack }}"><span style="{{ fuKnob }}"></span></div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:6px;margin-bottom:18px">
+            <sc-for list="{{ agentTabs }}" as="t" hint-placeholder-count="2">
+              <button onClick="{{ t.pick }}" style="{{ t.style }}">{{ t.label }}</button>
+            </sc-for>
+          </div>
+
+          <sc-if value="{{ tabSetup }}" hint-placeholder-val="{{ true }}">
+            <div style="background:#fff;border-radius:12px;padding:24px 26px;margin-bottom:18px">
+              <h2 style="font-family:'Wix Madefor Display',sans-serif;font-size:18px;font-weight:700;margin:0 0 5px">Channels</h2>
+              <p style="margin:0 0 16px;font-size:14px;color:#5c5a5a;max-width:640px;line-height:1.55">Used for reminders before a session and follow-ups after. Tries the first channel, waits, then moves down the list if there's no reply. Drag the activated channels to reorder them.</p>
+              <div style="border:1px solid #e5e5e5;border-radius:10px;overflow:hidden">
+                <sc-for list="{{ wizChans }}" as="c" hint-placeholder-count="5">
+                  <div style="{{ c.rowStyle }}" draggable="{{ c.canDrag }}" onDragStart="{{ c.dragStart }}" onDragOver="{{ c.dragOver }}" onDragEnd="{{ c.dragEnd }}" onDrop="{{ c.dragEnd }}">
+                    <span style="{{ c.gripStyle }}" title="Drag to reorder"><svg width="10" height="16" viewBox="0 0 10 16" fill="currentColor"><circle cx="2.5" cy="3" r="1.35"></circle><circle cx="7.5" cy="3" r="1.35"></circle><circle cx="2.5" cy="8" r="1.35"></circle><circle cx="7.5" cy="8" r="1.35"></circle><circle cx="2.5" cy="13" r="1.35"></circle><circle cx="7.5" cy="13" r="1.35"></circle></svg></span>
+                    <span style="{{ c.prioStyle }}">{{ c.prio }}</span>
+                    <span style="{{ c.iconStyle }}">{{ c.mark }}</span>
+                    <div style="flex:1;min-width:0">
+                      <div style="font-size:14px;font-weight:600">{{ c.name }}</div>
+                      <div style="font-size:12.5px;color:#8a8888;margin-top:1px;line-height:1.45">{{ c.desc }}</div>
+                    </div>
+                    <button style="font-family:inherit;background:none;border:none;padding:0 4px;font-size:12.5px;font-weight:600;color:#116dff;cursor:pointer;flex-shrink:0">{{ c.manageLabel }}</button>
+                    <button onClick="{{ c.toggle }}" style="{{ c.track }}"><span style="{{ c.knob }}"></span></button>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="display:flex;align-items:center;gap:14px;margin-top:16px;flex-wrap:wrap">
+                <span style="font-size:13.5px;font-weight:600">Wait before the next channel:</span>
+                <div style="display:flex;background:#f3f1f1;border:1px solid #dedede;border-radius:18px;padding:3px;gap:2px">
+                  <sc-for list="{{ waitOpts }}" as="w" hint-placeholder-count="3">
+                    <button onClick="{{ w.pick }}" style="{{ w.style }}">{{ w.label }}</button>
+                  </sc-for>
+                </div>
+                <span style="font-size:12.5px;color:#8a8888">After the last channel, it stops. The client is never chased twice for the same session.</span>
+              </div>
+            </div>
+
+            <div style="background:#fff;border-radius:12px;padding:24px 26px;margin-bottom:18px">
+              <h2 style="font-family:'Wix Madefor Display',sans-serif;font-size:18px;font-weight:700;margin:0 0 5px">Sessions &amp; limits</h2>
+              <p style="margin:0 0 16px;font-size:14px;color:#5c5a5a">Which services the Client Agent covers, and the limits it keeps to.</p>
+              <div style="display:grid;grid-template-columns:minmax(300px,1fr) minmax(260px,340px);gap:28px;align-items:start">
+                <div style="border:1px solid #e5e5e5;border-radius:10px;overflow:hidden">
+                  <sc-for list="{{ serviceRows }}" as="sv" hint-placeholder-count="4">
+                    <div style="{{ sv.rowStyle }}">
+                      <div style="flex:1;min-width:0">
+                        <div style="font-size:14px;font-weight:600">{{ sv.name }}</div>
+                        <div style="font-size:12.5px;color:#8a8888;margin-top:1px">{{ sv.meta }}</div>
+                      </div>
+                      <button onClick="{{ sv.toggle }}" style="{{ sv.track }}"><span style="{{ sv.knob }}"></span></button>
+                    </div>
+                  </sc-for>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:18px">
+                  <div onClick="{{ toggleQuiet }}" style="display:flex;align-items:flex-start;gap:10px;cursor:pointer">
+                    <div style="{{ quietTrack }}"><span style="{{ quietKnob }}"></span></div>
+                    <div style="min-width:0">
+                      <div style="display:flex;align-items:center;gap:10px">
+                        <span style="font-size:13.5px;font-weight:600">Quiet hours</span>
+                        <button onClick="{{ openQuiet }}" style="font-family:inherit;background:none;border:none;padding:0;font-size:12.5px;font-weight:600;color:#116dff;cursor:pointer">Edit</button>
+                      </div>
+                      <div style="font-size:12.5px;color:#8a8888;margin-top:1px;line-height:1.45">{{ quietDescShort }}</div>
+                    </div>
+                  </div>
+                  <div onClick="{{ toggleSkip }}" style="display:flex;align-items:flex-start;gap:10px;cursor:pointer">
+                    <div style="{{ skipTrack }}"><span style="{{ skipKnob }}"></span></div>
+                    <div style="min-width:0">
+                      <div style="font-size:13.5px;font-weight:600">One conversation per client</div>
+                      <div style="font-size:12.5px;color:#8a8888;margin-top:1px;line-height:1.45">A client with several sessions gets one thread covering all of them, instead of a separate message per booking. Retries on the next channel still follow your wait time.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div style="background:#fff;border-radius:12px;padding:24px 26px;margin-bottom:18px">
+              <h2 style="font-family:'Wix Madefor Display',sans-serif;font-size:18px;font-weight:700;margin:0 0 5px">Timing &amp; actions</h2>
+              <p style="margin:0 0 16px;font-size:14px;color:#5c5a5a;max-width:660px;line-height:1.55">When the agent reaches out before and after a session, and what it can do. Payments and bookings always go through your regular Wix checkout and calendar.</p>
+              <div style="border:1px solid #e5e5e5;border-radius:8px">
+                <sc-for list="{{ actGroups }}" as="g" hint-placeholder-count="3">
+                  <div style="{{ g.headStyle }}">
+                    <span style="font-size:12px;font-weight:700;color:#151414">{{ g.name }}</span>
+                    <span style="margin-left:auto;display:flex;align-items:center;gap:9px;flex-wrap:wrap">
+                      <span style="font-size:12.5px;color:#5c5a5a">{{ g.timingLabel }}</span>
+                      <span style="display:flex;background:#f3f1f1;border:1px solid #dedede;border-radius:18px;padding:3px;gap:2px">
+                        <sc-for list="{{ g.timingOpts }}" as="w" hint-placeholder-count="3">
+                          <button onClick="{{ w.pick }}" style="{{ w.style }}">{{ w.label }}</button>
+                        </sc-for>
+                      </span>
+                    </span>
+                  </div>
+                  <sc-for list="{{ g.items }}" as="k" hint-placeholder-count="2">
+                    <div onClick="{{ k.toggle }}" style="display:flex;align-items:flex-start;gap:9px;padding:9px 14px;border-top:1px solid #f3f1f1;cursor:pointer" style-hover="background:#fafafa">
+                      <div style="{{ k.track }}"><span style="{{ k.knob }}"></span></div>
+                      <div style="flex:1;min-width:0">
+                        <span style="{{ k.nameStyle }}">{{ k.name }}</span>
+                        <div style="{{ k.descStyle }}">{{ k.desc }}</div>
+                      </div>
+                    </div>
+                  </sc-for>
+                </sc-for>
+              </div>
+            </div>
+
+            <div style="background:#fff;border-radius:12px;padding:24px 26px">
+              <h2 style="font-family:'Wix Madefor Display',sans-serif;font-size:18px;font-weight:700;margin:0 0 5px">Conversation</h2>
+              <p style="margin:0 0 18px;font-size:14px;color:#5c5a5a">How much you want to check before the Client Agent sends.</p>
+              <div style="display:grid;grid-template-columns:minmax(300px,1fr) minmax(260px,340px);gap:28px;align-items:start">
+                <div>
+                  <div style="font-size:13.5px;font-weight:600;margin:0 0 9px">Before sending</div>
+                  <div style="display:flex;flex-direction:column;gap:10px">
+                    <sc-for list="{{ approvalOpts }}" as="o" hint-placeholder-count="2">
+                      <div onClick="{{ o.pick }}" style="{{ o.style }}">
+                        <span style="{{ o.dotStyle }}"></span>
+                        <div style="min-width:0">
+                          <div style="font-size:13.5px;font-weight:600">{{ o.label }}</div>
+                          <div style="font-size:12.5px;color:#8a8888;margin-top:2px;line-height:1.45">{{ o.desc }}</div>
+                        </div>
+                      </div>
+                    </sc-for>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:12px;border:1px solid #e5e5e5;border-radius:10px;padding:13px 15px;margin-top:18px">
+                    <span style="width:30px;height:30px;border-radius:7px;background:#eceafd;color:#4b42c9;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#4b42c9" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 3L10 14M21 3l-7 18-3-7-8-3z"></path></svg></span>
+                    <div style="flex:1;min-width:0">
+                      <div style="font-size:13.5px;font-weight:600">Try it on yourself first</div>
+                      <div style="font-size:12.5px;color:#8a8888;margin-top:1px">{{ testNote }}</div>
+                      <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+                        <sc-for list="{{ testBtns }}" as="b" hint-placeholder-count="2">
+                          <button onClick="{{ b.send }}" style="{{ b.style }}">{{ b.label }}</button>
+                        </sc-for>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div data-x="preview" style="background:#f4f3f3;border-radius:10px;padding:18px">
+                  <div style="font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#8a8888;margin-bottom:10px">Preview · WhatsApp</div>
+                  <div style="background:#fff;border-radius:10px;padding:12px 14px;max-width:290px">
+                    <div style="font-size:13.5px;line-height:1.5">{{ previewMsg }}</div>
+                    <div style="font-size:11px;color:#a3a1a1;margin-top:6px;text-align:right">6:02 PM</div>
+                  </div>
+                  <div style="font-size:12px;color:#8a8888;margin-top:12px;line-height:1.5">The Client Agent adapts the wording to the client, service and channel — this is the shape, not a fixed template.</div>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ tabActivity }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:14px">
+              <span style="font-size:14px;font-weight:600">Last 30 days</span>
+              <span style="font-size:13px;color:#8a8888">Jul 30 – Aug 28</span>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:14px">
+              <sc-for list="{{ actStats }}" as="st" hint-placeholder-count="4">
+                <div style="background:#fff;border-radius:12px;padding:18px">
+                  <div style="font-size:13px;color:#5c5a5a">{{ st.label }}</div>
+                  <div style="font-family:'Wix Madefor Display',sans-serif;font-size:30px;font-weight:700;margin-top:6px;line-height:1">{{ st.value }}</div>
+                  <div style="font-size:12.5px;margin-top:8px;color:#5c5a5a">{{ st.sub }}</div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 300px;gap:14px;margin-bottom:14px">
+              <div style="background:#fff;border-radius:12px;padding:20px 22px">
+                <div style="font-size:13.5px;font-weight:600">Actions taken</div>
+                <div style="display:flex;flex-direction:column;gap:13px;margin-top:16px">
+                  <sc-for list="{{ outcomes }}" as="o" hint-placeholder-count="6">
+                    <div>
+                      <div style="display:flex;align-items:baseline;justify-content:space-between;font-size:13px">
+                        <span style="color:#3b3939">{{ o.label }}</span>
+                        <span style="font-weight:600">{{ o.value }}</span>
+                      </div>
+                      <div style="height:6px;border-radius:4px;background:#efeded;margin-top:5px;overflow:hidden"><div style="{{ o.barStyle }}"></div></div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="background:#fff;border-radius:12px;padding:20px 22px">
+                <div style="font-size:13.5px;font-weight:600">Ratings collected</div>
+                <div style="display:flex;flex-direction:column;gap:10px;margin-top:16px">
+                  <sc-for list="{{ ratingSplit }}" as="r" hint-placeholder-count="5">
+                    <div style="display:flex;align-items:center;gap:10px">
+                      <span style="width:24px;font-size:12.5px;color:#3b3939;flex-shrink:0">{{ r.label }}</span>
+                      <div style="flex:1;height:6px;border-radius:4px;background:#efeded;overflow:hidden"><div style="{{ r.barStyle }}"></div></div>
+                      <span style="width:22px;text-align:right;font-size:12.5px;font-weight:600;flex-shrink:0">{{ r.count }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;margin-top:16px;padding-top:14px;border-top:1px solid #f0eeee;font-size:12.5px;color:#5c5a5a">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#c4151c" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5M12 16.2v.1"></path></svg>
+                  6 flagged for your team · <a onClick="{{ goInboxFu }}" style="cursor:pointer;font-weight:600">Review in Inbox</a>
+                </div>
+              </div>
+            </div>
+            <div style="background:#fff;border-radius:12px;padding:20px 22px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <span style="font-size:13.5px;font-weight:600">Recent follow-ups</span>
+                <a onClick="{{ goInboxFu }}" style="margin-left:auto;font-size:13px;font-weight:600;cursor:pointer">Open in Inbox</a>
+              </div>
+              <div style="margin-top:12px">
+                <div style="display:grid;grid-template-columns:1.2fr 1.3fr .9fr 1.2fr .6fr;gap:12px;padding:8px 10px;font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#8a8888;border-bottom:1px solid #f0eeee">
+                  <span>Client</span><span>Session</span><span>Channel</span><span>Outcome</span><span style="text-align:right">When</span>
+                </div>
+                <sc-for list="{{ recentRows }}" as="r" hint-placeholder-count="6">
+                  <div onClick="{{ r.open }}" style="display:grid;grid-template-columns:1.2fr 1.3fr .9fr 1.2fr .6fr;gap:12px;align-items:center;padding:11px 10px;font-size:13.5px;border-bottom:1px solid #f6f5f5;cursor:pointer" style-hover="background:#fafafa">
+                    <span style="font-weight:600">{{ r.client }}</span>
+                    <span style="color:#3b3939">{{ r.service }}</span>
+                    <span style="color:#5c5a5a">{{ r.channel }}</span>
+                    <span><span style="{{ r.chipStyle }}">{{ r.outcome }}</span></span>
+                    <span style="text-align:right;color:#8a8888;font-size:12.5px">{{ r.when }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+
+  <sc-if value="{{ customOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;z-index:300;display:flex;align-items:center;justify-content:center;background:rgba(21,20,20,.45);padding:24px">
+      <div style="width:min(460px,100%);background:#fff;border-radius:14px;box-shadow:0 20px 48px rgba(21,20,20,.28);overflow:hidden">
+        <div style="display:flex;align-items:flex-start;gap:12px;padding:22px 24px 0">
+          <div style="flex:1;min-width:0">
+            <div style="font-family:'Wix Madefor Display',sans-serif;font-size:18px;font-weight:700">{{ customTitle }}</div>
+            <div style="font-size:13.5px;color:#5c5a5a;margin-top:5px;line-height:1.5">{{ customSub }}</div>
+          </div>
+          <button onClick="{{ customCancel }}" style="background:none;border:none;cursor:pointer;color:#8a8888;font-size:20px;line-height:1;padding:2px 4px">×</button>
+        </div>
+        <div style="padding:20px 24px 4px">
+          <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+            <div style="display:flex;align-items:center;border:1px solid #dedede;border-radius:8px;overflow:hidden">
+              <button onClick="{{ customDec }}" style="font-family:inherit;background:#fff;border:none;border-right:1px solid #eceaea;width:38px;height:38px;font-size:17px;font-weight:600;color:#151414;cursor:pointer" style-hover="background:#f8f6f6">−</button>
+              <span style="width:56px;text-align:center;font-size:15px;font-weight:600">{{ customN }}</span>
+              <button onClick="{{ customInc }}" style="font-family:inherit;background:#fff;border:none;border-left:1px solid #eceaea;width:38px;height:38px;font-size:17px;font-weight:600;color:#151414;cursor:pointer" style-hover="background:#f8f6f6">+</button>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <sc-for list="{{ customUnits }}" as="u" hint-placeholder-count="3">
+                <button onClick="{{ u.pick }}" style="{{ u.style }}">{{ u.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:9px;background:#f8f7fe;border:1px solid #e3dffb;border-radius:9px;padding:11px 13px;margin-top:16px;font-size:13.5px;color:#2d2a5e">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#4b42c9" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v4l3 2"></path></svg>
+            <span>{{ customLead }} <strong style="font-weight:600">{{ customAmount }}</strong> {{ customPhrase }}.</span>
+          </div>
+          <div style="font-size:12.5px;color:#8a8888;margin-top:12px;line-height:1.5">Quiet hours still apply, so anything falling outside them waits for the next allowed time.</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:20px 24px 22px">
+          <div style="flex:1"></div>
+          <button onClick="{{ customCancel }}" style="font-family:inherit;background:#fff;border:1px solid #dedede;border-radius:8px;padding:9px 18px;font-size:14px;font-weight:600;color:#151414;cursor:pointer" style-hover="background:#f8f6f6">Cancel</button>
+          <button onClick="{{ customApply }}" style="font-family:inherit;background:#151414;color:#fff;border:none;border-radius:8px;padding:9px 22px;font-size:14px;font-weight:600;cursor:pointer" style-hover="background:#3b3939">Apply</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ quietOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;z-index:310;display:flex;align-items:center;justify-content:center;background:rgba(21,20,20,.45);padding:24px">
+      <div style="width:min(480px,100%);background:#fff;border-radius:14px;box-shadow:0 20px 48px rgba(21,20,20,.28);overflow:hidden">
+        <div style="display:flex;align-items:flex-start;gap:12px;padding:22px 24px 0">
+          <div style="flex:1;min-width:0">
+            <div style="font-family:'Wix Madefor Display',sans-serif;font-size:18px;font-weight:700">Quiet hours</div>
+            <div style="font-size:13.5px;color:#5c5a5a;margin-top:5px;line-height:1.5">Pick the days and times the agent is allowed to reach out. Times are in the client’s time zone.</div>
+          </div>
+          <button onClick="{{ quietCancel }}" style="background:none;border:none;cursor:pointer;color:#8a8888;font-size:20px;line-height:1;padding:2px 4px">×</button>
+        </div>
+        <div style="padding:20px 24px 4px">
+          <div style="font-size:13px;font-weight:600;margin-bottom:9px">Days</div>
+          <div style="display:flex;gap:7px;flex-wrap:wrap">
+            <sc-for list="{{ quietDayChips }}" as="d" hint-placeholder-count="7">
+              <button onClick="{{ d.pick }}" style="{{ d.style }}" title="{{ d.full }}">{{ d.label }}</button>
+            </sc-for>
+          </div>
+          <div style="display:flex;gap:14px;margin-top:20px;flex-wrap:wrap">
+            <div style="flex:1;min-width:150px">
+              <div style="font-size:13px;font-weight:600;margin-bottom:7px">From</div>
+              <select value="{{ quietFromVal }}" onChange="{{ quietSetFrom }}" style="font-family:inherit;width:100%;font-size:14px;color:#151414;background:#fff;border:1px solid #dedede;border-radius:8px;padding:10px 11px;cursor:pointer">
+                <sc-for list="{{ quietTimes }}" as="t" hint-placeholder-count="6">
+                  <option value="{{ t }}">{{ t }}</option>
+                </sc-for>
+              </select>
+            </div>
+            <div style="flex:1;min-width:150px">
+              <div style="font-size:13px;font-weight:600;margin-bottom:7px">To</div>
+              <select value="{{ quietToVal }}" onChange="{{ quietSetTo }}" style="font-family:inherit;width:100%;font-size:14px;color:#151414;background:#fff;border:1px solid #dedede;border-radius:8px;padding:10px 11px;cursor:pointer">
+                <sc-for list="{{ quietTimes }}" as="t" hint-placeholder-count="6">
+                  <option value="{{ t }}">{{ t }}</option>
+                </sc-for>
+              </select>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:9px;background:#f8f7fe;border:1px solid #e3dffb;border-radius:9px;padding:11px 13px;margin-top:18px;font-size:13.5px;color:#2d2a5e">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#4b42c9" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v4l3 2"></path></svg>
+            <span>{{ quietSummary }}</span>
+          </div>
+          <div style="font-size:12.5px;color:#8a8888;margin-top:12px;line-height:1.5">Anything scheduled outside these hours waits for the next allowed time.</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:20px 24px 22px">
+          <div style="flex:1"></div>
+          <button onClick="{{ quietCancel }}" style="font-family:inherit;background:#fff;border:1px solid #dedede;border-radius:8px;padding:9px 18px;font-size:14px;font-weight:600;color:#151414;cursor:pointer" style-hover="background:#f8f6f6">Cancel</button>
+          <button onClick="{{ quietApply }}" style="font-family:inherit;background:#151414;color:#fff;border:none;border-radius:8px;padding:9px 22px;font-size:14px;font-weight:600;cursor:pointer" style-hover="background:#3b3939">Apply</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ showDemoNav }}" hint-placeholder-val="{{ true }}">
+    <div style="position:fixed;left:16px;bottom:16px;z-index:200;display:flex;align-items:center;gap:4px;background:#151414;border-radius:22px;padding:5px 6px;box-shadow:0 8px 24px rgba(21,20,20,.35)">
+      <span style="font-size:10.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#8a8888;padding:0 8px">Demo</span>
+      <sc-for list="{{ demoNav }}" as="d" hint-placeholder-count="5">
+        <button onClick="{{ d.pick }}" style="{{ d.style }}">{{ d.label }}</button>
+      </sc-for>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1440, &quot;height&quot;: 900}, &quot;showDemoNav&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Prototype&quot;}, &quot;startAt&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;inbox&quot;, &quot;bookings&quot;, &quot;wizard&quot;, &quot;agent&quot;], &quot;default&quot;: &quot;bookings&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Prototype&quot;}}">
+class Component extends DCLogic {
+
+  state = {
+    view: 'bookings', sel: 'noa', filter: 'All conversations', chan: 'all', filterOpen: false,
+    contactOpen: false, trOpen: {}, resolved: {}, flagged: {},
+    fuOn: true, bannerDismissed: false, justOn: false,
+    wizStep: 1, wizFrom: 'inbox',
+    wch: { whatsapp: true, sms: true, email: true, facebook: false, instagram: false, phone: false },
+    chanOrder: ['whatsapp', 'sms', 'email', 'facebook', 'instagram', 'phone'],
+    dragChan: null,
+    wait: '12 hours',
+    services: { massage: true, facial: true, hydro: true, group: true },
+    reminderTiming: '24 hours before', customOpen: null, customN: 3, customUnit: 'days',
+    timing: '2 hours after', quiet: true, skip: true,
+    quietOpen: false,
+    quietDays: { sun: true, mon: true, tue: true, wed: true, thu: true, fri: true, sat: false },
+    quietFrom: '9:00 AM', quietTo: '9:00 PM',
+    acts: { rsvp: true, reschedule: true, intake: true, preupsell: false, predeposit: true, prep: false, review: true, message: true, rebook: true, winback: true, aftercare: false, nps: true, paylink: true, tip: true },
+    tone: 'Warm', approval: 'Fully automatic', testSent: {},
+    agentTab: 'setup'
+  };
+
+  componentDidMount() {
+    const start = this.props.startAt;
+    if (['inbox', 'bookings', 'wizard', 'agent'].indexOf(start) > -1 && start !== 'bookings') {
+      this.setState({ view: start });
+    }
+  }
+
+  toggle(on, size) {
+    const w = size === 'lg' ? 40 : 30, h = size === 'lg' ? 22 : 17, k = size === 'lg' ? 18 : 13;
+    return {
+      track: 'position:relative;width:' + w + 'px;height:' + h + 'px;flex-shrink:0;margin-top:2px;border-radius:' + h + 'px;cursor:pointer;border:none;padding:0;transition:background .15s;background:' + (on ? '#2f5dff' : '#c4c2c2'),
+      knob: 'position:absolute;width:' + k + 'px;height:' + k + 'px;background:#fff;border-radius:50%;top:2px;left:2px;transition:transform .15s;display:block;transform:translateX(' + (on ? (w - k - 4) + 'px' : '0px') + ')'
+    };
+  }
+
+  go(view) { this.setState({ view, filterOpen: false }); }
+
+  orderedChans() {
+    const order = this.state.chanOrder || [];
+    const byId = {};
+    this.CHAN_DEFS.forEach(c => { byId[c.id] = c; });
+    const out = order.map(id => byId[id]).filter(Boolean);
+    this.CHAN_DEFS.forEach(c => { if (out.indexOf(c) === -1) out.push(c); });
+    return out;
+  }
+
+  moveChan(id, dir) {
+    const order = this.orderedChans().map(c => c.id);
+    const i = order.indexOf(id);
+    const j = i + dir;
+    if (i < 0 || j < 0 || j >= order.length) return;
+    order[i] = order[j];
+    order[j] = id;
+    this.setState({ chanOrder: order });
+  }
+
+  dropChan(dragId, overId) {
+    if (!dragId || dragId === overId) return;
+    const order = this.orderedChans().map(c => c.id);
+    const from = order.indexOf(dragId);
+    const to = order.indexOf(overId);
+    if (from < 0 || to < 0) return;
+    order.splice(from, 1);
+    order.splice(to, 0, dragId);
+    this.setState({ chanOrder: order });
+  }
+
+  PRE_PRESETS = ['48 hours before', '24 hours before'];
+  POST_PRESETS = ['1 hour after', '2 hours after'];
+
+  timingChoices(phase) {
+    const s = this.state;
+    const pre = phase === 'pre';
+    const cur = pre ? s.reminderTiming : s.timing;
+    const presets = pre ? this.PRE_PRESETS : this.POST_PRESETS;
+    const seg = (on) => 'white-space:nowrap;font-family:inherit;font-size:12.5px;font-weight:600;padding:6px 14px;border-radius:16px;cursor:pointer;border:none;background:' + (on ? '#fff' : 'transparent') + ';color:' + (on ? '#151414' : '#5c5a5a') + ';box-shadow:' + (on ? '0 1px 3px rgba(21,20,20,.16)' : 'none');
+    const isCustom = presets.indexOf(cur) === -1;
+    const out = presets.map(label => ({
+      label, style: seg(cur === label),
+      pick: () => this.setState(pre ? { reminderTiming: label } : { timing: label })
+    }));
+    out.push({
+      label: isCustom ? cur : 'Custom',
+      style: seg(isCustom),
+      pick: () => this.setState({ customOpen: phase })
+    });
+    return out;
+  }
+
+  WAIT_PRESETS = ['4 hours', '12 hours'];
+
+  QUIET_DAYS = [
+    { id: 'sun', label: 'S', full: 'Sunday', short: 'Sun' },
+    { id: 'mon', label: 'M', full: 'Monday', short: 'Mon' },
+    { id: 'tue', label: 'T', full: 'Tuesday', short: 'Tue' },
+    { id: 'wed', label: 'W', full: 'Wednesday', short: 'Wed' },
+    { id: 'thu', label: 'T', full: 'Thursday', short: 'Thu' },
+    { id: 'fri', label: 'F', full: 'Friday', short: 'Fri' },
+    { id: 'sat', label: 'S', full: 'Saturday', short: 'Sat' }
+  ];
+
+  QUIET_TIMES = ['6:00 AM', '7:00 AM', '8:00 AM', '9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM', '6:00 PM', '7:00 PM', '8:00 PM', '9:00 PM', '10:00 PM', '11:00 PM'];
+
+  quietDaysPhrase() {
+    const d = this.state.quietDays;
+    const on = this.QUIET_DAYS.filter(x => d[x.id]);
+    if (!on.length) return 'no days selected';
+    if (on.length === 7) return 'every day';
+    const ids = on.map(x => x.id).join(',');
+    if (ids === 'mon,tue,wed,thu,fri') return 'Mon to Fri';
+    if (ids === 'sun,mon,tue,wed,thu,fri') return 'Sun to Fri';
+    if (ids === 'sat,sun' || ids === 'sun,sat') return 'weekends';
+    return on.map(x => x.short).join(', ');
+  }
+
+  quietVals() {
+    const s = this.state;
+    const chip = (on) => 'font-family:inherit;width:38px;height:38px;border-radius:50%;font-size:13px;font-weight:600;cursor:pointer;border:1px solid ' + (on ? '#2f5dff' : '#dedede') + ';background:' + (on ? '#eef2ff' : '#fff') + ';color:' + (on ? '#2f5dff' : '#3b3939');
+    const phrase = this.quietDaysPhrase();
+    return {
+      quietOpen: !!s.quietOpen,
+      openQuiet: (e) => { if (e && e.stopPropagation) e.stopPropagation(); this.setState({ quietOpen: true }); },
+      quietCancel: () => this.setState({ quietOpen: false }),
+      quietApply: () => this.setState({ quietOpen: false, quiet: true }),
+      quietDayChips: this.QUIET_DAYS.map(d => ({
+        label: d.label, full: d.full, style: chip(!!s.quietDays[d.id]),
+        pick: () => this.setState({ quietDays: Object.assign({}, s.quietDays, { [d.id]: !s.quietDays[d.id] }) })
+      })),
+      quietTimes: this.QUIET_TIMES,
+      quietFromVal: s.quietFrom,
+      quietToVal: s.quietTo,
+      quietSetFrom: (e) => this.setState({ quietFrom: e.target.value }),
+      quietSetTo: (e) => this.setState({ quietTo: e.target.value }),
+      quietSummary: 'The agent reaches out ' + phrase + ', between ' + s.quietFrom + ' and ' + s.quietTo + '.',
+      quietDesc: 'Only send ' + phrase + ', between ' + s.quietFrom + ' and ' + s.quietTo + ', in the client\u2019s time zone. Anything outside waits for the next allowed time.',
+      quietDescShort: phrase.charAt(0).toUpperCase() + phrase.slice(1) + ', ' + s.quietFrom + ' to ' + s.quietTo + ', client\u2019s time zone.'
+    };
+  }
+
+  waitChoices() {
+    const s = this.state;
+    const seg = (on) => 'white-space:nowrap;font-family:inherit;font-size:12.5px;font-weight:600;padding:6px 14px;border-radius:16px;cursor:pointer;border:none;background:' + (on ? '#fff' : 'transparent') + ';color:' + (on ? '#151414' : '#5c5a5a') + ';box-shadow:' + (on ? '0 1px 3px rgba(21,20,20,.16)' : 'none');
+    const isCustom = this.WAIT_PRESETS.indexOf(s.wait) === -1;
+    const out = this.WAIT_PRESETS.map(label => ({ label, style: seg(s.wait === label), pick: () => this.setState({ wait: label }) }));
+    out.push({ label: isCustom ? s.wait : 'Custom', style: seg(isCustom), pick: () => this.setState({ customOpen: 'wait' }) });
+    return out;
+  }
+
+  customVals() {
+    const s = this.state;
+    const phase = s.customOpen;
+    const pre = phase === 'pre';
+    const wait = phase === 'wait';
+    const units = ['minutes', 'hours', 'days'];
+    const n = s.customN;
+    const chip = (on) => 'white-space:nowrap;font-family:inherit;font-size:13px;font-weight:600;padding:7px 15px;border-radius:18px;cursor:pointer;border:1px solid ' + (on ? '#2f5dff' : '#dedede') + ';background:' + (on ? '#eef2ff' : '#fff') + ';color:' + (on ? '#2f5dff' : '#3b3939');
+    const amount = n + ' ' + (n === 1 ? s.customUnit.replace(/s$/, '') : s.customUnit);
+    const value = wait ? amount : amount + (pre ? ' before' : ' after');
+    return {
+      customOpen: !!phase,
+      customTitle: wait ? 'Custom wait time' : (pre ? 'Custom reminder time' : 'Custom follow-up time'),
+      customSub: wait ? 'How long should the agent wait for a reply before trying the next channel?' : (pre ? 'How long before the session starts should the agent send the reminder?' : 'How long after the session ends should the agent follow up?'),
+      customValue: value,
+      customAmount: amount,
+      customLead: wait ? 'The agent waits' : 'The agent reaches out',
+      customPhrase: wait ? 'for a reply, then moves on to the next channel' : (pre ? 'before the session starts' : 'after the session ends'),
+      customN: String(n),
+      customDec: () => this.setState({ customN: Math.max(1, n - 1) }),
+      customInc: () => this.setState({ customN: Math.min(99, n + 1) }),
+      customUnits: units.map(u => ({ label: u, style: chip(s.customUnit === u), pick: () => this.setState({ customUnit: u }) })),
+      customCancel: () => this.setState({ customOpen: null }),
+      customApply: () => this.setState(wait ? { wait: value, customOpen: null } : (pre ? { reminderTiming: value, customOpen: null } : { timing: value, customOpen: null }))
+    };
+  }
+
+  CHAN_DEFS = [
+    { id: 'whatsapp', name: 'WhatsApp Business', mark: '\u25cf', color: '#25d366', bg: '#e7f8ee', desc: 'Best reply rates. Sent as a service message from your business number.' },
+    { id: 'sms', name: 'SMS', mark: '\u2709', color: '#3b3939', bg: '#f0eeee', desc: 'Texts a link to Wix Smart Chat \u2014 the conversation happens there, in the client\u2019s browser.' },
+    { id: 'email', name: 'Email', mark: '@', color: '#5c5a5a', bg: '#f0eeee', desc: 'Sent from hello@parkyspa.com with your business branding.' },
+    { id: 'facebook', name: 'Facebook', mark: 'f', color: '#1877f2', bg: '#e8f0fe', desc: 'Messages clients who already talk to you on your Facebook page.' },
+    { id: 'instagram', name: 'Instagram Business', mark: '\u25ce', color: '#d62976', bg: '#fdeaf3', desc: 'Messages clients who already talk to you on your Instagram Business account.' },
+    { id: 'phone', name: 'Phone call', mark: '\u260e', color: '#4b42c9', bg: '#eceafd', desc: 'The agent calls the client \u2014 same voice as your phone agent.' }
+  ];
+
+  SERVICES = [
+    { id: 'massage', name: 'Deep Tissue Massage', meta: '60 min \u00b7 with Maya or Noa' },
+    { id: 'facial', name: 'Signature Facial', meta: '60 min' },
+    { id: 'hydro', name: 'Hydrotherapy', meta: '45 min' },
+    { id: 'group', name: 'Weekly Group Sessions', meta: 'Class \u00b7 up to 50 participants' }
+  ];
+
+  ACTIONS = [
+    { id: 'rsvp', group: 'Before the session', name: 'Ask clients to confirm (RSVP)', desc: 'Sends the reminder and asks the client to confirm they\u2019re coming.' },
+    { id: 'reschedule', group: 'Before the session', name: 'Let clients reschedule or cancel', desc: 'Offers open slots and moves the booking, or cancels it, right in the conversation.' },
+    { id: 'intake', group: 'Before the session', name: 'Get the intake form filled in', desc: 'Sends your form, nudges once if it\u2019s still open, and files the answers on the booking.' },
+    { id: 'preupsell', group: 'Before the session', name: 'Offer add-ons for the session', desc: 'Suggests add-ons from the service, based on what the client usually books.' },
+    { id: 'predeposit', group: 'Before the session', name: 'Collect payment or deposit', desc: 'Sends a paylink when a deposit or prepayment is required to hold the spot.' },
+    { id: 'prep', group: 'Before the session', name: 'Send prep instructions', desc: 'Your approved arrival info, intake forms or health screening \u2014 never generated advice.' },
+    { id: 'nps', group: 'After the session', name: 'Ask how likely clients are to recommend you', desc: 'A one-tap 0\u201310 score after the rating, so you can track how loyal clients feel over time.' },
+    { id: 'review', group: 'After the session', name: 'Ask for a Google or Yelp review', desc: 'Only when the rating is 4 or higher \u2014 unhappy clients are never asked.' },
+    { id: 'message', group: 'After the session', name: 'Take a message when something went wrong', desc: 'Apologizes, records what happened and flags the conversation for your team.' },
+    { id: 'rebook', group: 'After the session', name: 'Book the next session', desc: 'Offers the next open slot with the same staff member.' },
+    { id: 'winback', group: 'After the session', name: 'Offer a comeback discount', desc: 'A one-time offer if the client hasn\u2019t rebooked after 30 days.' },
+    { id: 'aftercare', group: 'After the session', name: 'Send aftercare instructions', desc: 'Your approved notes for the treatment \u2014 never generated advice.' },
+    { id: 'paylink', group: 'After the session', name: 'Send a paylink if the session is unpaid', desc: 'A secure link to settle the open balance through your Wix checkout.' },
+    { id: 'tip', group: 'After the session', name: 'Offer to add a tip', desc: 'Added to the session payment and assigned to the staff member.' }
+  ];
+
+  CHAN = {
+    phone: { bg: '#4b42c9', icon: 'M6 4h3l2 5-2 1a9 9 0 004 4l1-2 5 2v3a2 2 0 01-2 2A15 15 0 014 6a2 2 0 012-2z' },
+    whatsapp: { bg: '#25d366', icon: 'M4 20l1.4-4A8 8 0 1112 20H4z' },
+    sms: { bg: '#3b3939', icon: 'M4 5h16v11H9l-5 4z' },
+    chat: { bg: '#116dff', icon: 'M4 5h16v10H9l-5 4z' },
+    email: { bg: '#8a8888', icon: 'M4 6h16v12H4zM4 8l8 5 8-5' }
+  };
+
+  AV = ['#f0623c', '#4b42c9', '#1a6b3f', '#c8a23a', '#2f5dff', '#8a5cf6', '#0f6cbd'];
+
+  ICON_SEND = 'M21 3L10 14M21 3l-7 18-3-7-8-3z';
+  ICON_CALL = 'M6 4h3l2 5-2 1a9 9 0 004 4l1-2 5 2v3a2 2 0 01-2 2A15 15 0 014 6a2 2 0 012-2z';
+
+  CONV = [
+    { id: 'maya', name: 'Maya Cohen', initials: 'MC', when: 'Aug 28', preview: 'Client Agent \u00b7 Reminder \u00b7 RSVP confirmed', channel: 'whatsapp', fu: true, stage: 'pre',
+      follow: false, sub: 'WhatsApp \u00b7 054-220-9931', kind: 'Site member', phone: '054-220-9931', email: 'maya.cohen@gmail.com', channelName: 'WhatsApp',
+      history: [{ about: 'Signature Facial \u00b7 reminder sent \u00b7 RSVP confirmed', when: 'Aug 28, 2026' }],
+      thread: [
+        { isDate: true, text: 'Aug 28, 2026' },
+        { isEvent: true, text: 'Upcoming session \u00b7 Signature Facial with Noa \u00b7 tomorrow at 11:00 AM', mine: false },
+        { isCard: true, icon: 'send', title: 'Reminder sent by your AI agent', meta: '6:00 PM \u00b7 WhatsApp \u00b7 24 hours before the session',
+          summary: 'Reminded Maya about tomorrow\u2019s facial and asked her to confirm. She replied right away.',
+          did: [{ label: 'Sent a reminder' }, { label: 'Collected RSVP' }] },
+        { isText: true, text: 'Hi Maya, this is Parky Spa. Just confirming your Signature Facial with Noa tomorrow at 11:00 AM \u2014 will you be there?', via: 'Client Agent \u00b7 WhatsApp', mine: true },
+        { isText: true, text: 'Yes, see you then!', via: 'WhatsApp \u00b7 Maya', mine: false },
+        { isText: true, text: 'Great, see you tomorrow at 11.', via: 'Client Agent \u00b7 WhatsApp', mine: true }
+      ] },
+    { id: 'guy', name: 'Guy Rosen', initials: 'GR', when: 'Aug 28', preview: 'Client Agent \u00b7 Reminder \u00b7 Rescheduled to Aug 29', channel: 'sms', fu: true, stage: 'pre',
+      follow: false, sub: 'SMS \u00b7 052-773-4408', kind: 'Contact', phone: '052-773-4408', email: '\u2014', channelName: 'SMS',
+      history: [{ about: 'Deep Tissue Massage \u00b7 rescheduled', when: 'Aug 28, 2026' }],
+      thread: [
+        { isDate: true, text: 'Aug 28, 2026' },
+        { isEvent: true, text: 'Upcoming session \u00b7 Deep Tissue Massage with Maya \u00b7 tomorrow at 3:00 PM', mine: false },
+        { isCard: true, icon: 'send', title: 'Reminder sent by your AI agent', meta: '9:00 AM \u00b7 SMS \u00b7 24 hours before the session',
+          summary: 'Guy couldn\u2019t make tomorrow\u2019s slot. The agent offered the open times and moved the booking to Saturday.',
+          did: [{ label: 'Sent a reminder' }, { label: 'Rescheduled the booking' }, { label: 'Texted the new confirmation' }],
+          hasLink: true, linkTitle: 'Deep Tissue Massage \u00b7 60 min', linkSub: 'Moved to Sat, Aug 29, 2026 at 1:00 PM \u00b7 with Maya', linkCta: 'View booking' },
+        { isText: true, text: 'Hi Guy, this is Parky Spa. Reminder: Deep Tissue Massage with Maya tomorrow at 3:00 PM. See you then?', via: 'Client Agent \u00b7 SMS', mine: true },
+        { isText: true, text: 'Can\u2019t make it tomorrow, something came up. Can I move it?', via: 'SMS \u00b7 Guy', mine: false },
+        { isText: true, text: 'Of course. Maya has Saturday at 1:00 PM or Sunday at 10:00 AM open.', via: 'Client Agent \u00b7 SMS', mine: true },
+        { isText: true, text: 'Saturday at 1 works', via: 'SMS \u00b7 Guy', mine: false },
+        { isText: true, text: 'Moved to Saturday, Aug 29 at 1:00 PM. Confirmation is on its way.', via: 'Client Agent \u00b7 SMS', mine: true }
+      ] },
+    { id: 'roni', name: 'Roni Katz', initials: 'RK', when: 'Aug 27', preview: 'Client Agent \u00b7 Reminder \u00b7 Deposit paid', channel: 'whatsapp', fu: true, stage: 'pre',
+      follow: false, sub: 'WhatsApp \u00b7 050-336-2287', kind: 'Site member', phone: '050-336-2287', email: 'roni.katz@gmail.com', channelName: 'WhatsApp',
+      history: [{ about: 'Hydrotherapy \u00b7 deposit collected', when: 'Aug 27, 2026' }],
+      thread: [
+        { isDate: true, text: 'Aug 27, 2026' },
+        { isEvent: true, text: 'Upcoming session \u00b7 Hydrotherapy \u00b7 tomorrow at 9:00 AM \u00b7 \u20aa90 deposit required', mine: false },
+        { isCard: true, icon: 'send', title: 'Reminder sent by your AI agent', meta: '5:30 PM \u00b7 WhatsApp \u00b7 24 hours before the session',
+          summary: 'Roni\u2019s booking needed a deposit to hold the spot. The agent reminded her and sent a paylink, which she paid within minutes.',
+          did: [{ label: 'Sent a reminder' }, { label: 'Sent a paylink' }, { label: 'Payment received \u00b7 \u20aa90' }],
+          hasLink: true, linkTitle: 'Deposit \u00b7 \u20aa90', linkSub: 'Paid Aug 27, 5:44 PM \u00b7 Visa \u2022\u2022 2207', linkCta: 'View payment' },
+        { isText: true, text: 'Hi Roni, this is Parky Spa. Reminder: Hydrotherapy tomorrow at 9:00 AM. A \u20aa90 deposit holds your spot \u2014 you can pay here: pay.parkyspa.com/dep-4471', via: 'Client Agent \u00b7 WhatsApp', mine: true },
+        { isText: true, text: 'Just paid', via: 'WhatsApp \u00b7 Roni', mine: false },
+        { isText: true, text: 'Got it, thank you! See you tomorrow at 9.', via: 'Client Agent \u00b7 WhatsApp', mine: true }
+      ] },
+    { id: 'ofir', name: 'Ofir Dahan', initials: 'OD', when: 'Aug 27', preview: 'Client Agent \u00b7 Reminder \u00b7 Canceled, backfilled from waitlist', channel: 'whatsapp', fu: true, stage: 'pre',
+      follow: false, sub: 'WhatsApp \u00b7 053-118-7742', kind: 'Contact', phone: '053-118-7742', email: '\u2014', channelName: 'WhatsApp',
+      history: [{ about: 'Weekly Group Session \u00b7 canceled', when: 'Aug 27, 2026' }],
+      thread: [
+        { isDate: true, text: 'Aug 27, 2026' },
+        { isEvent: true, text: 'Upcoming session \u00b7 Weekly Group Session \u00b7 tomorrow at 9:30 AM', mine: false },
+        { isCard: true, icon: 'send', title: 'Reminder sent by your AI agent', meta: '11:00 AM \u00b7 WhatsApp \u00b7 24 hours before the session',
+          summary: 'Ofir canceled tomorrow\u2019s class. The agent freed the spot and offered it to the next person on the waitlist, who booked it immediately.',
+          did: [{ label: 'Sent a reminder' }, { label: 'Canceled the booking' }, { label: 'Filled the spot from the waitlist' }],
+          hasLink: true, linkTitle: 'Weekly Group Session', linkSub: 'Spot filled by Yuval Kramer \u00b7 Aug 27, 11:14 AM', linkCta: 'View booking' },
+        { isText: true, text: 'Hi Ofir, this is Parky Spa. Reminder: Weekly Group Session tomorrow at 9:30 AM. See you there?', via: 'Client Agent \u00b7 WhatsApp', mine: true },
+        { isText: true, text: 'Actually can\u2019t make it this week, please cancel', via: 'WhatsApp \u00b7 Ofir', mine: false },
+        { isText: true, text: 'No problem, you\u2019re canceled for tomorrow \u2014 hope to see you next week!', via: 'Client Agent \u00b7 WhatsApp', mine: true },
+        { isEvent: true, text: 'Spot offered to waitlist \u00b7 booked by Yuval Kramer', mine: false }
+      ] },
+    { id: 'noa', name: 'Noa Adler', initials: 'NA', when: 'Aug 26', preview: 'Client Agent \u00b7 Follow-up \u00b7 Review posted + rebooked', channel: 'whatsapp', fu: true, stage: 'post',
+      follow: false, sub: 'WhatsApp \u00b7 052-118-4437', kind: 'Site member', phone: '052-118-4437', email: 'noa.adler@gmail.com', channelName: 'WhatsApp',
+      history: [{ about: 'Deep Tissue Massage \u00b7 \u26055 \u00b7 review + rebooked', when: 'Aug 26, 2026' }, { about: 'Signature Facial \u00b7 \u26055', when: 'Jul 8, 2026' }],
+      thread: [
+        { isDate: true, text: 'Aug 26, 2026' },
+        { isEvent: true, text: 'Session completed \u00b7 Deep Tissue Massage with Maya \u00b7 4:00 PM', mine: false },
+        { isCard: true, icon: 'send', title: 'Follow-up by your AI agent', meta: '6:02 PM \u00b7 WhatsApp \u00b7 2 hours after the session',
+          summary: 'Checked in after Noa\u2019s massage. She rated it 5 out of 5, agreed to leave a Google review, and booked her next session for Sep 9.',
+          rating: '\u2605\u2605\u2605\u2605\u2605 5/5', good: true, quote: '\u201cMaya was amazing\u201d',
+          did: [{ label: 'Collected feedback' }, { label: 'Sent a Google review link' }, { label: 'Booked the next session' }],
+          hasLink: true, linkTitle: 'Deep Tissue Massage \u00b7 60 min', linkSub: 'Wed, Sep 9, 2026 at 4:00 PM \u00b7 with Maya', linkCta: 'View booking' },
+        { isText: true, text: 'Hi Noa, this is Parky Spa. How was your deep tissue massage with Maya today? A quick 1\u20135 is all I need.', via: 'Client Agent \u00b7 WhatsApp', mine: true },
+        { isText: true, text: '5! Honestly the best massage I\u2019ve had in ages. Maya was amazing.', via: 'WhatsApp \u00b7 Noa', mine: false },
+        { isText: true, text: 'That makes our day. Would you mind sharing that in a quick Google review? It really helps a small team: g.page/parkyspa/review', via: 'Client Agent \u00b7 WhatsApp', mine: true },
+        { isText: true, text: 'Done!', via: 'WhatsApp \u00b7 Noa', mine: false },
+        { isText: true, text: 'Thank you! Maya has Wednesday, Sep 9 at 4:00 PM open \u2014 want me to book your next one?', via: 'Client Agent \u00b7 WhatsApp', mine: true },
+        { isText: true, text: 'Yes, book it.', via: 'WhatsApp \u00b7 Noa', mine: false },
+        { isText: true, text: 'Booked \u2014 confirmation is on its way. See you on the 9th!', via: 'Client Agent \u00b7 WhatsApp', mine: true },
+        { isEvent: true, text: 'Review posted on Google \u00b7 \u2605\u2605\u2605\u2605\u2605', mine: false }
+      ] },
+    { id: 'eli', name: 'Eli Peretz', initials: 'EP', when: 'Aug 25', preview: 'Client Agent \u00b7 Follow-up \u00b7 Paid the open balance', channel: 'sms', fu: true, stage: 'post',
+      follow: false, sub: 'SMS \u00b7 054-873-2210', kind: 'Contact', phone: '054-873-2210', email: 'eli.peretz@gmail.com', channelName: 'SMS',
+      history: [{ about: 'Hydrotherapy \u00b7 \u26054 \u00b7 paid \u20aa280', when: 'Aug 25, 2026' }],
+      thread: [
+        { isDate: true, text: 'Aug 25, 2026' },
+        { isEvent: true, text: 'Session completed \u00b7 Hydrotherapy \u00b7 unpaid \u00b7 \u20aa280', mine: false },
+        { isCard: true, icon: 'send', title: 'Follow-up by your AI agent', meta: '8:18 PM \u00b7 SMS \u00b7 3 hours after the session',
+          summary: 'Eli\u2019s hydrotherapy session was still unpaid. The agent collected his feedback, then sent a paylink for the open balance. Paid within 20 minutes.',
+          rating: '\u2605\u2605\u2605\u2605\u2606 4/5', good: true, quote: '',
+          did: [{ label: 'Collected feedback' }, { label: 'Sent a paylink' }, { label: 'Payment received \u00b7 \u20aa280' }],
+          hasLink: true, linkTitle: 'Invoice #0000958 \u00b7 \u20aa280', linkSub: 'Paid Aug 25, 8:41 PM \u00b7 Visa \u2022\u2022 4413', linkCta: 'View payment' },
+        { isText: true, text: 'Hi Eli, this is Parky Spa. How was your hydrotherapy session today, 1\u20135?', via: 'Client Agent \u00b7 SMS', mine: true },
+        { isText: true, text: '4', via: 'SMS \u00b7 Eli', mine: false },
+        { isText: true, text: 'Good to hear. One small thing \u2014 today\u2019s session is still unpaid (\u20aa280). You can settle it here: pay.parkyspa.com/958', via: 'Client Agent \u00b7 SMS', mine: true },
+        { isText: true, text: 'Done, sorry about that', via: 'SMS \u00b7 Eli', mine: false },
+        { isText: true, text: 'All settled \u2014 the receipt is in your email. Thanks Eli!', via: 'Client Agent \u00b7 SMS', mine: true },
+        { isEvent: true, text: 'Invoice #0000958 paid \u00b7 \u20aa280', mine: false }
+      ] },
+    { id: 'yael', name: 'Yael Stern', initials: 'YS', when: 'Aug 24', preview: 'Client Agent \u00b7 Follow-up call \u00b7 Rebooked + tip', channel: 'phone', fu: true, stage: 'post',
+      follow: false, sub: 'Aug 24, 2026 \u00b7 6:15 PM \u00b7 1:46 min \u00b7 050-921-7784', kind: 'Site member', phone: '050-921-7784', email: 'yael.stern@gmail.com', channelName: 'SMS',
+      history: [{ about: 'Group session \u00b7 \u26055 \u00b7 rebooked + tip', when: 'Aug 24, 2026 \u00b7 1:46 min' }, { about: 'Group session \u00b7 \u26055', when: 'Aug 17, 2026 \u00b7 1:12 min' }],
+      thread: [
+        { isDate: true, text: 'Aug 24, 2026' },
+        { isEvent: true, text: 'Session completed \u00b7 Weekly Group Session \u00b7 9:30 AM', mine: false },
+        { isCard: true, icon: 'call', title: 'Outgoing feedback call by your AI agent', meta: '6:15 PM \u00b7 1:46 min \u00b7 Positive',
+          summary: 'Called Yael the evening after her group session. She rated it 5 out of 5, added a 10% tip for Dana, and saved her spot in next week\u2019s class.',
+          rating: '\u2605\u2605\u2605\u2605\u2605 5/5', good: true, quote: '\u201cDana pushed us just enough\u201d',
+          did: [{ label: 'Collected feedback' }, { label: 'Added a tip \u00b7 \u20aa18' }, { label: 'Booked next week\u2019s class' }],
+          hasLink: true, linkTitle: 'Weekly Group Session', linkSub: 'Tue, Sep 1, 2026 at 9:30 AM \u00b7 with Dana', linkCta: 'View booking',
+          lines: [
+            { who: 'Agent', text: 'Hi Yael, this is Parky Spa\u2019s assistant. Do you have a minute to tell us about this morning\u2019s class?' },
+            { who: 'Yael', text: 'Sure \u2014 it was great. Dana pushed us just enough.' },
+            { who: 'Agent', text: 'Love that. On a scale of one to five?' },
+            { who: 'Yael', text: 'Five.' },
+            { who: 'Agent', text: 'Want me to save your spot for next Tuesday at 9:30?' },
+            { who: 'Yael', text: 'Yes please.' },
+            { who: 'Agent', text: 'Done. And would you like to add a tip for Dana? I can add it to today\u2019s payment.' },
+            { who: 'Yael', text: 'Add ten percent.' },
+            { who: 'Agent', text: 'Added \u2014 thank you, and see you Tuesday!' }
+          ] }
+      ] },
+    { id: 'sara', name: 'Sara Golan', initials: 'SG', when: 'Aug 23', preview: 'Client Agent \u00b7 Follow-up \u00b7 Flagged for your team', channel: 'chat', fu: true, stage: 'post',
+      follow: true, followWhy: 'Sara rated her facial 2/5 \u2014 the room was cold and the session started 20 minutes late.',
+      sub: 'Website chat \u00b7 via SMS link \u00b7 053-660-1129', kind: 'Site member', phone: '053-660-1129', email: 'sara.golan@gmail.com', channelName: 'Wix Chat',
+      history: [{ about: 'Signature Facial \u00b7 \u26052 \u00b7 flagged', when: 'Aug 23, 2026' }],
+      thread: [
+        { isDate: true, text: 'Aug 23, 2026' },
+        { isEvent: true, text: 'Session completed \u00b7 Signature Facial with Noa \u00b7 11:00 AM', mine: false },
+        { isCard: true, icon: 'send', title: 'Follow-up by your AI agent', meta: 'Next morning \u00b7 Website chat, link sent by SMS',
+          summary: 'Sara opened the chat link from her follow-up text and rated the session 2 out of 5 \u2014 the room was cold and it started late. The agent apologized, took a message for the team and skipped the review ask.',
+          rating: '\u2605\u2605\u2606\u2606\u2606 2/5', good: false, quote: '\u201cThe room was freezing\u201d',
+          did: [{ label: 'Collected feedback' }, { label: 'Took a message' }, { label: 'Flagged for your team' }, { label: 'Skipped the review ask' }],
+          hasLink: false },
+        { isText: true, text: 'Hi Sara, this is Parky Spa. How was your facial with Noa yesterday? Tap to chat: parkyspa.com/chat', via: 'Client Agent \u00b7 SMS', mine: true },
+        { isText: true, text: 'To be honest, not great. The room was freezing and it started 20 minutes late.', via: 'Wix Chat \u00b7 Sara', mine: false },
+        { isText: true, text: 'I\u2019m really sorry, Sara \u2014 that\u2019s not the experience we want you to have. I\u2019ve passed this to the team and someone will reach out personally tomorrow. Is this the best number for a call?', via: 'Client Agent \u00b7 Wix Chat', mine: true },
+        { isText: true, text: 'Yes. Thanks for asking, at least.', via: 'Wix Chat \u00b7 Sara', mine: false }
+      ] },
+    { id: 'tom', name: 'Tom Avidan', initials: 'TA', when: 'Aug 22', preview: 'Client Agent \u00b7 Follow-up \u00b7 No reply yet', channel: 'whatsapp', fu: true, stage: 'post',
+      follow: false, sub: 'WhatsApp \u2192 SMS \u2192 Email \u00b7 052-914-6650', kind: 'Contact', phone: '052-914-6650', email: 'tom.avidan@gmail.com', channelName: 'Email',
+      history: [{ about: 'Hot Stone Massage \u00b7 no reply yet', when: 'Aug 22, 2026' }],
+      thread: [
+        { isDate: true, text: 'Aug 22, 2026' },
+        { isEvent: true, text: 'Session completed \u00b7 Hot Stone Massage with Noa \u00b7 5:00 PM', mine: false },
+        { isCard: true, icon: 'send', title: 'Follow-up by your AI agent', meta: 'WhatsApp \u2192 SMS \u2192 Email \u00b7 waiting for a reply',
+          summary: 'No reply on WhatsApp after 24 hours, so the agent retried by SMS, then email. If there\u2019s no reply within 3 days it stops \u2014 Tom won\u2019t be contacted again about this session.',
+          did: [{ label: 'Sent on WhatsApp' }, { label: 'Retried by SMS \u00b7 +24h' }, { label: 'Retried by email \u00b7 +48h' }] },
+        { isText: true, text: 'Hi Tom, this is Parky Spa. How was your hot stone massage with Noa today? A quick 1\u20135 is all I need.', via: 'Client Agent \u00b7 WhatsApp', mine: true },
+        { isEvent: true, text: 'No reply for 24h \u00b7 retried by SMS', mine: true },
+        { isText: true, text: 'Hi Tom, Parky Spa here \u2014 how was Saturday\u2019s massage, 1\u20135?', via: 'Client Agent \u00b7 SMS', mine: true },
+        { isEvent: true, text: 'No reply for 24h \u00b7 sent by email', mine: true },
+        { isText: true, text: 'Hi Tom, we\u2019d love to hear how Saturday\u2019s hot stone massage went. It takes 10 seconds \u2014 just reply to this email with a rating from 1 to 5.', via: 'Client Agent \u00b7 Email', mine: true }
+      ] },
+    { id: 'michal', name: 'Michal Barak', initials: 'MB', when: 'Aug 5', preview: 'AI call \u00b7 Rescheduled to Aug 12', channel: 'phone', fu: false,
+      follow: false, sub: 'Phone, WhatsApp \u00b7 050-664-1187', kind: 'Site member', phone: '050-664-1187', email: 'michal.barak@gmail.com', channelName: 'WhatsApp',
+      history: [{ about: 'Deep Tissue Massage \u00b7 \u26055 \u00b7 review posted', when: 'Aug 20, 2026' }],
+      thread: [
+        { isDate: true, text: 'Aug 5, 2026' },
+        { isCard: true, icon: 'call', title: 'Incoming call answered by your AI agent', meta: '9:14 AM \u00b7 1:22 min \u00b7 Positive',
+          summary: 'Wanted to move Thursday\u2019s massage. The agent verified her, offered the open slots and rescheduled to Aug 12 at 4:00 PM, then texted the new confirmation.',
+          did: [{ label: 'Verified the caller' }, { label: 'Rescheduled an appointment' }, { label: 'Texted the confirmation' }],
+          hasLink: true, linkTitle: 'Deep Tissue Massage \u00b7 60 min', linkSub: 'Moved to Wed, Aug 12, 2026 at 4:00 PM \u00b7 with Noa', linkCta: 'View booking',
+          lines: [
+            { who: 'Michal', text: 'Something came up Thursday, can I move my massage?' },
+            { who: 'Agent', text: 'Of course. Reading back the code I just sent will let me open your bookings.' },
+            { who: 'Michal', text: '2 9 0 5 5 1.' },
+            { who: 'Agent', text: 'I have Wednesday the 12th at four, or Friday at eleven.' },
+            { who: 'Michal', text: 'Wednesday at four is perfect.' },
+            { who: 'Agent', text: 'Moved. The new confirmation is on its way by text.' }
+          ] },
+        { isText: true, text: 'Got the text, thank you! See you Wednesday.', via: 'WhatsApp \u00b7 Michal', mine: false }
+      ] },
+    { id: 'carlos', name: 'Carlos Lampel', initials: 'C', when: 'May 6', preview: 'You: Hi Carlos, we\u2019re open until 2pm on...', channel: 'whatsapp', fu: false,
+      follow: false, sub: 'WhatsApp \u00b7 052-487-956', kind: 'Site member', phone: '052-487-956', email: 'carloslampel1@gmail.com', channelName: 'WhatsApp',
+      history: [],
+      thread: [
+        { isDate: true, text: 'May 6, 2026' },
+        { isText: true, text: 'Hi, is the studio open on Friday?', via: 'WhatsApp', mine: false },
+        { isText: true, text: 'Hi Carlos, we\u2019re open until 2pm on Friday.', via: 'You \u00b7 WhatsApp', mine: true }
+      ] }
+  ];
+
+  VIEW_FILTERS = [
+    { label: 'All conversations', icon: 'M4 6h16v12H4zM4 9l8 5 8-5' },
+    { label: 'Before the session', icon: 'M9 17a3 3 0 006 0M5 17h14l-1.4-2.1A6 6 0 0117 12V9a5 5 0 00-10 0v3a6 6 0 01-.6 2.9L5 17z' },
+    { label: 'After the session', icon: 'M12 4l2.4 5 5.6.7-4 3.8 1 5.5-5-2.8-5 2.8 1-5.5-4-3.8 5.6-.7z' },
+    { label: 'Needs your attention', icon: 'M6 4v16M6 5h11l-2 4 2 4H6' }
+  ];
+
+  CHANNELS = [
+    { id: 'all', label: 'All', icon: 'M4 7h16M4 12h16M4 17h10' },
+    { id: 'whatsapp', label: 'WhatsApp', icon: 'M4 20l1.4-4A8 8 0 1112 20H4z' },
+    { id: 'sms', label: 'SMS', icon: 'M4 5h16v11H9l-5 4z' },
+    { id: 'phone', label: 'Phone', icon: 'M6 4h3l2 5-2 1a9 9 0 004 4l1-2 5 2v3a2 2 0 01-2 2A15 15 0 014 6a2 2 0 012-2z' },
+    { id: 'chat', label: 'Chat', icon: 'M4 5h16v10H9l-5 4z' },
+    { id: 'email', label: 'Email', icon: 'M4 6h16v12H4zM4 8l8 5 8-5' }
+  ];
+
+  CONV_CHANNELS = { maya: ['whatsapp'], guy: ['sms'], roni: ['whatsapp'], ofir: ['whatsapp'], noa: ['whatsapp'], eli: ['sms'], yael: ['phone', 'sms'], sara: ['chat', 'sms'], tom: ['whatsapp', 'sms', 'email'], michal: ['phone', 'whatsapp'], carlos: ['whatsapp'] };
+  channelsOf(c) { return this.CONV_CHANNELS[c.id] || [c.channel]; }
+
+  filterOf(label) {
+    const s = this.state;
+    if (label === 'Before the session') return this.CONV.filter(c => c.stage === 'pre');
+    if (label === 'After the session') return this.CONV.filter(c => c.stage === 'post');
+    if (label === 'Needs your attention') return this.CONV.filter(c => (s.flagged[c.id] !== undefined ? s.flagged[c.id] : c.follow) && !s.resolved[c.id]);
+    return this.CONV;
+  }
+
+  renderVals() {
+    return Object.assign({}, this.navVals(), this.inboxVals(), this.bookingsVals(), this.wizardVals(), this.agentVals(), this.customVals(), this.quietVals());
+  }
+
+  navVals() {
+    const s = this.state;
+    const v = s.view;
+    const navBase = 'display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:14px;cursor:pointer;color:#151414;';
+    const demoDefs = [
+      { id: 'bookings', label: 'Entry point' },
+      { id: 'wizard', label: 'Setup' },
+      { id: 'agent-setup', label: 'Settings' },
+      { id: 'agent-activity', label: 'Activity' },
+      { id: 'inbox', label: 'Inbox' }
+    ];
+    const demoOn = (d) => (d.id === 'agent-setup' && v === 'agent' && s.agentTab === 'setup') || (d.id === 'agent-activity' && v === 'agent' && s.agentTab === 'activity') || d.id === v;
+    return {
+      viewInbox: v === 'inbox', viewBookings: v === 'bookings', viewWizard: v === 'wizard', viewAgent: v === 'agent',
+      navInbox: navBase + (v === 'inbox' ? 'font-weight:600;background:#f0eeee' : 'font-weight:500'),
+      navSettings: navBase + (v === 'bookings' ? 'font-weight:600;background:#f0eeee' : 'font-weight:500'),
+      goInbox: () => this.go('inbox'),
+      goBookings: () => this.go('bookings'),
+      goAgent: () => this.setState({ view: 'agent', agentTab: 'setup' }),
+      goInboxFu: () => this.setState({ view: 'inbox', filter: 'All conversations', chan: 'all', sel: 'noa' }),
+      openWizard: () => this.setState({ view: 'wizard', wizStep: 1, wizFrom: v }),
+      showDemoNav: this.props.showDemoNav !== false,
+      demoNav: demoDefs.map(d => ({
+        label: d.label,
+        style: 'font-family:inherit;font-size:12px;font-weight:600;border:none;border-radius:16px;padding:6px 12px;cursor:pointer;white-space:nowrap;background:' + (demoOn(d) ? '#fff' : 'transparent') + ';color:' + (demoOn(d) ? '#151414' : '#c4c2c2'),
+        pick: () => {
+          if (d.id === 'agent-setup') this.setState({ view: 'agent', agentTab: 'setup' });
+          else if (d.id === 'agent-activity') this.setState({ view: 'agent', agentTab: 'activity' });
+          else if (d.id === 'wizard') this.setState({ view: 'wizard', wizStep: 1, wizFrom: 'inbox' });
+          else this.go(d.id);
+        }
+      }))
+    };
+  }
+
+  inboxVals() {
+    const s = this.state;
+    const conv = this.CONV.filter(c => c.id === s.sel)[0] || this.CONV[0];
+    const flagged = s.flagged[conv.id] !== undefined ? s.flagged[conv.id] : conv.follow;
+    const chan = s.chan || 'all';
+    const inChan = (c) => chan === 'all' || this.channelsOf(c).indexOf(chan) > -1;
+    const shown = this.filterOf(s.filter).filter(inChan);
+    const avOf = (id) => this.AV[this.CONV.map(c => c.id).indexOf(id) % this.AV.length];
+
+    return {
+      setupBanner: !s.fuOn && !s.bannerDismissed && s.view === 'inbox',
+      onBanner: s.fuOn && !s.bannerDismissed && s.view === 'inbox',
+      timingLabel: s.timing === 'Next morning' ? 'the morning after' : s.timing,
+      reminderTimingLabel: s.reminderTiming,
+      dismissBanner: () => this.setState({ bannerDismissed: true }),
+      paneCols: (s.contactOpen && s.sel) ? '324px minmax(460px,1fr) 300px' : '324px minmax(460px,1fr)',
+
+      filterLabel: s.filter,
+      filterOpen: s.filterOpen,
+      toggleFilter: () => this.setState({ filterOpen: !s.filterOpen }),
+      viewFilters: this.VIEW_FILTERS.map(f => {
+        const on = s.filter === f.label;
+        return {
+          label: f.label, icon: f.icon, count: this.filterOf(f.label).length,
+          style: 'display:flex;align-items:center;gap:11px;width:100%;text-align:left;font-family:inherit;font-size:14px;font-weight:' + (on ? '600' : '500') + ';border:none;padding:9px 11px;border-radius:6px;cursor:pointer;background:' + (on ? '#f0eeee' : 'none') + ';color:#151414',
+          pick: () => this.setState({ filter: f.label, filterOpen: false })
+        };
+      }),
+      chanChips: this.CHANNELS.map(ch => {
+        const on = chan === ch.id;
+        const n = ch.id === 'all' ? this.filterOf(s.filter).length : this.filterOf(s.filter).filter(c => this.channelsOf(c).indexOf(ch.id) > -1).length;
+        return {
+          label: ch.label, icon: ch.icon,
+          style: 'display:inline-flex;align-items:center;gap:6px;font-family:inherit;font-size:12.5px;font-weight:600;white-space:nowrap;border-radius:16px;padding:5px 11px;cursor:pointer;border:1px solid ' + (on ? '#151414' : '#dedede') + ';background:' + (on ? '#151414' : '#fff') + ';color:' + (on ? '#fff' : n ? '#3b3939' : '#a9a7a7'),
+          stroke: on ? '#fff' : n ? '#3b3939' : '#a9a7a7',
+          pick: () => this.setState({ chan: ch.id, filterOpen: false })
+        };
+      }),
+      noneShown: shown.length === 0,
+      convList: shown.map(c => {
+        const on = c.id === s.sel;
+        const ch = this.CHAN[c.channel];
+        const follow = (s.flagged[c.id] !== undefined ? s.flagged[c.id] : c.follow) && !s.resolved[c.id];
+        return {
+          name: c.name, initials: c.initials, when: c.when, preview: c.preview, follow,
+          chanIcon: ch.icon,
+          rowStyle: 'display:flex;gap:12px;padding:14px 16px;cursor:pointer;align-items:center;border-bottom:1px solid #f0eeee;background:' + (on ? '#eaf2ff' : '#fff'),
+          avStyle: 'width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600;color:#fff;background:' + avOf(c.id),
+          chanStyle: 'position:absolute;right:-2px;bottom:-2px;width:16px;height:16px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;background:' + ch.bg,
+          nameStyle: 'font-size:14.5px;font-weight:' + (on ? '700' : '600') + ';color:#151414;overflow:hidden;text-overflow:ellipsis;white-space:nowrap',
+          previewStyle: 'font-size:13px;color:' + (follow ? '#3b3939' : '#5c5a5a') + ';overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0',
+          pick: () => this.setState({ sel: c.id })
+        };
+      }),
+
+      hdrName: conv.name, hdrInitials: conv.initials, hdrSub: conv.sub,
+      isAgent: !!conv.fu || conv.id === 'michal',
+      hdrAvStyle: 'width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13.5px;font-weight:600;color:#fff;flex-shrink:0;background:' + avOf(conv.id),
+      contactAvStyle: 'width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:600;color:#fff;flex-shrink:0;background:' + avOf(conv.id),
+      contactOpen: s.contactOpen && !!s.sel,
+      toggleContact: () => this.setState({ contactOpen: !s.contactOpen }),
+      contactBtnStyle: 'background:' + (s.contactOpen ? '#f0eeee' : 'none') + ';border:none;padding:6px;border-radius:6px;cursor:pointer;color:#3b3939',
+      flagBtnStyle: 'background:none;border:none;padding:6px;border-radius:6px;cursor:pointer;color:' + (flagged && !s.resolved[conv.id] ? '#c4151c' : '#3b3939'),
+      toggleFollow: () => this.setState({ flagged: Object.assign({}, s.flagged, { [conv.id]: !flagged }), resolved: Object.assign({}, s.resolved, { [conv.id]: false }) }),
+
+      thread: conv.thread.map((m, mi) => {
+        const trKey = conv.id + '-' + mi;
+        return {
+          isDate: !!m.isDate, isCard: !!m.isCard, isText: !!m.isText, isEvent: !!m.isEvent,
+          iconPath: m.icon === 'call' ? this.ICON_CALL : this.ICON_SEND,
+          hasLines: !!(m.lines && m.lines.length),
+          trOpen: !!(s.trOpen || {})[trKey],
+          trLabel: (s.trOpen || {})[trKey] ? 'Hide transcript' : 'Read the transcript',
+          trCaret: 'transition:transform .15s;transform:rotate(' + ((s.trOpen || {})[trKey] ? '180deg' : '0deg') + ')',
+          toggleTranscript: () => { const n = Object.assign({}, s.trOpen || {}); n[trKey] = !n[trKey]; this.setState({ trOpen: n }); },
+          text: m.text, title: m.title, meta: m.meta, summary: m.summary, via: m.via,
+          hasRating: !!m.rating, rating: m.rating || '', quote: m.quote || '',
+          ratingStyle: 'font-size:13.5px;font-weight:600;letter-spacing:1px;color:' + (m.good ? '#1a6b3f' : '#c4151c'),
+          did: m.did || [], hasLink: !!m.hasLink, linkTitle: m.linkTitle, linkSub: m.linkSub, linkCta: m.linkCta,
+          lines: (m.lines || []).map(l => ({
+            who: l.who, text: l.text,
+            whoStyle: 'flex-shrink:0;width:52px;font-size:12px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;padding-top:2px;color:' + (l.who === 'Agent' ? '#4b42c9' : '#8a8888')
+          })),
+          wrapStyle: 'display:flex;justify-content:' + (m.mine ? 'flex-end' : 'flex-start'),
+          bubbleStyle: 'max-width:78%;border-radius:12px;padding:11px 14px;background:' + (m.mine ? '#eaf2ff' : '#f4f3f3')
+        };
+      }),
+
+      showFollowBar: flagged && !s.resolved[conv.id],
+      followWhy: conv.followWhy || '',
+      resolveFollow: () => this.setState({ resolved: Object.assign({}, s.resolved, { [conv.id]: true }) }),
+      channelName: conv.channelName,
+      contactKind: conv.kind, contactPhone: conv.phone, contactEmail: conv.email,
+      fuCount: conv.history.length ? conv.history.length + ' this month' : 'None yet',
+      fuHistory: conv.history,
+      panelSections: ['Contact info', 'Bookings', 'Purchase stats', 'Notes', 'Tasks', 'Attachments'].map(name => ({ name }))
+    };
+  }
+
+  bookingsVals() {
+    const s = this.state;
+    const rows = [
+      { name: 'Client Agent', isNew: true, isFu: true, desc: 'Your AI agent reminds, confirms, reschedules and collects payment before each session \u2014 then follows up after for feedback, reviews and rebooking.' },
+      { name: 'Default hours', desc: 'Set default hours for when you and your staff are available for bookings.' },
+      { name: 'Add-ons', desc: 'Create and manage the add-ons you offer for your services.' },
+      { name: 'Staff', desc: 'Add your staff and set their work hours, sync calendars, and give calendar access.' },
+      { name: 'Resources & rooms', desc: 'Set up bookable resources such as rooms or stations.' },
+      { name: 'Notifications you send', desc: 'Manage notifications that are automatically sent to clients (e.g. confirmations and reminders).' },
+      { name: 'Notifications you get', desc: 'Manage email notifications you get about bookings on your site or app.' },
+      { name: 'Tips', desc: 'Collect tips from your customers and automatically assign them to staff.' }
+    ];
+    const onlineRows = [
+      { name: 'Client booking flow', desc: 'Customize the default booking experience clients have on your live site.' },
+      { name: 'Booking form', desc: 'Customize the form clients fill out when booking.' },
+      { name: 'Booking policies', desc: 'Set the booking, cancelation, and rescheduling policies for your services.' }
+    ];
+    const integrationRows = [
+      { name: 'Video conferencing account', desc: 'Set a default account (e.g. on Zoom) for services you provide on video conferencing.' },
+      { name: 'Booking integrations', desc: 'Enhance your business with additional capabilities.' }
+    ];
+    const mapRow = (r, i) => ({
+      name: r.name, desc: r.desc, isNew: !!r.isNew, isOn: !!r.isFu && s.fuOn,
+      rowStyle: 'display:flex;align-items:center;gap:14px;padding:18px 22px;cursor:pointer' + (i ? ';border-top:1px solid #f0eeee' : '') + (r.isFu ? ';background:#fcfbff' : ''),
+      click: r.isFu ? () => { if (s.fuOn) this.setState({ view: 'agent', agentTab: 'setup' }); else this.setState({ view: 'wizard', wizStep: 1, wizFrom: 'bookings' }); } : () => {}
+    });
+    return {
+      bookingsCta: s.fuOn ? 'Set Up' : 'Set Up Client Agent',
+      bookingRows: rows.map(mapRow),
+      onlineRows: onlineRows.map(mapRow),
+      integrationRows: integrationRows.map(mapRow)
+    };
+  }
+
+  wizardVals() {
+    const s = this.state;
+    const step = s.wizStep;
+    const seg = (on) => 'white-space:nowrap;font-family:inherit;font-size:12.5px;font-weight:600;padding:6px 14px;border-radius:16px;cursor:pointer;border:none;background:' + (on ? '#fff' : 'transparent') + ';color:' + (on ? '#151414' : '#5c5a5a') + ';box-shadow:' + (on ? '0 1px 3px rgba(21,20,20,.16)' : 'none');
+    const enabledOrder = this.orderedChans().filter(c => s.wch[c.id]).map(c => c.id);
+    const chanNames = { whatsapp: 'WhatsApp Business', sms: 'SMS', email: 'Email', facebook: 'Facebook', instagram: 'Instagram Business', phone: 'Phone call' };
+    const onServices = this.SERVICES.filter(x => s.services[x.id]);
+    const onActs = this.ACTIONS.filter(a => s.acts[a.id]);
+    const stepNames = ['Channels', 'Sessions', 'Timing & actions', 'Review'];
+    const qt = this.toggle(s.quiet);
+    const sk = this.toggle(s.skip);
+    const chanSummary = enabledOrder.map(id => chanNames[id]).join(' \u2192 ') || 'No channels selected';
+
+    return {
+      wiz1: step === 1, wiz2: step === 2, wiz3: step === 3, wiz4: step === 4,
+      wizStepLabel: 'Step ' + step + ' of 4 \u00b7 ' + stepNames[step - 1],
+      wizDots: [1, 2, 3, 4].map(i => ({
+        style: 'flex:1;height:4px;border-radius:4px;background:' + (i <= step ? '#4b42c9' : '#e3dffb')
+      })),
+      wizClose: () => this.go(s.wizFrom || 'inbox'),
+      wizBack: () => { if (step === 1) this.go(s.wizFrom || 'inbox'); else this.setState({ wizStep: step - 1 }); },
+      wizBackLabel: step === 1 ? 'Cancel' : 'Back',
+      wizNext: () => this.setState({ wizStep: step + 1 }),
+      wizNotLast: step < 4, wizLast: step === 4,
+      wizFinish: () => this.setState({ fuOn: true, justOn: true, view: 'agent', agentTab: 'setup', bannerDismissed: false }),
+
+      wizChans: this.orderedChans().map((c, i, arr) => {
+        const on = !!s.wch[c.id];
+        const t = this.toggle(on);
+        const prio = on ? String(enabledOrder.indexOf(c.id) + 1) : '\u2014';
+        const dragging = s.dragChan === c.id;
+        return {
+          name: c.name, desc: c.desc, mark: c.mark, prio,
+          manageLabel: on ? 'Manage' : 'Connect',
+          canDrag: on,
+          gripStyle: 'display:flex;align-items:center;flex-shrink:0;color:' + (on ? (dragging ? '#4b42c9' : '#a8a6a5') : '#e0dede') + ';cursor:' + (on ? 'grab' : 'default'),
+          dragStart: on ? ((e) => { if (e && e.dataTransfer) e.dataTransfer.effectAllowed = 'move'; this.setState({ dragChan: c.id }); }) : null,
+          dragOver: (e) => {
+            if (e) e.preventDefault();
+            if (on && s.dragChan && s.dragChan !== c.id) this.dropChan(s.dragChan, c.id);
+          },
+          dragEnd: () => this.setState({ dragChan: null }),
+          rowStyle: 'display:flex;align-items:center;gap:12px;padding:12px 14px' + (i ? ';border-top:1px solid #f3f1f1' : '') + ';background:' + (dragging ? '#f6f5ff' : (on ? '#fff' : '#fafafa')) + (dragging ? ';box-shadow:inset 0 0 0 1px #cfc9ff' : '') + ';transition:background 150ms ease-out',
+          prioStyle: 'width:32px;flex-shrink:0;text-align:center;font-size:13px;font-weight:700;color:' + (on ? '#4b42c9' : '#c4c2c2'),
+          iconStyle: 'width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;color:' + c.color + ';background:' + c.bg,
+          track: t.track, knob: t.knob,
+          toggle: () => this.setState({ wch: Object.assign({}, s.wch, { [c.id]: !on }) })
+        };
+      }),
+      waitOpts: this.waitChoices(),
+      reminderOpts: this.timingChoices('pre'),
+
+      serviceRows: this.SERVICES.map((sv, i) => {
+        const on = !!s.services[sv.id];
+        const t = this.toggle(on);
+        return {
+          name: sv.name, meta: sv.meta,
+          rowStyle: 'display:flex;align-items:center;gap:12px;padding:12px 14px' + (i ? ';border-top:1px solid #f3f1f1' : ''),
+          track: t.track, knob: t.knob,
+          toggle: () => this.setState({ services: Object.assign({}, s.services, { [sv.id]: !on }) })
+        };
+      }),
+      timingOpts: this.timingChoices('post'),
+      toggleQuiet: () => this.setState({ quiet: !s.quiet }),
+      quietTrack: qt.track, quietKnob: qt.knob,
+      toggleSkip: () => this.setState({ skip: !s.skip }),
+      skipTrack: sk.track, skipKnob: sk.knob,
+
+      actGroups: ['Before the session', 'After the session'].map((gn, gi) => ({
+        name: gn,
+        headStyle: 'display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:9px 14px;background:#fafafa;' + (gi ? 'border-top:1px solid #e5e5e5' : 'border-radius:7px 7px 0 0'),
+        timingLabel: gi ? 'Follow up' : 'Send a reminder',
+        timingOpts: this.timingChoices(gi ? 'post' : 'pre'),
+        items: this.ACTIONS.filter(a => a.group === gn).map(a => {
+          const on = !!s.acts[a.id];
+          const t = this.toggle(on);
+          return {
+            name: a.name, desc: a.desc, track: t.track, knob: t.knob,
+            nameStyle: 'font-size:13.5px;font-weight:600;color:' + (on ? '#151414' : '#6b6969'),
+            descStyle: 'font-size:12.5px;line-height:1.4;margin-top:1px;color:' + (on ? '#8a8888' : '#a9a7a7'),
+            toggle: () => this.setState({ acts: Object.assign({}, s.acts, { [a.id]: !on }) })
+          };
+        })
+      })),
+
+      wizSummary: [
+        { label: 'Channels', value: chanSummary + ' \u00b7 ' + s.wait + ' between channels' },
+        { label: 'Sessions', value: onServices.length + ' of ' + this.SERVICES.length + ' services \u00b7 reminder ' + s.reminderTiming.toLowerCase() + ', follow-up ' + s.timing.toLowerCase() },
+        { label: 'Guardrails', value: (s.quiet ? 'Quiet hours ' + this.quietDaysPhrase() + ', ' + s.quietFrom + '\u2013' + s.quietTo : 'No quiet hours') + ' \u00b7 ' + (s.skip ? 'one conversation per client' : 'no conversation limit') },
+        { label: 'Actions', value: onActs.length + ' on \u00b7 ' + onActs.slice(0, 3).map(a => a.name.toLowerCase()).join(', ') + (onActs.length > 3 ? '\u2026' : '') }
+      ].map((r, i) => ({
+        label: r.label, value: r.value,
+        rowStyle: 'display:flex;align-items:baseline;gap:14px;padding:12px 16px' + (i ? ';border-top:1px solid #f3f1f1' : '')
+      })),
+
+      approvalOpts: ['Fully automatic', 'Review drafts first'].map(label => ({
+        label,
+        desc: label === 'Fully automatic' ? 'The agent sends and replies on its own. Everything appears in your Inbox as it happens.' : 'Each follow-up waits in your Inbox for your OK before it\u2019s sent.',
+        style: 'display:flex;align-items:flex-start;gap:10px;border:1px solid ' + (s.approval === label ? '#2f5dff' : '#e5e5e5') + ';border-radius:10px;padding:12px 14px;cursor:pointer;background:' + (s.approval === label ? '#f8fbff' : '#fff'),
+        dotStyle: 'width:16px;height:16px;border-radius:50%;flex-shrink:0;margin-top:1px;border:' + (s.approval === label ? '5px solid #116dff' : '1.5px solid #c4c2c2'),
+        pick: () => this.setState({ approval: label })
+      })),
+
+      testNote: 'The agent sends you the same messages your clients will get \u2014 on ' + (chanNames[enabledOrder[0]] || 'your first channel') + ' to 054-922-6155.',
+      testBtns: [
+        { id: 'pre', label: 'Test the reminder', sent: 'Reminder sent \u2713' },
+        { id: 'post', label: 'Test the follow-up', sent: 'Follow-up sent \u2713' }
+      ].map(b => {
+        const done = !!(s.testSent || {})[b.id];
+        return {
+          label: done ? b.sent : b.label,
+          style: 'font-family:inherit;background:#fff;border:1px solid ' + (done ? '#cbe7d6' : '#dedede') + ';border-radius:8px;padding:7px 15px;font-size:13px;font-weight:600;color:' + (done ? '#1a6b3f' : '#151414') + ';cursor:pointer;white-space:nowrap',
+          send: () => this.setState({ testSent: Object.assign({}, s.testSent || {}, { [b.id]: true }) })
+        };
+      })
+    };
+  }
+
+  agentVals() {
+    const s = this.state;
+    const t = this.toggle(s.fuOn, 'lg');
+    const chip = (on) => 'white-space:nowrap;font-family:inherit;font-size:13px;font-weight:600;padding:7px 15px;border-radius:18px;cursor:pointer;border:1px solid ' + (on ? '#2f5dff' : '#dedede') + ';background:' + (on ? '#eef2ff' : '#fff') + ';color:' + (on ? '#2f5dff' : '#3b3939');
+    const outcomes = [
+      { label: 'Reminders sent', value: '142', pct: 100 },
+      { label: 'RSVP confirmed', value: '98', pct: 69 },
+      { label: 'Reschedules handled', value: '21', pct: 15 },
+      { label: 'Waitlist spots backfilled', value: '7', pct: 5 },
+      { label: 'Pre-session payments collected', value: '\u20aa1,860 \u00b7 6', pct: 8 },
+      { label: 'Feedback collected', value: '74', pct: 52 },
+      { label: 'Reviews posted (Google & Yelp)', value: '23', pct: 16 },
+      { label: 'Sessions rebooked', value: '31', pct: 22 },
+      { label: 'Unpaid sessions settled after service', value: '\u20aa2,140 \u00b7 9', pct: 6 },
+      { label: 'Tips added', value: '\u20aa412 \u00b7 14', pct: 10 },
+      { label: 'Messages taken for the team', value: '6', pct: 4 }
+    ];
+    const ratings = [
+      { label: '5\u2605', count: 46 }, { label: '4\u2605', count: 17 }, { label: '3\u2605', count: 5 }, { label: '2\u2605', count: 4 }, { label: '1\u2605', count: 2 }
+    ];
+    const rMax = 46;
+    const chipC = {
+      green: 'background:#e6f4ec;color:#1a6b3f', blue: 'background:#eef2ff;color:#2f5dff', red: 'background:#fdf3f2;color:#c4151c', gray: 'background:#f0eeee;color:#5c5a5a'
+    };
+    const recent = [
+      { id: 'maya', client: 'Maya Cohen', service: 'Signature Facial', channel: 'WhatsApp', outcome: 'RSVP confirmed', c: 'green', when: 'Aug 28' },
+      { id: 'guy', client: 'Guy Rosen', service: 'Deep Tissue Massage', channel: 'SMS', outcome: 'Rescheduled to Aug 29', c: 'blue', when: 'Aug 28' },
+      { id: 'roni', client: 'Roni Katz', service: 'Hydrotherapy', channel: 'WhatsApp', outcome: 'Deposit paid \u20aa90', c: 'green', when: 'Aug 27' },
+      { id: 'ofir', client: 'Ofir Dahan', service: 'Weekly Group Session', channel: 'WhatsApp', outcome: 'Canceled \u00b7 backfilled from waitlist', c: 'blue', when: 'Aug 27' },
+      { id: 'noa', client: 'Noa Adler', service: 'Deep Tissue Massage', channel: 'WhatsApp', outcome: '\u26055 \u00b7 Review + rebooked', c: 'green', when: 'Aug 26' },
+      { id: 'eli', client: 'Eli Peretz', service: 'Hydrotherapy', channel: 'SMS', outcome: '\u26054 \u00b7 Paid \u20aa280', c: 'green', when: 'Aug 25' },
+      { id: 'yael', client: 'Yael Stern', service: 'Weekly Group Session', channel: 'Phone call', outcome: '\u26055 \u00b7 Rebooked + tip', c: 'blue', when: 'Aug 24' },
+      { id: 'sara', client: 'Sara Golan', service: 'Signature Facial', channel: 'Chat via SMS', outcome: '\u26052 \u00b7 Flagged for team', c: 'red', when: 'Aug 23' },
+      { id: 'tom', client: 'Tom Avidan', service: 'Hot Stone Massage', channel: 'WhatsApp \u2192 Email', outcome: 'No reply yet', c: 'gray', when: 'Aug 22' },
+      { id: 'michal', client: 'Michal Barak', service: 'Deep Tissue Massage', channel: 'WhatsApp', outcome: '\u26055 \u00b7 Review posted', c: 'green', when: 'Aug 20' }
+    ];
+    return {
+      statusChip: 'font-size:11px;font-weight:600;padding:3px 10px;border-radius:4px;white-space:nowrap;' + (s.fuOn ? 'color:#1a6b3f;background:#e6f4ec' : 'color:#5c5a5a;background:#eceaea'),
+      statusLabel: s.fuOn ? 'On' : 'Off',
+      fuTrack: t.track, fuKnob: t.knob,
+      toggleFu: () => this.setState({ fuOn: !s.fuOn }),
+      justOn: s.justOn,
+      dismissJustOn: () => this.setState({ justOn: false }),
+      agentTabs: [{ id: 'setup', label: 'Setup' }, { id: 'activity', label: 'Activity' }].map(tb => ({
+        label: tb.label,
+        style: 'display:inline-flex;align-items:center;font-family:inherit;font-size:14px;font-weight:600;border:none;border-radius:8px;padding:9px 16px;cursor:pointer;background:' + (s.agentTab === tb.id ? '#eceaea' : 'transparent') + ';color:#151414',
+        pick: () => this.setState({ agentTab: tb.id })
+      })),
+      tabSetup: s.agentTab === 'setup', tabActivity: s.agentTab === 'activity',
+      tones: ['Warm', 'Professional', 'Playful', 'Brief'].map(label => ({ label, style: chip(s.tone === label), pick: () => this.setState({ tone: label }) })),
+      previewMsg: 'Hi Noa, this is Parky Spa. How was your deep tissue massage with Maya today? A quick 1\u20135 is all I need.',
+      actStats: [
+        { label: 'Messages sent', value: '270', sub: 'Reminders + follow-ups, 5 channels' },
+        { label: 'Replied', value: '71%', sub: '191 of 270 clients' },
+        { label: 'Avg. rating', value: '4.6', sub: 'From 74 ratings' },
+        { label: 'Revenue recovered', value: '\u20aa4,412', sub: 'Deposits, paylinks + tips' }
+      ],
+      outcomes: outcomes.map(o => ({
+        label: o.label, value: o.value,
+        barStyle: 'height:100%;border-radius:4px;background:#4b42c9;width:' + o.pct + '%'
+      })),
+      ratingSplit: ratings.map(r => ({
+        label: r.label, count: r.count,
+        barStyle: 'height:100%;border-radius:4px;background:' + (r.label === '2\u2605' || r.label === '1\u2605' ? '#e08a84' : '#c9c3f5') + ';width:' + Math.max(3, Math.round(r.count / rMax * 100)) + '%'
+      })),
+      recentRows: recent.map(r => ({
+        client: r.client, service: r.service, channel: r.channel, outcome: r.outcome, when: r.when,
+        chipStyle: 'display:inline-block;font-size:12px;font-weight:600;padding:3px 9px;border-radius:4px;white-space:nowrap;' + chipC[r.c],
+        open: () => this.setState({ view: 'inbox', sel: r.id, filter: 'All conversations', chan: 'all' })
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>
