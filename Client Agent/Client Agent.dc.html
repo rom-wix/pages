@@ -905,7 +905,7 @@
   </sc-if>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1440, &quot;height&quot;: 900}, &quot;showDemoNav&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Prototype&quot;}, &quot;startAt&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;inbox&quot;, &quot;bookings&quot;, &quot;wizard&quot;, &quot;agent&quot;], &quot;default&quot;: &quot;bookings&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Prototype&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1440, &quot;height&quot;: 900}}">
 class Component extends DCLogic {
 
   state = {
@@ -1478,14 +1478,14 @@ class Component extends DCLogic {
   bookingsVals() {
     const s = this.state;
     const rows = [
-      { name: 'Client Agent', isNew: true, isFu: true, desc: 'Your AI agent reminds, confirms, reschedules and collects payment before each session \u2014 then follows up after for feedback, reviews and rebooking.' },
       { name: 'Default hours', desc: 'Set default hours for when you and your staff are available for bookings.' },
       { name: 'Add-ons', desc: 'Create and manage the add-ons you offer for your services.' },
       { name: 'Staff', desc: 'Add your staff and set their work hours, sync calendars, and give calendar access.' },
       { name: 'Resources & rooms', desc: 'Set up bookable resources such as rooms or stations.' },
       { name: 'Notifications you send', desc: 'Manage notifications that are automatically sent to clients (e.g. confirmations and reminders).' },
       { name: 'Notifications you get', desc: 'Manage email notifications you get about bookings on your site or app.' },
-      { name: 'Tips', desc: 'Collect tips from your customers and automatically assign them to staff.' }
+      { name: 'Tips', desc: 'Collect tips from your customers and automatically assign them to staff.' },
+      { name: 'Client Agent', isNew: true, isFu: true, desc: 'Your AI agent reminds, confirms, reschedules and collects payment before each session \u2014 then follows up after for feedback, reviews and rebooking.' }
     ];
     const onlineRows = [
       { name: 'Client booking flow', desc: 'Customize the default booking experience clients have on your live site.' },
