@@ -442,7 +442,7 @@
 
           <sc-if value="{{ wiz2 }}" hint-placeholder-val="{{ false }}">
             <div style="background:#fff;border-radius:12px;padding:24px 26px">
-              <h2 style="font-family:'Wix Madefor Display',sans-serif;font-size:18px;font-weight:700;margin:0 0 5px">Which sessions?</h2>
+              <h2 style="font-family:'Wix Madefor Display',sans-serif;font-size:18px;font-weight:700;margin:0 0 5px">Which services?</h2>
               <p style="margin:0 0 18px;font-size:14px;color:#5c5a5a">Pick the services the Client Agent covers. You’ll set the timing with the actions in the next step.</p>
               <div style="border:1px solid #e5e5e5;border-radius:10px;overflow:hidden">
                 <sc-for list="{{ serviceRows }}" as="sv" hint-placeholder-count="4">
@@ -1085,7 +1085,7 @@ class Component extends DCLogic {
 
   CHAN_DEFS = [
     { id: 'whatsapp', name: 'WhatsApp Business', mark: '\u25cf', color: '#25d366', bg: '#e7f8ee', desc: 'Best reply rates. Sent as a service message from your business number.' },
-    { id: 'sms', name: 'SMS', mark: '\u2709', color: '#3b3939', bg: '#f0eeee', desc: 'Texts a link to Wix Smart Chat \u2014 the conversation happens there, in the client\u2019s browser.' },
+    { id: 'sms', name: 'SMS + Smart Chat', mark: '\u2709', color: '#3b3939', bg: '#f0eeee', desc: 'Texts a link to Wix Smart Chat \u2014 the conversation happens there, in the client\u2019s browser.' },
     { id: 'email', name: 'Email', mark: '@', color: '#5c5a5a', bg: '#f0eeee', desc: 'Sent from hello@parkyspa.com with your business branding.' },
     { id: 'facebook', name: 'Facebook', mark: 'f', color: '#1877f2', bg: '#e8f0fe', desc: 'Messages clients who already talk to you on your Facebook page.' },
     { id: 'instagram', name: 'Instagram Business', mark: '\u25ce', color: '#d62976', bg: '#fdeaf3', desc: 'Messages clients who already talk to you on your Instagram Business account.' },
@@ -1514,7 +1514,7 @@ class Component extends DCLogic {
     const step = s.wizStep;
     const seg = (on) => 'white-space:nowrap;font-family:inherit;font-size:12.5px;font-weight:600;padding:6px 14px;border-radius:16px;cursor:pointer;border:none;background:' + (on ? '#fff' : 'transparent') + ';color:' + (on ? '#151414' : '#5c5a5a') + ';box-shadow:' + (on ? '0 1px 3px rgba(21,20,20,.16)' : 'none');
     const enabledOrder = this.orderedChans().filter(c => s.wch[c.id]).map(c => c.id);
-    const chanNames = { whatsapp: 'WhatsApp Business', sms: 'SMS', email: 'Email', facebook: 'Facebook', instagram: 'Instagram Business', phone: 'Phone call' };
+    const chanNames = { whatsapp: 'WhatsApp Business', sms: 'SMS + Smart Chat', email: 'Email', facebook: 'Facebook', instagram: 'Instagram Business', phone: 'Phone call' };
     const onServices = this.SERVICES.filter(x => s.services[x.id]);
     const onActs = this.ACTIONS.filter(a => s.acts[a.id]);
     const stepNames = ['Channels', 'Sessions', 'Timing & actions', 'Review'];
