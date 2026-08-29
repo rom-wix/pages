@@ -29,7 +29,7 @@
 </style>
 </helmet>
 
-<div style="display:grid;grid-template-columns:248px 1fr;grid-template-rows:52px 1fr;height:100vh;background:#f4f3f3;font-size:14px">
+<div style="display:grid;grid-template-columns:auto 1fr;grid-template-rows:52px 1fr;height:100vh;background:#f4f3f3;font-size:14px">
   <div style="grid-column:1 / -1;display:flex;align-items:center;gap:20px;padding:0 20px;border-bottom:1px solid #e5e5e5;background:#fff">
     <span style="font-family:'Wix Madefor Display',sans-serif;font-size:15px;font-weight:800;letter-spacing:-.2px">WIX<span style="font-weight:500"> STUDIO</span></span>
     <span style="width:22px;height:22px;border-radius:6px;background:#fbd8f0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#151414">P</span>
@@ -48,15 +48,42 @@
     </div>
   </div>
 
-  <div style="border-right:1px solid #e5e5e5;background:#fff;padding:14px 12px;overflow-y:auto;display:flex;flex-direction:column;gap:2px">
+  <sc-if value="{{ navShut }}" hint-placeholder-val="{{ false }}">
+    <div style="width:60px;border-right:1px solid #e5e5e5;background:#fff;padding:14px 0;overflow-y:auto;display:flex;flex-direction:column;align-items:center;gap:4px">
+      <button onClick="{{ toggleNav }}" title="Expand" style="font-family:inherit;display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:none;border-radius:6px;cursor:pointer;color:#151414" style-hover="background:#f0eeee"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="15" rx="2.5"></rect><path d="M9 4.5v15"></path></svg></button>
+      <div style="width:24px;height:1px;background:#eceaea;margin:8px 0"></div>
+      <span style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;color:#151414"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.8"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v4l3 2"></path></svg></span>
+      <span style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;color:#151414"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.8"><rect x="4" y="4" width="6" height="6"></rect><rect x="14" y="4" width="6" height="6"></rect><rect x="4" y="14" width="6" height="6"></rect><rect x="14" y="14" width="6" height="6"></rect></svg></span>
+      <div style="width:24px;height:1px;background:#eceaea;margin:8px 0"></div>
+      <span style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;color:#151414" title="Home"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-6 8 6v8H4z"></path></svg></span>
+      <span style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;color:#151414" title="AI Agents"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l1.8 4.2L18 10l-4.2 1.8L12 16l-1.8-4.2L6 10l4.2-1.8z"></path></svg></span>
+      <span style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;color:#151414" title="Booking Calendar"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="2"></rect><path d="M4 10h16M9 3v4M15 3v4"></path></svg></span>
+      <span style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;color:#151414" title="Events"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="2"></rect><path d="M8 12h8M8 16h5"></path></svg></span>
+      <span style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;color:#151414" title="Sales"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v8M9.5 10.5h5M9.5 13.5h5"></path></svg></span>
+      <span style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;color:#151414" title="Catalog"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8l8-4 8 4v8l-8 4-8-4z"></path><path d="M4 8l8 4 8-4"></path></svg></span>
+      <span style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;color:#151414" title="Apps"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="7" height="7"></rect><rect x="13" y="4" width="7" height="7"></rect><rect x="4" y="13" width="7" height="7"></rect><rect x="13" y="13" width="7" height="7"></rect></svg></span>
+      <div style="width:24px;height:1px;background:#eceaea;margin:8px 0"></div>
+      <span style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;color:#151414" title="Site &amp; Mobile App"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="13" height="10" rx="1.5"></rect><rect x="16" y="10" width="5" height="9" rx="1.5"></rect></svg></span>
+      <span style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;color:#151414" title="Marketing"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h4l8-4v14l-8-4H4z"></path></svg></span>
+      <button onClick="{{ goInbox }}" title="Inbox" style="font-family:inherit;display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:none;border-radius:6px;cursor:pointer;color:#151414" style-hover="background:#f0eeee"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16v12H4z"></path><path d="M4 9l8 5 8-5"></path></svg></button>
+      <span style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;color:#151414" title="Customers &amp; Leads"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="8" r="3.4"></circle><path d="M4 20c0-3.3 2.7-6 6-6M16 13l4 4M20 13l-4 4"></path></svg></span>
+      <span style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;color:#151414" title="Automations"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3l-2 8h5l-6 10 2-8H7z"></path></svg></span>
+      <div style="width:24px;height:1px;background:#eceaea;margin:8px 0"></div>
+      <button onClick="{{ goBookings }}" title="Settings" style="font-family:inherit;display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:none;border-radius:6px;cursor:pointer;color:#151414" style-hover="background:#f0eeee"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M12 4v3M12 17v3M4 12h3M17 12h3"></path></svg></button>
+    </div>
+  </sc-if>
+  <sc-if value="{{ navOpen }}" hint-placeholder-val="{{ true }}">
+  <div style="width:248px;border-right:1px solid #e5e5e5;background:#fff;padding:14px 12px;overflow-y:auto;display:flex;flex-direction:column;gap:2px">
     <div style="display:flex;align-items:center;gap:9px;padding:7px 10px;color:#151414;font-size:13.5px;font-weight:500">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.8"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v4l3 2"></path></svg>
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.8"><rect x="4" y="4" width="6" height="6"></rect><rect x="14" y="4" width="6" height="6"></rect><rect x="4" y="14" width="6" height="6"></rect><rect x="14" y="14" width="6" height="6"></rect></svg>
       Quick Actions
+      <span style="width:1px;height:16px;background:#e5e5e5;margin-left:auto"></span>
+      <button onClick="{{ toggleNav }}" title="Collapse" style="font-family:inherit;display:flex;align-items:center;justify-content:center;width:28px;height:28px;border:none;background:none;border-radius:6px;cursor:pointer;color:#151414;flex-shrink:0" style-hover="background:#f0eeee"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="15" rx="2.5"></rect><path d="M9 4.5v15"></path></svg></button>
     </div>
     <div style="height:1px;background:#eceaea;margin:8px 4px"></div>
     <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:14px;font-weight:500;color:#151414"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-6 8 6v8H4z"></path></svg>Home</div>
-    <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:14px;font-weight:500;color:#151414"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l1.8 4.2L18 10l-4.2 1.8L12 16l-1.8-4.2L6 10l4.2-1.8z"></path></svg>AI Agents<span style="font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#151414;background:#fbd8a0;padding:2px 7px;border-radius:4px;margin-left:auto">New</span></div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:14px;font-weight:500;color:#151414"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l1.8 4.2L18 10l-4.2 1.8L12 16l-1.8-4.2L6 10l4.2-1.8z"></path></svg>AI Agents</div>
     <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:14px;font-weight:500;color:#151414"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="2"></rect><path d="M4 10h16M9 3v4M15 3v4"></path></svg>Booking Calendar<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8a8888" stroke-width="2.2" stroke-linecap="round" style="margin-left:auto"><path d="M9 6l6 6-6 6"></path></svg></div>
     <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:14px;font-weight:500;color:#151414"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="2"></rect><path d="M8 12h8M8 16h5"></path></svg>Events<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8a8888" stroke-width="2.2" stroke-linecap="round" style="margin-left:auto"><path d="M9 6l6 6-6 6"></path></svg></div>
     <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:14px;font-weight:500;color:#151414"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v8M9.5 10.5h5M9.5 13.5h5"></path></svg>Sales<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8a8888" stroke-width="2.2" stroke-linecap="round" style="margin-left:auto"><path d="M9 6l6 6-6 6"></path></svg></div>
@@ -74,6 +101,7 @@
     <div style="height:1px;background:#eceaea;margin:8px 4px"></div>
     <div onClick="{{ goBookings }}" style="{{ navSettings }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M12 4v3M12 17v3M4 12h3M17 12h3"></path></svg>Settings</div>
   </div>
+  </sc-if>
 
   <div style="display:flex;flex-direction:column;min-width:0;min-height:0;background:#f4f3f3">
 
@@ -572,15 +600,8 @@
     <sc-if value="{{ viewAgent }}" hint-placeholder-val="{{ false }}">
       <div data-screen-label="Session follow-ups settings" style="flex:1;min-height:0;overflow-y:auto;padding:24px 28px 60px">
         <div style="max-width:1080px;margin:0 auto">
-          <div style="display:flex;align-items:center;gap:7px;font-size:13.5px;color:#5c5a5a"><span onClick="{{ goInbox }}" style="cursor:pointer">Inbox</span> <span style="color:#c4c2c2">/</span> <span style="cursor:pointer">Inbox Settings</span> <span style="color:#c4c2c2">/</span> <span style="color:#151414">Client Agent</span></div>
+          <div style="display:flex;align-items:center;gap:7px;font-size:13.5px;color:#5c5a5a"><span onClick="{{ goBookings }}" style="cursor:pointer">Settings</span> <span style="color:#c4c2c2">/</span> <span onClick="{{ goBookings }}" style="cursor:pointer">Booking Settings</span> <span style="color:#c4c2c2">/</span> <span style="color:#151414">Client Agent</span></div>
 
-          <sc-if value="{{ justOn }}" hint-placeholder-val="{{ false }}">
-            <div style="display:flex;align-items:center;gap:10px;margin-top:14px;padding:10px 16px;background:#e6f4ec;border:1px solid #cbe7d6;border-radius:10px;font-size:13.5px;color:#194b31">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1a6b3f" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"></path></svg>
-              <span>The Client Agent is on. It starts with the next session that's booked.</span>
-              <button onClick="{{ dismissJustOn }}" style="margin-left:auto;background:none;border:none;cursor:pointer;color:#5c7a68;font-size:15px;line-height:1;padding:2px 4px">×</button>
-            </div>
-          </sc-if>
 
           <div style="display:flex;align-items:flex-start;gap:16px;margin:14px 0 20px">
             <span style="width:44px;height:44px;border-radius:12px;background:#eceafd;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:3px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4b42c9" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l1.8 4.2L18 10l-4.2 1.8L12 16l-1.8-4.2L6 10l4.2-1.8z"></path></svg></span>
@@ -1359,7 +1380,10 @@ class Component extends DCLogic {
       { id: 'inbox', label: 'Inbox' }
     ];
     const demoOn = (d) => (d.id === 'agent-setup' && v === 'agent' && s.agentTab === 'setup') || (d.id === 'agent-activity' && v === 'agent' && s.agentTab === 'activity') || d.id === v;
+    const navOpen = s.navCollapsed !== true;
     return {
+      navOpen, navShut: !navOpen,
+      toggleNav: () => this.setState({ navCollapsed: navOpen }),
       viewInbox: v === 'inbox', viewBookings: v === 'bookings', viewWizard: v === 'wizard', viewAgent: v === 'agent',
       navInbox: navBase + (v === 'inbox' ? 'font-weight:600;background:#f0eeee' : 'font-weight:500'),
       navSettings: navBase + (v === 'bookings' ? 'font-weight:600;background:#f0eeee' : 'font-weight:500'),
