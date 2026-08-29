@@ -427,7 +427,6 @@
                       <div style="font-size:14px;font-weight:600">{{ c.name }}</div>
                       <div style="font-size:12.5px;color:#8a8888;margin-top:1px;line-height:1.45">{{ c.desc }}</div>
                     </div>
-                    <button style="font-family:inherit;background:none;border:none;padding:0 4px;font-size:12.5px;font-weight:600;color:#116dff;cursor:pointer;flex-shrink:0">{{ c.manageLabel }}</button>
                     <button onClick="{{ c.toggle }}" style="{{ c.track }}"><span style="{{ c.knob }}"></span></button>
                   </div>
                 </sc-for>
@@ -1111,7 +1110,7 @@ class Component extends DCLogic {
     { id: 'reschedule', group: 'Before the session', name: 'Let clients reschedule or cancel', desc: 'Offers open slots and moves the booking, or cancels it, right in the conversation.' },
     { id: 'intake', group: 'Before the session', name: 'Get the intake form filled in', desc: 'Sends your form, nudges once if it\u2019s still open, and files the answers on the booking.' },
     { id: 'preupsell', group: 'Before the session', name: 'Offer add-ons for the session', desc: 'Suggests add-ons from the service, based on what the client usually books.' },
-    { id: 'predeposit', group: 'Before the session', name: 'Collect payment or deposit', desc: 'Sends a paylink when a deposit or prepayment is required to hold the spot.' },
+    { id: 'predeposit', group: 'Before the session', name: 'Collect payment or remaining of deposit', desc: 'Sends a paylink for a deposit, a prepayment, or the balance left after a deposit.' },
     { id: 'prep', group: 'Before the session', name: 'Send prep instructions', desc: 'Your approved arrival info, intake forms or health screening \u2014 never generated advice.' },
     { id: 'nps', group: 'After the session', name: 'Ask how likely clients are to recommend you', desc: 'A one-tap 0\u201310 score after the rating, so you can track how loyal clients feel over time.' },
     { id: 'review', group: 'After the session', name: 'Ask for a Google or Yelp review', desc: 'Only when the rating is 4 or higher \u2014 unhappy clients are never asked.' },
