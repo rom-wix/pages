@@ -26,7 +26,7 @@
 html,body{margin:0}
 body{
   background:var(--white); color:var(--ink);
-  padding-bottom:86px; /* clear the fixed demo bar */
+  padding-bottom:var(--barpad,86px); /* clear the fixed demo bar */
   font-family:'Wix Madefor Text',system-ui,-apple-system,'Segoe UI',sans-serif;
   font-size:15px; line-height:1.5; -webkit-font-smoothing:antialiased;
 }
@@ -101,15 +101,35 @@ section{padding:80px 0}
 
 /* ── demo chrome ────────────────────────────────────────────────────────── */
 #demobar{position:fixed;z-index:100;left:50%;transform:translateX(-50%);bottom:18px;
-  display:flex;align-items:center;gap:6px;padding:7px;border-radius:999px;
-  background:rgba(11,13,23,.93);backdrop-filter:blur(8px);box-shadow:0 10px 30px rgba(0,0,0,.28)}
+  display:flex;align-items:center;gap:6px;padding:7px;border-radius:999px;max-width:94vw;
+  background:rgba(11,13,23,.93);backdrop-filter:blur(8px);box-shadow:0 10px 30px rgba(0,0,0,.28);
+  transition:padding .16s var(--ease)}
 #demobar button{height:34px;padding:0 14px;border:0;border-radius:999px;background:transparent;
   color:#cfd4e6;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
 #demobar button:hover{background:rgba(255,255,255,.10);color:#fff}
 #demobar button[aria-current="true"]{background:var(--lime);color:var(--deep)}
-#demobar .sep{width:1px;height:20px;background:rgba(255,255,255,.18);margin:0 3px}
-#demobar .tag{color:#7b83a0;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:0 8px}
-@media(max-width:640px){#demobar{flex-wrap:wrap;max-width:94vw;justify-content:center;border-radius:18px}}
+#demobar .sep{width:1px;height:20px;background:rgba(255,255,255,.18);margin:0 3px;flex:0 0 auto}
+#demobar .tag{color:#7b83a0;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:0 8px;flex:0 0 auto}
+/* The controls scroll sideways rather than wrapping onto a second row. */
+#demobar .bar-body{display:flex;align-items:center;gap:6px;overflow-x:auto;scrollbar-width:none;
+  -webkit-overflow-scrolling:touch}
+#demobar .bar-body::-webkit-scrollbar{display:none}
+#demobar .bar-body > *{flex:0 0 auto}
+/* The handle: always visible, collapses the bar to just itself. */
+#demobar .handle{width:34px;height:34px;padding:0;border-radius:999px;display:grid;place-items:center;
+  background:rgba(255,255,255,.10);color:#fff;flex:0 0 auto}
+#demobar .handle:hover{background:rgba(255,255,255,.2)}
+#demobar .handle svg{transition:transform .16s var(--ease)}
+/* Collapsed it is just a handle, so park it in the corner rather than over
+   the middle of the page. */
+#demobar.collapsed{padding:6px;left:auto;right:16px;transform:none}
+#demobar.collapsed .bar-body{display:none}
+#demobar.collapsed .handle svg{transform:rotate(180deg)}
+@media(max-width:640px){
+  #demobar{left:auto;right:12px;transform:none;bottom:12px}
+  #demobar.collapsed{right:12px}
+}
 
 /* ── landing ────────────────────────────────────────────────────────────── */
 .nav{position:sticky;top:0;z-index:20;background:rgba(246,247,251,.9);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
@@ -174,7 +194,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:24px;align-items:center;padding-top
 footer nav{margin-left:auto;display:flex;gap:24px;font-size:13px;color:var(--muted)}
 
 /* ── onboarding ─────────────────────────────────────────────────────────── */
-.onb{display:flex;min-height:calc(100vh - 86px)}
+.onb{display:flex;min-height:calc(100vh - var(--barpad,86px))}
 .rail{width:480px;flex:0 0 auto;background:var(--paper);padding:40px 44px;display:flex;flex-direction:column;position:relative;overflow:hidden}
 .rail .wash{left:50%;top:46%;width:520px;height:520px;margin:-260px 0 0 -260px}
 .rail .mid{position:relative;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px}
@@ -206,6 +226,10 @@ footer nav{margin-left:auto;display:flex;gap:24px;font-size:13px;color:var(--mut
 .opt{border:1px solid var(--line-2);background:var(--white);border-radius:16px;padding:16px;text-align:left;cursor:pointer}
 .opt:hover{background:var(--paper)}
 .opt[aria-pressed="true"]{border-color:var(--violet);box-shadow:0 0 0 1px var(--violet);background:var(--paper)}
+.prov{height:40px;padding:0 16px;border-radius:999px;background:var(--white);border:1px solid var(--line-2);
+  font-size:13px;font-weight:600;cursor:pointer}
+.prov:hover{background:var(--paper)}
+.prov[aria-pressed="true"]{background:var(--lime-tint);color:var(--lime-deep);border-color:var(--lime-line)}
 .opt b{display:block;font-size:15px}
 .opt span{display:block;margin-top:4px;font-size:13px;color:var(--muted);line-height:1.5}
 .combo{position:relative;max-width:380px}
@@ -231,8 +255,8 @@ footer nav{margin-left:auto;display:flex;gap:24px;font-size:13px;color:var(--mut
 }
 
 /* ── dashboard ──────────────────────────────────────────────────────────── */
-.dash{display:grid;grid-template-columns:248px 1fr;min-height:calc(100vh - 86px)}
-.side{position:sticky;top:0;height:calc(100vh - 86px);background:var(--paper);border-right:1px solid var(--line);padding:16px;
+.dash{display:grid;grid-template-columns:248px 1fr;min-height:calc(100vh - var(--barpad,86px))}
+.side{position:sticky;top:0;height:calc(100vh - var(--barpad,86px));background:var(--paper);border-right:1px solid var(--line);padding:16px;
   display:flex;flex-direction:column;gap:2px}
 .side .brand{padding:6px 6px 20px}
 .side a{display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:8px;text-decoration:none;
@@ -265,7 +289,8 @@ tr.clickable:hover td{background:var(--paper);cursor:pointer}
   transition:transform .15s var(--ease)}
 .sw[aria-checked="true"]::after{transform:translateX(18px)}
 .row{display:flex;align-items:center;gap:16px;justify-content:space-between}
-@media(max-width:900px){.dash{grid-template-columns:1fr}.side{display:none}}
+@media(max-width:900px){.dash{grid-template-columns:1fr}.side{display:none}.home-grid{grid-template-columns:1fr!important}}
+.dash main > section, .dash main > div{margin-bottom:24px}
 .mobnav{display:none;gap:6px;overflow-x:auto;padding:10px 24px;border-bottom:1px solid var(--line);
   background:var(--white);position:sticky;top:57px;z-index:9;-webkit-overflow-scrolling:touch}
 .mobnav button{flex:0 0 auto;height:32px;padding:0 12px;border-radius:999px;border:1px solid var(--line-2);
@@ -370,7 +395,12 @@ const DEFAULTS = {
 };
 let S = Object.assign({}, DEFAULTS);
 
-const STEPS = ['Meet','Business','Personality','Teach','Greeting','Number','Go live'];
+const STEPS = ['Business','Personality','Teach','Greeting','Number','Forward'];
+// 0..5 are the steps; SUCCESS is the screen after the last one — an outcome,
+// not a step, so it has no bead and no counter.
+const LAST_STEP = 5;
+const SUCCESS = 6;
+const bead = () => S.step;
 const TONES = {
   Warm:{blurb:'friendly and upbeat, uses first names, a little small talk.', peb:'happy',
     line:n=>`Hi there, thanks for calling ${S.business}! I’m ${n}. What can I do for you today?`},
@@ -412,20 +442,241 @@ const COUNTRIES = [
     ['91','Madrid'],['93','Barcelona'],['96','Valencia']]},
 ];
 const SUFFIX = ['1387','2210','4406'];
+/* Ported verbatim from packages/alfred-standalone-web/src/onboarding/forwarding.ts
+   so the demo shows the same instructions the product does. */
 const PHONE_TYPES = {
-  mobile:{label:'Mobile phone',providers:['AT&T','T-Mobile','Verizon','Other']},
-  landline:{label:'Landline',providers:['AT&T Home','Verizon Fios','Xfinity','CenturyLink']},
-  voip:{label:'VoIP service',providers:['Vonage','Ooma','Google Voice','RingCentral']},
+  mobile: {
+    label: 'Mobile phone',
+    providers: ['AT&T', 'T-Mobile', 'Verizon', 'Other'],
+  },
+  landline: {
+    label: 'Landline',
+    providers: ['AT&T Home', 'Verizon Fios', 'Xfinity', 'CenturyLink'],
+  },
+  voip: {
+    label: 'VoIP service',
+    providers: [
+      'Vonage',
+      'Ooma',
+      'Google Voice',
+      'RingCentral',
+      '8x8',
+      'Grasshopper',
+    ],
+  },
 };
-function forwardSteps(n, always) {
-  return always
-    ? {steps:[`Open your phone app and dial **21*${n}#, then tap Call.`,
-              'Wait for the confirmation message. All incoming calls now go to Alfred.'],
-       off:'To turn this off, dial ##21#, then tap Call.'}
-    : {steps:[`Open your phone app and dial **004*${n}#, then tap Call.`,
-              'Wait for the confirmation message. Calls go to Alfred when you’re busy, don’t answer, or have no signal.'],
-       off:'To turn this off, dial ##004#, then tap Call.'};
+
+function instructionsFor(provider, mode, n, e) {
+  const always = mode === 'always';
+
+  
+  const gsm = always
+    ? {
+        steps: [
+          `Open your phone app and dial **21*${n}#, then tap Call.`,
+          'Wait for the confirmation message. All incoming calls now go to Alfred.',
+        ],
+        off: 'To turn this off, dial ##21#, then tap Call.',
+        note: 'You can change this at any time in your phone’s call forwarding settings.',
+      }
+    : {
+        steps: [
+          `Open your phone app and dial **004*${n}#, then tap Call.`,
+          'Wait for the confirmation message. Calls go to Alfred when you’re busy, don’t answer, or have no signal.',
+        ],
+        off: 'To turn this off, dial ##004#, then tap Call.',
+        note: 'You can change this at any time in your phone’s call forwarding settings.',
+      };
+
+  
+  const starLine = always
+    ? {
+        steps: [
+          'Dial *72 and wait for a dial tone.',
+          `Dial ${n} and wait for the call to be answered.`,
+          'Hang up. All incoming calls now go to Alfred.',
+        ],
+        off: 'To turn this off, dial *73.',
+      }
+    : {
+        steps: [
+          'Dial *71 and wait for a dial tone.',
+          `Dial ${n} and wait for the call to be answered.`,
+          'Hang up. Calls go to Alfred when you’re busy or don’t answer.',
+        ],
+        off: 'To turn this off, dial *73.',
+      };
+
+  const byProvider = {
+    'AT&T': gsm,
+    'T-Mobile': gsm,
+    Other: gsm,
+    Verizon: always
+      ? {
+          steps: [
+            `Dial *72${n}, then tap Call.`,
+            'Wait for a confirmation tone or message, then hang up. All incoming calls now go to Alfred.',
+          ],
+          off: 'To turn this off, dial *73, then tap Call.',
+        }
+      : {
+          steps: [
+            `Dial *71${n}, then tap Call.`,
+            'Wait for a confirmation tone or message, then hang up. Calls go to Alfred when you’re busy or don’t answer.',
+          ],
+          off: 'To turn this off, dial *73, then tap Call.',
+        },
+    'AT&T Home': always
+      ? {
+          steps: [
+            'Pick up the handset and dial *72. Wait for a stutter tone, then a regular dial tone.',
+            `Dial ${n} and wait for the call to be answered.`,
+            'Hang up. You’ll hear a confirmation tone when call forwarding is active.',
+          ],
+          off: 'To turn this off, pick up your phone and dial *73.',
+          note: 'If your number is private or unlisted, dial *82 before *72 to temporarily unblock caller ID.',
+        }
+      : {
+          steps: [
+            'Pick up the handset and dial *71. Wait for a dial tone.',
+            `Dial ${n} and wait for the call to be answered.`,
+            'Hang up. Calls now go to Alfred when you’re busy or don’t answer.',
+          ],
+          off: 'To turn this off, pick up your phone and dial *73.',
+          note: 'If your number is private or unlisted, dial *82 before *71 to temporarily unblock caller ID.',
+        },
+    'Verizon Fios': always
+      ? {
+          steps: [
+            `Dial *72 and wait for a dial tone, then dial ${n}.`,
+            'A courtesy call is placed to Alfred’s number. It must be answered to activate call forwarding.',
+            'Hang up once you hear the confirmation.',
+          ],
+          off: 'To turn this off, dial *73.',
+        }
+      : {
+          steps: [
+            `Dial *71 and wait for a dial tone, then dial ${n}.`,
+            'A courtesy call is placed to Alfred’s number. It must be answered to activate call forwarding.',
+            'Hang up once you hear the confirmation. Calls go to Alfred when you’re busy or don’t answer.',
+          ],
+          off: 'To turn this off, dial *73.',
+        },
+    Xfinity: starLine,
+    CenturyLink: starLine,
+    Vonage: always
+      ? {
+          steps: [
+            'From your Vonage phone, dial *72 and wait for a dial tone.',
+            `Enter ${n} and press 1 to confirm.`,
+          ],
+          off: 'To turn this off, dial *73.',
+          note: 'You can also configure this in the Vonage account portal under My Numbers.',
+        }
+      : {
+          steps: [
+            'Sign in to your Vonage account and open My Numbers.',
+            `Under Call Forwarding, set When busy or unanswered to ${n} and save.`,
+          ],
+          off: 'To turn this off, remove the number under My Numbers.',
+        },
+    Ooma: always
+      ? {
+          steps: [
+            'From your Ooma phone, dial *72 and wait for a prompt.',
+            `Dial ${n}# to set the forwarding destination.`,
+          ],
+          off: 'To turn this off, dial *73. To toggle using the last saved number, dial *74.',
+        }
+      : {
+          steps: [
+            'Sign in to My Ooma and go to Preferences, then Call Forwarding.',
+            `Turn on forwarding when busy or unanswered, enter ${n} and save.`,
+          ],
+          off: 'To turn this off, switch forwarding off in My Ooma.',
+        },
+    'Google Voice': always
+      ? {
+          steps: [
+            'Open Google Voice and go to Settings.',
+            `Under Linked numbers, click New linked number and enter ${n}.`,
+            'Enter the verification code Alfred receives, then turn the linked number on.',
+          ],
+          off: 'To turn this off, remove the linked number.',
+          note: 'Google Voice rings linked numbers together, so Alfred picks up while your phone is still ringing.',
+        }
+      : {
+          steps: [
+            'Google Voice rings linked numbers at the same time, so Alfred would answer every call.',
+            'To use him only when you’re unavailable, forward from your mobile carrier instead. Pick Mobile phone above.',
+          ],
+          off: '',
+        },
+    RingCentral: always
+      ? {
+          steps: [
+            'In the RingCentral app, click your profile picture, then Settings.',
+            'Go to Phone, then Call Handling & Forwarding.',
+            `Under Work hours, select Forward to external number, enter ${n} and save.`,
+          ],
+          off: 'To turn this off, switch the rule back to your own extension.',
+        }
+      : {
+          steps: [
+            'In the RingCentral app, click your profile picture, then Settings.',
+            'Go to Phone, then Call Handling & Forwarding.',
+            `Under Missed calls, select Forward to external number, enter ${n} and save.`,
+          ],
+          off: 'To turn this off, switch Missed calls back to voicemail.',
+        },
+    '8x8': always
+      ? {
+          steps: [
+            'Log in to the 8x8 Admin Console.',
+            'Select Call forwarding rules.',
+            `Click Edit next to Always, choose Forward Directly To and enter ${e}.`,
+          ],
+          off: 'To turn this off, remove the Always rule.',
+        }
+      : {
+          steps: [
+            'Log in to the 8x8 Admin Console.',
+            'Select Call forwarding rules.',
+            `Click Edit next to No Answer and Busy, choose Forward Directly To and enter ${e} for both.`,
+          ],
+          off: 'To turn this off, remove the No Answer and Busy rules.',
+        },
+    Grasshopper: always
+      ? {
+          steps: [
+            'Sign in to your Grasshopper account (grasshopper.com).',
+            'Click Edit next to the extension you want to use.',
+            `Enter ${n} as the forwarding destination, choose Always Forward, and click Save.`,
+          ],
+          off: 'To turn this off, remove the forwarding rule on the extension.',
+          note: 'You can also do this in the Grasshopper mobile app under settings for your business number.',
+        }
+      : {
+          steps: [
+            'Sign in to your Grasshopper account (grasshopper.com).',
+            'Click Edit next to the extension you want to use.',
+            `Enter ${n} as the forwarding destination, choose Forward on No Answer and Forward When Busy, and click Save.`,
+          ],
+          off: 'To turn this off, remove the forwarding rules on the extension.',
+          note: 'You can also do this in the Grasshopper mobile app under settings for your business number.',
+        },
+  };
+
+  return byProvider[provider] || gsm;
 }
+
+const forwardTitle = (provider, type, mode) => {
+  const suffix =
+    type === 'mobile' ? ' mobile' : type === 'landline' ? ' landline' : '';
+  return `${provider}${suffix} · ${
+    mode === 'always' ? 'forward every call' : 'forward when you’re unavailable'
+  }`;
+};
 
 /* Dummy dashboard data */
 const CALLS = [
@@ -657,37 +908,43 @@ function viewLanding() {
 </script>
 <script>
 /* ── onboarding ─────────────────────────────────────────────────────────── */
-const PEB_BY_STEP = ['listening','curious','speaking','thinking','speaking','curious','happy'];
+const PEB_BY_STEP = ['curious','speaking','thinking','speaking','curious','idle','happy'];
 function saysFor(i) {
   const n = esc(S.name);
   return [
-    `Hi, I’m ${n}. I answer your calls when you can’t. Give me a few minutes and I’ll be ready to pick up.`,
     'Which business am I answering for? If you have a website, I’ll read it so I know your hours and services.',
     'This is how I’ll sound. Pick my languages and accent, a voice and a tone, and call me whatever suits your team.',
     S.website ? `I’ve read ${esc(S.website)}. Here’s what I learned. Add anything your site doesn’t say.`
               : 'Without a website I start from scratch. Tell me the things a caller always asks.',
     'Here’s how I’ll greet callers. Change any word, then listen.',
     'Callers need a way to reach me. Pick a number in your country. Next I’ll show you how to send your existing line to it.',
-    'Try me before you go live. Call me from your phone, or just chat. Test calls aren’t logged and don’t count.',
+    S.number
+      ? `Keep the number your customers know. Forward it to me and I’ll pick up on ${S.number}, every call or only when you can’t.`
+      : 'Once I have a number of my own, you can forward your existing line to it and keep the number your customers know.',
+    S.number
+      ? `That’s me hired. I’ll answer ${S.number} from now on — you can change anything from your dashboard.`
+      : 'That’s me hired. Give me a number whenever you’re ready and I’ll start picking up.',
   ][i];
 }
 
 function stepper() {
+  const cur = bead();
   return `<ol class="stepper">${STEPS.map((label,i) => {
-    const done = i < S.step, now = i === S.step;
-    const bead = done ? ico('check',13,'var(--lime-deep)') : (i+1);
+    const done = i < cur, now = i === cur;
+    const glyph = done ? ico('check',13,'var(--lime-deep)') : (i+1);
     return `<li><button class="bead ${done?'done':''} ${now?'now':''}" onclick="set({step:${i}})"
-        title="Jump to ${label}">${bead}</button>
+        title="Jump to ${label}">${glyph}</button>
       <span class="nm ${now?'now':''}" onclick="set({step:${i}})">${label}</span></li>
       ${i < STEPS.length-1 ? `<span class="rule ${done?'done':''}"></span>` : ''}`;
   }).join('')}</ol>`;
 }
 
 function shell(opts) {
-  const back = S.step > 0
+  const isSuccess = opts.variant === 'success';
+  const back = (S.step > 0 && !isSuccess)
     ? `<button class="btn btn-ghost" onclick="set({step:${S.step-1}})">Back</button>` : '<div></div>';
-  const skip = opts.skip === false ? ''
-    : `<button class="btn btn-ghost" onclick="set({step:${Math.min(S.step+1,6)}})">${opts.skipLabel||'Skip for now'}</button>`;
+  const skip = (opts.skip === false || isSuccess) ? ''
+    : `<button class="btn btn-ghost" onclick="${S.step >= LAST_STEP ? 'finish()' : `set({step:${S.step+1}})`}">${opts.skipLabel||'Skip for now'}</button>`;
   const next = opts.next
     || `<button class="btn btn-primary" onclick="set({step:${S.step+1}})">Continue ${ico('arrow',18,'var(--deep)')}</button>`;
   return `<div class="onb">
@@ -696,10 +953,10 @@ function shell(opts) {
       <div style="position:relative">${mark(28)}</div>
       <div class="mid">${pebble(200, PEB_BY_STEP[S.step])}
         <div class="says"><div class="who">${esc(S.name)}</div><p>${saysFor(S.step)}</p></div></div>
-      <div class="muted" style="position:relative;font-size:13px">Step ${S.step+1} of 7</div>
+      ${isSuccess ? '' : `<div class="muted" style="position:relative;font-size:13px">Step ${bead()+1} of ${STEPS.length}</div>`}
     </aside>
     <main>
-      ${stepper()}
+      ${isSuccess ? '' : stepper()}
       <div><h1>${opts.title}</h1>${opts.intro?`<p class="intro" style="margin-top:8px">${opts.intro}</p>`:''}</div>
       ${opts.body}
       <div class="foot">${back}<div class="right">${skip}${next}</div></div>
@@ -712,25 +969,8 @@ function viewOnboarding() {
   switch (S.step) {
 
   case 0: return shell({
-    title:'Meet your new receptionist',
-    intro:`Here is what ${n} will do for your business from day one. Everything can be changed later.`,
-    skip:false,
-    next:`<button class="btn btn-primary" onclick="set({step:1})">Let’s get started ${ico('arrow',18,'var(--deep)')}</button>`,
-    body:`<div style="display:flex;flex-direction:column;gap:20px;max-width:640px">
-      ${[['help','Answers questions','Hours, services, prices and directions, from your website and the answers you add.'],
-         ['doc','Takes messages and books meetings','Gets the caller’s name and number, and finds a slot in your calendar when they want one.'],
-         ['contact','Sends you the summary','After every call: a summary, the transcript and the caller saved as a contact.']]
-        .map(([i,t,b])=>`<div class="feat"><span class="ic">${ico(i,20)}</span><div><b>${t}</b><p>${b}</p></div></div>`).join('')}
-      <div class="channels">
-        <span class="c">${ico('phone',16)}<b>Phone calls</b><span class="pill pill-live"><i></i>Live</span></span>
-        <span class="c muted">${ico('chat',16,'var(--muted)')}Texts <span class="pill pill-soon">Coming soon</span></span>
-        <span class="c muted">${ico('whatsapp',16,'var(--muted)')}WhatsApp <span class="pill pill-soon">Coming soon</span></span>
-      </div></div>`});
-
-  case 1: return shell({
     title:'Tell me about your business',
     intro:`${n} uses this to introduce your business and to learn what it offers.`,
-    skipLabel:'Skip for now',
     body:`<div style="display:flex;flex-direction:column;gap:22px;max-width:560px">
       <div class="field"><label for="biz">Business name</label>
         <input id="biz" type="text" value="${esc(S.business)}" oninput="S.business=this.value">
@@ -738,11 +978,11 @@ function viewOnboarding() {
       <div class="field"><label for="site">Website</label>
         <input id="site" type="url" value="${esc(S.website)}" placeholder="yourbusiness.com" oninput="S.website=this.value">
         <div class="hint">${n} reads your pages and answers only from what he finds there and what you add.</div></div>
-      <a href="#" onclick="event.preventDefault();set({website:'',step:2})"
+      <a href="#" onclick="event.preventDefault();set({website:'',step:1})"
          style="font-size:14px;font-weight:600;align-self:flex-start">I don’t have a website</a>
     </div>`});
 
-  case 2: return shell({
+  case 1: return shell({
     title:'Give him a name, a voice and a tone',
     intro:`This is ${n}’s personality. He keeps it on every call, and answers in the caller’s language when it is one you chose.`,
     body:`<div style="display:flex;flex-direction:column;gap:24px;max-width:680px">
@@ -754,8 +994,8 @@ function viewOnboarding() {
         <div style="display:flex;gap:8px;flex-wrap:wrap">${LANGS.map(l=>
           `<button class="chip" aria-pressed="${S.languages.includes(l.code)}" onclick="toggleLang('${l.code}')">${l.name}</button>`).join('')}</div></div>
       ${S.languages.length ? `<div class="grid g2">${LANGS.filter(l=>S.languages.includes(l.code)).map(l=>
-        `<div class="field"><label>${l.name} accent</label>
-          <select onchange="S.accents['${l.code}']=this.value">${l.accents.map(a=>
+        `<div class="field"><label for="acc-${l.code}">${l.name} accent</label>
+          <select id="acc-${l.code}" onchange="S.accents['${l.code}']=this.value">${l.accents.map(a=>
             `<option ${(S.accents[l.code]||l.accents[0])===a?'selected':''}>${a}</option>`).join('')}</select></div>`).join('')}</div>` : ''}
       <div><b style="font-size:14px">Voice</b>
         <div class="grid g3" style="margin-top:10px;gap:10px">${VOICES.map(v=>
@@ -767,7 +1007,7 @@ function viewOnboarding() {
         <div class="hint" style="margin-top:8px"><b style="color:var(--ink)">${S.tone}:</b> ${TONES[S.tone].blurb}</div></div>
     </div>`});
 
-  case 3: return shell({
+  case 2: return shell({
     title: S.website ? 'Here’s what I learned from your site' : 'Teach me about your business',
     intro:'Check it, fix anything that is off, then add the things a website never says.',
     body:`<div style="display:flex;flex-direction:column;gap:22px;max-width:680px">
@@ -781,8 +1021,8 @@ function viewOnboarding() {
       <div>
         <b style="font-size:14px">Add what your site doesn’t say</b>
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0">${
-          ['Cancellation policy','Payment methods','New patient forms','Emergency after hours'].map(p=>
-          `<button class="chip btn-sm" style="height:36px" onclick="document.getElementById('fact').value='${p}: ';document.getElementById('fact').focus()">${ico('plus',13,'var(--muted)')} ${p}</button>`).join('')}</div>
+          ['Cancellation policy','Payment methods','New patient forms','Emergency after hours'].map(pr=>
+          `<button class="chip btn-sm" style="height:36px" onclick="document.getElementById('fact').value='${pr}: ';document.getElementById('fact').focus()">${ico('plus',13,'var(--muted)')} ${pr}</button>`).join('')}</div>
         <div style="display:flex;gap:10px"><input id="fact" type="text" placeholder="e.g. Cancellations need 24 hours’ notice"
             onkeydown="if(event.key==='Enter')addFact()">
           <button class="btn btn-outline" onclick="addFact()">Add</button></div>
@@ -793,7 +1033,7 @@ function viewOnboarding() {
             <button class="btn btn-ghost btn-sm" onclick="S.facts.splice(${i},1);render()">Remove</button></div>`).join('')}</div>`:''}
       </div></div>`});
 
-  case 4: return shell({
+  case 3: return shell({
     title:'How I’ll answer the phone',
     intro:`Drafted from your business name and the ${S.tone} tone you chose.`,
     body:`<div style="display:flex;flex-direction:column;gap:18px;max-width:620px">
@@ -809,7 +1049,7 @@ function viewOnboarding() {
         <div class="hint">Played when you switch ${n} to Paused, for example on holidays.</div></div>
     </div>`});
 
-  case 5: {
+  case 4: {
     const c = country();
     const opts = c.areas.filter(a => !S.areaQuery ||
       a[0].indexOf(S.areaQuery.trim()) === 0 || a[1].toLowerCase().indexOf(S.areaQuery.trim().toLowerCase()) >= 0);
@@ -818,7 +1058,7 @@ function viewOnboarding() {
       title:'Where callers reach me',
       intro:'Pick your country and an area code your customers recognize. Forwarding from your existing line comes next.',
       skipLabel:'I’ll do this later',
-      next:`<button class="btn btn-primary" ${S.number?'':'disabled'} onclick="set({step:6})">Continue ${ico('arrow',18,'var(--deep)')}</button>`,
+      next:`<button class="btn btn-primary" ${S.number?'':'disabled'} onclick="set({step:5})">Continue ${ico('arrow',18,'var(--deep)')}</button>`,
       body:`<div style="display:flex;flex-direction:column;gap:22px;max-width:680px">
         <div><b style="font-size:14px">Country</b>
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">${COUNTRIES.map(x=>
@@ -828,8 +1068,8 @@ function viewOnboarding() {
             <button class="trigger" onclick="set({areaOpen:${!S.areaOpen},areaQuery:''})">
               <span><b>${S.area}</b> <span class="muted" style="font-size:13px">${areaCity()}</span></span>
               <span style="transform:rotate(90deg);display:inline-flex">${ico('arrow',16,'var(--muted)')}</span></button>
-            ${S.areaOpen?`<div class="menu"><div style="padding:8px"><input type="text" autofocus placeholder="Search by code or city"
-                value="${esc(S.areaQuery)}" oninput="S.areaQuery=this.value;render();const i=document.querySelector('.combo input');if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length)}"></div>
+            ${S.areaOpen?`<div class="menu"><div style="padding:8px"><input id="areaq" type="text" autofocus placeholder="Search by code or city"
+                value="${esc(S.areaQuery)}" oninput="S.areaQuery=this.value;render()"></div>
               <div class="list">${opts.length?opts.map(a=>
                 `<button onclick="set({area:'${a[0]}',areaOpen:false,areaQuery:''})"><b>${a[0]}</b><span class="muted">${a[1]}</span></button>`).join('')
                 :`<div class="muted" style="padding:12px 14px;font-size:13px">No area codes match. Try a city name.</div>`}</div></div>`:''}
@@ -839,8 +1079,8 @@ function viewOnboarding() {
         ${S.number?`<div class="banner" style="padding:14px 18px"><span>${ico('check',16,'var(--lime-deep)')}</span>
             <b style="font-size:14px">${S.number} is yours.</b></div>`
           : (S.numbersShown?`<div><b style="font-size:14px">Pick a number</b>
-            <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px">${SUFFIX.map(s=>{
-              const num = c.fmt(S.area, s);
+            <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px">${SUFFIX.map(sx=>{
+              const num = c.fmt(S.area, sx);
               return `<div class="numrow"><span class="n">${num}</span><span class="muted" style="font-size:13px">${areaCity()}</span>
                 <button class="btn btn-primary btn-sm" style="margin-left:auto" onclick="set({number:'${num}'})">Take it</button></div>`;}).join('')}</div></div>`
           : `<p class="hint" style="margin:0">Pick an area code, then show the numbers available to you.</p>`)}
@@ -849,35 +1089,101 @@ function viewOnboarding() {
       </div>`});
   }
 
-  case 6: {
-    const ready = `<div class="banner">${pebble(48,'happy')}<div>
-      <b style="font-size:15px">${n} is ready to go live</b>
-      <p>${S.number?`He will answer ${S.number} as ${esc(S.business)}, ${S.tone} tone.`
-        :`He’ll answer as ${esc(S.business)} in a ${S.tone.toLowerCase()} tone — once he has a number to answer on.`}</p></div></div>`;
+  case 5: {
+    if (!S.number) {
+      // Never invent a destination — forwarding a real line to a number that
+      // isn't yours would send your callers to a stranger.
+      return shell({
+        title:`Forward your existing line to ${n}`,
+        intro:`Forwarding needs a number to point at, so this step waits until ${n} has one.`,
+        skip:false,
+        next:`<button class="btn btn-primary" onclick="finish()">Put ${n} on duty ${ico('arrow',18,'var(--deep)')}</button>`,
+        body:`<div style="display:flex;gap:16px;align-items:flex-start;background:var(--paper);
+            border:1px solid var(--line);border-radius:16px;padding:20px;max-width:620px">
+          ${pebble(44,'idle')}
+          <div><b style="font-size:15px">No number to forward to yet</b>
+            <p class="muted" style="margin:4px 0 0;font-size:13px">Go back a step to pick a number, or carry on and
+              set forwarding up later from Phone number in your dashboard. Your own line keeps working exactly as
+              it does now.</p></div></div>`});
+    }
+    const dialable = S.number.replace(/^\+1/,'').trim();
+    const e164 = S.number.replace(/[^\d+]/g,'');
+    const ins = instructionsFor(S.provider, S.forwardMode, dialable, e164);
+    const T = PHONE_TYPES[S.phoneType];
     return shell({
-      title:'Try him, then go live',
-      intro: S.number ? `Give ${n} a test call the way a customer would. When it sounds right, switch him on.`
-                      : `Chat with ${n} to hear how he answers. He can go on duty now and take calls as soon as he has a number.`,
-      skip:false,
-      next:`<button class="btn btn-primary" onclick="goLive()">Go live ${ico('arrow',18,'var(--deep)')}</button>`,
-      body:`<div style="display:flex;flex-direction:column;gap:18px;max-width:780px">
-        <div class="grid g2">
-          <div class="card" style="padding:20px"><div style="display:flex;align-items:center;gap:10px">${ico('phone',18)}<b>Call ${n}</b></div>
-            ${S.number?`<p class="muted" style="margin:8px 0 0;font-size:13px">Dial his number from your phone and ask what a customer would.</p>
-              <div style="margin-top:16px;font-size:20px;font-weight:700;font-variant-numeric:tabular-nums">${S.number}</div>`
-             :`<p class="muted" style="margin:8px 0 0;font-size:13px">You skipped picking a number, so there’s nothing to call yet.
-                Add one from Phone number in your dashboard whenever you’re ready.</p>
-               <button class="btn btn-ghost btn-sm" style="margin-top:12px;padding:0" onclick="set({step:5})">Pick a number now</button>`}</div>
-          <div class="card" style="padding:20px;display:flex;flex-direction:column">
-            <div style="display:flex;align-items:center;gap:10px">${ico('chat',18)}<b>Chat with ${n}</b></div>
-            <div class="bubbles" style="margin-top:12px">
-              <div class="bub them">${esc(greetingText())}</div>
-              ${S.chat.map(m=>`<div class="bub ${m.me?'you':'them'}">${esc(m.text)}</div>`).join('')}</div>
-            <div style="display:flex;gap:8px;margin-top:12px">
-              <input id="ask" type="text" placeholder="Ask him something" onkeydown="if(event.key==='Enter')ask()">
-              <button class="btn btn-outline" onclick="ask()">Send</button></div></div>
+      title:`Forward your existing line to ${n}`,
+      intro:`Optional. Callers keep dialing the number they know, and the call lands on ${n}’s number,
+        <b style="color:var(--ink)">${S.number}</b>.`,
+      skipLabel:'Skip and finish',
+      next:`<button class="btn btn-primary" onclick="finish()">Put ${n} on duty ${ico('arrow',18,'var(--deep)')}</button>`,
+      body:`<div style="display:flex;flex-direction:column;gap:22px;max-width:720px">
+        <div><b style="font-size:14px">How should ${n} pick up?</b>
+          <div class="grid g2" style="margin-top:10px;gap:10px">
+            <button class="opt" aria-pressed="${S.forwardMode==='always'}" onclick="set({forwardMode:'always'})">
+              <b>As a receptionist</b><span>Every call to your number goes straight to ${n}. You get the summary
+              and the transcript.</span></button>
+            <button class="opt" aria-pressed="${S.forwardMode==='unavailable'}" onclick="set({forwardMode:'unavailable'})">
+              <b>Like voicemail</b><span>${n} answers only when you’re busy, don’t pick up, or have no
+              signal.</span></button>
+          </div></div>
+
+        <div><b style="font-size:14px">Which phone forwards to ${n}?</b>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">${Object.keys(PHONE_TYPES).map(k=>
+            `<button class="chip" aria-pressed="${S.phoneType===k}" onclick="pickPhoneType('${k}')">${PHONE_TYPES[k].label}</button>`).join('')}</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">${T.providers.map(pv=>
+            `<button class="prov" aria-pressed="${S.provider===pv}" onclick="set({provider:'${pv.replace(/'/g,"\\'")}'})">${pv}</button>`).join('')}</div>
+          <div class="hint" style="margin-top:8px">${S.phoneType==='mobile'
+            ? 'Not listed? Choose AT&amp;T, its codes work for most carriers.'
+            : 'Not listed? Your provider’s help pages list its forwarding codes.'}</div></div>
+
+        <div style="background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:20px">
+          <b style="font-size:15px">${forwardTitle(S.provider, S.phoneType, S.forwardMode)}</b>
+          <ol style="list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:10px">
+            ${ins.steps.map((t,i)=>`<li style="display:flex;gap:12px;font-size:14px">
+              <span style="width:24px;height:24px;border-radius:999px;background:var(--white);display:grid;
+                place-items:center;font-size:11px;font-weight:700;flex:0 0 auto">${i+1}</span>
+              <span style="line-height:1.5">${t}</span></li>`).join('')}
+          </ol>
+          ${ins.note?`<p class="muted" style="margin:14px 0 0;font-size:13px;line-height:1.5">${ins.note}</p>`:''}
+          ${ins.off?`<p class="muted" style="margin:8px 0 0;font-size:13px;line-height:1.5">${ins.off}</p>`:''}
         </div>
-        ${ready}</div>`});
+        <p class="hint" style="margin:0">You can change this any time from Phone number in your dashboard.</p>
+      </div>`});
+  }
+
+  case SUCCESS: {
+    // Not a step: onboarding is done and Alfred is on duty. It confirms what
+    // was set up and hands over to the dashboard.
+    const what = [
+      S.number ? `Callers reach ${n} on ${S.number}.`
+               : `Pick a number from Phone number and ${n} starts answering.`,
+      'After every call you get a summary, the transcript and the caller as a contact.',
+      `Switch ${n} to Paused or Off at any time from the dashboard.`,
+    ];
+    return shell({
+      variant:'success',
+      title:`${n} is on duty`,
+      intro: S.number
+        ? `He’s answering ${S.number} as ${esc(S.business)}, in a ${S.tone.toLowerCase()} tone.`
+        : `He’s set up as ${esc(S.business)}. He’ll start taking calls as soon as he has a number.`,
+      next:`<button class="btn btn-primary" onclick="go('dashboard',{page:'home'})">Go to my dashboard ${ico('arrow',18,'var(--deep)')}</button>`,
+      body:`<div style="display:flex;flex-direction:column;gap:18px;max-width:620px">
+        <div class="banner" style="align-items:flex-start;flex-direction:column;gap:12px">
+          <b style="font-size:15px">What happens now</b>
+          <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px">
+            ${what.map(l=>`<li style="display:flex;gap:10px;align-items:flex-start;font-size:14px;line-height:1.5;color:rgba(43,90,0,.9)">
+              ${ico('check',15,'var(--lime-deep)')}<span>${l}</span></li>`).join('')}
+          </ul>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;background:var(--white);
+            border:1px solid var(--line);border-radius:16px;padding:20px">
+          ${pebble(40,'speaking')}
+          <div style="flex:1;min-width:180px"><b style="font-size:15px">Want to hear him first?</b>
+            <p class="muted" style="margin:2px 0 0;font-size:13px">Test calls and chats are never logged and never
+              count towards your usage.</p></div>
+          <button class="btn btn-outline" onclick="go('dashboard',{page:'test'})">${ico('play',17)} Try him</button>
+        </div>
+      </div>`});
   }
   }
 }
@@ -886,6 +1192,7 @@ function toggleLang(code) {
   S.languages = S.languages.includes(code) ? S.languages.filter(c=>c!==code) : S.languages.concat([code]);
   render();
 }
+function pickPhoneType(k) { set({phoneType:k, provider:PHONE_TYPES[k].providers[0]}); }
 function pickCountry(id) {
   const c = COUNTRIES.find(x=>x.id===id);
   set({country:id, area:(id==='us'?'854':c.areas[0][0]), areaOpen:false, areaQuery:'', number:'', numbersShown:false});
@@ -911,7 +1218,7 @@ function ask() {
   S.chat.push({me:false, text:REPLIES[S.chat.length % REPLIES.length]});
   render();
 }
-function goLive() { set({screen:'dashboard', page:'home', status:'ACTIVE'}); window.scrollTo(0,0); }
+function finish() { set({status:'ACTIVE', step:SUCCESS}); window.scrollTo(0,0); }
 </script>
 <script>
 /* ── dashboard ──────────────────────────────────────────────────────────── */
@@ -934,29 +1241,93 @@ function dashPage() {
   const n = esc(S.name);
   switch (S.page) {
 
-  case 'home': return `<h1>Home</h1><p class="muted" style="margin:0 0 20px">Your assistant at a glance.</p>
-    ${S.number ? '' : card('No phone number yet',
-      `${n} can’t take calls until he has one. Everything else is set up.`,
-      `<button class="btn btn-primary btn-sm" onclick="set({page:'phone'})">Get a number</button>`,'phone')}
-    <div class="grid g2">
-      ${card('Voice &amp; personality','How '+n+' sounds.',
-        `<div style="display:flex;gap:24px;flex-wrap:wrap"><div><div class="muted" style="font-size:12px">Assistant</div><b>${n}</b></div>
-         <div><div class="muted" style="font-size:12px">Tone</div><b>${S.tone}</b></div>
-         <div><div class="muted" style="font-size:12px">Voice</div><b>${VOICES.find(v=>v.id===S.voice).name}</b></div></div>`,'test')}
-      ${card('Phone number','Where callers reach '+n+'.',
-        S.number?`<div style="font-size:18px;font-weight:700;font-variant-numeric:tabular-nums">${S.number}</div>
-          <div class="muted" style="font-size:13px;margin-top:4px">Forwarding: ${S.forwardMode==='always'?'every call':'when unavailable'}</div>`
-        :`<button class="btn btn-outline btn-sm" onclick="set({page:'phone'})">Get an ${n} number</button>`,'phone')}
-      ${card('This month','Calls &amp; minutes.',
-        `<div style="display:flex;gap:28px"><div class="kpi"><b>128</b><span class="muted">calls</span></div>
-         <div class="kpi"><b>312</b><span class="muted">min</span></div></div>
-         <div class="bar" style="margin-top:14px"><i style="width:64%"></i></div>
-         <div class="muted" style="font-size:12px;margin-top:6px">64% of your 200-call plan</div>`,'usage')}
-      ${card('Recent calls','Latest activity.',
-        CALLS.slice(0,3).map(c=>`<div style="display:flex;gap:10px;align-items:baseline;padding:8px 0;border-top:1px solid var(--line)">
-          <b style="font-size:13px;flex:1">${c.who}</b><span class="muted" style="font-size:12px">${c.t}</span></div>`).join('')
-        +`<button class="btn btn-ghost btn-sm" style="padding:0;margin-top:8px" onclick="set({page:'calls'})">See all calls ${ico('arrow',14)}</button>`,'calls')}
+  case 'home': {
+    const peb = {ACTIVE:'listening', PAUSED:'idle', OFF:'asleep'}[S.status] || 'idle';
+    const line = S.status === 'ACTIVE'
+      ? (S.number ? `Answering <b style="color:var(--ink)">${S.number}</b> as ${esc(S.business)}, ${S.tone.toLowerCase()} tone.`
+                  : `Ready to answer as ${esc(S.business)} — he just needs a number.`)
+      : S.status === 'PAUSED' ? 'Callers hear your paused message until you switch him back on.'
+      : 'Calls ring through to your line as usual.';
+    const initials = (who) => who === 'Unknown caller' ? '?' : who.split(/\s+/).slice(0,2).map(w=>w[0]).join('');
+    const stat = (label, value, sub, bar) => `<div class="card" style="padding:16px">
+      <div class="muted" style="font-size:12px;font-weight:600">${label}</div>
+      <div style="display:flex;align-items:baseline;gap:6px;margin-top:4px">
+        <span style="font-family:'Wix Madefor Display',sans-serif;font-size:32px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums">${value}</span>
+        ${sub?`<span class="muted" style="font-size:13px">${sub}</span>`:''}</div>
+      ${bar!=null?`<div class="bar" style="margin-top:12px;height:6px"><i style="width:${bar}%"></i></div>`:''}</div>`;
+    const panel = (title, page, visual, body) => `<section class="card" style="padding:20px">
+      <header style="display:flex;align-items:center;gap:12px">${visual}<b style="font-size:15px">${title}</b>
+        <a href="#" onclick="event.preventDefault();set({page:'${page}'})" style="margin-left:auto;font-size:13px;font-weight:600;color:var(--violet)">Edit</a></header>
+      <div style="margin-top:16px">${body}</div></section>`;
+
+    return `
+    <section style="position:relative;overflow:hidden;border-radius:24px;background:var(--paper);padding:28px 32px">
+      <div class="wash" style="left:-96px;top:-160px;width:520px;height:520px"></div>
+      <div style="position:relative;display:flex;gap:24px;align-items:center;flex-wrap:wrap">
+        ${pebble(112, peb)}
+        <div style="flex:1;min-width:240px">
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            <h1 style="font-size:30px;line-height:1.1;margin:0">${n} ${statusText()}</h1>
+            ${S.status==='ACTIVE'?'<span class="pill pill-live"><i></i>Live</span>':''}</div>
+          <p class="muted" style="margin:6px 0 0;font-size:15px">${line}</p></div>
+        <div class="seg" role="group" aria-label="${n} status" style="background:var(--white);box-shadow:var(--shadow)">
+          ${['ACTIVE','PAUSED','OFF'].map(st=>`<button aria-pressed="${S.status===st}" onclick="set({status:'${st}'})"
+            style="${S.status===st?'background:var(--ink);color:var(--white)':''}">${st[0]+st.slice(1).toLowerCase()}</button>`).join('')}</div>
+      </div>
+    </section>
+
+    ${S.number ? '' : `<section style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;border:1px solid rgba(122,92,255,.25);
+        background:rgba(122,92,255,.06);border-radius:16px;padding:16px 16px 16px 20px">
+      <span class="icobox" style="background:rgba(122,92,255,.15);color:var(--violet)">${ico('phone',18)}</span>
+      <div style="flex:1;min-width:200px"><b style="font-size:15px">No phone number yet</b>
+        <p class="muted" style="margin:2px 0 0;font-size:13px">${n} can’t take calls until he has one. Everything else is set up.</p></div>
+      <button class="btn btn-primary btn-sm" onclick="set({page:'phone'})">Get a number</button></section>`}
+
+    <div style="display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:24px" class="home-grid">
+      <div style="display:flex;flex-direction:column;gap:24px;min-width:0">
+        <div class="grid g4" style="gap:12px">
+          ${stat('Calls this month', 128, 'of 200', 64)}
+          ${stat('Minutes', 312, 'of 600')}
+          ${stat('Average call', '2:26')}
+          ${stat('Today', 3, 'calls')}
+        </div>
+        <section class="card" style="padding:0">
+          <header style="display:flex;align-items:center;gap:12px;padding:20px 20px 0">
+            <h2 style="font-size:17px;margin:0">Recent calls</h2>
+            <a href="#" onclick="event.preventDefault();set({page:'calls'})" style="margin-left:auto;font-size:13px;font-weight:600;color:var(--violet);display:inline-flex;gap:4px;align-items:center">All calls ${ico('arrow',13)}</a></header>
+          <ul style="list-style:none;margin:0;padding:12px 8px 8px;display:flex;flex-direction:column">
+            ${CALLS.slice(0,5).map((c,i)=>`<li><a href="#" onclick="event.preventDefault();set({page:'calls',openCall:${i}})"
+                style="display:flex;gap:14px;align-items:flex-start;padding:12px;border-radius:12px;text-decoration:none"
+                onmouseover="this.style.background='var(--paper)'" onmouseout="this.style.background=''">
+              <span style="width:40px;height:40px;border-radius:999px;background:var(--paper);display:grid;place-items:center;font-size:13px;font-weight:700;flex:0 0 auto">${initials(c.who)}</span>
+              <span style="flex:1;min-width:0">
+                <span style="display:flex;align-items:baseline;gap:8px"><b style="font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.who}</b>
+                  <span class="muted" style="margin-left:auto;flex:0 0 auto;font-size:12px">${c.t}</span></span>
+                <span style="display:flex;align-items:center;gap:8px;margin-top:2px">
+                  <span style="flex:0 0 auto;background:var(--paper);border-radius:999px;padding:2px 8px;font-size:11px;font-weight:600;color:var(--muted)">${c.type}</span>
+                  <span class="muted" style="font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.sum}</span></span>
+              </span></a></li>`).join('')}
+          </ul>
+        </section>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:16px;min-width:0">
+        ${panel('Voice &amp; personality','settings', pebble(44,'speaking'),
+          `<dl style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0;font-size:13px">
+            <div><dt class="muted" style="font-size:12px">Name</dt><dd style="margin:0;font-weight:600">${n}</dd></div>
+            <div><dt class="muted" style="font-size:12px">Tone</dt><dd style="margin:0;font-weight:600">${S.tone}</dd></div>
+            <div><dt class="muted" style="font-size:12px">Voice</dt><dd style="margin:0;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${VOICES.find(v=>v.id===S.voice).name}</dd></div></dl>`)}
+        ${panel('Knowledge','settings', `<span class="icobox" style="width:36px;height:36px">${ico('doc',17)}</span>`,
+          `<p class="muted" style="margin:0;font-size:13px;line-height:1.5">${S.website
+            ? `Learned from <b style="color:var(--ink)">${esc(S.website)}</b>${S.facts.length?', plus the facts you added.':'.'}`
+            : 'Nothing yet — add your website or a few facts.'}</p>`)}
+        ${panel('Phone number','phone', `<span class="icobox" style="width:36px;height:36px">${ico('phone',17)}</span>`,
+          S.number ? `<div style="font-size:18px;font-weight:700;font-variant-numeric:tabular-nums">${S.number}</div>
+              <p class="muted" style="margin:4px 0 0;font-size:13px">Forward your existing line here to keep the number customers know.</p>`
+            : `<button class="btn btn-outline btn-sm" style="width:100%" onclick="set({page:'phone'})">Get an ${n} number</button>`)}
+      </div>
     </div>`;
+  }
 
   case 'calls': return `<h1>Call log</h1><p class="muted" style="margin:0 0 20px">Every call, with a summary and transcript.</p>
     <div class="card" style="padding:16px 10px"><div class="tscroll"><table><thead><tr>
@@ -1010,22 +1381,23 @@ function dashPage() {
     ${card('Call forwarding','Forward your existing business line to '+n+'.',
       `<div class="muted" style="font-size:14px">Mode: <b style="color:var(--ink)">${S.forwardMode==='always'?'As a receptionist':'Like voicemail'}</b></div>
        <div style="margin-top:12px;background:var(--paper);border-radius:10px;padding:14px">
-        ${forwardSteps(S.number||'your Alfred number', S.forwardMode==='always').steps.map((t,i)=>
+        ${instructionsFor(S.provider, S.forwardMode, (S.number||'your Alfred number').replace(/^\+1/,'').trim(),
+            (S.number||'').replace(/[^\d+]/g,'')).steps.map((t,i)=>
           `<div style="display:flex;gap:10px;padding:4px 0;font-size:14px"><b>${i+1}.</b><span>${t}</span></div>`).join('')}
        </div>`,'phone')}`;
 
   case 'settings': return `<h1>Settings</h1><p class="muted" style="margin:0 0 20px">How ${n} works for your business.</p>
     ${card('Voice &amp; personality','How '+n+' introduces himself and sounds.',
       `<div class="field" style="max-width:420px"><label>Assistant name</label>
-        <input type="text" value="${esc(S.name)}" oninput="S.name=this.value||'Alfred';render()"></div>
+        <input id="set-name" type="text" value="${esc(S.name)}" oninput="S.name=this.value||'Alfred';render()"></div>
        <div style="margin-top:16px"><b style="font-size:14px">Tone</b>
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">${Object.keys(TONES).map(t=>
           `<button class="chip" aria-pressed="${S.tone===t}" onclick="set({tone:'${t}',greeting:''})">${t}</button>`).join('')}</div></div>
        <div class="field" style="margin-top:16px"><label>Greeting</label>
-        <textarea rows="2" oninput="S.greeting=this.value">${esc(greetingText())}</textarea></div>`,'test')}
+        <textarea id="set-greet" rows="2" oninput="S.greeting=this.value">${esc(greetingText())}</textarea></div>`,'test')}
     ${card('Business knowledge','What '+n+' answers callers from.',
       `<div class="field" style="max-width:420px"><label>Website</label>
-        <input type="url" value="${esc(S.website)}" oninput="S.website=this.value"></div>
+        <input id="set-site" type="url" value="${esc(S.website)}" oninput="S.website=this.value"></div>
        <div style="margin-top:14px;display:flex;flex-direction:column;gap:6px">${FACTS.map(([k,v])=>
         `<div style="display:flex;gap:12px;font-size:14px;background:var(--paper);border-radius:8px;padding:10px 12px">
           <b style="width:90px;flex:0 0 auto">${k}</b><span class="muted" style="flex:1">${v}</span></div>`).join('')}</div>`,'doc')}
@@ -1065,8 +1437,6 @@ function viewDashboard() {
         <div class="biz"><b>${esc(S.business)}</b>
           <span class="muted" style="font-size:12px">${S.number || 'No number yet'}</span></div>
         <div style="margin-left:auto;display:flex;align-items:center;gap:12px">
-          <div class="seg">${['ACTIVE','PAUSED','OFF'].map(s=>
-            `<button aria-pressed="${S.status===s}" onclick="set({status:'${s}'})">${s[0]+s.slice(1).toLowerCase()}</button>`).join('')}</div>
           <span class="pill ${S.status==='ACTIVE'?'pill-live':''}"
             style="${S.status==='ACTIVE'?'':'background:var(--paper);color:var(--muted)'}">
             ${S.status==='ACTIVE'?'<i></i>':''}${n} ${statusText()}</span>
@@ -1080,25 +1450,91 @@ function viewDashboard() {
 }
 
 /* ── demo bar + render ──────────────────────────────────────────────────── */
+/* The bar is a demo aid, not part of the product — it collapses to a small
+   handle so it never eats the screen, and remembers the choice per browser. */
+const BAR_KEY = 'alfred-demo-bar';
+function barOpenDefault() {
+  try {
+    const saved = localStorage.getItem(BAR_KEY);
+    if (saved === 'open') return true;
+    if (saved === 'closed') return false;
+  } catch (e) { /* private mode — fall through */ }
+  // Start collapsed where space is tight, expanded where it isn't.
+  return window.innerWidth > 640;
+}
+let barOpen = barOpenDefault();
+function toggleBar() {
+  barOpen = !barOpen;
+  try { localStorage.setItem(BAR_KEY, barOpen ? 'open' : 'closed'); } catch (e) {}
+  render();
+}
+
 function demobar() {
   const tab = (id,label) => `<button aria-current="${S.screen===id}" onclick="go('${id}')">${label}</button>`;
   const steps = S.screen === 'onboarding'
     ? `<span class="sep"></span><span class="tag">Step</span>` +
-      STEPS.map((l,i)=>`<button aria-current="${S.step===i}" onclick="set({step:${i}})" title="${l}">${i+1}</button>`).join('')
+      STEPS.map((label,i)=>`<button aria-current="${S.step===i}" onclick="set({step:${i}})" title="${label}">${i+1}</button>`).join('')
+      + `<button aria-current="${S.step===SUCCESS}" onclick="set({step:SUCCESS})" title="Success screen">✓</button>`
     : '';
-  return `<span class="tag">Demo</span>${tab('landing','Landing')}${tab('onboarding','Onboarding')}${tab('dashboard','Dashboard')}
-    ${steps}<span class="sep"></span><button onclick="reset()" title="Back to the starting state">Reset</button>`;
+  const handle = `<button class="handle" onclick="toggleBar()" aria-expanded="${barOpen}"
+      aria-controls="bar-body" title="${barOpen?'Hide the demo controls':'Show the demo controls'}">
+      <span class="sr">${barOpen?'Hide':'Show'} demo controls</span>
+      ${barOpen ? ico('arrow',16) : pebble(22,'idle')}</button>`;
+  return `${handle}<div class="bar-body" id="bar-body">
+      <span class="tag">Demo</span>${tab('landing','Landing')}${tab('onboarding','Onboarding')}${tab('dashboard','Dashboard')}
+      ${steps}<span class="sep"></span>
+      <button onclick="reset()" title="Back to the starting state">Reset</button>
+    </div>`;
 }
 function reset() { S = Object.assign({}, DEFAULTS); render(); window.scrollTo(0,0); }
 
 function render() {
   const app = document.getElementById('app');
+
+  // Replacing innerHTML destroys whatever has focus, so a field whose handler
+  // re-renders (the assistant's name, the area-code search) would lose focus
+  // after one keystroke. Remember what was focused and where the caret was,
+  // and put it back afterwards. Every focusable control carries a stable id.
+  const active = document.activeElement;
+  const focusId = active && active.id ? active.id : null;
+  let selStart = null, selEnd = null;
+  if (focusId) {
+    try { selStart = active.selectionStart; selEnd = active.selectionEnd; } catch (e) {}
+  }
+
   app.innerHTML = S.screen === 'landing' ? viewLanding()
                 : S.screen === 'onboarding' ? viewOnboarding()
                 : viewDashboard();
-  document.getElementById('demobar').innerHTML = demobar();
+
+  if (focusId) {
+    const el = document.getElementById(focusId);
+    if (el && typeof el.focus === 'function') {
+      el.focus({ preventScroll: true });
+      if (selStart !== null) {
+        try { el.setSelectionRange(selStart, selEnd); } catch (e) { /* not a text field */ }
+      }
+    }
+  }
+
+  const bar = document.getElementById('demobar');
+  bar.innerHTML = demobar();
+  bar.classList.toggle('collapsed', !barOpen);
+  // Reserve only as much room as the bar actually takes.
+  document.documentElement.style.setProperty('--barpad', barOpen ? '86px' : '24px');
   document.title = 'Alfred — ' + S.screen + ' demo';
 }
+
+// `d` toggles the controls, so a demo can be run from the keyboard. Ignored
+// while typing so it never swallows a character.
+document.addEventListener('keydown', (e) => {
+  const t = e.target;
+  const typing = t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable);
+  if (!typing && !e.metaKey && !e.ctrlKey && !e.altKey && e.key.toLowerCase() === 'd') {
+    e.preventDefault();
+    toggleBar();
+  }
+});
+
 render();
 </script>
 </body>
