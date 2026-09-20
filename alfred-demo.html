@@ -298,6 +298,39 @@ footer{background:var(--paper);border-top:1px solid var(--line)}
   .stepper .nm{display:none}
 }
 
+
+/* ── Entry points (Alfred in Bookings) — the Wix Bookings shell it lives in ── */
+.ep{--blue-100:#2F5DFF;--blue-50:#1C3FE5;--blue-600:#EAEFFF;--neutral-100:#151414;--neutral-300:#525150;
+  --neutral-400:#767574;--neutral-500:#A8A6A5;--neutral-550:#DEDEDE;--neutral-600:#E8E7E7;--neutral-700:#F0EFEF;
+  --neutral-750:#F8F6F6;--canvas-grey:#F5F5F5;--fg-1:#151414;--fg-2:#525150;--fg-3:#767574;--fg-muted:#A8A6A5;
+  --bg-app:#fff;--bg-canvas:#F5F5F5;--bg-panel:#fff;--bg-subtle:#F8F6F6;--bg-hover:#F0EFEF;--bg-selected:#EAEFFF;
+  --border-subtle:rgba(0,0,0,.08);--border-default:rgba(0,0,0,.10);--border-strong:#DEDEDE;--border-focus:#2F5DFF;
+  --radius-xs:4px;--radius-sm:5px;--radius-md:7px;--radius-lg:8px;--radius-xl:12px;--radius-full:9999px;
+  --shadow-panel:0 12px 30px 0 rgba(19,23,32,.10);--shadow-soft:0 2px 8px 0 rgba(0,0,0,.06);
+  --font-display:'Wix Madefor Display',system-ui,sans-serif;--font-text:'Wix Madefor Text',system-ui,sans-serif}
+.ep a{color:#2F5DFF;text-decoration:none}
+.ep a:hover{color:#1C3FE5}
+@keyframes alf-breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.045)}}
+.ep .alf-peb{animation:alf-breathe 4.2s cubic-bezier(.2,0,0,1) infinite;transform-origin:50% 52%}
+.ep h1,.ep h2,.ep h3{letter-spacing:-.02em}
+/* Reach numbers live in the demo bar, never in the mock. */
+#demobar .ep-num{margin-left:6px;padding:1px 6px;border-radius:999px;background:rgba(201,255,61,.18);
+  color:#C9FF3D;font-size:11px;font-weight:800;font-variant-numeric:tabular-nums}
+#demobar button[aria-current="true"] .ep-num{background:rgba(11,13,23,.18);color:var(--deep)}
+
+/* ── Inside Wix: Front Desk Agent (ported board) ────────────────────────── */
+.fda{position:relative;height:calc(100vh - var(--barpad,86px));overflow:hidden;
+  font-family:'Wix Madefor Text',system-ui,sans-serif;color:#151414;background:#f4f3f3;font-size:14px;line-height:1.4}
+.fda *{box-sizing:border-box}
+.fda button{font-family:inherit}
+.fda{font-size:15px;line-height:1.5}
+.fda a{color:#7A5CFF;text-decoration:none}
+.fda a:hover{color:#5B3EE8}
+.fda input,.fda textarea,.fda select,.fda button{font-family:inherit}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.fda ::-webkit-scrollbar{width:10px;height:10px}
+.fda ::-webkit-scrollbar-thumb{background:#d9d9d9;border-radius:8px;border:3px solid #f4f3f3}
+
 /* ── dashboard ──────────────────────────────────────────────────────────── */
 .dash{display:grid;grid-template-columns:248px 1fr;min-height:calc(100vh - var(--barpad,86px))}
 .side{position:sticky;top:0;height:calc(100vh - var(--barpad,86px));background:var(--paper);border-right:1px solid var(--line);padding:16px;
@@ -345,6 +378,1145 @@ tr.clickable:hover td{background:var(--paper);cursor:pointer}
 </head>
 <body>
 <div id="app"></div>
+<script type="text/plain" id="fda-body">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="alfredGrad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#7A5CFF"></stop><stop offset=".5" stop-color="#2ED9FF"></stop><stop offset="1" stop-color="#C9FF3D"></stop></linearGradient></defs></svg>
+
+
+
+<div style="position:absolute;inset:0;display:flex;flex-direction:column;background:#f4f3f3;font-size:14px;line-height:1.4">
+
+  <div style="height:52px;background:#fff;border-bottom:1px solid #eceaea;display:flex;align-items:center;padding:0 16px;gap:16px;flex-shrink:0;z-index:10">
+    <div style="display:flex;align-items:baseline;gap:5px">
+      <span style="font-family:'Wix Madefor Display',sans-serif;font-weight:800;font-size:16px;letter-spacing:-0.02em">WIX</span>
+      <span style="font-family:'Wix Madefor Display',sans-serif;font-weight:400;font-size:14px;letter-spacing:0.08em;color:#5c5a5a">STUDIO</span>
+    </div>
+    <div style="width:1px;height:20px;background:#e5e5e5"></div>
+    <div style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:4px 8px;border-radius:8px">
+      <div style="width:22px;height:22px;border-radius:6px;background:#fbd8f0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700">L</div>
+      <span style="font-weight:600;font-size:13px">{{ business }}</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+    </div>
+    <div style="flex:1;display:flex;justify-content:center">
+      <div style="display:flex;align-items:center;gap:8px;width:100%;max-width:440px;background:#fafafa;border:1px solid #eceaea;border-radius:20px;padding:6px 14px;color:#8a8888;font-size:13.5px;cursor:text">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m21 21-4.34-4.34M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z"></path></svg>
+        <span>Search for tools, apps, help &amp; more...</span>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px">
+      <span style="display:flex;align-items:center;gap:5px;font-size:14px;color:#3b3939;cursor:pointer">Resources <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#3b3939" stroke-width="2.4" stroke-linecap="round"><path d="M6 9l6 6 6-6"></path></svg></span>
+      <span style="display:flex;align-items:center;gap:5px;font-size:14px;color:#3b3939;cursor:pointer">Help <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#3b3939" stroke-width="2.4" stroke-linecap="round"><path d="M6 9l6 6 6-6"></path></svg></span>
+      <span style="width:26px;height:26px;border-radius:50%;background:#e8e6f8;cursor:pointer"></span>
+      <span style="display:flex;align-items:center;gap:7px;border:1px solid #151414;border-radius:20px;padding:5px 13px;font-size:13.5px;font-weight:600;cursor:pointer"><span style="width:15px;height:15px;border-radius:50%;background:#151414"></span>Ask Aria</span>
+    </div>
+  </div>
+
+  <div style="flex:1;display:flex;min-height:0">
+    <div style="width:260px;flex-shrink:0;background:#fff;border-right:1px solid #e5e5e5;padding:14px 12px;overflow-y:auto;display:flex;flex-direction:column;gap:2px">
+      <sc-for list="{{ wixNav }}" as="w" hint-placeholder-count="14">
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 10px 8px {{ w.pad }};border-radius:6px;cursor:pointer;background:{{ w.bg }};color:#151414;font-weight:{{ w.weight }}" style-hover="background:#f0eeee">
+          <sc-if value="{{ w.hasIcon }}" hint-placeholder-val="{{ true }}">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="{{ w.d }}"></path></svg>
+          </sc-if>
+          <span style="flex:1;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ w.label }}</span>
+          <sc-if value="{{ w.isNew }}" hint-placeholder-val="{{ false }}">
+            <span style="font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#151414;background:#fbd8a0;padding:2px 7px;border-radius:4px">NEW</span>
+          </sc-if>
+          <sc-if value="{{ w.count }}" hint-placeholder-val="{{ false }}">
+            <span style="font-size:10px;font-weight:700;background:#151414;color:#fff;padding:2px 6px;border-radius:999px">{{ w.count }}</span>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="flex:1;min-width:0;overflow-y:auto;background:#fff">
+
+<sc-if value="{{ isWelcome }}" hint-placeholder-val="{{ true }}">
+<div data-screen-label="Welcome" style="padding-bottom:86px">
+
+  <section style="background:#F6F7FB;padding:56px 0">
+    <div style="max-width:1200px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:56px;flex-wrap:wrap">
+      <div style="width:540px;flex:1 1 440px;display:flex;flex-direction:column;gap:22px">
+        <div style="font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#7A5CFF">AI front desk by Wix</div>
+        <h1 style="font-family:'Wix Madefor Display',sans-serif;font-size:clamp(38px,5vw,62px);line-height:1;letter-spacing:-.025em;margin:0">Every message answered. Every channel covered.</h1>
+        <p style="margin:0;font-size:19px;line-height:1.55;color:#525150;max-width:500px;text-wrap:pretty">{{ name }} answers the phone, replies on WhatsApp, Instagram and your site, books the appointment and takes the order — then hands you the summary.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <div onClick="{{ goOnb }}" style="height:56px;padding:0 26px;border-radius:10px;display:flex;align-items:center;gap:8px;background:#C9FF3D;color:#0B0D17;font-size:16px;font-weight:600;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)"><span>Put {{ name }} on the front desk</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0B0D17" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+          </div>
+          <div onClick="{{ goDash }}" style="height:56px;padding:0 26px;border-radius:10px;display:flex;align-items:center;background:#fff;border:1px solid rgba(0,0,0,.18);font-size:16px;font-weight:600;cursor:pointer">See the dashboard</div>
+        </div>
+        <ul style="display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:#525150;list-style:none;padding:0;margin:0">
+          <li style="display:flex;align-items:center;gap:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6CB800" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5 5L20 6.5"></path></svg>Set up in a few minutes</li>
+          <li style="display:flex;align-items:center;gap:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6CB800" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5 5L20 6.5"></path></svg>Books and sells in your Wix products</li>
+          <li style="display:flex;align-items:center;gap:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6CB800" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5 5L20 6.5"></path></svg>Keep your number</li>
+        </ul>
+      </div>
+
+      <div style="position:relative;flex:1 1 420px;min-width:320px;display:flex;justify-content:center;align-items:center;gap:24px;flex-wrap:wrap">
+        <div style="position:absolute;left:50%;top:50%;width:620px;height:620px;margin:-310px 0 0 -310px;border-radius:999px;pointer-events:none;background:radial-gradient(circle at 50% 50%,rgba(122,92,255,.22) 0%,rgba(46,217,255,.10) 40%,rgba(246,247,251,0) 70%)"></div>
+        <svg width="180" height="180" viewBox="0 0 64 64" style="position:relative;flex:0 0 auto;animation:breathe 4.2s cubic-bezier(.2,0,0,1) infinite;transform-origin:50% 52%">
+          <circle cx="32" cy="33" r="28" fill="none" stroke="#2ED9FF" stroke-opacity=".45" stroke-width="1.2" stroke-dasharray="2 5" style="animation:spin 18s linear infinite;transform-origin:32px 33px"></circle>
+          <path d="M31 14c11-1 21 7 21 18 0 11-8 21-19 21S12 46 12 33c0-10 9-18 19-19z" fill="url(#alfredGrad)"></path>
+          <ellipse cx="26" cy="32" rx="2.2" ry="2.6" fill="#151414"></ellipse>
+          <ellipse cx="38" cy="32" rx="2.2" ry="2.6" fill="#151414"></ellipse>
+        </svg>
+        <div style="position:relative;width:380px;max-width:100%;background:#fff;border:1px solid rgba(0,0,0,.10);border-radius:20px;padding:20px;box-shadow:0 12px 30px rgba(19,23,32,.10);display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;align-items:center;gap:8px">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.6 8.6 0 0 1-3.8-.9L3 21l1.9-4.7A8.4 8.4 0 0 1 3 11.5a8.4 8.4 0 0 1 9-8.4 8.4 8.4 0 0 1 9 8.4z"></path></svg>
+            <b style="font-size:14px">WhatsApp</b>
+            <span style="display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px;border-radius:999px;background:#EAF9C8;color:#2B5A00;font-size:12px;font-weight:700"><i style="width:7px;height:7px;border-radius:999px;background:#6CB800;display:block"></i>Live</span>
+            <span style="margin-left:auto;font-size:13px;color:#525150">14:32</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="align-self:flex-start;max-width:92%;padding:10px 14px;border-radius:16px;border-bottom-left-radius:4px;background:#F6F7FB;font-size:13px;line-height:1.5">Hi! Anything for two on Saturday?</div>
+            <div style="align-self:flex-end;max-width:92%;padding:10px 14px;border-radius:16px;border-bottom-right-radius:4px;background:#151414;color:#fff;font-size:13px;line-height:1.5">{{ toneLine }}</div>
+            <div style="align-self:flex-start;max-width:92%;padding:10px 14px;border-radius:16px;border-bottom-left-radius:4px;background:#F6F7FB;font-size:13px;line-height:1.5">17:30 please</div>
+            <div style="align-self:flex-end;max-width:92%;padding:10px 14px;border-radius:16px;border-bottom-right-radius:4px;background:#151414;color:#fff;font-size:13px;line-height:1.5">Booked. I've sent the confirmation and a deposit link.</div>
+          </div>
+          <div style="background:#F6F7FB;border-radius:16px;padding:16px">
+            <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#525150">Handled by {{ name }}</div>
+            <p style="margin:6px 0 0;font-size:13px">Couples hot stone booked for Saturday 17:30 in Wix Bookings. Deposit link sent and paid.</p>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:12px">
+              <span style="background:#fff;border-radius:999px;padding:4px 10px;font-size:11px;font-weight:600;box-shadow:0 2px 8px rgba(0,0,0,.06)">Booking made</span>
+              <span style="background:#fff;border-radius:999px;padding:4px 10px;font-size:11px;font-weight:600;box-shadow:0 2px 8px rgba(0,0,0,.06)">Payment link</span>
+              <span style="background:#fff;border-radius:999px;padding:4px 10px;font-size:11px;font-weight:600;box-shadow:0 2px 8px rgba(0,0,0,.06)">New contact</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="channels" style="padding:80px 0">
+    <div style="max-width:1200px;margin:0 auto;padding:0 24px;display:flex;flex-direction:column;gap:32px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:40px;flex-wrap:wrap">
+        <div>
+          <div style="font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#7A5CFF">Channels</div>
+          <h2 style="font-family:'Wix Madefor Display',sans-serif;font-size:clamp(28px,3.4vw,44px);line-height:1.05;margin:8px 0 0;max-width:640px">One {{ name }}, wherever your customers reach you</h2>
+        </div>
+        <p style="margin:0;max-width:400px;font-size:16px;color:#525150;text-wrap:pretty">He recognizes the same person across channels and keeps one thread, so nobody repeats themselves.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px">
+        <sc-for list="{{ channelCards }}" as="c" hint-placeholder-count="8">
+          <div style="background:#fff;border:1px solid rgba(0,0,0,.10);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;align-items:center;gap:10px">
+              <span style="width:38px;height:38px;border-radius:11px;background:#F6F7FB;display:flex;align-items:center;justify-content:center">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="{{ c.d }}"></path></svg>
+              </span>
+              <span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:999px;background:{{ c.pillBg }};color:{{ c.pillFg }};font-size:11px;font-weight:700">{{ c.state }}</span>
+            </div>
+            <div style="font-family:'Wix Madefor Display',sans-serif;font-size:17px;font-weight:600">{{ c.name }}</div>
+            <p style="margin:0;font-size:13.5px;color:#525150;line-height:1.5;text-wrap:pretty">{{ c.blurb }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section id="does" style="background:#F6F7FB;padding:80px 0">
+    <div style="max-width:1200px;margin:0 auto;padding:0 24px;display:flex;flex-direction:column;gap:32px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:40px;flex-wrap:wrap">
+        <div>
+          <div style="font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#7A5CFF">What he does</div>
+          <h2 style="font-family:'Wix Madefor Display',sans-serif;font-size:clamp(28px,3.4vw,44px);line-height:1.05;margin:8px 0 0;max-width:640px">From answering to acting</h2>
+        </div>
+        <p style="margin:0;max-width:400px;font-size:16px;color:#525150;text-wrap:pretty">He finishes the job inside Bookings, Stores and Events, then leaves you the record.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px">
+        <sc-for list="{{ doesCards }}" as="c" hint-placeholder-count="4">
+          <div style="background:#fff;border:1px solid rgba(0,0,0,.10);border-radius:16px;padding:26px;min-height:230px;display:flex;flex-direction:column;gap:14px">
+            <span style="width:44px;height:44px;border-radius:12px;background:#F6F7FB;display:flex;align-items:center;justify-content:center">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="{{ c.d }}"></path></svg>
+            </span>
+            <div style="font-family:'Wix Madefor Display',sans-serif;font-size:20px;font-weight:600">{{ c.title }}</div>
+            <p style="margin:0;font-size:15px;color:#525150;line-height:1.5;text-wrap:pretty">{{ c.body }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section id="tone" style="background:#0B0D17;color:#fff;padding:80px 0;position:relative;overflow:hidden">
+    <div style="position:absolute;left:50%;top:50%;width:900px;height:900px;margin:-450px 0 0 -450px;border-radius:999px;pointer-events:none;background:radial-gradient(circle at 50% 50%,rgba(122,92,255,.35) 0%,rgba(46,217,255,.10) 40%,rgba(11,13,23,0) 70%)"></div>
+    <div style="position:relative;max-width:1200px;margin:0 auto;padding:0 24px;display:flex;flex-direction:column;gap:32px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:40px;flex-wrap:wrap">
+        <div>
+          <div style="font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#C9FF3D">Personality</div>
+          <h2 style="font-family:'Wix Madefor Display',sans-serif;font-size:clamp(28px,3.4vw,44px);line-height:1.05;margin:8px 0 0;color:#fff">{{ name }}, the way you'd say it</h2>
+        </div>
+        <p style="margin:0;max-width:400px;font-size:16px;color:#A6ADC8;text-wrap:pretty">Pick one and the conversation at the top of the page answers that way.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px">
+        <sc-for list="{{ toneCards }}" as="t" hint-placeholder-count="4">
+          <div onClick="{{ t.pick }}" style="background:#141A2B;border:1px solid {{ t.border }};box-shadow:{{ t.glow }};border-radius:16px;padding:24px 22px;display:flex;flex-direction:column;gap:14px;cursor:pointer">
+            <div style="display:flex;align-items:center;gap:12px;font-family:'Wix Madefor Display',sans-serif;font-size:18px;font-weight:600">
+              <svg width="34" height="34" viewBox="0 0 64 64" style="flex:0 0 auto"><path d="M31 14c11-1 21 7 21 18 0 11-8 21-19 21S12 46 12 33c0-10 9-18 19-19z" fill="url(#alfredGrad)"></path><ellipse cx="26" cy="32" rx="2.2" ry="3" fill="#151414"></ellipse><ellipse cx="38" cy="32" rx="2.2" ry="3" fill="#151414"></ellipse></svg>
+              {{ t.name }}
+            </div>
+            <p style="margin:0;font-size:14.5px;line-height:1.5;color:#A6ADC8;text-wrap:pretty">“{{ t.line }}”</p>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:18px 22px">
+        <span style="background:#C9FF3D;color:#0B0D17;height:26px;padding:0 10px;border-radius:999px;display:inline-flex;align-items:center;font-size:12px;font-weight:700">{{ landingTone }}</span>
+        <span style="font-size:15px;color:#A6ADC8">{{ toneBlurb }}</span>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:#F6F7FB;padding:80px 0;position:relative;overflow:hidden">
+    <div style="position:absolute;left:50%;top:50%;width:640px;height:640px;margin:-320px 0 0 -320px;border-radius:999px;pointer-events:none;background:radial-gradient(circle at 50% 50%,rgba(122,92,255,.22) 0%,rgba(46,217,255,.10) 40%,rgba(246,247,251,0) 70%)"></div>
+    <div style="position:relative;max-width:1200px;margin:0 auto;padding:0 24px;display:flex;flex-direction:column;align-items:center;text-align:center">
+      <svg width="110" height="110" viewBox="0 0 64 64" style="animation:breathe 4.2s cubic-bezier(.2,0,0,1) infinite;transform-origin:50% 52%"><path d="M31 14c11-1 21 7 21 18 0 11-8 21-19 21S12 46 12 33c0-10 9-18 19-19z" fill="url(#alfredGrad)"></path><g fill="#FF6BD6" fill-opacity=".55"><circle cx="22" cy="38" r="2.4"></circle><circle cx="42" cy="38" r="2.4"></circle></g><ellipse cx="26" cy="32" rx="2.2" ry="3" fill="#151414"></ellipse><ellipse cx="38" cy="32" rx="2.2" ry="3" fill="#151414"></ellipse></svg>
+      <h2 style="font-family:'Wix Madefor Display',sans-serif;font-size:clamp(28px,3.4vw,44px);margin:28px 0 0">Put {{ name }} on the front desk</h2>
+      <p style="margin:14px 0 0;font-size:17px;color:#525150;max-width:440px">Five minutes to set up. He starts with the channels you already have.</p>
+      <div onClick="{{ goOnb }}" style="margin-top:28px;height:56px;padding:0 26px;border-radius:10px;display:inline-flex;align-items:center;gap:8px;background:#C9FF3D;color:#0B0D17;font-size:16px;font-weight:600;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)">Start setup
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0B0D17" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+      </div>
+    </div>
+  </section>
+
+</div>
+</sc-if>
+
+<sc-if value="{{ isOnboarding }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Onboarding" style="display:flex;padding-bottom:86px;flex-wrap:wrap;align-items:stretch">
+
+  <aside style="flex:1 1 260px;min-width:0;background:#F6F7FB;padding:24px 28px;display:flex;flex-direction:column;position:relative;overflow:hidden">
+    <div style="position:absolute;left:50%;top:46%;width:520px;height:520px;margin:-260px 0 0 -260px;border-radius:999px;pointer-events:none;background:radial-gradient(circle at 50% 50%,rgba(122,92,255,.22) 0%,rgba(46,217,255,.10) 40%,rgba(246,247,251,0) 70%)"></div>
+    <div style="position:relative;display:flex;align-items:center;gap:10px">
+      <svg width="26" height="26" viewBox="0 0 64 64"><path d="M31 14c11-1 21 7 21 18 0 11-8 21-19 21S12 46 12 33c0-10 9-18 19-19z" fill="url(#alfredGrad)"></path><ellipse cx="26" cy="32" rx="2.2" ry="3" fill="#151414"></ellipse><ellipse cx="38" cy="32" rx="2.2" ry="3" fill="#151414"></ellipse></svg>
+      <b style="font-family:'Wix Madefor Display',sans-serif;font-size:16px">{{ name }}</b>
+      <span style="font-size:12px;font-weight:600;color:#525150">by Wix</span>
+    </div>
+    <div style="position:relative;display:flex;flex-wrap:wrap;align-items:center;align-content:flex-start;justify-content:flex-start;gap:20px;padding:20px 0 24px">
+      <svg width="120" height="120" viewBox="0 0 64 64" style="flex:0 0 auto" style="animation:breathe 4.2s cubic-bezier(.2,0,0,1) infinite;transform-origin:50% 52%">
+        <circle cx="32" cy="33" r="28" fill="none" stroke="#C9FF3D" stroke-opacity=".7" stroke-width="1.2" stroke-dasharray="2 5" style="animation:spin 14s linear infinite;transform-origin:32px 33px"></circle>
+        <path d="M31 14c11-1 21 7 21 18 0 11-8 21-19 21S12 46 12 33c0-10 9-18 19-19z" fill="url(#alfredGrad)"></path>
+        <ellipse cx="26" cy="32" rx="2.2" ry="3" fill="#151414"></ellipse>
+        <ellipse cx="38" cy="32" rx="2.2" ry="3" fill="#151414"></ellipse>
+      </svg>
+      <div style="flex:1 1 200px;min-width:0;background:#fff;border:1px solid rgba(0,0,0,.10);border-radius:16px;border-bottom-left-radius:4px;padding:16px 18px;box-shadow:0 2px 8px rgba(0,0,0,.06)">
+        <div style="font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#7A5CFF">{{ name }}</div>
+        <p style="margin:8px 0 0;font-size:15.5px;line-height:1.5;text-wrap:pretty">{{ saysLine }}</p>
+      </div>
+    </div>
+    <div style="position:relative;font-size:13px;color:#525150">{{ stepCounter }}</div>
+  </aside>
+
+  <main style="flex:3 1 380px;min-width:0;padding:28px 32px;display:flex;flex-direction:column;gap:24px">
+    <sc-if value="{{ notSuccess }}" hint-placeholder-val="{{ true }}">
+      <ol style="display:flex;align-items:center;gap:8px;list-style:none;margin:0;padding:0;flex-wrap:wrap">
+        <sc-for list="{{ beads }}" as="b" hint-placeholder-count="5">
+          <li onClick="{{ b.go }}" style="display:inline-flex;align-items:center;gap:7px;cursor:pointer">
+            <span style="width:24px;height:24px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;background:{{ b.bg }};color:{{ b.fg }};border:1px solid {{ b.bc }}">{{ b.num }}</span>
+            <span style="font-size:12px;font-weight:{{ b.w }};color:{{ b.tc }}">{{ b.label }}</span>
+          </li>
+        </sc-for>
+      </ol>
+    </sc-if>
+
+    <div>
+      <h1 style="font-family:'Wix Madefor Display',sans-serif;font-size:34px;line-height:1.1;letter-spacing:-.02em;margin:0">{{ stepTitle }}</h1>
+      <p style="margin:8px 0 0;font-size:16px;color:#525150;text-wrap:pretty">{{ stepIntro }}</p>
+    </div>
+
+    <sc-if value="{{ step0 }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;flex-direction:column;gap:22px;max-width:560px">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <label style="font-size:14px;font-weight:600">Business name</label>
+          <input type="text" value="{{ business }}" onInput="{{ setBusiness }}" style="height:48px;padding:0 14px;border-radius:10px;border:1px solid rgba(0,0,0,.16);font-size:15px;color:#151414;outline:0;width:100%">
+          <div style="font-size:13px;color:#525150">Customers hear and read this name in every greeting.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <label style="font-size:14px;font-weight:600">Website</label>
+          <input type="text" value="{{ website }}" onInput="{{ setWebsite }}" style="height:48px;padding:0 14px;border-radius:10px;border:1px solid rgba(0,0,0,.16);font-size:15px;color:#151414;outline:0;width:100%">
+          <div style="font-size:13px;color:#525150">{{ name }} reads your pages for hours, services and prices, and re-reads them every 24 hours.</div>
+        </div>
+        <div style="display:flex;gap:16px;align-items:flex-start;background:#F6F7FB;border-radius:14px;padding:16px 18px">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7A5CFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;margin-top:2px"><path d="M12 4l1.6 4.4L18 10l-4.4 1.6L12 16l-1.6-4.4L6 10l4.4-1.6z"></path></svg>
+          <div style="font-size:13.5px;color:#525150;text-wrap:pretty">Add documents later from Knowledge — price lists, policies, anything your site doesn't say.</div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ step1 }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:24px;max-width:680px">
+        <div style="display:flex;flex-direction:column;gap:8px;max-width:380px">
+          <label style="font-size:14px;font-weight:600">Name</label>
+          <input type="text" value="{{ name }}" onInput="{{ setName }}" style="height:48px;padding:0 14px;border-radius:10px;border:1px solid rgba(0,0,0,.16);font-size:15px;color:#151414;outline:0;width:100%">
+        </div>
+        <div>
+          <b style="font-size:14px">Personality</b>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px;margin-top:10px">
+            <sc-for list="{{ toneOpts }}" as="t" hint-placeholder-count="4">
+              <div onClick="{{ t.pick }}" style="border:1px solid {{ t.bc }};box-shadow:{{ t.glow }};background:{{ t.bg }};border-radius:14px;padding:14px 16px;cursor:pointer">
+                <b style="font-size:15px">{{ t.name }}</b>
+                <div style="margin-top:4px;font-size:13px;color:#525150;line-height:1.5">{{ t.blurb }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div>
+          <b style="font-size:14px">Phone voice</b>
+          <div style="font-size:13px;color:#525150;margin-top:4px">Used when he picks up the phone. Text channels use the personality above.</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin-top:10px">
+            <sc-for list="{{ voiceOpts }}" as="v" hint-placeholder-count="3">
+              <div onClick="{{ v.pick }}" style="border:1px solid {{ v.bc }};box-shadow:{{ v.glow }};background:{{ v.bg }};border-radius:14px;padding:14px 16px;cursor:pointer">
+                <b style="font-size:15px">{{ v.name }}</b>
+                <div style="margin-top:4px;font-size:13px;color:#525150">{{ v.sub }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ step2 }}" hint-placeholder-val="{{ false }}">
+      <div style="max-width:760px;background:#fff;border:1px solid rgba(0,0,0,.10);border-radius:16px;overflow:hidden">
+        <sc-for list="{{ onbChannels }}" as="c" hint-placeholder-count="8">
+          <div style="display:flex;align-items:center;gap:14px;padding:14px 18px;border-top:1px solid rgba(0,0,0,.07)">
+            <span style="width:36px;height:36px;border-radius:10px;background:#F6F7FB;display:flex;align-items:center;justify-content:center;flex:0 0 auto">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="{{ c.d }}"></path></svg>
+            </span>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:14.5px;font-weight:600">{{ c.name }}</div>
+              <div style="font-size:12.5px;color:#525150;text-wrap:pretty">{{ c.note }}</div>
+            </div>
+            <div onClick="{{ c.toggle }}" style="width:40px;height:23px;border-radius:999px;background:{{ c.tBg }};position:relative;cursor:pointer;flex:0 0 auto;transition:background .15s ease-out">
+              <div style="position:absolute;top:3px;left:{{ c.knob }};width:17px;height:17px;border-radius:999px;background:#fff;transition:left .15s ease-out"></div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="max-width:760px;font-size:13px;color:#525150">Not connected yet? Connect the channel in Communication Channels and it appears here.</div>
+    </sc-if>
+
+    <sc-if value="{{ step3 }}" hint-placeholder-val="{{ false }}">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;max-width:820px">
+        <sc-for list="{{ actionCards }}" as="a" hint-placeholder-count="3">
+          <div style="background:#fff;border:1px solid {{ a.bc }};box-shadow:{{ a.glow }};border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;align-items:center;gap:10px">
+              <span style="width:38px;height:38px;border-radius:11px;background:#F6F7FB;display:flex;align-items:center;justify-content:center">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="{{ a.d }}"></path></svg>
+              </span>
+              <b style="font-size:16px;flex:1">{{ a.name }}</b>
+              <div onClick="{{ a.toggle }}" style="width:40px;height:23px;border-radius:999px;background:{{ a.tBg }};position:relative;cursor:pointer;flex:0 0 auto;transition:background .15s ease-out">
+                <div style="position:absolute;top:3px;left:{{ a.knob }};width:17px;height:17px;border-radius:999px;background:#fff;transition:left .15s ease-out"></div>
+              </div>
+            </div>
+            <p style="margin:0;font-size:13.5px;color:#525150;line-height:1.5;text-wrap:pretty">{{ a.body }}</p>
+          </div>
+        </sc-for>
+      </div>
+      <div style="max-width:820px;display:flex;gap:14px;align-items:flex-start;background:#F6F7FB;border-radius:14px;padding:16px 18px">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7A5CFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;margin-top:2px"><path d="M12 4l1.6 4.4L18 10l-4.4 1.6L12 16l-1.6-4.4L6 10l4.4-1.6z"></path></svg>
+        <div style="font-size:13.5px;color:#525150;text-wrap:pretty">{{ name }} only ever acts inside the products you turn on here. Everything else he answers and hands to you.</div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ step4 }}" hint-placeholder-val="{{ false }}">
+      <div style="max-width:760px;background:#fff;border:1px solid rgba(0,0,0,.10);border-radius:16px;overflow-x:auto">
+        <div style="min-width:460px">
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) repeat(4,68px);align-items:center;padding:12px 18px;background:#F6F7FB">
+          <div style="font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#525150">Tell me when</div>
+          <sc-for list="{{ reachCols }}" as="h" hint-placeholder-count="4">
+            <div style="text-align:center;font-size:12px;font-weight:700;color:#525150">{{ h }}</div>
+          </sc-for>
+        </div>
+        <sc-for list="{{ reachRows }}" as="r" hint-placeholder-count="5">
+          <div style="display:grid;grid-template-columns:minmax(0,1fr) repeat(4,68px);align-items:center;padding:13px 18px;border-top:1px solid rgba(0,0,0,.07)">
+            <div style="font-size:14px;font-weight:600;padding-right:12px;text-wrap:pretty">{{ r.label }}</div>
+            <sc-for list="{{ r.cells }}" as="c" hint-placeholder-count="4">
+              <div style="display:flex;justify-content:center">
+                <div onClick="{{ c.toggle }}" style="width:22px;height:22px;border-radius:7px;border:1px solid {{ c.bc }};background:{{ c.bg }};cursor:pointer;display:flex;align-items:center;justify-content:center">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="{{ c.fg }}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5 5L20 6.5"></path></svg>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-for>
+        </div>
+      </div>
+      <div style="max-width:760px;display:flex;align-items:center;gap:14px;background:#F6F7FB;border-radius:14px;padding:14px 18px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#525150" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+        <div style="flex:1;font-size:13.5px;color:#525150;text-wrap:pretty">Outside your customer quiet hours, everything except “Customer asks for a human” waits until morning.</div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ stepDone }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:18px;max-width:640px">
+        <div style="background:#EAF9C8;border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:12px">
+          <b style="font-size:15px;color:#2B5A00">What happens now</b>
+          <sc-for list="{{ doneList }}" as="l" hint-placeholder-count="3">
+            <div style="display:flex;gap:10px;align-items:flex-start;font-size:14px;line-height:1.5;color:#2B5A00">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2B5A00" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;margin-top:4px"><path d="m4 12.5 5 5L20 6.5"></path></svg>
+              <span>{{ l }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;background:#fff;border:1px solid rgba(0,0,0,.10);border-radius:16px;padding:20px">
+          <svg width="40" height="40" viewBox="0 0 64 64" style="flex:0 0 auto"><path d="M31 14c11-1 21 7 21 18 0 11-8 21-19 21S12 46 12 33c0-10 9-18 19-19z" fill="url(#alfredGrad)"></path><ellipse cx="26" cy="32" rx="2.2" ry="2.6" fill="#151414"></ellipse><ellipse cx="38" cy="32" rx="2.2" ry="2.6" fill="#151414"></ellipse></svg>
+          <div style="flex:1;min-width:200px">
+            <b style="font-size:15px">Want to hear him first?</b>
+            <p style="margin:2px 0 0;font-size:13px;color:#525150">Test conversations are never logged and never count towards your credits.</p>
+          </div>
+          <div onClick="{{ goDash }}" style="height:40px;padding:0 16px;border-radius:10px;display:flex;align-items:center;background:#fff;border:1px solid rgba(0,0,0,.18);font-size:14px;font-weight:600;cursor:pointer">Try him</div>
+        </div>
+      </div>
+    </sc-if>
+
+    <div style="margin-top:auto;padding-top:24px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+      <div onClick="{{ stepBack }}" style="height:48px;padding:0 18px;border-radius:10px;display:flex;align-items:center;font-size:15px;font-weight:600;cursor:pointer;visibility:{{ backVis }}">Back</div>
+      <div style="display:flex;gap:10px;align-items:center">
+        <div onClick="{{ stepNext }}" style="height:48px;padding:0 20px;border-radius:10px;display:flex;align-items:center;gap:8px;background:#C9FF3D;color:#0B0D17;font-size:15px;font-weight:600;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)">{{ nextLabel }}
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0B0D17" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+</sc-if>
+
+<sc-if value="{{ isDash }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Dashboard" style="padding-bottom:86px">
+
+  <div style="display:flex;align-items:center;gap:12px;padding:20px 28px 0">
+    <svg width="30" height="30" viewBox="0 0 64 64" style="flex:0 0 auto"><path d="M31 14c11-1 21 7 21 18 0 11-8 21-19 21S12 46 12 33c0-10 9-18 19-19z" fill="url(#alfredGrad)"></path><ellipse cx="26" cy="32" rx="2.2" ry="3" fill="#151414"></ellipse><ellipse cx="38" cy="32" rx="2.2" ry="3" fill="#151414"></ellipse></svg>
+    <b style="font-family:'Wix Madefor Display',sans-serif;font-size:18px">{{ name }}</b>
+    <span style="font-size:12.5px;color:#525150">Front Desk Agent</span>
+  </div>
+  <div style="border-bottom:1px solid #eceaea;padding:0 28px;display:flex;gap:24px;margin-top:12px">
+    <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="6">
+      <div onClick="{{ n.go }}" style="display:flex;align-items:center;gap:7px;padding:10px 0 12px;font-size:14px;font-weight:600;cursor:pointer;color:{{ n.fg }};border-bottom:2px solid {{ n.bar }};margin-bottom:-1px">
+        <span>{{ n.label }}</span>
+        <sc-if value="{{ n.badge }}" hint-placeholder-val="{{ false }}">
+          <span style="min-width:19px;height:19px;padding:0 6px;border-radius:999px;background:#7A5CFF;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center">{{ n.badge }}</span>
+        </sc-if>
+      </div>
+    </sc-for>
+  </div>
+
+  <main style="min-width:0;padding:24px 28px 40px;display:flex;flex-direction:column;gap:22px;max-width:1080px">
+
+    <sc-if value="{{ pgHome }}" hint-placeholder-val="{{ true }}">
+      <section style="position:relative;overflow:hidden;border-radius:24px;background:#F6F7FB;padding:26px 30px">
+        <div style="position:absolute;left:-96px;top:-160px;width:520px;height:520px;border-radius:999px;pointer-events:none;background:radial-gradient(circle at 50% 50%,rgba(122,92,255,.22) 0%,rgba(46,217,255,.10) 40%,rgba(246,247,251,0) 70%)"></div>
+        <div style="position:relative;display:flex;gap:22px;align-items:center;flex-wrap:wrap">
+          <svg width="104" height="104" viewBox="0 0 64 64" style="flex:0 0 auto;animation:breathe 4.2s cubic-bezier(.2,0,0,1) infinite;transform-origin:50% 52%">
+            <circle cx="32" cy="33" r="28" fill="none" stroke="#2ED9FF" stroke-opacity=".5" stroke-width="1.2" stroke-dasharray="2 5" style="animation:spin 18s linear infinite;transform-origin:32px 33px"></circle>
+            <path d="M31 14c11-1 21 7 21 18 0 11-8 21-19 21S12 46 12 33c0-10 9-18 19-19z" fill="url(#alfredGrad)"></path>
+            <ellipse cx="26" cy="32" rx="2.2" ry="2.6" fill="#151414"></ellipse>
+            <ellipse cx="38" cy="32" rx="2.2" ry="2.6" fill="#151414"></ellipse>
+          </svg>
+          <div style="flex:1;min-width:240px">
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+              <h1 style="font-family:'Wix Madefor Display',sans-serif;font-size:29px;line-height:1.1;margin:0">{{ statusHeadline }}</h1>
+              <sc-if value="{{ isLive }}" hint-placeholder-val="{{ true }}">
+                <span style="display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px;border-radius:999px;background:#EAF9C8;color:#2B5A00;font-size:12px;font-weight:700"><i style="width:7px;height:7px;border-radius:999px;background:#6CB800;display:block"></i>Live</span>
+              </sc-if>
+            </div>
+            <p style="margin:6px 0 0;font-size:15px;color:#525150;text-wrap:pretty">{{ statusLine }}</p>
+          </div>
+          <div style="display:inline-flex;background:#fff;border-radius:999px;padding:3px;box-shadow:0 2px 8px rgba(0,0,0,.06)">
+            <sc-for list="{{ statusOpts }}" as="s" hint-placeholder-count="3">
+              <div onClick="{{ s.pick }}" style="height:32px;padding:0 16px;border-radius:999px;display:flex;align-items:center;font-size:13px;font-weight:600;cursor:pointer;background:{{ s.bg }};color:{{ s.fg }}">{{ s.label }}</div>
+            </sc-for>
+          </div>
+        </div>
+      </section>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px">
+        <sc-for list="{{ stats }}" as="s" hint-placeholder-count="4">
+          <div style="background:#fff;border:1px solid rgba(0,0,0,.10);border-radius:16px;padding:16px">
+            <div style="font-size:12px;font-weight:600;color:#525150">{{ s.label }}</div>
+            <div style="display:flex;align-items:baseline;gap:6px;margin-top:4px">
+              <span style="font-family:'Wix Madefor Display',sans-serif;font-size:30px;font-weight:700;line-height:1">{{ s.value }}</span>
+              <span style="font-size:13px;color:#525150">{{ s.sub }}</span>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:20px">
+        <section style="background:#fff;border:1px solid rgba(0,0,0,.10);border-radius:16px;padding:0;min-width:0">
+          <header style="display:flex;align-items:center;gap:12px;padding:18px 20px 0">
+            <h2 style="font-family:'Wix Madefor Display',sans-serif;font-size:17px;margin:0">Recent conversations</h2>
+            <span onClick="{{ goInbox }}" style="margin-left:auto;font-size:13px;font-weight:600;color:#7A5CFF;cursor:pointer">Open inbox</span>
+          </header>
+          <div style="padding:10px 8px 8px;display:flex;flex-direction:column">
+            <sc-for list="{{ convos }}" as="c" hint-placeholder-count="6">
+              <div onClick="{{ c.open }}" style="display:flex;gap:14px;align-items:flex-start;padding:12px;border-radius:12px;cursor:pointer">
+                <span style="width:38px;height:38px;border-radius:11px;background:#F6F7FB;display:flex;align-items:center;justify-content:center;flex:0 0 auto">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="{{ c.d }}"></path></svg>
+                </span>
+                <div style="flex:1;min-width:0">
+                  <div style="display:flex;align-items:baseline;gap:8px">
+                    <b style="font-size:14px">{{ c.who }}</b>
+                    <span style="font-size:12px;color:#525150">{{ c.channel }}</span>
+                    <span style="margin-left:auto;font-size:12px;color:#525150;flex:0 0 auto">{{ c.when }}</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:8px;margin-top:3px">
+                    <span style="flex:0 0 auto;background:{{ c.tagBg }};color:{{ c.tagFg }};border-radius:999px;padding:2px 8px;font-size:11px;font-weight:600">{{ c.type }}</span>
+                    <span style="font-size:13px;color:#525150;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ c.sum }}</span>
+                  </div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </section>
+
+        <div style="display:flex;flex-direction:column;gap:14px;min-width:0">
+          <section style="background:#fff;border:1px solid rgba(0,0,0,.10);border-radius:16px;padding:18px">
+            <header style="display:flex;align-items:center;gap:10px">
+              <svg width="30" height="30" viewBox="0 0 64 64" style="flex:0 0 auto"><path d="M31 14c11-1 21 7 21 18 0 11-8 21-19 21S12 46 12 33c0-10 9-18 19-19z" fill="url(#alfredGrad)"></path><ellipse cx="26" cy="32" rx="2.2" ry="3" fill="#151414"></ellipse><ellipse cx="38" cy="32" rx="2.2" ry="3" fill="#151414"></ellipse></svg>
+              <b style="font-size:15px;flex:1">Personality</b>
+            </header>
+            <div style="margin-top:14px;font-size:13px;display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;justify-content:space-between;gap:12px"><span style="color:#525150">Tone</span><b>{{ tone }}</b></div>
+              <div style="display:flex;justify-content:space-between;gap:12px"><span style="color:#525150">Phone voice</span><b>{{ voiceName }}</b></div>
+              <div style="display:flex;justify-content:space-between;gap:12px"><span style="color:#525150">One thread per customer</span><b>On</b></div>
+            </div>
+          </section>
+
+          <section style="background:#fff;border:1px solid rgba(0,0,0,.10);border-radius:16px;padding:18px">
+            <header style="display:flex;align-items:center;gap:10px">
+              <span style="width:34px;height:34px;border-radius:10px;background:#F6F7FB;display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18M3 12h18M12 3c2.6 2.9 2.6 15.1 0 18"></path></svg></span>
+              <b style="font-size:15px;flex:1">Knowledge</b>
+              <span onClick="{{ goChannels }}" style="font-size:13px;font-weight:600;color:#7A5CFF;cursor:pointer">Edit</span>
+            </header>
+            <p style="margin:12px 0 0;font-size:13px;color:#525150;line-height:1.5">Answers from <b style="color:#151414">{{ website }}</b> — 24 pages read, syncs every 24 hours.</p>
+          </section>
+
+          <section style="background:#fff;border:1px solid rgba(0,0,0,.10);border-radius:16px;padding:18px">
+            <header style="display:flex;align-items:center;gap:10px">
+              <span style="width:34px;height:34px;border-radius:10px;background:#F6F7FB;display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 8-3 8h18s-3-1-3-8M13.7 21a2 2 0 0 1-3.4 0"></path></svg></span>
+              <b style="font-size:15px;flex:1">How he reaches you</b>
+              <span onClick="{{ goReach }}" style="font-size:13px;font-weight:600;color:#7A5CFF;cursor:pointer">Edit</span>
+            </header>
+            <p style="margin:12px 0 0;font-size:13px;color:#525150;line-height:1.5">{{ reachSummary }}</p>
+          </section>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ pgInbox }}" hint-placeholder-val="{{ false }}">
+      <div>
+        <h1 style="font-family:'Wix Madefor Display',sans-serif;font-size:28px;margin:0">Inbox</h1>
+        <p style="margin:6px 0 0;font-size:15px;color:#525150">One thread per customer, whatever channel they used.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:16px;align-items:start">
+        <div style="background:#fff;border:1px solid rgba(0,0,0,.10);border-radius:16px;padding:8px;display:flex;flex-direction:column">
+          <sc-for list="{{ convos }}" as="c" hint-placeholder-count="6">
+            <div onClick="{{ c.open }}" style="display:flex;gap:12px;align-items:flex-start;padding:11px;border-radius:12px;cursor:pointer;background:{{ c.selBg }}">
+              <span style="width:34px;height:34px;border-radius:10px;background:#F6F7FB;display:flex;align-items:center;justify-content:center;flex:0 0 auto">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="{{ c.d }}"></path></svg>
+              </span>
+              <div style="flex:1;min-width:0">
+                <div style="display:flex;align-items:baseline;gap:8px"><b style="font-size:13.5px">{{ c.who }}</b><span style="margin-left:auto;font-size:11.5px;color:#525150;flex:0 0 auto">{{ c.when }}</span></div>
+                <div style="font-size:12.5px;color:#525150;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ c.sum }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="background:#fff;border:1px solid rgba(0,0,0,.10);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:16px;min-width:0">
+          <header style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            <b style="font-size:16px">{{ openWho }}</b>
+            <span style="font-size:13px;color:#525150">{{ openChannel }} · {{ openWhen }}</span>
+            <span style="margin-left:auto;display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px;border-radius:999px;background:{{ openTagBg }};color:{{ openTagFg }};font-size:12px;font-weight:700">{{ openType }}</span>
+          </header>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <sc-for list="{{ openMsgs }}" as="m" hint-placeholder-count="4">
+              <div style="align-self:{{ m.align }};max-width:76%;padding:10px 14px;border-radius:16px;background:{{ m.bg }};color:{{ m.fg }};font-size:13.5px;line-height:1.5">{{ m.text }}</div>
+            </sc-for>
+          </div>
+          <div style="background:#F6F7FB;border-radius:14px;padding:16px">
+            <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#525150">Handled by {{ name }}</div>
+            <p style="margin:6px 0 0;font-size:13.5px">{{ openSum }}</p>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <div style="height:40px;padding:0 16px;border-radius:10px;display:flex;align-items:center;background:#C9FF3D;color:#0B0D17;font-size:14px;font-weight:600;cursor:pointer">Take over</div>
+            <div style="height:40px;padding:0 16px;border-radius:10px;display:flex;align-items:center;background:#fff;border:1px solid rgba(0,0,0,.18);font-size:14px;font-weight:600;cursor:pointer">View contact</div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ pgChannels }}" hint-placeholder-val="{{ false }}">
+      <div>
+        <h1 style="font-family:'Wix Madefor Display',sans-serif;font-size:28px;margin:0">Channels</h1>
+        <p style="margin:6px 0 0;font-size:15px;color:#525150">Turn on the ones {{ name }} should handle, and set what he's allowed to do.</p>
+      </div>
+      <div style="background:#fff;border:1px solid rgba(0,0,0,.10);border-radius:16px;overflow:hidden">
+        <sc-for list="{{ onbChannels }}" as="c" hint-placeholder-count="8">
+          <div style="display:flex;align-items:center;gap:14px;padding:14px 18px;border-top:1px solid rgba(0,0,0,.07)">
+            <span style="width:36px;height:36px;border-radius:10px;background:#F6F7FB;display:flex;align-items:center;justify-content:center;flex:0 0 auto">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="{{ c.d }}"></path></svg>
+            </span>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:14.5px;font-weight:600">{{ c.name }}</div>
+              <div style="font-size:12.5px;color:#525150;text-wrap:pretty">{{ c.note }}</div>
+            </div>
+            <div onClick="{{ c.toggle }}" style="width:40px;height:23px;border-radius:999px;background:{{ c.tBg }};position:relative;cursor:pointer;flex:0 0 auto;transition:background .15s ease-out">
+              <div style="position:absolute;top:3px;left:{{ c.knob }};width:17px;height:17px;border-radius:999px;background:#fff;transition:left .15s ease-out"></div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ pgActions }}" hint-placeholder-val="{{ false }}">
+      <div>
+        <h1 style="font-family:'Wix Madefor Display',sans-serif;font-size:28px;margin:0">Actions</h1>
+        <p style="margin:6px 0 0;font-size:15px;color:#525150">Everything {{ name }} can do in each business solution. Turn off anything he shouldn't handle.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;max-width:820px">
+        <sc-for list="{{ verticals }}" as="v" hint-placeholder-count="3">
+          <div style="background:#fff;border:1px solid rgba(0,0,0,.10);border-radius:16px;overflow:hidden">
+            <div style="display:flex;align-items:center;gap:12px;padding:16px 20px;background:#F6F7FB">
+              <span style="width:36px;height:36px;border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:center;flex:0 0 auto">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="{{ v.d }}"></path></svg>
+              </span>
+              <div style="flex:1;min-width:0">
+                <b style="font-size:16px">{{ v.name }}</b>
+                <div style="font-size:12.5px;color:#525150">{{ v.count }}</div>
+              </div>
+              <div onClick="{{ v.toggle }}" style="width:40px;height:23px;border-radius:999px;background:{{ v.tBg }};position:relative;cursor:pointer;flex:0 0 auto;transition:background .15s ease-out">
+                <div style="position:absolute;top:3px;left:{{ v.knob }};width:17px;height:17px;border-radius:999px;background:#fff;transition:left .15s ease-out"></div>
+              </div>
+            </div>
+            <div style="opacity:{{ v.dim }}">
+              <sc-for list="{{ v.groups }}" as="g" hint-placeholder-count="2">
+                <div style="padding:16px 20px 2px;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#525150">{{ g.label }}</div>
+                <sc-for list="{{ g.items }}" as="i" hint-placeholder-count="4">
+                  <div style="display:flex;align-items:flex-start;gap:14px;padding:12px 20px;border-top:1px solid rgba(0,0,0,.06)">
+                    <div style="flex:1;min-width:0">
+                      <div style="font-size:14px;font-weight:600;text-wrap:pretty">{{ i.name }}</div>
+                      <div style="font-size:12.5px;color:#525150;margin-top:2px;text-wrap:pretty">{{ i.desc }}</div>
+                    </div>
+                    <div onClick="{{ i.toggle }}" style="width:36px;height:21px;border-radius:999px;background:{{ i.tBg }};position:relative;cursor:pointer;flex:0 0 auto;margin-top:2px;transition:background .15s ease-out">
+                      <div style="position:absolute;top:3px;left:{{ i.knob }};width:15px;height:15px;border-radius:999px;background:#fff;transition:left .15s ease-out"></div>
+                    </div>
+                  </div>
+                </sc-for>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ pgReach }}" hint-placeholder-val="{{ false }}">
+      <div>
+        <h1 style="font-family:'Wix Madefor Display',sans-serif;font-size:28px;margin:0">How {{ name }} reaches you</h1>
+        <p style="margin:6px 0 0;font-size:15px;color:#525150">Pick a channel for each thing worth interrupting you for.</p>
+      </div>
+      <div style="max-width:760px;background:#fff;border:1px solid rgba(0,0,0,.10);border-radius:16px;overflow:hidden">
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) repeat(4,68px);align-items:center;padding:12px 18px;background:#F6F7FB">
+          <div style="font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#525150">Tell me when</div>
+          <sc-for list="{{ reachCols }}" as="h" hint-placeholder-count="4">
+            <div style="text-align:center;font-size:12px;font-weight:700;color:#525150">{{ h }}</div>
+          </sc-for>
+        </div>
+        <sc-for list="{{ reachRows }}" as="r" hint-placeholder-count="5">
+          <div style="display:grid;grid-template-columns:minmax(0,1fr) repeat(4,68px);align-items:center;padding:13px 18px;border-top:1px solid rgba(0,0,0,.07)">
+            <div style="font-size:14px;font-weight:600;padding-right:12px;text-wrap:pretty">{{ r.label }}</div>
+            <sc-for list="{{ r.cells }}" as="c" hint-placeholder-count="4">
+              <div style="display:flex;justify-content:center">
+                <div onClick="{{ c.toggle }}" style="width:22px;height:22px;border-radius:7px;border:1px solid {{ c.bc }};background:{{ c.bg }};cursor:pointer;display:flex;align-items:center;justify-content:center">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="{{ c.fg }}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5 5L20 6.5"></path></svg>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-for>
+      </div>
+      <div style="max-width:760px;display:flex;align-items:center;gap:14px;background:#F6F7FB;border-radius:14px;padding:14px 18px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#525150" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+        <div style="flex:1;font-size:13.5px;color:#525150;text-wrap:pretty">Quiet hours follow the ones you set for customers. Outside them, everything except “Customer asks for a human” waits until morning.</div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ pgUsage }}" hint-placeholder-val="{{ false }}">
+      <div>
+        <h1 style="font-family:'Wix Madefor Display',sans-serif;font-size:28px;margin:0">Usage</h1>
+        <p style="margin:6px 0 0;font-size:15px;color:#525150">Conversations and credits this month.</p>
+      </div>
+      <div style="background:#fff;border:1px solid rgba(0,0,0,.10);border-radius:16px;padding:22px;max-width:760px">
+        <div style="display:flex;gap:40px;flex-wrap:wrap">
+          <div style="display:flex;gap:6px;align-items:baseline"><b style="font-family:'Wix Madefor Display',sans-serif;font-size:32px">412</b><span style="color:#525150">of 600 conversations</span></div>
+          <div style="display:flex;gap:6px;align-items:baseline"><b style="font-family:'Wix Madefor Display',sans-serif;font-size:32px">94%</b><span style="color:#525150">handled without you</span></div>
+        </div>
+        <div style="height:8px;border-radius:999px;background:#F6F7FB;overflow:hidden;margin-top:18px"><div style="height:100%;width:69%;background:#C9FF3D;border-radius:999px"></div></div>
+        <div style="font-size:12px;color:#525150;margin-top:8px">Resets on 1 October.</div>
+      </div>
+      <div style="background:#fff;border:1px solid rgba(0,0,0,.10);border-radius:16px;padding:22px;max-width:760px">
+        <b style="font-size:15px">Conversations by channel</b>
+        <div style="display:flex;flex-direction:column;gap:12px;margin-top:16px">
+          <sc-for list="{{ usageBars }}" as="u" hint-placeholder-count="5">
+            <div style="display:flex;align-items:center;gap:12px">
+              <span style="width:100px;flex:0 0 auto;font-size:13px;color:#525150">{{ u.label }}</span>
+              <div style="flex:1;height:10px;border-radius:999px;background:#F6F7FB;overflow:hidden"><div style="height:100%;width:{{ u.w }};background:{{ u.color }};border-radius:999px"></div></div>
+              <span style="width:44px;text-align:right;flex:0 0 auto;font-size:13px;font-weight:600">{{ u.n }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+  </main>
+</div>
+</sc-if>
+
+    </div>
+  </div>
+</div>
+</script>
+<script type="text/plain" id="fda-logic">
+class Component extends DCLogic {
+  state = {
+    screen: null, step: 0, page: 'home',
+    name: null, business: null, website: null,
+    tone: 'Warm & friendly', voice: 'deep', landingTone: 'Warm & friendly',
+    channels: { smart: true, phone: true, wa: true, ig: true, sms: false, email: true, fb: false, imsg: false },
+    actions: { bookings: true, stores: true, events: false }, acts: {},
+    reach: { human: ['push', 'sms'], unsure: ['push'], unhappy: ['push', 'email'], payment: ['email'], summary: ['email'] },
+    status: 'LIVE', openConv: 0
+  };
+
+  D = {
+    smart: 'M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z',
+    phone: 'M6 4h3l1.6 4.2-2 1.3a11 11 0 0 0 5 5l1.3-2 4.2 1.6V18a2 2 0 0 1-2.2 2A15 15 0 0 1 4 6.2 2 2 0 0 1 6 4Z',
+    wa: 'M21 11.5a8.4 8.4 0 0 1-9 8.4 8.6 8.6 0 0 1-3.8-.9L3 21l1.9-4.7A8.4 8.4 0 0 1 3 11.5a8.4 8.4 0 0 1 9-8.4 8.4 8.4 0 0 1 9 8.4z',
+    ig: 'M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4Zm5 5a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm5.3-1.3h.01',
+    fb: 'M14 9V7.5c0-.8.2-1.5 1.5-1.5H17V3h-2.5C11.9 3 11 4.6 11 6.9V9H9v3h2v9h3v-9h2.3l.4-3H14Z',
+    sms: 'M21 12a8 8 0 0 1-8 8H7l-4 3V12a8 8 0 0 1 8-8h2a8 8 0 0 1 8 8Z',
+    email: 'M3 6.5h18v11H3zM3.5 7l8.5 6 8.5-6',
+    imsg: 'M12 3c5 0 9 3.4 9 7.6 0 4.2-4 7.6-9 7.6-1 0-2-.1-2.9-.4L4 20l1.2-3.2A7.6 7.6 0 0 1 3 10.6C3 6.4 7 3 12 3Z',
+    home: 'M3.5 11 12 4l8.5 7M6 9.5V20h4v-5h4v5h4V9.5',
+    inbox: 'M3 13h5l1.5 3h5L16 13h5M3 13l3-8h12l3 8v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z',
+    layers: 'M12 3 3 8l9 5 9-5-9-5M3 15l9 5 9-5M3 11.5l9 5 9-5',
+    bolt: 'M13 3 5 13h6l-1 8 8-10h-6l1-8Z',
+    bell: 'M18 8a6 6 0 1 0-12 0c0 7-3 8-3 8h18s-3-1-3-8M13.7 21a2 2 0 0 1-3.4 0',
+    chart: 'M4 20h16M7 20v-6M12 20V6M17 20v-9',
+    cal: 'M3.5 5h17v15h-17zM3.5 9.5h17M8 3.5v3M16 3.5v3M9 13.5l2 2 4-4',
+    bag: 'M6 8h12l1 12H5L6 8Zm3 0V6a3 3 0 0 1 6 0v2',
+    ticket: 'M4 9V6h16v3a3 3 0 0 0 0 6v3H4v-3a3 3 0 0 0 0-6ZM12 7v10',
+    hand: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18M3 12h18M12 3c2.6 2.9 2.6 15.1 0 18',
+    doc: 'M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9zM14 3v6h6M8 13h8M8 17h5',
+    wHome: 'M3 10.2 12 3l9 7.2V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z',
+    sparkles: 'M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0zM20 3v4M22 5h-4M4 17v2M5 18H3',
+    wInbox: 'M22 12h-6l-2 3h-4l-2-3H2M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11Z',
+    users: 'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75',
+    tag: 'M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42ZM7.5 7.5h.01',
+    calendar: 'M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z',
+    megaphone: 'm3 11 18-5v12L3 14v-3ZM11.6 16.8a3 3 0 1 1-5.8-1.6',
+    zap: 'M13 2 3 14h9l-1 8 10-12h-9l1-8Z',
+    grid: 'M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z',
+    gear: 'M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2zM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z'
+  };
+
+  tones = [
+    { name: 'Warm & friendly', blurb: 'First names, a little warmth, never gushing.', line: 'Hi Dana! Saturday has 15:00 and 17:30 free — want me to hold one?' },
+    { name: 'Professional', blurb: 'Courteous and to the point, no small talk.', line: 'Good afternoon. Saturday has 15:00 and 17:30 available. Shall I reserve one?' },
+    { name: 'Playful', blurb: 'Light and upbeat, still clear.', line: 'Good timing — 15:00 and 17:30 are still free on Saturday. Grab one?' },
+    { name: 'Short & direct', blurb: 'No filler, one line where one will do.', line: 'Saturday: 15:00 or 17:30. Which one?' }
+  ];
+
+  voices = [
+    { id: 'deep', name: 'Deep and steady', sub: 'Lower register, unhurried' },
+    { id: 'bright', name: 'Bright and friendly', sub: 'Higher register, quick' },
+    { id: 'soft', name: 'Soft and calm', sub: 'Even, gentle, patient' }
+  ];
+
+  chanDefs = [
+    { id: 'smart', name: 'Smart Chat', note: 'Answers on your site and books from the chat window.', blurb: 'The chat window on your site. He answers, books and sends checkout links.' },
+    { id: 'phone', name: 'Phone', note: 'Picks up when you can\u2019t, takes messages and books.', blurb: 'Keep your number and forward it. He answers around the clock.' },
+    { id: 'wa', name: 'WhatsApp', note: 'Full replies, bookings and payment links.', blurb: 'Replies, books and sends payment links in the chat they already use.' },
+    { id: 'ig', name: 'Instagram', note: 'Replies to DMs. Comments stay yours until you allow them.', blurb: 'Answers DMs, and comments too when you let him.' },
+    { id: 'sms', name: 'SMS', note: 'Text replies and booking confirmations.', blurb: 'Short answers and confirmations by text.' },
+    { id: 'email', name: 'Email', note: 'Replies to inquiries sent to your business address.', blurb: 'Longer answers to inquiries, in your tone.' },
+    { id: 'fb', name: 'Facebook', note: 'Replies to Messenger and page comments.', blurb: 'Messenger and page comments, moved into your inbox when real.' },
+    { id: 'imsg', name: 'iMessage', note: 'Replies from your Apple Business account.', blurb: 'Answers from your Apple Business account.' }
+  ];
+
+  actDefs = [
+    { id: 'bookings', name: 'Bookings', icon: 'cal', body: 'Offers real times, books, reschedules and cancels. Sends the reminder before and the follow-up after.' },
+    { id: 'stores', name: 'Stores', icon: 'bag', body: 'Answers about products and stock, sends a checkout link and tracks the order afterwards.' },
+    { id: 'events', name: 'Events', icon: 'ticket', body: 'Sells tickets, answers about the venue and the schedule, and sends the details to guests.' }
+  ];
+
+  vertDefs = [
+    { id: 'bookings', name: 'Bookings', icon: 'cal', groups: [
+      { label: 'Before the session', items: [
+        { id: 'book', name: 'Book, reschedule & cancel sessions', desc: 'Finds an open slot and books it straight into your calendar.', def: true },
+        { id: 'faq', name: 'Answer service & pricing questions', desc: 'Uses your services, staff and price list.', def: true },
+        { id: 'remind', name: 'Send confirmations & reminders', desc: 'Confirms right after booking, reminds before the session.', def: true },
+        { id: 'intake', name: 'Collect intake forms', desc: 'Sends your form and nudges until it comes back.', def: false },
+        { id: 'pay', name: 'Take payment & send payment links', desc: 'For services that require prepayment.', def: false }
+      ] },
+      { label: 'After the session', items: [
+        { id: 'follow', name: 'Send a follow-up message', desc: 'Checks in after the session with any aftercare notes.', def: true },
+        { id: 'rebook', name: 'Offer to rebook', desc: 'Suggests the next session based on the service cadence.', def: true },
+        { id: 'noshow', name: 'Follow up on no-shows', desc: 'Reaches out to reschedule a missed session.', def: true },
+        { id: 'review', name: 'Ask for a review', desc: 'One ask per customer, after a completed session.', def: false }
+      ] }
+    ] },
+    { id: 'stores', name: 'Stores', icon: 'bag', groups: [
+      { label: 'Before the order', items: [
+        { id: 'st_q', name: 'Answer product & stock questions', desc: 'Uses your catalog, prices and inventory.', def: true },
+        { id: 'st_reco', name: 'Recommend products & send checkout links', desc: 'Suggests items and links straight to checkout.', def: true },
+        { id: 'st_cart', name: 'Recover abandoned carts', desc: 'Nudges customers who left items behind.', def: true },
+        { id: 'st_order', name: 'Place orders for customers', desc: 'Only with an explicit customer confirmation.', def: false }
+      ] },
+      { label: 'After the order', items: [
+        { id: 'st_track', name: 'Answer order status & shipping questions', desc: 'Shares tracking and delivery updates.', def: true },
+        { id: 'st_return', name: 'Handle returns & exchanges', desc: 'Starts the return; refunds always get a human look.', def: false },
+        { id: 'st_review', name: 'Ask for a product review', desc: 'One ask per order, after delivery.', def: false }
+      ] }
+    ] },
+    { id: 'events', name: 'Events', icon: 'ticket', groups: [
+      { label: 'Before the event', items: [
+        { id: 'ev_q', name: 'Answer event & schedule questions', desc: 'Dates, location, lineup and availability.', def: true },
+        { id: 'ev_rsvp', name: 'Sell tickets & take RSVPs', desc: 'Registers guests and sends their tickets.', def: true },
+        { id: 'ev_remind', name: 'Send event reminders', desc: 'Reminds registered guests before doors open.', def: true }
+      ] },
+      { label: 'After the event', items: [
+        { id: 'ev_follow', name: 'Send a thank-you & recap', desc: 'Follows up with guests who attended.', def: true },
+        { id: 'ev_next', name: 'Invite to the next event', desc: 'Reaches out when a similar event goes live.', def: false }
+      ] }
+    ] }
+  ];
+
+  reachDefs = [
+    { id: 'human', label: 'Customer asks for a human' },
+    { id: 'unsure', label: 'Alfred is unsure how to answer' },
+    { id: 'unhappy', label: 'Unhappy customer' },
+    { id: 'payment', label: 'Payment issue' },
+    { id: 'summary', label: 'Daily summary' }
+  ];
+
+  reachChans = [{ id: 'push', label: 'Push' }, { id: 'email', label: 'Email' }, { id: 'sms', label: 'SMS' }, { id: 'wa', label: 'WhatsApp' }];
+
+  steps = ['Business', 'Personality', 'Channels', 'Actions', 'Reach me'];
+
+  convoDefs = [
+    { id: 'dana', who: 'Dana Whitfield', ch: 'wa', channel: 'WhatsApp', when: 'Today 14:32', type: 'Booking', sum: 'Booked a couples hot stone for Saturday 17:30. Deposit link sent and paid.',
+      msgs: [['them', 'Hi! Anything for two on Saturday?'], ['me', 'Hi Dana! Saturday has 15:00 and 17:30 free — want me to hold one?'], ['them', '17:30 please'], ['me', 'Booked. I\u2019ve sent the confirmation and a deposit link.']] },
+    { id: 'marcus', who: '@marcusbell', ch: 'ig', channel: 'Instagram', when: 'Today 11:08', type: 'Question', sum: 'Asked about gift cards. Sent the store link.',
+      msgs: [['them', 'do you do gift cards?'], ['me', 'We do — any amount from $50. Here\u2019s the link: lumawellness.com/gift-cards'], ['them', 'perfect thanks']] },
+    { id: 'unknown', who: 'Unknown caller', ch: 'phone', channel: 'Phone', when: 'Today 09:51', type: 'Needs you', sum: 'Wanted a person about a refund. Flagged for you.',
+      msgs: [['them', 'I\u2019d rather speak to someone about a refund.'], ['me', 'Of course — I\u2019ve passed this to the team and they\u2019ll call you back this morning. Can I take your number?'], ['them', '617 555 0142']] },
+    { id: 'priya', who: 'Priya Raman', ch: 'smart', channel: 'Smart Chat', when: 'Yesterday 17:20', type: 'Order', sum: 'Bought two candles, $64. Checkout link paid.',
+      msgs: [['them', 'Are the lavender candles back in stock?'], ['me', 'They are — 12 left. Want me to send a checkout link?'], ['them', 'Two please'], ['me', 'Sent. $64 including delivery.']] },
+    { id: 'ellen', who: 'Ellen Park', ch: 'sms', channel: 'SMS', when: 'Yesterday 15:44', type: 'Reschedule', sum: 'Moved Thursday 9:00 to Friday 15:30.',
+      msgs: [['them', 'Can I move Thursday?'], ['me', 'Friday 15:30 or Monday 11:00 are open.'], ['them', 'Friday'], ['me', 'Moved. See you Friday at 15:30.']] },
+    { id: 'tom', who: 'Tom Guerrero', ch: 'email', channel: 'Email', when: 'Yesterday 10:02', type: 'Question', sum: 'Asked about parking. Gave directions to the Elm lot.',
+      msgs: [['them', 'Is there parking at the studio?'], ['me', 'There is — a free lot behind the building, entrance on Elm Street.']] }
+  ];
+
+  componentDidMount() {
+    const q = new URLSearchParams(location.search);
+    const next = {};
+    const sc = q.get('screen');
+    if (['welcome', 'onboarding', 'dashboard'].includes(sc)) next.screen = sc;
+    const st = parseInt(q.get('step'), 10);
+    if (!isNaN(st)) { next.step = Math.max(0, Math.min(5, st)); next.screen = next.screen || 'onboarding'; }
+    const pg = q.get('page');
+    if (['home', 'inbox', 'channels', 'actions', 'reach', 'usage'].includes(pg)) { next.page = pg; next.screen = next.screen || 'dashboard'; }
+    if (Object.keys(next).length) this.setState(next);
+  }
+
+  componentDidUpdate() {
+    const S = this.state;
+    const screen = S.screen || (this.props.startScreen ?? 'welcome');
+    const q = new URLSearchParams();
+    q.set('screen', screen);
+    if (screen === 'onboarding') q.set('step', String(S.step));
+    if (screen === 'dashboard') q.set('page', S.page);
+    const url = location.pathname + '?' + q.toString();
+    if (url !== location.pathname + location.search) history.replaceState(null, '', url);
+  }
+
+  go(screen, extra) { this.setState(Object.assign({ screen: screen }, extra || {})); window.scrollTo(0, 0); }
+  patch(p) { this.setState(p); }
+
+  renderVals() {
+    const S = this.state, D = this.D;
+    const name = S.name ?? (this.props.agentName ?? 'Alfred');
+    const business = S.business ?? (this.props.businessName ?? 'Luma Wellness');
+    const website = S.website ?? 'lumawellness.com';
+    const screen = S.screen || (this.props.startScreen ?? 'welcome');
+    const showSwitcher = this.props.showSwitcher ?? true;
+
+    const LIME = '#C9FF3D', INK = '#151414', VIOLET = '#7A5CFF';
+    const onGlow = '0 0 0 1px ' + VIOLET;
+
+    const switcher = showSwitcher ? [['welcome', 'Welcome'], ['onboarding', 'Onboarding'], ['dashboard', 'Dashboard']].map(([k, label]) => ({
+      label: label, bg: screen === k ? LIME : 'transparent', fg: screen === k ? '#0B0D17' : '#cfd4e6',
+      go: () => this.go(k)
+    })) : [];
+
+    const toneObj = this.tones.find(t => t.name === S.tone) || this.tones[0];
+    const landingObj = this.tones.find(t => t.name === S.landingTone) || this.tones[0];
+
+    const channelCards = this.chanDefs.map(c => {
+      const on = S.channels[c.id];
+      return {
+        name: c.name, blurb: c.blurb, d: D[c.id], state: on ? 'Live' : 'Connect',
+        pillBg: on ? '#EAF9C8' : '#F6F7FB', pillFg: on ? '#2B5A00' : '#525150'
+      };
+    });
+
+    const onbChannels = this.chanDefs.map(c => {
+      const on = S.channels[c.id];
+      return {
+        name: c.name, note: on ? c.note : 'Not connected yet', d: D[c.id],
+        tBg: on ? LIME : '#DEDEDE', knob: on ? '20px' : '3px',
+        toggle: () => this.setState(st => ({ channels: Object.assign({}, st.channels, { [c.id]: !st.channels[c.id] }) }))
+      };
+    });
+
+    const actionCards = this.actDefs.map(a => {
+      const on = S.actions[a.id];
+      return {
+        name: a.name, body: a.body, d: D[a.icon],
+        bc: on ? VIOLET : 'rgba(0,0,0,.10)', glow: on ? onGlow : 'none',
+        tBg: on ? LIME : '#DEDEDE', knob: on ? '20px' : '3px',
+        toggle: () => this.setState(st => ({ actions: Object.assign({}, st.actions, { [a.id]: !st.actions[a.id] }) }))
+      };
+    });
+
+    const actOn = (it) => S.acts[it.id] === undefined ? it.def : S.acts[it.id];
+    const verticals = this.vertDefs.map(v => {
+      const vOn = S.actions[v.id];
+      const all = v.groups.reduce((a, g) => a.concat(g.items), []);
+      const n = all.filter(actOn).length;
+      return {
+        name: v.name, d: D[v.icon], dim: vOn ? '1' : '.45',
+        count: vOn ? n + ' of ' + all.length + ' actions on' : 'Off — ' + v.name + ' stays with you',
+        tBg: vOn ? LIME : '#DEDEDE', knob: vOn ? '20px' : '3px',
+        toggle: () => this.setState(st => ({ actions: Object.assign({}, st.actions, { [v.id]: !st.actions[v.id] }) })),
+        groups: v.groups.map(g => ({
+          label: g.label,
+          items: g.items.map(it => {
+            const on = actOn(it);
+            return {
+              name: it.name, desc: it.desc,
+              tBg: on ? LIME : '#DEDEDE', knob: on ? '18px' : '3px',
+              toggle: () => this.setState(st => ({ acts: Object.assign({}, st.acts, { [it.id]: !(st.acts[it.id] === undefined ? it.def : st.acts[it.id]) }) }))
+            };
+          })
+        }))
+      };
+    });
+
+    const reachRows = this.reachDefs.map(r => ({
+      label: r.label,
+      cells: this.reachChans.map(ch => {
+        const on = (S.reach[r.id] || []).includes(ch.id);
+        return {
+          bg: on ? INK : '#fff', bc: on ? INK : 'rgba(0,0,0,.22)', fg: on ? LIME : 'transparent',
+          toggle: () => this.setState(st => {
+            const cur = st.reach[r.id] || [];
+            const nx = cur.includes(ch.id) ? cur.filter(x => x !== ch.id) : cur.concat([ch.id]);
+            return { reach: Object.assign({}, st.reach, { [r.id]: nx }) };
+          })
+        };
+      })
+    }));
+
+    const pickedReach = this.reachChans.filter(ch => Object.keys(S.reach).some(k => (S.reach[k] || []).includes(ch.id))).map(ch => ch.label);
+    const reachSummary = pickedReach.length
+      ? 'Handovers and alerts arrive by ' + pickedReach.join(', ').replace(/, ([^,]*)$/, ' and $1') + '.'
+      : 'Nothing set — he handles everything silently.';
+
+    const saysLines = [
+      'Which business am I answering for? Point me at your site and I\u2019ll read it for hours, services and prices.',
+      'This is how I\u2019ll sound on every channel. Name me whatever suits your team.',
+      'Pick the channels I should cover. I keep one thread per customer across all of them.',
+      'Now what I\u2019m allowed to do. I only ever act inside the products you turn on.',
+      'Last one: when should I interrupt you, and where?',
+      'That\u2019s me hired. I\u2019m at the front desk from now on.'
+    ];
+    const titles = [
+      'Tell me about your business',
+      'Give me a name and a manner',
+      'Choose my channels',
+      'Choose what I can do',
+      'How I reach you',
+      name + ' is at the front desk'
+    ];
+    const intros = [
+      name + ' uses this to introduce your business and to learn what it offers.',
+      'He keeps this on every channel, and answers in the customer\u2019s language.',
+      'Turn on the ones he should handle. Everything else keeps coming to you.',
+      'He finishes the job inside these products instead of just talking about it.',
+      'Pick a channel for each thing worth interrupting you for.',
+      'Answering as ' + business + ', in a ' + S.tone.toLowerCase() + ' manner, across ' + Object.keys(S.channels).filter(k => S.channels[k]).length + ' channels.'
+    ];
+
+    const beads = this.steps.map((label, i) => {
+      const done = i < S.step, now = i === S.step;
+      return {
+        label: label, num: done ? '✓' : String(i + 1),
+        bg: done ? '#EAF9C8' : (now ? INK : '#fff'), fg: done ? '#2B5A00' : (now ? '#fff' : '#525150'),
+        bc: done ? 'transparent' : (now ? 'transparent' : 'rgba(0,0,0,.16)'),
+        tc: now ? INK : '#525150', w: now ? '700' : '600',
+        go: () => this.setState({ step: i })
+      };
+    });
+
+    const doneList = [
+      'He answers on ' + this.chanDefs.filter(c => S.channels[c.id]).map(c => c.name).join(', ') + '.',
+      'Every conversation lands in your inbox as one thread per customer, with a summary.',
+      'Switch him to Paused or Off at any time from the dashboard.'
+    ];
+
+    const navDefs = [
+      { k: 'home', label: 'Home', d: D.home },
+      { k: 'inbox', label: 'Inbox', d: D.inbox, badge: '2' },
+      { k: 'channels', label: 'Channels', d: D.layers },
+      { k: 'actions', label: 'Actions', d: D.bolt },
+      { k: 'reach', label: 'Notifications', d: D.bell },
+      { k: 'usage', label: 'Usage', d: D.chart }
+    ];
+    const navItems = navDefs.map(n => ({
+      label: n.label, d: n.d, badge: n.badge || null,
+      bg: S.page === n.k ? 'rgba(122,92,255,.10)' : 'transparent',
+      fg: S.page === n.k ? INK : '#5c5a5a',
+      bar: S.page === n.k ? INK : 'transparent',
+      go: () => this.setState({ page: n.k })
+    }));
+
+    const wixNav = [
+      { label: 'Home', d: D.wHome },
+      { label: 'AI Agents', d: D.sparkles },
+      { label: 'Symphony', sub: true },
+      { label: 'Front Desk Agent', sub: true, act: true, isNew: true },
+      { label: 'Marketing Agent', sub: true },
+      { label: 'Design Agent', sub: true },
+      { label: 'Inbox', d: D.wInbox, count: '4' },
+      { label: 'Customers & Leads', d: D.users },
+      { label: 'Sales', d: D.tag },
+      { label: 'Booking Calendar', d: D.calendar },
+      { label: 'Marketing', d: D.megaphone },
+      { label: 'Automations', d: D.zap },
+      { label: 'Apps', d: D.grid },
+      { label: 'Settings', d: D.gear }
+    ].map(w => ({
+      label: w.label, d: w.d || null, hasIcon: !w.sub, isNew: !!w.isNew, count: w.count || null,
+      pad: w.sub ? '39px' : '10px',
+      bg: w.act ? '#f0eeee' : 'transparent',
+      weight: w.act ? '600' : '500'
+    }));
+
+    const statusOpts = [['LIVE', 'Live'], ['PAUSED', 'Paused'], ['OFF', 'Off']].map(([k, label]) => ({
+      label: label, bg: S.status === k ? INK : 'transparent', fg: S.status === k ? '#fff' : '#525150',
+      pick: () => this.setState({ status: k })
+    }));
+    const statusHeadline = name + (S.status === 'LIVE' ? ' is on the desk' : (S.status === 'PAUSED' ? ' is paused' : ' is off'));
+    const statusLine = S.status === 'LIVE'
+      ? 'Answering for ' + business + ' across ' + this.chanDefs.filter(c => S.channels[c.id]).map(c => c.name).join(', ') + '.'
+      : (S.status === 'PAUSED' ? 'Customers get your paused message until you switch him back on.' : 'Messages and calls come straight to you, as they did before.');
+
+    const tagColor = (t) => t === 'Needs you' ? ['#FFEFD6', '#7A4A00'] : ['#F6F7FB', '#525150'];
+
+    const convos = this.convoDefs.map((c, i) => {
+      const tc = tagColor(c.type);
+      return {
+        who: c.who, channel: c.channel, when: c.when, type: c.type, sum: c.sum, d: D[c.ch],
+        tagBg: tc[0], tagFg: tc[1], selBg: S.openConv === i ? '#F6F7FB' : 'transparent',
+        open: () => this.setState({ page: 'inbox', openConv: i })
+      };
+    });
+    const oc = this.convoDefs[S.openConv] || this.convoDefs[0];
+    const ocTag = tagColor(oc.type);
+
+    const usageBars = [
+      { label: 'WhatsApp', n: 148, w: '100%', color: '#7A5CFF' },
+      { label: 'Smart Chat', n: 96, w: '65%', color: '#2ED9FF' },
+      { label: 'Phone', n: 71, w: '48%', color: '#C9FF3D' },
+      { label: 'Instagram', n: 59, w: '40%', color: '#FF6BD6' },
+      { label: 'Email', n: 38, w: '26%', color: '#FFB13D' }
+    ];
+
+    return {
+      name: name, business: business, website: website,
+      switcher: switcher,
+      isWelcome: screen === 'welcome', isOnboarding: screen === 'onboarding', isDash: screen === 'dashboard',
+      goOnb: () => this.go('onboarding', { step: 0 }),
+      goDash: () => this.go('dashboard', { page: 'home' }),
+      goInbox: () => this.setState({ page: 'inbox' }),
+      goChannels: () => this.setState({ page: 'channels' }),
+      goReach: () => this.setState({ page: 'reach' }),
+
+      landingTone: S.landingTone, toneLine: landingObj.line, toneBlurb: landingObj.blurb,
+      toneCards: this.tones.map(t => ({
+        name: t.name, line: t.line,
+        border: S.landingTone === t.name ? LIME : 'rgba(255,255,255,.10)',
+        glow: S.landingTone === t.name ? '0 0 0 1px ' + LIME : 'none',
+        pick: () => this.setState({ landingTone: t.name })
+      })),
+      channelCards: channelCards,
+      doesCards: [
+        { title: 'Answers anything on your site', body: 'Hours, services, prices and directions — read from your site and re-read every 24 hours.', d: D.hand },
+        { title: 'Books and reschedules', body: 'Offers real times from your calendar, books them, and moves them when plans change.', d: D.cal },
+        { title: 'Takes the order', body: 'Answers about products, sends a checkout link and follows the order through.', d: D.bag },
+        { title: 'Hands over to you', body: 'When someone asks for a person or sounds unhappy, he reaches you on the channel you chose.', d: D.bell }
+      ],
+
+      saysLine: saysLines[S.step], stepTitle: titles[S.step], stepIntro: intros[S.step],
+      stepCounter: S.step > 4 ? 'Setup complete' : 'Step ' + (S.step + 1) + ' of 5',
+      notSuccess: S.step < 5, step0: S.step === 0, step1: S.step === 1, step2: S.step === 2,
+      step3: S.step === 3, step4: S.step === 4, stepDone: S.step === 5,
+      beads: beads, doneList: doneList,
+      backVis: S.step === 0 || S.step === 5 ? 'hidden' : 'visible',
+      nextLabel: S.step === 4 ? 'Put ' + name + ' on the desk' : (S.step === 5 ? 'Go to my dashboard' : 'Continue'),
+      stepBack: () => this.setState({ step: Math.max(0, S.step - 1) }),
+      stepNext: () => { if (S.step === 5) { this.go('dashboard', { page: 'home' }); } else { this.setState({ step: S.step + 1 }); window.scrollTo(0, 0); } },
+      setName: (e) => this.setState({ name: e.target.value }),
+      setBusiness: (e) => this.setState({ business: e.target.value }),
+      setWebsite: (e) => this.setState({ website: e.target.value }),
+      toneOpts: this.tones.map(t => ({
+        name: t.name, blurb: t.blurb,
+        bc: S.tone === t.name ? VIOLET : 'rgba(0,0,0,.16)', glow: S.tone === t.name ? onGlow : 'none',
+        bg: S.tone === t.name ? '#F6F7FB' : '#fff',
+        pick: () => this.setState({ tone: t.name, landingTone: t.name })
+      })),
+      voiceOpts: this.voices.map(v => ({
+        name: v.name, sub: v.sub,
+        bc: S.voice === v.id ? VIOLET : 'rgba(0,0,0,.16)', glow: S.voice === v.id ? onGlow : 'none',
+        bg: S.voice === v.id ? '#F6F7FB' : '#fff',
+        pick: () => this.setState({ voice: v.id })
+      })),
+      onbChannels: onbChannels, actionCards: actionCards, verticals: verticals,
+      reachCols: this.reachChans.map(c => c.label), reachRows: reachRows,
+
+      navItems: navItems, wixNav: wixNav,
+      pgHome: S.page === 'home', pgInbox: S.page === 'inbox', pgChannels: S.page === 'channels',
+      pgActions: S.page === 'actions', pgReach: S.page === 'reach', pgUsage: S.page === 'usage',
+      statusOpts: statusOpts, statusHeadline: statusHeadline, statusLine: statusLine, isLive: S.status === 'LIVE',
+      stats: [
+        { label: 'Conversations this month', value: '412', sub: 'of 600' },
+        { label: 'Handled without you', value: '94%', sub: '' },
+        { label: 'Bookings made', value: '38', sub: 'this month' },
+        { label: 'Needs you', value: '2', sub: 'open' }
+      ],
+      convos: convos, tone: S.tone, voiceName: (this.voices.find(v => v.id === S.voice) || this.voices[0]).name,
+      reachSummary: reachSummary,
+      openWho: oc.who, openChannel: oc.channel, openWhen: oc.when, openType: oc.type, openSum: oc.sum,
+      openTagBg: ocTag[0], openTagFg: ocTag[1],
+      openMsgs: oc.msgs.map(([from, text]) => ({
+        text: text, align: from === 'me' ? 'flex-end' : 'flex-start',
+        bg: from === 'me' ? INK : '#F6F7FB', fg: from === 'me' ? '#fff' : INK
+      })),
+      usageBars: usageBars
+    };
+  }
+}
+</script>
+
 <div id="demobar" role="group" aria-label="Demo navigation"></div>
 <script>
 /* =========================================================================
@@ -437,6 +1609,7 @@ const DEFAULTS = {
   status: 'ACTIVE',
   scheduling: true,
   chat: [],
+  ep: { screen:'services', markers:false, rowMenu:false, searchOpen:true, alfredTip:false, bannerOpen:true }, // Entry points board
   landingTone: 'Warm',   // which tone answers the call at the top of the landing page
   shown: 4,              // bubbles visible in that call (the replay reveals them one by one)
 };
@@ -1369,6 +2542,7 @@ addEventListener('scroll', () => {
 function finish() { set({status:'ACTIVE', step:SUCCESS}); window.scrollTo(0,0); }
 </script>
 <script>
+
 /* ── dashboard ──────────────────────────────────────────────────────────── */
 const NAV = [
   ['home','Home','home'],['settings','Settings','settings'],['phone','Phone number','phone'],
@@ -1597,6 +2771,540 @@ function viewDashboard() {
   </div>`;
 }
 
+
+/* ── Entry points: "Alfred in Bookings" — ported from the Design board ─────
+   Three Wix Bookings dashboard pages (Booking Services, Settings, Booking
+   Calendar) with nine pre-adoption Alfred entry points. Everything violet–lime
+   is new, and all of it assumes Alfred is not set up yet.                 */
+
+
+
+/* Measured reach of each surface, 21 Aug – 19 Sep 2026 (30 full days), from the
+   Bookings BO page-load event src 16 / evid 277. Reach = the page's audience
+   in a month, NOT a forecast of Alfred sign-ups: the only measured
+   page → Alfred rate is 1.33 %, on the Integrations page. */
+const EP_SURFACE = {
+  services: { name:'Services catalog',            sites:154347, views:1841004, perSite:11.9 },
+  settings: { name:'Booking Settings hub',        sites:27477,  views:108547,  perSite:3.9,
+              note:'Settings + policies together: 47,474 sites · 302,118 views.' },
+  calendar: { name:'Calendar',                    sites:120937, views:2121082, perSite:17.5 },
+};
+const kfmt = (n) => n == null ? '—' : n >= 1e6 ? (n/1e6).toFixed(2).replace(/\.?0+$/,'') + 'M' : n >= 1e3 ? Math.round(n/1e3) + 'K' : String(n);
+// Reach shown on the DEMO NAVIGATION only — it is commentary for whoever is
+// watching the demo, not part of the design, so it never touches the mock.
+const EP_METHOD = 'Measured page traffic, 21 Aug – 19 Sep 2026 (30 days), from the Bookings BO page-load event src 16 / evid 277. This is the surface’s monthly audience, not a forecast of Alfred sign-ups — the only measured page → Alfred rate is 1.33% (Integrations: 14,733 sites → 196).';
+function epNav(screen) {
+  const sf = EP_SURFACE[screen];
+  return {
+    short: kfmt(sf.sites),
+    title: `${sf.name} — ${sf.sites.toLocaleString()} sites${sf.views ? ', ' + sf.views.toLocaleString() + ' page views' : ''}${sf.perSite ? ', ' + sf.perSite + ' views per site' : ''} per month.\n\n${EP_METHOD}`,
+  };
+}
+
+function epVals() {
+  const st = S.ep;
+  const s = st.screen;
+  const sel = '#F0EFEF';
+  const on = '#C9FF3D', off = 'transparent', onFg = '#0B0D17', offFg = '#A6ADC8';
+  return {
+    svcFw: s === 'services' ? 600 : 400, setFw: s === 'settings' ? 600 : 400, calFw: s === 'calendar' ? 600 : 400,
+    tabSvc: s === 'services' ? on : off, tabSet: s === 'settings' ? on : off, tabCal: s === 'calendar' ? on : off,
+    tabSvcFg: s === 'services' ? onFg : offFg, tabSetFg: s === 'settings' ? onFg : offFg, tabCalFg: s === 'calendar' ? onFg : offFg,
+    isServices: s === 'services', isSettings: s === 'settings', isCalendar: s === 'calendar', notCalendar: s !== 'calendar',
+    svcBg: s === 'services' ? sel : 'transparent', setBg: s === 'settings' ? sel : 'transparent', calBg: s === 'calendar' ? sel : 'transparent',
+    rowBg: st.rowMenu ? 'rgba(122,92,255,.05)' : 'transparent',
+    markers: false, bannerOpen: st.bannerOpen, rowMenu: st.rowMenu, searchOpen: st.searchOpen, alfredTip: st.alfredTip,
+    'true': true, 'false': false,
+  };
+}
+function epAct(name) {
+  const st = S.ep;
+  const go = (screen) => set({ep: Object.assign({}, st, {screen, rowMenu:false, alfredTip:false})});
+  ({
+    goServices: () => go('services'), goSettings: () => go('settings'), goCalendar: () => go('calendar'),
+    dismissBanner: () => set({ep: Object.assign({}, st, {bannerOpen:false})}),
+    toggleMarkers: () => set({ep: Object.assign({}, st, {markers:!st.markers})}),
+    toggleRowMenu: () => set({ep: Object.assign({}, st, {rowMenu:!st.rowMenu})}),
+    toggleSearch: () => set({ep: Object.assign({}, st, {searchOpen:!st.searchOpen})}),
+    toggleAlfredTip: () => set({ep: Object.assign({}, st, {alfredTip:!st.alfredTip})}),
+  })[name]();
+}
+function viewEntryPoints() {
+  const EP = epVals();
+  return `<div class="ep">` + `<div style="background:#F5F5F5;color:#151414;font-family:'Wix Madefor Text',system-ui,-apple-system,sans-serif;font-size:14px;line-height:1.45;min-height:100vh;width:100%;overflow-x:auto;display:flex;flex-direction:column">
+
+  <div style="background:#0B0D17;color:#fff;min-width:1520px;padding:10px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+    <div style="display:flex;align-items:center;gap:9px">
+      <svg class="alf-peb" width="22" height="22" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="pgBar" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#7A5CFF"></stop><stop offset=".5" stop-color="#2ED9FF"></stop><stop offset="1" stop-color="#C9FF3D"></stop></linearGradient></defs><path d="M31 14c11-1 21 7 21 18 0 11-8 21-19 21S12 46 12 33c0-10 9-18 19-19z" fill="url(#pgBar)"></path><ellipse cx="26" cy="32" rx="2.2" ry="2.6" fill="#0B0D17"></ellipse><ellipse cx="38" cy="32" rx="2.2" ry="2.6" fill="#0B0D17"></ellipse></svg>
+      <span style="font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#C9FF3D">Alfred entry points · concept</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px;padding:4px;border-radius:999px;background:rgba(255,255,255,.08)">
+      <button type="button" onclick="epAct(\'goServices\')" style="height:30px;padding:0 15px;border-radius:999px;border:0;font:inherit;font-size:13px;font-weight:600;cursor:pointer;background:${EP.tabSvc};color:${EP.tabSvcFg}">Booking Services</button>
+      <button type="button" onclick="epAct(\'goCalendar\')" style="height:30px;padding:0 15px;border-radius:999px;border:0;font:inherit;font-size:13px;font-weight:600;cursor:pointer;background:${EP.tabCal};color:${EP.tabCalFg}">Booking Calendar</button>
+      <button type="button" onclick="epAct(\'goSettings\')" style="height:30px;padding:0 15px;border-radius:999px;border:0;font:inherit;font-size:13px;font-weight:600;cursor:pointer;background:${EP.tabSet};color:${EP.tabSetFg}">Settings</button>
+    </div>
+    <span style="font-size:13px;color:#A6ADC8">Everything violet–lime is new, and all of it assumes Alfred is not set up yet.</span>
+  </div>
+
+  <div style="height:54px;min-width:1520px;background:#fff;border-bottom:1px solid rgba(0,0,0,.08);display:flex;align-items:center;gap:18px;padding:0 20px;flex:0 0 auto;white-space:nowrap">
+    <span style="font-family:'Wix Madefor Display',sans-serif;font-size:15px;font-weight:700;letter-spacing:.04em;flex:0 0 auto">WIX STUDIO</span>
+    <span style="width:26px;height:26px;flex:0 0 auto;border-radius:6px;background:#F4D9EC;display:grid;place-items:center;font-size:12px;font-weight:700;color:#151414">R</span>
+    <span style="height:32px;flex:0 0 auto;padding:0 12px;border-radius:8px;background:#F0EFEF;display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600">A La Cart <span style="color:#767574">▾</span></span>
+    <span style="font-size:13px;color:#151414;flex:0 0 auto">Resources ▾</span>
+    <span style="font-size:13px;color:#151414;flex:0 0 auto">Community ▾</span>
+    <span style="font-size:13px;color:#151414;flex:0 0 auto">Help ▾</span>
+    <span style="height:32px;flex:0 0 auto;padding:0 12px;border-radius:8px;border:1px solid rgba(0,0,0,.14);display:inline-flex;align-items:center;font-size:13px;font-weight:600;color:#2F5DFF">Upgrade</span>
+    <div style="flex:1 1 auto;min-width:160px;max-width:480px;height:34px;border-radius:999px;background:#F5F5F5;display:flex;align-items:center;gap:9px;padding:0 14px;margin:0 auto;overflow:hidden">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#A8A6A5" stroke-width="2" stroke-linecap="round" style="flex:0 0 auto"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4.3-4.3"></path></svg>
+      <span style="font-size:13px;color:#A8A6A5;overflow:hidden;text-overflow:ellipsis">Search for tools, apps, help &amp; more…</span>
+    </div>
+    <span style="width:28px;height:28px;flex:0 0 auto;border-radius:999px;background:#E8E7E7"></span>
+
+    <div style="position:relative;display:flex;align-items:center;gap:8px;flex:0 0 auto">
+      <span style="height:34px;padding:0 13px;border-radius:999px;border:1.5px solid rgba(0,0,0,.16);display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:#151414">
+        <span style="width:18px;height:18px;border-radius:999px;background:#151414"></span>Ask Aria
+      </span>
+    </div>
+  </div>
+
+  <div style="flex:1;min-width:1520px;display:flex;min-height:0">
+
+    ${EP.isCalendar ? `
+      <div style="width:56px;flex:0 0 auto;background:#fff;border-right:1px solid rgba(0,0,0,.08);padding:12px 0;display:flex;flex-direction:column;align-items:center;gap:4px">
+        <span style="width:36px;height:36px;border-radius:8px;display:grid;place-items:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M9 4v16"></path></svg></span>
+        <span style="width:28px;height:1px;background:#EFEEEE;margin:6px 0"></span>
+        <span style="width:36px;height:36px;border-radius:8px;display:grid;place-items:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg></span>
+        <span style="width:36px;height:36px;border-radius:8px;display:grid;place-items:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1.4"></rect><rect x="14" y="3" width="7" height="7" rx="1.4"></rect><rect x="3" y="14" width="7" height="7" rx="1.4"></rect><rect x="14" y="14" width="7" height="7" rx="1.4"></rect></svg></span>
+        <button type="button" onclick="epAct(\'goServices\')" style="width:36px;height:36px;border:0;background:transparent;border-radius:8px;display:grid;place-items:center;cursor:pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 11 12 4l8.5 7M6 9.5V20h4v-5h4v5h4V9.5"></path></svg></button>
+        <span style="width:36px;height:36px;border-radius:8px;display:grid;place-items:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l1.6 4.4L18 10l-4.4 1.6L12 16l-1.6-4.4L6 10l4.4-1.6z"></path></svg></span>
+        <span style="width:36px;height:36px;border-radius:8px;background:#F0EFEF;display:grid;place-items:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2"></rect><path d="M3.5 9.5h17M8 3.5v3M16 3.5v3"></path></svg></span>
+        <span style="width:36px;height:36px;border-radius:8px;display:grid;place-items:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v10M9.5 9.5h4a2 2 0 0 1 0 4h-3a2 2 0 0 0 0 4h4"></path></svg></span>
+        <button type="button" onclick="epAct(\'goServices\')" style="width:36px;height:36px;border:0;background:transparent;border-radius:8px;display:grid;place-items:center;cursor:pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h7.2a2 2 0 0 1 1.4.6l7 7a2 2 0 0 1 0 2.8l-4.8 4.8a2 2 0 0 1-2.8 0l-7-7A2 2 0 0 1 4 11.2V4Z"></path></svg></button>
+        <span style="width:36px;height:36px;border-radius:8px;display:grid;place-items:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg></span>
+        <span style="width:36px;height:36px;border-radius:8px;display:grid;place-items:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></span>
+        <span style="width:28px;height:1px;background:#EFEEEE;margin:6px 0"></span>
+        <button type="button" onclick="epAct(\'goSettings\')" style="width:36px;height:36px;border:0;background:transparent;border-radius:8px;display:grid;place-items:center;cursor:pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-2.9 1.2 2 2 0 1 1-4 0 1.7 1.7 0 0 0-2.9-1.2l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.7 1.7 0 0 0 3 15a2 2 0 1 1 0-4 1.7 1.7 0 0 0 1.2-2.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A1.7 1.7 0 0 0 10 4.2a2 2 0 1 1 4 0 1.7 1.7 0 0 0 2.9 1.2l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1A1.7 1.7 0 0 0 21 11a2 2 0 1 1 0 4Z"></path></svg></button>
+        <span style="width:36px;height:36px;border-radius:8px;display:grid;place-items:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="15" rx="2"></rect><path d="M3.5 9.5h17M9 9.5v10"></path></svg></span>
+      </div>
+    ` : ``}
+
+    ${EP.notCalendar ? `
+    <div style="width:250px;flex:0 0 auto;background:#fff;border-right:1px solid rgba(0,0,0,.08);padding:16px 12px;display:flex;flex-direction:column;gap:2px">
+      <div style="display:flex;align-items:center;gap:8px;padding:6px 10px 12px;font-size:13px;font-weight:600;color:#151414">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1.4"></rect><rect x="14" y="3" width="7" height="7" rx="1.4"></rect><rect x="3" y="14" width="7" height="7" rx="1.4"></rect><rect x="14" y="14" width="7" height="7" rx="1.4"></rect></svg>
+        Quick Actions
+      </div>
+
+      <div style="display:flex;align-items:center;gap:11px;height:38px;padding:0 10px;border-radius:8px;color:#151414"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 11 12 4l8.5 7M6 9.5V20h4v-5h4v5h4V9.5"></path></svg>Home</div>
+      <div style="display:flex;align-items:center;gap:11px;height:38px;padding:0 10px;border-radius:8px;color:#151414"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l1.6 4.4L18 10l-4.4 1.6L12 16l-1.6-4.4L6 10l4.4-1.6z"></path></svg>AI Agents<span style="margin-left:auto;height:19px;padding:0 7px;border-radius:5px;background:#FFDFA8;font-size:11px;font-weight:700">NEW</span></div>
+      <button type="button" onclick="epAct(\'goCalendar\')" style="display:flex;align-items:center;gap:11px;height:38px;padding:0 10px;border-radius:8px;border:0;width:100%;font:inherit;font-size:14px;text-align:left;cursor:pointer;font-weight:${EP.calFw};background:${EP.calBg};color:#151414"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2"></rect><path d="M3.5 9.5h17M8 3.5v3M16 3.5v3"></path></svg>Booking Calendar</button>
+      <div style="display:flex;align-items:center;gap:11px;height:38px;padding:0 10px;border-radius:8px;color:#151414"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2"></rect><path d="M3.5 9.5h17"></path></svg>Events</div>
+      <div style="display:flex;align-items:center;gap:11px;height:38px;padding:0 10px;border-radius:8px;color:#151414"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v10M9.5 9.5h4a2 2 0 0 1 0 4h-3a2 2 0 0 0 0 4h4"></path></svg>Sales</div>
+      <div style="display:flex;align-items:center;gap:11px;height:38px;padding:0 10px;border-radius:8px;color:#151414"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h7.2a2 2 0 0 1 1.4.6l7 7a2 2 0 0 1 0 2.8l-4.8 4.8a2 2 0 0 1-2.8 0l-7-7A2 2 0 0 1 4 11.2V4Z"></path></svg>Catalog<span style="margin-left:auto;color:#767574">▴</span></div>
+      <div style="display:flex;align-items:center;height:36px;padding:0 10px 0 39px;border-radius:8px;font-size:14px;color:#151414">Store Products</div>
+      <button type="button" onclick="epAct(\'goServices\')" style="display:flex;align-items:center;height:36px;padding:0 10px 0 39px;border-radius:8px;border:0;width:100%;font:inherit;font-size:14px;text-align:left;cursor:pointer;font-weight:${EP.svcFw};background:${EP.svcBg};color:#151414">Booking Services</button>
+      <div style="display:flex;align-items:center;height:36px;padding:0 10px 0 39px;border-radius:8px;font-size:14px;color:#151414">Pricing Plans</div>
+      <div style="display:flex;align-items:center;height:36px;padding:0 10px 0 39px;border-radius:8px;font-size:14px;color:#151414">Booking Channels</div>
+      <div style="display:flex;align-items:center;gap:11px;height:38px;padding:0 10px;border-radius:8px;color:#151414"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg>Staff</div>
+      <div style="display:flex;align-items:center;gap:11px;height:38px;padding:0 10px;border-radius:8px;color:#151414"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>Inbox</div>
+
+      <div style="height:1px;background:#EFEEEE;margin:12px 4px"></div>
+      <button type="button" onclick="epAct(\'goSettings\')" style="display:flex;align-items:center;gap:11px;height:38px;padding:0 10px;border-radius:8px;border:0;width:100%;font:inherit;font-size:14px;text-align:left;cursor:pointer;font-weight:${EP.setFw};background:${EP.setBg};color:#151414" data-screen-label="Booking Settings"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-2.9 1.2 2 2 0 1 1-4 0 1.7 1.7 0 0 0-2.9-1.2l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.7 1.7 0 0 0 3 15a2 2 0 1 1 0-4 1.7 1.7 0 0 0 1.2-2.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A1.7 1.7 0 0 0 10 4.2a2 2 0 1 1 4 0 1.7 1.7 0 0 0 2.9 1.2l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1A1.7 1.7 0 0 0 21 11a2 2 0 1 1 0 4Z"></path></svg>Settings</button>
+      <div style="display:flex;align-items:center;gap:11px;height:38px;padding:0 10px;border-radius:8px;color:#151414"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#151414" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="15" rx="2"></rect><path d="M3.5 9.5h17M9 9.5v10"></path></svg>CMS</div>
+    </div>
+    ` : ``}
+
+    <div style="flex:1;min-width:0;overflow:auto">
+
+      ${EP.isServices ? `
+        <div style="padding:30px 40px 60px;max-width:1280px;display:flex;flex-direction:column;gap:26px">
+          <div style="display:flex;align-items:flex-start;gap:24px;flex-wrap:wrap">
+            <div style="flex:1;min-width:280px">
+              <h1 style="margin:0;font-family:'Wix Madefor Display',sans-serif;font-size:32px;letter-spacing:-.02em">Booking Services <span style="color:#A8A6A5;font-weight:400">137</span></h1>
+              <p style="margin:6px 0 0;font-size:14px;color:#525150">Create and edit courses, classes or appointments.</p>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center">
+              <span style="height:36px;padding:0 16px;border-radius:8px;border:1px solid rgba(0,0,0,.16);display:inline-flex;align-items:center;font-size:14px;font-weight:600">Share Services</span>
+              <span style="height:36px;padding:0 16px;border-radius:8px;background:#151414;color:#fff;display:inline-flex;align-items:center;font-size:14px;font-weight:600">+ Add a New Service</span>
+            </div>
+          </div>
+
+          <div>
+            <h2 style="margin:0 0 12px;font-family:'Wix Madefor Display',sans-serif;font-size:19px;letter-spacing:-.01em">Business setup recommendations</h2>
+            <div style="display:flex;gap:16px;flex-wrap:wrap">
+              <div style="position:relative;width:440px;max-width:100%;background:#0B0D17;border-radius:12px;padding:20px 22px;display:flex;flex-direction:column;gap:9px">
+                <div style="display:flex;align-items:center;gap:9px">
+                  <svg class="alf-peb" width="24" height="24" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="pgRec" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#7A5CFF"></stop><stop offset=".5" stop-color="#2ED9FF"></stop><stop offset="1" stop-color="#C9FF3D"></stop></linearGradient></defs><path d="M31 14c11-1 21 7 21 18 0 11-8 21-19 21S12 46 12 33c0-10 9-18 19-19z" fill="url(#pgRec)"></path><ellipse cx="27.5" cy="30" rx="2.2" ry="2.8" fill="#0B0D17"></ellipse><ellipse cx="39.5" cy="30" rx="2.2" ry="2.8" fill="#0B0D17"></ellipse></svg>
+                  <span style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#C9FF3D">Recommended for you</span>
+                </div>
+                <div style="font-family:'Wix Madefor Display',sans-serif;font-size:19px;font-weight:700;line-height:1.25;color:#fff">Let Alfred answer the calls you can’t</div>
+                <p style="margin:0;font-size:13.5px;line-height:1.45;color:#A6ADC8">He reads all 137 of your services and books from them, on the phone, at any hour. Setting him up takes about five minutes.</p>
+                <div style="display:flex;align-items:center;gap:14px;margin-top:6px">
+                  <span style="height:34px;padding:0 16px;border-radius:8px;background:#C9FF3D;color:#0B0D17;display:inline-flex;align-items:center;font-size:13.5px;font-weight:700">Set up Alfred</span>
+                  <span style="font-size:13.5px;font-weight:600;color:#A6ADC8">Hear him first</span>
+                </div>
+                ${EP.markers ? `
+                  <span style="position:absolute;left:-10px;top:-10px;width:24px;height:24px;border-radius:999px;background:#2ED9FF;color:#0B0D17;display:grid;place-items:center;font-size:12px;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,.3)">3</span>
+                ` : ``}
+              </div>
+              <div style="width:360px;max-width:100%;background:#fff;border-radius:12px;padding:20px 22px;display:flex;flex-direction:column;gap:8px;border:1px solid rgba(0,0,0,.07)">
+                <div style="font-size:16px;font-weight:600">Launch your own beauty products</div>
+                <p style="margin:0;font-size:13.5px;line-height:1.45;color:#525150">Sell quality branded beauty &amp; wellness products, fulfilled by our partner, Blanka.</p>
+                <span style="margin-top:6px;font-size:13.5px;font-weight:600;color:#2F5DFF">Explore Blanka Products</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h2 style="margin:0 0 12px;font-family:'Wix Madefor Display',sans-serif;font-size:19px;letter-spacing:-.01em">Service list</h2>
+            <div style="background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:12px;overflow:visible">
+              <div style="display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid #F0EFEF">
+                <span style="height:34px;padding:0 14px;border-radius:8px;border:1px solid rgba(0,0,0,.14);display:inline-flex;align-items:center;gap:8px;font-size:13.5px">All categories <span style="color:#767574">▾</span></span>
+                <span style="height:34px;padding:0 14px;border-radius:8px;border:1px solid rgba(0,0,0,.14);display:inline-flex;align-items:center;font-size:13.5px">Manage Categories</span>
+                <span style="margin-left:auto;font-size:13.5px;color:#151414">Filter</span>
+                <span style="width:220px;height:34px;border-radius:8px;border:1px solid rgba(0,0,0,.14);display:inline-flex;align-items:center;padding:0 12px;font-size:13.5px;color:#A8A6A5">Search…</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px;padding:12px 20px;border-bottom:1px solid #F0EFEF;font-size:13px;font-weight:600;color:#767574">
+                <span style="flex:1">Service</span><span style="width:130px">Price</span><span style="width:170px">Schedule</span><span style="width:40px"></span>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px;padding:14px 20px;border-bottom:1px solid #F5F4F4">
+                <span style="flex:1;display:flex;align-items:center;gap:12px"><span style="width:38px;height:38px;border-radius:7px;background:#E6EBFF"></span>Appointment | Per session or with a plan</span>
+                <span style="width:130px;color:#525150">$20</span><span style="width:170px;color:#2F5DFF">Show Availability</span><span style="width:40px;text-align:right;color:#767574">···</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px;padding:14px 20px;border-bottom:1px solid #F5F4F4">
+                <span style="flex:1;display:flex;align-items:center;gap:12px"><span style="width:38px;height:38px;border-radius:7px;background:#F0E4DA"></span>Deep Tissue Massage | 60 min</span>
+                <span style="width:130px;color:#525150">From $120</span><span style="width:170px;color:#2F5DFF">Show Availability</span><span style="width:40px;text-align:right;color:#767574">···</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px;padding:14px 20px;border-bottom:1px solid #F5F4F4">
+                <span style="flex:1;display:flex;align-items:center;gap:12px"><span style="width:38px;height:38px;border-radius:7px;background:#E6EBFF"></span>Appointment | With a plan</span>
+                <span style="width:130px;color:#525150">$100</span><span style="width:170px;color:#2F5DFF">Show Availability</span><span style="width:40px;text-align:right;color:#767574">···</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px;padding:14px 20px;border-bottom:1px solid #F5F4F4">
+                <span style="flex:1;display:flex;align-items:center;gap:12px"><span style="width:38px;height:38px;border-radius:7px;background:#E6EBFF"></span>Class with form</span>
+                <span style="width:130px;color:#525150">From $200</span><span style="width:170px;color:#2F5DFF">Show Schedule</span><span style="width:40px;text-align:right;color:#767574">···</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px;padding:14px 20px;border-bottom:1px solid #F5F4F4">
+                <span style="flex:1;display:flex;align-items:center;gap:12px"><span style="width:38px;height:38px;border-radius:7px;background:#E8DCE4"></span>Class | Per session or with a plan</span>
+                <span style="width:130px;color:#525150">$40</span><span style="width:170px;color:#2F5DFF">Show Schedule</span><span style="width:40px;text-align:right;color:#767574">···</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px;padding:14px 20px">
+                <span style="flex:1;display:flex;align-items:center;gap:12px"><span style="width:38px;height:38px;border-radius:7px;background:#E6EBFF"></span>Class - custom price</span>
+                <span style="width:130px;color:#525150">Price negotiable</span><span style="width:170px;color:#525150">No upcoming sessions</span><span style="width:40px;text-align:right;color:#767574">···</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      ` : ``}
+
+      ${EP.isSettings ? `
+        <div style="padding:30px 40px 60px;max-width:1420px;display:flex;flex-direction:column;gap:26px">
+          <div style="font-size:13.5px;color:#767574">Settings <span style="margin:0 6px;color:#A8A6A5">/</span> <span style="color:#151414">Booking Settings</span></div>
+          <div style="display:flex;align-items:center;gap:12px;margin-top:-14px">
+            <span style="color:#767574;font-size:20px">‹</span>
+            <h1 style="margin:0;font-family:'Wix Madefor Display',sans-serif;font-size:34px;letter-spacing:-.02em">Booking Settings</h1>
+          </div>
+          <p style="margin:-16px 0 0;font-size:14px;color:#525150">Set up your business to take bookings exactly how and when you’d like.</p>
+
+          <div style="position:relative">
+            <div style="width:100%;height:46px;border-radius:8px;background:#F0EFEF;display:flex;align-items:center;gap:11px;padding:0 16px;font-size:14px;color:#A8A6A5">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#767574" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4.3-4.3"></path></svg>
+              Search bookings settings
+            </div>
+          </div>
+
+          <div>
+            <h2 style="margin:0 0 12px;font-family:'Wix Madefor Display',sans-serif;font-size:19px;letter-spacing:-.01em">Bookings Setup</h2>
+            <div style="background:#fff;border-radius:12px;box-shadow:0 1px 2px rgba(22,45,61,.06),0 0 0 1px rgba(22,45,61,.06);overflow:hidden;padding:8px 0">
+              <div style="display:flex;align-items:center;gap:16px;padding:14px 26px"><div style="flex:1"><div style="font-size:16px;font-weight:600">Default hours</div><div style="font-size:14px;color:#767574;margin-top:2px">Set default hours for when you and your staff are available for bookings.</div></div><span style="color:#2F5DFF;font-size:16px">›</span></div>
+              <div style="display:flex;align-items:center;gap:16px;padding:14px 26px"><div style="flex:1"><div style="font-size:16px;font-weight:600">Add-ons</div><div style="font-size:14px;color:#767574;margin-top:2px">Create and manage the add-ons you offer for your services.</div></div><span style="color:#2F5DFF;font-size:16px">›</span></div>
+              <div style="display:flex;align-items:center;gap:16px;padding:14px 26px"><div style="flex:1"><div style="font-size:16px;font-weight:600">Staff</div><div style="font-size:14px;color:#767574;margin-top:2px">Add your staff and set their work hours, sync calendars, and give calendar access.</div></div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2F5DFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8 8M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"></path></svg></div>
+
+              <div style="display:flex;align-items:center;gap:16px;padding:16px 26px;background:linear-gradient(100deg,rgba(228,246,250,.75) 0%,rgba(237,234,251,.75) 38%,rgba(246,236,246,.6) 68%,rgba(255,255,255,0) 100%)">
+                <span style="position:relative;width:40px;height:40px;flex:0 0 auto;display:grid;place-items:center">
+                  <span style="width:34px;height:34px;border-radius:999px;background:linear-gradient(135deg,#7A5CFF,#2ED9FF 55%,#C9FF3D);display:flex;align-items:center;justify-content:center;gap:6px"><span style="width:5px;height:5px;border-radius:999px;background:#151414"></span><span style="width:5px;height:5px;border-radius:999px;background:#151414"></span></span>
+                </span>
+                <div style="flex:1">
+                  <div style="display:flex;align-items:center;gap:10px"><span style="font-size:16px;font-weight:600">Alfred, your phone receptionist</span><span style="height:21px;padding:0 8px;border-radius:5px;background:#FFDFA8;color:#151414;font-size:11px;font-weight:700;display:inline-flex;align-items:center">NEW</span></div>
+                  <div style="font-size:14px;color:#525150;margin-top:2px">Let him answer your calls, reply from your service pages and book into this calendar.</div>
+                </div>
+                <span style="color:#2F5DFF;font-size:16px">›</span>
+              </div>
+
+              <div style="display:flex;align-items:center;gap:16px;padding:14px 26px"><div style="flex:1"><div style="font-size:16px;font-weight:600">Resources &amp; rooms</div><div style="font-size:14px;color:#767574;margin-top:2px">Set up bookable resources such as rooms or stations.</div></div><span style="color:#2F5DFF;font-size:16px">›</span></div>
+              <div style="display:flex;align-items:center;gap:16px;padding:14px 26px"><div style="flex:1"><div style="display:flex;align-items:center;gap:10px"><span style="font-size:16px;font-weight:600">Location management</span><span style="height:21px;padding:0 8px;border-radius:5px;background:#FFDFA8;color:#151414;font-size:11px;font-weight:700;display:inline-flex;align-items:center">NEW</span></div><div style="font-size:14px;color:#767574;margin-top:2px">Assign staff to locations so your site collaborators can manage their bookings.</div></div><span style="color:#2F5DFF;font-size:16px">›</span></div>
+              <div style="display:flex;align-items:center;gap:16px;padding:14px 26px"><div style="flex:1"><div style="font-size:16px;font-weight:600">Notifications you send</div><div style="font-size:14px;color:#767574;margin-top:2px">Manage notifications that are automatically sent to clients (e.g. appointment confirmations and reminders).</div></div><span style="color:#2F5DFF;font-size:16px">›</span></div>
+              <div style="display:flex;align-items:center;gap:16px;padding:14px 26px"><div style="flex:1"><div style="font-size:16px;font-weight:600">Notifications you get</div><div style="font-size:14px;color:#767574;margin-top:2px">Manage email notifications you get about bookings on your site or app.</div></div><span style="color:#2F5DFF;font-size:16px">›</span></div>
+              <div style="display:flex;align-items:center;gap:16px;padding:14px 26px"><div style="flex:1"><div style="font-size:16px;font-weight:600">Tips</div><div style="font-size:14px;color:#767574;margin-top:2px">Collect tips from your customers and automatically assign them to staff.</div></div><span style="color:#2F5DFF;font-size:16px">›</span></div>
+            </div>
+          </div>
+
+          <div>
+            <h2 style="margin:0 0 12px;font-family:'Wix Madefor Display',sans-serif;font-size:19px;letter-spacing:-.01em">Online Bookings</h2>
+            <div style="background:#fff;border-radius:12px;box-shadow:0 1px 2px rgba(22,45,61,.06),0 0 0 1px rgba(22,45,61,.06);overflow:hidden;padding:8px 0">
+              <div style="display:flex;align-items:center;gap:16px;padding:14px 26px"><div style="flex:1"><div style="font-size:16px;font-weight:600">Client booking flow</div><div style="font-size:14px;color:#767574;margin-top:2px">Customize the default booking experience clients have on your live site.</div></div><span style="color:#2F5DFF;font-size:16px">›</span></div>
+              <div style="display:flex;align-items:center;gap:16px;padding:14px 26px"><div style="flex:1"><div style="font-size:16px;font-weight:600">Booking form</div><div style="font-size:14px;color:#767574;margin-top:2px">Customize the form clients fill out when booking.</div></div><span style="color:#2F5DFF;font-size:16px">›</span></div>
+              <div style="display:flex;align-items:center;gap:16px;padding:14px 26px"><div style="flex:1"><div style="font-size:16px;font-weight:600">Booking policies</div><div style="font-size:14px;color:#767574;margin-top:2px">Set the booking, cancelation, and rescheduling policies for your services.</div></div><span style="color:#2F5DFF;font-size:16px">›</span></div>
+            </div>
+          </div>
+
+          <div>
+            <h2 style="margin:0 0 12px;font-family:'Wix Madefor Display',sans-serif;font-size:19px;letter-spacing:-.01em">Bookings Off Your Site</h2>
+            <div style="background:#fff;border-radius:12px;box-shadow:0 1px 2px rgba(22,45,61,.06),0 0 0 1px rgba(22,45,61,.06);overflow:hidden;padding:8px 0">
+              <div style="display:flex;align-items:center;gap:16px;padding:16px 26px;background:linear-gradient(100deg,rgba(228,246,250,.75) 0%,rgba(237,234,251,.75) 38%,rgba(246,236,246,.6) 68%,rgba(255,255,255,0) 100%)">
+                <span style="width:40px;height:40px;flex:0 0 auto;display:grid;place-items:center">
+                  <span style="width:34px;height:34px;border-radius:999px;background:linear-gradient(135deg,#7A5CFF,#2ED9FF 55%,#C9FF3D);display:flex;align-items:center;justify-content:center;gap:6px"><span style="width:5px;height:5px;border-radius:999px;background:#151414"></span><span style="width:5px;height:5px;border-radius:999px;background:#151414"></span></span>
+                </span>
+                <div style="flex:1">
+                  <div style="display:flex;align-items:center;gap:10px"><span style="font-size:16px;font-weight:600">Phone bookings</span><span style="height:21px;padding:0 8px;border-radius:5px;background:#E8E7E7;color:#525150;font-size:11px;font-weight:700;display:inline-flex;align-items:center">NOT SET UP</span></div>
+                  <div style="font-size:14px;color:#525150;margin-top:2px">Right now calls go to voicemail. Choose what Alfred can answer, which services he can book, and the hours he covers.</div>
+                </div>
+                <span style="height:34px;padding:0 16px;border-radius:8px;background:#C9FF3D;color:#0B0D17;display:inline-flex;align-items:center;font-size:14px;font-weight:700;flex:0 0 auto">Set up</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px;padding:14px 26px"><div style="flex:1"><div style="font-size:16px;font-weight:600">Booking channels</div><div style="font-size:14px;color:#767574;margin-top:2px">Manage where clients can book — your site, the Wix app, and third-party listings.</div></div><span style="color:#2F5DFF;font-size:16px">›</span></div>
+              <div style="display:flex;align-items:center;gap:16px;padding:14px 26px"><div style="flex:1"><div style="font-size:16px;font-weight:600">Book on behalf</div><div style="font-size:14px;color:#767574;margin-top:2px">Let staff create bookings for clients from the dashboard.</div></div><span style="color:#2F5DFF;font-size:16px">›</span></div>
+            </div>
+          </div>
+        </div>
+      ` : ``}
+
+      ${EP.isCalendar ? `
+        <div style="display:flex;min-height:100%">
+          <div style="width:280px;flex:0 0 auto;border-right:1px solid rgba(0,0,0,.08);padding:22px 18px;display:flex;flex-direction:column;gap:20px;background:#fff">
+            <h2 style="margin:0;font-family:'Wix Madefor Display',sans-serif;font-size:20px;letter-spacing:-.01em">Calendar</h2>
+            <div style="border:1px solid rgba(0,0,0,.07);border-radius:10px;padding:14px">
+              <div style="display:flex;align-items:center;justify-content:space-between;font-size:13.5px;font-weight:600;margin-bottom:10px"><span style="color:#767574">‹</span>July 2026<span style="color:#767574">›</span></div>
+              <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;font-size:12px;color:#A8A6A5;text-align:center">
+                <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;font-size:12.5px;text-align:center;margin-top:6px;color:#151414">
+                <span>26</span><span>27</span><span style="background:#2F5DFF;color:#fff;border-radius:999px">28</span><span>29</span><span>30</span><span>31</span><span style="color:#A8A6A5">1</span>
+              </div>
+            </div>
+
+            <div style="border:1px solid rgba(0,0,0,.07);border-radius:10px;padding:13px">
+              <div style="display:flex;align-items:center;justify-content:space-between;font-size:13.5px;font-weight:600">Sync your personal calendar <span style="color:#767574">···</span></div>
+              <p style="margin:6px 0 8px;font-size:12.5px;line-height:1.4;color:#525150">View personal and business events in one place.</p>
+              <span style="font-size:13px;color:#2F5DFF">Sync Calendars</span>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <div style="font-size:15px;font-weight:600;margin-bottom:6px">Activity</div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #F0EFEF;font-size:13.5px">Appointment waitlist <span style="color:#767574">▾</span></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #F0EFEF;font-size:13.5px">Booking requests <span style="color:#767574">▾</span></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;font-size:13.5px">Recent activity <span style="color:#767574">▾</span></div>
+            </div>
+          </div>
+
+          <div style="position:relative;flex:1;min-width:0;display:flex;flex-direction:column;padding:18px 24px 40px;gap:16px">
+
+            ${EP.bannerOpen ? `
+            <div style="position:absolute;left:36px;right:36px;bottom:34px;z-index:6;border-radius:28px;padding:20px 60px 20px 26px;display:flex;align-items:center;gap:26px;background:linear-gradient(100deg,#E4F6FA 0%,#EDEAFB 34%,#F6ECF6 62%,#FAFAFB 100%);box-shadow:0 18px 44px rgba(19,23,32,.16)">
+              <button type="button" onclick="epAct(\'dismissBanner\')" aria-label="Dismiss" style="position:absolute;right:18px;top:18px;width:30px;height:30px;border-radius:999px;border:0;background:rgba(255,255,255,.6);color:#525150;display:grid;place-items:center;cursor:pointer;font:inherit">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+              </button>
+              <div style="position:relative;width:74px;height:74px;flex:0 0 auto;display:grid;place-items:center">
+                <span style="position:absolute;inset:0;border-radius:999px;border:2px dashed #8FD9E8"></span>
+                <span style="width:54px;height:54px;border-radius:999px;background:linear-gradient(135deg,#7A5CFF,#2ED9FF 55%,#C9FF3D);display:flex;align-items:center;justify-content:center;gap:9px">
+                  <span style="width:8px;height:8px;border-radius:999px;background:#151414"></span>
+                  <span style="width:8px;height:8px;border-radius:999px;background:#151414"></span>
+                </span>
+              </div>
+              <div style="flex:1;min-width:0">
+                <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+                  <span style="font-family:'Wix Madefor Display',sans-serif;font-size:27px;font-weight:700;letter-spacing:-.02em;color:#151414">Alfred could be on the desk</span>
+                </div>
+                <p style="margin:6px 0 0;font-size:16px;line-height:1.4;color:#525150">He’d answer for A La Cart across Phone, Smart Chat, WhatsApp — and book straight into this calendar.</p>
+              </div>
+              <div style="display:flex;align-items:center;gap:14px;flex:0 0 auto">
+                <span style="height:46px;padding:0 22px;border-radius:999px;background:#C9FF3D;color:#0B0D17;display:inline-flex;align-items:center;font-size:15px;font-weight:700">Set him up</span>
+              </div>
+            </div>
+            ` : ``}
+
+            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+              <span style="height:36px;padding:0 16px;border-radius:8px;border:1px solid rgba(0,0,0,.16);display:inline-flex;align-items:center;font-size:14px;font-weight:600">Today</span>
+              <span style="color:#767574">‹</span><span style="color:#767574">›</span>
+              <span style="font-family:'Wix Madefor Display',sans-serif;font-size:19px;font-weight:600">July – August 2026</span>
+              <div style="margin-left:auto;display:flex;align-items:center;gap:10px">
+                <span style="height:36px;padding:0 15px;border-radius:8px;border:1px solid rgba(0,0,0,.16);display:inline-flex;align-items:center;font-size:14px;font-weight:600">Weekly ▾</span>
+                <span style="height:36px;padding:0 16px;border-radius:8px;background:#151414;color:#fff;display:inline-flex;align-items:center;font-size:14px;font-weight:600">Add ▾</span>
+              </div>
+            </div>
+
+            <div style="flex:1;min-height:560px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:12px;display:flex;flex-direction:column;overflow:hidden">
+              <div style="display:flex;border-bottom:1px solid #EFEEEE">
+                <div style="width:54px;flex:0 0 auto;border-right:1px solid #E9EDF0"></div>
+                <div style="flex:1;padding:12px 0;text-align:center;font-size:13.5px;font-weight:600;color:#525150">Sun 26</div>
+                <div style="flex:1;padding:12px 0;text-align:center;font-size:13.5px;font-weight:600;color:#525150">Mon 27</div>
+                <div style="flex:1;padding:12px 0;text-align:center;font-size:13.5px;font-weight:700;color:#151414">Tue 28</div>
+                <div style="flex:1;padding:12px 0;text-align:center;font-size:13.5px;font-weight:600;color:#525150">Wed 29</div>
+                <div style="flex:1;padding:12px 0;text-align:center;font-size:13.5px;font-weight:600;color:#525150">Thu 30</div>
+                <div style="flex:1;padding:12px 0;text-align:center;font-size:13.5px;font-weight:600;color:#525150">Fri 31</div>
+              </div>
+              <div style="flex:1;display:flex;min-height:0;overflow:auto">
+                <div style="width:54px;flex:0 0 auto;border-right:1px solid #E9EDF0;display:flex;flex-direction:column;font-size:11px;color:#767574">
+                  <div style="height:60px;flex:0 0 auto;padding:2px 8px 0;text-align:right">9 AM</div>
+                  <div style="height:60px;flex:0 0 auto;padding:2px 8px 0;text-align:right">10 AM</div>
+                  <div style="height:60px;flex:0 0 auto;padding:2px 8px 0;text-align:right">11 AM</div>
+                  <div style="height:60px;flex:0 0 auto;padding:2px 8px 0;text-align:right">12 PM</div>
+                  <div style="height:60px;flex:0 0 auto;padding:2px 8px 0;text-align:right">1 PM</div>
+                  <div style="height:60px;flex:0 0 auto;padding:2px 8px 0;text-align:right">2 PM</div>
+                  <div style="height:60px;flex:0 0 auto;padding:2px 8px 0;text-align:right">3 PM</div>
+                  <div style="height:60px;flex:0 0 auto;padding:2px 8px 0;text-align:right">4 PM</div>
+                </div>
+                <div style="position:relative;flex:1;border-right:1px solid #E9EDF0">
+                  <div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div>
+                  <div style="position:absolute;left:3px;right:3px;top:120px;height:52px;border-radius:3px;border-left:3px solid #597DFF;background:#EAF4FF;padding:3px 6px;font-size:11px;line-height:1.3;overflow:hidden"><div style="font-weight:600">Class | Per session</div><div style="color:#767574">0/50 · Carlos Lampel</div></div>
+                </div>
+                <div style="position:relative;flex:1;border-right:1px solid #E9EDF0">
+                  <div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div>
+                  <div style="position:absolute;left:3px;right:3px;top:0;height:52px;border-radius:3px;border-left:3px solid #597DFF;background:#EAF4FF;padding:3px 6px;font-size:11px;line-height:1.3;overflow:hidden"><div style="font-weight:600">Class with form</div><div style="color:#767574">0/50 · Broadway</div></div>
+                  <div style="position:absolute;left:3px;right:3px;top:180px;height:70px;border-radius:3px;border-left:3px solid #E8750A;background:#FFF3E6;padding:3px 6px;font-size:11px;line-height:1.3;overflow:hidden"><div style="font-weight:600">Dance Class - Test</div><div style="color:#767574">0/50 · Room 1 · Broadway</div></div>
+                </div>
+                <div style="position:relative;flex:1;border-right:1px solid #E9EDF0">
+                  <div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div>
+                  <div style="position:absolute;left:3px;right:3px;top:300px;height:52px;border-radius:3px;border-left:3px solid #597DFF;background:#EAF4FF;padding:3px 6px;font-size:11px;line-height:1.3;overflow:hidden"><div style="font-weight:600">Pilates</div><div style="color:#767574">0/10 · Carlos Lampel</div></div>
+                </div>
+                <div style="position:relative;flex:1;border-right:1px solid #E9EDF0">
+                  <div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div>
+                  <div style="position:absolute;left:3px;right:3px;top:240px;height:52px;border-radius:3px;border-left:3px solid #597DFF;background:#EAF4FF;padding:3px 6px;font-size:11px;line-height:1.3;overflow:hidden"><div style="font-weight:600">Pilates</div><div style="color:#767574">0/10 · Jane Bordo</div></div>
+                </div>
+                <div style="position:relative;flex:1;border-right:1px solid #E9EDF0">
+                  <div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div>
+                  <div style="position:absolute;left:3px;right:3px;top:0;height:52px;border-radius:3px;border-left:3px solid #597DFF;background:#EAF4FF;padding:3px 6px;font-size:11px;line-height:1.3;overflow:hidden"><div style="font-weight:600">Class with form</div><div style="color:#767574">0/50 · Tom J</div></div>
+                  <div style="position:absolute;left:3px;right:3px;top:180px;height:52px;border-radius:3px;border-left:3px solid #20C45F;background:#E6F7EE;padding:3px 6px;font-size:11px;line-height:1.3;overflow:hidden"><div style="font-weight:600">Basic Makeup Tutorial</div><div style="color:#767574">1/50 · Broadway</div></div>
+                </div>
+                <div style="position:relative;flex:1">
+                  <div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div><div style="height:60px;border-bottom:1px solid #E9EDF0"></div>
+                  <div style="position:absolute;left:3px;right:3px;top:60px;height:52px;border-radius:3px;border-left:3px solid #597DFF;background:#EAF4FF;padding:3px 6px;font-size:11px;line-height:1.3;overflow:hidden"><div style="font-weight:600">Class | Per session</div><div style="color:#767574">0/50 · Carlos Lampel</div></div>
+                  <div style="position:absolute;left:3px;right:3px;top:300px;height:52px;border-radius:3px;border-left:3px solid #20C45F;background:#E6F7EE;padding:3px 6px;font-size:11px;line-height:1.3;overflow:hidden"><div style="font-weight:600">Yoga class</div><div style="color:#767574">6/50 · Broadway</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ` : ``}
+
+    </div>
+
+  </div>
+</div>
+` + `</div>`;
+}
+
+/* ── dc-mini ────────────────────────────────────────────────────────────────
+   A tiny renderer for the Design-board dialect: <sc-for>, <sc-if>, {{ holes }}
+   and onClick handlers. Enough to run a board's own markup and renderVals()
+   verbatim, with no React and no network.                                   */
+function dcBlock(html, open, tag) {           // → [inner, indexAfterClose]
+  const openTag = '<' + tag, closeTag = '</' + tag + '>';
+  let depth = 1, i = html.indexOf('>', open) + 1, from = i;
+  const re = new RegExp(openTag + '\\b|' + closeTag, 'g');
+  re.lastIndex = i;
+  let m;
+  while ((m = re.exec(html))) {
+    depth += m[0] === closeTag ? -1 : 1;
+    if (depth === 0) return [html.slice(from, m.index), m.index + closeTag.length];
+  }
+  throw new Error('unbalanced <' + tag + '>');
+}
+function dcLook(expr, scopes) {
+  expr = expr.trim();
+  if (expr === 'true') return true;
+  if (expr === 'false') return false;
+  const path = expr.split('.');
+  for (let s = scopes.length - 1; s >= 0; s--) {
+    if (path[0] in scopes[s]) {
+      let v = scopes[s][path[0]];
+      for (let k = 1; k < path.length && v != null; k++) v = v[path[k]];
+      return v;
+    }
+  }
+  return undefined;
+}
+function dcRender(tpl, scopes, sink) {
+  let out = '', i = 0;
+  for (;;) {
+    const f = tpl.indexOf('<sc-for', i), n = tpl.indexOf('<sc-if', i);
+    const at = f === -1 ? n : n === -1 ? f : Math.min(f, n);
+    if (at === -1) { out += dcSubst(tpl.slice(i), scopes, sink); break; }
+    out += dcSubst(tpl.slice(i, at), scopes, sink);
+    const isFor = at === f;
+    const tag = isFor ? 'sc-for' : 'sc-if';
+    const head = tpl.slice(at, tpl.indexOf('>', at) + 1);
+    const [inner, after] = dcBlock(tpl, at, tag);
+    if (isFor) {
+      const list = dcLook((head.match(/list="\{\{([^}]*)\}\}"/) || [])[1] || '', scopes) || [];
+      const as = (head.match(/as="([^"]*)"/) || [])[1] || 'it';
+      for (const item of list) {
+        scopes.push({ [as]: item });
+        out += dcRender(inner, scopes, sink);
+        scopes.pop();
+      }
+    } else if (dcLook((head.match(/value="\{\{([^}]*)\}\}"/) || [])[1] || '', scopes)) {
+      out += dcRender(inner, scopes, sink);
+    }
+    i = after;
+  }
+  return out;
+}
+function dcSubst(chunk, scopes, sink) {
+  // Handlers first: onClick="{{ path }}" → a delegated data attribute.
+  chunk = chunk.replace(/onClick="\{\{([^}]*)\}\}"/g, (_, e) => {
+    const fn = dcLook(e, scopes);
+    if (typeof fn !== 'function') return '';
+    sink.handlers.push(fn);
+    return 'data-dch="' + (sink.handlers.length - 1) + '"';
+  });
+  chunk = chunk.replace(/\s(?:hint-placeholder-\w+|style-hover)="[^"]*"/g, '');
+  return chunk.replace(/\{\{([^}]*)\}\}/g, (_, e) => {
+    const v = dcLook(e, scopes);
+    return v == null || typeof v === 'function' ? '' : String(v);
+  });
+}
+/* The base class a board's script expects. */
+class DCLogic {
+  constructor(props, onChange) { this.props = props || {}; this._onChange = onChange; }
+  setState(patch) {
+    this.state = Object.assign({}, this.state, typeof patch === 'function' ? patch(this.state) : patch);
+    this._onChange && this._onChange();
+  }
+}
+
+/* ── Inside Wix: the Front Desk Agent board, rendered by dc-mini ───────────
+   Its markup and its renderVals() are the design's own, unmodified; only the
+   root's position is contained so the demo bar stays reachable.            */
+let FDA = null, FDA_HANDLERS = [];
+function fdaInit() {
+  if (FDA) return FDA;
+  const logic = document.getElementById('fda-logic').textContent;
+  const Cls = new Function('DCLogic', logic + '; return Component;')(DCLogic);
+  // showSwitcher off: the demo bar is the navigation now.
+  FDA = new Cls({ agentName:'Alfred', businessName:'Luma Wellness', startScreen:'welcome', showSwitcher:false }, render);
+  try { FDA.componentDidMount && FDA.componentDidMount(); } catch (e) { /* deep-link params only */ }
+  return FDA;
+}
+const FDA_SCREENS = [['welcome','Welcome'],['onboarding','Onboarding'],['dashboard','Dashboard']];
+const FDA_PAGES   = [['home','Home'],['inbox','Inbox'],['channels','Channels'],['actions','Actions'],['reach','Reach'],['usage','Usage']];
+const FDA_STEPS   = ['Business','Personality','Channels','Actions','Reach me'];  // the board's own labels
+function fdaGo(screen) { fdaInit().setState({ screen }); }
+function fdaStep(step) { fdaInit().setState({ screen:'onboarding', step }); }
+function fdaPage(page) { fdaInit().setState({ screen:'dashboard', page }); }
+function viewInsideWix() {
+  const c = fdaInit();
+  const sink = { handlers: [] };
+  const out = dcRender(document.getElementById('fda-body').textContent, [c.renderVals()], sink);
+  FDA_HANDLERS = sink.handlers;
+  return '<div class="fda">' + out + '</div>';
+}
+// The board's handlers are bound by index at render time.
+document.addEventListener('click', (e) => {
+  const el = e.target.closest && e.target.closest('[data-dch]');
+  if (!el) return;
+  const fn = FDA_HANDLERS[Number(el.getAttribute('data-dch'))];
+  if (typeof fn === 'function') { e.preventDefault(); fn(); }
+});
+
 /* ── demo bar + render ──────────────────────────────────────────────────── */
 /* The bar is a demo aid, not part of the product — it collapses to a small
    handle so it never eats the screen, and remembers the choice per browser. */
@@ -1619,22 +3327,48 @@ function toggleBar() {
 
 function demobar() {
   const tab = (id,label) => `<button aria-current="${S.screen===id}" onclick="go('${id}')">${label}</button>`;
-  const steps = S.screen === 'onboarding'
-    ? `<span class="sep"></span><span class="tag">Step</span>` +
+
+  // Contextual sub-nav for whichever screen is open.
+  let sub = '';
+  if (S.screen === 'onboarding') {
+    sub = `<span class="sep"></span><span class="tag">Step</span>` +
       STEPS.map((label,i)=>`<button aria-current="${S.step===i}" onclick="set({step:${i}})" title="${label}">${i+1}</button>`).join('')
-      + `<button aria-current="${S.step===SUCCESS}" onclick="set({step:SUCCESS})" title="Success screen">✓</button>`
-    : '';
+      + `<button aria-current="${S.step===SUCCESS}" onclick="set({step:SUCCESS})" title="Success screen">✓</button>`;
+  } else if (S.screen === 'insidewix') {
+    const c = fdaInit(), cur = c.state.screen || 'welcome';
+    sub = `<span class="sep"></span>` +
+      FDA_SCREENS.map(([id,l])=>`<button aria-current="${cur===id}" onclick="fdaGo('${id}')">${l}</button>`).join('');
+    if (cur === 'onboarding') {
+      sub += `<span class="sep"></span><span class="tag">Step</span>` +
+        FDA_STEPS.map((l,i)=>`<button aria-current="${c.state.step===i}" onclick="fdaStep(${i})" title="${l}">${i+1}</button>`).join('') +
+        `<button aria-current="${c.state.step===5}" onclick="fdaStep(5)" title="Done">\u2713</button>`;
+    } else if (cur === 'dashboard') {
+      sub += `<span class="sep"></span><span class="tag">Page</span>` +
+        FDA_PAGES.map(([id,l])=>`<button aria-current="${c.state.page===id}" onclick="fdaPage('${id}')">${l}</button>`).join('');
+    }
+  } else if (S.screen === 'entrypoints') {
+    sub = `<span class="sep"></span><span class="tag">Reach / mo</span>` +
+      [['services','Services'],['calendar','Calendar'],['settings','Settings']].map(([id,l]) => {
+        const r = epNav(id);
+        return `<button aria-current="${S.ep.screen===id}" onclick="epAct('go${id[0].toUpperCase()+id.slice(1)}')"
+          title="${r.title.replace(/"/g,'&quot;')}">${l}<b class="ep-num">${r.short}</b></button>`;
+      }).join('');
+  }
+
   const handle = `<button class="handle" onclick="toggleBar()" aria-expanded="${barOpen}"
       aria-controls="bar-body" title="${barOpen?'Hide the demo controls':'Show the demo controls'}">
       <span class="sr">${barOpen?'Hide':'Show'} demo controls</span>
       ${barOpen ? ico('arrow',16) : pebble(22,'idle')}</button>`;
+
+  // Two products: the standalone app, and Alfred inside the Wix dashboard.
   return `${handle}<div class="bar-body" id="bar-body">
-      <span class="tag">Demo</span>${tab('landing','Landing')}${tab('onboarding','Onboarding')}${tab('dashboard','Dashboard')}
-      ${steps}<span class="sep"></span>
+      <span class="tag">Standalone</span>${tab('landing','Landing')}${tab('onboarding','Onboarding')}${tab('dashboard','Dashboard')}
+      <span class="sep"></span><span class="tag">Inside Wix</span>${tab('insidewix','Front Desk')}${tab('entrypoints','Entry points')}
+      ${sub}<span class="sep"></span>
       <button onclick="reset()" title="Back to the starting state">Reset</button>
     </div>`;
 }
-function reset() { S = Object.assign({}, DEFAULTS); render(); window.scrollTo(0,0); }
+function reset() { S = Object.assign({}, DEFAULTS); FDA = null; FDA_HANDLERS = []; render(); window.scrollTo(0,0); }
 
 function render() {
   const app = document.getElementById('app');
@@ -1652,6 +3386,8 @@ function render() {
 
   app.innerHTML = S.screen === 'landing' ? viewLanding()
                 : S.screen === 'onboarding' ? viewOnboarding()
+                : S.screen === 'insidewix' ? viewInsideWix()
+                : S.screen === 'entrypoints' ? viewEntryPoints()
                 : viewDashboard();
 
   if (focusId) {
