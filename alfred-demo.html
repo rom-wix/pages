@@ -430,6 +430,7 @@ const DEFAULTS = {
   areaOpen: false,
   areaQuery: '',
   number: '',
+  selectedNumber: '',   // pre-set to the first available number on the Number step
   forwardMode: 'always',
   phoneType: 'mobile',
   provider: 'AT&T',
@@ -1129,11 +1130,16 @@ function viewOnboarding() {
     const opts = c.areas.filter(a => !S.areaQuery ||
       a[0].indexOf(S.areaQuery.trim()) === 0 || a[1].toLowerCase().indexOf(S.areaQuery.trim().toLowerCase()) >= 0);
     const count = `${S.areaQuery.trim()?opts.length+' of ':''}${c.areas.length} area code${c.areas.length===1?'':'s'} in ${c.name}`;
+    // One number, already chosen: the first suffix by default, or the random
+    // one "Try another number" rolled.
+    const chosen = S.selectedNumber || c.fmt(S.area, SUFFIX[0]);
     return shell({
       title:'Where callers reach me',
       intro:'Pick your country and an area code your customers recognize. Forwarding from your existing line comes next.',
       skipLabel:'I’ll do this later',
-      next:`<button class="btn btn-primary" ${S.number?'':'disabled'} onclick="set({step:5})">Continue ${ico('arrow',18,'var(--deep)')}</button>`,
+      next: S.number
+        ? `<button class="btn btn-primary" onclick="set({step:5})">Continue ${ico('arrow',18,'var(--deep)')}</button>`
+        : `<button class="btn btn-primary" onclick="set({number:'${chosen}',step:5})">Take ${chosen} ${ico('arrow',18,'var(--deep)')}</button>`,
       body:`<div style="display:flex;flex-direction:column;gap:22px;max-width:680px">
         <div><b style="font-size:14px">Country</b>
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">${COUNTRIES.map(x=>
@@ -1146,19 +1152,20 @@ function viewOnboarding() {
             ${S.areaOpen?`<div class="menu"><div style="padding:8px"><input id="areaq" type="text" autofocus placeholder="Search by code or city"
                 value="${esc(S.areaQuery)}" oninput="S.areaQuery=this.value;render()"></div>
               <div class="list">${opts.length?opts.map(a=>
-                `<button onclick="set({area:'${a[0]}',areaOpen:false,areaQuery:''})"><b>${a[0]}</b><span class="muted">${a[1]}</span></button>`).join('')
+                `<button onclick="set({area:'${a[0]}',areaOpen:false,areaQuery:'',selectedNumber:''})"><b>${a[0]}</b><span class="muted">${a[1]}</span></button>`).join('')
                 :`<div class="muted" style="padding:12px 14px;font-size:13px">No area codes match. Try a city name.</div>`}</div></div>`:''}
           </div>
           <div class="hint">${count}</div></div>
-        <div><button class="btn btn-outline" onclick="set({numbersShown:true})">Show me numbers</button></div>
         ${S.number?`<div class="banner" style="padding:14px 18px"><span>${ico('check',16,'var(--lime-deep)')}</span>
             <b style="font-size:14px">${S.number} is yours.</b></div>`
-          : (S.numbersShown?`<div><b style="font-size:14px">Pick a number</b>
-            <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px">${SUFFIX.map(sx=>{
-              const num = c.fmt(S.area, sx);
-              return `<div class="numrow"><span class="n">${num}</span><span class="muted" style="font-size:13px">${areaCity()}</span>
-                <button class="btn btn-primary btn-sm" style="margin-left:auto" onclick="set({number:'${num}'})">Take it</button></div>`;}).join('')}</div></div>`
-          : `<p class="hint" style="margin:0">Pick an area code, then show the numbers available to you.</p>`)}
+          : `<div><b style="font-size:14px">Your number</b>
+            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:10px;background:var(--white);
+                border:2px solid var(--ink);border-radius:16px;padding:16px 20px">
+              <span style="font-size:22px;font-weight:700;font-variant-numeric:tabular-nums">${chosen}</span>
+              <span class="muted" style="font-size:13px">${areaCity()}</span>
+              <button class="btn btn-outline btn-sm" style="margin-left:auto" onclick="anotherNumber()">${ico('sparkle',15)} Try another number</button>
+            </div>
+            <p class="hint" style="margin:8px 0 0">Not this one? Try another — it stays in ${S.area}.</p></div>`}
         ${S.number?'':`<p class="hint" style="margin:0">You can do this later — ${n} just can’t take calls until he has a
           number. Everything else you set up is kept.</p>`}
       </div>`});
@@ -1268,9 +1275,16 @@ function toggleLang(code) {
   render();
 }
 function pickPhoneType(k) { set({phoneType:k, provider:PHONE_TYPES[k].providers[0]}); }
+function anotherNumber() {
+  const c = country();
+  const cur = S.selectedNumber || c.fmt(S.area, SUFFIX[0]);
+  let next = cur;
+  while (next === cur) next = c.fmt(S.area, String(1000 + Math.floor(Math.random() * 9000)));
+  set({selectedNumber: next});
+}
 function pickCountry(id) {
   const c = COUNTRIES.find(x=>x.id===id);
-  set({country:id, area:(id==='us'?'854':c.areas[0][0]), areaOpen:false, areaQuery:'', number:'', numbersShown:false});
+  set({country:id, area:(id==='us'?'854':c.areas[0][0]), areaOpen:false, areaQuery:'', number:'', selectedNumber:''});
 }
 function addFact() {
   const el = document.getElementById('fact');
