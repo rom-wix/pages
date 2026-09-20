@@ -161,7 +161,10 @@ section{padding:80px 0}
 .callcard{background:var(--white);border:1px solid var(--line);border-radius:20px;padding:20px;
   box-shadow:var(--shadow-lg);display:flex;flex-direction:column;gap:14px}
 .bubbles{display:flex;flex-direction:column;gap:10px}
+.callcard .bubbles{min-height:196px}
 .bub{max-width:92%;padding:10px 14px;border-radius:16px;font-size:13px;line-height:1.5}
+.callcard .bub{animation:pop .28s var(--ease) both}
+@keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .bub.them{align-self:flex-start;background:var(--paper);border-bottom-left-radius:4px}
 .bub.you{align-self:flex-end;background:var(--ink);color:var(--white);border-bottom-right-radius:4px}
 .summary{background:var(--paper);border-radius:16px;padding:16px}
@@ -186,12 +189,53 @@ section{padding:80px 0}
 @media(max-width:900px){.twoways{grid-template-columns:1fr}.twoways .col{padding-left:0;border-left:0}}
 .icobox{width:44px;height:44px;border-radius:12px;background:var(--paper);display:grid;place-items:center;flex:0 0 auto}
 .tone-card{background:var(--night-panel);border:1px solid rgba(255,255,255,.10);border-radius:16px;padding:24px 22px;
-  display:flex;flex-direction:column;gap:16px}
+  display:flex;flex-direction:column;gap:16px;text-align:left;cursor:pointer;color:inherit;
+  transition:border-color .14s var(--ease),box-shadow .14s var(--ease)}
+.tone-card:hover{border-color:rgba(255,255,255,.3)}
+.tone-card[aria-pressed="true"]{border-color:var(--lime);box-shadow:0 0 0 1px var(--lime)}
+.tone-bar{display:flex;align-items:center;gap:16px;flex-wrap:wrap;background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:18px 22px}
+.tone-bar .lbl{background:var(--lime);color:var(--deep);height:26px;padding:0 10px;border-radius:999px;
+  display:inline-flex;align-items:center;font-size:12px;font-weight:700}
+.tone-bar .hint{margin-left:auto;font-size:14px;font-weight:600;color:var(--lime);text-decoration:none}
+.tone-bar .hint:hover{text-decoration:underline}
+
+/* Scroll motion: reveal on entry, staggered across siblings via --d. */
+[data-reveal]{opacity:0;transform:translateY(26px);
+  transition:opacity .72s var(--ease),transform .72s var(--ease);transition-delay:calc(var(--d,0) * 85ms)}
+[data-reveal="scale"]{transform:translateY(26px) scale(.965)}
+[data-reveal].in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){[data-reveal]{opacity:1!important;transform:none!important;transition:none}
+  [data-parallax]{transform:none!important}}
+/* Back to top — sits above the demo handle so the two never overlap. */
+.totop{position:fixed;right:16px;bottom:76px;z-index:40;width:44px;height:44px;border-radius:999px;
+  display:grid;place-items:center;background:var(--white);border:1px solid var(--line-2);color:var(--ink);
+  cursor:pointer;box-shadow:var(--shadow);opacity:0;pointer-events:none;transform:translateY(10px);
+  transition:opacity .3s var(--ease),transform .3s var(--ease),background .12s var(--ease)}
+.totop:hover{background:var(--paper)}
+.totop.show{opacity:1;pointer-events:auto;transform:none}
 .tone-card .t{display:flex;align-items:center;gap:14px;font-family:'Wix Madefor Display',sans-serif;font-size:20px;font-weight:600}
 .tone-card p{margin:0;font-size:15px;line-height:1.5;color:var(--night-muted)}
-footer{background:var(--white);border-top:1px solid var(--line)}
-footer .wrap{display:flex;flex-wrap:wrap;gap:24px;align-items:center;padding-top:40px;padding-bottom:40px}
-footer nav{margin-left:auto;display:flex;gap:24px;font-size:13px;color:var(--muted)}
+footer{background:var(--paper);border-top:1px solid var(--line)}
+.foot{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:66px;padding-top:54px;padding-bottom:54px}
+.foot-brand{display:flex;flex-direction:column;gap:18px}
+.foot-about{margin:0;font-size:14px;line-height:1.5;color:var(--muted);max-width:340px}
+.foot-cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:40px;padding-left:66px;border-left:1px solid var(--line)}
+.foot-h{margin:0 0 19px;font-family:'Wix Madefor Display',sans-serif;font-size:14px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--ink)}
+.foot-col ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:18px}
+.foot-col a{font-size:16px;line-height:1.15;color:var(--ink);text-decoration:none}
+.foot-col a:hover{color:var(--violet)}
+.foot-bottom{display:flex;align-items:center;gap:24px;flex-wrap:wrap;padding-top:24px;padding-bottom:32px;border-top:1px solid var(--line)}
+.socials{display:flex;gap:15px;align-items:center}
+.socials a{width:24px;height:24px;display:grid;place-items:center;color:var(--ink);opacity:.85;transition:opacity .12s var(--ease),color .12s var(--ease)}
+.socials a:hover{opacity:1;color:var(--violet)}
+.legal{margin-left:auto;display:flex;align-items:center;gap:24px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.legal a{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+.legal a:hover{color:var(--violet)}
+@media(max-width:900px){.foot{grid-template-columns:1fr;gap:40px}
+  .foot-cols{padding-left:0;border-left:0;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px}
+  .legal{margin-left:0;width:100%;gap:16px}}
+@media(max-width:560px){.foot-cols{grid-template-columns:1fr}}
 
 /* ── onboarding ─────────────────────────────────────────────────────────── */
 .onb{display:flex;min-height:calc(100vh - var(--barpad,86px))}
@@ -392,6 +436,8 @@ const DEFAULTS = {
   status: 'ACTIVE',
   scheduling: true,
   chat: [],
+  landingTone: 'Warm',   // which tone answers the call at the top of the landing page
+  shown: 4,              // bubbles visible in that call (the replay reveals them one by one)
 };
 let S = Object.assign({}, DEFAULTS);
 
@@ -726,8 +772,9 @@ function go(screen, extra) { set(Object.assign({screen: screen}, extra||{})); wi
 <script>
 /* ── landing ────────────────────────────────────────────────────────────── */
 function viewLanding() {
-  const tone = (t) => `<div class="tone-card"><div class="t">${pebble(44, TONES[t].peb)}${t}</div>
-    <p>“${esc(TONES[t].line(S.name))}”</p></div>`;
+  const tone = (t) => `<button class="tone-card" aria-pressed="${S.landingTone===t}" onclick="set({landingTone:'${t}'})">
+    <div class="t">${pebble(44, TONES[t].peb)}${t}</div>
+    <p>“${esc(TONES[t].line(S.name))}”</p></button>`;
   const doCard = (i,t,b) => `<div class="card" style="min-height:250px;display:flex;flex-direction:column;gap:14px">
     <span class="icobox">${ico(i,20)}</span>
     <div style="font-family:'Wix Madefor Display',sans-serif;font-size:20px;font-weight:600">${t}</div>
@@ -743,7 +790,7 @@ function viewLanding() {
   </div>
 </div></header>
 
-<section class="sec-paper" style="padding:64px 0"><div class="wrap hero">
+<section class="sec-paper" id="hero" style="padding:64px 0"><div class="wrap hero">
   <div class="hero-copy">
     <div class="eyebrow">AI receptionist by Wix</div>
     <h1>Every call answered. Every detail kept.</h1>
@@ -751,7 +798,7 @@ function viewLanding() {
       meeting, and hands you the summary while you get on with the work.</p>
     <div style="display:flex;gap:12px;flex-wrap:wrap">
       <button class="btn btn-primary btn-lg" onclick="go('onboarding',{step:0})">Put ${esc(S.name)} on the line ${ico('arrow',18,'var(--deep)')}</button>
-      <button class="btn btn-outline btn-lg" onclick="go('onboarding',{step:6})">${ico('play',18)} Listen to a call</button>
+      <button class="btn btn-outline btn-lg" onclick="playCall()">${ico('play',18)} Listen to a call</button>
     </div>
     <ul class="assure">
       <li>${ico('check',14,'var(--lime-mid)')} Set up in a few minutes</li>
@@ -761,18 +808,19 @@ function viewLanding() {
   </div>
   <div class="hero-art">
     <div class="wash"></div>
-    <div class="peb">${pebble(220,'listening')}</div>
+    <div class="peb" data-parallax="0.12">${pebble(220,'listening')}</div>
     <div class="callcard">
       <div style="display:flex;align-items:center;justify-content:space-between">
         <div style="display:flex;align-items:center;gap:8px">
           <b style="font-size:14px">Incoming call</b><span class="pill pill-live"><i></i>Live</span>
-        </div><span class="muted" style="font-size:13px;font-variant-numeric:tabular-nums">0:42</span>
+        </div><span class="muted" style="font-size:13px;font-variant-numeric:tabular-nums">${['0:00','0:09','0:21','0:33','0:42'][S.shown]}</span>
       </div>
-      <div class="bubbles">
-        <div class="bub them">Good afternoon, ${esc(S.business)}, this is ${esc(S.name)}. How can I help?</div>
-        <div class="bub you">Hi, I’d like to book a cleaning next week, mornings if possible.</div>
-        <div class="bub them">Of course. I have Tuesday at 10:30 or Thursday at 9:00. Which works better?</div>
-        <div class="bub you">Tuesday, please.</div>
+      <div class="bubbles">${[
+        {me:false, text: TONES[S.landingTone].line(S.name)},
+        {me:true,  text:'Hi, I’d like to book a cleaning next week, mornings if possible.'},
+        {me:false, text:'Of course. I have Tuesday at 10:30 or Thursday at 9:00. Which works better?'},
+        {me:true,  text:'Tuesday, please.'},
+      ].slice(0, S.shown).map(b=>`<div class="bub ${b.me?'you':'them'}">${esc(b.text)}</div>`).join('')}
       </div>
       <div class="summary">
         <div class="lbl">Call summary</div>
@@ -811,7 +859,7 @@ function viewLanding() {
       <p class="muted" style="margin:0">Give him a name, pick his voice and set his tone. He drafts a greeting for
         your business that you can change in a sentence.</p>
       <div class="mini"><div><div class="ml">Name</div><div class="mf" style="margin-top:6px">${esc(S.name)}</div></div>
-        <div class="tone-mini">${Object.keys(TONES).map(t=>`<span class="${t===S.tone?'on':''}">${t}</span>`).join('')}</div></div></div>
+        <div class="tone-mini">${Object.keys(TONES).map(t=>`<span class="${t===S.landingTone?'on':''}">${t}</span>`).join('')}</div></div></div>
     <div class="card step-card"><div style="display:flex;align-items:center;gap:12px"><span class="n">2</span><h3>Teach him</h3></div>
       <p class="muted" style="margin:0">Paste your website and he reads it. Add the things a site never says:
         parking, cancellations, what to bring. He answers from that and nothing else.</p>
@@ -864,13 +912,16 @@ function viewLanding() {
 </div></section>
 
 <section class="sec-night" id="tone" style="position:relative;overflow:hidden">
-  <div class="wash" style="left:50%;top:50%;width:900px;height:900px;margin:-450px 0 0 -450px;
+  <div class="wash" data-parallax="0.06" style="left:50%;top:50%;width:900px;height:900px;margin:-450px 0 0 -450px;
     background:radial-gradient(circle at 50% 50%,rgba(122,92,255,.35) 0%,rgba(46,217,255,.10) 40%,rgba(11,13,23,0) 70%)"></div>
   <div class="wrap" style="position:relative;display:flex;flex-direction:column;gap:36px">
     <div class="sec-head"><div><div class="eyebrow">Personality</div>
       <h2 style="color:#fff">${esc(S.name)}, the way you’d say it</h2></div>
-      <p>Name him, pick his voice, set his tone. He keeps it on every call, and you can change it whenever your business does.</p></div>
+      <p>Name him, pick his voice, set his tone. Choose one below and the call at the top of the page answers that way.</p></div>
     <div class="grid g4">${Object.keys(TONES).map(tone).join('')}</div>
+    <div class="tone-bar"><span class="lbl">${S.landingTone}</span>
+      <span style="font-size:15px;color:var(--night-muted)">${TONES[S.landingTone].blurb}</span>
+      <a class="hint" href="#hero" onclick="event.preventDefault();window.scrollTo({top:0,behavior:'smooth'})">Hear it on the call above →</a></div>
   </div>
 </section>
 
@@ -885,7 +936,7 @@ function viewLanding() {
     </figcaption></figure>`).join('')}</div>
 </div></section>
 
-<section class="sec-paper" style="position:relative;overflow:hidden">
+<section class="sec-paper" id="cta" style="position:relative;overflow:hidden">
   <div class="wash" style="left:50%;top:50%;width:640px;height:640px;margin:-320px 0 0 -320px"></div>
   <div class="wrap" style="position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:0">
     ${pebble(120,'happy')}
@@ -894,16 +945,40 @@ function viewLanding() {
       account needed. Keep your number.</p>
     <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:28px">
       <button class="btn btn-primary btn-lg" onclick="go('onboarding',{step:0})">Put ${esc(S.name)} on the line ${ico('arrow',18,'var(--deep)')}</button>
-      <button class="btn btn-outline btn-lg" onclick="go('onboarding',{step:6})">${ico('play',18)} Listen to a call</button>
+      <button class="btn btn-outline btn-lg" onclick="playCall()">${ico('play',18)} Listen to a call</button>
     </div>
   </div>
 </section>
 
-<footer><div class="wrap">
-  <div>${mark(28)}<p class="muted" style="margin:8px 0 0;font-size:13px">The AI receptionist for small businesses.</p></div>
-  <nav><a href="#">Help</a><a href="#">Privacy</a><a href="#">Terms</a></nav>
-  <div class="muted" style="width:100%;font-size:12px">© 2026 Wix.com, Inc.</div>
-</div></footer>`;
+<footer>
+  <div class="wrap foot">
+    <div class="foot-brand">
+      ${mark(32)}
+      <p class="foot-about">${esc(S.name)} by Wix is an AI receptionist built for small business owners who can’t get to
+        the phone. He answers in your business’s voice, knows your hours, services and prices, and books the
+        meeting while you keep working. Every call comes back to you as a summary, a full transcript and a saved
+        contact — including the ones that come in at midnight.</p>
+    </div>
+    <div class="foot-cols">
+      ${[['Product',[['How it works','#how'],['What he does','#what'],['Personality','#tone'],['Pricing','#cta'],['Help center','#cta'],['Affiliates','#cta']]],
+         ['More from Wix',[['Website builder','#cta'],['Website design','#cta'],['Website templates','#cta'],['eCommerce website','#cta'],['Domain registration','#cta'],['Wix Studio','#cta']]],
+         ['Company',[['About Wix','#cta'],['Contact us','#cta'],['Press &amp; media','#cta'],['Accessibility statement','#cta'],['Site map','#cta'],['Careers','#cta']]]]
+        .map(([h,links])=>`<div class="foot-col"><p class="foot-h">${h}</p><ul>${links.map(([l,href])=>`<li><a href="${href}">${l}</a></li>`).join('')}</ul></div>`).join('')}
+    </div>
+  </div>
+  <div class="wrap foot-bottom">
+    <div class="socials">
+      <a href="#cta" aria-label="YouTube"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 12s0-3.6-.5-5.3a2.7 2.7 0 0 0-1.9-1.9C18.9 4.3 12 4.3 12 4.3s-6.9 0-8.6.5a2.7 2.7 0 0 0-1.9 1.9C1 8.4 1 12 1 12s0 3.6.5 5.3a2.7 2.7 0 0 0 1.9 1.9c1.7.5 8.6.5 8.6.5s6.9 0 8.6-.5a2.7 2.7 0 0 0 1.9-1.9C23 15.6 23 12 23 12ZM9.8 15.3V8.7l5.7 3.3-5.7 3.3Z"/></svg></a>
+      <a href="#cta" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg></a>
+      <a href="#cta" aria-label="TikTok"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.5 3h-2.8v12.2a2.6 2.6 0 1 1-2.1-2.6V9.7a5.7 5.7 0 1 0 5 5.6V9.4a6.6 6.6 0 0 0 3.9 1.3V7.8a3.8 3.8 0 0 1-4-4.8Z"/></svg></a>
+      <a href="#cta" aria-label="X"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.6 3h3.3l-7.2 8.3L22 21h-6.6l-5.2-6.8L4.3 21H1l7.7-8.8L1.4 3H8l4.7 6.2L17.6 3Zm-1.2 16h1.8L7.7 4.9H5.7L16.4 19Z"/></svg></a>
+      <a href="#cta" aria-label="LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5ZM3 9h4v12H3V9Zm7 0h3.8v1.7h.05a4.2 4.2 0 0 1 3.75-2c4 0 4.4 2.5 4.4 5.9V21h-4v-5.5c0-1.3 0-3-1.9-3s-2.1 1.4-2.1 2.9V21h-4V9Z"/></svg></a>
+    </div>
+    <div class="legal"><a href="#cta">Terms of use</a><a href="#cta">Privacy policy</a>
+      <span>${esc(S.name)} by Wix is part of Wix.com Ltd. © 2006–2026</span></div>
+  </div>
+</footer>
+<button class="totop" data-totop aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})"><span style="display:inline-flex;transform:rotate(-90deg)">${ico('arrow',18)}</span></button>`;
 }
 </script>
 <script>
@@ -1218,6 +1293,65 @@ function ask() {
   S.chat.push({me:false, text:REPLIES[S.chat.length % REPLIES.length]});
   render();
 }
+/* "Listen to a call": replay the bubbles one at a time with the clock. */
+let callTimer = null;
+function playCall() {
+  if (callTimer) { clearInterval(callTimer); callTimer = null; }
+  set({shown:0});
+  callTimer = setInterval(() => {
+    S.shown = Math.min(S.shown + 1, 4);
+    render();
+    if (S.shown >= 4) { clearInterval(callTimer); callTimer = null; }
+  }, 950);
+}
+
+/* Landing motion: reveal on entry (staggered per group), parallax on the hero
+   pebble and the night wash, back-to-top past the fold. Re-armed after each
+   render of the landing; anything already on screen shows at once. */
+const REVEAL_GROUPS = [
+  ['.hero-copy > *', null], ['.hero-art', null], ['.sec-head > *', 'section'], ['.grid > *', 'section'],
+  ['.twoways', null], ['.tone-bar', null], ['#cta .wrap > *', null], ['.foot-brand, .foot-col', null],
+];
+let revealIO = null;
+function armLandingMotion() {
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  REVEAL_GROUPS.forEach(([sel, scopeSel]) => {
+    const scopes = scopeSel ? document.querySelectorAll(scopeSel) : [document];
+    scopes.forEach(scope => scope.querySelectorAll(sel).forEach((el, i) => {
+      if (el.hasAttribute('data-reveal')) return;
+      el.setAttribute('data-reveal', (el.classList.contains('card') || el.classList.contains('tone-card')) ? 'scale' : '');
+      el.style.setProperty('--d', Math.min(i, 5));
+    }));
+  });
+  if (revealIO) revealIO.disconnect();
+  const targets = document.querySelectorAll('[data-reveal]');
+  if (reduced || !('IntersectionObserver' in window)) { targets.forEach(t => t.classList.add('in')); return; }
+  revealIO = new IntersectionObserver(entries => entries.forEach(en => {
+    if (en.isIntersecting) { en.target.classList.add('in'); revealIO.unobserve(en.target); }
+  }), {rootMargin:'0px 0px -12% 0px', threshold:.08});
+  targets.forEach(t => {
+    if (t.getBoundingClientRect().top < innerHeight * 0.9) t.classList.add('in'); else revealIO.observe(t);
+  });
+  parallax();
+}
+let ticking = false;
+function parallax() {
+  ticking = false;
+  if (S.screen !== 'landing' || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const y = pageYOffset;
+  document.querySelectorAll('[data-parallax]').forEach(el => {
+    const k = Number(el.dataset.parallax) || 0;
+    const box = el.getBoundingClientRect();
+    const mid = box.top + y + box.height / 2 - innerHeight / 2;
+    el.style.transform = `translate3d(0,${((y - mid) * k).toFixed(1)}px,0)`;
+  });
+}
+addEventListener('scroll', () => {
+  if (!ticking) { ticking = true; requestAnimationFrame(parallax); }
+  const t = document.querySelector('[data-totop]');
+  if (t) t.classList.toggle('show', pageYOffset > 700);
+}, {passive:true});
+
 function finish() { set({status:'ACTIVE', step:SUCCESS}); window.scrollTo(0,0); }
 </script>
 <script>
@@ -1515,6 +1649,8 @@ function render() {
       }
     }
   }
+
+  if (S.screen === 'landing') armLandingMotion();
 
   const bar = document.getElementById('demobar');
   bar.innerHTML = demobar();
