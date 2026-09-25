@@ -1,0 +1,356 @@
+<title>Oil &amp; Gas Bot Research</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --paper:#f3f4f5; --surface:#fcfcfb; --ink:#141d26; --ink-2:#4b5560; --muted:#7f8790;
+  --grid:#e3e5e7; --axis:#c3c7cc; --rule:#d9dcdf; --band:rgba(20,29,38,0.05);
+  --accent:#a65300; --accent-soft:#f6e7d6;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --gray:#a3a9b0;
+  --pos:#2a78d6; --neg:#e34948;
+  --good:#0ca30c; --good-ink:#006300; --good-bg:#e4f4e4;
+  --warn:#fab219; --warn-ink:#7a5200; --warn-bg:#fdf1d8;
+  --bad:#d03b3b; --bad-ink:#a32020; --bad-bg:#f9e2e2;
+  --font-body:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-data:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --shadow:0 1px 0 rgba(20,29,38,0.04);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --paper:#0e1114; --surface:#161a1e; --ink:#eef1f4; --ink-2:#b7bec6; --muted:#8a929b;
+    --grid:#262b31; --axis:#3a4148; --rule:#2b3137; --band:rgba(255,255,255,0.05);
+    --accent:#f0a24a; --accent-soft:#3a2a17;
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --gray:#6d747c;
+    --pos:#3987e5; --neg:#e66767;
+    --good-ink:#5fd35f; --good-bg:#16301a; --warn-ink:#f5c35a; --warn-bg:#35290f; --bad-ink:#ff8a8a; --bad-bg:#3a1818;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --paper:#0e1114; --surface:#161a1e; --ink:#eef1f4; --ink-2:#b7bec6; --muted:#8a929b;
+  --grid:#262b31; --axis:#3a4148; --rule:#2b3137; --band:rgba(255,255,255,0.05);
+  --accent:#f0a24a; --accent-soft:#3a2a17;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --gray:#6d747c;
+  --pos:#3987e5; --neg:#e66767;
+  --good-ink:#5fd35f; --good-bg:#16301a; --warn-ink:#f5c35a; --warn-bg:#35290f; --bad-ink:#ff8a8a; --bad-bg:#3a1818;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.55;
+  font-variation-settings:"wdth" 100;padding-inline:20px;padding-block:0 64px}
+.wrap{max-width:1080px;margin:0 auto}
+h1,h2,h3{font-family:var(--font-body);text-wrap:balance;margin:0;line-height:1.12}
+h1{font-size:clamp(34px,5.4vw,58px);font-weight:760;font-stretch:78%;font-variation-settings:"wdth" 78;letter-spacing:-0.01em}
+h2{font-size:clamp(24px,3vw,32px);font-weight:720;font-variation-settings:"wdth" 82}
+h3{font-size:18px;font-weight:680;font-variation-settings:"wdth" 90}
+p{margin:0;max-width:68ch}
+a{color:var(--accent);text-underline-offset:2px}
+.eyebrow{font-family:var(--font-data);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.mono{font-family:var(--font-data)}
+.num{font-variant-numeric:tabular-nums}
+
+/* header */
+header.top{padding-block:40px 28px;display:grid;gap:18px;border-bottom:1px solid var(--rule)}
+.lede{font-size:19px;color:var(--ink-2);max-width:64ch}
+.tickers{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:10px;overflow:hidden;margin-top:6px}
+.tk{background:var(--surface);padding:14px 16px;display:grid;gap:2px}
+.tk .sym{font-family:var(--font-data);font-size:13px;font-weight:500;letter-spacing:.04em}
+.tk .nm{font-size:12.5px;color:var(--muted)}
+.tk .px{font-size:26px;font-weight:650;font-variation-settings:"wdth" 85}
+.tk .meta{font-family:var(--font-data);font-size:12px;color:var(--ink-2)}
+.srcnote{font-size:12.5px;color:var(--muted)}
+
+/* nav */
+nav.toc{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--rule);margin-inline:-20px;padding-inline:20px}
+nav.toc .wrap{display:flex;gap:4px 18px;flex-wrap:wrap;padding-block:10px;font-size:13.5px}
+nav.toc a{color:var(--ink-2);text-decoration:none}
+nav.toc a:hover,nav.toc a:focus-visible{color:var(--ink);text-decoration:underline}
+
+section{padding-block:44px 8px;display:grid;gap:18px}
+section > .head{display:grid;gap:8px}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+.card{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:18px 18px 16px;box-shadow:var(--shadow);display:grid;gap:10px;align-content:start}
+.card p{font-size:15px}
+figure{margin:0;background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:16px 16px 12px;display:grid;gap:10px}
+figcaption{display:grid;gap:4px}
+figcaption .t{font-weight:650;font-size:15.5px}
+figcaption .s{font-size:13.5px;color:var(--ink-2);max-width:80ch}
+.viz{position:relative;width:100%}
+.viz svg{display:block;overflow:visible}
+.viz-tip{position:absolute;pointer-events:none;background:var(--surface);color:var(--ink);border:1px solid var(--rule);border-radius:8px;
+  padding:8px 10px;font-size:12.5px;box-shadow:0 4px 18px rgba(0,0,0,.12);min-width:150px;z-index:3}
+.viz-tip-title{font-family:var(--font-data);font-size:11.5px;color:var(--muted);margin-bottom:4px}
+.viz-tip-row{display:flex;align-items:center;gap:8px;white-space:nowrap}
+.viz-tip-key{display:inline-block;width:12px;height:3px;border-radius:2px}
+.viz-tip-row strong{font-family:var(--font-data);font-weight:500}
+.viz-tip-label{color:var(--ink-2)}
+.viz-mark:focus{outline:none}
+.viz-mark:focus rect:first-child{stroke:var(--accent);stroke-width:1}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{display:inline-block;width:14px;height:3px;border-radius:2px}
+.legend i.box{width:10px;height:10px;border-radius:2px}
+
+/* tables */
+.tbl{overflow-x:auto;border:1px solid var(--rule);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--grid);vertical-align:top}
+th{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.03em;text-transform:uppercase;white-space:nowrap;background:var(--surface);position:sticky;top:0}
+td.n,th.n{text-align:right;font-family:var(--font-data);font-variant-numeric:tabular-nums;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td .sub{display:block;color:var(--muted);font-size:12.5px;margin-top:2px}
+.neg{color:var(--bad-ink)} .posv{color:var(--ink)}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;padding:3px 9px 3px 7px;border-radius:999px;white-space:nowrap}
+.chip svg{width:13px;height:13px}
+.chip.build{background:var(--good-bg);color:var(--good-ink)}
+.chip.maybe{background:var(--warn-bg);color:var(--warn-ink)}
+.chip.avoid{background:var(--bad-bg);color:var(--bad-ink)}
+
+/* bot spec */
+.spec{display:grid;grid-template-columns:minmax(150px,220px) 1fr;border:1px solid var(--rule);border-radius:10px;overflow:hidden;background:var(--surface)}
+.spec > div{padding:11px 14px;border-bottom:1px solid var(--grid);font-size:14.5px}
+.spec > div:nth-child(odd){color:var(--muted);font-size:13px;font-weight:600;letter-spacing:.02em;background:color-mix(in srgb,var(--surface) 70%,var(--paper))}
+.spec > div:nth-last-child(-n+2){border-bottom:0}
+@media (max-width:560px){.spec{grid-template-columns:1fr}.spec > div:nth-child(odd){border-bottom:0;padding-bottom:0}}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.kpi{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:12px 14px;display:grid;gap:2px}
+.kpi .l{font-size:12.5px;color:var(--muted)}
+.kpi .v{font-size:24px;font-weight:650;font-variation-settings:"wdth" 88}
+.kpi .d{font-size:12px;color:var(--ink-2)}
+.callout{border-left:3px solid var(--accent);background:var(--accent-soft);padding:12px 16px;border-radius:0 8px 8px 0;font-size:15px;max-width:none}
+ul.clean{margin:0;padding-left:1.1em;display:grid;gap:6px;max-width:74ch}
+ul.clean li{padding-left:2px}
+.small{font-size:13.5px;color:var(--ink-2)}
+hr.rule{border:0;border-top:1px solid var(--rule);margin:8px 0 0}
+details{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:12px 16px}
+details summary{cursor:pointer;font-weight:600}
+details[open] summary{margin-bottom:10px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+
+<div class="wrap">
+<header class="top">
+  <div class="eyebrow">Strategy research · XTIUSD · XBRUSD · XNGUSD · 25 Sep 2026</div>
+  <h1>Oil &amp; gas bot research</h1>
+  <p class="lede">We backtested 11 strategy families on 33 years of roll-adjusted futures, 15 years of one-minute CFD prices and EIA spot prices up to 22&nbsp;Sep&nbsp;2026, charging retail CFD spreads and swap costs. Trend following is the one durable edge, and a refining-margin (crack spread) signal makes it better for crude. Most of the ideas people usually build into oil bots lost money.</p>
+  <div class="tickers" role="list">
+    <div class="tk" role="listitem"><span class="sym">XTIUSD</span><span class="nm">WTI crude · EIA spot 22 Sep</span><span class="px num">$96.41</span><span class="meta">YTD +68% · 30d vol 42%</span></div>
+    <div class="tk" role="listitem"><span class="sym">XBRUSD</span><span class="nm">Brent crude · EIA spot 22 Sep</span><span class="px num">$114.89</span><span class="meta">YTD +87% · 30d vol 56% (92nd pct)</span></div>
+    <div class="tk" role="listitem"><span class="sym">XNGUSD</span><span class="nm">Henry Hub gas · EIA spot 22 Sep</span><span class="px num">$2.90</span><span class="meta">YTD −28% · 52w range $2.54–30.72</span></div>
+    <div class="tk" role="listitem"><span class="sym">BRENT − WTI</span><span class="nm">Spot spread</span><span class="px num">$18.48</span><span class="meta">2025 avg $3.58 · peak $25.94 (8 Apr)</span></div>
+  </div>
+  <p class="srcnote">Spot prints are EIA assessments; your broker's CFD quotes follow the front futures and differ from these, most of all for gas.</p>
+</header>
+</div>
+
+<nav class="toc" aria-label="Sections"><div class="wrap">
+  <a href="#verdict">Verdict</a><a href="#bot">Recommended bot</a><a href="#trend">Trend</a><a href="#crack">Crack spread</a>
+  <a href="#carry">Carry</a><a href="#losers">What failed</a><a href="#season">Seasonality</a><a href="#intraday">Intraday</a>
+  <a href="#ml">ML</a><a href="#grid">Grid &amp; martingale</a><a href="#recent">2024–26</a><a href="#method">Method</a>
+</div></nav>
+
+<div class="wrap">
+
+<section id="verdict">
+  <div class="head">
+    <div class="eyebrow">Verdict board</div>
+    <h2>What is worth building</h2>
+    <p>Net Sharpe ratio after CFD spreads, 2.5%/yr financing markup and roll yield. Daily strategies are scored on the equal-weight portfolio of the markets they trade, from 1991 to March 2024; out-of-sample means 2008 onwards, with parameters chosen on the earlier years. For a sense of scale, a Sharpe of 0.5 over 33 years is a solid systematic strategy, and anything above 1.5 in a daily oil backtest should make you look for a bug.</p>
+  </div>
+  <figure>
+    <figcaption><span class="t">Best net Sharpe per strategy family</span><span class="s">One representative (best reasonable) configuration per family, on the P&amp;L-relevant data. Blue is positive and red is negative. The values are also listed in the table below.</span></figcaption>
+    <div class="viz" id="fig-scoreboard"></div>
+  </figure>
+  <div class="tbl"><table id="tbl-verdict">
+    <thead><tr><th>Strategy family</th><th>What we tested</th><th class="n">Net Sharpe</th><th class="n">Out-of-sample</th><th>Verdict</th></tr></thead>
+    <tbody><!--VERDICT_ROWS--></tbody>
+  </table></div>
+</section>
+
+<section id="bot">
+  <div class="head">
+    <div class="eyebrow">Direction 1 · core</div>
+    <h2>A daily trend bot with a crack-spread tilt</h2>
+    <p>This is the configuration we would build first. It trades all three CFDs once a day (or once a week), holds positions for weeks to months, and sizes every market to the same risk. The backtest below is net of costs.</p>
+  </div>
+  <div class="kpis" id="kpis"></div>
+  <figure>
+    <figcaption><span class="t">Growth of $1, 1991 – Mar 2024 (log scale)</span><span class="s">Equal-weight portfolio of XTIUSD, XBRUSD and XNGUSD, each targeted at 15% annual volatility; the crack signal applies to the two crude markets only. "Buy &amp; hold" is a volatility-targeted long position in the same three markets.</span></figcaption>
+    <div class="legend" id="leg-equity"></div>
+    <div class="viz" id="fig-equity"></div>
+  </figure>
+  <figure>
+    <figcaption><span class="t">Calendar-year returns, trend + crack (% of equity)</span><span class="s">Net of costs at a 15% per-market volatility target; 1991 starts in November and 2024 ends in March.</span></figcaption>
+    <div class="viz" id="fig-yearly"></div>
+  </figure>
+  <div class="spec">
+    <div>Markets</div><div>XTIUSD, XBRUSD, XNGUSD, equal risk. Gas trades trend only; crude trades 50% trend and 50% crack signal.</div>
+    <div>Trend signal</div><div>Average of four EWMA crossovers (8/32, 16/64, 32/128, 64/256 days) and four breakout rules (40, 80, 160, 320 days), each scaled by volatility. Computed on a roll-adjusted daily close, never on the raw CFD chart if it has roll gaps.</div>
+    <div>Crack signal</div><div>z-score of the 3-2-1 crack spread (2×RBOB + 1×heating oil/ULSD − 3×WTI, $/bbl) against its own 250-day history. Long crude when refining margins are high, short when they are low. Needs a daily feed of RBOB and ULSD settlements (CME RB, HO).</div>
+    <div>Position size</div><div>Target 15% annualised volatility per market: position = forecast × 15% ÷ forecast volatility, using a 36-day EWMA blended 70/30 with the 10-year average. Typical exposure is 0.3–0.6× equity per market; cap 3×.</div>
+    <div>Trading</div><div>Rebalance daily or weekly (Wednesday gave the same result). Execute in the 30 minutes before the 14:30 ET settlement, when CFD spreads are tightest. Skip trades smaller than 10% of the typical position.</div>
+    <div>Risk overlay</div><div>Halve a market's exposure when its volatility is above the 90th percentile of the past five years. Trend lost money in that regime in all three markets. Portfolio kill-switch at −25% from peak for manual review; the backtest's worst drawdown was −24%.</div>
+    <div>Costs assumed</div><div>Per-side spread + slippage of 3 bp (WTI), 3.5 bp (Brent), 10 bp (gas), plus a 2.5%/yr financing markup on both longs and shorts. Doubling or tripling spreads barely matters; a 5% markup takes about 0.09 off the Sharpe ratio.</div>
+  </div>
+  <div class="callout"><strong>Check this with your broker before writing code.</strong> The futures returns we use include roll yield: backwardation pays longs, contango charges them. A CFD passes that through only if its overnight swap is set from the futures curve. Ask how XTIUSD, XBRUSD and XNGUSD are priced, how the monthly roll is handled, and what the long and short swaps are. If the swap is a flat interest-style rate, the same trend rules applied to spot-style prices earned roughly nothing in our tests (Sharpe −0.1 to 0.1 for crude).</div>
+  <!--DIRECTION2-->
+</section>
+
+<section id="trend">
+  <div class="head">
+    <div class="eyebrow">Evidence · trend following</div>
+    <h2>Trend works in all three markets and in every decade</h2>
+    <p>Every trend rule we tried made money on the rolled futures after costs, from simple 12-month momentum to breakouts and moving-average crossovers. Blends of several speeds were the most stable. The edge is modest per market (Sharpe 0.4–0.5) and improves when the three markets are combined, because oil and gas trends are only loosely related.</p>
+  </div>
+  <div class="cols">
+    <figure>
+      <figcaption><span class="t">Net Sharpe by decade and market</span><span class="s">Blended trend rule; 2020s = Jan 2020 – Mar 2024.</span></figcaption>
+      <div class="legend" id="leg-dec"></div>
+      <div class="viz" id="fig-decades"></div>
+    </figure>
+    <figure>
+      <figcaption><span class="t">Trend Sharpe by volatility regime</span><span class="s">Market volatility ranked against its own trailing five years, known on the day. The top 10% of volatility is where trend lost money.</span></figcaption>
+      <div class="legend" id="leg-vol"></div>
+      <div class="viz" id="fig-volreg"></div>
+    </figure>
+  </div>
+  <div class="tbl"><table id="tbl-trendvars"><thead><tr><th>Trend rule (3-market portfolio)</th><th class="n">Net Sharpe</th><th class="n">1991–2007</th><th class="n">2008–2024</th><th class="n">Max drawdown</th></tr></thead><tbody></tbody></table></div>
+  <div class="cols">
+    <div class="card"><h3>Robust to the usual stress tests</h3><p>Trading one or two days late changes the Sharpe by 0.02. Doubling or tripling spreads costs about 0.03. With no position buffer, or a 25% buffer, it moves by ±0.04. Every one of 26 trend variants was positive.</p></div>
+    <div class="card"><h3>Mostly small losses, a few big wins</h3><p>About three direction changes a year per market, held 1–3 months. Roughly four in five direction changes lose around 2% of equity; the trends that run gain 20–28%. Both long and short sides contribute in each market.</p></div>
+    <div class="card"><h3>Part of the edge is roll yield</h3><p>The same positions applied to EIA spot returns earned a Sharpe of −0.1 to 0.1 for crude, against 0.4–0.5 on futures. Trend tends to be long in backwardation and short in contango, so it collects carry. That is why the broker's swap method matters.</p></div>
+  </div>
+</section>
+
+<section id="crack">
+  <div class="head">
+    <div class="eyebrow">Evidence · refining margin</div>
+    <h2>The crack spread predicts crude, and not only through trend</h2>
+    <p>When gasoline and diesel are expensive relative to crude compared with the past year, refiners buy more crude and product-led rallies follow. A position proportional to the 250-day z-score of the 3-2-1 crack spread earned a net Sharpe of 0.61 on WTI and Brent together (0.44 before 2008, 0.76 after). Its daily P&amp;L is 0.51 correlated with trend, so combining the two lifts the three-market portfolio from 0.58 to 0.69 and cuts the worst drawdown from −32% to −24%.</p>
+  </div>
+  <div class="cols">
+    <figure>
+      <figcaption><span class="t">Crack signal: Sharpe vs execution delay</span><span class="s">Trading up to ten days after the signal still worked, which rules out a closing-price artefact. It is a slow, fundamental signal.</span></figcaption>
+      <div class="viz" id="fig-cracklag"></div>
+    </figure>
+    <figure>
+      <figcaption><span class="t">Crack signal variants</span><span class="s">Two-market (WTI + Brent) portfolio, net Sharpe.</span></figcaption>
+      <div class="viz" id="fig-crackvars"></div>
+    </figure>
+  </div>
+  <p class="small">Weak points: most of the signal comes from gasoline (Sharpe 0.60 alone vs 0.33 for heating oil). On its own, the crack signal built from near-month WTI instead of the December contract scored 0.41 for 2008–2024 rather than 0.76; inside the trend + crack blend the near-month version still reached 0.66. It survives seasonal adjustment (0.54) and doubled costs (0.58). We could not test it after March 2024 because the product prices in our data stop there. Paper-trade it before giving it full weight.</p>
+</section>
+
+<section id="carry">
+  <div class="head">
+    <div class="eyebrow">Evidence · carry and curve shape</div>
+    <h2>Carry looks strong until you trade it a day later</h2>
+    <p>Going long when the futures curve is in backwardation and short in contango scored 0.50 on the three-market portfolio with same-close execution. With a one-day delay it fell to 0.35, and for WTI the 2008–2024 result went from 0.53 to 0.07. Much of the raw signal was day-to-day noise in the spread between contracts. A 60-day smoothed version was robust to delay but weak after 2008 (0.35). Used as a filter on trend it added 0.02. Treat carry as a cost to track, not a signal to trade.</p>
+  </div>
+  <div class="tbl"><table id="tbl-carry"><thead><tr><th>Carry rule</th><th class="n">Portfolio Sharpe</th><th class="n">1991–2007</th><th class="n">2008–2024</th><th class="n">WTI</th><th class="n">Brent</th><th class="n">Gas</th></tr></thead><tbody></tbody></table></div>
+</section>
+
+<section id="losers">
+  <div class="head">
+    <div class="eyebrow">Evidence · what failed</div>
+    <h2>Mean reversion, spreads and ratios lose money</h2>
+    <p>Oil does not revert at daily-to-monthly horizons; it trends. All 22 daily reversal and fade rules lost money on the three-market portfolio after costs, most of them before costs too. The one exception, buying two-day RSI dips inside an uptrend, is a trend strategy in disguise and was weak after 2007 (0.17).</p>
+  </div>
+  <figure>
+    <figcaption><span class="t">Daily mean-reversion rules, portfolio net Sharpe</span><span class="s">Signal traded at the close (blue/red bars) on rolled futures, 1991–2024.</span></figcaption>
+    <div class="viz" id="fig-mr"></div>
+  </figure>
+  <div class="cols">
+    <div class="card"><h3>The Brent–WTI timing trap</h3><p>On EIA spot prices, fading the Brent–WTI spread showed Sharpe ratios of 2.5–3.1. That is an artefact: Brent is assessed in London hours before WTI settles in New York, so the spread "reverts" the next morning. Trading one day later drops it to 0.2–0.5. On synchronous futures prices the same rules lost money (−0.8 to −2.0). Any spread bot must compare prices taken at the same moment.</p></div>
+    <div class="card"><h3>Oil/gas ratio</h3><p>Betting that the WTI/gas price ratio returns to normal lost money (−0.2 to −0.5). The ratio moved from about 10 to over 40 after the shale gas boom and never came back. Structural breaks make these ratio trades dangerous.</p></div>
+  </div>
+</section>
+
+<section id="season">
+  <div class="head">
+    <div class="eyebrow">Evidence · calendar</div>
+    <h2>Seasonality</h2>
+  </div>
+  <!--SEASONALITY-->
+</section>
+
+<section id="intraday">
+  <div class="head">
+    <div class="eyebrow">Evidence · intraday (Oanda 1-minute CFD prices, 2005–2020)</div>
+    <h2>Intraday strategies</h2>
+  </div>
+  <!--INTRADAY-->
+</section>
+
+<section id="ml">
+  <div class="head">
+    <div class="eyebrow">Evidence · machine learning</div>
+    <h2>Machine-learning baseline</h2>
+  </div>
+  <!--ML-->
+</section>
+
+<section id="grid">
+  <div class="head">
+    <div class="eyebrow">Evidence · popular retail bots</div>
+    <h2>Grid, martingale and averaging-down bots</h2>
+  </div>
+  <!--GRID-->
+</section>
+
+<section id="recent">
+  <div class="head">
+    <div class="eyebrow">Out-of-sample · Apr 2024 – Sep 2026</div>
+    <h2>The last 30 months were bad for trend</h2>
+    <p>Our futures data ends in March 2024, so we ran the trend rule on EIA spot prices for the period since. Spot understates a futures-based result because it misses roll yield, but year by year the two tracked each other closely from 2010 to 2024. Trend lost money: WTI −0.74 and Brent −0.77 Sharpe. The 2024–25 range around $60–80 produced repeated false starts. In March 2026 the rule was long into the spike and made 13% (WTI) and 20% (Brent) that month. It then gave most of that back in the May–July swings.</p>
+  </div>
+  <figure>
+    <figcaption><span class="t">Spot prices, weekly</span><span class="s">EIA spot assessments; the shaded area is the out-of-sample window.</span></figcaption>
+    <div class="legend" id="leg-px"></div>
+    <div class="viz" id="fig-prices"></div>
+  </figure>
+  <figure>
+    <figcaption><span class="t">Trend rule, monthly P&amp;L (% of equity, 15% volatility target)</span><span class="s">WTI and Brent on spot prices.</span></figcaption>
+    <div class="legend" id="leg-hold"></div>
+    <div class="viz" id="fig-holdout"></div>
+  </figure>
+  <div class="cols">
+    <div class="card"><h3>What this means for the bot</h3><p>Losing stretches of two to five years are normal for trend strategies: in the backtest there was a 30% chance of a losing year and the longest time under water was 4.8 years. The current market is in the regime where trend has done worst, with Brent volatility in its top decile. That argues for starting small, paper trading first and keeping the volatility overlay switched on.</p></div>
+    <div class="card"><h3>Expectations to set</h3><div class="tbl" style="border:0"><table id="tbl-rolling"><thead><tr><th>Holding period</th><th class="n">Chance of loss</th><th class="n">Median</th><th class="n">Worst</th></tr></thead><tbody></tbody></table></div><p class="small">Trend + crack, rolling windows 1991–2024.</p></div>
+  </div>
+</section>
+
+<section id="method">
+  <div class="head">
+    <div class="eyebrow">Method, data and caveats</div>
+    <h2>How the tests were run</h2>
+  </div>
+  <div class="cols">
+    <div class="card"><h3>Data</h3><ul class="clean">
+      <li>Roll-adjusted futures from the pysystemtrade repository: WTI (December contract), Brent (~2nd month), Henry Hub gas (~2nd month), RBOB, heating oil; 1989 – 28 Mar 2024. Near-month WTI and gas series (2006+) used as checks.</li>
+      <li>EIA daily spot prices for WTI, Brent and Henry Hub, 1986 – 22 Sep 2026.</li>
+      <li>Oanda one-minute mid prices for the WTI and natural gas CFDs, Jan 2005 – May 2020. There was no intraday Brent.</li>
+      <li>Yahoo, FRED, EIA's API, Dukascopy, Stooq and CFTC were blocked in this sandbox, so no COT positioning, inventory surprises or futures after March 2024.</li></ul></div>
+    <div class="card"><h3>Rules</h3><ul class="clean">
+      <li>Signals use only data up to the close; trades fill at that close and earn from the next day. We repeated key tests with 1–10 day delays.</li>
+      <li>Parameters were picked on 1990–2007 and judged on 2008–2024; spot data after March 2024 is an untouched holdout.</li>
+      <li>Every market is sized to 15% annual volatility, so results are comparable across gas and crude.</li>
+      <li>We ran about 130 portfolio-level variants. The recommended strategies have t-statistics of 3.4–4.0 over 33 years, above the t&nbsp;&gt;&nbsp;3 bar suggested for new strategies. The expected best Sharpe from 130 random strategies would be about 0.5.</li></ul></div>
+    <div class="card"><h3>Where the backtest can mislead</h3><ul class="clean">
+      <li>CFD swaps are modelled as futures roll yield plus a 2.5% markup; your broker may differ.</li>
+      <li>The main WTI series holds the December contract. On near-month contracts, which are closer to what the CFDs track, 2008–2024 Sharpe was 0.45 for trend and 0.66 for trend + crack, against 0.54 and 0.76 on the main series.</li>
+      <li>Henry Hub spot behaves very differently from gas futures. The XNGUSD CFD follows futures, so ignore spot-based gas results.</li>
+      <li>Weekend gaps, broker outages and the April 2020 negative-price event are not fully captured by daily closes.</li></ul></div>
+  </div>
+  <p class="small">Code, data loaders and every results table are in <span class="mono">oil-trading-research/</span> on branch <span class="mono">claude/oil-trading-strategies-yp3ao8</span> of rom-wix/pages. Run <span class="mono">scripts/fetch_data.sh</span>, then the scripts in <span class="mono">experiments/</span>.</p>
+</section>
+</div>
+
+<script>/*__CHARTS_JS__*/</script>
+<script>
+const DATA = /*__DATA__*/;
+/*__PAGE_JS__*/
+</script>
