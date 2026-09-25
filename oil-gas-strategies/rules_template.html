@@ -1,0 +1,294 @@
+<title>Oil Flag Breakout Rules</title>
+<meta name="description" content="The complete rule set for System 1, a daily flag-breakout system for WTI and Brent crude oil: setup, orders, sizing, exits and daily routine.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+:root {
+  --paper: #f2f3ef; --surface: #fbfbf9; --ink: #121518; --ink-2: #464c52; --muted: #6c7278;
+  --rule: rgba(18, 21, 24, 0.12); --axis: #c3c5bd; --accent: #1c5cab; --accent-wash: #e3ecf8;
+  --stop: #b3302f; --stop-wash: #fbe7e5; --note-bg: #fbf3dc; --note-edge: #d9a300; --note-ink: #4a3900;
+  --candle: #5b6168; --trail: #1baf7a;
+  --font-display: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --paper: #0e1011; --surface: #16181a; --ink: #eef0ee; --ink-2: #c1c5c2; --muted: #92979b;
+    --rule: rgba(255, 255, 255, 0.11); --axis: #3b3f41; --accent: #86b6ef; --accent-wash: #15263b;
+    --stop: #f08b86; --stop-wash: #3a1d1c; --note-bg: #2a2410; --note-edge: #c98500; --note-ink: #f3e2b0;
+    --candle: #a4a9ad; --trail: #199e70;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #0e1011; --surface: #16181a; --ink: #eef0ee; --ink-2: #c1c5c2; --muted: #92979b;
+  --rule: rgba(255, 255, 255, 0.11); --axis: #3b3f41; --accent: #86b6ef; --accent-wash: #15263b;
+  --stop: #f08b86; --stop-wash: #3a1d1c; --note-bg: #2a2410; --note-edge: #c98500; --note-ink: #f3e2b0;
+  --candle: #a4a9ad; --trail: #199e70;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.6; margin: 0; }
+.wrap { max-width: 860px; margin: 0 auto; padding-inline: 20px; padding-block: 0 64px; }
+a { color: var(--accent); text-underline-offset: 2px; }
+a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+p { margin: 0; }
+h1, h2 { font-family: var(--font-display); font-weight: 600; margin: 0; text-wrap: balance; letter-spacing: 0.005em; }
+h1 { font-size: clamp(42px, 8vw, 66px); line-height: 0.98; }
+h2 { font-size: clamp(27px, 4vw, 34px); line-height: 1.05; }
+h3 { font-size: 16.5px; font-weight: 600; margin: 0; }
+.eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); }
+.mono { font-family: var(--font-mono); font-size: 0.92em; }
+.small { font-size: 14px; color: var(--ink-2); }
+header.top { padding-block: 40px 22px; display: grid; gap: 14px; }
+header.top .dek { font-size: 18.5px; line-height: 1.5; max-width: 60ch; }
+nav.toc { display: flex; flex-wrap: wrap; gap: 6px 18px; padding-block: 12px; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); font-size: 14px; }
+nav.toc a { color: var(--ink-2); text-decoration: none; }
+nav.toc a:hover { color: var(--accent); text-decoration: underline; }
+section { padding-block: 44px 0; display: grid; gap: 16px; }
+.head { display: grid; gap: 6px; }
+.prose { max-width: 68ch; display: grid; gap: 12px; }
+.glance { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; }
+.glance div { background: var(--surface); padding: 12px 14px; display: grid; gap: 2px; }
+.glance .l { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-2); }
+.glance .v { font-size: 16px; font-weight: 600; line-height: 1.35; }
+/* numbered rules */
+ol.rules { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; overflow: hidden; counter-reset: r var(--start, 0); }
+ol.rules > li { counter-increment: r; display: grid; grid-template-columns: 58px minmax(0, 1fr); gap: 0; border-top: 1px solid var(--rule); }
+ol.rules > li:first-child { border-top: 0; }
+ol.rules > li::before { content: "R" counter(r); font-family: var(--font-mono); font-weight: 600; font-size: 13px; color: var(--accent); padding: 13px 0 0 16px; }
+ol.rules .body { padding: 11px 16px 12px 4px; display: grid; gap: 6px; }
+ol.rules .body b.t { font-weight: 600; }
+ol.rules ul { margin: 0; padding-left: 1.1em; display: grid; gap: 4px; }
+ol.rules .formula { font-family: var(--font-mono); font-size: 13.5px; background: var(--paper); border-radius: 6px; padding: 6px 10px; overflow-x: auto; white-space: pre; }
+.danger { background: var(--stop-wash); }
+.danger::before { color: var(--stop) !important; }
+/* checklist */
+ol.check { margin: 0; padding-left: 1.4em; display: grid; gap: 8px; max-width: 70ch; }
+ol.check li::marker { font-family: var(--font-mono); color: var(--accent); font-weight: 600; }
+/* example */
+.ticket { background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; overflow: hidden; }
+.ticket .th { padding: 11px 16px; border-bottom: 1px solid var(--rule); display: flex; flex-wrap: wrap; gap: 6px 16px; justify-content: space-between; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-2); }
+.ticket table { width: 100%; border-collapse: collapse; font-size: 14.5px; font-variant-numeric: tabular-nums; }
+.ticket td { padding: 8px 16px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+.ticket td:first-child { font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.05em; color: var(--accent); width: 150px; white-space: nowrap; padding-top: 10px; }
+.ticket tr:last-child td { border-bottom: 0; }
+.scroll { overflow-x: auto; }
+figure { margin: 0; background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 16px; display: grid; gap: 10px; }
+figcaption { font-size: 13.5px; color: var(--ink-2); }
+svg text { font-family: var(--font-body); }
+table.data { border-collapse: collapse; width: 100%; font-size: 14px; font-variant-numeric: tabular-nums; }
+table.data th, table.data td { padding: 7px 10px; border-bottom: 1px solid var(--rule); text-align: left; vertical-align: top; }
+table.data thead th { font-size: 12px; font-weight: 600; color: var(--ink-2); border-bottom: 1px solid var(--axis); }
+table.data td.n { text-align: right; white-space: nowrap; }
+.note { background: var(--note-bg); color: var(--note-ink); border-left: 3px solid var(--note-edge); border-radius: 6px; padding: 12px 14px; font-size: 14.5px; line-height: 1.55; }
+.note b { font-weight: 600; }
+.two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 720px) { .two { grid-template-columns: 1fr; } ol.rules > li { grid-template-columns: 46px minmax(0, 1fr); } .ticket td:first-child { width: 110px; } }
+.card { background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 14px 16px; display: grid; gap: 8px; align-content: start; }
+.card ul { margin: 0; padding-left: 1.1em; display: grid; gap: 5px; font-size: 15px; }
+footer { margin-top: 56px; padding-top: 16px; border-top: 1px solid var(--rule); font-size: 13px; color: var(--ink-2); display: grid; gap: 4px; }
+</style>
+
+<div class="wrap">
+<header class="top">
+  <div class="eyebrow">System 1 · version A+ · daily bars · crude oil</div>
+  <h1>Oil Flag Breakout Rules</h1>
+  <p class="dek">The complete rule set, written so every decision is mechanical. After a strong move in crude, a tight pause forms; buy or sell the break of that pause in the direction of the move.</p>
+  <p class="small">Every rule below is the rule that was backtested (see the <a href="oil-gas-trading-strategies.html">research report</a>). Changing any of them means trading an untested system.</p>
+</header>
+<nav class="toc" aria-label="Sections"><a href="#glance">At a glance</a><a href="#defs">Definitions</a><a href="#setup">Setup</a><a href="#orders">Orders &amp; size</a><a href="#exits">Exits</a><a href="#portfolio">Portfolio</a><a href="#routine">Daily routine</a><a href="#example">Example</a><a href="#expect">What to expect</a><a href="#never">Never</a></nav>
+
+<section id="glance">
+  <div class="glance">
+    <div><span class="l">Markets</span><span class="v">WTI (CL, MCL, USOIL) or Brent (BZ, UKOIL)</span></div>
+    <div><span class="l">Timeframe</span><span class="v">Daily bars, decisions after the close</span></div>
+    <div><span class="l">Direction</span><span class="v">With the impulse only</span></div>
+    <div><span class="l">Risk per trade</span><span class="v">0.5–1% of the account</span></div>
+    <div><span class="l">Frequency</span><span class="v">About 2–4 trades a year per market</span></div>
+    <div><span class="l">Typical hold</span><span class="v">3–5 weeks, up to 12</span></div>
+  </div>
+  <div class="note"><b>Not for natural gas, and not for 1-hour or 4-hour charts.</b> Both were tested and lost money after costs.</div>
+</section>
+
+<section id="defs">
+  <div class="head"><div class="eyebrow">Terms used below</div><h2>Definitions</h2></div>
+  <div class="scroll">
+    <table class="data">
+      <tbody>
+        <tr><th>Daily bar</th><td>One CME trading session, 18:00 to 17:00 New York time. The bar is dated by the day it closes. Sunday evening trading belongs to Monday's bar.</td></tr>
+        <tr><th>True range</th><td>The largest of: high − low, |high − previous close|, |low − previous close|.</td></tr>
+        <tr><th>ATR</th><td>Simple average of the last 20 true ranges, in price units ($ per barrel).</td></tr>
+        <tr><th>Impulse window</th><td>4, 5 or 6 consecutive daily bars. Its <b>start close</b> is the close of the bar just before the window.</td></tr>
+        <tr><th>Impulse size (I)</th><td>Highest price minus lowest price across the window, counting the start close.</td></tr>
+        <tr><th>Impulse extreme (P1)</th><td>The window's highest price after an up-impulse, lowest after a down-impulse.</td></tr>
+        <tr><th>Box</th><td>The 4, 5 or 6 bars right after the impulse window. <b>Box high</b> = their highest high, <b>box low</b> = their lowest low.</td></tr>
+        <tr><th>Setup day</th><td>The last bar of the box. Everything is checked at its close.</td></tr>
+        <tr><th>Tick</th><td>Minimum price step: $0.01 for CL, MCL and BZ.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="setup">
+  <div class="head"><div class="eyebrow">Checked at the close of the setup day</div><h2>Setup</h2></div>
+  <figure>
+    <svg viewBox="0 0 640 250" width="100%" role="img" aria-label="Diagram of impulse, box, entry, stop and target">
+      <rect x="252" y="96" width="120" height="38" rx="3" fill="var(--accent-wash)" stroke="var(--accent)" stroke-width="1"/>
+      <line x1="372" x2="560" y1="96" y2="96" stroke="var(--accent)" stroke-width="1.5"/>
+      <line x1="372" x2="560" y1="134" y2="134" stroke="var(--stop)" stroke-width="1.5"/>
+      <line x1="372" x2="560" y1="30" y2="30" stroke="var(--ink-2)" stroke-width="1.5"/>
+      <polyline points="40,196 70,200 100,192 130,196 160,166 190,140 220,112 245,92 270,110 300,122 330,104 355,118 380,90 420,70 450,52 480,34 505,44 530,60" fill="none" stroke="var(--candle)" stroke-width="2" stroke-linejoin="round"/>
+      <polyline points="380,134 420,112 450,98 480,80 505,80 530,80" fill="none" stroke="var(--trail)" stroke-width="2" stroke-linejoin="round"/>
+      <line x1="140" x2="140" y1="196" y2="92" stroke="var(--ink)" stroke-width="1.5"/>
+      <line x1="134" x2="146" y1="196" y2="196" stroke="var(--ink)" stroke-width="1.5"/>
+      <line x1="134" x2="146" y1="92" y2="92" stroke="var(--ink)" stroke-width="1.5"/>
+      <text x="130" y="138" font-size="12.5" fill="var(--ink)" text-anchor="end">Impulse</text>
+      <text x="130" y="154" font-size="12.5" fill="var(--ink)" text-anchor="end">≥ 1.5 ATR</text>
+      <text x="130" y="170" font-size="12.5" fill="var(--ink)" text-anchor="end">4–6 bars</text>
+      <text x="312" y="152" font-size="12.5" fill="var(--ink-2)" text-anchor="middle">Box: 4–6 bars</text>
+      <text x="312" y="168" font-size="12.5" fill="var(--ink-2)" text-anchor="middle">height ≤ ½ impulse</text>
+      <text x="566" y="34" font-size="12.5" fill="var(--ink)">½ target</text>
+      <text x="566" y="100" font-size="12.5" fill="var(--ink)">buy stop</text>
+      <text x="566" y="138" font-size="12.5" fill="var(--ink)">stop loss</text>
+      <text x="470" y="98" font-size="12.5" fill="var(--ink-2)" text-anchor="middle">½ trails</text>
+      <circle cx="380" cy="96" r="5" fill="var(--accent)" stroke="var(--surface)" stroke-width="2"/>
+      <circle cx="480" cy="30" r="4.5" fill="var(--ink)" stroke="var(--surface)" stroke-width="2"/>
+      <circle cx="530" cy="80" r="4.5" fill="var(--ink)" stroke="var(--surface)" stroke-width="2"/>
+    </svg>
+    <figcaption>Up-impulse shown; a down-impulse is the mirror image. Schematic, not real prices.</figcaption>
+  </figure>
+  <ol class="rules" style="--start:0">
+    <li><div class="body"><b class="t">Impulse.</b> Over a window of 4, 5 or 6 bars, the last close minus the start close is at least 1.5 × ATR, measured on the bar just before the window. The sign gives the direction.
+      <div class="formula">|close(last bar) − start close| ≥ 1.5 × ATR(bar before window)</div></div></li>
+    <li><div class="body"><b class="t">Box.</b> The next 4, 5 or 6 bars form the box. Its height must be at most half the impulse size.
+      <div class="formula">box high − box low ≤ 0.5 × I</div></div></li>
+    <li><div class="body"><b class="t">Hold most of the move.</b> After an up-impulse, the box low stays above P1 − 0.618 × I. After a down-impulse, the box high stays below P1 + 0.618 × I.</div></li>
+    <li><div class="body"><b class="t">Volatility filter.</b> On the setup day, ATR ÷ close is higher than on at least half of the previous 251 trading days. If not, there is no trade.</div></li>
+    <li><div class="body"><b class="t">No overlap.</b> An impulse window must start after the last setup day found with the same window and box lengths. You never reuse part of an old box as a new impulse.</div></li>
+    <li><div class="body"><b class="t">All nine combinations count.</b> Check every pair of impulse length (4, 5, 6) and box length (4, 5, 6). Usually several describe the same box. If they give different boxes, place orders for each; the first one that fills is the trade (R13).</div></li>
+  </ol>
+</section>
+
+<section id="orders">
+  <div class="head"><div class="eyebrow">Placed before the next session opens</div><h2>Orders and size</h2></div>
+  <ol class="rules" style="--start:6">
+    <li><div class="body"><b class="t">Entry.</b> After an up-impulse, a buy stop 1 tick above the box high. After a down-impulse, a sell stop 1 tick below the box low. If the market gaps through the level, the fill at the open counts.</div></li>
+    <li><div class="body"><b class="t">Order life.</b> The entry order is good for the next 10 trading days. If it has not filled by the close of day 10, cancel it.</div></li>
+    <li class="danger"><div class="body"><b class="t">Cancel on the other side.</b> If price trades at or beyond the opposite edge of the box before the entry fills, cancel the entry. That is the box low for a long, the box high for a short.</div></li>
+    <li class="danger"><div class="body"><b class="t">Protective stop.</b> The opposite edge of the box, but never closer than 0.5 × ATR (the ATR from R1) to the entry level. Place it as a resting stop order the moment the entry fills.
+      <div class="formula">long stop  = min(box low,  box high − 0.5 × ATR)
+short stop = max(box high, box low  + 0.5 × ATR)</div></div></li>
+    <li><div class="body"><b class="t">Position size.</b> Size from the planned entry level to the stop, and round down to an even number of contracts so the position splits in half. If even 2 of the smallest contract risk too much, skip the trade.
+      <div class="formula">contracts = (account × risk %) ÷ (|entry level − stop| × units per contract)
+units: CL 1,000 · MCL 100 · BZ 1,000 · CFD per your broker</div></div></li>
+  </ol>
+</section>
+
+<section id="exits">
+  <div class="head"><div class="eyebrow">Two halves, managed separately</div><h2>Exits</h2></div>
+  <ol class="rules" style="--start:11">
+    <li><div class="body"><b class="t">Half 1, measured move.</b> Limit order at the entry level plus one impulse size (minus for shorts). Its stop stays at the R10 stop. If neither is hit, close it at the close of the 20th trading day after entry.
+      <div class="formula">target = entry level ± I</div></div></li>
+    <li><div class="body"><b class="t">Half 2, trailing runner.</b> After every daily close, starting with the entry day, compute close − 3.5 × ATR for a long (close + 3.5 × ATR for a short). If that is tighter than the current stop, move the stop there. Never loosen it. Close this half at the close of the 60th trading day if it is still open.</div></li>
+    <li class="danger"><div class="body"><b class="t">No other exits.</b> No moving stops to break-even, no early profit-taking, no exits on news. The average trade depends on the few runners that go far.</div></li>
+  </ol>
+</section>
+
+<section id="portfolio">
+  <div class="head"><div class="eyebrow">Across positions</div><h2>Portfolio rules</h2></div>
+  <ol class="rules" style="--start:14">
+    <li><div class="body"><b class="t">One position per market.</b> While a trade is open, ignore new setups in that market. Once both halves are closed, any setup whose entry order is still within its 10 days can be taken.</div></li>
+    <li><div class="body"><b class="t">WTI and Brent are one bet.</b> They move together. If both signal the same way within a few days, either trade one of them or split the risk (0.5% each at a 1% budget).</div></li>
+    <li><div class="body"><b class="t">Futures rolls.</b> Find setups on a back-adjusted continuous chart. Place orders in the contract you trade, shifted by the roll difference if the box spans a roll. Roll open positions before first notice and keep the stop and target the same distance from price. CFD prices are already continuous.</div></li>
+    <li><div class="body"><b class="t">Take every signal.</b> The three best trades produced about half of all profit in the backtests. Skipping signals because they "look wrong" removes the edge.</div></li>
+  </ol>
+</section>
+
+<section id="routine">
+  <div class="head"><div class="eyebrow">About 10 minutes after the 17:00 New York close</div><h2>Daily routine</h2></div>
+  <ol class="check">
+    <li><b>Update the chart</b> and ATR(20). Or run <span class="mono">python3 scan.py --csv your_daily.csv</span>, which checks R1–R6 and prints open positions and live orders with their levels.</li>
+    <li><b>Manage open trades first:</b> move half 2's trailing stop (R13), check the 20- and 60-day time stops (R12, R13).</li>
+    <li><b>Look for a new setup</b> if flat: an impulse (R1), a box (R2, R3), the filter (R4).</li>
+    <li><b>Write the order ticket:</b> entry stop, cancel level, protective stop, target, size, last valid day.</li>
+    <li><b>Place the orders</b> before 18:00 New York: the entry stop, and bracket orders that attach the stop and target on fill if your platform supports them.</li>
+    <li><b>Check pending entries:</b> cancel any that reached day 10 or whose opposite box edge traded.</li>
+    <li><b>Log it:</b> every setup, taken or not, with the levels and the result in R.</li>
+  </ol>
+</section>
+
+<section id="example">
+  <div class="head"><div class="eyebrow">WTI, January 2026, daily closing prices</div><h2>Worked example</h2></div>
+  <div class="ticket">
+    <div class="th"><span>Order ticket · WTI · long</span><span>Account $50,000 · risk 1%</span></div>
+    <div class="scroll"><table>
+      <tr><td>IMPULSE</td><td>5 bars, 8–14 January. Start close $56.01 (7 January), last close $61.84: +$5.83. ATR on 7 January was $1.41, so the threshold was 1.5 × 1.41 = $2.12. <b>Pass.</b></td></tr>
+      <tr><td>BOX</td><td>5 bars, 15–22 January (19 January was a holiday). High $60.38, low $59.13, height $1.25, limit 0.5 × 5.83 = $2.92. Hold line 61.84 − 0.618 × 5.83 = $58.24; box low $59.13 is above it. <b>Pass.</b></td></tr>
+      <tr><td>FILTER</td><td>ATR ÷ close on 22 January ranked above 70% of the past year. <b>Pass.</b></td></tr>
+      <tr><td>ENTRY</td><td>Buy stop $60.39 (box high + 1 tick), good through 5 February. Cancel if $59.13 trades first.</td></tr>
+      <tr><td>STOP</td><td>$59.13 (box low; the 0.5 × ATR floor would be $59.67, so the box low is the wider of the two).</td></tr>
+      <tr><td>SIZE</td><td>$500 ÷ ($1.25 × 100 barrels) = 4 MCL contracts: 2 for the target, 2 for the runner.</td></tr>
+      <tr><td>HALF 1</td><td>Target $60.38 + $5.83 = <b>$66.21</b>, time stop 20 trading days.</td></tr>
+      <tr><td>HALF 2</td><td>Trail 3.5 × ATR behind each close, time stop 60 trading days.</td></tr>
+      <tr><td>RESULT</td><td>In the closing-price backtest the target was reached on 19 February. The runner rode the March supply shock and was stopped on 17 April at $85.90. Net +12.4R.</td></tr>
+    </table></div>
+  </div>
+  <p class="small">The example uses daily closes, so its highs and lows are closes too. On a normal OHLC chart the box and levels come out slightly different.</p>
+</section>
+
+<section id="expect">
+  <div class="head"><div class="eyebrow">From the backtests since 2005, version A+</div><h2>What to expect</h2></div>
+  <div class="scroll">
+    <table class="data">
+      <thead><tr><th>Measure</th><th>Typical</th><th>Worst seen</th></tr></thead>
+      <tbody>
+        <tr><td>Average trade</td><td class="n">+0.66R (WTI, 1-minute fills)</td><td class="n">95% range +0.01R to +1.36R</td></tr>
+        <tr><td>Win rate</td><td class="n">45–53%</td><td class="n">–</td></tr>
+        <tr><td>Average win vs average loss</td><td class="n">2.5R vs 1.0R</td><td class="n">–</td></tr>
+        <tr><td>Losing streak</td><td class="n">2–3</td><td class="n">5 in a row</td></tr>
+        <tr><td>Drawdown</td><td class="n">5–10R</td><td class="n">13.9R (Brent, daily closes)</td></tr>
+        <tr><td>Losing years</td><td class="n">About 1 in 3</td><td class="n">−9.6R in one year (Brent)</td></tr>
+        <tr><td>Return at 1% risk</td><td class="n">1.5–4% a year</td><td class="n">5% of simulated decades lose money</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="two">
+    <div class="card">
+      <h3>Start small</h3>
+      <ul>
+        <li>First 10 trades: paper, or 0.5% risk.</li>
+        <li>Compare every 10 trades with the table above.</li>
+        <li>Move to 1% only after the live numbers look like the backtest.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Stop and review if</h3>
+      <ul>
+        <li>The drawdown from the equity peak reaches 15R, beyond the worst seen.</li>
+        <li>8 losses come in a row, against a historical worst of 5.</li>
+        <li>After 30 trades the average is below zero.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="never">
+  <div class="head"><div class="eyebrow">Tested and rejected</div><h2>Never</h2></div>
+  <ol class="rules" style="--start:18">
+    <li class="danger"><div class="body"><b class="t">Don't trade against the impulse.</b> Box breaks against the move, failed-breakout reversals, fading the spike and range trades inside the box all failed out of sample.</div></li>
+    <li class="danger"><div class="body"><b class="t">Don't apply the rules to intraday charts.</b> On 1-hour and 4-hour bars the same rules fail after costs.</div></li>
+    <li class="danger"><div class="body"><b class="t">Don't trade natural gas with it.</b> Every variant lost in at least one decade.</div></li>
+    <li class="danger"><div class="body"><b class="t">Don't add filters on the fly.</b> A trend filter was tested and was not reliable. New filters, targets or stop tweaks need their own backtest first.</div></li>
+  </ol>
+  <div class="note"><b>Before real money:</b> rerun the backtest on your broker's own continuous futures or CFD history with <span class="mono">scan.py</span>. The realistic 1-minute test covers only WTI up to 2020 (34 trades). Everything after that relies on daily closing prices.</div>
+</section>
+
+<footer>
+  <div>Research only, not investment advice. Futures and CFDs can lose more than the planned risk on gaps.</div>
+  <div>Rules as backtested in the research, September 2026 · <span class="mono">oil-gas-strategies/system.py</span></div>
+</footer>
+</div>
