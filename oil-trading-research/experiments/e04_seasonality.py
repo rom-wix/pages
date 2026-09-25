@@ -693,6 +693,24 @@ def main():
     print(rob[["name", "symbol", "lag", "cost_mult", "sharpe", "is_sharpe", "oos_sharpe"]].round(3)
           .to_string(index=False))
 
+    # ------------------------------------------------------------------ year-concentration check (crude rules)
+    yc_rows, ycy = [], {}
+    for nm, (lm, sm_) in [("crude_long_FebMay", ((2, 3, 4, 5), ())), ("crude_short_OctDec", ((), (10, 11, 12))),
+                          ("crude_FebMay_long_OctDec_short", ((2, 3, 4, 5), (10, 11, 12)))]:
+        r = evaluate(month_rule_fn(lm, sm_), nm, data=FUT, symbols=["XTIUSD", "XBRUSD"], keep_series=True)
+        p_ = r["port"]
+        yr = (1 + p_).groupby(p_.index.year).prod() - 1
+        ycy[nm] = yr
+        top = yr.sort_values(ascending=False).index
+        yc_rows.append({"name": nm, "sharpe": bt.sharpe(p_), "pos_years": int((yr > 0).sum()), "n_years": len(yr),
+                        "median_year_pct": yr.median() * 100, "best3_years": ",".join(map(str, top[:3])),
+                        "sharpe_ex_best3": bt.sharpe(p_[~p_.index.year.isin(top[:3])]),
+                        "sharpe_ex_best5": bt.sharpe(p_[~p_.index.year.isin(top[:5])])})
+    yc = pd.DataFrame(yc_rows)
+    yc.to_csv(os.path.join(OUT, "e04_crude_rule_year_concentration.csv"), index=False)
+    pd.DataFrame(ycy).to_csv(os.path.join(OUT, "e04_crude_rule_yearly_returns.csv"))
+    print("\n=== year concentration (crude rules, WTI+Brent PORT)\n", yc.round(3).to_string(index=False))
+
     # ------------------------------------------------------------------ all variants
     allv = pd.concat(ALL_EVALS, ignore_index=True)
     tidy(allv).to_csv(os.path.join(OUT, "e04_all_variants.csv"), index=False)
