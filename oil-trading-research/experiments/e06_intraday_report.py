@@ -417,7 +417,7 @@ def write_markdown(R, Y, fs, live, G, T):
         A(f"| {yv} | " + " | ".join(f"{pv.loc[yv, c] * 100:.1f}" if np.isfinite(pv.loc[yv, c]) else "n/a" for c in colsf) + " |")
     keys = yfb.drop_duplicates("col").set_index("col")["strategy"]
     A("")
-    A("Columns: " + "; ".join(f"{c} = `{keys[c].split('|', 1)[1]}`" for c in colsf).replace("|", "\\|") + ".")
+    A("Columns: " + "; ".join(f"{c} = `{keys[c].split('|', 1)[1]}`" for c in colsf) + ".")
     A("")
     A("## Family details and verdicts")
     A("")

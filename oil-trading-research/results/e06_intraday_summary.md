@@ -117,6 +117,29 @@ SR = annualised Sharpe of the daily net P&L after 1x costs (zeros on no-trade da
 | 2019 | 1.88 / 8.8 / 10 | -0.57 / -1.9 / 54 | 0.41 / 2.0 / 11 | -0.35 / -8.2 / 250 | 1.03 / 13.6 / 50 |
 | 2020 | 3.00 / 30.5 / 13 | 2.24 / 26.0 / 51 | n/a / 0.0 / 0 | 1.12 / 25.2 / 92 | 0.33 / 2.3 / 19 |
 
+**Per-year net return (%, 1x notional, 1x costs) of the IS-selected best configuration in every family** (configs as in `e06_cumulative_best.png`; full detail in `e06_yearly_family_best.csv`):
+
+| year | A XNG | B XNG | C XNG | D XNG | E XNG | A XTI | B XTI | C XTI | D XTI | E XTI |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 2005 | -20.1 | 0.0 | 10.7 | 21.8 | -3.7 | 25.6 | -0.8 | 5.4 | -6.7 | -0.6 |
+| 2006 | 5.6 | -1.7 | 5.0 | -0.2 | -3.3 | 16.1 | -2.2 | 7.7 | -1.4 | -3.8 |
+| 2007 | -11.0 | 9.4 | -0.2 | 5.6 | -4.9 | 24.7 | 6.8 | -5.4 | 13.0 | -2.4 |
+| 2008 | -8.1 | -2.5 | 22.5 | 45.6 | -0.2 | -7.5 | 26.5 | 19.5 | 3.2 | 3.9 |
+| 2009 | -0.3 | 4.9 | 15.4 | -11.6 | 5.5 | -3.5 | 14.8 | -7.1 | 20.9 | 7.7 |
+| 2010 | 13.2 | 0.1 | 4.0 | 23.4 | 0.6 | 27.0 | 1.7 | -4.0 | -8.5 | -4.8 |
+| 2011 | 20.8 | -2.5 | -7.5 | 11.7 | -8.9 | -10.1 | 0.1 | 2.5 | 2.3 | 5.0 |
+| 2012 | 30.6 | -8.0 | -9.5 | -6.9 | -9.3 | 19.9 | -1.0 | -0.8 | 5.8 | -4.2 |
+| 2013 | -3.2 | -10.0 | -8.7 | -7.8 | -3.8 | -13.2 | -5.9 | 0.2 | 4.0 | 1.8 |
+| 2014 | -7.7 | 3.1 | -0.2 | 7.7 | -2.5 | 30.5 | 7.1 | -5.4 | -4.4 | -3.4 |
+| 2015 | -3.9 | -15.4 | -10.6 | 24.2 | -8.2 | -22.6 | 12.2 | -8.4 | 6.6 | -5.3 |
+| 2016 | -17.9 | 3.0 | -15.8 | -33.8 | 0.7 | 7.3 | 6.5 | -9.0 | 3.0 | 1.9 |
+| 2017 | -20.5 | -9.8 | -7.9 | -10.0 | -2.4 | -12.3 | -3.6 | -0.7 | 9.0 | -4.8 |
+| 2018 | -26.1 | -7.6 | 2.2 | 19.7 | -2.7 | 28.8 | -7.8 | -4.2 | 1.2 | -5.5 |
+| 2019 | -16.5 | -22.1 | -3.5 | 13.6 | -2.1 | -8.2 | -1.9 | -0.8 | 4.3 | -10.2 |
+| 2020 | -4.2 | -3.3 | -1.2 | 2.3 | 0.4 | 25.2 | 26.0 | -3.6 | -25.9 | 5.6 |
+
+Columns: A XNG = `orb\|09:30\|60\|16:55\|mid\|narrow0.75`; B XNG = `mom\|on1000\|q0.8\|14:30`; C XNG = `eia_pre\|short\|09:00->T-1`; D XNG = `dow\|Thu_0900_1430\|short`; E XNG = `mr\|5m\|pxz\|1h\|z3\|time30`; A XTI = `stretch\|09:00\|k0.5\|16:55\|none\|none`; B XTI = `mom\|on930\|q0.8\|14:30`; C XTI = `eia_fade\|w15\|k2\|14:30`; D XTI = `dow\|Fri_0900_1430\|long`; E XTI = `mr\|15m\|pxz\|4h\|z3\|mean`.
+
 ## Family details and verdicts
 
 ### A. Opening-range breakout: **reject**
@@ -257,6 +280,6 @@ Sessions: Asia 18:00-02:00, London 02:00-08:00, NY pre 08:00-09:00, NY main 09:0
 ## Files
 
 * **Code:** `src/intraday.py` (session matrices, execution helpers, minute-path stop-order simulator, stats, EIA schedule, `dsr_null`); `experiments/e06_intraday_data_checks.py`, `e06_intraday_orb.py`, `e06_intraday_momentum.py`, `e06_intraday_eia.py`, `e06_intraday_sessions.py`, `e06_intraday_meanrev.py`, and `e06_intraday_summary.py` with `e06_intraday_report.py`. Run the family scripts first, then the summary.
-* **Results:** `results/e06_ranked.csv` (the ranked table with all columns), `e06_family_trial_summary.csv`, `e06_yearly.csv`, the family grids `e06_A_orb_grid.csv`, `e06_B_momentum_grid.csv`, `e06_C_eia_grid.csv`, `e06_D_session_grid.csv` and `e06_E_meanrev_grid.csv`, plus `e06_B_momentum_regressions.csv`, `e06_B_momentum_subintervals.csv`, `e06_B_momentum_robustness.csv`, `e06_C_eia_event_vol.csv`, `e06_C_eia_minute_profile.csv`, `e06_D_session_stats.csv`, `e06_D_hourly.csv`, `e06_D_dayofweek.csv`, `e06_D_walkforward_picks.csv`, `e06_D_sunday_gap_robustness.csv`, `e06_data_checks.csv` and `e06_data_checks_eia2008.csv`.
+* **Results:** `results/e06_ranked.csv` (the ranked table with all columns), `e06_family_trial_summary.csv`, `e06_yearly.csv`, `e06_yearly_family_best.csv`, the family grids `e06_A_orb_grid.csv`, `e06_B_momentum_grid.csv`, `e06_C_eia_grid.csv`, `e06_D_session_grid.csv` and `e06_E_meanrev_grid.csv`, plus `e06_B_momentum_regressions.csv`, `e06_B_momentum_subintervals.csv`, `e06_B_momentum_robustness.csv`, `e06_C_eia_event_vol.csv`, `e06_C_eia_minute_profile.csv`, `e06_D_session_stats.csv`, `e06_D_hourly.csv`, `e06_D_dayofweek.csv`, `e06_D_walkforward_picks.csv`, `e06_D_sunday_gap_robustness.csv`, `e06_data_checks.csv` and `e06_data_checks_eia2008.csv`.
 * **Charts:** `results/e06_cumulative_best.png`, `results/e06_momentum_buckets.png` and `results/e06_eia_vol_profile.png`.
 
