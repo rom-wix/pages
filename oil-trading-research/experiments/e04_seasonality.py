@@ -711,12 +711,78 @@ def main():
     pd.DataFrame(ycy).to_csv(os.path.join(OUT, "e04_crude_rule_yearly_returns.csv"))
     print("\n=== year concentration (crude rules, WTI+Brent PORT)\n", yc.round(3).to_string(index=False))
 
+    # ------------------------------------------------------------------ headline summary table
+    summary_table(fn_lookup, tilts)
+
     # ------------------------------------------------------------------ all variants
     allv = pd.concat(ALL_EVALS, ignore_index=True)
     tidy(allv).to_csv(os.path.join(OUT, "e04_all_variants.csv"), index=False)
 
     # ------------------------------------------------------------------ charts
     charts(moy, ngd, eff, wf_series, ov_series)
+
+
+def summary_row(fn, strategy, data, symbols, verdict, start=None, keep=("PORT",), note=""):
+    net = evaluate(fn, strategy, data=data, symbols=symbols, start=start)["table"]
+    gross = evaluate(fn, strategy, data=data, symbols=symbols, start=start, cost_mult=0.0, fin=0.0)["table"]
+    rows = []
+    for _, r in net.iterrows():
+        if r["symbol"] not in keep:
+            continue
+        g = gross.loc[gross.symbol == r["symbol"], "sharpe"].iloc[0]
+        to = r["turnover_py"] if r["symbol"] != "PORT" else net.loc[net.symbol != "PORT", "turnover_py"].mean()
+        rows.append({"strategy": strategy, "instrument": r["symbol"] if r["symbol"] != "PORT" else
+                     ("PORT(" + "+".join(x[:3] for x in symbols) + ")" if len(symbols) > 1 else symbols[0]),
+                     "period": f"{r['start'][:4]}-{r['end'][:4]}", "net_sharpe": r["sharpe"],
+                     "is_sharpe_1990_2007": r["is_sharpe"], "oos_sharpe_2008_2024": r["oos_sharpe"],
+                     "gross_sharpe": g, "cagr": r["cagr"], "max_dd": r["max_dd"], "turnover_py": to,
+                     "verdict": verdict, "note": note})
+    return rows
+
+
+def summary_table(fn_lookup, tilts):
+    rows = []
+    ALL3 = SYMBOLS
+    CR = ["XTIUSD", "XBRUSD"]
+    NG = ["XNGUSD"]
+    fl = lambda nm, syms, data: first_live(fn_lookup[nm][0], {s_: data[s_] for s_ in syms})  # noqa: E731
+    for nm, v in [("wf_seasonal_Nexp_sign", "reject"), ("wf_seasonal_Nexp_tstat", "reject"),
+                  ("wf_seasonal_N10_sign", "reject"), ("wf_seasonal_N5_sign", "reject"),
+                  ("wf_seasonal_N15_sign", "reject")]:
+        rows += summary_row(fn_lookup[nm][0], nm, FUT, ALL3, v, start=fl(nm, ALL3, FUT),
+                            keep=("PORT", "XTIUSD", "XBRUSD", "XNGUSD") if nm == "wf_seasonal_Nexp_sign" else ("PORT",))
+    rows += summary_row(fn_lookup["crude_long_FebMay"][0], "crude_long_FebMay (driving season)", FUT, CR,
+                        "marginal", keep=("PORT", "XTIUSD", "XBRUSD"))
+    rows += summary_row(fn_lookup["crude_short_OctDec"][0], "crude_short_OctDec (Q4 weakness)", FUT, CR,
+                        "reject", note="3 crash years (2014, 2018, 1993) make all of it")
+    rows += summary_row(fn_lookup["crude_FebMay_long_OctDec_short"][0], "crude_FebMay_long_OctDec_short", FUT, CR,
+                        "marginal", keep=("PORT", "XTIUSD", "XBRUSD"))
+    for nm, v in [("ng_long_AugOct", "reject"), ("ng_long_SepNov", "reject"), ("ng_short_JanApr", "reject"),
+                  ("ng_AugOct_long_JanApr_short", "reject"), ("ng_AugOct_JanApr_carry_filtered", "reject")]:
+        rows += summary_row(fn_lookup[nm][0], nm, FUT, NG, v, keep=("PORT",))
+    rows += summary_row(fn_lookup["ng_long_SepNov"][0], "ng_long_SepNov on Henry Hub SPOT (not tradeable)", SPOT,
+                        NG, "not tradeable", keep=("PORT",), note="spot has no roll cost; futures version is negative")
+    rows += summary_row(fn_lookup["carry_sign"][0], "carry_sign (side finding)", FUT, ALL3, "separate study",
+                        keep=("PORT", "XTIUSD", "XBRUSD", "XNGUSD"))
+    rows += summary_row(fn_lookup["pre_hol_fixed_long"][0], "pre_holiday_long", FUTC, CR, "marginal",
+                        keep=("PORT", "XTIUSD", "XBRUSD"), note="in market ~9 days/yr")
+    rows += summary_row(fn_lookup["eia_wf_sign"][0], "ng_eia_day_walkforward_sign", FUTC, NG, "reject",
+                        keep=("PORT",), note="effect real (t=-3.4) but 10bp/side cost eats it")
+    rows += summary_row(fn_lookup["tom_fixed_long"][0], "turn_of_month_long", FUTC, ALL3, "reject")
+    rows += summary_row(fn_lookup["dow_wf_sign_all_days"][0], "day_of_week_walkforward", FUTC, ALL3, "reject")
+    rows += summary_row(fn_lookup["exp_week_fixed_short"][0], "expiry_week_short", FUTC, ALL3, "reject")
+    rows += summary_row(TREND, "trend_only (reference)", FUTC, ALL3, "reference")
+    for tn, lab, v in [("crude_FebMay_OctDec__ng_none", "trend + 0.5 x crude seasonal", "marginal (best add-on)"),
+                       ("seasonal_wf_exp_tstat", "trend + 0.5 x walk-forward seasonal", "reject"),
+                       ("pre_holiday_long__crude_only", "trend + 0.5 x pre-holiday (crude)", "marginal"),
+                       ("eia_day_wf__ng_only", "trend + 0.5 x NG EIA-day", "reject")]:
+        tfn = tilts[tn]
+        fn = (lambda tfn: lambda d: TREND(d) + 0.5 * tfn(d))(tfn)
+        rows += summary_row(fn, lab, FUTC, ALL3, v)
+    T = pd.DataFrame(rows)
+    T.to_csv(os.path.join(OUT, "e04_summary_table.csv"), index=False)
+    print("\n=== SUMMARY TABLE\n", T.round(3).to_string(index=False))
+    return T
 
 
 # ================================================================================================
@@ -741,7 +807,9 @@ def charts(moy, ngd, eff, wf_series, ov_series):
         ax.scatter(x + 0.0, h2.values, marker="D", s=20, color=ps.INK, zorder=3)
         for i, (v, t) in enumerate(zip(full.values, tfull.values)):
             if abs(t) >= 2:
-                ax.text(i, v + (0.6 if v >= 0 else -0.6), f"t={t:.1f}", ha="center",
+                vals = [v, h1.values[i], h2.values[i]]
+                top = np.nanmax(vals) if v >= 0 else np.nanmin(vals)
+                ax.text(i, top + (0.45 if v >= 0 else -0.45), f"t={t:.1f}", ha="center",
                         va="bottom" if v >= 0 else "top", fontsize=7.5, color=ps.INK2)
         ax.axhline(0, color=ps.AXIS, lw=0.8, zorder=1)
         ax.set_xticks(x, [m[0] for m in MONTHS])
@@ -785,7 +853,7 @@ def charts(moy, ngd, eff, wf_series, ov_series):
     # 3. daily effects t-stats (futures, full sample)
     sub = eff[(eff.dataset == "fut") & (eff.period == "full") & eff.effect.ne("dow_anova")].copy()
     order = EFFECTS + [f"dow{d}" for d in range(5)]
-    fig, ax = plt.subplots(figsize=(9.5, 7.2))
+    fig, ax = plt.subplots(figsize=(9.5, 7.4))
     ypos = np.arange(len(order))
     h = 0.26
     for k, s in enumerate(SYMBOLS):
@@ -794,39 +862,47 @@ def charts(moy, ngd, eff, wf_series, ov_series):
                 zorder=2)
     ntest = len(sub)
     bonf = stats.norm.ppf(1 - 0.025 / ntest)
-    for xv, lab in [(1.96, "|t| = 1.96"), (bonf, f"Bonferroni ({ntest} tests), |t| = {bonf:.2f}")]:
-        ax.axvline(xv, color=ps.INK2 if xv < 2.5 else ps.CRITICAL, lw=0.8)
-        ax.axvline(-xv, color=ps.INK2 if xv < 2.5 else ps.CRITICAL, lw=0.8)
-        ax.text(xv + 0.05, len(order) - 0.4, lab, fontsize=7.5, color=ps.INK2, va="top")
+    for xv, col in [(1.96, ps.INK2), (bonf, ps.CRITICAL)]:
+        ax.axvline(xv, color=col, lw=0.8)
+        ax.axvline(-xv, color=col, lw=0.8)
+    ax.text(1.96 + 0.05, -0.75, "|t| = 1.96", fontsize=7.5, color=ps.INK2, va="bottom")
+    ax.text(-bonf - 0.05, -0.75, f"Bonferroni, {ntest} tests: |t| = {bonf:.2f}", fontsize=7.5, color=ps.INK2,
+            va="bottom", ha="right")
     ax.axvline(0, color=ps.AXIS, lw=0.8)
     ax.set_yticks(ypos, [EFFECT_LABEL[e] for e in order])
-    ax.invert_yaxis()
+    ax.set_ylim(len(order) - 0.4, -1.1)
+    ax.set_xlim(-4.6, 4.0)
     ax.set_xlabel("t-stat of (mean return on flagged days - mean on other days), rolled futures 1990-2024")
-    ax.legend(loc="lower right")
+    ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.08), ncol=3)
     ax.grid(axis="y", visible=False)
-    ps.title(fig, "Daily calendar effects: nothing clears a multiple-testing hurdle", y=1.02)
+    ps.title(fig, "Daily calendar effects: only the NG storage-report day clears a multiple-testing bar", y=1.035)
+    ps.subtitle(fig, "NG falls 26 bp on report days vs +2 bp otherwise (t = -3.4), but a 10 bp/side CFD spread "
+                     "eats it: net Sharpe ~0 as a bot.", y=1.0)
     ps.save(fig, os.path.join(OUT, "e04_daily_effects.png"))
 
-    # 4. walk-forward seasonal vs trend vs overlay (PORT, cumulative net, log)
-    fig, ax = plt.subplots(figsize=(11, 4.6))
+    # 4. trend vs trend + tilts (PORT, cumulative net, log)
+    fig, ax = plt.subplots(figsize=(11, 4.8))
     series = [("trend_only", "Trend only (multi-speed EWMAC)", ps.SERIES[0]),
-              ("trend+0.5xseasonal_wf_exp_tstat", "Trend + 0.5 x walk-forward seasonal tilt", ps.SERIES[1]),
-              ]
+              ("trend+0.5xcrude_FebMay_OctDec__ng_none", "Trend + 0.5 x crude seasonal (long Feb-May, short Oct-Dec)",
+               ps.SERIES[1]),
+              ("trend+0.5xseasonal_wf_exp_tstat", "Trend + 0.5 x walk-forward seasonal tilt", ps.SERIES[2])]
     for key, lab, col in series:
-        s = ov_series[key]
-        s = s[s.index >= "1996-01-01"]
-        eq = (1 + s).cumprod()
+        s_ = ov_series[key]
+        s_ = s_[s_.index >= "1996-01-01"]
+        eq = (1 + s_).cumprod()
         ax.plot(eq.index, eq.values, color=col, lw=1.3, label=lab)
         ax.text(eq.index[-1], eq.values[-1], f"  {eq.values[-1]:.1f}x", color=ps.INK2, fontsize=8, va="center")
-    s = wf_series["wf_seasonal_Nexp_tstat"]
-    s = s[s.index >= "1996-01-01"]
-    eq = (1 + s).cumprod()
-    ax.plot(eq.index, eq.values, color=ps.SERIES[2], lw=1.3, label="Walk-forward seasonal alone (expanding, t-stat)")
+    s_ = wf_series["wf_seasonal_Nexp_tstat"]
+    s_ = s_[s_.index >= "1996-01-01"]
+    eq = (1 + s_).cumprod()
+    ax.plot(eq.index, eq.values, color=ps.SERIES[3], lw=1.3, label="Walk-forward seasonal alone (expanding, t-stat)")
     ax.text(eq.index[-1], eq.values[-1], f"  {eq.values[-1]:.1f}x", color=ps.INK2, fontsize=8, va="center")
     ax.set_yscale("log")
-    ax.set_ylabel("growth of 1 (net of costs, log scale)")
+    ax.set_ylabel("growth of 1, net of costs (log scale)")
     ax.legend(loc="upper left")
-    ps.title(fig, "Equal-weight 3-instrument portfolio, net of CFD costs, 1996-2024", y=1.03)
+    ps.title(fig, "A crude seasonal tilt helps trend a little; a learned seasonal barely does", y=1.06)
+    ps.subtitle(fig, "Equal-weight WTI/Brent/NG portfolio, 15% vol target per instrument, CFD costs + 2.5% "
+                     "financing, 1996-2024.", y=1.0)
     ps.save(fig, os.path.join(OUT, "e04_walkforward_vs_trend.png"))
 
 

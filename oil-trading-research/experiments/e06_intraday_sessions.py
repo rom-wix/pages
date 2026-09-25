@@ -116,26 +116,28 @@ def overnight_trades(S, direction):
     return tr  # P&L booked on the exit date
 
 
-def sunday_gap_trades(S, mode, exit_t, thr):
+def sunday_gap_trades(S, mode, exit_t, thr, entry_t="18:05"):
     """Monday sessions: gap = Fri 17:00 -> Sun reopen.  Enter at 18:05 Sunday (market; STOP_SLIPPAGE
     added for the wide Sunday-open spread), exit at exit_t on the same (Monday) session."""
     rows = np.where(S.valid & (S.dates.dayofweek == 0))[0]
     gap = np.log(reopen_px(S) / prev_close17(S))[rows]
-    ep, ec = ix.px_exec(S, 5, max_wait=30)
+    ep, ec = ix.px_exec(S, ix.col(entry_t), max_wait=30)
     xp, xc = ix.px_exec(S, ix.col(exit_t), max_wait=30, fallback_before=True)
     sg = np.where(np.abs(gap) > thr, np.sign(gap), 0.0)
     d = -sg if mode == "fade" else sg
     return ix.make_trades(S, rows, d, ep[rows], xp[rows], ec[rows], xc[rows], n_stop=1)
 
 
-def walk_forward(S, d, sym, trade_fns):
-    """Each year Y: rank candidate sessions by |t| of their trailing 3-year mean (years Y-3..Y-1),
-    hold the best one in the sign of its mean for all of Y.  Uses the trade-level net P&L of each
-    candidate (so costs are included in the ranking)."""
-    cands = {}
-    for name, fn in trade_fns.items():
-        tr = fn(1.0)
-        cands[name] = tr
+def dow_trades(S, weekday, direction):
+    """Hold 09:00 -> 14:30 on one weekday only."""
+    tr = hold_trades(S, "09:00", "14:30", direction)
+    return tr[pd.DatetimeIndex(tr["date"]).dayofweek == weekday].reset_index(drop=True)
+
+
+def walk_forward(S, sym, cands, min_t=2.0):
+    """Each year Y: compute the GROSS t-stat of every candidate's trade returns over years Y-3..Y-1,
+    pick the candidate with the largest |t| (if |t| > min_t, else stay flat), and trade it in the sign
+    of its trailing mean for all of Y.  Costs apply to the traded P&L.  `cands`: name -> long trades."""
     picks, parts = [], []
     years = sorted(set(S.dates[S.valid].year))
     for Y in years:
@@ -144,11 +146,11 @@ def walk_forward(S, d, sym, trade_fns):
         best, bt_ = None, 0.0
         for name, tr in cands.items():
             yy = pd.DatetimeIndex(tr["date"]).year
-            x = ix.net_returns(tr[(yy >= Y - 3) & (yy <= Y - 1)])
-            t = tstat(x)
+            t = tstat(tr["gross"][(yy >= Y - 3) & (yy <= Y - 1)])
             if np.isfinite(t) and abs(t) > abs(bt_):
                 best, bt_ = name, t
-        if best is None:
+        if best is None or abs(bt_) < min_t:
+            picks.append({"sym": sym, "year": Y, "pick": "flat", "dir": "", "trailing_gross_t": bt_})
             continue
         tr = cands[best]
         yy = pd.DatetimeIndex(tr["date"]).year
@@ -157,9 +159,36 @@ def walk_forward(S, d, sym, trade_fns):
             sub["dir"] = -sub["dir"]
             sub["gross"] = -sub["gross"]
         parts.append(sub)
-        picks.append({"sym": sym, "year": Y, "pick": best, "dir": "long" if bt_ > 0 else "short", "trailing_t": bt_})
-    tr = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame()
+        picks.append({"sym": sym, "year": Y, "pick": best, "dir": "long" if bt_ > 0 else "short", "trailing_gross_t": bt_})
+    tr = pd.concat(parts, ignore_index=True) if parts else ix.make_trades(S, [], 0, [], [])
     return tr, picks
+
+
+def sunday_gap_robustness():
+    """Robustness of the Sunday-gap fade (checks, not selection trials): entry delay, exit time, threshold,
+    cost multiple, ex-2020."""
+    out = []
+    for sym in ["XTIUSD", "XNGUSD"]:
+        S = ix.session_matrix(sym)
+        dates = ix.valid_dates(S)
+        grid = [("18:05", "09:00", 0.005, m) for m in [0.0, 1.0, 2.0, 3.0]]
+        grid += [(e, "09:00", 0.005, 1.0) for e in ["18:15", "18:30", "19:00", "20:00"]]
+        grid += [("18:05", x, 0.005, 1.0) for x in ["02:00", "06:00", "12:00", "14:30"]]
+        grid += [("18:05", "09:00", t, 1.0) for t in [0.0025, 0.01, 0.02]]
+        for e, x, t, m in grid:
+            tr = sunday_gap_trades(S, "fade", x, t, entry_t=e)
+            row = {"sym": sym, "entry": e, "exit": x, "thr": t, "cost_mult": m}
+            for p, (a, b) in ix.PERIODS.items():
+                ps = ix.period_stats(tr, dates, a, b, mult=m)
+                row[f"{p}_sharpe"] = ps.get("sharpe", np.nan)
+                row[f"{p}_trades_py"] = ps.get("trades_py", np.nan)
+                row[f"{p}_avg_bps"] = ps.get("avg_bps", np.nan)
+            dn = ix.daily_pnl(tr, dates, m)
+            x0 = dn[dn.index.year != 2020]
+            row["full_ex2020_sharpe"] = ix.bt.sharpe(x0)
+            row["oos_ex2020_sharpe"] = ix.bt.sharpe(x0[x0.index >= ix.OOS_START])
+            out.append(row)
+    return pd.DataFrame(out)
 
 
 def main():
@@ -196,11 +225,25 @@ def main():
                     store[key] = tr
                     grid.append({"key": key, "sym": sym, "family": "D_session", "item": "sunday_gap", "dir": mode,
                                  "exit": xt, "thr": thr, **ix.evaluate(tr, S)})
-        tr, picks = walk_forward(S, d, sym, fns)
-        key = f"{sym}|session_walkforward|trailing3y"
-        store[key] = tr
-        grid.append({"key": key, "sym": sym, "family": "D_session", "item": "walkforward", "dir": "wf", **ix.evaluate(tr, S)})
-        wf_picks += picks
+        # day-of-week intraday holds (09:00 -> 14:30 on one weekday), long and short
+        dnames = ["Mon", "Tue", "Wed", "Thu", "Fri"]
+        for wd in range(5):
+            for dname, dr in [("long", 1.0), ("short", -1.0)]:
+                tr = dow_trades(S, wd, dr)
+                key = f"{sym}|dow|{dnames[wd]}_0900_1430|{dname}"
+                store[key] = tr
+                grid.append({"key": key, "sym": sym, "family": "D_session", "item": f"dow_{dnames[wd]}", "dir": dname,
+                             **ix.evaluate(tr, S)})
+        # walk-forward pickers (one trial each): sessions only, and sessions + weekday holds
+        cands = {name: fn(1.0) for name, fn in fns.items()}
+        for label, cc in [("sessions", cands),
+                          ("sessions+dow", {**cands, **{f"dow_{dnames[wd]}": dow_trades(S, wd, 1.0) for wd in range(5)}})]:
+            tr, picks = walk_forward(S, sym, cc)
+            key = f"{sym}|session_walkforward|{label}"
+            store[key] = tr
+            grid.append({"key": key, "sym": sym, "family": "D_session", "item": f"walkforward_{label}", "dir": "wf",
+                         **ix.evaluate(tr, S)})
+            wf_picks += [{**p, "candidates": label} for p in picks]
         # Sunday gap diagnostics: gap vs subsequent returns
         mon = S.valid & (S.dates.dayofweek == 0)
         gap = pd.Series(np.log(reopen_px(S) / prev_close17(S)), index=S.dates)[mon]
@@ -226,6 +269,8 @@ def main():
     G = pd.DataFrame(grid)
     G.to_csv(os.path.join(OUT, "e06_D_session_grid.csv"), index=False)
     pd.DataFrame(wf_picks).to_csv(os.path.join(OUT, "e06_D_walkforward_picks.csv"), index=False)
+    SG = sunday_gap_robustness()
+    SG.to_csv(os.path.join(OUT, "e06_D_sunday_gap_robustness.csv"), index=False)
     pd.to_pickle(store, os.path.join(ix.CACHE, "e06_D_trades.pkl"))
     pd.set_option("display.width", 250)
     print(ST.pivot_table(index=["sym", "item"], columns="period", values=["mean_bp", "t"]).round(2).to_string())
@@ -235,6 +280,7 @@ def main():
             "full_avg_bps", "full_avg_gross_bps", "full_hit"]
     print(G[show].round(3).to_string(index=False))
     print(pd.DataFrame(wf_picks).to_string(index=False))
+    print(SG.round(3).to_string(index=False))
 
 
 if __name__ == "__main__":

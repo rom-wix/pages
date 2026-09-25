@@ -272,7 +272,7 @@
           if (v == null) return;
           const x = cx - groupW / 2 + k * (bw + gap);
           const y0 = Y(0), y1 = Y(v), h = Math.max(Math.abs(y1 - y0), 1), r = Math.min(4, bw / 2, h);
-          const col = css(s.colorFn ? s.colorFn(v) : s.color);
+          const col = css(cfg.colorAt ? cfg.colorAt(i, k) : s.colorFn ? s.colorFn(v) : s.color);
           const d = v >= 0
             ? `M${x},${y0} v-${h - r} q0,-${r} ${r},-${r} h${bw - 2 * r} q${r},0 ${r},${r} v${h - r} z`
             : `M${x},${y0} v${h - r} q0,${r} ${r},${r} h${bw - 2 * r} q${r},0 ${r},-${r} v-${h - r} z`;
@@ -281,7 +281,7 @@
             text(g, x + bw / 2, v >= 0 ? y1 - 8 : y1 + 9, cfg.fmt ? cfg.fmt(v) : v.toFixed(2), { anchor: "middle", size: 10.5, fill: css("--ink-2") });
         });
         const show = () => {
-          const rows = ser.map((s) => ({ color: css(s.colorFn ? s.colorFn(s.values[i] ?? 0) : s.color), value: s.values[i] == null ? "–" : (cfg.fmt ? cfg.fmt(s.values[i]) : s.values[i].toFixed(2)), label: s.name }));
+          const rows = ser.map((s, k) => ({ color: css(cfg.colorAt ? cfg.colorAt(i, k) : s.colorFn ? s.colorFn(s.values[i] ?? 0) : s.color), value: s.values[i] == null ? "–" : (cfg.fmt ? cfg.fmt(s.values[i]) : s.values[i].toFixed(2)), label: s.name }));
           showTip(tip, host, cx, Y(Math.max(...ser.map((s) => s.values[i] ?? 0))), cfg.catFmt ? cfg.catFmt(c) : c, rows);
         };
         g.addEventListener("pointerenter", show);

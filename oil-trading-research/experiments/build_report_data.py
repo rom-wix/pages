@@ -100,6 +100,26 @@ def main():
     hold["table"] = ht[["name", "symbol", "sharpe", "cagr", "ann_vol", "max_dd"]].round(3).to_dict("records")
     out["holdout"] = hold
 
+    # ---- last 12 months (spot) + revised configuration
+    e13 = json.load(open(os.path.join(R, "e13_last_year.json")))
+    spd = spot_daily()["2025-09-01":"2026-09-22"]
+    ly_px = {s: [[str(i.date()), float(v)] for i, v in spd[s].dropna().items()] for s in ["XTIUSD", "XBRUSD"]}
+    ls = pd.read_csv(os.path.join(R, "e13_last_year_strategies.csv"))
+    ls = ls[(ls.lag == 1) & ls.symbol.isin(["XTIUSD", "XBRUSD"])]
+    crude = ls.groupby("name").sharpe.mean()
+    e15 = json.load(open(os.path.join(R, "e15_revised_headline.json")))
+    mon = json.load(open(os.path.join(R, "e14_last12m_monthly.json")))
+    out["last_year"] = {"regime": e13["regime"], "character": e13["character"], "prices": ly_px,
+                        "crude_sharpe": {k: round(float(v), 3) for k, v in crude.items()},
+                        "mr_median": float(crude[[k for k in crude.index if k in ls[ls.family == "mean_reversion"].name.unique()]].median()),
+                        "monthly": mon, "revised": e15["last12m"], "revised_since2024": e15["spot_2024_26"]}
+    out["revised"] = {k: e15[k] for k in ["revised", "revised_no_crack"]}
+    rv = pd.read_csv(os.path.join(R, "e15_revised_daily_returns.csv"), index_col=0, parse_dates=True)
+    out["equity"]["revised"] = monthly_equity(rv["revised"]["1991-11-01":])
+    out["equity"]["revised_no_crack"] = monthly_equity(rv["revised_no_crack"]["1991-11-01":])
+    out["speed_blends"] = pd.read_csv(os.path.join(R, "e14_speed_blends.csv")).round(3).to_dict("records")
+    out["near_month"] = pd.read_csv(os.path.join(R, "e12_near_month.csv")).round(3).to_dict("records")
+
     ex = os.path.join(R, "e11_extras.json")
     if os.path.exists(ex):
         out["extras"] = json.load(open(ex))

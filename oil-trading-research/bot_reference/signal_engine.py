@@ -1,7 +1,10 @@
-"""Reference signal engine for the recommended daily bot (trend + crack tilt, vol-targeted).
+"""Reference signal engine for the recommended daily bot (multi-speed trend + crack tilt, vol-targeted).
 
-Self-contained (pandas/numpy only) and identical in logic to the backtest in experiments/e10_portfolio.py,
-so live targets can be checked against research numbers (see verify_against_backtest.py).
+Self-contained (pandas/numpy only) and identical in logic to the research backtests, so live targets can
+be checked against research numbers (see verify_against_backtest.py):
+  trend="revised"  (default)  1/3/12-month momentum (Hurst-Ooi-Pedersen 2017) averaged with fast-to-medium
+                              EWMA crossovers (4-32d) and breakouts (20-160d)      -> experiments/e14_speed_blends.py
+  trend="original"            EWMA crossovers 8-64d + breakouts 40-320d            -> experiments/e10_portfolio.py
 
 Inputs (daily, one row per trading day, aligned on the settlement/close time you trade at):
   closes[sym]  : roll-ADJUSTED daily closes for XTIUSD / XBRUSD / XNGUSD (no roll gaps!)
@@ -21,8 +24,11 @@ import pandas as pd
 TARGET_VOL = 0.15       # per market, annualised
 CAP = 3.0               # max |position| as multiple of equity
 BUFFER = 0.10           # trade only when target moves >10% of the typical position
-EWMAC_SPEEDS = (8, 16, 32, 64)
+EWMAC_SPEEDS = (8, 16, 32, 64)            # original blend
 BREAKOUT_WINDOWS = (40, 80, 160, 320)
+FAST_EWMAC_SPEEDS = (4, 8, 16, 32)         # revised blend
+FAST_BREAKOUT_WINDOWS = (20, 40, 80, 160)
+TSMOM_LOOKBACKS = (21, 63, 252)            # 1, 3, 12 months
 CRACK_WINDOW = 250
 VOL_PCTILE_CUT = 0.90   # halve exposure above this percentile of trailing-5y vol (optional overlay)
 CRUDE = ("XTIUSD", "XBRUSD")
@@ -40,21 +46,30 @@ def returns_from_adjusted(closes: pd.Series, unadjusted: pd.Series | None = None
     return (closes.diff() / unadjusted.shift(1)).fillna(0.0)
 
 
-def trend_forecast(r: pd.Series) -> pd.Series:
+def trend_forecast(r: pd.Series, ewmac_speeds=EWMAC_SPEEDS, breakout_windows=BREAKOUT_WINDOWS) -> pd.Series:
     x = np.log((1 + r).cumprod())
     vol = r.ewm(span=36, min_periods=20).std()
     ew = []
-    for f in EWMAC_SPEEDS:
+    for f in ewmac_speeds:
         raw = (x.ewm(span=f, min_periods=f).mean() - x.ewm(span=4 * f, min_periods=4 * f).mean()) / vol
         ew.append(_normalise(raw))
     ewmac = _normalise(pd.concat(ew, axis=1).mean(axis=1))
     bo = []
-    for n in BREAKOUT_WINDOWS:
+    for n in breakout_windows:
         hi, lo = x.rolling(n, min_periods=n).max(), x.rolling(n, min_periods=n).min()
         raw = ((x - (hi + lo) / 2) / (hi - lo)).ewm(span=max(n // 4, 2)).mean() * 2
         bo.append(_normalise(raw))
     brk = _normalise(pd.concat(bo, axis=1).mean(axis=1))
     return (ewmac + brk) / 2
+
+
+def tsmom_forecast(r: pd.Series) -> pd.Series:
+    x = np.log((1 + r).cumprod())
+    return sum(np.sign(x - x.shift(n)) for n in TSMOM_LOOKBACKS) / len(TSMOM_LOOKBACKS)
+
+
+def revised_trend_forecast(r: pd.Series) -> pd.Series:
+    return (tsmom_forecast(r) + trend_forecast(r, FAST_EWMAC_SPEEDS, FAST_BREAKOUT_WINDOWS)) / 2
 
 
 def crack_forecast(crack_px: pd.DataFrame) -> pd.Series:
@@ -91,17 +106,19 @@ def buffer_positions(pos: pd.Series, buffer: float = BUFFER) -> pd.Series:
 
 
 def target_positions(rets: dict[str, pd.Series], crack_px: pd.DataFrame | None = None,
-                     vol_overlay: bool = False, buffered: bool = True) -> pd.DataFrame:
-    """rets: {sym: daily % return series of the roll-adjusted CFD/futures}. Returns targets per day."""
+                     vol_overlay: bool = True, buffered: bool = True, trend: str = "revised") -> pd.DataFrame:
+    """rets: {sym: daily % return series of the roll-adjusted CFD/futures}. Returns targets per day.
+    The volatility overlay halves the TREND part when the market's vol is above its 90th percentile of the
+    trailing five years; the crack tilt (crude only) is added after the overlay."""
     ck = crack_forecast(crack_px) if crack_px is not None else None
     out = {}
     for sym, r in rets.items():
-        fc = trend_forecast(r)
-        if ck is not None and sym in CRUDE:
-            fc = (fc + 2 * ck.reindex(fc.index).ffill()) / 2
+        fc = revised_trend_forecast(r) if trend == "revised" else trend_forecast(r)
         if vol_overlay:
             p = vol_percentile(r).reindex(fc.index)
             fc = fc.where(~(p > VOL_PCTILE_CUT), fc * 0.5)
+        if ck is not None and sym in CRUDE:
+            fc = (fc + 2 * ck.reindex(fc.index).ffill()) / 2
         pos = (fc.fillna(0.0) * TARGET_VOL / forecast_vol(r)).clip(-CAP, CAP).fillna(0.0)
         out[sym] = buffer_positions(pos) if buffered else pos
     return pd.DataFrame(out)
