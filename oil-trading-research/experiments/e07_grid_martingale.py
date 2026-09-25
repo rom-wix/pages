@@ -95,9 +95,9 @@ def load_series(label):
             "cps": COST_PER_SIDE[sym], "sym": sym}
 
 
-def run_bot(bot, D, cfg, i0, i1, use_hl=False):
+def run_bot(bot, D, cfg, i0, i1, use_hl=False, gross=False):
     step = step_for(D["label"], *cfg["step"]) if isinstance(cfg["step"], tuple) else cfg["step"]
-    a = (D["C"], D["L"], D["H"], D["O"], D["days"], D["cps"], FIN_MARKUP)
+    a = (D["C"], D["L"], D["H"], D["O"], D["days"], 0.0 if gross else D["cps"], 0.0 if gross else FIN_MARKUP)
     if bot in ("grid", "grid_hedged"):
         eq, ex, st, se, ntr, nwin = rb.sim_grid(*a, step, cfg["lot"], cfg["nmax"], i0, i1, use_hl,
                                                 1 if bot == "grid" else 2)
@@ -194,6 +194,43 @@ def trend_reference():
 def first_start(D):
     """Bots need no warm-up beyond the martingale's 20-day momentum."""
     return str(max(pd.Timestamp("1991-01-01"), D["idx"][21]).date())
+
+
+def continuous_track(bot, D, cfg, gross=False, blow_up=0.10):
+    """Run the bot from the first start; after a stop-out (or equity <= 10%) open a fresh account the next
+    day.  Returns the chained daily return series and the number of closed trades / blow-ups."""
+    i0 = int(D["idx"].searchsorted(pd.Timestamp(first_start(D))))
+    base = i0
+    n = len(D["C"])
+    rets = pd.Series(0.0, index=D["idx"][i0:])
+    ntr_tot, nblow = 0, 0
+    while i0 < n - 2:
+        eq, ex, st, se, ntr, nwin, extra = run_bot(bot, D, cfg, i0, n - 1, gross=gross)
+        low = np.where(eq <= blow_up)[0]
+        cut = len(eq) - 1
+        if st >= 0:
+            cut = st - i0
+        if len(low) and low[0] < cut:
+            cut = int(low[0])
+        e = np.r_[1.0, eq[: cut + 1]]
+        r = e[1:] / e[:-1] - 1
+        rets.iloc[i0 - base: i0 - base + cut + 1] = r
+        ntr_tot += ntr
+        if cut < len(eq) - 1:
+            nblow += 1
+            i0 = i0 + cut + 1
+        else:
+            break
+    return rets, ntr_tot, nblow
+
+
+def track_metrics(r):
+    from src import backtest as bt
+    years = len(r) / 252
+    eq = (1 + r).cumprod()
+    cagr = eq.iloc[-1] ** (1 / years) - 1 if eq.iloc[-1] > 0 else -1.0
+    return {"sharpe": bt.sharpe(r), "is_sharpe": bt.sharpe(r[r.index <= "2007-12-31"]),
+            "oos_sharpe": bt.sharpe(r[r.index > "2007-12-31"]), "cagr": cagr, "max_dd": bt.max_drawdown(r)}
 
 
 def cfg_name(bot, cfg, label=None):
@@ -295,6 +332,23 @@ def main():
     print("\n=== intraday (Oanda high/low) vs close-only stop-out checks, starts 2005-2018")
     print(hl[["bot", "series", "intraday_stop_check", "n_starts", "p_stop_out", "p_loss_ge_50pct",
               "median_2y_ret", "worst_2y_ret"]].round(3).to_string(index=False))
+
+    # ------------------------------------------------------------------ 3b. continuous (re-funded) tracks
+    tr_rows = []
+    for bot, cfg in HEADLINE.items():
+        for lab in MAIN + ["WTI front (CRUDE_ICE)", "NatGas front (GAS-LAST)"]:
+            D = DATA[lab]
+            r, ntr, nblow = continuous_track(bot, D, cfg)
+            rg, _, _ = continuous_track(bot, D, cfg, gross=True)
+            m = track_metrics(r)
+            years = len(r) / 252
+            tr_rows.append({"bot": bot, "series": lab, "config": cfg_name(bot, cfg, lab),
+                            "period": f"{r.index[0].year}-{r.index[-1].year}", **m,
+                            "gross_sharpe": track_metrics(rg)["sharpe"], "trades_per_year": ntr / years,
+                            "blow_ups": nblow, "blow_ups_per_decade": nblow / years * 10})
+    tracks = pd.DataFrame(tr_rows)
+    tracks.to_csv(os.path.join(OUT, "e07_continuous_tracks.csv"), index=False)
+    print("\n=== continuous tracks (fresh account after every blow-up)\n", tracks.round(3).to_string(index=False))
 
     # ------------------------------------------------------------------ 4. episodes
     episodes = [
@@ -417,7 +471,8 @@ def charts(DATA, head, per_start, sweep, ep_series, long_series, ep):
         for bot in ["grid", "martingale", "dca"]:
             e, sd = d[bot]
             ax2.plot(e.index, e.values, color=BOT_COLOR[bot], lw=1.2, label=BOT_LABEL[bot])
-            if sd is not None:
+            prev = e.shift(1).fillna(1.0)
+            if sd is not None and e.loc[sd] < prev.loc[sd]:   # mark stop-outs that were losses
                 ax2.scatter([sd], [e.loc[sd]], s=40, color=ps.CRITICAL, zorder=4, edgecolor=ps.SURFACE,
                             linewidth=1.5)
         ax2.axhline(1.0, color=ps.AXIS, lw=0.7)
@@ -426,12 +481,14 @@ def charts(DATA, head, per_start, sweep, ep_series, long_series, ep):
             ax2.set_ylabel("account equity, start = 1")
         ax2.xaxis.set_major_locator(mdates.YearLocator())
         ax2.xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
-    axes[1, 0].legend(loc="lower left", fontsize=7.5)
-    ps.title(fig, "The same story in every crash: steady gains, then a margin stop-out", y=1.05)
+    handles, labels = axes[1, 0].get_legend_handles_labels()
+    fig.legend(handles, labels, loc="lower center", ncol=3, bbox_to_anchor=(0.5, -0.04), fontsize=9)
+    fig.tight_layout(rect=(0, 0.03, 1, 0.9))
+    ps.title(fig, "The same story in every crash: steady gains, then a margin stop-out", y=0.995)
     ps.subtitle(fig, "Headline settings, 1:10 leverage, stop-out at 50% margin level (red dot). Price = futures "
-                     "total-return index (incl. roll yield). Last panel: CFD tracking the expiring May-2020 contract.",
-                y=1.0)
-    fig.tight_layout()
+                     "total-return index (incl. roll yield). Last panel: CFD tracking the expiring May-2020 WTI "
+                     "contract (EIA spot, -$37 on 20 Apr); the martingale was short and was closed at a gain.",
+                y=0.955)
     ps.save(fig, os.path.join(OUT, "e07_episodes.png"))
 
     # 2. outcome by start month (2-year final equity), per bot, main series
@@ -439,25 +496,25 @@ def charts(DATA, head, per_start, sweep, ep_series, long_series, ep):
     for ax, bot in zip(axes, ["grid", "martingale", "dca"]):
         for lab in MAIN:
             df = per_start[(bot, lab)]
-            ok = ~df["stopped"]
-            ax.scatter(df.loc[ok, "start"], df.loc[ok, "final"], s=9, color=COLOR[lab], label=lab, alpha=0.85,
-                       linewidths=0)
-            ax.scatter(df.loc[~ok, "start"], df.loc[~ok, "final"], s=16, color=COLOR[lab], marker="x",
-                       linewidths=1.1)
+            ok = ~(df["stopped"] | (df["min_eq"] <= 0.5))
+            ax.scatter(df.loc[ok, "start"], df.loc[ok, "final"].clip(upper=3.0), s=9, color=COLOR[lab], label=lab,
+                       alpha=0.85, linewidths=0)
+            ax.scatter(df.loc[~ok, "start"], df.loc[~ok, "final"].clip(upper=3.0), s=16, color=COLOR[lab],
+                       marker="x", linewidths=1.1)
         ax.axhline(1.0, color=ps.AXIS, lw=0.8)
         ax.axhline(0.5, color=ps.CRITICAL, lw=0.7)
         r = head[(head.bot == bot) & head.series.isin(MAIN)]
-        txt = "  ".join(f"{l.split(' ')[0]}: stop-out {p:.0%}" for l, p in zip(r.series, r.p_stop_out))
-        ax.set_title(f"{BOT_LABEL[bot]}  ({txt})", fontsize=10)
+        txt = "   ".join(f"{l.split(' ')[0]} {p:.0%}" for l, p in zip(r.series, r.p_loss_ge_50pct))
+        ax.set_title(f"{BOT_LABEL[bot]}.  P(lose >= 50% within 2 years): {txt}", fontsize=10)
         ax.set_ylabel("equity after 2 years")
-        ax.set_ylim(-0.05, 2.6)
+        ax.set_ylim(-0.05, 3.1)
     axes[0].legend(loc="upper left", ncol=3, fontsize=8, markerscale=1.8)
     axes[-1].xaxis.set_major_locator(mdates.YearLocator(4))
     axes[-1].xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
-    ps.title(fig, "Start a new account every month and run it for two years", y=1.03)
-    ps.subtitle(fig, "Each dot = one 2-year run (x = start month). Crosses = stopped out by the broker. "
-                     "Red line = half the account lost.", y=1.0)
-    fig.tight_layout()
+    fig.tight_layout(rect=(0, 0, 1, 0.94))
+    ps.title(fig, "Start a new account every month and run it for two years", y=0.995)
+    ps.subtitle(fig, "Each mark = one 2-year run (x = start month). Cross = ruined on the way (broker stop-out or "
+                     ">= 50% loss). Red line = half the account. Values above 3 are drawn at 3.", y=0.965)
     ps.save(fig, os.path.join(OUT, "e07_outcomes_by_start.png"))
 
     # 3. sweep: ruin probability vs median 2y return, all configs, main series
@@ -472,11 +529,12 @@ def charts(DATA, head, per_start, sweep, ep_series, long_series, ep):
         ax.set_title(BOT_LABEL[bot], fontsize=10.5)
         ax.set_xlabel("median 2-year return, %")
     axes[0].set_ylabel("P(losing >= 50% of the account within 2 years), %")
-    axes[0].legend(loc="upper left", fontsize=8)
+    handles, labels = axes[0].get_legend_handles_labels()
+    fig.legend(handles, labels, loc="lower center", ncol=3, bbox_to_anchor=(0.5, -0.07), fontsize=9)
     ps.title(fig, "No setting buys a decent median return without a large chance of losing half the account",
              y=1.07)
     ps.subtitle(fig, "Each dot = one parameter set (step 1.5-8%, lot / base / ladder size, depth), monthly starts "
-                     "1991-2022.", y=1.0)
+                     "1991-2022, 2-year runs.", y=1.0)
     ps.save(fig, os.path.join(OUT, "e07_sweep_ruin_vs_return.png"))
 
     # 4. typical pattern: longest-surviving open-ended run per bot
@@ -491,10 +549,10 @@ def charts(DATA, head, per_start, sweep, ep_series, long_series, ep):
                     xytext=(-10, 10), ha="right", fontsize=8, color=ps.INK2)
         ax.set_title(f"{BOT_LABEL[bot]} on {lab}: longest survivor of all monthly starts", fontsize=10)
         ax.set_ylabel("equity")
-    ps.title(fig, "High win rate, smooth equity, then ruin", y=1.03)
+    fig.tight_layout(rect=(0, 0, 1, 0.94))
+    ps.title(fig, "High win rate, smooth equity, then ruin", y=0.995)
     ps.subtitle(fig, "Headline settings. Each bot's best-case history: the start month that survived longest "
-                     "before ruin (stop-out or half the account lost, red dot).", y=1.0)
-    fig.tight_layout()
+                     "before ruin (stop-out or half the account lost, red dot).", y=0.965)
     ps.save(fig, os.path.join(OUT, "e07_typical_pattern.png"))
 
 

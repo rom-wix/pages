@@ -158,13 +158,13 @@ def pct(x, nd=0):
 
 
 def md_table(df, cols, headers, fmts):
-    out = ["| " + " | ".join(headers) + " |", "|" + "|".join(["---"] * len(headers)) + "|"]
+    out = ["| " + " | ".join(h.replace("|", "\\|") for h in headers) + " |", "|" + "|".join(["---"] * len(headers)) + "|"]
     for _, r in df.iterrows():
         cells = []
         for c, f in zip(cols, fmts):
             v = r[c]
             cells.append(f(v) if callable(f) else (str(v) if f is None else f.format(v)))
-        out.append("| " + " | ".join(cells) + " |")
+        out.append("| " + " | ".join(c.replace("|", "\\|") for c in cells) + " |")
     return "\n".join(out)
 
 
@@ -279,8 +279,10 @@ def write_markdown(R, Y, fs, live, G, T):
       f"to {f2(rv(bm, 'XTIUSD', 'dsr_is_family'))} (trial-dispersion flavour).")
     A(f"* **Second candidate, unproven: fading WTI Sunday-open gaps above 0.5%** (enter Sunday 18:05-20:00, exit Monday 09:00). It had "
       f"no in-sample support (IS {f2(rv(sgk, 'XTIUSD', 'is_sharpe'))}) but scored OOS {f2(rv(sgk, 'XTIUSD', 'oos_sharpe'))} "
-      f"({f2(rv(sgk, 'XTIUSD', 'oos_ex2020_sharpe'))} ex-2020). The OOS result survives entry delays, thresholds and 3x costs, "
-      f"on only ~{rv(sgk, 'XTIUSD', 'full_trades_py'):.0f} trades/yr, and it carries real gap risk. Forward-test only.")
+      f"({f2(rv(sgk, 'XTIUSD', 'oos_ex2020_sharpe'))} ex-2020; OOS bootstrap CI [{f2(rv(sgk, 'XTIUSD', 'oos_ci_lo'))}, "
+      f"{f2(rv(sgk, 'XTIUSD', 'oos_ci_hi'))}], the only candidate whose OOS CI excludes zero). The OOS result survives entry delays, "
+      f"thresholds and 3x costs. But it rests on only ~{rv(sgk, 'XTIUSD', 'full_trades_py'):.0f} trades/yr, the in-sample years show "
+      "nothing, and it carries real weekend-gap risk. Forward-test only.")
     A("* Reject: opening-range breakout (gross edge, net ~0 for WTI and deeply negative for NG), EIA continuation and fade, "
       "session and day-of-week drifts, and short-term mean reversion (no edge even gross).")
     A(f"* The EIA releases matter for **risk management**, not alpha. The first minute after the crude report is "
@@ -392,7 +394,7 @@ def write_markdown(R, Y, fs, live, G, T):
         pnl = Y.pivot_table(index="year", columns="strategy", values="net_ret")
         ntr = Y.pivot_table(index="year", columns="strategy", values="trades")
         order = list(dict.fromkeys(Y["strategy"]))
-        hdr = ["year"] + [f"`{s}` SR / net % / trades" for s in order]
+        hdr = ["year"] + [f"`{s_}` SR / net % / trades".replace("|", "\\|") for s_ in order]
         A("| " + " | ".join(hdr) + " |")
         A("|" + "|".join(["---"] * len(hdr)) + "|")
         for yv in piv.index:
@@ -401,6 +403,21 @@ def write_markdown(R, Y, fs, live, G, T):
                 v = piv.loc[yv, s_] if s_ in piv.columns else np.nan
                 cells.append(f"{f2(v)} / {pnl.loc[yv, s_] * 100:.1f} / {ntr.loc[yv, s_]:.0f}")
             A("| " + " | ".join(cells) + " |")
+    A("")
+    yfb = pd.read_csv(os.path.join(OUT, "e06_yearly_family_best.csv"))
+    A("**Per-year net return (%, 1x notional, 1x costs) of the IS-selected best configuration in every family** "
+      "(configs as in `e06_cumulative_best.png`; full detail in `e06_yearly_family_best.csv`):")
+    A("")
+    yfb["col"] = yfb["fam"] + " " + yfb["sym"].str[:3]
+    pv = yfb.pivot_table(index="year", columns="col", values="net_ret")
+    colsf = sorted(pv.columns, key=lambda c: (c.split()[1], c.split()[0]), reverse=False)
+    A("| year | " + " | ".join(colsf) + " |")
+    A("|" + "|".join(["---"] * (len(colsf) + 1)) + "|")
+    for yv in pv.index:
+        A(f"| {yv} | " + " | ".join(f"{pv.loc[yv, c] * 100:.1f}" if np.isfinite(pv.loc[yv, c]) else "n/a" for c in colsf) + " |")
+    keys = yfb.drop_duplicates("col").set_index("col")["strategy"]
+    A("")
+    A("Columns: " + "; ".join(f"{c} = `{keys[c].split('|', 1)[1]}`" for c in colsf).replace("|", "\\|") + ".")
     A("")
     A("## Family details and verdicts")
     A("")
@@ -562,7 +579,7 @@ def write_markdown(R, Y, fs, live, G, T):
       f"(`e06_D_sunday_gap_robustness.csv`): OOS {min(sg_oos):.2f}-{max(sg_oos):.2f} for entries 18:05-20:00 (IS {min(sg_is):.2f} to "
       f"{max(sg_is):.2f}), {min(sg_thr):.2f}-{max(sg_thr):.2f} for thresholds 0.25-2%, and {f2(sgv('18:05', '09:00', 0.005, 3.0, 'oos_sharpe'))} "
       f"at 3x costs. NG fades lose. Verdict: **marginal, OOS-only evidence**: consistent across settings from 2013 on, absent in 2005-12, "
-      f"~{rv(sgk, 'XTIUSD', 'full_trades_py'):.0f} trades/yr, and exposed to Sunday-open spreads and weekend-news gaps (-33% on 2020-03-09). "
+      f"~{rv(sgk, 'XTIUSD', 'full_trades_py'):.0f} trades/yr, and exposed to Sunday-open spreads and weekend-news gaps (-28% on 2020-03-09). "
       "Forward-test before any use.")
     A(f"* **Walk-forward session picker** (each year hold the session with the largest trailing-3-year gross |t|, if |t| > 2, in its "
       f"sign): WTI OOS net {f2(rv('D4 walk-forward session pick', 'XTIUSD', 'oos_sharpe'))} (gross "
@@ -612,7 +629,7 @@ def write_markdown(R, Y, fs, live, G, T):
     A("* **Settlement (14:28-14:30 NY)** is the closing range. Prices lean in the day's direction into 14:28 and partially revert at "
       "14:30-14:35.")
     A(f"* **Sunday reopen (18:00 NY):** the weekend-gap standard deviation is ~{sv('XTIUSD', 'weekend_gap', 'full', 'sd_bp'):.0f} bp, with "
-      "tail events like -33% (WTI, 2020-03-09). Be flat over weekends or size for the gap; stops do not protect.")
+      "tail events like -28% (WTI reopen on 2020-03-09). Be flat over weekends or size for the gap; stops do not protect.")
     A("* **Holidays and early closes:** Globex halts around 13:30 NY on MLK, Presidents', Memorial, July 4, Labor and Thanksgiving days, "
       "with no settlement. Any 14:30-exit logic must handle that.")
     A("")
@@ -623,6 +640,7 @@ def write_markdown(R, Y, fs, live, G, T):
       "`e06_intraday_sessions.py`, `e06_intraday_meanrev.py`, and `e06_intraday_summary.py` with `e06_intraday_report.py`. Run the family "
       "scripts first, then the summary.")
     A("* **Results:** `results/e06_ranked.csv` (the ranked table with all columns), `e06_family_trial_summary.csv`, `e06_yearly.csv`, "
+      "`e06_yearly_family_best.csv`, "
       "the family grids `e06_A_orb_grid.csv`, `e06_B_momentum_grid.csv`, `e06_C_eia_grid.csv`, `e06_D_session_grid.csv` and "
       "`e06_E_meanrev_grid.csv`, plus `e06_B_momentum_regressions.csv`, `e06_B_momentum_subintervals.csv`, `e06_B_momentum_robustness.csv`, "
       "`e06_C_eia_event_vol.csv`, `e06_C_eia_minute_profile.csv`, `e06_D_session_stats.csv`, `e06_D_hourly.csv`, `e06_D_dayofweek.csv`, "

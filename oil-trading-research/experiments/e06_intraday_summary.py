@@ -167,6 +167,20 @@ def main():
         yrows.append(y)
     Y = pd.concat(yrows, ignore_index=True) if yrows else pd.DataFrame()
     Y.to_csv(os.path.join(OUT, "e06_yearly.csv"), index=False)
+    # per-year results of the IS-selected best configuration of every family x instrument
+    Rf = R.copy()
+    Rf["fam"] = Rf["sub"].str[0]
+    fb = Rf.sort_values("is_sharpe", ascending=False).groupby(["fam", "sym"]).head(1)
+    yf = []
+    for _, r in fb.iterrows():
+        key = f"{r['sym']}|{r['best_config']}"
+        y = ix.yearly_stats(T[key], ix.session_matrix(r["sym"]))
+        y.insert(0, "strategy", key)
+        y.insert(0, "sym", r["sym"])
+        y.insert(0, "fam", r["fam"])
+        yf.append(y)
+    YF = pd.concat(yf, ignore_index=True)
+    YF.to_csv(os.path.join(OUT, "e06_yearly_family_best.csv"), index=False)
     print(Y.round(3).to_string(index=False))
     # all-trial summary per family (how many survive OOS after costs)
     fs = live.groupby(["fam", "sym"]).agg(trials=("key", "size"), oos_net_pos=("oos_sharpe", lambda x: (x > 0).mean()),
