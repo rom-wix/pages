@@ -198,30 +198,36 @@ def first_start(D):
     return str(max(pd.Timestamp("1991-01-01"), D["idx"][21]).date())
 
 
-def continuous_track(bot, D, cfg, gross=False, blow_up=0.10):
+def continuous_track(bot, D, cfg, gross=False, blow_up=0.10, rebase_years=HORIZON_YEARS):
     """Run the bot from the first start; after a stop-out (or equity <= 10%) open a fresh account the next
-    day.  Returns the chained daily return series and the number of closed trades / blow-ups."""
+    day, and in any case re-size the bot to the current balance every `rebase_years` (otherwise lot sizes
+    fixed in units drift with a price index that rose ~9x).  Returns the chained daily returns, the number of
+    closed trades and the number of blow-ups."""
     i0 = int(D["idx"].searchsorted(pd.Timestamp(first_start(D))))
     base = i0
     n = len(D["C"])
     rets = pd.Series(0.0, index=D["idx"][i0:])
     ntr_tot, nblow = 0, 0
     while i0 < n - 2:
-        eq, ex, st, se, ntr, nwin, extra = run_bot(bot, D, cfg, i0, n - 1, gross=gross)
+        i1 = min(n - 1, int(D["idx"].searchsorted(D["idx"][i0] + pd.DateOffset(years=rebase_years))))
+        eq, ex, st, se, ntr, nwin, extra = run_bot(bot, D, cfg, i0, i1, gross=gross)
         low = np.where(eq <= blow_up)[0]
         cut = len(eq) - 1
+        blew = False
         if st >= 0:
             cut = st - i0
+            blew = True
         if len(low) and low[0] < cut:
             cut = int(low[0])
+            blew = True
+            ntr = run_bot(bot, D, cfg, i0, i0 + cut, gross=gross)[4]  # trades up to the cut only
         e = np.r_[1.0, eq[: cut + 1]]
         r = e[1:] / e[:-1] - 1
         rets.iloc[i0 - base: i0 - base + cut + 1] = r
         ntr_tot += ntr
-        if cut < len(eq) - 1:
-            nblow += 1
-            i0 = i0 + cut + 1
-        else:
+        nblow += int(blew)
+        i0 = i0 + cut + 1
+        if i0 >= n - 2:
             break
     return rets, ntr_tot, nblow
 
@@ -451,7 +457,7 @@ def main():
         long_rows.append({"bot": bot, "series": lab, "start": str(D["idx"][i0].date()),
                           "ruin_date": str(D["idx"][st].date()), "years_survived": life / 252,
                           "peak_equity": float(e.max()), "closed_trades": ntr,
-                          "win_rate": nwin / ntr if ntr else np.nan, "equity_after_stop": float(e.iloc[-1])})
+                          "win_rate": nwin / ntr if ntr else np.nan, "equity_60d_after_ruin": float(e.iloc[-1])})
     lr = pd.DataFrame(long_rows)
     lr.to_csv(os.path.join(OUT, "e07_longest_survivors.csv"), index=False)
     surv = pd.DataFrame(surv_rows)
