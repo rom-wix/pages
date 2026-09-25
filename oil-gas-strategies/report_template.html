@@ -1,0 +1,1006 @@
+<title>Energy Impulse Playbook</title>
+<meta name="description" content="Backtested research on trading the pause after strong moves in crude oil and natural gas, with a recommended daily flag-breakout system for WTI and Brent.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+:root {
+  --paper: #f2f3ef;
+  --surface: #fbfbf9;
+  --ink: #121518;
+  --ink-2: #464c52;
+  --muted: #6c7278;
+  --grid: #e3e4de;
+  --axis: #c3c5bd;
+  --rule: rgba(18, 21, 24, 0.12);
+  --accent: #1c5cab;
+  --accent-ink: #ffffff;
+  --accent-wash: #e3ecf8;
+  --band-a: rgba(18, 21, 24, 0.045);
+  --band-b: rgba(28, 92, 171, 0.06);
+  --band-c: rgba(28, 92, 171, 0.11);
+  --wti: #2a78d6;
+  --wtis: #1baf7a;
+  --brent: #eb6834;
+  --deemph: #9ea3a6;
+  --candle: #5b6168;
+  --note-bg: #fbf3dc;
+  --note-edge: #d9a300;
+  --note-ink: #4a3900;
+  --d-n3: #a52b2a; --d-n2: #de4c4a; --d-n1: #f4bdb8; --d-0: #eceae6; --d-p1: #bcd6f6; --d-p2: #5598e7; --d-p3: #1c5cab;
+  --d-n3-t: #ffffff; --d-n2-t: #ffffff; --d-n1-t: #121518; --d-0-t: #121518; --d-p1-t: #121518; --d-p2-t: #ffffff; --d-p3-t: #ffffff;
+  --font-display: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --paper: #0e1011; --surface: #16181a; --ink: #eef0ee; --ink-2: #c1c5c2; --muted: #92979b;
+    --grid: #26292b; --axis: #3b3f41; --rule: rgba(255, 255, 255, 0.11);
+    --accent: #86b6ef; --accent-ink: #0e1011; --accent-wash: #15263b;
+    --band-a: rgba(255, 255, 255, 0.035); --band-b: rgba(134, 182, 239, 0.06); --band-c: rgba(134, 182, 239, 0.11);
+    --wti: #3987e5; --wtis: #199e70; --brent: #d95926; --deemph: #6f7477; --candle: #a4a9ad;
+    --note-bg: #2a2410; --note-edge: #c98500; --note-ink: #f3e2b0;
+    --d-n3: #f08b86; --d-n2: #c94442; --d-n1: #4e2624; --d-0: #2b2d2e; --d-p1: #1b3657; --d-p2: #2f6fc4; --d-p3: #8dbbf1;
+    --d-n3-t: #121518; --d-n2-t: #ffffff; --d-n1-t: #f2d9d7; --d-0-t: #dfe2e0; --d-p1-t: #d9e7f8; --d-p2-t: #ffffff; --d-p3-t: #0e1011;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #0e1011; --surface: #16181a; --ink: #eef0ee; --ink-2: #c1c5c2; --muted: #92979b;
+  --grid: #26292b; --axis: #3b3f41; --rule: rgba(255, 255, 255, 0.11);
+  --accent: #86b6ef; --accent-ink: #0e1011; --accent-wash: #15263b;
+  --band-a: rgba(255, 255, 255, 0.035); --band-b: rgba(134, 182, 239, 0.06); --band-c: rgba(134, 182, 239, 0.11);
+  --wti: #3987e5; --wtis: #199e70; --brent: #d95926; --deemph: #6f7477; --candle: #a4a9ad;
+  --note-bg: #2a2410; --note-edge: #c98500; --note-ink: #f3e2b0;
+  --d-n3: #f08b86; --d-n2: #c94442; --d-n1: #4e2624; --d-0: #2b2d2e; --d-p1: #1b3657; --d-p2: #2f6fc4; --d-p3: #8dbbf1;
+  --d-n3-t: #121518; --d-n2-t: #ffffff; --d-n1-t: #f2d9d7; --d-0-t: #dfe2e0; --d-p1-t: #d9e7f8; --d-p2-t: #ffffff; --d-p3-t: #0e1011;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.6; margin: 0; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-inline: 20px; padding-block: 0 72px; }
+a { color: var(--accent); text-underline-offset: 2px; }
+a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+p { margin: 0; }
+.prose { max-width: 70ch; display: grid; gap: 14px; }
+.prose ul { margin: 0; padding-left: 1.2em; display: grid; gap: 8px; }
+h1, h2 { font-family: var(--font-display); font-weight: 600; text-wrap: balance; margin: 0; letter-spacing: 0.005em; }
+h1 { font-size: clamp(44px, 8vw, 76px); line-height: 0.98; }
+h2 { font-size: clamp(30px, 4.4vw, 42px); line-height: 1.02; }
+h3 { font-size: 17px; line-height: 1.35; font-weight: 600; margin: 0; text-wrap: balance; }
+.eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); }
+.mono { font-family: var(--font-mono); }
+.num { font-variant-numeric: tabular-nums; }
+.small { font-size: 14px; color: var(--ink-2); }
+.pos { color: var(--ink); }
+strong { font-weight: 600; }
+
+header.top { padding-block: 44px 28px; display: grid; gap: 18px; }
+header.top .dek { font-size: clamp(18px, 2.2vw, 21px); line-height: 1.5; max-width: 62ch; color: var(--ink); }
+header.top .meta { font-size: 13.5px; color: var(--ink-2); max-width: 90ch; }
+nav.toc { display: flex; flex-wrap: wrap; gap: 6px 18px; padding-block: 14px; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); font-size: 14px; }
+nav.toc a { color: var(--ink-2); text-decoration: none; }
+nav.toc a:hover { color: var(--accent); text-decoration: underline; }
+
+section { padding-block: 56px 0; display: grid; gap: 20px; }
+section > .head { display: grid; gap: 8px; }
+.lede { font-size: 18px; line-height: 1.55; }
+
+/* verdict */
+.verdict { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 28px; align-items: start; }
+@media (max-width: 860px) { .verdict { grid-template-columns: 1fr; } }
+.pick { background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 20px; display: grid; gap: 16px; }
+.pick .tag { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
+.pick .tag::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+.pick h3 { font-family: var(--font-display); font-size: 30px; font-weight: 600; line-height: 1.05; }
+.tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; }
+.tile { background: var(--surface); padding: 12px 14px; display: grid; gap: 2px; }
+.tile .v { font-size: 30px; font-weight: 600; line-height: 1.1; letter-spacing: -0.01em; }
+.tile .l { font-size: 13px; color: var(--ink-2); line-height: 1.35; }
+.findings { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none; }
+.findings li { display: grid; gap: 4px; padding-left: 16px; border-left: 2px solid var(--rule); }
+.findings li.good { border-left-color: var(--accent); }
+.findings b { font-weight: 600; }
+
+/* rules spec sheet */
+.spec-wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+@media (max-width: 900px) { .spec-wrap { grid-template-columns: 1fr; } }
+.spec { background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; overflow: hidden; }
+.spec .spec-h { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 12px 16px; border-bottom: 1px solid var(--rule); font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-2); }
+.spec dl { margin: 0; display: grid; grid-template-columns: 104px minmax(0, 1fr); }
+.spec dt { font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.06em; color: var(--accent); padding: 12px 0 12px 16px; border-bottom: 1px solid var(--rule); }
+.spec dd { margin: 0; padding: 11px 16px 11px 8px; border-bottom: 1px solid var(--rule); font-size: 15px; line-height: 1.5; }
+.spec dl > :nth-last-child(-n+2) { border-bottom: 0; }
+.example { font-size: 14.5px; line-height: 1.55; color: var(--ink-2); display: grid; gap: 8px; padding: 14px 16px; border-top: 1px solid var(--rule); background: var(--paper); }
+.example b { color: var(--ink); }
+
+/* figures */
+figure { margin: 0; background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 18px 18px 14px; display: grid; gap: 12px; min-width: 0; align-content: start; }
+.stack { display: grid; gap: 18px; }
+figure .fh { display: flex; flex-wrap: wrap; gap: 8px 18px; justify-content: space-between; align-items: baseline; }
+figure .fh h3 { font-size: 16.5px; }
+figcaption { font-size: 13.5px; color: var(--ink-2); line-height: 1.5; max-width: 90ch; }
+.chart { width: 100%; min-width: 0; }
+.chart svg { display: block; overflow: visible; }
+.chart text { font-family: var(--font-body); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13px; color: var(--ink-2); }
+.legend span { display: inline-flex; align-items: center; gap: 7px; }
+.legend i { display: inline-block; width: 18px; height: 2px; border-radius: 2px; }
+.legend i.dot { width: 10px; height: 10px; border-radius: 50%; }
+.legend i.ring { width: 10px; height: 10px; border-radius: 50%; background: transparent !important; border: 2px solid var(--deemph); }
+.legend i.sq { width: 12px; height: 12px; border-radius: 3px; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+@media (max-width: 820px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+.scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+/* tables */
+table.data { border-collapse: collapse; width: 100%; font-size: 14px; font-variant-numeric: tabular-nums; }
+table.data th, table.data td { padding: 7px 10px; text-align: right; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+table.data th:first-child, table.data td:first-child { text-align: left; }
+table.data thead th { font-size: 12px; font-weight: 600; color: var(--ink-2); letter-spacing: 0.02em; border-bottom: 1px solid var(--axis); vertical-align: bottom; white-space: normal; }
+table.data tbody th { font-weight: 500; }
+table.data tr.grp th { text-align: left; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); padding-top: 16px; border-bottom: 1px solid var(--axis); }
+table.data td.l, table.data th.l { text-align: left; }
+table.data .sub { display: block; font-size: 12px; color: var(--ink-2); font-weight: 400; }
+table.data tr.hl td, table.data tr.hl th { background: var(--accent-wash); }
+.neg-t { color: var(--ink); }
+
+/* heat cells */
+.heat td.c { text-align: center; min-width: 64px; font-size: 13px; line-height: 1.25; border: 2px solid var(--surface); border-radius: 6px; }
+.heat td.c small { display: block; font-size: 11px; opacity: 0.85; }
+.d-n3 { background: var(--d-n3); color: var(--d-n3-t); } .d-n2 { background: var(--d-n2); color: var(--d-n2-t); } .d-n1 { background: var(--d-n1); color: var(--d-n1-t); }
+.d-0 { background: var(--d-0); color: var(--d-0-t); }
+.d-p1 { background: var(--d-p1); color: var(--d-p1-t); } .d-p2 { background: var(--d-p2); color: var(--d-p2-t); } .d-p3 { background: var(--d-p3); color: var(--d-p3-t); }
+.d-na { background: transparent; color: var(--muted); }
+.scale { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; font-size: 12px; color: var(--ink-2); }
+.scale span.sw { display: inline-block; width: 34px; height: 12px; border-radius: 3px; }
+.scale .lab { margin-inline: 6px; }
+table.pgrid { border-collapse: separate; border-spacing: 3px; font-variant-numeric: tabular-nums; font-size: 12.5px; }
+table.pgrid td.c { width: 52px; height: 34px; text-align: center; border-radius: 5px; }
+table.pgrid td.c.sel { outline: 2px solid var(--ink); outline-offset: -2px; }
+table.pgrid th { font-weight: 500; color: var(--ink-2); font-size: 12px; padding: 2px 6px; }
+
+/* toggle */
+.seg { display: inline-flex; border: 1px solid var(--rule); border-radius: 999px; padding: 3px; background: var(--surface); gap: 2px; }
+.seg button { font: inherit; font-size: 13.5px; border: 0; background: transparent; color: var(--ink-2); padding: 6px 14px; border-radius: 999px; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); font-weight: 600; }
+.bar-row { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; }
+
+/* notes */
+.note { background: var(--note-bg); color: var(--note-ink); border-left: 3px solid var(--note-edge); border-radius: 6px; padding: 12px 14px; font-size: 14.5px; line-height: 1.55; max-width: 90ch; }
+.note b { font-weight: 600; }
+details { background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 10px 14px; }
+details summary { cursor: pointer; font-weight: 500; font-size: 14.5px; }
+details[open] summary { margin-bottom: 8px; }
+.defs { display: grid; grid-template-columns: minmax(150px, 220px) minmax(0, 1fr); gap: 8px 16px; font-size: 14px; margin: 0; }
+.defs dt { font-weight: 600; }
+.defs dd { margin: 0; color: var(--ink-2); }
+@media (max-width: 560px) { .defs { grid-template-columns: 1fr; } .defs dd { margin-bottom: 6px; } .spec dl { grid-template-columns: 88px minmax(0,1fr); } }
+ol.steps { margin: 0; padding-left: 1.3em; display: grid; gap: 10px; max-width: 75ch; }
+ol.steps li::marker { font-family: var(--font-mono); color: var(--accent); font-weight: 600; }
+.kv { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px 24px; }
+.kv div { display: grid; gap: 2px; }
+.kv .v { font-size: 22px; font-weight: 600; }
+.kv .l { font-size: 13px; color: var(--ink-2); }
+
+/* tooltip */
+.tip { position: fixed; z-index: 50; pointer-events: none; background: var(--surface); color: var(--ink); border: 1px solid var(--rule); box-shadow: 0 6px 24px rgba(0, 0, 0, 0.14); border-radius: 8px; padding: 8px 10px; font-size: 12.5px; line-height: 1.45; max-width: 290px; font-variant-numeric: tabular-nums; }
+.tip-t { font-weight: 600; margin-bottom: 4px; }
+.tip-r { display: flex; align-items: center; gap: 7px; }
+.tip-r b { font-weight: 600; min-width: 58px; }
+.tip-r span { color: var(--ink-2); }
+.tip-k { display: inline-block; width: 12px; height: 2px; border-radius: 2px; flex: none; }
+footer { margin-top: 64px; padding-top: 18px; border-top: 1px solid var(--rule); font-size: 13px; color: var(--ink-2); display: grid; gap: 6px; }
+@media (prefers-reduced-motion: no-preference) { .seg button { transition: background-color .15s, color .15s; } }
+</style>
+
+<div class="wrap">
+<header class="top">
+  <div class="eyebrow">Research note · Crude oil &amp; natural gas · September 2026</div>
+  <h1>Energy Impulse Playbook</h1>
+  <p class="dek">What happens after a strong move in oil or gas, once price pauses and builds a range? We tested 13 ways to trade that pause on 1-hour, 4-hour and daily bars and found one that is worth trading.</p>
+  <p class="meta">Backtests on WTI and natural gas 1-minute data (2005 to April 2020) and WTI, Brent and Henry Hub daily closes (1986 to September 2026). All results are net of spread, commission and stop slippage. R = the amount risked on a trade (entry to stop).</p>
+</header>
+<nav class="toc" aria-label="Sections">
+  <a href="#verdict">Short answer</a><a href="#rules">The rules</a><a href="#question">With or against the impulse?</a><a href="#tested">What we tested</a><a href="#results">Results</a><a href="#robust">Robustness</a><a href="#y2026">2026</a><a href="#gas">Natural gas</a><a href="#playbook">Running it</a><a href="#method">Data &amp; method</a>
+</nav>
+
+<section id="verdict">
+  <div class="verdict">
+    <div class="prose">
+      <div class="head"><div class="eyebrow">The short answer</div><h2>Trade the continuation, on daily bars, in crude oil</h2></div>
+      <p class="lede">After a strong 4 to 6 day move, wait for a 4 to 6 day pause that stays tight. Then trade the break of that pause in the direction of the original move. Take half the profit at the measured move and trail the rest. Only take the setup when volatility is above its one-year median.</p>
+      <ul class="findings">
+        <li class="good"><b>Continuation beats retracement on crude.</b> On daily oil charts the pause breaks with the impulse first 53 to 57% of the time, and continuation trades earned +0.35R to +0.75R each after costs on all three oil datasets. Trades against the impulse were less reliable: +0.06R to +0.51R without the filter, and −0.11R on the longest WTI record with it.</li>
+        <li><b>Intraday versions don't survive costs.</b> On 1-hour and 4-hour bars the pause breaks against the impulse about as often as with it, or more often, and none of the 13 approaches stayed positive after costs in both test periods.</li>
+        <li><b>Natural gas has no edge from this pattern.</b> Every variant lost money in at least one decade. We don't recommend trading gas this way.</li>
+        <li><b>It is a slow, lumpy system.</b> About 2 to 4 trades a year per market, around half of them winners, and the three best trades made roughly half to two-thirds of all the profit. Skipping signals is the fastest way to lose the edge.</li>
+      </ul>
+    </div>
+    <aside class="pick" aria-label="Recommended system">
+      <div class="tag">Recommended</div>
+      <h3>System 1 · Oil flag breakout</h3>
+      <div class="tiles">
+        <div class="tile"><div class="v">+0.66R</div><div class="l">average trade after costs</div></div>
+        <div class="tile"><div class="v">2.3</div><div class="l">profit factor (gross win ÷ gross loss)</div></div>
+        <div class="tile"><div class="v">47%</div><div class="l">winning trades; average win 2.6× average loss</div></div>
+        <div class="tile"><div class="v">5.1R</div><div class="l">worst peak-to-trough drawdown</div></div>
+      </div>
+      <p class="small">WTI with 1-minute fills, resting stop orders, January 2005 to April 2020, 34 trades, volatility filter on (version A+). On 40 years of daily closes the same rules made +1.45R per trade in WTI and +0.94R in Brent since 2005, and +1.64R and +0.57R in the May 2020 to September 2026 holdout, which played no part in the design.</p>
+    </aside>
+  </div>
+</section>
+
+<section id="rules">
+  <div class="head"><div class="eyebrow">System 1</div><h2>The rules</h2></div>
+  <div class="prose"><p>Daily bars on the CME session (18:00 to 17:00 New York). For WTI (CL, MCL, USOIL) or Brent (BZ, UKOIL). Every distance is in ATR, the 20-day average true range.</p></div>
+  <div class="spec-wrap">
+    <div class="spec">
+      <div class="spec-h"><span>Oil flag breakout · daily</span><span>Version A+</span></div>
+      <dl>
+        <dt>IMPULSE</dt><dd>A net move over the last 4, 5 or 6 days of at least <b>1.5 × ATR</b>. Measure ATR on the day before the move started.</dd>
+        <dt>PAUSE</dt><dd>The next 4, 5 or 6 bars form a box. Box height at most <b>50% of the impulse</b>, and the box gives back no more than <b>61.8%</b> of it.</dd>
+        <dt>FILTER</dt><dd>ATR ÷ price is above its <b>median of the past 252 days</b>. Otherwise skip the setup. Without this rule you get version A: twice the trades at half the edge.</dd>
+        <dt>ENTRY</dt><dd><b>Buy stop at the box high</b> after an up-impulse, sell stop at the box low after a down-impulse. Good for 10 trading days. Cancel it if the other side of the box breaks first.</dd>
+        <dt>STOP</dt><dd>The <b>opposite edge of the box</b>, never closer than 0.5 × ATR. Typically 1.2 to 1.5 × ATR away.</dd>
+        <dt>EXIT ½</dt><dd>Target = entry level ± <b>one impulse length</b> (the measured move). If not reached in 20 trading days, close at the market.</dd>
+        <dt>EXIT ½</dt><dd><b>Trail a stop 3.5 × ATR</b> behind the daily close, moving only in your favour. Close after 60 trading days at most.</dd>
+        <dt>SIZE</dt><dd>Risk 0.5 to 1% of the account from entry to stop. One position per market. A WTI and a Brent signal on the same day count as one trade: split the risk.</dd>
+      </dl>
+      <div class="example">
+        <div><b>Worked example, WTI, January 2026</b> (daily closes, EIA spot)</div>
+        <div>WTI rallied from $56.01 on 7 January to $61.84 on 14 January, a $5.83 impulse. The next five sessions closed between $59.13 and $60.38, a range of 21% of the impulse. That put the entry at $60.38 and the stop at $59.13: $1.25 per barrel of planned risk, or $125 per MCL contract. Trading on closes, the entry filled at $60.71 on 23 January.</div>
+        <div>The measured-move target was $60.38 + $5.83 = $66.21. The first half closed on 19 February at $66.66 (+4.8R). The trailing half rode the March supply shock and was stopped on 17 April at $85.90 (+20.1R). Net +12.4R, the kind of trade that pays for a year of small losses.</div>
+      </div>
+    </div>
+    <figure>
+      <div class="fh"><h3>The pattern</h3><span class="small">Schematic, not real prices</span></div>
+      <div class="chart" id="schematic"></div>
+      <figcaption>An up-impulse, a tight pause that holds most of the gain, a buy stop at the top of the pause and a stop at its bottom. Half comes off at one impulse length above the entry; the rest trails 3.5 ATR behind the close.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="question">
+  <div class="head"><div class="eyebrow">The core question</div><h2>With the impulse or against it?</h2></div>
+  <div class="prose"><p>We took every impulse-and-pause setup the rules detect and traded it both ways: a stop order on the impulse side of the box (continuation) and on the opposite side (retracement), with identical stops, exits and costs. All setups, 2005 onward.</p></div>
+  <figure>
+    <div class="fh"><h3>Average trade, continuation vs retracement, same setups</h3>
+      <div class="legend"><span><i class="dot" style="background:var(--accent)"></i>With the impulse (continuation)</span><span><i class="ring"></i>Against the impulse (retracement)</span></div></div>
+    <div class="scroll" id="sides"></div>
+    <figcaption>Per trade after futures costs, one position at a time. "Breaks with impulse first" is the share of setups whose first box break went in the impulse direction. The remainder broke the other way, or neither side within 10 bars. Daily oil: WTI with 1-minute fills (2005 to April 2020) and daily closes for WTI and Brent (2005 to September 2026).</figcaption>
+  </figure>
+  <div class="prose">
+    <p>On daily crude charts the pause usually resolves with the impulse, and trading that side paid on all three oil datasets. The retracement side paid on two of the three, less reliably, and not at all on the longest WTI record once the volatility filter is applied (−0.11R). On 4-hour and 1-hour bars the box breaks against the impulse about as often as with it, or more often, and neither side covers its costs. On gas neither side works.</p>
+  </div>
+</section>
+
+<section id="tested">
+  <div class="head"><div class="eyebrow">13 approaches · 3 timeframes · 2 markets</div><h2>Everything we tested</h2></div>
+  <div class="prose"><p>Each approach ran on WTI and natural gas 1-minute data from 2005 to April 2020 across 72 detector settings (impulse length and size, pause length, box height) and several exit rules. Each cell shows the median result across settings, per trade after futures costs, for 2005–2014 and for 2015–April 2020. The colour follows the weaker of the two periods, so a blue cell held up in both.</p></div>
+  <figure>
+    <div class="fh"><h3>Median average trade by approach, timeframe and market</h3><div class="scale" id="heat-scale"></div></div>
+    <div class="scroll" id="families"></div>
+    <figcaption>Cells show 2005–2014 / 2015–Apr 2020. Continuation approaches trade in the impulse direction, retracement approaches against it, range trades inside the box. The benchmark row trades any tight box with no prior impulse.</figcaption>
+  </figure>
+  <details>
+    <summary>What each approach does</summary>
+    <dl class="defs">
+      <dt>Box breakout</dt><dd>Stop order through the box edge on the impulse side. System 1 is the refined daily version.</dd>
+      <dt>Break and retest</dt><dd>Wait for a close beyond the box, then a limit order back at the broken edge.</dd>
+      <dt>Failed breakdown (spring)</dt><dd>Price pokes out of the box against the impulse, closes back inside: enter with the impulse.</dd>
+      <dt>50% pullback</dt><dd>Limit order at a 50% retracement of the impulse, stop beyond its origin, target the impulse extreme.</dd>
+      <dt>Origin zone</dt><dd>Supply/demand zone: the tight base the impulse left from. Limit order on the first return to it.</dd>
+      <dt>Follow the spike</dt><dd>Enter with the impulse at the next open, no pause required.</dd>
+      <dt>Box break against</dt><dd>Stop order through the box edge opposite the impulse, targeting a retracement of the move.</dd>
+      <dt>Failed breakout (turtle soup)</dt><dd>Price pokes out of the box with the impulse, closes back inside: enter against the impulse.</dd>
+      <dt>Retest against</dt><dd>Break-and-retest on the side opposite the impulse.</dd>
+      <dt>Fade the spike</dt><dd>Enter against the impulse at the next open, target a 50% retracement, no pause required.</dd>
+      <dt>Buy support / sell resistance</dt><dd>Limit orders at the box edges while the range holds, target the other edge.</dd>
+      <dt>Any tight box</dt><dd>Two-sided box breakout with no impulse before it. Tells us whether the impulse adds anything.</dd>
+    </dl>
+  </details>
+</section>
+
+<section id="results">
+  <div class="head"><div class="eyebrow">System 1 results</div><h2>How the system performed</h2></div>
+  <div class="bar-row">
+    <div class="seg" role="group" aria-label="System version">
+      <button type="button" id="ver-ap" data-ver="A+" aria-pressed="true">A+ · volatility filter</button>
+      <button type="button" id="ver-a" data-ver="A" aria-pressed="false">A · all setups</button>
+    </div>
+    <span class="small">Applies to every chart and table in this section and the next two.</span>
+  </div>
+  <figure>
+    <div class="fh"><h3>Cumulative profit in R, by trade exit date</h3>
+      <div class="legend"><span><i style="background:var(--wti)"></i>WTI, 1-minute fills</span><span><i style="background:var(--wtis)"></i>WTI, daily closes</span><span><i style="background:var(--brent)"></i>Brent, daily closes</span></div></div>
+    <div class="chart" id="equity"></div>
+    <figcaption>1R = the risk of one trade. Shading marks the test periods: before 2005 (never used for design), 2005–2014 (design), 2015–April 2020 (first check) and May 2020–September 2026 (holdout). The 1-minute series uses resting stop orders on WTI CFD prices; the daily-close series enter and exit on the close.</figcaption>
+  </figure>
+  <figure>
+    <div class="fh"><h3>Results by period</h3><span class="small" id="tbl-ver-note"></span></div>
+    <div class="scroll" id="periods"></div>
+    <figcaption>Futures costs. Max drawdown is the worst peak-to-trough fall of cumulative R. "Excl. 2020" drops the April 2020 storage crisis, when spot WTI briefly traded below zero and daily closes swung wildly.</figcaption>
+  </figure>
+  <div class="prose">
+    <p>The edge is concentrated after 2005. Before that, on daily closes, the same rules lost money in WTI and made a modest profit in Brent. A likely reason: the oil market of the late 1980s and 1990s traded mostly inside an OPEC-managed range that rewarded fading moves, and it began to trend much harder once financial participation grew in the mid-2000s. We treat the pre-2005 result as a warning that this edge can fade, not as noise.</p>
+    <p>Two datasets, two execution styles. The 1-minute WTI series tests the rules as written, with resting stop orders, and its average loss is 0.96R. The daily-close series cover 40 years but enter and exit on the close. On the same 2005–2020 WTI data, acting on closes made more per trade (+1.24R against +0.66R with the filter), but losses averaged about 1.5R because the exit waits for the close. Both styles work. Resting stops keep each loss near the planned amount. If you prefer to act on closes, size every trade about a third smaller.</p>
+  </div>
+</section>
+
+<section id="robust">
+  <div class="head"><div class="eyebrow">Stress tests</div><h2>Robustness checks</h2></div>
+  <div class="grid-2">
+    <figure>
+      <div class="fh"><h3>Parameter map · WTI, 1-minute fills</h3></div>
+      <div class="scroll" id="heat-ohlc"></div>
+      <figcaption>Average trade since 2005 for single parameter pairs: impulse length (rows) × pause length (columns), impulse ≥ 1.5 ATR. The outlined block is the 4–6 × 4–6 range System 1 uses.</figcaption>
+    </figure>
+    <figure>
+      <div class="fh"><h3>Parameter map · WTI + Brent, daily closes</h3></div>
+      <div class="scroll" id="heat-spot"></div>
+      <figcaption>Same map on the daily-close datasets, pooled. Every cell is positive in both maps for both versions; the result does not hinge on one lucky setting.</figcaption>
+    </figure>
+  </div>
+  <figure>
+    <div class="fh"><h3>Real timing vs random timing</h3></div>
+    <div class="grid-3" id="random"></div>
+    <figcaption>Each bar counts random runs: the same number of trades with the same box sizes, stops, exits and filter, placed on random days since 2005. The line marks the real system. The share of random runs that did as well is printed under each panel.</figcaption>
+  </figure>
+  <div class="stack">
+    <figure>
+      <div class="fh"><h3>Alternatives on the same data</h3></div>
+      <div class="scroll" id="alts"></div>
+      <figcaption>Average trade since 2005 (total R and trades in brackets). Two-sided places stop orders on both box edges and takes whichever breaks first. The control uses tight boxes of the same size with no impulse before them.</figcaption>
+    </figure>
+    <figure>
+      <div class="fh"><h3>Costs and uncertainty</h3></div>
+      <div class="scroll" id="costs"></div>
+      <figcaption>Average trade since 2005 under five cost levels, and a 95% bootstrap range for the average trade. Futures: 1 tick spread plus commission, 1 tick slippage per stop fill. CFD: typical retail spreads (WTI and Brent about 4 cents, natural gas about 1 cent).</figcaption>
+    </figure>
+  </div>
+  <figure>
+    <div class="fh"><h3>What ten years could look like</h3></div>
+    <div class="scroll" id="mc"></div>
+    <figcaption>10,000 simulated decades, resampling the real trades since 2005 at the historical trade rate, with the risk per trade compounded. Returns are per year. Drawdown is the worst fall from an equity peak.</figcaption>
+  </figure>
+  <div class="prose">
+    <p><b>What the checks say.</b> The edge survives every parameter choice we mapped and costs up to four times retail CFD spreads. With the filter on, 0 to 2.5% of random-timing runs did as well as the real system; without it, 14% did on the 1-minute WTI data, so the filter carries much of the timing edge there. Two-sided entries and impulse-free boxes both earn less per trade, so the strong move before the pause matters. It isn't just a volatility-squeeze effect. The bootstrap range is wide, because a few very large winners dominate. With 34 trades the lower bound for WTI with 1-minute fills sits just above zero, so treat +0.66R as an estimate, not a promise.</p>
+    <p><b>What did not help.</b> A trend filter (trade only in the direction of the 100-day average) helped on one dataset and hurt on another, so it is not part of the rules. The same rules on 4-hour bars made +0.38R per trade in 2005–2014 but only +0.05R in 2015–April 2020, so we list that version as experimental.</p>
+  </div>
+</section>
+
+<section id="y2026">
+  <div class="head"><div class="eyebrow">Recent market</div><h2>2026 in focus</h2></div>
+  <div class="prose"><p>Crude went from about $67 at the start of March to $113 in early April, fell back near $70 by late June, then climbed to about $100 in September. These are the trades System 1 took on daily closes (EIA spot prices) from October 2025.</p></div>
+  <figure>
+    <div class="fh"><h3>System 1 trades, October 2025 to September 2026</h3>
+      <div class="legend"><span><i class="sq" style="background:var(--band-c);outline:1px solid var(--accent)"></i>Pause box</span><span><i class="dot" style="background:var(--accent)"></i>Entry</span><span><i class="dot" style="background:var(--ink)"></i>Exit of each half</span></div></div>
+    <div id="case" class="grid-2"></div>
+    <div class="scroll" id="case-table"></div>
+    <figcaption>Daily closing prices. The last WTI trade's trailing half was still open at the final data point (22 September 2026) and is marked at that price.</figcaption>
+  </figure>
+  <div class="note"><b>Same rules, 2026 CFD data.</b> On six months of USOIL and UKOIL CFD data (March to September 2026) with resting stops and no volatility filter, because there is not enough history for it, the system took 4 WTI trades (−0.25R in total) and 3 Brent trades (+0.70R). Six months is far too short to judge a system that trades a few times a year.</div>
+</section>
+
+<section id="gas">
+  <div class="head"><div class="eyebrow">Henry Hub &amp; NYMEX natural gas</div><h2>Natural gas: no trade</h2></div>
+  <div class="prose">
+    <p>The same rules lose money on natural gas: −0.10R per trade on NG futures data (2005 to April 2020) and −0.36R on Henry Hub daily closes since 2005. The 2005–2014 decade kills every gas variant we tried. That was the decade of the post-Katrina spike, the 2008 peak near $13 and the shale-driven collapse. Gas spikes are more often weather-driven and short-lived, and the front-month contango drags on multi-day longs.</p>
+    <p>The only gas variant with a positive recent record trades the box break against the impulse in winter, November to March. It made +0.27R per trade in 2015–2020 on futures data and +0.25R in 2020–2026 on Henry Hub closes, but lost −0.40R and −0.71R per trade in 2005–2014. We would not trade it with real money.</p>
+  </div>
+  <figure>
+    <div class="fh"><h3>Natural gas results</h3></div>
+    <div class="scroll" id="ng"></div>
+    <figcaption>Futures costs. NG futures CFD data use 1-minute fills; Henry Hub uses daily closes. Henry Hub spot includes cash-market spikes that futures traders never saw (for example $30 in late January 2026), so it overstates both wins and losses.</figcaption>
+  </figure>
+</section>
+
+<section id="playbook">
+  <div class="head"><div class="eyebrow">Practical</div><h2>Running it</h2></div>
+  <ol class="steps">
+    <li><b>After each daily close</b> (17:00 New York), check WTI and Brent for a finished 4 to 6 day pause after a 1.5-ATR move. <span class="mono">scan.py</span> in the repository does this for any daily CSV and prints the order levels.</li>
+    <li><b>Check the filter.</b> Is today's ATR ÷ price above its median of the past year? If not, skip the setup.</li>
+    <li><b>Place both orders at once:</b> the entry stop at the box edge and, once filled, the protective stop at the opposite edge. Size so that a stop-out costs 0.5 to 1% of the account.</li>
+    <li><b>On a fill,</b> set the measured-move target for half the position. After each close, move the other half's stop to 3.5 × ATR behind the close if that is tighter.</li>
+    <li><b>Cancel</b> the entry after 10 trading days, or as soon as the other side of the box breaks.</li>
+    <li><b>Log every signal,</b> taken or not. Compare against the numbers below every 10 trades.</li>
+  </ol>
+  <div class="kv">
+    <div><div class="v">≈2–4 a year</div><div class="l">trades per market with the filter; about 5–6 without it</div></div>
+    <div><div class="v">3–5 weeks</div><div class="l">median holding time; 1 in 10 trades lasts 12 weeks or more</div></div>
+    <div><div class="v">4–5 in a row</div><div class="l">longest losing streak with the filter since 2005 (up to 8–10 without it)</div></div>
+    <div><div class="v">1.2–1.5 ATR</div><div class="l">typical stop distance; in the 2026 shock that meant $1.60 to $11 per barrel</div></div>
+  </div>
+  <div class="prose">
+    <p><b>Instruments.</b> Micro WTI (MCL, 100 barrels) keeps position sizes workable for smaller accounts. On CL or BZ, use a back-adjusted continuous chart so roll gaps don't create fake impulses, and roll positions before first notice. CFDs (USOIL, UKOIL) work too, but overnight financing includes the contango cost of rolling, which adds up over a 3 to 5 week hold.</p>
+    <p><b>Scaling.</b> One market at 1% risk is a slow system: the median simulated decade returns about 1.5 to 4% a year. Risking 2% roughly doubles both return and drawdown. WTI and Brent move together, so trading both adds few independent trades. The better lever is applying the same rules to more markets, which needs its own testing.</p>
+  </div>
+</section>
+
+<section id="method">
+  <div class="head"><div class="eyebrow">How we know</div><h2>Data and method</h2></div>
+  <div class="prose">
+    <p><b>Data.</b> This environment blocks Yahoo Finance, FRED, the EIA website and Stooq, so every series came from public GitHub repositories:</p>
+    <ul>
+      <li>OANDA WTI and natural gas CFD 1-minute bars, 2005 to April 2020 (<a href="https://github.com/FutureSharks/financial-data">FutureSharks/financial-data</a>). They are carry-adjusted cash prices, so there are no roll gaps; we checked this against EIA spot. The data is cut on 15 April 2020, before the negative-price dislocation.</li>
+      <li>EIA daily spot closes: WTI from 1986, Brent from 1987 (<a href="https://github.com/datasets/oil-prices">datasets/oil-prices</a>), Henry Hub from 1997 (<a href="https://github.com/datasets/natural-gas">datasets/natural-gas</a>), all to 22 September 2026.</li>
+      <li>USOIL and UKOIL CFD 1-hour and 1-minute samples for March to September 2026 (<a href="https://github.com/getdata-finance/usoil-1h-ohlcv-commodities-historical-data">getdata-finance</a>).</li>
+    </ul>
+    <p><b>Engine.</b> Signals use completed bars only; orders go live on the next bar. Every order is simulated on the 1-minute path where it exists, so a stop and a target inside the same daily bar are resolved in the order they actually happened. Gaps fill at the open. Limit orders need the price to trade through. The protective stop is checked first on the entry bar. One position at a time per market.</p>
+    <p><b>Testing.</b> Families and parameters were chosen on 2005–2014. 2015–April 2020 was the first check, and the May 2020–September 2026 daily closes were kept as a holdout. The volatility filter and the 4–6 day ranges also win on 2005–2014 alone. More than 30,000 configurations were run in total, so we judge approaches by how consistent they are across settings, periods and datasets, not by the best single result.</p>
+    <p><b>Limits.</b> The realistic 1-minute test covers only WTI and only to 2020, with 34 trades in version A+. Brent and post-2020 WTI rely on closing prices. EIA spot is not a traded price, and OANDA's CFD is not the futures contract. Before trading real money, rerun the tests on your broker's continuous CL and BZ futures history. <span class="mono">scan.py --csv your_file.csv</span> reruns the backtest on any daily OHLC file and lists live setups.</p>
+    <p><b>Reproduce.</b> Code, sweeps and results are in <span class="mono">oil-gas-strategies/</span> in this repository: <span class="mono">data_build.py</span> builds the bars, <span class="mono">ogslib.py</span> is the engine (its tests are in <span class="mono">test_engine.py</span>), <span class="mono">system.py</span> holds the rules and <span class="mono">validate.py</span> produces every number on this page.</p>
+  </div>
+</section>
+
+<footer>
+  <div>Research only, not investment advice. Backtests are hypothetical; futures and CFDs can lose more than the planned risk on gaps.</div>
+  <div>Generated September 2026 · data through 22 September 2026.</div>
+</footer>
+</div>
+
+<script id="ogs-data" type="application/json">__DATA__</script>
+<script>
+(function () {
+  'use strict';
+  const D = JSON.parse(document.getElementById('ogs-data').textContent);
+  const NS = 'http://www.w3.org/2000/svg';
+  const state = { ver: 'A+' };
+  try { const v = localStorage.getItem('ogs-ver'); if (v === 'A' || v === 'A+') state.ver = v; } catch (e) { /* storage unavailable */ }
+
+  // ---------- helpers
+  function el(tag, attrs, ...kids) {
+    const e = document.createElement(tag);
+    if (attrs) for (const k in attrs) {
+      if (k === 'class') e.className = attrs[k];
+      else if (k === 'text') e.textContent = attrs[k];
+      else if (k === 'style') e.setAttribute('style', attrs[k]);
+      else e.setAttribute(k, attrs[k]);
+    }
+    for (const c of kids) if (c != null) e.append(c);
+    return e;
+  }
+  function sv(tag, attrs, parent) {
+    const e = document.createElementNS(NS, tag);
+    if (attrs) for (const k in attrs) {
+      if (k === 'text') e.textContent = attrs[k];
+      else e.setAttribute(k, attrs[k]);
+    }
+    if (parent) parent.append(e);
+    return e;
+  }
+  const fin = v => v !== null && v !== undefined && isFinite(v);
+  const sR = (v, d = 2) => !fin(v) ? '–' : (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v).toFixed(d) + 'R';
+  const sN = (v, d = 2) => !fin(v) ? '–' : (v < 0 ? '−' : '') + Math.abs(v).toFixed(d);
+  const pc = (v, d = 0) => !fin(v) ? '–' : (v * 100).toFixed(d) + '%';
+  const spc = (v, d = 1) => !fin(v) ? '–' : (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v * 100).toFixed(d) + '%';
+  function lin(d0, d1, r0, r1) { const f = v => r0 + (v - d0) / (d1 - d0) * (r1 - r0); f.inv = p => d0 + (p - r0) / (r1 - r0) * (d1 - d0); return f; }
+  function ticks(lo, hi, n) {
+    const span = hi - lo || 1; const raw = span / n; const mag = Math.pow(10, Math.floor(Math.log10(raw)));
+    const e = raw / mag; const step = (e >= 7.5 ? 10 : e >= 3.5 ? 5 : e >= 1.5 ? 2 : 1) * mag;
+    const out = []; for (let v = Math.ceil(lo / step - 1e-9) * step; v <= hi + 1e-9; v += step) out.push(Math.round(v / step) * step);
+    return { list: out, step };
+  }
+  function divClass(v) {
+    if (!fin(v)) return 'd-na';
+    const a = Math.abs(v); const s = a < 0.05 ? 0 : a < 0.2 ? 1 : a < 0.5 ? 2 : 3;
+    return s === 0 ? 'd-0' : (v > 0 ? 'd-p' : 'd-n') + s;
+  }
+  const DS = { WTI_ohlc: 'WTI · 1-min fills', WTI_eia: 'WTI · daily closes', BRENT_eia: 'Brent · daily closes' };
+  const DSSUB = { WTI_ohlc: 'OANDA CFD, 2005–Apr 2020', WTI_eia: 'EIA spot, 1986–2026', BRENT_eia: 'EIA spot, 1987–2026' };
+
+  // ---------- tooltip
+  const tip = el('div', { class: 'tip', role: 'tooltip' }); tip.hidden = true; document.body.append(tip);
+  function showTip(evt, title, rows) {
+    tip.replaceChildren();
+    if (title) tip.append(el('div', { class: 'tip-t', text: title }));
+    for (const r of rows) {
+      const row = el('div', { class: 'tip-r' });
+      if (r.color) { const k = el('span', { class: 'tip-k' }); k.style.background = r.color; row.append(k); }
+      row.append(el('b', { text: r.value }));
+      if (r.label) row.append(el('span', { text: r.label }));
+      tip.append(row);
+    }
+    tip.hidden = false; placeTip(evt);
+  }
+  function placeTip(evt) {
+    const pad = 14, w = tip.offsetWidth, h = tip.offsetHeight;
+    let x = evt.clientX + pad, y = evt.clientY + pad;
+    if (x + w > window.innerWidth - 8) x = evt.clientX - w - pad;
+    if (y + h > window.innerHeight - 8) y = evt.clientY - h - pad;
+    tip.style.left = Math.max(8, x) + 'px'; tip.style.top = Math.max(8, y) + 'px';
+  }
+  function hideTip() { tip.hidden = true; }
+  function hoverable(node, title, rows) {
+    node.setAttribute('tabindex', '0');
+    node.addEventListener('pointermove', e => showTip(e, title, rows));
+    node.addEventListener('pointerleave', hideTip);
+    node.addEventListener('focus', () => { const r = node.getBoundingClientRect(); showTip({ clientX: r.right, clientY: r.top }, title, rows); });
+    node.addEventListener('blur', hideTip);
+  }
+
+  // ---------- mounting & resize
+  const mounts = [];
+  function mount(id, fn) {
+    const host = document.getElementById(id); if (!host) return;
+    const run = () => { host.replaceChildren(); fn(host, Math.max(260, host.clientWidth)); };
+    mounts.push({ id, run }); run();
+  }
+  function rerender(ids) { mounts.forEach(m => { if (!ids || ids.includes(m.id)) m.run(); }); }
+  let lastW = document.documentElement.clientWidth, rt;
+  window.addEventListener('resize', () => {
+    const w = document.documentElement.clientWidth; if (Math.abs(w - lastW) < 2) return; lastW = w;
+    clearTimeout(rt); rt = setTimeout(() => rerender(), 160);
+  });
+
+  // ---------- schematic
+  function renderSchematic(host, W) {
+    const H = Math.round(Math.min(360, Math.max(280, W * 0.62)));
+    const svg = sv('svg', { width: W, height: H, viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': 'Schematic of the impulse, pause box, entry, stop and exits' }, host);
+    const bars = [
+      [70.4, 70.9, 69.8, 70.2], [70.2, 70.6, 69.6, 69.9], [69.9, 70.5, 69.5, 70.3], [70.3, 70.7, 69.9, 70.0],
+      [70.0, 71.6, 69.9, 71.4], [71.4, 73.2, 71.2, 72.9], [72.9, 74.1, 72.5, 73.8], [73.8, 75.9, 73.6, 75.6], [75.6, 76.4, 74.9, 75.9],
+      [75.9, 76.2, 74.8, 75.1], [75.1, 75.8, 74.4, 75.5], [75.5, 76.1, 74.9, 75.0], [75.0, 75.7, 74.6, 75.4], [75.4, 76.0, 74.9, 75.8],
+      [75.8, 77.9, 75.6, 77.6], [77.6, 78.9, 77.2, 78.6], [78.6, 79.4, 77.9, 78.2], [78.2, 80.6, 78.0, 80.3], [80.3, 82.1, 79.8, 81.7],
+      [81.7, 83.4, 81.2, 83.0], [83.0, 84.2, 82.3, 82.8], [82.8, 84.9, 82.4, 84.5], [84.5, 85.2, 83.1, 83.6], [83.6, 84.0, 81.9, 82.3],
+      [82.3, 82.8, 80.7, 81.0], [81.0, 81.4, 79.2, 79.6]
+    ];
+    const narrow = W < 520;
+    const m = { l: 8, r: narrow ? 104 : 150, t: 14, b: 18 };
+    const x = lin(-0.5, bars.length - 0.5, m.l, W - m.r);
+    const y = lin(68.5, 86.5, H - m.b, m.t);
+    const bw = Math.max(3, Math.min(12, (W - m.l - m.r) / bars.length * 0.55));
+    const boxHi = 76.2, boxLo = 74.4, impLo = 69.9, impHi = 76.4, target = boxHi + (impHi - impLo);
+    const g = sv('g', {}, svg);
+    // box
+    sv('rect', { x: x(8.6), y: y(boxHi), width: x(13.4) - x(8.6), height: y(boxLo) - y(boxHi), rx: 3, fill: 'var(--band-c)', stroke: 'var(--accent)', 'stroke-width': 1 }, g);
+    // levels
+    const lvl = (v, x0, label, color) => {
+      sv('line', { x1: x(x0), x2: W - m.r + 6, y1: y(v), y2: y(v), stroke: color, 'stroke-width': 1.5 }, g);
+      sv('text', { x: W - m.r + 10, y: y(v) + 4, 'font-size': 12, fill: 'var(--ink)', text: label }, g);
+    };
+    lvl(target, 13.5, narrow ? 'target: ½ out' : 'Target: ½ out at +1 impulse', 'var(--ink-2)');
+    lvl(boxHi, 13.5, narrow ? 'buy stop' : 'Buy stop at box high', 'var(--accent)');
+    lvl(boxLo, 13.5, narrow ? 'stop loss' : 'Stop at box low', 'var(--muted)');
+    // candles
+    bars.forEach((b, i) => {
+      const [o, h, l, c] = b; const up = c >= o; const cx = x(i);
+      sv('line', { x1: cx, x2: cx, y1: y(h), y2: y(l), stroke: 'var(--candle)', 'stroke-width': 1.2 }, g);
+      sv('rect', { x: cx - bw / 2, y: y(Math.max(o, c)), width: bw, height: Math.max(1.5, Math.abs(y(o) - y(c))), rx: 1, fill: up ? 'var(--surface)' : 'var(--candle)', stroke: 'var(--candle)', 'stroke-width': 1.2 }, g);
+    });
+    // trailing stop path (3.5 ATR behind close, schematic)
+    const trail = [[15, 75.5], [16, 75.9], [17, 75.9], [18, 76.9], [19, 78.3], [20, 79.6], [21, 79.6], [22, 81.1], [23, 81.1], [24, 81.1], [25, 81.1]];
+    sv('path', { d: trail.map((p, i) => (i ? 'L' : 'M') + x(p[0]).toFixed(1) + ' ' + y(p[1]).toFixed(1)).join(' '), fill: 'none', stroke: 'var(--wtis)', 'stroke-width': 2, 'stroke-linejoin': 'round' }, g);
+    sv('text', { x: x(21.2), y: y(79.0) + 16, 'font-size': 12, fill: 'var(--ink-2)', 'text-anchor': 'middle', text: narrow ? 'trail' : '½ trails 3.5 ATR' }, g);
+    // impulse bracket
+    const bx = x(3.7);
+    sv('line', { x1: bx, x2: bx, y1: y(impLo), y2: y(impHi), stroke: 'var(--ink)', 'stroke-width': 1.5 }, g);
+    sv('line', { x1: bx - 4, x2: bx + 4, y1: y(impLo), y2: y(impLo), stroke: 'var(--ink)', 'stroke-width': 1.5 }, g);
+    sv('line', { x1: bx - 4, x2: bx + 4, y1: y(impHi), y2: y(impHi), stroke: 'var(--ink)', 'stroke-width': 1.5 }, g);
+    const t1 = sv('text', { x: bx - 6, y: y((impLo + impHi) / 2) - 6, 'font-size': 12, fill: 'var(--ink)', 'text-anchor': 'end' }, g);
+    t1.append(Object.assign(document.createElementNS(NS, 'tspan'), { textContent: 'Impulse' }));
+    const t1b = document.createElementNS(NS, 'tspan'); t1b.setAttribute('x', bx - 6); t1b.setAttribute('dy', '15'); t1b.textContent = '≥ 1.5 ATR'; t1.append(t1b);
+    const t1c = document.createElementNS(NS, 'tspan'); t1c.setAttribute('x', bx - 6); t1c.setAttribute('dy', '15'); t1c.textContent = 'in 4–6 days'; t1.append(t1c);
+    // box label
+    sv('text', { x: x(8.8), y: y(boxLo) + 17, 'font-size': 12, fill: 'var(--ink-2)', 'text-anchor': 'start', text: 'Pause 4–6 days' }, g);
+    sv('text', { x: x(8.8), y: y(boxLo) + 32, 'font-size': 12, fill: 'var(--ink-2)', 'text-anchor': 'start', text: 'height ≤ ½ impulse' }, g);
+    // entry marker
+    sv('circle', { cx: x(14), cy: y(boxHi), r: 5, fill: 'var(--accent)', stroke: 'var(--surface)', 'stroke-width': 2 }, g);
+    sv('circle', { cx: x(20.3), cy: y(target), r: 4.5, fill: 'var(--ink)', stroke: 'var(--surface)', 'stroke-width': 2 }, g);
+    sv('circle', { cx: x(25), cy: y(81.1), r: 4.5, fill: 'var(--ink)', stroke: 'var(--surface)', 'stroke-width': 2 }, g);
+  }
+
+  // ---------- continuation vs retracement
+  function renderSides(host, W) {
+    const rows = D.sides;
+    const label = r => {
+      const m = { WTI: 'WTI', BRENT: 'Brent', NG: 'Natural gas', HH: 'Henry Hub' }[r.mkt];
+      const tf = { '1d': 'daily', '4h': '4-hour', '1h': '1-hour' }[r.tf];
+      const src = r.source === 'eia' ? 'daily closes' : '1-min fills';
+      return [m + ' · ' + tf, r.tf === '1d' ? src : '1-min fills, 2005–Apr 2020'];
+    };
+    const tbl = el('table', { class: 'data' });
+    const thead = el('thead'); const hr = el('tr');
+    ['Market and bars', 'Breaks with impulse first', 'Average trade (−0.5R to +1R)', 'With impulse', 'Against', 'With, A+', 'Against, A+'].forEach((h, i) => hr.append(el('th', { class: i === 0 || i === 2 ? 'l' : '', text: h })));
+    thead.append(hr); tbl.append(thead);
+    const tb = el('tbody'); tbl.append(tb);
+    const TW = 220, TH = 26, lo = -0.5, hi = 1.0;
+    const x = lin(lo, hi, 8, TW - 8);
+    const groups = [['Daily, crude oil', r => r.tf === '1d' && (r.mkt === 'WTI' || r.mkt === 'BRENT')], ['Daily, natural gas', r => r.tf === '1d' && (r.mkt === 'NG' || r.mkt === 'HH')], ['Intraday', r => r.tf !== '1d']];
+    for (const [gname, f] of groups) {
+      const g = el('tr', { class: 'grp' }); g.append(el('th', { colspan: 7, text: gname })); tb.append(g);
+      for (const r of rows.filter(f)) {
+        const [a, b] = label(r);
+        const tr = el('tr');
+        const th = el('th', { class: 'l' }); th.append(document.createTextNode(a), el('span', { class: 'sub', text: b })); tr.append(th);
+        tr.append(el('td', { text: pc(r.p_cont_first) }));
+        const td = el('td', { class: 'l' });
+        const s = sv('svg', { width: TW, height: TH, viewBox: `0 0 ${TW} ${TH}`, role: 'img', 'aria-label': `with ${sR(r.cont_A_avgR)}, against ${sR(r.rev_A_avgR)}` });
+        sv('line', { x1: 8, x2: TW - 8, y1: TH / 2, y2: TH / 2, stroke: 'var(--grid)', 'stroke-width': 1 }, s);
+        sv('line', { x1: x(0), x2: x(0), y1: 3, y2: TH - 3, stroke: 'var(--axis)', 'stroke-width': 1 }, s);
+        const cx = v => x(Math.max(lo, Math.min(hi, v)));
+        sv('line', { x1: cx(r.cont_A_avgR), x2: cx(r.rev_A_avgR), y1: TH / 2, y2: TH / 2, stroke: 'var(--deemph)', 'stroke-width': 2 }, s);
+        sv('circle', { cx: cx(r.rev_A_avgR), cy: TH / 2, r: 5, fill: 'var(--surface)', stroke: 'var(--deemph)', 'stroke-width': 2 }, s);
+        sv('circle', { cx: cx(r.cont_A_avgR), cy: TH / 2, r: 5.5, fill: 'var(--accent)', stroke: 'var(--surface)', 'stroke-width': 2 }, s);
+        td.append(s); tr.append(td);
+        const cell = (v, n) => { const c = el('td'); c.append(document.createTextNode(sR(v)), el('span', { class: 'sub', text: n + ' trades' })); return c; };
+        tr.append(cell(r.cont_A_avgR, r.cont_A_n), cell(r.rev_A_avgR, r.rev_A_n), cell(r.cont_Ap_avgR, r.cont_Ap_n), cell(r.rev_Ap_avgR, r.rev_Ap_n));
+        hoverable(td, a + ' · ' + b, [
+          { value: sR(r.cont_A_avgR), label: 'with the impulse, ' + r.cont_A_n + ' trades', color: 'var(--accent)' },
+          { value: sR(r.rev_A_avgR), label: 'against the impulse, ' + r.rev_A_n + ' trades', color: 'var(--deemph)' },
+          { value: pc(r.p_cont_first), label: 'of setups broke with the impulse first' }]);
+        tb.append(tr);
+      }
+    }
+    host.append(tbl);
+  }
+
+  // ---------- family matrix
+  const FAMS = [
+    ['Continuation (trade with the impulse)', [['cont_bo', 'Box breakout'], ['retest_cont', 'Break and retest'], ['failed_cont', 'Failed breakdown (spring)'], ['fib', '50% pullback'], ['zone', 'Origin zone'], ['spike_follow', 'Follow the spike, no pause']]],
+    ['Retracement (trade against the impulse)', [['rev_bo', 'Box break against'], ['failed_rev', 'Failed breakout (turtle soup)'], ['retest_rev', 'Retest against'], ['spike_fade', 'Fade the spike, no pause']]],
+    ['Range trades inside the box', [['fade_cont', 'Buy support (with impulse)'], ['fade_rev', 'Sell resistance (against impulse)']]],
+    ['Benchmark', [['box_any', 'Any tight box, no impulse']]]
+  ];
+  function renderScale(host) {
+    host.replaceChildren();
+    host.append(el('span', { class: 'lab', text: 'worse' }));
+    ['d-n3', 'd-n2', 'd-n1', 'd-0', 'd-p1', 'd-p2', 'd-p3'].forEach((c, i) => {
+      const s = el('span', { class: 'sw ' + c, title: ['≤ −0.5R', '−0.5 to −0.2R', '−0.2 to −0.05R', '±0.05R', '0.05 to 0.2R', '0.2 to 0.5R', '≥ 0.5R'][i] }); host.append(s);
+    });
+    host.append(el('span', { class: 'lab', text: 'better' }));
+    host.append(el('span', { class: 'lab', text: '(cut points ±0.05, ±0.2, ±0.5R)' }));
+  }
+  function renderFamilies(host) {
+    const idx = {}; for (const r of D.families.stage1) idx[r.fam + '|' + r.tf + '|' + r.mkt] = r;
+    const cols = [['1h', 'WTI'], ['1h', 'NG'], ['4h', 'WTI'], ['4h', 'NG'], ['1d', 'WTI'], ['1d', 'NG']];
+    const tbl = el('table', { class: 'data heat' });
+    const th1 = el('tr'); th1.append(el('th', { class: 'l', rowspan: 2, text: 'Approach' }));
+    [['1-hour', '1h'], ['4-hour', '4h'], ['Daily', '1d']].forEach(([n]) => th1.append(el('th', { colspan: 2, style: 'text-align:center', text: n })));
+    const th2 = el('tr'); cols.forEach(([, m]) => th2.append(el('th', { style: 'text-align:center', text: m === 'NG' ? 'Nat gas' : 'WTI' })));
+    const thead = el('thead'); thead.append(th1, th2); tbl.append(thead);
+    const tb = el('tbody'); tbl.append(tb);
+    for (const [gname, list] of FAMS) {
+      const g = el('tr', { class: 'grp' }); g.append(el('th', { colspan: 7, text: gname })); tb.append(g);
+      for (const [key, name] of list) {
+        const tr = el('tr'); tr.append(el('th', { class: 'l', text: name }));
+        for (const [tf, m] of cols) {
+          const r = idx[key + '|' + tf + '|' + m];
+          const td = el('td', { class: 'c' });
+          if (!r) { td.className = 'c d-na'; td.textContent = '–'; tr.append(td); continue; }
+          const worst = Math.min(r.fut_is, r.fut_oos);
+          td.className = 'c ' + divClass(worst);
+          td.append(document.createTextNode(sN(r.fut_is) + ' / ' + sN(r.fut_oos)));
+          td.append(el('small', { text: pc(r.pos_oos) + ' of settings > 0' }));
+          hoverable(td, name + ' · ' + (tf === '1d' ? 'daily' : tf) + ' · ' + (m === 'NG' ? 'natural gas' : 'WTI'), [
+            { value: sR(r.fut_is), label: '2005–2014, median of ' + r.cfg + ' settings' },
+            { value: sR(r.fut_oos), label: '2015–Apr 2020' },
+            { value: pc(r.pos_is) + ' / ' + pc(r.pos_oos), label: 'settings positive' },
+            { value: sR(r.gross_oos), label: '2015–2020 before costs' }]);
+          tr.append(td);
+        }
+        tb.append(tr);
+      }
+    }
+    host.append(tbl);
+  }
+
+  // ---------- equity chart
+  const SER = [
+    { key: 'WTI_ohlc', name: 'WTI, 1-minute fills', color: 'var(--wti)', start: '2005-01-03', end: '2020-04-15' },
+    { key: 'WTI_eia', name: 'WTI, daily closes', color: 'var(--wtis)', start: '1986-01-02', end: '2026-09-22' },
+    { key: 'BRENT_eia', name: 'Brent, daily closes', color: 'var(--brent)', start: '1987-05-20', end: '2026-09-22' }
+  ];
+  const BANDS = [['1986-01-01', '2005-01-01', 'Before 2005', 'pre-2005', 'var(--band-a)'], ['2005-01-01', '2015-01-01', '2005–2014 design', 'design', 'transparent'],
+    ['2015-01-01', '2020-05-01', '2015–Apr 2020 check', 'check', 'var(--band-b)'], ['2020-05-01', '2026-12-31', 'May 2020–2026 holdout', 'holdout', 'var(--band-c)']];
+  function renderEquity(host, W) {
+    const narrow = W < 600;
+    const H = narrow ? 300 : 380;
+    const m = { l: 42, r: narrow ? 64 : 84, t: 30, b: 28 };
+    const svg = sv('svg', { width: W, height: H, viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': 'Cumulative R over time for three oil datasets' }, host);
+    const T = s => Date.parse(s + 'T00:00:00Z');
+    const t0 = T('1986-01-01'), t1 = T('2026-12-31');
+    const x = lin(t0, t1, m.l, W - m.r);
+    const series = SER.map(s => {
+      const raw = (D.equity[s.key + '|' + state.ver] || []).map(([d, v]) => [T(d), v]);
+      return Object.assign({}, s, { pts: [[T(s.start), 0]].concat(raw), t0: T(s.start), t1: T(s.end) });
+    });
+    let lo = 0, hi = 0; series.forEach(s => s.pts.forEach(p => { lo = Math.min(lo, p[1]); hi = Math.max(hi, p[1]); }));
+    const tk = ticks(lo, hi, narrow ? 4 : 6);
+    const ylo = Math.min(tk.list[0], lo), yhi = Math.max(tk.list[tk.list.length - 1], hi);
+    const y = lin(ylo, yhi, H - m.b, m.t);
+    // bands
+    BANDS.forEach(([a, b, lab, short, fill]) => {
+      const xa = x(T(a)), xb = Math.min(x(T(b)), W - m.r);
+      sv('rect', { x: xa, y: m.t - 22, width: xb - xa, height: H - m.b - m.t + 22, fill }, svg);
+      const fits = (xb - xa) > lab.length * 6.3 + 10;
+      sv('text', { x: xa + 4, y: m.t - 9, 'font-size': 11, fill: 'var(--ink-2)', text: narrow || !fits ? short : lab }, svg);
+    });
+    // grid
+    tk.list.forEach(v => {
+      sv('line', { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: v === 0 ? 'var(--axis)' : 'var(--grid)', 'stroke-width': 1 }, svg);
+      sv('text', { x: m.l - 6, y: y(v) + 4, 'font-size': 11, fill: 'var(--muted)', 'text-anchor': 'end', text: (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v) + 'R' }, svg);
+    });
+    for (let yr = 1990; yr <= 2025; yr += narrow ? 10 : 5) {
+      sv('text', { x: x(T(yr + '-01-01')), y: H - m.b + 17, 'font-size': 11, fill: 'var(--muted)', 'text-anchor': 'middle', text: String(yr) }, svg);
+    }
+    // lines
+    const ends = [];
+    series.forEach(s => {
+      let d = ''; s.pts.forEach((p, i) => { const px = x(p[0]).toFixed(1), py = y(p[1]).toFixed(1); d += i === 0 ? `M${px} ${py}` : `H${px}V${py}`; });
+      d += `H${x(s.t1).toFixed(1)}`;
+      sv('path', { d, fill: 'none', stroke: s.color, 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, svg);
+      const last = s.pts[s.pts.length - 1][1];
+      sv('circle', { cx: x(s.t1), cy: y(last), r: 4, fill: s.color, stroke: 'var(--surface)', 'stroke-width': 2 }, svg);
+      ends.push({ s, x: x(s.t1), y: y(last), v: last });
+    });
+    // end labels with simple collision avoidance
+    ends.sort((a, b) => a.y - b.y);
+    for (let i = 1; i < ends.length; i++) if (Math.abs(ends[i].x - ends[i - 1].x) < 60 && ends[i].y - ends[i - 1].y < 15) ends[i].ly = (ends[i - 1].ly || ends[i - 1].y) + 15;
+    ends.forEach(e => {
+      const ly = e.ly || e.y;
+      if (e.ly) sv('line', { x1: e.x + 5, x2: e.x + 9, y1: e.y, y2: ly - 4, stroke: 'var(--muted)', 'stroke-width': 1 }, svg);
+      sv('text', { x: e.x + 10, y: ly + 4, 'font-size': 12, 'font-weight': 600, fill: 'var(--ink)', text: sR(e.v, 0) }, svg);
+    });
+    // crosshair
+    const cross = sv('line', { x1: 0, x2: 0, y1: m.t, y2: H - m.b, stroke: 'var(--muted)', 'stroke-width': 1, visibility: 'hidden' }, svg);
+    const hit = sv('rect', { x: m.l, y: m.t, width: W - m.l - m.r, height: H - m.t - m.b, fill: 'transparent', tabindex: 0 }, svg);
+    const valueAt = (s, t) => { if (t < s.t0 || t > s.t1) return null; let v = 0; for (const p of s.pts) { if (p[0] <= t) v = p[1]; else break; } return v; };
+    const move = e => {
+      const r = svg.getBoundingClientRect(); const px = Math.max(m.l, Math.min(W - m.r, e.clientX - r.left));
+      const t = x.inv(px); cross.setAttribute('x1', px); cross.setAttribute('x2', px); cross.setAttribute('visibility', 'visible');
+      const dt = new Date(t); const title = dt.toLocaleString('en-GB', { month: 'short', year: 'numeric', timeZone: 'UTC' });
+      showTip(e, title + ' · cumulative', series.map(s => { const v = valueAt(s, t); return { value: v === null ? 'no data' : sR(v, 1), label: s.name, color: s.color }; }));
+    };
+    hit.addEventListener('pointermove', move);
+    hit.addEventListener('pointerleave', () => { cross.setAttribute('visibility', 'hidden'); hideTip(); });
+  }
+
+  // ---------- period table
+  const PER = [['1986-2004', '1986–2004'], ['2005-2014', '2005–2014 · design'], ['2015-2020.04', '2015–Apr 2020 · check'], ['2020.05-2026.09', 'May 2020–Sep 2026 · holdout'], ['post-2005', 'All since 2005'], ['post-2005 ex-2020', 'Since 2005, excl. 2020']];
+  function renderPeriods(host) {
+    const idx = {}; for (const r of D.summary) idx[r.set + '|' + r.version + '|' + r.period] = r;
+    const tbl = el('table', { class: 'data' });
+    const hr = el('tr'); ['Period', 'Trades', 'Per year', 'Win rate', 'Average trade', 'Profit factor', 'Total R', 'Max drawdown'].forEach((h, i) => hr.append(el('th', { class: i === 0 ? 'l' : '', text: h })));
+    const th = el('thead'); th.append(hr); tbl.append(th);
+    const tb = el('tbody'); tbl.append(tb);
+    for (const ds of ['WTI_ohlc', 'WTI_eia', 'BRENT_eia']) {
+      const g = el('tr', { class: 'grp' }); g.append(el('th', { colspan: 8, text: DS[ds] + ' · ' + DSSUB[ds] })); tb.append(g);
+      for (const [p, lab] of PER) {
+        const r = idx[ds + '|' + state.ver + '|' + p]; if (!r) continue;
+        const tr = el('tr', { class: p === 'post-2005' ? 'hl' : '' });
+        tr.append(el('th', { class: 'l', text: lab }));
+        [String(r.n), fin(r.per_yr) ? r.per_yr.toFixed(1) : '–', pc(r.win), sR(r.avgR), fin(r.pf) ? r.pf.toFixed(2) : '∞', sR(r.sumR, 1), sR(-r.maxddR, 1)].forEach(v => tr.append(el('td', { text: v })));
+        tb.append(tr);
+      }
+    }
+    host.append(tbl);
+    const note = document.getElementById('tbl-ver-note'); if (note) note.textContent = state.ver === 'A+' ? 'Version A+ (volatility filter)' : 'Version A (all setups)';
+  }
+
+  // ---------- parameter heat maps
+  function renderHeat(host, which) {
+    const rows = D.heat.filter(r => r.version === state.ver && r.imp_k === 1.5);
+    const cell = {};
+    if (which === 'ohlc') rows.filter(r => r.set === 'WTI_ohlc').forEach(r => { cell[r.imp_n + '|' + r.cons_m] = { avg: r.avgR, n: r.n }; });
+    else {
+      const acc = {}; rows.filter(r => r.set !== 'WTI_ohlc').forEach(r => { const k = r.imp_n + '|' + r.cons_m; acc[k] = acc[k] || { s: 0, n: 0 }; acc[k].s += r.sumR; acc[k].n += r.n; });
+      for (const k in acc) cell[k] = { avg: acc[k].n ? acc[k].s / acc[k].n : null, n: acc[k].n };
+    }
+    const N = [2, 3, 4, 5, 6, 7, 8], M = [2, 3, 4, 5, 6, 8];
+    const tbl = el('table', { class: 'pgrid' });
+    const hr = el('tr'); hr.append(el('th', { text: 'impulse ↓ / pause →' })); M.forEach(mm => hr.append(el('th', { text: mm + 'd' })));
+    tbl.append(hr);
+    N.forEach(n => {
+      const tr = el('tr'); tr.append(el('th', { text: n + ' days' }));
+      M.forEach(mm => {
+        const c = cell[n + '|' + mm]; const td = el('td', { class: 'c ' + divClass(c ? c.avg : null) + (n >= 4 && n <= 6 && mm >= 4 && mm <= 6 ? ' sel' : '') });
+        td.textContent = c && fin(c.avg) ? sN(c.avg) : '–';
+        if (c) hoverable(td, `Impulse ${n} days, pause ${mm} days`, [{ value: sR(c.avg), label: 'average trade since 2005' }, { value: String(c.n), label: 'trades' }]);
+        tr.append(td);
+      });
+      tbl.append(tr);
+    });
+    host.append(tbl);
+  }
+
+  // ---------- random benchmark
+  function renderRandom(host) {
+    const idx = {}; for (const r of D.summary) idx[r.set + '|' + r.version + '|' + r.period] = r;
+    for (const ds of ['WTI_ohlc', 'WTI_eia', 'BRENT_eia']) {
+      const wrap = el('div');
+      const vals = (D.random[ds + '|' + state.ver] || []).filter(fin);
+      const real = idx[ds + '|' + state.ver + '|post-2005'].avgR;
+      const W = Math.max(240, Math.floor((host.clientWidth - 36) / (host.clientWidth > 820 ? 3 : 1))), H = 170;
+      const m = { l: 10, r: 10, t: 20, b: 26 };
+      const svg = sv('svg', { width: W, height: H, viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': 'Histogram of random-timing results for ' + DS[ds] }, wrap);
+      const lo = Math.min(-0.4, Math.min(...vals)), hi = Math.max(real + 0.2, Math.max(...vals));
+      const bw = 0.1; const b0 = Math.floor(lo / bw) * bw; const nb = Math.ceil((hi - b0) / bw);
+      const counts = new Array(nb).fill(0); vals.forEach(v => { const i = Math.min(nb - 1, Math.max(0, Math.floor((v - b0) / bw))); counts[i]++; });
+      const x = lin(b0, b0 + nb * bw, m.l, W - m.r); const cmax = Math.max(...counts);
+      const y = lin(0, cmax, H - m.b, m.t + 6);
+      sv('line', { x1: m.l, x2: W - m.r, y1: H - m.b, y2: H - m.b, stroke: 'var(--axis)', 'stroke-width': 1 }, svg);
+      counts.forEach((c, i) => {
+        if (!c) return; const xa = x(b0 + i * bw) + 1, xb = x(b0 + (i + 1) * bw) - 1;
+        const r = sv('rect', { x: xa, y: y(c), width: Math.max(1, xb - xa), height: H - m.b - y(c), rx: 2, fill: 'var(--deemph)' }, svg);
+        hoverable(r, `${sN(b0 + i * bw, 1)}R to ${sN(b0 + (i + 1) * bw, 1)}R`, [{ value: String(c), label: 'random runs' }]);
+      });
+      const t = ticks(b0, b0 + nb * bw, 4);
+      t.list.forEach(v => sv('text', { x: x(v), y: H - m.b + 16, 'font-size': 11, fill: 'var(--muted)', 'text-anchor': 'middle', text: (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v).toFixed(1) + 'R' }, svg));
+      const rx = x(Math.min(real, b0 + nb * bw));
+      sv('line', { x1: rx, x2: rx, y1: m.t - 4, y2: H - m.b, stroke: 'var(--accent)', 'stroke-width': 2 }, svg);
+      sv('text', { x: rx - 4, y: m.t + 4, 'font-size': 12, 'font-weight': 600, fill: 'var(--ink)', 'text-anchor': 'end', text: 'real ' + sR(real) }, svg);
+      const share = vals.filter(v => v >= real).length / vals.length;
+      wrap.append(el('div', { class: 'small', text: DS[ds] + ': ' + (share === 0 ? `none of ${vals.length} random runs did as well` : `${(share * 100).toFixed(1)}% of ${vals.length} random runs did as well`) + `. Random average ${sR(vals.reduce((a, b) => a + b, 0) / vals.length)}.` }));
+      host.append(wrap);
+    }
+  }
+
+  // ---------- alternatives
+  function renderAlts(host) {
+    const rows = D.straddle;
+    const pick = (ds, kind, per) => rows.find(r => r.set === ds && r.period === per && r.variant.replace(/^A\+?\s+/, '').startsWith(kind) && (state.ver === 'A+' ? r.variant.startsWith('A+') : !r.variant.startsWith('A+')));
+    const tbl = el('table', { class: 'data' });
+    const hr = el('tr'); ['Since 2005', ...['WTI_ohlc', 'WTI_eia', 'BRENT_eia'].map(k => DS[k])].forEach((h, i) => hr.append(el('th', { class: i === 0 ? 'l' : '', text: h })));
+    const th = el('thead'); th.append(hr); tbl.append(th); const tb = el('tbody'); tbl.append(tb);
+    [['continuation only', 'System 1: with the impulse'], ['two-sided (OCO)', 'Two-sided, first break'], ['CONTROL', 'Control: any tight box']].forEach(([k, lab], i) => {
+      const tr = el('tr', { class: i === 0 ? 'hl' : '' }); tr.append(el('th', { class: 'l', text: lab }));
+      ['WTI_ohlc', 'WTI_eia', 'BRENT_eia'].forEach(ds => {
+        const r = pick(ds, k, 'post05'); const td = el('td');
+        if (r) { td.append(document.createTextNode(sR(r.avgR)), el('span', { class: 'sub', text: `${sR(r.sumR, 0)} · ${r.n} trades` })); } else td.textContent = '–';
+        tr.append(td);
+      });
+      tb.append(tr);
+    });
+    const g = el('tr', { class: 'grp' }); g.append(el('th', { colspan: 4, text: 'Holdout, May 2020–Sep 2026' })); tb.append(g);
+    [['continuation only', 'System 1: with the impulse'], ['two-sided (OCO)', 'Two-sided, first break'], ['CONTROL', 'Control: any tight box']].forEach(([k, lab]) => {
+      const tr = el('tr'); tr.append(el('th', { class: 'l', text: lab }));
+      ['WTI_ohlc', 'WTI_eia', 'BRENT_eia'].forEach(ds => { const r = pick(ds, k, '20-26'); const td = el('td'); if (r) td.append(document.createTextNode(sR(r.avgR)), el('span', { class: 'sub', text: r.n + ' trades' })); else td.textContent = 'no data'; tr.append(td); });
+      tb.append(tr);
+    });
+    host.append(tbl);
+  }
+
+  // ---------- costs + bootstrap
+  function renderCosts(host) {
+    const tbl = el('table', { class: 'data' });
+    const regs = [['zerox1', 'No costs'], ['futuresx1', 'Futures'], ['cfdx1', 'Retail CFD'], ['cfdx2', 'CFD × 2'], ['cfdx4', 'CFD × 4']];
+    const hr = el('tr'); ['Since 2005', ...regs.map(r => r[1]), '95% range'].forEach((h, i) => hr.append(el('th', { class: i === 0 ? 'l' : '', text: h })));
+    const th = el('thead'); th.append(hr); tbl.append(th); const tb = el('tbody'); tbl.append(tb);
+    for (const ds of ['WTI_ohlc', 'WTI_eia', 'BRENT_eia']) {
+      const tr = el('tr'); tr.append(el('th', { class: 'l', text: DS[ds] }));
+      regs.forEach(([k]) => { const r = D.costs.find(c => c.set === ds && c.version === state.ver && c.regime === k); tr.append(el('td', { text: r ? sR(r.avgR) : '–' })); });
+      const b = D.bootstrap_mc[ds + '|' + state.ver];
+      tr.append(el('td', { text: b ? `${sN(b.ci_lo)} to ${sN(b.ci_hi)}` : '–' }));
+      tb.append(tr);
+    }
+    host.append(tbl);
+  }
+
+  // ---------- Monte Carlo
+  function renderMC(host) {
+    const tbl = el('table', { class: 'data' });
+    const hr = el('tr'); ['Risk per trade', 'Market', 'Median return', 'Bad decade (5th pct)', 'Good decade (95th pct)', 'Typical max drawdown', 'Bad-case drawdown (95th pct)', 'Chance of a losing decade'].forEach((h, i) => hr.append(el('th', { class: i < 2 ? 'l' : '', text: h })));
+    const th = el('thead'); th.append(hr); tbl.append(th); const tb = el('tbody'); tbl.append(tb);
+    for (const rk of ['r1', 'r2']) {
+      for (const ds of ['WTI_ohlc', 'WTI_eia', 'BRENT_eia']) {
+        const b = D.bootstrap_mc[ds + '|' + state.ver]; if (!b) continue; const s = b[rk];
+        const tr = el('tr'); tr.append(el('th', { class: 'l', text: rk === 'r1' ? '1%' : '2%' }), el('td', { class: 'l', text: DS[ds] }));
+        [spc(s.cagr_p50), spc(s.cagr_p5), spc(s.cagr_p95), pc(s.dd_p50, 1), pc(s.dd_p95, 1), pc(s.p_loss10y, 0)].forEach(v => tr.append(el('td', { text: v })));
+        tb.append(tr);
+      }
+    }
+    host.append(tbl);
+  }
+
+  // ---------- 2026 case study
+  function renderCase(host) {
+    const W = Math.max(280, Math.floor((host.clientWidth - 18) / (host.clientWidth > 820 ? 2 : 1)));
+    for (const mk of ['WTI', 'BRENT']) {
+      const wrap = el('div'); wrap.append(el('div', { class: 'small', style: 'font-weight:600;color:var(--ink)', text: mk === 'WTI' ? 'WTI · $ per barrel' : 'Brent · $ per barrel' }));
+      const px = D.case2026[mk + '|px'].map(([d, v]) => [Date.parse(d + 'T00:00:00Z'), v]);
+      const trades = D.case2026[mk + '|' + state.ver] || [];
+      const H = 280, m = { l: 36, r: 10, t: 12, b: 26 };
+      const svg = sv('svg', { width: W, height: H, viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': mk + ' daily closes with System 1 trades' }, wrap);
+      const t0 = px[0][0], t1 = px[px.length - 1][0];
+      const x = lin(t0, t1, m.l, W - m.r);
+      let lo = Math.min(...px.map(p => p[1])), hi = Math.max(...px.map(p => p[1]));
+      trades.forEach(t => { lo = Math.min(lo, t.stop, t.box_lo); hi = Math.max(hi, t.box_hi); });
+      const tk = ticks(lo, hi, 5); const y = lin(Math.min(tk.list[0], lo), Math.max(tk.list[tk.list.length - 1], hi), H - m.b, m.t);
+      tk.list.forEach(v => { sv('line', { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: 'var(--grid)', 'stroke-width': 1 }, svg); sv('text', { x: m.l - 5, y: y(v) + 4, 'font-size': 11, fill: 'var(--muted)', 'text-anchor': 'end', text: String(v) }, svg); });
+      ['2025-10-01', '2026-01-01', '2026-04-01', '2026-07-01'].forEach(d => { const tt = Date.parse(d + 'T00:00:00Z'); sv('text', { x: x(tt), y: H - m.b + 17, 'font-size': 11, fill: 'var(--muted)', 'text-anchor': 'middle', text: new Date(tt).toLocaleString('en-GB', { month: 'short', year: '2-digit', timeZone: 'UTC' }) }, svg); });
+      const T = s => Date.parse(s + 'T00:00:00Z');
+      trades.forEach(t => {
+        const xa = x(Math.max(t0, T(t.box_from))), xb = x(T(t.box_to));
+        sv('rect', { x: xa, y: y(t.box_hi), width: Math.max(3, xb - xa), height: Math.max(2, y(t.box_lo) - y(t.box_hi)), fill: 'var(--band-c)', stroke: 'var(--accent)', 'stroke-width': 1, rx: 2 }, svg);
+        const xe = x(T(t.entry)), xs = x(Math.max(T(t.exit_mm_t), T(t.exit_tr_t)));
+        sv('line', { x1: xe, x2: xs, y1: y(t.stop), y2: y(t.stop), stroke: 'var(--muted)', 'stroke-width': 1 }, svg);
+      });
+      let d = ''; px.forEach((p, i) => { d += (i ? 'L' : 'M') + x(p[0]).toFixed(1) + ' ' + y(p[1]).toFixed(1); });
+      sv('path', { d, fill: 'none', stroke: 'var(--ink-2)', 'stroke-width': 1.6, 'stroke-linejoin': 'round' }, svg);
+      trades.forEach((t, i) => {
+        const e = sv('circle', { cx: x(T(t.entry)), cy: y(t.entry_px), r: 5.5, fill: 'var(--accent)', stroke: 'var(--surface)', 'stroke-width': 2 }, svg);
+        const rowsTip = [{ value: (t.dir > 0 ? 'Long ' : 'Short ') + '$' + t.entry_px.toFixed(2), label: 'entry ' + t.entry }, { value: '$' + t.stop.toFixed(2), label: 'stop (box edge)' },
+          { value: sR(t.R_mm), label: 'half 1 at $' + t.exit_mm.toFixed(2) + ', ' + t.exit_mm_t }, { value: sR(t.R_tr), label: 'half 2 at $' + t.exit_tr.toFixed(2) + ', ' + t.exit_tr_t + (t.open ? ' (open)' : '') },
+          { value: sR(t.R), label: 'trade result' }];
+        hoverable(e, mk + ' trade ' + (i + 1), rowsTip);
+        [[t.exit_mm_t, t.exit_mm], [t.exit_tr_t, t.exit_tr]].forEach(([dt, pv]) => {
+          const c = sv('circle', { cx: x(T(dt)), cy: y(pv), r: 4.5, fill: 'var(--ink)', stroke: 'var(--surface)', 'stroke-width': 2 }, svg);
+          hoverable(c, mk + ' trade ' + (i + 1), rowsTip);
+        });
+        sv('text', { x: x(T(t.entry)), y: y(t.entry_px) + (t.dir > 0 ? 18 : -10), 'font-size': 11, 'font-weight': 600, fill: 'var(--ink)', 'text-anchor': 'middle', text: String(i + 1) }, svg);
+      });
+      host.append(wrap);
+    }
+  }
+  function renderCaseTable(host) {
+    const tbl = el('table', { class: 'data' });
+    const hr = el('tr'); ['#', 'Market', 'Entry', 'Side', 'Entry price', 'Stop', 'Half 1 exit', 'Half 2 exit', 'Result'].forEach((h, i) => hr.append(el('th', { class: i < 2 ? 'l' : '', text: h })));
+    const th = el('thead'); th.append(hr); tbl.append(th); const tb = el('tbody'); tbl.append(tb);
+    let tot = { WTI: 0, BRENT: 0 };
+    for (const mk of ['WTI', 'BRENT']) {
+      (D.case2026[mk + '|' + state.ver] || []).forEach((t, i) => {
+        tot[mk] += t.R;
+        const tr = el('tr');
+        [String(i + 1), mk === 'WTI' ? 'WTI' : 'Brent', t.entry, t.dir > 0 ? 'Long' : 'Short', '$' + t.entry_px.toFixed(2), '$' + t.stop.toFixed(2),
+          `$${t.exit_mm.toFixed(2)} · ${sR(t.R_mm, 1)}`, `$${t.exit_tr.toFixed(2)} · ${sR(t.R_tr, 1)}${t.open ? ' (open)' : ''}`, sR(t.R)].forEach((v, j) => tr.append(el(j < 2 ? 'th' : 'td', { class: j < 2 ? 'l' : '', text: v })));
+        tb.append(tr);
+      });
+    }
+    const tr = el('tr', { class: 'hl' }); tr.append(el('th', { class: 'l', colspan: 8, text: `Total since October 2025: WTI ${sR(tot.WTI, 1)}, Brent ${sR(tot.BRENT, 1)}` }), el('td', { text: sR(tot.WTI + tot.BRENT, 1) })); tb.append(tr);
+    host.append(tbl);
+  }
+
+  // ---------- natural gas
+  function renderNG(host) {
+    const tbl = el('table', { class: 'data' });
+    const pers = [['1986-2004', 'Before 2005'], ['2005-2014', '2005–2014'], ['2015-2020.04', '2015–Apr 2020'], ['2020.05-2026.09', 'May 2020–2026'], ['post-2005', 'Since 2005']];
+    const hr = el('tr'); ['System and data', ...pers.map(p => p[1])].forEach((h, i) => hr.append(el('th', { class: i === 0 ? 'l' : '', text: h })));
+    const th = el('thead'); th.append(hr); tbl.append(th); const tb = el('tbody'); tbl.append(tb);
+    const rowsDef = [['S1 flag breakout', 'NG_ohlc', 'A', 'System 1 (A) · NG futures, 1-min fills'], ['S1 flag breakout', 'NG_ohlc', 'A+', 'System 1 (A+) · NG futures, 1-min fills'],
+      ['S1 flag breakout', 'HH_eia', 'A', 'System 1 (A) · Henry Hub closes'], ['S1 flag breakout', 'HH_eia', 'A+', 'System 1 (A+) · Henry Hub closes'],
+      ['NG winter retracement (experimental)', 'NG_ohlc', 'winter', 'Winter retracement · NG futures'], ['NG winter retracement (experimental)', 'HH_eia', 'winter', 'Winter retracement · Henry Hub closes']];
+    rowsDef.forEach(([sys, set, ver, lab]) => {
+      const tr = el('tr'); tr.append(el('th', { class: 'l', text: lab }));
+      pers.forEach(([p]) => {
+        const r = D.ng.find(z => z.system === sys && z.set === set && z.version === ver && z.period === p); const td = el('td');
+        if (r) td.append(document.createTextNode(sR(r.avgR)), el('span', { class: 'sub', text: r.n + ' trades' })); else td.textContent = '–';
+        tr.append(td);
+      });
+      tb.append(tr);
+    });
+    host.append(tbl);
+  }
+
+  // ---------- version switch
+  const VER_IDS = ['equity', 'periods', 'heat-ohlc', 'heat-spot', 'random', 'alts', 'costs', 'mc', 'case', 'case-table'];
+  function setVer(v) {
+    state.ver = v; try { localStorage.setItem('ogs-ver', v); } catch (e) { /* ignore */ }
+    document.querySelectorAll('.seg button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.ver === v)));
+    rerender(VER_IDS);
+  }
+  document.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => setVer(b.dataset.ver)));
+  document.querySelectorAll('.seg button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.ver === state.ver)));
+
+  renderScale(document.getElementById('heat-scale'));
+  mount('schematic', renderSchematic);
+  mount('sides', renderSides);
+  mount('families', renderFamilies);
+  mount('equity', renderEquity);
+  mount('periods', renderPeriods);
+  mount('heat-ohlc', h => renderHeat(h, 'ohlc'));
+  mount('heat-spot', h => renderHeat(h, 'spot'));
+  mount('random', renderRandom);
+  mount('alts', renderAlts);
+  mount('costs', renderCosts);
+  mount('mc', renderMC);
+  mount('case', renderCase);
+  mount('case-table', renderCaseTable);
+  mount('ng', renderNG);
+})();
+</script>
