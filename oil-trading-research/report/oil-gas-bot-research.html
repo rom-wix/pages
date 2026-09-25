@@ -183,7 +183,7 @@ details[open] summary{margin-bottom:10px}
   <div class="cols">
     <div class="card"><h3>What worked</h3><p>Fast trend rules with one- to three-month memory: 1-month momentum scored 1.38 and a 20-day Donchian breakout 1.30 on crude. The recommended blend made +9.7% on WTI and +5.4% on Brent (Sharpe 0.74 and 0.48) with drawdowns under 10%. Holding long also worked (1.36), which is hindsight after a 50–70% rally.</p></div>
     <div class="card"><h3>What did not</h3><p>Slow trend rules were short going into the March spike and whipsawed after it: 160–320 day breakouts scored −0.8 to −1.8. Mean reversion lost again (median rule −0.68). A permanent short scored −1.47. The original, slower trend blend was flat to slightly negative.</p></div>
-    <div class="card"><h3>What we could not test yet</h3><p>Intraday rules, the crack spread and carry need data we don't have for this period: broker minute bars, RBOB and ULSD prices, and the futures curve. Your market-data server would cover the first; this sandbox blocks its host, <span class="mono">ouifx.rol4.com</span>. Once it's allowed, the intraday section can be rerun on the last year.</p></div>
+    <div class="card"><h3>What we could not test yet</h3><p>Intraday rules, the crack spread and carry need data we don't have for this period: broker minute bars, RBOB and ULSD prices, and the futures curve. Your market-data server would cover the first, but this sandbox's network policy blocks it. Once it's allowed, the intraday section can be rerun on the last year.</p></div>
   </div>
   <div class="tbl"><table id="tbl-character"><thead><tr><th>Market character</th><th class="n">Lag-1 autocorr.</th><th class="n">VR 2d</th><th class="n">VR 5d</th><th class="n">VR 10d</th><th class="n">VR 20d</th></tr></thead><tbody></tbody></table></div>
   <p class="small">Variance ratio (VR) above 1 means moves tend to continue over that horizon; below 1 means they tend to reverse. Over the last year both crude markets showed two-day continuation (VR 1.07–1.14). Over 5–20 days WTI leaned toward reversal (0.64–0.84) and Brent was close to neutral (0.92–1.06).</p>
@@ -474,7 +474,7 @@ details[open] summary{margin-bottom:10px}
       <li>Henry Hub and Dated Brent spot can diverge sharply from the futures the CFDs follow: Henry Hub printed $30.72 in January 2026. Gas results for the last 12 months are left out for that reason.</li>
       <li>Weekend gaps, broker outages and the April 2020 negative-price event are not fully captured by daily closes.</li></ul></div>
   </div>
-  <p class="small">Code, data loaders and every results table are in <span class="mono">oil-trading-research/</span> on branch <span class="mono">claude/oil-trading-strategies-yp3ao8</span> of rom-wix/pages. Run <span class="mono">scripts/fetch_data.sh</span>, then the scripts in <span class="mono">experiments/</span>. <span class="mono">bot_reference/</span> holds the signal engine, verified to reproduce the backtest positions exactly.</p>
+  <p class="small">Code, data loaders and every results table are in <span class="mono">oil-trading-research/</span> in the rom-wix/pages repository. Run <span class="mono">scripts/fetch_data.sh</span>, then the scripts in <span class="mono">experiments/</span>. <span class="mono">bot_reference/</span> holds the signal engine, verified to reproduce the backtest positions exactly.</p>
 </section>
 </div>
 
