@@ -1,0 +1,5 @@
+sources/
+data/
+__pycache__/
+*.nbi
+*.nbc
