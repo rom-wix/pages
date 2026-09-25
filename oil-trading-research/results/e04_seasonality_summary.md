@@ -62,7 +62,7 @@ Every natural-gas seasonal idea fails on futures. The gas seasonal exists in the
 - **SR** is the annualised Sharpe ratio. "Gross" means before spreads and the financing markup. PORT (3) is the equal-weight WTI/Brent/NG portfolio.
 - **Turnover** is traded notional per year in multiples of equity. For PORT rows it is the per-instrument average.
 - **Calendar-based rules are not stress-tested with a one-day lag.** A lag of 2 moves a one-day calendar effect onto the wrong day (for example, pre-holiday onto post-holiday), so it tests nothing useful. They are stress-tested with 2x costs instead.
-- **The monthly crude rules are also robust to lag = 2.** Feb-May gives 0.47, and the combined rule gives 0.50 (see `e04_robustness.csv`).
+- **The monthly crude rules are also robust to lag = 2.** Feb-May gives 0.46, and the combined rule gives 0.49 (see `e04_robustness.csv`).
 
 ## 1. Month-of-year returns
 ![month of year](e04_month_of_year.png)
@@ -134,7 +134,7 @@ So what spot gains in the autumn, a futures-based CFD pays back through roll-dow
 - Portfolio (WTI+Brent) net Sharpe 0.46: 0.63 in 1990-2007 and 0.31 in 2008-2024.
 - Positive in 23 of 35 years, with a median year of +5.3%.
 - Still 0.32 without its three best years.
-- Only about 2 round trips per year, so cost-insensitive: 0.46 at 2x costs.
+- One round trip per year per instrument (two for the long/short version), so cost-insensitive: 0.46 at 2x costs.
 - Its maximum drawdown is -33%, because it holds full vol-targeted exposure while in the market.
 
 **Short Oct-Dec (Q4 weakness) is a crash artifact.** Its Sharpe of 0.25 comes entirely from three years: 2014 (+31%), 2018 (+22%) and 1993 (+19%). Without them the Sharpe is -0.01, and the median year is 0.0%.

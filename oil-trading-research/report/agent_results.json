@@ -2289,6 +2289,78 @@
      0.172
     ]
    ]
+  },
+  "grid_lose_half": {
+   "categories": [
+    "Grid",
+    "Hedged grid",
+    "Averaging down",
+    "Martingale",
+    "Trend (ref.)"
+   ],
+   "XTIUSD": [
+    66,
+    91,
+    59,
+    47,
+    0
+   ],
+   "XBRUSD": [
+    77,
+    95,
+    77,
+    52,
+    0
+   ],
+   "XNGUSD": [
+    92,
+    94,
+    88,
+    40,
+    0
+   ]
   }
- }
+ },
+ "scoreboard": [
+  {
+   "label": "ML: best model (5-day logistic)",
+   "sub": "2005\u20132024; it is trend + fragile carry",
+   "value": 0.63
+  },
+  {
+   "label": "ML: next-day models, best",
+   "sub": "2005\u20132024",
+   "value": 0.15
+  },
+  {
+   "label": "Grid bot, WTI",
+   "sub": "typical settings, re-funded after each blow-up",
+   "value": -0.04
+  },
+  {
+   "label": "Averaging-down (DCA) bot, WTI",
+   "sub": "typical settings, re-funded after each blow-up",
+   "value": -0.12
+  }
+ ],
+ "verdict_rows": [
+  [
+   "Machine learning (logistic, LightGBM)",
+   "walk-forward 2005\u20132024, 50 features, next-day and next-5-day direction",
+   "\u22120.16 to 0.63",
+   "\u2264 0.62",
+   "n/a",
+   "avoid",
+   "Next-day models are noise; the best 5-day model is trend plus the fragile carry signal."
+  ],
+  [
+   "Grid, martingale, averaging-down bots",
+   "72 settings per bot, 1:10 leverage, broker stop-out at 50% margin",
+   "\u22120.85 to 0.22",
+   "\u2013",
+   "n/a",
+   "avoid",
+   "Win nearly every closed trade, then lose most of the account: 40\u201396% lose half within two years."
+  ]
+ ]
 }

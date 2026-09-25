@@ -285,6 +285,40 @@ def make_fn(sig_by_sym, mix_trend=0.0):
     return fn
 
 
+def paired_sharpe_diff(a: pd.Series, b: pd.Series, n=2000, block=20, seed=0):
+    """Stationary (Politis-Romano) paired bootstrap of SR(a) - SR(b): same resampled days for both."""
+    j = pd.concat([a, b], axis=1).dropna()
+    x, y = j.iloc[:, 0].to_numpy(), j.iloc[:, 1].to_numpy()
+    T = len(x)
+    rng = np.random.default_rng(seed)
+    out = np.empty(n)
+    t = np.arange(T)
+    for k in range(n):
+        new = rng.random(T) < 1.0 / block
+        new[0] = True
+        starts = rng.integers(0, T, size=T)
+        bid = np.cumsum(new) - 1
+        first = np.flatnonzero(new)
+        idx = (starts[first][bid] + (t - first[bid])) % T
+        xa, ya = x[idx], y[idx]
+        out[k] = (xa.mean() / xa.std() - ya.mean() / ya.std()) * np.sqrt(252)
+    obs = (x.mean() / x.std() - y.mean() / y.std()) * np.sqrt(252)
+    return obs, float(np.quantile(out, 0.025)), float(np.quantile(out, 0.975)), float((out <= 0).mean())
+
+
+def carry_z_signal(df):
+    c = df["carry"].clip(-3, 3)
+    z = (c - c.rolling(250, min_periods=120).mean()) / c.rolling(250, min_periods=120).std()
+    return (z / 1.0).clip(-2, 2).fillna(0.0) / 0.8  # ~unit mean |signal|
+
+
+def static_drift_signal(df):
+    """What the pooled models' instrument dummies amount to: sign of the instrument's average daily
+    return over all *past* data (expanding), i.e. long crude / short gas most of the time."""
+    m = df["ret"].expanding(min_periods=500).mean().shift(1)
+    return np.sign(m).fillna(0.0)
+
+
 def main():
     ps.apply()
     P = build_panel()
@@ -328,11 +362,39 @@ def main():
                     corr_rows.append({"variant": name, "symbol": s, "corr_daily_net_vs_trend": j.corr().iloc[0, 1],
                                       "corr_signal_vs_trend_signal": sig_corr})
         print(f"done {name}")
+    # simple non-ML factor benchmarks on the same window
+    bench = {"carry_z": carry_z_signal, "static_drift": static_drift_signal,
+             "trend+carry_z": lambda d: 0.5 * TREND(d) + 0.5 * carry_z_signal(d),
+             "trend+carry_z+drift": lambda d: (TREND(d) + carry_z_signal(d) + static_drift_signal(d)) / 3}
+    for bn, bfn in bench.items():
+        for lag in [1, 2]:
+            r = evaluate(bfn, f"bench_{bn}", data=FUTS, start=f"{FIRST_TEST_YEAR}-01-01", lag=lag, keep_series=True)
+            strat_rows.append(r["table"].assign(model="benchmark", target="", pooled="", lag=lag, blend=0.0))
+            if lag == 1:
+                ports[f"bench_{bn}"] = r["port"]
+        r = evaluate(bfn, f"bench_{bn}", data=FUTS, start=f"{FIRST_TEST_YEAR}-01-01", cost_mult=2.0)
+        strat_rows.append(r["table"].assign(model="benchmark", target="", pooled="", lag=1, blend=0.0, cost_mult=2.0))
+        r = evaluate(bfn, f"bench_{bn}", data=FUTS, start=f"{FIRST_TEST_YEAR}-01-01", cost_mult=0.0, fin=0.0)
+        strat_rows.append(r["table"].assign(model="benchmark", target="", pooled="", lag=1, blend=0.0, cost_mult=0.0))
+    # 2x costs for every ML variant (standalone and blend) and trend
+    for name, sig in sig_store.items():
+        for blend in [0.0, 0.5]:
+            for cm in [2.0, 0.0]:
+                r = evaluate(make_fn(sig, blend), name, data=FUTS, start=f"{FIRST_TEST_YEAR}-01-01", cost_mult=cm,
+                             fin=0.0 if cm == 0.0 else None)
+                strat_rows.append(r["table"].assign(model=name.split("_")[0], target=name.split("_")[1],
+                                                    pooled="pooled" in name, lag=1, blend=blend, cost_mult=cm))
+    for cm in [2.0, 0.0]:
+        r = evaluate(TREND, "trend_multi_ewmac", data=FUTS, start=f"{FIRST_TEST_YEAR}-01-01", cost_mult=cm,
+                     fin=0.0 if cm == 0.0 else None)
+        strat_rows.append(r["table"].assign(model="trend", target="", pooled="", lag=1, blend=0.0, cost_mult=cm))
+
     preds = pd.concat(all_preds)
     preds.to_csv(os.path.join(OUT, "e08_oos_predictions.csv"))
     CM = pd.DataFrame(cm_rows)
     CM.to_csv(os.path.join(OUT, "e08_classification_metrics.csv"), index=False)
     ST = pd.concat(strat_rows, ignore_index=True)
+    ST["cost_mult"] = ST["cost_mult"].fillna(1.0) if "cost_mult" in ST else 1.0
     ST.to_csv(os.path.join(OUT, "e08_strategy_results.csv"), index=False)
     CR = pd.DataFrame(corr_rows)
     CR.to_csv(os.path.join(OUT, "e08_correlations.csv"), index=False)
@@ -341,8 +403,8 @@ def main():
               "auc", "auc_z", "logloss_gain", "trend_sign_accuracy", "trend_auc"]].round(4).to_string(index=False))
     print("\n=== strategies (PORT) 2005-2024")
     sp = ST[ST.symbol == "PORT"]
-    print(sp[["name", "blend", "lag", "sharpe", "cagr", "max_dd", "sr_2000-2009", "sr_2010-2019", "sr_2020-2029"]]
-          .round(3).to_string(index=False))
+    print(sp[["name", "blend", "lag", "cost_mult", "sharpe", "cagr", "max_dd", "sr_2000-2009", "sr_2010-2019",
+              "sr_2020-2029"]].round(3).to_string(index=False))
     print("\n=== per instrument, lag 1, no blend")
     si = ST[(ST.symbol != "PORT") & (ST.lag == 1) & (ST.blend == 0.0)]
     print(si[["name", "symbol", "sharpe", "gross_sharpe", "turnover_py", "cost_py"]].round(3).to_string(index=False))
@@ -363,15 +425,29 @@ def main():
 
     # bootstrap CI for PORT Sharpe and the blend-minus-trend difference
     boot_rows = []
-    for key, s in ports.items():
-        s = s[s.index >= f"{FIRST_TEST_YEAR}-01-01"]
-        lo, hi = bt.bootstrap_sharpe_ci(s, n=1000)
-        j = pd.concat([s, ports["trend"]], axis=1, keys=["a", "t"]).dropna()
-        d = j["a"] - j["t"]
-        boot_rows.append({"series": key, "sharpe": bt.sharpe(s), "ci95_lo": lo, "ci95_hi": hi,
-                          "diff_vs_trend_t": d.mean() / d.std() * np.sqrt(len(d)) if key != "trend" else np.nan,
-                          "corr_vs_trend": j.corr().iloc[0, 1]})
+    tr_port = ports["trend"][ports["trend"].index >= f"{FIRST_TEST_YEAR}-01-01"]
+    tc_port = ports["bench_trend+carry_z"][ports["bench_trend+carry_z"].index >= f"{FIRST_TEST_YEAR}-01-01"]
+    for key, s_ in ports.items():
+        s_ = s_[s_.index >= f"{FIRST_TEST_YEAR}-01-01"]
+        lo, hi = bt.bootstrap_sharpe_ci(s_, n=1000)
+        row = {"series": key, "sharpe": bt.sharpe(s_), "ci95_lo": lo, "ci95_hi": hi,
+               "corr_vs_trend": pd.concat([s_, tr_port], axis=1).dropna().corr().iloc[0, 1]}
+        if key != "trend":
+            d, dlo, dhi, p0 = paired_sharpe_diff(s_, tr_port)
+            row.update({"sr_minus_trend": d, "diff_ci95_lo": dlo, "diff_ci95_hi": dhi, "p_diff_le_0": p0})
+        if key not in ("trend", "bench_trend+carry_z"):
+            d, dlo, dhi, p0 = paired_sharpe_diff(s_, tc_port)
+            row.update({"sr_minus_trend_carry": d, "tc_diff_ci95_lo": dlo, "tc_diff_ci95_hi": dhi,
+                        "p_tc_diff_le_0": p0})
+        boot_rows.append(row)
     BO = pd.DataFrame(boot_rows)
+    # deflated Sharpe of each standalone ML variant against the 8 standalone ML variants tried
+    ml_keys = [k for k in ports if k.endswith("|blend0.0")]
+    trial_sr = [bt.sharpe(ports[k][ports[k].index >= f"{FIRST_TEST_YEAR}-01-01"]) for k in ml_keys]
+    for k in ml_keys:
+        x = ports[k][ports[k].index >= f"{FIRST_TEST_YEAR}-01-01"]
+        BO.loc[BO.series == k, "dsr_vs_8_ml_variants"] = bt.deflated_sharpe(bt.sharpe(x), trial_sr, len(x),
+                                                                            float(x.skew()), float(x.kurt() + 3))
     BO.to_csv(os.path.join(OUT, "e08_port_bootstrap.csv"), index=False)
     print("\n=== PORT Sharpe bootstrap + difference vs trend\n", BO.round(3).to_string(index=False))
 
@@ -392,30 +468,49 @@ def main():
 
 def summary_table(ST, CM, CR):
     rows = []
-    for _, r in ST[(ST.lag == 1)].iterrows():
+    base = ST[(ST.lag == 1) & (ST.cost_mult == 1.0)]
+    lag2 = ST[(ST.lag == 2) & (ST.cost_mult == 1.0)]
+    c2 = ST[(ST.lag == 1) & (ST.cost_mult == 2.0)]
+    c0 = ST[(ST.lag == 1) & (ST.cost_mult == 0.0)]
+    bench_label = {"bench_carry_z": "Carry z-score alone (simple, no ML)",
+                   "bench_static_drift": "Static drift: sign of past mean return (long crude / short NG)",
+                   "bench_trend+carry_z": "50/50 trend + carry z-score (simple, no ML)",
+                   "bench_trend+carry_z+drift": "Trend + carry z + static drift, equal weight (simple)"}
+    for _, r in base.iterrows():
         if r["model"] == "trend":
-            strat = "Trend: multi-speed EWMAC (reference)"
-            verdict = "reference"
+            strat, verdict = "Trend: multi-speed EWMAC (reference)", "reference"
+        elif r["model"] == "benchmark":
+            strat, verdict = bench_label[r["name"]], "benchmark"
         else:
-            pooled = "pooled" if r["pooled"] else "per-instrument"
+            pooled = "pooled" if r["pooled"] in (True, "True") else "per-instrument"
             strat = (f"{'LogReg L2' if r['model'] == 'lr' else 'LightGBM'}, "
                      f"{'next-day' if r['target'] == 'y1' else 'next-5-day'} target, {pooled}")
             if r["blend"] > 0:
                 strat = "50/50 blend: trend + " + strat
             verdict = ""
+        key = (r["name"], r["blend"], r["symbol"])
+
+        def pick(df):
+            x = df[(df.name == key[0]) & (df.blend == key[1]) & (df.symbol == key[2])]
+            return x["sharpe"].iloc[0] if len(x) else np.nan
         c = CM[(CM.model == r["name"]) & (CM.symbol == (r["symbol"] if r["symbol"] != "PORT" else "ALL"))]
+        is_ml = r["model"] in ("lr", "lgbm")
         rows.append({"strategy": strat, "variant": r["name"], "blend": r["blend"], "instrument": r["symbol"],
                      "period": f"{r['start'][:4]}-{r['end'][:4]}", "net_sharpe": r["sharpe"],
                      "sr_2005_2007": r["is_sharpe"], "sr_2008_2024": r["oos_sharpe"],
                      "sr_2010s": r.get("sr_2010-2019"), "sr_2020s": r.get("sr_2020-2029"),
-                     "gross_sharpe": r.get("gross_sharpe"), "cagr": r["cagr"], "max_dd": r["max_dd"],
-                     "turnover_py": r.get("turnover_py"),
-                     "oos_accuracy": c["accuracy"].iloc[0] if len(c) and r["model"] != "trend" else np.nan,
-                     "oos_auc": c["auc"].iloc[0] if len(c) and r["model"] != "trend" else np.nan,
+                     "net_sharpe_lag2": pick(lag2), "net_sharpe_2x_cost": pick(c2),
+                     "gross_sharpe": pick(c0), "cagr": r["cagr"], "max_dd": r["max_dd"],
+                     "turnover_py": r.get("turnover_py") if r["symbol"] != "PORT" else base[
+                         (base.name == r["name"]) & (base.blend == r["blend"]) & (base.symbol != "PORT")][
+                         "turnover_py"].mean(),
+                     "oos_accuracy": c["accuracy"].iloc[0] if len(c) and is_ml and r["blend"] == 0 else np.nan,
+                     "oos_auc": c["auc"].iloc[0] if len(c) and is_ml and r["blend"] == 0 else np.nan,
                      "verdict": verdict})
     T = pd.DataFrame(rows)
-    # PORT gross Sharpe / turnover (evaluate leaves them blank for PORT)
     T.to_csv(os.path.join(OUT, "e08_summary_table.csv"), index=False)
+    print("\n=== SUMMARY (PORT rows)\n", T[T.instrument == "PORT"].drop(columns=["strategy"]).round(3)
+          .to_string(index=False))
     return T
 
 
@@ -425,25 +520,30 @@ def charts(ports, AY, FI, CM):
     # 1. PORT equity: trend vs best ML vs blend
     fig, ax = plt.subplots(figsize=(11, 4.6))
     items = [("trend", "Trend only (multi-speed EWMAC)", ps.SERIES[0]),
-             ("lgbm_y1_pooled|blend0.0", "LightGBM next-day, pooled", ps.SERIES[1]),
-             ("lr_y5_pooled|blend0.0", "Logistic next-5-day, pooled", ps.SERIES[2]),
-             ("lgbm_y1_pooled|blend0.5", "50/50 trend + LightGBM next-day", ps.SERIES[3])]
+             ("lr_y5_pooled|blend0.0", "Best ML: logistic next-5-day, pooled", ps.SERIES[1]),
+             ("lgbm_y1_pooled|blend0.0", "LightGBM next-day, pooled", ps.SERIES[2]),
+             ("bench_trend+carry_z", "Simple 50/50 trend + carry z (no ML)", ps.SERIES[3])]
     for key, lab, col in items:
         s = ports[key]
         s = s[s.index >= f"{FIRST_TEST_YEAR}-01-01"]
         eq = (1 + s).cumprod()
         ax.plot(eq.index, eq.values, color=col, lw=1.3, label=f"{lab} (SR {bt.sharpe(s):.2f})")
         ax.text(eq.index[-1], eq.values[-1], f"  {eq.values[-1]:.2f}x", color=ps.INK2, fontsize=8, va="center")
+    from matplotlib.ticker import FixedLocator, FuncFormatter, NullLocator
     ax.set_yscale("log")
+    ax.yaxis.set_major_locator(FixedLocator([0.5, 0.75, 1, 1.5, 2, 3, 4, 5]))
+    ax.yaxis.set_minor_locator(NullLocator())
+    ax.yaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v:g}"))
     ax.set_ylabel("growth of 1, net of costs (log scale)")
     ax.legend(loc="upper left")
-    ps.title(fig, "Walk-forward ML vs trend, equal-weight 3-instrument portfolio, 2005-2024", y=1.06)
+    ps.title(fig, "Walk-forward ML vs trend and a two-factor rule, 3-instrument portfolio, 2005-2024", y=1.06)
     ps.subtitle(fig, "All ML predictions out-of-sample (expanding window, yearly refit, 5-day purge). "
                      "15% vol target, CFD costs + 2.5% financing.", y=1.0)
     ps.save(fig, os.path.join(OUT, "e08_equity.png"))
 
     # 2. AUC by year (pooled models, all instruments averaged) vs trend
     fig, axes = plt.subplots(1, 2, figsize=(12.5, 4.2), sharey=True)
+    AY = AY[AY.year <= 2023]  # 2024 = Jan-Mar only
     for ax, tgt in zip(axes, ["y1", "y5"]):
         for key, lab, col in [(f"lgbm_{tgt}_pooled", "LightGBM pooled", ps.SERIES[1]),
                               (f"lr_{tgt}_pooled", "Logistic pooled", ps.SERIES[2])]:
@@ -456,9 +556,11 @@ def charts(ports, AY, FI, CM):
         ax.set_title("Next-day direction" if tgt == "y1" else "Next-5-day direction (overlapping, daily)",
                      fontsize=10.5)
         ax.set_xlabel("test year")
+        ax.set_xticks(range(2005, 2024, 3))
     axes[0].set_ylabel("out-of-sample AUC (mean of 3 instruments)")
     axes[0].legend(loc="lower left", fontsize=8)
-    ps.title(fig, "Out-of-sample AUC hovers around 0.5 - a coin flip with occasional good years", y=1.06)
+    ps.title(fig, "Within each year, out-of-sample AUC hovers around 0.5 - ML and trend alike", y=1.06)
+    ps.subtitle(fig, "AUC computed within each calendar year, averaged over WTI, Brent and NG (2005-2023).", y=1.0)
     ps.save(fig, os.path.join(OUT, "e08_auc_by_year.png"))
 
     # 3. feature importance (LightGBM pooled, next-day and next-5-day)
@@ -470,7 +572,8 @@ def charts(ports, AY, FI, CM):
                      fontsize=10.5)
         ax.set_xlabel("share of total gain, %")
         ax.grid(axis="y", visible=False)
-    ps.title(fig, "What the trees use: mostly volatility and long-horizon trend state", y=1.04)
+    ps.title(fig, "What the trees use: volatility, carry, crack spreads and trend state - no dominant signal",
+             y=1.04)
     fig.tight_layout()
     ps.save(fig, os.path.join(OUT, "e08_feature_importance.png"))
 

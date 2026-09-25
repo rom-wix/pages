@@ -229,5 +229,15 @@
     });
   }
 
+  if ($("fig-grid") && DATA.agent && DATA.agent.grid_lose_half) {
+    const G = DATA.agent.grid_lose_half;
+    legend($("leg-grid"), Object.values(MKT), true);
+    Viz.columns($("fig-grid"), {
+      categories: G.categories,
+      series: Object.entries(MKT).map(([s, [n, c]]) => ({ name: n, color: c, values: G[s] })),
+      fmt: (v) => Math.round(v) + "%", min: 0, max: 100, height: 260, valueLabels: true, aria: "Chance of losing half the account",
+    });
+  }
+
   /*__AGENT_JS__*/
 })();

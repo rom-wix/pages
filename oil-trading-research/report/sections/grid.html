@@ -1,0 +1,21 @@
+  <p>Most "oil trading bots" sold to retail traders are grids, martingales or averaging-down systems. We simulated typical settings with the conditions a retail CFD account really has: 1:10 leverage (the EU limit for commodity CFDs), a broker stop-out at a 50% margin level, spreads, financing and roll yield. We opened a new account every month from 1991 and ran each one for two years.</p>
+  <figure>
+    <figcaption><span class="t">Chance of losing at least half the account within two years</span><span class="s">Typical retail settings: 3% steps for crude and 5% for gas, 1:10 leverage. The trend bot at the same leverage never lost half in any two-year window.</span></figcaption>
+    <div class="legend" id="leg-grid"></div>
+    <div class="viz" id="fig-grid"></div>
+  </figure>
+  <div class="tbl"><table>
+    <thead><tr><th>Bot (typical settings)</th><th class="n">Lose ≥ half</th><th class="n">Broker stop-out</th><th class="n">Median 2-year result</th><th class="n">Closed trades won</th></tr></thead>
+    <tbody>
+      <tr><td>Grid<span class="sub">buy every step down, take profit one step up, up to 8 lots of 0.5×</span></td><td class="n">66–92%</td><td class="n">47–76%</td><td class="n">−38% to −83%</td><td class="n">100%</td></tr>
+      <tr><td>Two-sided hedged grid<span class="sub">also sells every step up</span></td><td class="n">91–95%</td><td class="n">74–89%</td><td class="n">about −75%</td><td class="n">100%</td></tr>
+      <tr><td>Averaging down (DCA)<span class="sub">7-order ladder, take profit +2% on the average price, no stop</span></td><td class="n">59–88%</td><td class="n">53–76%</td><td class="n">about −79%</td><td class="n">100%</td></tr>
+      <tr><td>Martingale<span class="sub">double after each loss, up to 6 times</span></td><td class="n">40–52%</td><td class="n">0%*</td><td class="n">coin flip; worst 5% ≈ −99%</td><td class="n">53–56%</td></tr>
+      <tr><td>Trend following at 15% volatility (reference)</td><td class="n">0%</td><td class="n">0%</td><td class="n">+5% to +14%</td><td class="n">–</td></tr>
+    </tbody></table></div>
+  <p class="small">*The martingale's own stop-loss closes each losing trade before the broker has to, but the doubling does the same damage.</p>
+  <div class="cols">
+    <div class="card"><h3>Why they look good at first</h3><p>Every closed grid and averaging-down trade is a winner and equity climbs smoothly, because losing positions are never closed. The longest-lived grid ran six years on Brent, reached 3.5× its starting balance with 123 winning trades, and was wiped out in the December 2014 collapse. Left to run, 91–100% of grid and averaging-down accounts were eventually ruined, after a median of 0.5–1.4 years.</p></div>
+    <div class="card"><h3>When they died</h3><p>Grid and averaging-down accounts were stopped out in September 2008, November 2014 and on 6 March 2020 in crude, and in August 2008 in gas. One averaging-down account nearly doubled in the 2021–22 gas spike, then died in January 2023. By the day WTI futures went negative in April 2020, they had already been liquidated weeks earlier.</p></div>
+    <div class="card"><h3>No safe setting</h3><p>We tried 72 settings per bot. Averaging down never had a positive average two-year return. The safest grid still had a 13% chance of losing half, in exchange for about +5% over two years. Remove the martingale's doubling and the same entries become harmless (Sharpe 0.10–0.37, a 0–1% chance of losing half), so the doubling itself does the damage.</p></div>
+  </div>
