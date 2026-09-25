@@ -63,6 +63,8 @@ HEADLINE = {
     "martingale": dict(step=(0.03, 0.05), base=0.5, kmax=6),                # 0.5x doubling up to 32x (capped)
     "dca": dict(step=(0.03, 0.05), tp=0.02, vmult=1.5, mmax=6, gross=5.0),  # 7-order ladder = 5x at full
 }
+# reference: the martingale's own entries/exits (20-day momentum, TP = SL) with a fixed size - no doubling
+NO_DOUBLING = dict(step=(0.03, 0.05), base=0.5, kmax=0)
 
 
 # ------------------------------------------------------------------------------------------------
@@ -259,6 +261,12 @@ def main():
             df = rolling_study(bot, D, cfg, first=first)
             per_start[(bot, lab)] = df
             head_rows.append(summarise(df, bot, lab, cfg_name(bot, cfg, lab)))
+    for lab in MAIN:
+        D = DATA[lab]
+        df = rolling_study("martingale", D, NO_DOUBLING, first=first_start(D))
+        r_ = summarise(df, "martingale", lab, cfg_name("martingale", NO_DOUBLING, lab))
+        r_["bot"] = "same entries, no doubling (reference)"
+        head_rows.append(r_)
     head = pd.DataFrame(head_rows)
     ref = trend_reference()
     head = pd.concat([head, ref], ignore_index=True)
@@ -346,8 +354,19 @@ def main():
                             "period": f"{r.index[0].year}-{r.index[-1].year}", **m,
                             "gross_sharpe": track_metrics(rg)["sharpe"], "trades_per_year": ntr / years,
                             "blow_ups": nblow, "blow_ups_per_decade": nblow / years * 10})
+    for lab in MAIN:
+        D = DATA[lab]
+        r, ntr, nblow = continuous_track("martingale", D, NO_DOUBLING)
+        rg, _, _ = continuous_track("martingale", D, NO_DOUBLING, gross=True)
+        years = len(r) / 252
+        tr_rows.append({"bot": "same entries, no doubling (reference)", "series": lab,
+                        "config": cfg_name("martingale", NO_DOUBLING, lab),
+                        "period": f"{r.index[0].year}-{r.index[-1].year}", **track_metrics(r),
+                        "gross_sharpe": track_metrics(rg)["sharpe"], "trades_per_year": ntr / years,
+                        "blow_ups": nblow, "blow_ups_per_decade": nblow / years * 10})
     tracks = pd.DataFrame(tr_rows)
     tracks.to_csv(os.path.join(OUT, "e07_continuous_tracks.csv"), index=False)
+    summary_table(head, tracks)
     print("\n=== continuous tracks (fresh account after every blow-up)\n", tracks.round(3).to_string(index=False))
 
     # ------------------------------------------------------------------ 4. episodes
@@ -448,6 +467,29 @@ def main():
     print("\n=== longest-surviving run per bot (illustration)\n", lr.round(3).to_string(index=False))
 
     charts(DATA, head, per_start, sweep, ep_series, long_series, ep)
+
+
+def summary_table(head, tracks):
+    """One row per bot x series: continuous-track Sharpe etc. + 2-year ruin statistics."""
+    rows = []
+    for _, t in tracks.iterrows():
+        h = head[(head.bot == t["bot"]) & (head.series == t["series"])]
+        h = h.iloc[0] if len(h) else None
+        rows.append({"strategy": BOT_LABEL.get(t["bot"], t["bot"]), "bot": t["bot"], "instrument": t["series"],
+                     "config": t["config"], "period": t["period"], "net_sharpe": t["sharpe"],
+                     "is_sharpe": t["is_sharpe"], "oos_sharpe": t["oos_sharpe"], "gross_sharpe": t["gross_sharpe"],
+                     "cagr_refunded": t["cagr"], "max_dd": t["max_dd"], "trades_per_year": t["trades_per_year"],
+                     "blow_ups_per_decade": t["blow_ups_per_decade"],
+                     "p_stop_out_2y": h["p_stop_out"] if h is not None else np.nan,
+                     "p_loss50_2y": h["p_loss_ge_50pct"] if h is not None else np.nan,
+                     "median_2y_ret": h["median_2y_ret"] if h is not None else np.nan,
+                     "worst_2y_ret": h["worst_2y_ret"] if h is not None else np.nan,
+                     "median_win_rate": h["median_win_rate"] if h is not None else np.nan,
+                     "verdict": "reference" if "reference" in t["bot"] else "reject"})
+    T = pd.DataFrame(rows)
+    T.to_csv(os.path.join(OUT, "e07_summary_table.csv"), index=False)
+    print("\n=== SUMMARY TABLE\n", T.drop(columns=["strategy"]).round(3).to_string(index=False))
+    return T
 
 
 # ================================================================================================

@@ -138,7 +138,7 @@ SR = annualised Sharpe of the daily net P&L after 1x costs (zeros on no-trade da
 | 2019 | -16.5 | -22.1 | -3.5 | 13.6 | -2.1 | -8.2 | -1.9 | -0.8 | 4.3 | -10.2 |
 | 2020 | -4.2 | -3.3 | -1.2 | 2.3 | 0.4 | 25.2 | 26.0 | -3.6 | -25.9 | 5.6 |
 
-Columns: A XNG = `orb\|09:30\|60\|16:55\|mid\|narrow0.75`; B XNG = `mom\|on1000\|q0.8\|14:30`; C XNG = `eia_pre\|short\|09:00->T-1`; D XNG = `dow\|Thu_0900_1430\|short`; E XNG = `mr\|5m\|pxz\|1h\|z3\|time30`; A XTI = `stretch\|09:00\|k0.5\|16:55\|none\|none`; B XTI = `mom\|on930\|q0.8\|14:30`; C XTI = `eia_fade\|w15\|k2\|14:30`; D XTI = `dow\|Fri_0900_1430\|long`; E XTI = `mr\|15m\|pxz\|4h\|z3\|mean`.
+Columns: A XNG = `orb|09:30|60|16:55|mid|narrow0.75`; B XNG = `mom|on1000|q0.8|14:30`; C XNG = `eia_pre|short|09:00->T-1`; D XNG = `dow|Thu_0900_1430|short`; E XNG = `mr|5m|pxz|1h|z3|time30`; A XTI = `stretch|09:00|k0.5|16:55|none|none`; B XTI = `mom|on930|q0.8|14:30`; C XTI = `eia_fade|w15|k2|14:30`; D XTI = `dow|Fri_0900_1430|long`; E XTI = `mr|15m|pxz|4h|z3|mean`.
 
 ## Family details and verdicts
 
