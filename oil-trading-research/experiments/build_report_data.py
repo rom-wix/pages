@@ -117,6 +117,13 @@ def main():
     rv = pd.read_csv(os.path.join(R, "e15_revised_daily_returns.csv"), index_col=0, parse_dates=True)
     out["equity"]["revised"] = monthly_equity(rv["revised"]["1991-11-01":])
     out["equity"]["revised_no_crack"] = monthly_equity(rv["revised_no_crack"]["1991-11-01":])
+    # equity curves rescaled (ex post, display only) to the same 10% annualised volatility
+    vm = {}
+    for k, ser in [("revised", rv["revised"]), ("revised_no_crack", rv["revised_no_crack"]),
+                   ("trend", S["trend"]), ("long_only", S["long_only"])]:
+        x = ser["1991-11-01":].fillna(0)
+        vm[k] = monthly_equity(x * (0.10 / (x.std() * np.sqrt(252))))
+    out["equity_volmatched"] = vm
     out["speed_blends"] = pd.read_csv(os.path.join(R, "e14_speed_blends.csv")).round(3).to_dict("records")
     out["near_month"] = pd.read_csv(os.path.join(R, "e12_near_month.csv")).round(3).to_dict("records")
 

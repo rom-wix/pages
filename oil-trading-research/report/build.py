@@ -60,7 +60,7 @@ def main():
         ("Crack-spread tilt (crude)", "z-score of the 3-2-1 refining margin; windows, lags, components",
          f2(H["crack"]["sharpe"]), f2(rob[("crack", "base")]["oos_sharpe"]), "n/a", "build",
          "Adds to trend; needs RBOB and ULSD prices."),
-        ("Recommended bot (both)", "trend + crack for crude, trend for gas, volatility overlay",
+        ("Recommended bot (trend + crack)", "trend + crack for crude, trend for gas, volatility overlay",
          f2(RV["revised"]["sharpe"]), f2(RV["revised"]["oos_sharpe"]), f2(ly_rev) + "*", "build",
          "Start here. *Last 12 months without the crack part."),
         ("WTI settlement momentum (intraday)", "Gao et al. (2018) rule adapted to the 14:30 settlement; 44 variants",
@@ -95,10 +95,16 @@ def main():
 
     tpl = open(os.path.join(HERE, "template.html")).read()
     tpl = tpl.replace("<!--VERDICT_ROWS-->", "\n".join(trs))
+    import re
     for key in ["INTRADAY", "ML", "GRID", "DIRECTION2"]:
         p = os.path.join(HERE, "sections", key.lower() + ".html")
         if os.path.exists(p):
             tpl = tpl.replace(f"<!--{key}-->", open(p).read())
+        elif key in ("ML", "GRID"):
+            sid = {"ML": "ml", "GRID": "grid"}[key]
+            # section not ready: drop it and its nav link rather than show an empty block
+            tpl = re.sub(r'<section id="%s">.*?</section>\s*' % sid, "", tpl, flags=re.S)
+            tpl = re.sub(r'<a href="#%s">[^<]*</a>' % sid, "", tpl)
     charts = open(os.path.join(HERE, "charts.js")).read()
     page = open(os.path.join(HERE, "page.js")).read()
     ajs = os.path.join(HERE, "sections", "agent.js")

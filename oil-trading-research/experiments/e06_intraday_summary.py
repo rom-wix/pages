@@ -130,6 +130,10 @@ def main():
         r["dsr_is_family"] = dsr(clip(dn, "is"), famg["is_sharpe"].tolist())
         r["dsr_full_family"] = dsr(dn, famg["full_sharpe"].tolist())
         r["dsr_full_global"] = dsr(dn, all_full)
+        # null-SE flavour: hurdle = expected max of N zero-skill trials (N = family trials / all trials)
+        r["dsrN_is_family"] = ix.dsr_null(clip(dn, "is"), len(famg))
+        r["dsrN_full_family"] = ix.dsr_null(dn, len(famg))
+        r["dsrN_full_global"] = ix.dsr_null(dn, len(all_full))
         r["share_family_trials_oos_net_pos"] = float((famg["oos_sharpe"] > 0).mean())
         rows.append(r)
     R = pd.DataFrame(rows).sort_values("oos_sharpe", ascending=False)
@@ -147,8 +151,8 @@ def main():
     pd.set_option("display.max_columns", 50)
     show = ["sub", "sym", "best_config", "n_trials_sub", "is_sharpe", "oos_sharpe", "full_sharpe", "full_gross_sharpe",
             "oos_gross_sharpe", "full_trades_py", "full_avg_bps", "full_hit", "full_max_dd", "full_t_stat",
-            "full_sharpe_2x", "oos_ex2020_sharpe", "sr0_is_family", "dsr_is_family", "dsr_full_family", "dsr_full_global",
-            "oos_ci_lo", "oos_ci_hi"]
+            "full_sharpe_2x", "oos_ex2020_sharpe", "sr0_is_family", "dsr_is_family", "dsr_full_global", "dsrN_is_family",
+            "dsrN_full_family", "dsrN_full_global", "oos_ci_lo", "oos_ci_hi"]
     print(R[show].round(3).to_string(index=False))
 
     # per-year tables for the promising / marginal candidates

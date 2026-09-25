@@ -193,7 +193,10 @@
       const svg = el("svg", { width: W, height: H, viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": cfg.aria || "bar chart" });
       host.prepend(svg);
       const vals = items.map((d) => d.value);
-      const lo = Math.min(cfg.min ?? 0, ...vals), hi = Math.max(cfg.max ?? 0, ...vals);
+      let lo = Math.min(cfg.min ?? 0, ...vals), hi = Math.max(cfg.max ?? 0, ...vals);
+      const span0 = hi - lo || 1;
+      if (lo < 0) lo -= span0 * 0.16;   // room for value labels at the bar ends
+      if (hi > 0) hi += span0 * 0.10;
       const m = { l: labW + 8, r: 52, t: 8, b: 26 };
       const X = (v) => m.l + ((v - lo) / (hi - lo)) * (W - m.l - m.r);
       linTicks(lo, hi, narrow ? 3 : 6).forEach((v) => {

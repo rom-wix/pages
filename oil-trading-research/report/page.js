@@ -73,6 +73,14 @@
              { name: "Original slow blend", color: "--gray", values: monO.map((d) => d[1] * 100) }],
     fmt: (v) => (v >= 0 ? "+" : "−") + Math.abs(v).toFixed(1) + "%", height: 260, maxBar: 14, aria: "Monthly P&L last 12 months",
   });
+  if (DATA.agent && DATA.agent.ly_positions) {
+    legend($("leg-lypos"), [["WTI", "--s1"], ["Brent", "--s2"]]);
+    Viz.line($("fig-lypos"), {
+      series: [{ name: "WTI", color: "--s1", data: DATA.agent.ly_positions.XTIUSD }, { name: "Brent", color: "--s2", data: DATA.agent.ly_positions.XBRUSD }],
+      height: 240, zeroLine: true, yFmt: (v) => (v > 0 ? "+" : v < 0 ? "−" : "") + Math.abs(v).toFixed(1) + "×",
+      valFmt: (v) => (v >= 0 ? "+" : "−") + Math.abs(v).toFixed(2) + "×", aria: "Daily positions of the recommended bot",
+    });
+  }
   const ch = document.querySelector("#tbl-character tbody");
   LY.character.filter((r) => r.symbol !== "XNGUSD").forEach((r) => {
     const tr = document.createElement("tr");
@@ -102,7 +110,7 @@
                ["Original slow trend", "trend", "--s3"], ["Buy & hold", "long_only", "--gray"]];
   legend($("leg-equity"), eqS.map(([n, , c]) => [n, c]));
   Viz.line($("fig-equity"), {
-    series: eqS.map(([n, k, c]) => ({ name: n.replace("Recommended (trend + crack)", "Recommended").replace("Recommended, no crack", "No crack").replace("Original slow trend", "Original"), color: c, data: DATA.equity[k] })),
+    series: eqS.map(([n, k, c]) => ({ name: n.replace("Recommended (trend + crack)", "Recommended").replace("Recommended, no crack", "No crack").replace("Original slow trend", "Original"), color: c, data: DATA.equity_volmatched[k] })),
     log: true, height: 360, yFmt: (v) => "$" + v, valFmt: (v) => "$" + v.toFixed(2), aria: "Growth of one dollar",
   });
   const Yr = RV.yearly;

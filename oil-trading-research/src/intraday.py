@@ -320,6 +320,25 @@ def dsr_for(daily: pd.Series, trial_sharpes) -> float:
                               float(stats.kurtosis(x, fisher=False)))
 
 
+def dsr_null(daily: pd.Series, n_trials: int) -> float:
+    """Deflated Sharpe with the hurdle set by N *unskilled* trials: the variance of the trial Sharpes is the
+    sampling variance of a zero-Sharpe estimator, 1/(T-1) per day, instead of the observed cross-trial
+    dispersion (which, with many cost-heavy variants, mostly reflects known cost differences, not noise).
+    Same formula as backtest.deflated_sharpe otherwise."""
+    x = daily.dropna()
+    T = len(x)
+    if T < 3 or x.std() == 0:
+        return float("nan")
+    sr = x.mean() / x.std()
+    N = max(int(n_trials), 1)
+    g = 0.5772156649
+    emax = ((1 - g) * stats.norm.ppf(1 - 1.0 / N) + g * stats.norm.ppf(1 - 1.0 / (N * math.e))) if N > 1 else 0.0
+    sr0 = emax / math.sqrt(T - 1)
+    sk, ku = float(stats.skew(x)), float(stats.kurtosis(x, fisher=False))
+    den = math.sqrt(max(1 - sk * sr + (ku - 1) / 4.0 * sr ** 2, 1e-12))
+    return float(stats.norm.cdf((sr - sr0) * math.sqrt(T - 1) / den))
+
+
 def nw_ols(y, X, lags: int = 5):
     """OLS with Newey-West (HAC) standard errors. X without constant; returns statsmodels result."""
     import statsmodels.api as sm

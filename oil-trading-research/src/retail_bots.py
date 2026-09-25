@@ -14,13 +14,17 @@ Timing / fills (daily bars)
     market actions (first entry, stop-out liquidation) fill at the close.  Stop-losses (martingale)
     fill at the stop level (optimistic for the bot) or at the open when the bar gaps through it
     (OHLC mode only).
-  * use_hl=True: the stop-out is also checked against the intraday low/high (adverse extreme) and
-    liquidates at the price where the margin level hits 50% (or at the open if it gapped through).
+  * the broker monitors the margin level continuously: a stop-out fills at the price where the margin
+    level first reaches 50% (close-only mode assumes a continuous path from the previous close).
+  * use_hl=True: the stop-out (and the martingale's stop-loss / take-profit) are also checked against the
+    intraday low/high, adverse extreme first; a bar that opens beyond the level fills at the open.
+  * a non-positive price (the May-2020 WTI contract) closes every position at that price.
 
 Bots
-  grid        symmetric ("hedged") grid: a long lot every `step` lower, a short lot every `step` higher,
-              each lot takes profit one step away, no stop, at most `nmax` lots per side;
-              lot size fixed in units at the start (like a fixed MT4 lot)
+  grid        sides=1: long-only grid - buy a lot every `step` below the lowest open lot, each lot takes
+              profit `step` above its entry ("symmetric" step/TP), no stop, at most `nmax` lots; when no lot
+              is open it buys one at market.  sides=2: two-sided ("hedged") grid that also sells a lot every
+              `step` higher with a take-profit one step lower.  Lot size fixed in units at the start.
   martingale  one position at a time, direction = sign of 20-day momentum, TP = SL = `step`;
               size doubles after each loss, resets after a win or after `kmax` consecutive losses;
               size capped so that margin <= 90% of equity
@@ -38,6 +42,41 @@ STOP_OUT = 0.50    # margin level
 
 
 @njit(cache=True)
+def _liquidation(A, B, M, P_prev, P, lo, hi, op, use_hl):
+    """Return the stop-out fill price for today, or -1 if no stop-out.
+    equity(P) = A + B*P, used margin = M*P.  The broker monitors continuously: the account is closed at
+    the price where the margin level first reaches 50% (ps).  If the bar opens beyond ps (gap), the fill
+    is the open.  Close-only mode assumes a continuous path from the previous close (no open available).
+    A non-positive price (negative WTI) closes everything at that price."""
+    if M <= 0:
+        return -1.0
+    pa = P
+    if use_hl:
+        pa = lo if B > 0 else hi
+    if pa <= 0:
+        return pa if pa < 0 else -1e-12
+    if (A + B * pa) >= STOP_OUT * M * pa:
+        return -1.0
+    ps = _stop_price(A, B, M, STOP_OUT)
+    if ps <= 0:
+        ps = pa
+    if use_hl and op > 0:
+        # gap through ps at the open
+        if (B > 0 and op < ps) or (B <= 0 and op > ps):
+            return op
+    # clip ps into the range the price traded through
+    if B > 0:
+        top = op if (use_hl and op > 0) else P_prev
+        ps = min(ps, top)
+        ps = max(ps, pa)
+    else:
+        bot = op if (use_hl and op > 0) else P_prev
+        ps = max(ps, bot)
+        ps = min(ps, pa)
+    return ps
+
+
+@njit(cache=True)
 def _stop_price(A, B, M, so):
     """Price P where (A + B*P) / (M*P) = so, i.e. equity = so * margin.  Returns -1 if none."""
     den = so * M - B
@@ -48,7 +87,7 @@ def _stop_price(A, B, M, so):
 
 
 @njit(cache=True)
-def sim_grid(C, L, H, O, days, cps, fin, step, lot, nmax, i0, i1, use_hl):
+def sim_grid(C, L, H, O, days, cps, fin, step, lot, nmax, i0, i1, use_hl, sides):
     n = i1 - i0 + 1
     eq = np.full(n, np.nan)
     expo = np.zeros(n)
@@ -66,36 +105,22 @@ def sim_grid(C, L, H, O, days, cps, fin, step, lot, nmax, i0, i1, use_hl):
         P = C[t]
         if t > i0 and (nl + ns) > 0:
             cash -= u * (nl + ns) * C[t - 1] * fin * days[t] / 365.0
-        # ---- stop-out checks
+        # ---- stop-out check (continuous monitoring by the broker)
         A = cash - u * le[:nl].sum() + u * se[:ns].sum()   # equity(P) = A + B*P
         B = u * (nl - ns)
         M = MARGIN * u * (nl + ns)
-        liq = -1.0
         if (nl + ns) > 0:
-            if use_hl:
-                pa = L[t] if B > 0 else H[t]
-                if (A + B * pa) < STOP_OUT * M * pa or pa <= 0:
-                    ps = _stop_price(A, B, M, STOP_OUT)
-                    if ps <= 0:
-                        ps = pa
-                    po = O[t]
-                    if B > 0:
-                        liq = min(ps, po) if po > 0 else ps
-                    else:
-                        liq = max(ps, po)
-            if liq < 0 and ((A + B * P) < STOP_OUT * M * P or P <= 0):
-                liq = P
-        if liq > 0 or ((nl + ns) > 0 and P <= 0):
-            if liq <= 0:
-                liq = max(P, 1e-9)
-            e = A + B * liq - cps * u * (nl + ns) * abs(liq)
-            e = max(e, 0.0)
-            eq[t - i0:] = e
-            stop_t = t
-            stop_eq = e
-            nl = 0
-            ns = 0
-            break
+            pprev = C[t - 1] if t > i0 else P
+            liq = _liquidation(A, B, M, pprev, P, L[t], H[t], O[t], use_hl)
+            if liq != -1.0:
+                e = A + B * liq - cps * u * (nl + ns) * abs(liq)
+                e = max(e, 0.0)
+                eq[t - i0:] = e
+                stop_t = t
+                stop_eq = e
+                nl = 0
+                ns = 0
+                break
         # ---- take profits
         k = 0
         while k < nl:
@@ -124,7 +149,7 @@ def sim_grid(C, L, H, O, days, cps, fin, step, lot, nmax, i0, i1, use_hl):
             else:
                 k += 1
         # ---- new lots (free margin must cover the new lot's margin)
-        for side in range(2):
+        for side in range(sides):
             while True:
                 if side == 0:
                     if nl >= nmax:
@@ -148,7 +173,7 @@ def sim_grid(C, L, H, O, days, cps, fin, step, lot, nmax, i0, i1, use_hl):
                             break
                 equity = cash + u * (P * nl - le[:nl].sum()) + u * (se[:ns].sum() - P * ns)
                 used = MARGIN * u * (nl + ns) * P
-                if equity - used < MARGIN * u * px:
+                if equity - used < MARGIN * u * px or px <= 0:
                     break
                 cash -= cps * u * px
                 if side == 0:
@@ -188,44 +213,41 @@ def sim_martingale(C, L, H, O, days, cps, fin, step, base, kmax, i0, i1, use_hl,
             A = cash - d * units * entry
             B = d * units
             M = MARGIN * units
-            liq = -1.0
-            if use_hl:
-                pa = L[t] if d > 0 else H[t]
-                if (A + B * pa) < STOP_OUT * M * pa or pa <= 0:
-                    ps = _stop_price(A, B, M, STOP_OUT)
-                    if ps <= 0:
-                        ps = pa
-                    liq = min(ps, O[t]) if d > 0 else max(ps, O[t])
-            if liq < 0 and ((A + B * P) < STOP_OUT * M * P or P <= 0):
-                liq = max(P, 1e-9)
-            if liq > 0:
-                e = max(A + B * liq - cps * units * liq, 0.0)
+            tp = entry * (1.0 + d * step)
+            sl = entry * (1.0 - d * step)
+            pa = (L[t] if d > 0 else H[t]) if use_hl else P    # adverse extreme
+            pf = (H[t] if d > 0 else L[t]) if use_hl else P    # favourable extreme
+            op = O[t] if use_hl else -1.0
+            pprev = C[t - 1] if t > i0 else P
+            ps = _stop_price(A, B, M, STOP_OUT)
+            reach_sl = (pa <= sl) if d > 0 else (pa >= sl)
+            reach_so = ps > 0 and ((pa <= ps) if d > 0 else (pa >= ps))
+            if pa <= 0:
+                reach_so = True
+                ps = pa
+            so_first = reach_so and ((not reach_sl) or (d > 0 and ps >= sl) or (d < 0 and ps <= sl) or pa <= 0)
+            if so_first:
+                liq = _liquidation(A, B, M, pprev, P, L[t], H[t], O[t], use_hl)
+                if liq == -1.0:
+                    liq = ps
+                e = max(A + B * liq - cps * units * abs(liq), 0.0)
                 eq[t - i0:] = e
                 stop_t = t
                 stop_eq = e
                 in_pos = False
                 break
-            # TP / SL
-            tp = entry * (1.0 + d * step)
-            sl = entry * (1.0 - d * step)
-            hit_tp = (P >= tp) if d > 0 else (P <= tp)
-            hit_sl = (P <= sl) if d > 0 else (P >= sl)
-            if use_hl:
-                # adverse extreme first (conservative): an intraday touch of the stop counts
-                if d > 0 and L[t] <= sl:
-                    hit_sl = True
-                    hit_tp = False
-                if d < 0 and H[t] >= sl:
-                    hit_sl = True
-                    hit_tp = False
+            hit_sl = reach_sl
+            hit_tp = False if hit_sl else ((pf >= tp) if d > 0 else (pf <= tp))
             if hit_tp or hit_sl:
                 if hit_sl:
                     px = sl
-                    if use_hl:
-                        px = min(sl, O[t]) if d > 0 else max(sl, O[t])
+                    if use_hl and op > 0:
+                        px = min(sl, op) if d > 0 else max(sl, op)   # gap through the stop
                 else:
                     px = tp
-                pnl = d * units * (px - entry) - cps * units * px
+                    if use_hl and op > 0:
+                        px = max(tp, op) if d > 0 else min(tp, op)
+                pnl = d * units * (px - entry) - cps * units * abs(px)
                 cash += pnl
                 ntr += 1
                 in_pos = False
@@ -239,7 +261,7 @@ def sim_martingale(C, L, H, O, days, cps, fin, step, base, kmax, i0, i1, use_hl,
                     if k > kmax:
                         nseq += 1
                         k = 0
-        if not in_pos:
+        if not in_pos and P > 0:
             j = t - mom_lb if t - mom_lb >= 0 else 0
             d = 1.0 if C[t] >= C[j] else -1.0
             equity = cash
@@ -282,18 +304,10 @@ def sim_dca(C, L, H, O, days, cps, fin, step, tp, vmult, mmax, gross, i0, i1, us
             A = cash - cost
             B = units
             M = MARGIN * units
-            liq = -1.0
-            if use_hl:
-                pa = L[t]
-                if (A + B * pa) < STOP_OUT * M * pa or pa <= 0:
-                    ps = _stop_price(A, B, M, STOP_OUT)
-                    if ps <= 0:
-                        ps = pa
-                    liq = min(ps, O[t])
-            if liq < 0 and ((A + B * P) < STOP_OUT * M * P or P <= 0):
-                liq = max(P, 1e-9)
-            if liq > 0:
-                e = max(A + B * liq - cps * units * liq, 0.0)
+            pprev = C[t - 1] if t > i0 else P
+            liq = _liquidation(A, B, M, pprev, P, L[t], H[t], O[t], use_hl)
+            if liq != -1.0:
+                e = max(A + B * liq - cps * units * abs(liq), 0.0)
                 eq[t - i0:] = e
                 stop_t = t
                 stop_eq = e
@@ -324,7 +338,7 @@ def sim_dca(C, L, H, O, days, cps, fin, step, tp, vmult, mmax, gross, i0, i1, us
                 cash -= cps * notional
                 last = px
                 norders += 1
-        if norders == 0:
+        if norders == 0 and P > 0:
             equity = cash
             notional = base
             if equity > MARGIN * notional:

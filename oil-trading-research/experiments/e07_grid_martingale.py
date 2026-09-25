@@ -45,8 +45,10 @@ SERIES = {
 MAIN = ["WTI (Dec, CRUDE_W)", "Brent (BRENT_W)", "NatGas (GAS_US)"]
 COLOR = {"WTI (Dec, CRUDE_W)": ps.SERIES[0], "Brent (BRENT_W)": ps.SERIES[1], "NatGas (GAS_US)": ps.SERIES[2],
          "WTI front (CRUDE_ICE)": ps.SERIES[0], "NatGas front (GAS-LAST)": ps.SERIES[2]}
-BOT_COLOR = {"grid": ps.SERIES[0], "martingale": ps.SERIES[1], "dca": ps.SERIES[2]}
-BOT_LABEL = {"grid": "Symmetric grid", "martingale": "Martingale", "dca": "Long-only DCA (averaging down)"}
+BOT_COLOR = {"grid": ps.SERIES[0], "martingale": ps.SERIES[1], "dca": ps.SERIES[2], "grid_hedged": ps.SERIES[3]}
+BOT_LABEL = {"grid": "Grid (buy every X% down, TP +X% per lot)", "martingale": "Martingale (double after a loss)",
+             "dca": "DCA averaging down (TP on average price)", "grid_hedged": "Two-sided hedged grid"}
+BOTS3 = ["grid", "martingale", "dca"]
 HORIZON_YEARS = 2
 
 
@@ -56,7 +58,8 @@ def step_for(series_label, crude_step, ng_step):
 
 # headline configurations (typical retail settings); step: crude 3%, gas 5% (~1.5 daily sigma)
 HEADLINE = {
-    "grid": dict(step=(0.03, 0.05), lot=0.5, nmax=8),                       # 8 lots/side x 0.5 = 4x per side
+    "grid": dict(step=(0.03, 0.05), lot=0.5, nmax=8),                       # 8 lots x 0.5 = 4x when full
+    "grid_hedged": dict(step=(0.03, 0.05), lot=0.5, nmax=8),                # same, both directions
     "martingale": dict(step=(0.03, 0.05), base=0.5, kmax=6),                # 0.5x doubling up to 32x (capped)
     "dca": dict(step=(0.03, 0.05), tp=0.02, vmult=1.5, mmax=6, gross=5.0),  # 7-order ladder = 5x at full
 }
@@ -95,8 +98,9 @@ def load_series(label):
 def run_bot(bot, D, cfg, i0, i1, use_hl=False):
     step = step_for(D["label"], *cfg["step"]) if isinstance(cfg["step"], tuple) else cfg["step"]
     a = (D["C"], D["L"], D["H"], D["O"], D["days"], D["cps"], FIN_MARKUP)
-    if bot == "grid":
-        eq, ex, st, se, ntr, nwin = rb.sim_grid(*a, step, cfg["lot"], cfg["nmax"], i0, i1, use_hl)
+    if bot in ("grid", "grid_hedged"):
+        eq, ex, st, se, ntr, nwin = rb.sim_grid(*a, step, cfg["lot"], cfg["nmax"], i0, i1, use_hl,
+                                                1 if bot == "grid" else 2)
         extra = {}
     elif bot == "martingale":
         eq, ex, st, se, ntr, nwin, nseq, nsw = rb.sim_martingale(*a, step, cfg["base"], cfg["kmax"], i0, i1,
@@ -116,6 +120,10 @@ def start_indices(idx, first="1991-01-01", horizon_years=HORIZON_YEARS):
     firsts = s.groupby([s.index.year, s.index.month]).first()
     out = []
     for i0 in firsts.values:
+        if horizon_years == 0:
+            if i0 < len(idx) - 252:
+                out.append((int(i0), len(idx) - 1))
+            continue
         end_date = idx[i0] + pd.DateOffset(years=horizon_years)
         i1 = idx.searchsorted(end_date) - 1
         if idx[-1] >= end_date - pd.Timedelta(days=3):
@@ -192,7 +200,7 @@ def cfg_name(bot, cfg, label=None):
     st = cfg["step"]
     if isinstance(st, tuple):
         st = step_for(label or "", *st)
-    if bot == "grid":
+    if bot in ("grid", "grid_hedged"):
         return f"step{st:.1%}_lot{cfg['lot']}x_n{cfg['nmax']}"
     if bot == "martingale":
         return f"step{st:.1%}_base{cfg['base']}x_k{cfg['kmax']}"
@@ -236,9 +244,10 @@ def main():
             for lot in [0.25, 0.5, 1.0]:
                 for nmax in [5, 10]:
                     cfg = dict(step=st, lot=lot, nmax=nmax)
-                    s = summarise(rolling_study("grid", D, cfg, first=first), "grid", lab, cfg_name("grid", cfg))
-                    s.update({"step": st, "size": lot, "depth": nmax, "full_exposure_x": lot * nmax})
-                    sweep_rows.append(s)
+                    for gb in ["grid", "grid_hedged"]:
+                        s = summarise(rolling_study(gb, D, cfg, first=first), gb, lab, cfg_name(gb, cfg))
+                        s.update({"step": st, "size": lot, "depth": nmax, "full_exposure_x": lot * nmax})
+                        sweep_rows.append(s)
             for base in [0.25, 0.5, 1.0]:
                 for kmax in [4, 8]:
                     cfg = dict(step=st, base=base, kmax=kmax)
@@ -337,21 +346,52 @@ def main():
     print(ep[["episode", "bot", "price_change", "price_min", "peak_equity", "final_equity", "stopped_out",
               "stop_date", "closed_trades", "win_rate"]].round(3).to_string(index=False))
 
-    # ------------------------------------------------------------------ 5. typical pattern: long single runs
-    long_rows, long_series = [], {}
-    for bot, lab, a in [("dca", "WTI front (CRUDE_ICE)", "2006-03-01"), ("grid", "WTI (Dec, CRUDE_W)", "2003-01-02"),
-                        ("martingale", "NatGas (GAS_US)", "2003-01-02")]:
+    # ------------------------------------------------------------------ 5. typical pattern: open-ended runs
+    # start every month and run until stop-out or end of data; report survival and the "track record"
+    # a vendor could show before the blow-up; illustrate with the longest-surviving run per bot
+    long_rows, long_series, surv_rows = [], {}, []
+    for bot in BOTS3 + ["grid_hedged"]:
+        best = None
+        for lab in MAIN:
+            D = DATA[lab]
+            for i0, _ in start_indices(D["idx"], first_start(D), horizon_years=0):
+                eq, ex, st, se, ntr, nwin, extra = run_bot(bot, D, HEADLINE[bot], i0, len(D["C"]) - 1)
+                below = np.where(eq <= 0.5)[0]
+                ruin_rel = below[0] if len(below) else -1          # first close with >= 50% loss
+                if st >= 0 and (ruin_rel < 0 or st - i0 < ruin_rel):
+                    ruin_rel = st - i0
+                ruined = ruin_rel >= 0
+                life = ruin_rel if ruined else (len(D["C"]) - 1 - i0)
+                pre = eq[: ruin_rel if ruined and ruin_rel > 0 else (1 if ruined else len(eq))]
+                surv_rows.append({"bot": bot, "series": lab, "start": D["idx"][i0], "ruined": ruined,
+                                  "stopped_out": st >= 0, "years_to_ruin": life / 252 if ruined else np.nan,
+                                  "years_observed": life / 252, "peak_equity_before_ruin": np.nanmax(pre),
+                                  "closed_trades": ntr, "win_rate": nwin / ntr if ntr else np.nan})
+                if ruined and (best is None or life > best[0]):
+                    best = (life, lab, i0, i0 + ruin_rel, ntr, nwin)
+        life, lab, i0, st, ntr, nwin = best
         D = DATA[lab]
-        i0 = int(D["idx"].searchsorted(pd.Timestamp(a)))
-        eq, ex, st, se, ntr, nwin, extra = run_bot(bot, D, HEADLINE[bot], i0, len(D["C"]) - 1)
+        eq, *_ = run_bot(bot, D, HEADLINE[bot], i0, len(D["C"]) - 1)
         e = pd.Series(eq, index=D["idx"][i0:])
+        e = e[e.index <= D["idx"][min(st + 60, len(D["C"]) - 1)]]
         long_series[bot] = (lab, e, st)
-        long_rows.append({"bot": bot, "series": lab, "start": a, "stop_date": str(D["idx"][st].date()) if st >= 0
-                          else "", "peak_equity": e.max(), "closed_trades": ntr,
-                          "win_rate": nwin / ntr if ntr else np.nan, "final_equity": e.dropna().iloc[-1]})
+        long_rows.append({"bot": bot, "series": lab, "start": str(D["idx"][i0].date()),
+                          "ruin_date": str(D["idx"][st].date()), "years_survived": life / 252,
+                          "peak_equity": float(e.max()), "closed_trades": ntr,
+                          "win_rate": nwin / ntr if ntr else np.nan, "equity_after_stop": float(e.iloc[-1])})
     lr = pd.DataFrame(long_rows)
-    lr.to_csv(os.path.join(OUT, "e07_long_runs.csv"), index=False)
-    print("\n=== long single runs\n", lr.round(3).to_string(index=False))
+    lr.to_csv(os.path.join(OUT, "e07_longest_survivors.csv"), index=False)
+    surv = pd.DataFrame(surv_rows)
+    surv.to_csv(os.path.join(OUT, "e07_open_ended_survival.csv"), index=False)
+    ss = surv.groupby(["bot", "series"]).agg(n=("ruined", "size"), share_ruined=("ruined", "mean"),
+                                             share_stopped_out=("stopped_out", "mean"),
+                                             median_years_to_ruin=("years_to_ruin", "median"),
+                                             p90_years_to_ruin=("years_to_ruin", lambda x: x.quantile(0.9)),
+                                             median_peak_before_ruin=("peak_equity_before_ruin", "median"),
+                                             median_win_rate=("win_rate", "median"))
+    ss.to_csv(os.path.join(OUT, "e07_open_ended_survival_summary.csv"))
+    print("\n=== open-ended runs (start every month, run until stop-out or data end)\n", ss.round(3).to_string())
+    print("\n=== longest-surviving run per bot (illustration)\n", lr.round(3).to_string(index=False))
 
     charts(DATA, head, per_start, sweep, ep_series, long_series, ep)
 
@@ -439,20 +479,21 @@ def charts(DATA, head, per_start, sweep, ep_series, long_series, ep):
                      "1991-2022.", y=1.0)
     ps.save(fig, os.path.join(OUT, "e07_sweep_ruin_vs_return.png"))
 
-    # 4. typical pattern: long single runs with win rates
-    fig, axes = plt.subplots(len(long_series), 1, figsize=(11, 7.5))
+    # 4. typical pattern: longest-surviving open-ended run per bot
+    fig, axes = plt.subplots(len(long_series), 1, figsize=(11, 8.0))
     for ax, (bot, (lab, e, st)) in zip(axes, long_series.items()):
         e = e.dropna()
         ax.plot(e.index, e.values, color=BOT_COLOR[bot], lw=1.3)
         ax.axhline(1.0, color=ps.AXIS, lw=0.7)
-        if st >= 0:
-            sd = DATA[lab]["idx"][st]
-            ax.scatter([sd], [e.loc[sd]], s=40, color=ps.CRITICAL, zorder=4, edgecolor=ps.SURFACE, linewidth=1.5)
-            ax.annotate(f"stop-out {sd.date()}", (sd, e.loc[sd]), textcoords="offset points", xytext=(8, 8),
-                        fontsize=8, color=ps.INK2)
-        ax.set_title(f"{BOT_LABEL[bot]} on {lab}", fontsize=10)
+        sd = DATA[lab]["idx"][st]
+        ax.scatter([sd], [e.loc[sd]], s=40, color=ps.CRITICAL, zorder=4, edgecolor=ps.SURFACE, linewidth=1.5)
+        ax.annotate(f"ruin {sd.date()}: equity {e.loc[sd]:.2f}", (sd, e.loc[sd]), textcoords="offset points",
+                    xytext=(-10, 10), ha="right", fontsize=8, color=ps.INK2)
+        ax.set_title(f"{BOT_LABEL[bot]} on {lab}: longest survivor of all monthly starts", fontsize=10)
         ax.set_ylabel("equity")
     ps.title(fig, "High win rate, smooth equity, then ruin", y=1.03)
+    ps.subtitle(fig, "Headline settings. Each bot's best-case history: the start month that survived longest "
+                     "before ruin (stop-out or half the account lost, red dot).", y=1.0)
     fig.tight_layout()
     ps.save(fig, os.path.join(OUT, "e07_typical_pattern.png"))
 
