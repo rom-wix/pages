@@ -1,9 +1,0 @@
-  <div class="head" style="margin-top:18px">
-    <div class="eyebrow">Direction 2 · optional satellite</div>
-    <h3>WTI settlement momentum, paper-traded first</h3>
-  </div>
-  <div class="spec">
-    <div>Rule</div><div>At 14:00 NY compute s = ln(price just before 09:30 ÷ prior session's 14:29–14:30 price). If |s| is above its trailing 250-session 80th percentile, buy (s &gt; 0) or sell (s &lt; 0) XTIUSD at market, and exit at market at 14:29–14:30. Roughly 55 trades a year, flat by the close, so no swap.</div>
-    <div>Evidence</div><div>2005–2020 minute data: Sharpe 0.88 before 2013 and 0.53 after, 9.4 bp net per trade. It has earned money mainly in high-volatility years, which describes the last 12 months, but it hasn't been tested on them yet.</div>
-    <div>Go / no-go</div><div>Run it only if your measured spread plus slippage at 14:00 and 14:30 NY is 3 bp a side or less (breakeven is 7.7 bp). Trade fixed notional; volatility targeting made it worse. Stop it if realised slippage drifts above the model, not on P&amp;L alone.</div>
-  </div>
