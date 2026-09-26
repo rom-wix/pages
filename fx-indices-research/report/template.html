@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FX &amp; Indices Edge Hunt</title>
+<meta name="description" content="Backtests of 19 short-term strategy families on 8 FX pairs and 8 stock indices, Feb–Sep 2026, with 1-minute fills and retail costs. None passed.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+<style>
+:root {
+  color-scheme: light;
+  --page: #f6f6f3; --surface: #fcfcfb; --surface-2: #f0efec;
+  --ink: #0b0b0b; --ink-2: #52514e; --muted: #6f6e69;
+  --grid: #e1e0d9; --axis: #c3c2b7; --rule: rgba(11,11,11,0.10);
+  --s1: #2a78d6; --s2: #eb6834; --link: #1c5cab;
+  --pos: #006300; --neg: #b42318; --hi: #1c5cab;
+  --quad: rgba(42,120,214,0.07);
+  --callout: #fbf3dc; --callout-edge: #d9a300; --callout-ink: #3d3000;
+  --bad-bg: #fbe4e2; --bad-ink: #8c1d18;
+  --font: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232321;
+    --ink: #ffffff; --ink-2: #c3c2b7; --muted: #9a998f;
+    --grid: #2c2c2a; --axis: #45453f; --rule: rgba(255,255,255,0.10);
+    --s1: #3987e5; --s2: #d95926; --link: #86b6ef;
+    --pos: #3fbf3f; --neg: #f07a78; --hi: #86b6ef;
+    --quad: rgba(57,135,229,0.10);
+    --callout: #2b2614; --callout-edge: #c98500; --callout-ink: #f3e3b5;
+    --bad-bg: #3a1d1b; --bad-ink: #f5b3ae;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232321;
+  --ink: #ffffff; --ink-2: #c3c2b7; --muted: #9a998f;
+  --grid: #2c2c2a; --axis: #45453f; --rule: rgba(255,255,255,0.10);
+  --s1: #3987e5; --s2: #d95926; --link: #86b6ef;
+  --pos: #3fbf3f; --neg: #f07a78; --hi: #86b6ef;
+  --quad: rgba(57,135,229,0.10);
+  --callout: #2b2614; --callout-edge: #c98500; --callout-ink: #f3e3b5;
+  --bad-bg: #3a1d1b; --bad-ink: #f5b3ae;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--page); color: var(--ink); font: 16px/1.55 var(--font); }
+main { max-width: 1080px; margin: 0 auto; padding: 32px 16px 80px; }
+h1 { font-size: clamp(28px, 5vw, 40px); line-height: 1.12; margin: 0 0 8px; letter-spacing: -0.01em; }
+h2 { font-size: 22px; margin: 48px 0 8px; letter-spacing: -0.005em; }
+h3 { font-size: 17px; margin: 24px 0 6px; }
+p, li { color: var(--ink-2); max-width: 74ch; }
+p b, li b { color: var(--ink); }
+a { color: var(--link); }
+code { font: 13px var(--mono); background: var(--surface-2); padding: 1px 5px; border-radius: 4px; color: var(--ink); }
+.lede { font-size: 18px; color: var(--ink-2); margin: 0 0 24px; }
+.meta { font: 13px var(--mono); color: var(--muted); margin-bottom: 20px; }
+.card { background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 20px; margin: 16px 0; }
+.verdict { border-left: 4px solid var(--neg); }
+.verdict h2 { margin-top: 0; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin: 16px 0 4px; }
+.tile { background: var(--surface-2); border-radius: 10px; padding: 12px 14px; }
+.tile .v { font-size: 26px; font-weight: 600; color: var(--ink); line-height: 1.2; }
+.tile .l { font-size: 13px; color: var(--ink-2); }
+.callout { background: var(--callout); border-left: 4px solid var(--callout-edge); color: var(--callout-ink); border-radius: 8px; padding: 12px 16px; margin: 16px 0; }
+.callout p, .callout li { color: var(--callout-ink); }
+.scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 12px 0; border: 1px solid var(--rule); border-radius: 10px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { padding: 9px 8px; border-bottom: 1px solid var(--rule); vertical-align: top; text-align: left; }
+th { font-size: 12px; font-weight: 600; color: var(--ink-2); background: var(--surface-2); position: sticky; top: 0; }
+tr:last-child td { border-bottom: 0; }
+td.num, th.num { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; font-size: 13px; }
+td.name { min-width: 230px; max-width: 360px; }
+td.name b { display: block; color: var(--ink); }
+.kind { display: block; font-size: 12px; color: var(--muted); }
+.rule { display: block; font-size: 12.5px; color: var(--ink-2); margin-top: 4px; line-height: 1.45; }
+.sub { display: block; font-size: 11px; color: var(--muted); }
+.pos { color: var(--pos); } .neg { color: var(--neg); } .hi { color: var(--hi); font-weight: 600; }
+.tag { display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 999px; }
+.tag.bad { background: var(--bad-bg); color: var(--bad-ink); }
+.tag.bad::before { content: "✕ "; }
+.legend { display: flex; gap: 18px; flex-wrap: wrap; font-size: 13px; color: var(--ink-2); margin: 4px 0 10px; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.chart-title { font-weight: 600; color: var(--ink); margin: 0; }
+.chart-sub { font-size: 13px; color: var(--ink-2); margin: 2px 0 8px; }
+/* dumbbell */
+.db-row { display: grid; grid-template-columns: 210px 1fr; align-items: center; min-height: 30px; }
+.db-label { font-size: 13px; color: var(--ink-2); padding-right: 10px; }
+.db-track svg, .db-axis svg { display: block; width: 100%; height: 30px; overflow: visible; }
+.db-axis { display: grid; grid-template-columns: 210px 1fr; }
+@media (max-width: 640px) {
+  .db-row, .db-axis { grid-template-columns: 1fr; }
+  .db-label { padding: 6px 0 0; }
+  .db-axis > div:first-child { display: none; }
+}
+#scatter svg { display: block; width: 100%; overflow: visible; }
+.tip { position: fixed; pointer-events: none; z-index: 10; background: var(--surface); color: var(--ink); border: 1px solid var(--rule);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12); border-radius: 8px; padding: 8px 10px; font-size: 12.5px; max-width: 280px; display: none; }
+.tip .tv { font: 600 14px var(--mono); }
+.tip .tl { color: var(--ink-2); }
+.tip .key { display: inline-block; width: 12px; height: 2px; vertical-align: middle; margin-right: 6px; }
+details { margin: 8px 0; }
+summary { cursor: pointer; color: var(--link); font-size: 14px; }
+.watch { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.watch .card { margin: 0; }
+.watch h3 { margin-top: 0; }
+.watch .nums { font: 13px var(--mono); color: var(--ink); margin: 8px 0; }
+ol li, ul li { margin: 4px 0; }
+footer { margin-top: 56px; font-size: 13px; color: var(--muted); }
+</style>
+<body>
+<main>
+<div class="meta">Backtest report · __START__ – __END__ · 1-minute fills · retail costs</div>
+<h1>FX &amp; Indices Edge Hunt</h1>
+<p class="lede">I searched for short-term strategies (15m–4H charts, 1–10 trades a week, holding minutes to days) on 8 FX pairs and 8 stock indices,
+and backtested them on the most recent data I could reach. <b>No strategy passed.</b> The details below cover what was tested, why it failed, and what would change the answer.</p>
+
+<section class="card verdict">
+<h2>Verdict: nothing is ready to trade</h2>
+<p>Every standard short-term idea (breakouts, opening ranges, pullbacks, range fades, gap fades, news shocks, session and fix flows)
+either lost money after costs or made money in one half of the sample and lost it in the other. The handful of instrument-level "winners"
+is <b>smaller</b> than what luck alone produces in a search this size.</p>
+<div class="tiles">
+  <div class="tile"><div class="v">19</div><div class="l">strategy families (__CONFIGS__ parameter sets)</div></div>
+  <div class="tile"><div class="v">__TRADES__</div><div class="l">simulated trades, 1-minute stop/target fills</div></div>
+  <div class="tile"><div class="v">__R1_BOTH__ of __R1_CFGS__</div><div class="l">round-1 parameter sets profitable in both Feb–May and Jun–Sep</div></div>
+  <div class="tile"><div class="v">__SC_HITS__ vs __SC_CHANCE__</div><div class="l">instrument-level results with t ≥ 2, found vs expected by pure chance (of __SC_TESTS__)</div></div>
+</div>
+</section>
+
+<div class="callout">
+<p><b>Only 8 of the 12 months.</b> The session's network allows GitHub only; Yahoo, Dukascopy, Stooq, OANDA and similar sources are blocked.
+The only recent intraday data on GitHub (getdata-finance samples, rebuilt from their git history) starts on <b>1 Feb 2026</b>, so the test window is
+__START__ – __END__ (__WEEKS__ weeks), not Sep 2025 – Sep 2026. The pipeline takes a broker or Dukascopy export for the missing months without code changes (see <a href="#next">next steps</a>).</p>
+</div>
+
+<h2>What was tested</h2>
+<p>Instruments: EURUSD, GBPUSD, USDJPY, AUDUSD, USDCAD, USDCHF, EURJPY, EURGBP · US500, NAS100, US30, US2000, GER40, EUSTX50, JPN225, AUS200
+(UK100, NZDUSD, GBPJPY and gold were not available). Signals come from 15m, 1h and 4h bars. Every entry, stop and target is resolved on the 1-minute path.</p>
+<ul>
+<li><b>Round 1</b>: 13 families from the literature and common practice. Each has a default fixed in advance plus a small grid around it (222 sets), run on the full sample.</li>
+<li><b>Round 2</b>: 4 hypotheses built from Feb–May market behaviour only, then tested once on Jun–Sep.</li>
+<li><b>Round 3</b>: multi-day 4h strategies (channel breakout with trailing stop, index dip-buying) against a random-entry benchmark.</li>
+<li><b>Exploratory checks</b> that stopped at the design stage: US-index afternoon momentum, the USD "fix clock" (Krohn–Mueller–Whelan 2024), and an end-of-day momentum surface.</li>
+</ul>
+<p>R = profit ÷ initial risk (entry to stop), after costs, so +0.10 means an average trade earns a tenth of what it risks.
+Costs: round-trip spread + commission (EURUSD 0.9 pip, USDJPY 1.0, GBPUSD 1.3 … US500 0.6 pt, NAS100 2.0, GER40 1.5),
+stop-fill slippage of 0.1 pip + 10% of the fill minute's range, and financing for positions held overnight.</p>
+
+<h2>Round 1: 13 families, full sample</h2>
+<div class="card">
+  <p class="chart-title">Average trade before and after costs, default settings</p>
+  <p class="chart-sub">R per trade. Costs move every family left; only the Tokyo-fix trade stays right of zero, and it is not significant (t 1.5).</p>
+  <div class="legend"><span><i class="dot" style="background:var(--s1)"></i>Before costs</span><span><i class="dot" style="background:var(--s2)"></i>After costs</span></div>
+  <div id="dumbbell"></div>
+</div>
+<div class="scroll">
+<table>
+<thead><tr><th>Strategy (default rules)</th><th class="num">Trades</th><th class="num">Per week<br>per instr.</th><th class="num">Win</th>
+<th class="num">R before<br>costs</th><th class="num">R after<br>costs</th><th class="num">t</th><th class="num">Feb–May</th><th class="num">Jun–Sep</th>
+<th class="num">Sets + in both<br>halves / total</th><th class="num">Best set<br>R after costs</th></tr></thead>
+<tbody>
+__FAM_ROWS__
+</tbody>
+</table>
+</div>
+<p>"Best set" is the best of each family's grid, a deliberately optimistic number. Even the best sets rarely reach t = 2, and the few that do are
+the kind of maximum you expect from searching 222 sets with no real edge.</p>
+
+<div class="card">
+  <p class="chart-title">Does a good first half predict a good second half?</p>
+  <p class="chart-sub">Each dot is one parameter set (rounds 1 and 3): average R after costs in Feb–May vs Jun–Sep. Losers stay losers (costs don't go away), but winners don't carry over:
+  of the 53 sets that made money in Feb–May, 11 also made money in Jun–Sep, and as a group they averaged −0.04R there.</p>
+  <div class="legend"><span><i class="dot" style="background:var(--s1)"></i>Parameter set</span><span><i class="dot" style="background:var(--s2)"></i>Watch-list sets (below)</span></div>
+  <div id="scatter"></div>
+  <details><summary>Table view: the sets that were positive in both halves</summary><div class="scroll"><table id="both-table"><thead><tr><th>Family</th><th>Settings</th><th class="num">Trades</th><th class="num">Feb–May</th><th class="num">Jun–Sep</th></tr></thead><tbody></tbody></table></div></details>
+</div>
+
+<h2>Round 2: designed on Feb–May, tested on Jun–Sep</h2>
+<p>Feb–May diagnostics showed two structural facts. JPY pairs trend (variance ratio above 1), and most other markets mean-revert intraday.
+Large 15-minute moves in JPY pairs tended to continue, large moves in US indices and FX majors tended to reverse, and large 1h moves in European and Asian indices continued.
+One setting per idea was fixed from Feb–May and run once on Jun–Sep.</p>
+<div class="scroll">
+<table>
+<thead><tr><th>Hypothesis</th><th class="num">Feb–May<br>trades</th><th class="num">Feb–May<br>R</th><th class="num">t</th><th class="num">Jun–Sep<br>trades</th><th class="num">Jun–Sep<br>R</th><th class="num">t</th><th>Result</th></tr></thead>
+<tbody>
+__R2_ROWS__
+</tbody>
+</table>
+</div>
+<p>Patterns flip between halves. The index-continuation idea earned +0.12R per trade (t 2.4) in Feb–May and lost −0.10R (t −2.5) in Jun–Sep.
+The reversal tendencies are real in close-to-close returns but too small to pay for stops, targets and spreads.</p>
+
+<h2>Round 3: multi-day 4h trades</h2>
+<ul>
+<li><b>4h channel breakout</b> (stop order at the 10/20/40-bar high or low, 1.5 ATR initial stop, 1.5–3 ATR trailing stop, 10-day limit), all 16 instruments:
+__DON_ALL__ R per trade across the 9 settings. JPY pairs alone reached up to __DON_JPY__ R, but only from short trades, with the three best trades supplying 70–200% of the net profit.</li>
+<li><b>Index dip-buy</b> (4h close at a 1-day low, ≥ 1–1.5 ATR below the 5-day high, prior daily close above the 20-day midpoint; TP 0.75–1.5 ATR, SL 1–1.5 ATR, 5-day limit):
+best setting __DIP_BEST__ R on __DIP_N__ trades (t &lt; 1). <b>Random long entries</b> with the same exits averaged __RND__ R, so the dip rule adds little beyond the 2026 bull market.</li>
+</ul>
+
+<h2>Why the usual strategies failed in 2026</h2>
+<ol>
+<li><b>Intraday mean reversion.</b> Most instruments reversed their multi-hour moves (variance ratio &lt; 1 below). That is poison for breakouts, ORB and
+momentum-style intraday systems. The exceptions are USDJPY and EURJPY (highlighted), which trended in both halves.</li>
+<li><b>Costs are large relative to intraday edges.</b> A round trip costs 0.02–0.17R depending on stop size. Most families' edge before costs was between −0.09R and +0.03R.</li>
+<li><b>Behaviour changes within months.</b> Round 2 showed effects that were significant one way in Feb–May and the other way in Jun–Sep.</li>
+</ol>
+<details><summary>Variance ratios by instrument (15m returns aggregated to 4h and 1 day; &gt; 1 trending, &lt; 1 mean-reverting)</summary>
+<div class="scroll"><table><thead><tr><th>Instrument</th><th class="num">4h Feb–May</th><th class="num">4h Jun–Sep</th><th class="num">1d Feb–May</th><th class="num">1d Jun–Sep</th></tr></thead><tbody>__VR_ROWS__</tbody></table></div></details>
+
+<h2>A data trap that looked like an edge</h2>
+<p>The first pass found a strong result: buy USDJPY and EURJPY at 07:00 Tokyo time and sell at the 09:55 fix (+0.16R per trade, t 4.1, positive in both halves).
+It was an artefact. The vendor's quotes are <b>bid prices</b>. Around the 17:00 New York rollover, spreads widen, so the bid sags for about an hour
+and snaps back at about 22:00 UTC, which is 07:00 Tokyo. Every pair showed the same jump in that minute, whether USD was the base or the quote currency.
+A real trader buys at the ask there and gets nothing. The engine now blocks entries, targets and time exits between 16:40 and 18:10 New York.
+Stop-losses still trigger in that window, as a real sell-stop would. All results above include this fix.</p>
+
+<h2>Watch list: not recommended, worth re-testing on 12+ months</h2>
+<div class="watch">
+<div class="card"><h3>Tokyo pre-fix, gotobi days</h3>
+<p>USDJPY and EURJPY, on the 5th, 10th, 15th, 20th, 25th and month-end (moved to the prior business day). Long at 08:00 JST, exit 09:55 JST, SL 0.3 ATR.</p>
+<p class="nums">80 trades · +0.13R · t 1.5 · + both halves · + both pairs · ~1.2 a week per pair</p>
+<p>Documented flow (importers buying USD for the fix). Too few trades to separate from noise.</p></div>
+<div class="card"><h3>End-of-day momentum after a big move</h3>
+<p>Indices: if the second-last half hour of the cash session moved ≥ 0.2 ATR, trade that direction for the last 30 min; SL 0.15–0.25 ATR.</p>
+<p class="nums">80 trades · +0.08 to +0.29R (by stop size) · t 1.4–2.1 · + both halves</p>
+<p>An isolated spike. Every broader version (day move, session move, 90-minute move) is negative (t −2 to −3).</p></div>
+<div class="card"><h3>JPY trend-following</h3>
+<p>USDJPY, EURJPY: 4h 20-bar channel breakout, 1.5 ATR stop, 2–3 ATR trailing stop.</p>
+<p class="nums">~50 trades · +0.25R · t 1.4–1.6 · Feb–May mixed across settings</p>
+<p>Fits the only trending markets, but the profit comes from a few sharp yen rallies (short trades).</p></div>
+<div class="card"><h3>Index dip-buy in an uptrend</h3>
+<p>4h close at a 1-day low, ≥ 1.5 ATR under the 5-day high, trend filter on. TP 0.75 ATR, SL 1 ATR, 5-day limit.</p>
+<p class="nums">91 trades · +0.08R · t 0.9</p>
+<p>Barely better than random long entries in a rising market.</p></div>
+</div>
+
+<h2 id="next">Next steps</h2>
+<ol>
+<li><b>Fill in Sep 2025 – Jan 2026.</b> Either add <code>datafeed.dukascopy.com</code> to the environment's allowed domains, or export 1-minute bars from MT4/MT5
+(UTC timestamps) to <code>fx-indices-research/data/raw/&lt;SYMBOL&gt;.csv</code>. Then rebuild and rerun:
+<code>python3 src/data.py &amp;&amp; python3 experiments/e01_run_all.py</code>. The split points and every rule stay fixed, so the extra months are a clean out-of-sample test.</li>
+<li><b>News with surprises, not just volatility.</b> The news test here detects releases by candle size. An economic calendar with actual vs consensus
+(NFP, CPI, central-bank decisions) would allow surprise-direction strategies. Each event type has only 5–8 releases in this window, so it needs the longer history.</li>
+<li><b>Bid/ask data.</b> The vendor supplies bids only, so short stop-losses (which trigger on the ask) are slightly optimistic. A broker export with spreads would close that gap.</li>
+</ol>
+
+<h2>Method details</h2>
+<ul>
+<li><b>Fills</b>: market orders at the next minute's open; stop orders at the level or a gapped open, plus slippage; if a stop and a target are both inside one minute, the stop wins;
+in the entry minute of a stop/limit order only the stop is checked. A random-entry control loses −0.01R before costs from these conservative rules alone.</li>
+<li><b>Data checks</b>: the 1-minute snapshots agree exactly where they overlap; NFP releases from Feb to Sep appear at the right minute on EURUSD, USDJPY and US500 at once;
+FX cross-rate levels drift up to ~1.6% between days before late August (vendor stitching) but hold to ~1 bp within a day, which is what intraday tests need.</li>
+<li><b>One position</b> per strategy and instrument at a time; OCO pairs keep the first leg filled.</li>
+<li>Code, trade lists and CSVs: <code>fx-indices-research/</code> in this repository. This is research, not investment advice.</li>
+</ul>
+<footer>Built from <code>fx-indices-research/results/report_data.json</code> by <code>report/build_report.py</code>.</footer>
+</main>
+<div class="tip" id="tip" role="tooltip"></div>
+<script>
+const FAM = __FAM_JSON__;
+const CFG = __CFG_JSON__;
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const tip = document.getElementById("tip");
+const fmt = v => (v >= 0 ? "+" : "−") + Math.abs(v).toFixed(3);
+function showTip(ev, rows) {
+  tip.replaceChildren();
+  rows.forEach(([cls, text, key]) => {
+    const d = document.createElement("div");
+    if (key) { const k = document.createElement("span"); k.className = "key"; k.style.background = key; d.appendChild(k); }
+    const s = document.createElement("span"); s.className = cls; s.textContent = text; d.appendChild(s);
+    tip.appendChild(d);
+  });
+  tip.style.display = "block";
+  const w = tip.offsetWidth, h = tip.offsetHeight;
+  let x = ev.clientX + 14, y = ev.clientY + 14;
+  if (x + w > innerWidth - 8) x = ev.clientX - w - 14;
+  if (y + h > innerHeight - 8) y = ev.clientY - h - 14;
+  tip.style.left = x + "px"; tip.style.top = y + "px";
+}
+const hideTip = () => { tip.style.display = "none"; };
+const NS = "http://www.w3.org/2000/svg";
+const el = (n, a) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); return e; };
+
+function dumbbell() {
+  const host = document.getElementById("dumbbell");
+  host.replaceChildren();
+  const rows = [...FAM].sort((a, b) => b.net - a.net);
+  const lo = -0.5, hi = 0.25;
+  rows.forEach(r => {
+    const row = document.createElement("div"); row.className = "db-row";
+    const lab = document.createElement("div"); lab.className = "db-label"; lab.textContent = r.name; row.appendChild(lab);
+    const tr = document.createElement("div"); tr.className = "db-track"; row.appendChild(tr);
+    host.appendChild(row);
+    const W = tr.clientWidth || 600, pad = 8;
+    const x = v => pad + (Math.max(lo, Math.min(hi, v)) - lo) / (hi - lo) * (W - 2 * pad);
+    const svg = el("svg", { viewBox: `0 0 ${W} 30`, preserveAspectRatio: "none" });
+    for (let t = -0.4; t <= 0.21; t += 0.1) svg.appendChild(el("line", { x1: x(t), x2: x(t), y1: 0, y2: 30, stroke: Math.abs(t) < 1e-9 ? css("--axis") : css("--grid"), "stroke-width": 1 }));
+    svg.appendChild(el("line", { x1: x(r.gross), x2: x(r.net), y1: 15, y2: 15, stroke: css("--muted"), "stroke-width": 2, "stroke-linecap": "round" }));
+    [["gross", "Before costs", css("--s1")], ["net", "After costs", css("--s2")]].forEach(([k, name, col]) => {
+      const c = el("circle", { cx: x(r[k]), cy: 15, r: 5, fill: col, stroke: css("--surface"), "stroke-width": 2 });
+      const hit = el("circle", { cx: x(r[k]), cy: 15, r: 12, fill: "transparent", tabindex: 0 });
+      const on = ev => showTip(ev.clientX ? ev : { clientX: hit.getBoundingClientRect().x, clientY: hit.getBoundingClientRect().y },
+        [["tv", fmt(r.gross) + " R", css("--s1")], ["tl", "before costs"], ["tv", fmt(r.net) + " R", css("--s2")], ["tl", "after costs · " + r.n.toLocaleString() + " trades"], ["tl", r.name]]);
+      hit.addEventListener("pointermove", on); hit.addEventListener("focus", on);
+      hit.addEventListener("pointerleave", hideTip); hit.addEventListener("blur", hideTip);
+      svg.appendChild(c); svg.appendChild(hit);
+    });
+    tr.appendChild(svg);
+  });
+  const ax = document.createElement("div"); ax.className = "db-axis";
+  ax.appendChild(document.createElement("div"));
+  const at = document.createElement("div"); ax.appendChild(at); host.appendChild(ax);
+  const W = at.clientWidth || 600, pad = 8;
+  const x = v => pad + (v - lo) / (hi - lo) * (W - 2 * pad);
+  const svg = el("svg", { viewBox: `0 0 ${W} 30` });
+  for (let t = -0.4; t <= 0.21; t += 0.1) {
+    const tx = el("text", { x: x(t), y: 16, "text-anchor": "middle", "font-size": 11, fill: css("--muted"), "font-family": "IBM Plex Mono, monospace" });
+    tx.textContent = (t > 1e-9 ? "+" : t < -1e-9 ? "−" : "") + Math.abs(t).toFixed(1); svg.appendChild(tx);
+  }
+  const cap = el("text", { x: W - pad, y: 29, "text-anchor": "end", "font-size": 11, fill: css("--muted") }); cap.textContent = "R per trade";
+  svg.appendChild(cap); at.appendChild(svg);
+}
+
+const WATCH = c => (c.fam === "Tokyo-fix flow (gotobi)" && c.cfg.includes('"entry": "08:00"') && c.cfg.includes('"gotobi"')) ||
+                   (c.fam === "Last-half-hour momentum" && c.cfg.includes('"penult"') && c.cfg.includes('"min_move_atr": 0.2'));
+function scatter() {
+  const host = document.getElementById("scatter");
+  host.replaceChildren();
+  const W = host.clientWidth || 700, H = Math.max(300, Math.min(460, W * 0.7));
+  const m = { l: 48, r: 12, t: 12, b: 40 };
+  const xlo = -0.9, xhi = 0.4, ylo = -0.6, yhi = 0.4;
+  const X = v => m.l + (Math.max(xlo, Math.min(xhi, v)) - xlo) / (xhi - xlo) * (W - m.l - m.r);
+  const Y = v => m.t + (yhi - Math.max(ylo, Math.min(yhi, v))) / (yhi - ylo) * (H - m.t - m.b);
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, height: H });
+  svg.appendChild(el("rect", { x: X(0), y: Y(yhi), width: X(xhi) - X(0), height: Y(0) - Y(yhi), fill: css("--quad") }));
+  const q = el("text", { x: X(xhi) - 6, y: Y(yhi) + 16, "text-anchor": "end", "font-size": 12, fill: css("--ink-2") }); q.textContent = "profitable in both halves"; svg.appendChild(q);
+  const mono = { "font-size": 11, fill: css("--muted"), "font-family": "IBM Plex Mono, monospace" };
+  for (let t = -0.8; t <= 0.41; t += 0.2) {
+    svg.appendChild(el("line", { x1: X(t), x2: X(t), y1: m.t, y2: H - m.b, stroke: Math.abs(t) < 1e-9 ? css("--axis") : css("--grid"), "stroke-width": 1 }));
+    const tx = el("text", { x: X(t), y: H - m.b + 16, "text-anchor": "middle", ...mono }); tx.textContent = (t > 1e-9 ? "+" : t < -1e-9 ? "−" : "") + Math.abs(t).toFixed(1); svg.appendChild(tx);
+  }
+  for (let t = -0.6; t <= 0.41; t += 0.2) {
+    svg.appendChild(el("line", { x1: m.l, x2: W - m.r, y1: Y(t), y2: Y(t), stroke: Math.abs(t) < 1e-9 ? css("--axis") : css("--grid"), "stroke-width": 1 }));
+    const tx = el("text", { x: m.l - 6, y: Y(t) + 4, "text-anchor": "end", ...mono }); tx.textContent = (t > 1e-9 ? "+" : t < -1e-9 ? "−" : "") + Math.abs(t).toFixed(1); svg.appendChild(tx);
+  }
+  const xl = el("text", { x: W - m.r, y: H - 4, "text-anchor": "end", "font-size": 12, fill: css("--ink-2") }); xl.textContent = "Feb–May: R per trade after costs →"; svg.appendChild(xl);
+  const yl = el("text", { x: m.l + 4, y: m.t + 12, "font-size": 12, fill: css("--ink-2") }); yl.textContent = "↑ Jun–Sep"; svg.appendChild(yl);
+  const pts = CFG.map(c => ({ ...c, px: X(c.h1), py: Y(c.h2), w: WATCH(c) }));
+  pts.sort((a, b) => a.w - b.w).forEach(p => svg.appendChild(el("circle", { cx: p.px, cy: p.py, r: 4, fill: p.w ? css("--s2") : css("--s1"), stroke: css("--surface"), "stroke-width": 2 })));
+  const lab = (text, p, dx, dy) => { const t = el("text", { x: p.px + dx, y: p.py + dy, "font-size": 12, fill: css("--ink"), "text-anchor": dx < 0 ? "end" : "start" }); t.textContent = text; svg.appendChild(t); };
+  const tk = pts.find(p => p.w && p.fam.startsWith("Tokyo")); if (tk) lab("Tokyo pre-fix", tk, 8, -8);
+  const eod = pts.filter(p => p.w && p.fam.startsWith("Last")).sort((a, b) => b.h2 - a.h2)[0]; if (eod) lab("End-of-day momentum", eod, -8, -8);
+  const hitLayer = el("rect", { x: 0, y: 0, width: W, height: H, fill: "transparent" });
+  hitLayer.addEventListener("pointermove", ev => {
+    const r = svg.getBoundingClientRect(), sx = W / r.width;
+    const mx = (ev.clientX - r.left) * sx, my = (ev.clientY - r.top) * sx;
+    let best = null, bd = 24 * sx;
+    pts.forEach(p => { const d = Math.hypot(p.px - mx, p.py - my); if (d < bd) { bd = d; best = p; } });
+    if (!best) return hideTip();
+    showTip(ev, [["tv", `${fmt(best.h1)} → ${fmt(best.h2)} R`], ["tl", "Feb–May → Jun–Sep"], ["tl", `${best.fam} · ${best.n} trades`],
+                 ["tl", best.cfg.replace(/[{}"]/g, "").replace(/,/g, ", ")]]);
+  });
+  hitLayer.addEventListener("pointerleave", hideTip);
+  svg.appendChild(hitLayer);
+  host.appendChild(svg);
+  const tb = document.querySelector("#both-table tbody"); tb.replaceChildren();
+  CFG.filter(c => c.h1 > 0 && c.h2 > 0).sort((a, b) => b.h2 - a.h2).forEach(c => {
+    const tr = document.createElement("tr");
+    [[c.fam, ""], [c.cfg.replace(/[{}"]/g, "").replace(/,/g, ", "), ""], [c.n, "num"], [fmt(c.h1), "num"], [fmt(c.h2), "num"]].forEach(([v, k]) => {
+      const td = document.createElement("td"); td.textContent = v; if (k) td.className = k; tr.appendChild(td); });
+    tb.appendChild(tr);
+  });
+}
+function draw() { dumbbell(); scatter(); }
+draw();
+let rt; addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(draw, 150); });
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", draw);
+</script>
+</body>
+</html>

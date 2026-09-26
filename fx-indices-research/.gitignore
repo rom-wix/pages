@@ -1,0 +1,5 @@
+data/
+sources/
+__pycache__/
+*.pyc
+results/trades_all.parquet

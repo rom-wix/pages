@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FX &amp; Indices Edge Hunt</title>
+<meta name="description" content="Backtests of 19 short-term strategy families on 8 FX pairs and 8 stock indices, Feb–Sep 2026, with 1-minute fills and retail costs. None passed.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+<style>
+:root {
+  color-scheme: light;
+  --page: #f6f6f3; --surface: #fcfcfb; --surface-2: #f0efec;
+  --ink: #0b0b0b; --ink-2: #52514e; --muted: #6f6e69;
+  --grid: #e1e0d9; --axis: #c3c2b7; --rule: rgba(11,11,11,0.10);
+  --s1: #2a78d6; --s2: #eb6834; --link: #1c5cab;
+  --pos: #006300; --neg: #b42318; --hi: #1c5cab;
+  --quad: rgba(42,120,214,0.07);
+  --callout: #fbf3dc; --callout-edge: #d9a300; --callout-ink: #3d3000;
+  --bad-bg: #fbe4e2; --bad-ink: #8c1d18;
+  --font: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232321;
+    --ink: #ffffff; --ink-2: #c3c2b7; --muted: #9a998f;
+    --grid: #2c2c2a; --axis: #45453f; --rule: rgba(255,255,255,0.10);
+    --s1: #3987e5; --s2: #d95926; --link: #86b6ef;
+    --pos: #3fbf3f; --neg: #f07a78; --hi: #86b6ef;
+    --quad: rgba(57,135,229,0.10);
+    --callout: #2b2614; --callout-edge: #c98500; --callout-ink: #f3e3b5;
+    --bad-bg: #3a1d1b; --bad-ink: #f5b3ae;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232321;
+  --ink: #ffffff; --ink-2: #c3c2b7; --muted: #9a998f;
+  --grid: #2c2c2a; --axis: #45453f; --rule: rgba(255,255,255,0.10);
+  --s1: #3987e5; --s2: #d95926; --link: #86b6ef;
+  --pos: #3fbf3f; --neg: #f07a78; --hi: #86b6ef;
+  --quad: rgba(57,135,229,0.10);
+  --callout: #2b2614; --callout-edge: #c98500; --callout-ink: #f3e3b5;
+  --bad-bg: #3a1d1b; --bad-ink: #f5b3ae;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--page); color: var(--ink); font: 16px/1.55 var(--font); }
+main { max-width: 1080px; margin: 0 auto; padding: 32px 16px 80px; }
+h1 { font-size: clamp(28px, 5vw, 40px); line-height: 1.12; margin: 0 0 8px; letter-spacing: -0.01em; }
+h2 { font-size: 22px; margin: 48px 0 8px; letter-spacing: -0.005em; }
+h3 { font-size: 17px; margin: 24px 0 6px; }
+p, li { color: var(--ink-2); max-width: 74ch; }
+p b, li b { color: var(--ink); }
+a { color: var(--link); }
+code { font: 13px var(--mono); background: var(--surface-2); padding: 1px 5px; border-radius: 4px; color: var(--ink); }
+.lede { font-size: 18px; color: var(--ink-2); margin: 0 0 24px; }
+.meta { font: 13px var(--mono); color: var(--muted); margin-bottom: 20px; }
+.card { background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 20px; margin: 16px 0; }
+.verdict { border-left: 4px solid var(--neg); }
+.verdict h2 { margin-top: 0; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin: 16px 0 4px; }
+.tile { background: var(--surface-2); border-radius: 10px; padding: 12px 14px; }
+.tile .v { font-size: 26px; font-weight: 600; color: var(--ink); line-height: 1.2; }
+.tile .l { font-size: 13px; color: var(--ink-2); }
+.callout { background: var(--callout); border-left: 4px solid var(--callout-edge); color: var(--callout-ink); border-radius: 8px; padding: 12px 16px; margin: 16px 0; }
+.callout p, .callout li { color: var(--callout-ink); }
+.scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 12px 0; border: 1px solid var(--rule); border-radius: 10px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { padding: 9px 8px; border-bottom: 1px solid var(--rule); vertical-align: top; text-align: left; }
+th { font-size: 12px; font-weight: 600; color: var(--ink-2); background: var(--surface-2); position: sticky; top: 0; }
+tr:last-child td { border-bottom: 0; }
+td.num, th.num { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; font-size: 13px; }
+td.name { min-width: 230px; max-width: 360px; }
+td.name b { display: block; color: var(--ink); }
+.kind { display: block; font-size: 12px; color: var(--muted); }
+.rule { display: block; font-size: 12.5px; color: var(--ink-2); margin-top: 4px; line-height: 1.45; }
+.sub { display: block; font-size: 11px; color: var(--muted); }
+.pos { color: var(--pos); } .neg { color: var(--neg); } .hi { color: var(--hi); font-weight: 600; }
+.tag { display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 999px; }
+.tag.bad { background: var(--bad-bg); color: var(--bad-ink); }
+.tag.bad::before { content: "✕ "; }
+.legend { display: flex; gap: 18px; flex-wrap: wrap; font-size: 13px; color: var(--ink-2); margin: 4px 0 10px; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.chart-title { font-weight: 600; color: var(--ink); margin: 0; }
+.chart-sub { font-size: 13px; color: var(--ink-2); margin: 2px 0 8px; }
+/* dumbbell */
+.db-row { display: grid; grid-template-columns: 210px 1fr; align-items: center; min-height: 30px; }
+.db-label { font-size: 13px; color: var(--ink-2); padding-right: 10px; }
+.db-track svg, .db-axis svg { display: block; width: 100%; height: 30px; overflow: visible; }
+.db-axis { display: grid; grid-template-columns: 210px 1fr; }
+@media (max-width: 640px) {
+  .db-row, .db-axis { grid-template-columns: 1fr; }
+  .db-label { padding: 6px 0 0; }
+  .db-axis > div:first-child { display: none; }
+}
+#scatter svg { display: block; width: 100%; overflow: visible; }
+.tip { position: fixed; pointer-events: none; z-index: 10; background: var(--surface); color: var(--ink); border: 1px solid var(--rule);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12); border-radius: 8px; padding: 8px 10px; font-size: 12.5px; max-width: 280px; display: none; }
+.tip .tv { font: 600 14px var(--mono); }
+.tip .tl { color: var(--ink-2); }
+.tip .key { display: inline-block; width: 12px; height: 2px; vertical-align: middle; margin-right: 6px; }
+details { margin: 8px 0; }
+summary { cursor: pointer; color: var(--link); font-size: 14px; }
+.watch { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.watch .card { margin: 0; }
+.watch h3 { margin-top: 0; }
+.watch .nums { font: 13px var(--mono); color: var(--ink); margin: 8px 0; }
+ol li, ul li { margin: 4px 0; }
+footer { margin-top: 56px; font-size: 13px; color: var(--muted); }
+</style>
+<body>
+<main>
+<div class="meta">Backtest report · 1 Feb 2026 – 25 Sep 2026 · 1-minute fills · retail costs</div>
+<h1>FX &amp; Indices Edge Hunt</h1>
+<p class="lede">I searched for short-term strategies (15m–4H charts, 1–10 trades a week, holding minutes to days) on 8 FX pairs and 8 stock indices,
+and backtested them on the most recent data I could reach. <b>No strategy passed.</b> The details below cover what was tested, why it failed, and what would change the answer.</p>
+
+<section class="card verdict">
+<h2>Verdict: nothing is ready to trade</h2>
+<p>Every standard short-term idea (breakouts, opening ranges, pullbacks, range fades, gap fades, news shocks, session and fix flows)
+either lost money after costs or made money in one half of the sample and lost it in the other. The handful of instrument-level "winners"
+is <b>smaller</b> than what luck alone produces in a search this size.</p>
+<div class="tiles">
+  <div class="tile"><div class="v">19</div><div class="l">strategy families (249 parameter sets)</div></div>
+  <div class="tile"><div class="v">231,780</div><div class="l">simulated trades, 1-minute stop/target fills</div></div>
+  <div class="tile"><div class="v">9 of 222</div><div class="l">round-1 parameter sets profitable in both Feb–May and Jun–Sep</div></div>
+  <div class="tile"><div class="v">11 vs 43</div><div class="l">instrument-level results with t ≥ 2, found vs expected by pure chance (of 1,868)</div></div>
+</div>
+</section>
+
+<div class="callout">
+<p><b>Only 8 of the 12 months.</b> The session's network allows GitHub only; Yahoo, Dukascopy, Stooq, OANDA and similar sources are blocked.
+The only recent intraday data on GitHub (getdata-finance samples, rebuilt from their git history) starts on <b>1 Feb 2026</b>, so the test window is
+1 Feb 2026 – 25 Sep 2026 (34 weeks), not Sep 2025 – Sep 2026. The pipeline takes a broker or Dukascopy export for the missing months without code changes (see <a href="#next">next steps</a>).</p>
+</div>
+
+<h2>What was tested</h2>
+<p>Instruments: EURUSD, GBPUSD, USDJPY, AUDUSD, USDCAD, USDCHF, EURJPY, EURGBP · US500, NAS100, US30, US2000, GER40, EUSTX50, JPN225, AUS200
+(UK100, NZDUSD, GBPJPY and gold were not available). Signals come from 15m, 1h and 4h bars. Every entry, stop and target is resolved on the 1-minute path.</p>
+<ul>
+<li><b>Round 1</b>: 13 families from the literature and common practice. Each has a default fixed in advance plus a small grid around it (222 sets), run on the full sample.</li>
+<li><b>Round 2</b>: 4 hypotheses built from Feb–May market behaviour only, then tested once on Jun–Sep.</li>
+<li><b>Round 3</b>: multi-day 4h strategies (channel breakout with trailing stop, index dip-buying) against a random-entry benchmark.</li>
+<li><b>Exploratory checks</b> that stopped at the design stage: US-index afternoon momentum, the USD "fix clock" (Krohn–Mueller–Whelan 2024), and an end-of-day momentum surface.</li>
+</ul>
+<p>R = profit ÷ initial risk (entry to stop), after costs, so +0.10 means an average trade earns a tenth of what it risks.
+Costs: round-trip spread + commission (EURUSD 0.9 pip, USDJPY 1.0, GBPUSD 1.3 … US500 0.6 pt, NAS100 2.0, GER40 1.5),
+stop-fill slippage of 0.1 pip + 10% of the fill minute's range, and financing for positions held overnight.</p>
+
+<h2>Round 1: 13 families, full sample</h2>
+<div class="card">
+  <p class="chart-title">Average trade before and after costs, default settings</p>
+  <p class="chart-sub">R per trade. Costs move every family left; only the Tokyo-fix trade stays right of zero, and it is not significant (t 1.5).</p>
+  <div class="legend"><span><i class="dot" style="background:var(--s1)"></i>Before costs</span><span><i class="dot" style="background:var(--s2)"></i>After costs</span></div>
+  <div id="dumbbell"></div>
+</div>
+<div class="scroll">
+<table>
+<thead><tr><th>Strategy (default rules)</th><th class="num">Trades</th><th class="num">Per week<br>per instr.</th><th class="num">Win</th>
+<th class="num">R before<br>costs</th><th class="num">R after<br>costs</th><th class="num">t</th><th class="num">Feb–May</th><th class="num">Jun–Sep</th>
+<th class="num">Sets + in both<br>halves / total</th><th class="num">Best set<br>R after costs</th></tr></thead>
+<tbody>
+<tr>
+<td class="name"><b>Tokyo-fix flow (gotobi)</b><span class="kind">Flow / calendar · USDJPY, EURJPY</span><span class="rule">On gotobi days (5th, 10th … month-end): long 08:00 → 09:55 JST fix. SL 0.3 ATR.</span></td>
+<td class="num">80</td><td class="num">1.2</td><td class="num">55%</td>
+<td class="num">+0.17</td><td class="num pos"><b>+0.13</b></td><td class="num">+1.5</td>
+<td class="num pos">+0.08</td><td class="num pos">+0.16</td>
+<td class="num">1 / 6</td>
+<td class="num pos">+0.13<span class="sub">t 1.5</span></td>
+</tr>
+<tr>
+<td class="name"><b>Overnight drift</b><span class="kind">Calendar · Indices (8)</span><span class="rule">Long 5 min before the cash close → 5 min after the next open, Mon–Thu. SL 0.6 ATR.</span></td>
+<td class="num">1,048</td><td class="num">3.9</td><td class="num">51%</td>
+<td class="num">+0.03</td><td class="num neg"><b>−0.00</b></td><td class="num">−0.1</td>
+<td class="num pos">+0.03</td><td class="num neg">−0.03</td>
+<td class="num">0 / 6</td>
+<td class="num pos">+0.01<span class="sub">t 0.3</span></td>
+</tr>
+<tr>
+<td class="name"><b>Opening-gap fade</b><span class="kind">Mean reversion · Indices (8)</span><span class="rule">Gap of 0.15–0.6 ATR between the prior cash close and the open: fade at the open. TP prior close · SL 1× gap · exit after 2.5 h.</span></td>
+<td class="num">671</td><td class="num">2.5</td><td class="num">52%</td>
+<td class="num">+0.02</td><td class="num neg"><b>−0.01</b></td><td class="num">−0.1</td>
+<td class="num neg">−0.03</td><td class="num pos">+0.01</td>
+<td class="num">3 / 33</td>
+<td class="num pos">+0.02<span class="sub">t 0.7</span></td>
+</tr>
+<tr>
+<td class="name"><b>Last-half-hour momentum</b><span class="kind">Momentum · Indices (8)</span><span class="rule">Gao–Han–Li–Zhou: sign of prior close → first 30 min predicts the last 30 min. Trade the last 30 min of the cash session; SL 0.25 ATR.</span></td>
+<td class="num">1,294</td><td class="num">4.8</td><td class="num">44%</td>
+<td class="num">+0.02</td><td class="num neg"><b>−0.01</b></td><td class="num">−1.0</td>
+<td class="num neg">−0.02</td><td class="num neg">+0.00</td>
+<td class="num">3 / 13</td>
+<td class="num pos">+0.29<span class="sub">t 2.1</span></td>
+</tr>
+<tr>
+<td class="name"><b>Noise-area momentum</b><span class="kind">Momentum · Indices (8)</span><span class="rule">Zarattini–Aziz–Barbon bands (open ± average move-from-open, 14 days). Checked every 30 min; enter on a close outside the band; exit back inside band/VWAP or at the close; hard SL 0.5 ATR.</span></td>
+<td class="num">717</td><td class="num">2.7</td><td class="num">31%</td>
+<td class="num">−0.02</td><td class="num neg"><b>−0.04</b></td><td class="num">−2.1</td>
+<td class="num neg">−0.00</td><td class="num neg">−0.07</td>
+<td class="num">0 / 24</td>
+<td class="num neg">−0.02<span class="sub">t −1.4</span></td>
+</tr>
+<tr>
+<td class="name"><b>Trend pullback</b><span class="kind">Pullback · All (16)</span><span class="rule">New 20-day high in the last 5 days, 1h pullback ≥ 0.5 ATR, enter when a 1h bar closes above the prior bar&#x27;s high (mirror for shorts). SL pullback extreme · TP 2R · 72 h max.</span></td>
+<td class="num">784</td><td class="num">1.5</td><td class="num">39%</td>
+<td class="num">+0.01</td><td class="num neg"><b>−0.05</b></td><td class="num">−1.1</td>
+<td class="num neg">−0.03</td><td class="num neg">−0.07</td>
+<td class="num">2 / 18</td>
+<td class="num pos">+0.03<span class="sub">t 0.5</span></td>
+</tr>
+<tr>
+<td class="name"><b>Home-hours seasonality</b><span class="kind">Flow / calendar · EURUSD, GBPUSD, USDCHF</span><span class="rule">Breedon–Ranaldo: a currency weakens in its own business hours. Short EUR/GBP (long USDCHF) 03:00 → 11:00 NY; SL 0.4 ATR. US-afternoon leg in the grid.</span></td>
+<td class="num">495</td><td class="num">4.9</td><td class="num">47%</td>
+<td class="num">−0.01</td><td class="num neg"><b>−0.06</b></td><td class="num">−1.4</td>
+<td class="num neg">−0.10</td><td class="num neg">−0.02</td>
+<td class="num">0 / 5</td>
+<td class="num neg">−0.02<span class="sub">t −0.8</span></td>
+</tr>
+<tr>
+<td class="name"><b>London breakout</b><span class="kind">Breakout · FX (8)</span><span class="rule">Asian box 00:00–07:00 London. Stop orders 3% ATR beyond both edges (one cancels the other), live 07:00–11:00. SL opposite edge · TP 1× box · exit 16:00 London. Skip boxes &gt; 0.6 ATR.</span></td>
+<td class="num">1,003</td><td class="num">3.7</td><td class="num">54%</td>
+<td class="num">+0.00</td><td class="num neg"><b>−0.06</b></td><td class="num">−2.5</td>
+<td class="num neg">−0.02</td><td class="num neg">−0.10</td>
+<td class="num">0 / 37</td>
+<td class="num neg">−0.03<span class="sub">t −0.9</span></td>
+</tr>
+<tr>
+<td class="name"><b>Opening-range breakout</b><span class="kind">Breakout · Indices (8)</span><span class="rule">Range of the first 30 min of the cash session. Stop orders at its high/low for 3 h. SL other side · TP 2R · exit 5 min before the close.</span></td>
+<td class="num">1,155</td><td class="num">4.3</td><td class="num">42%</td>
+<td class="num">−0.07</td><td class="num neg"><b>−0.10</b></td><td class="num">−3.3</td>
+<td class="num neg">−0.06</td><td class="num neg">−0.14</td>
+<td class="num">0 / 18</td>
+<td class="num neg">−0.07<span class="sub">t −2.7</span></td>
+</tr>
+<tr>
+<td class="name"><b>NR4 inside-bar breakout</b><span class="kind">Breakout · All (16)</span><span class="rule">4h bar that is an inside bar and the narrowest of 4: stop orders at its high/low for 2 bars. SL other side · TP 2× bar range · 24 h max.</span></td>
+<td class="num">1,261</td><td class="num">2.3</td><td class="num">36%</td>
+<td class="num">−0.03</td><td class="num neg"><b>−0.12</b></td><td class="num">−3.0</td>
+<td class="num neg">−0.13</td><td class="num neg">−0.10</td>
+<td class="num">0 / 12</td>
+<td class="num neg">−0.11<span class="sub">t −3.9</span></td>
+</tr>
+<tr>
+<td class="name"><b>Asian-session range fade</b><span class="kind">Range · FX (8)</span><span class="rule">19:30–00:30 New York: a 15m close beyond the prior 2 h range is faded. TP range midpoint · SL 1× range · exit 02:00 NY.</span></td>
+<td class="num">1,792</td><td class="num">6.6</td><td class="num">57%</td>
+<td class="num">+0.02</td><td class="num neg"><b>−0.14</b></td><td class="num">−7.3</td>
+<td class="num neg">−0.12</td><td class="num neg">−0.16</td>
+<td class="num">0 / 13</td>
+<td class="num neg">−0.07<span class="sub">t −5.2</span></td>
+</tr>
+<tr>
+<td class="name"><b>Prior-day high/low sweep</b><span class="kind">Range / reversal · All (16)</span><span class="rule">A 15m bar trades through the prior day&#x27;s high (low) and closes back inside: fade at the next bar. SL beyond the bar + 5% ATR · TP 2R · 8 h max.</span></td>
+<td class="num">1,511</td><td class="num">2.8</td><td class="num">34%</td>
+<td class="num">−0.09</td><td class="num neg"><b>−0.21</b></td><td class="num">−6.2</td>
+<td class="num neg">−0.18</td><td class="num neg">−0.23</td>
+<td class="num">0 / 12</td>
+<td class="num neg">−0.14<span class="sub">t −5.1</span></td>
+</tr>
+<tr>
+<td class="name"><b>US data-release shock</b><span class="kind">News · USD pairs + US indices (10)</span><span class="rule">08:30 ET candle ≥ 2.5× its 20-day median range with a body ≥ 50%: follow at 08:45 (fade variant in the grid). SL candle midpoint · TP 2R · exit 12:00 ET.</span></td>
+<td class="num">107</td><td class="num">0.3</td><td class="num">23%</td>
+<td class="num">−0.32</td><td class="num neg"><b>−0.44</b></td><td class="num">−3.6</td>
+<td class="num neg">−0.54</td><td class="num neg">−0.39</td>
+<td class="num">0 / 25</td>
+<td class="num pos">+0.18<span class="sub">t 1.3</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>"Best set" is the best of each family's grid, a deliberately optimistic number. Even the best sets rarely reach t = 2, and the few that do are
+the kind of maximum you expect from searching 222 sets with no real edge.</p>
+
+<div class="card">
+  <p class="chart-title">Does a good first half predict a good second half?</p>
+  <p class="chart-sub">Each dot is one parameter set (rounds 1 and 3): average R after costs in Feb–May vs Jun–Sep. Losers stay losers (costs don't go away), but winners don't carry over:
+  of the 53 sets that made money in Feb–May, 11 also made money in Jun–Sep, and as a group they averaged −0.04R there.</p>
+  <div class="legend"><span><i class="dot" style="background:var(--s1)"></i>Parameter set</span><span><i class="dot" style="background:var(--s2)"></i>Watch-list sets (below)</span></div>
+  <div id="scatter"></div>
+  <details><summary>Table view: the sets that were positive in both halves</summary><div class="scroll"><table id="both-table"><thead><tr><th>Family</th><th>Settings</th><th class="num">Trades</th><th class="num">Feb–May</th><th class="num">Jun–Sep</th></tr></thead><tbody></tbody></table></div></details>
+</div>
+
+<h2>Round 2: designed on Feb–May, tested on Jun–Sep</h2>
+<p>Feb–May diagnostics showed two structural facts. JPY pairs trend (variance ratio above 1), and most other markets mean-revert intraday.
+Large 15-minute moves in JPY pairs tended to continue, large moves in US indices and FX majors tended to reverse, and large 1h moves in European and Asian indices continued.
+One setting per idea was fixed from Feb–May and run once on Jun–Sep.</p>
+<div class="scroll">
+<table>
+<thead><tr><th>Hypothesis</th><th class="num">Feb–May<br>trades</th><th class="num">Feb–May<br>R</th><th class="num">t</th><th class="num">Jun–Sep<br>trades</th><th class="num">Jun–Sep<br>R</th><th class="num">t</th><th>Result</th></tr></thead>
+<tbody>
+<tr><td class="name"><b>JPY big-move continuation</b><span class="kind">USDJPY, EURJPY</span><span class="rule">15m bar ≥ 2.5σ: follow at the next bar, SL 1× bar range, exit after 4 h</span></td>
+<td class="num">160</td><td class="num neg">−0.05</td><td class="num">−0.6</td>
+<td class="num">212</td><td class="num pos"><b>+0.29</b></td><td class="num">+2.2</td>
+<td><span class="tag bad">Failed</span></td></tr>
+<tr><td class="name"><b>US-index big-move fade</b><span class="kind">US500, NAS100, US30, US2000</span><span class="rule">15m bar ≥ 2.5σ: fade, TP ½ bar range, SL 1× range, exit after 4 h</span></td>
+<td class="num">629</td><td class="num neg">−0.02</td><td class="num">−0.9</td>
+<td class="num">667</td><td class="num neg"><b>−0.02</b></td><td class="num">−0.8</td>
+<td><span class="tag bad">Failed</span></td></tr>
+<tr><td class="name"><b>FX-majors big-move fade</b><span class="kind">6 non-JPY pairs</span><span class="rule">15m bar ≥ 2.5σ: fade, TP ½ bar range, SL 1× range, exit after 4 h</span></td>
+<td class="num">897</td><td class="num neg">−0.03</td><td class="num">−1.1</td>
+<td class="num">834</td><td class="num neg"><b>−0.10</b></td><td class="num">−4.2</td>
+<td><span class="tag bad">Failed</span></td></tr>
+<tr><td class="name"><b>Europe/Asia index 1h continuation</b><span class="kind">GER40, EUSTX50, JPN225, AUS200</span><span class="rule">1h bar ≥ 2σ: follow, SL 1× bar range, exit after 4 h</span></td>
+<td class="num">274</td><td class="num pos">+0.12</td><td class="num">+2.4</td>
+<td class="num">269</td><td class="num neg"><b>−0.10</b></td><td class="num">−2.5</td>
+<td><span class="tag bad">Failed</span></td></tr>
+</tbody>
+</table>
+</div>
+<p>Patterns flip between halves. The index-continuation idea earned +0.12R per trade (t 2.4) in Feb–May and lost −0.10R (t −2.5) in Jun–Sep.
+The reversal tendencies are real in close-to-close returns but too small to pay for stops, targets and spreads.</p>
+
+<h2>Round 3: multi-day 4h trades</h2>
+<ul>
+<li><b>4h channel breakout</b> (stop order at the 10/20/40-bar high or low, 1.5 ATR initial stop, 1.5–3 ATR trailing stop, 10-day limit), all 16 instruments:
+−0.06 to −0.09 R per trade across the 9 settings. JPY pairs alone reached up to +0.27 R, but only from short trades, with the three best trades supplying 70–200% of the net profit.</li>
+<li><b>Index dip-buy</b> (4h close at a 1-day low, ≥ 1–1.5 ATR below the 5-day high, prior daily close above the 20-day midpoint; TP 0.75–1.5 ATR, SL 1–1.5 ATR, 5-day limit):
+best setting +0.08 R on 91 trades (t &lt; 1). <b>Random long entries</b> with the same exits averaged −0.03 R, so the dip rule adds little beyond the 2026 bull market.</li>
+</ul>
+
+<h2>Why the usual strategies failed in 2026</h2>
+<ol>
+<li><b>Intraday mean reversion.</b> Most instruments reversed their multi-hour moves (variance ratio &lt; 1 below). That is poison for breakouts, ORB and
+momentum-style intraday systems. The exceptions are USDJPY and EURJPY (highlighted), which trended in both halves.</li>
+<li><b>Costs are large relative to intraday edges.</b> A round trip costs 0.02–0.17R depending on stop size. Most families' edge before costs was between −0.09R and +0.03R.</li>
+<li><b>Behaviour changes within months.</b> Round 2 showed effects that were significant one way in Feb–May and the other way in Jun–Sep.</li>
+</ol>
+<details><summary>Variance ratios by instrument (15m returns aggregated to 4h and 1 day; &gt; 1 trending, &lt; 1 mean-reverting)</summary>
+<div class="scroll"><table><thead><tr><th>Instrument</th><th class="num">4h Feb–May</th><th class="num">4h Jun–Sep</th><th class="num">1d Feb–May</th><th class="num">1d Jun–Sep</th></tr></thead><tbody><tr><td>EURJPY</td><td class='num hi'>1.14</td><td class='num hi'>1.06</td><td class='num hi'>1.05</td><td class='num hi'>1.18</td></tr><tr><td>USDJPY</td><td class='num hi'>1.04</td><td class='num hi'>1.02</td><td class='num hi'>1.06</td><td class='num hi'>1.16</td></tr><tr><td>USDCHF</td><td class='num '>0.96</td><td class='num hi'>1.04</td><td class='num hi'>1.02</td><td class='num '>0.97</td></tr><tr><td>GER40</td><td class='num '>0.96</td><td class='num hi'>1.00</td><td class='num '>0.98</td><td class='num '>0.94</td></tr><tr><td>JPN225</td><td class='num hi'>1.02</td><td class='num '>0.96</td><td class='num '>0.99</td><td class='num '>0.90</td></tr><tr><td>GBPUSD</td><td class='num '>0.89</td><td class='num '>0.98</td><td class='num '>0.94</td><td class='num '>0.92</td></tr><tr><td>EURGBP</td><td class='num '>0.86</td><td class='num '>0.99</td><td class='num '>0.88</td><td class='num '>0.97</td></tr><tr><td>US30</td><td class='num '>0.85</td><td class='num '>0.97</td><td class='num '>0.86</td><td class='num '>0.97</td></tr><tr><td>NAS100</td><td class='num '>0.95</td><td class='num '>0.96</td><td class='num '>0.92</td><td class='num '>0.89</td></tr><tr><td>USDCAD</td><td class='num '>0.86</td><td class='num '>0.98</td><td class='num '>0.81</td><td class='num '>0.98</td></tr><tr><td>EURUSD</td><td class='num '>0.87</td><td class='num hi'>1.01</td><td class='num '>0.89</td><td class='num '>0.88</td></tr><tr><td>AUS200</td><td class='num '>0.94</td><td class='num '>0.95</td><td class='num '>0.91</td><td class='num '>0.82</td></tr><tr><td>AUDUSD</td><td class='num '>0.86</td><td class='num '>0.95</td><td class='num '>0.81</td><td class='num '>0.88</td></tr><tr><td>US500</td><td class='num '>0.87</td><td class='num '>0.91</td><td class='num '>0.84</td><td class='num '>0.81</td></tr><tr><td>EUSTX50</td><td class='num '>0.90</td><td class='num '>0.91</td><td class='num '>0.87</td><td class='num '>0.74</td></tr><tr><td>US2000</td><td class='num '>0.90</td><td class='num '>0.85</td><td class='num '>0.81</td><td class='num '>0.67</td></tr></tbody></table></div></details>
+
+<h2>A data trap that looked like an edge</h2>
+<p>The first pass found a strong result: buy USDJPY and EURJPY at 07:00 Tokyo time and sell at the 09:55 fix (+0.16R per trade, t 4.1, positive in both halves).
+It was an artefact. The vendor's quotes are <b>bid prices</b>. Around the 17:00 New York rollover, spreads widen, so the bid sags for about an hour
+and snaps back at about 22:00 UTC, which is 07:00 Tokyo. Every pair showed the same jump in that minute, whether USD was the base or the quote currency.
+A real trader buys at the ask there and gets nothing. The engine now blocks entries, targets and time exits between 16:40 and 18:10 New York.
+Stop-losses still trigger in that window, as a real sell-stop would. All results above include this fix.</p>
+
+<h2>Watch list: not recommended, worth re-testing on 12+ months</h2>
+<div class="watch">
+<div class="card"><h3>Tokyo pre-fix, gotobi days</h3>
+<p>USDJPY and EURJPY, on the 5th, 10th, 15th, 20th, 25th and month-end (moved to the prior business day). Long at 08:00 JST, exit 09:55 JST, SL 0.3 ATR.</p>
+<p class="nums">80 trades · +0.13R · t 1.5 · + both halves · + both pairs · ~1.2 a week per pair</p>
+<p>Documented flow (importers buying USD for the fix). Too few trades to separate from noise.</p></div>
+<div class="card"><h3>End-of-day momentum after a big move</h3>
+<p>Indices: if the second-last half hour of the cash session moved ≥ 0.2 ATR, trade that direction for the last 30 min; SL 0.15–0.25 ATR.</p>
+<p class="nums">80 trades · +0.08 to +0.29R (by stop size) · t 1.4–2.1 · + both halves</p>
+<p>An isolated spike. Every broader version (day move, session move, 90-minute move) is negative (t −2 to −3).</p></div>
+<div class="card"><h3>JPY trend-following</h3>
+<p>USDJPY, EURJPY: 4h 20-bar channel breakout, 1.5 ATR stop, 2–3 ATR trailing stop.</p>
+<p class="nums">~50 trades · +0.25R · t 1.4–1.6 · Feb–May mixed across settings</p>
+<p>Fits the only trending markets, but the profit comes from a few sharp yen rallies (short trades).</p></div>
+<div class="card"><h3>Index dip-buy in an uptrend</h3>
+<p>4h close at a 1-day low, ≥ 1.5 ATR under the 5-day high, trend filter on. TP 0.75 ATR, SL 1 ATR, 5-day limit.</p>
+<p class="nums">91 trades · +0.08R · t 0.9</p>
+<p>Barely better than random long entries in a rising market.</p></div>
+</div>
+
+<h2 id="next">Next steps</h2>
+<ol>
+<li><b>Fill in Sep 2025 – Jan 2026.</b> Either add <code>datafeed.dukascopy.com</code> to the environment's allowed domains, or export 1-minute bars from MT4/MT5
+(UTC timestamps) to <code>fx-indices-research/data/raw/&lt;SYMBOL&gt;.csv</code>. Then rebuild and rerun:
+<code>python3 src/data.py &amp;&amp; python3 experiments/e01_run_all.py</code>. The split points and every rule stay fixed, so the extra months are a clean out-of-sample test.</li>
+<li><b>News with surprises, not just volatility.</b> The news test here detects releases by candle size. An economic calendar with actual vs consensus
+(NFP, CPI, central-bank decisions) would allow surprise-direction strategies. Each event type has only 5–8 releases in this window, so it needs the longer history.</li>
+<li><b>Bid/ask data.</b> The vendor supplies bids only, so short stop-losses (which trigger on the ask) are slightly optimistic. A broker export with spreads would close that gap.</li>
+</ol>
+
+<h2>Method details</h2>
+<ul>
+<li><b>Fills</b>: market orders at the next minute's open; stop orders at the level or a gapped open, plus slippage; if a stop and a target are both inside one minute, the stop wins;
+in the entry minute of a stop/limit order only the stop is checked. A random-entry control loses −0.01R before costs from these conservative rules alone.</li>
+<li><b>Data checks</b>: the 1-minute snapshots agree exactly where they overlap; NFP releases from Feb to Sep appear at the right minute on EURUSD, USDJPY and US500 at once;
+FX cross-rate levels drift up to ~1.6% between days before late August (vendor stitching) but hold to ~1 bp within a day, which is what intraday tests need.</li>
+<li><b>One position</b> per strategy and instrument at a time; OCO pairs keep the first leg filled.</li>
+<li>Code, trade lists and CSVs: <code>fx-indices-research/</code> in this repository. This is research, not investment advice.</li>
+</ul>
+<footer>Built from <code>fx-indices-research/results/report_data.json</code> by <code>report/build_report.py</code>.</footer>
+</main>
+<div class="tip" id="tip" role="tooltip"></div>
+<script>
+const FAM = [{"name": "London breakout", "gross": 0.002, "net": -0.063, "n": 1003}, {"name": "Opening-range breakout", "gross": -0.07, "net": -0.102, "n": 1155}, {"name": "Noise-area momentum", "gross": -0.023, "net": -0.04, "n": 717}, {"name": "Opening-gap fade", "gross": 0.024, "net": -0.005, "n": 671}, {"name": "Prior-day high/low sweep", "gross": -0.091, "net": -0.21, "n": 1511}, {"name": "Trend pullback", "gross": 0.008, "net": -0.05, "n": 784}, {"name": "Asian-session range fade", "gross": 0.024, "net": -0.138, "n": 1792}, {"name": "Tokyo-fix flow (gotobi)", "gross": 0.171, "net": 0.126, "n": 80}, {"name": "US data-release shock", "gross": -0.323, "net": -0.437, "n": 107}, {"name": "Home-hours seasonality", "gross": -0.013, "net": -0.059, "n": 495}, {"name": "NR4 inside-bar breakout", "gross": -0.031, "net": -0.116, "n": 1261}, {"name": "Last-half-hour momentum", "gross": 0.021, "net": -0.011, "n": 1294}, {"name": "Overnight drift", "gross": 0.028, "net": -0.001, "n": 1048}];
+const CFG = [{"fam": "London breakout", "cfg": "{\"box_max_atr\": 0.6, \"exit_at\": \"16:00\", \"sl\": \"edge\", \"tp_mult\": 1.0, \"until\": \"11:00\"}", "n": 1003, "h1": -0.021, "h2": -0.1, "avg": -0.063}, {"fam": "London breakout", "cfg": "{\"box_max_atr\": 0.4, \"exit_at\": \"16:00\", \"sl\": \"edge\", \"tp_mult\": 1.0, \"until\": \"10:00\"}", "n": 748, "h1": -0.047, "h2": -0.109, "avg": -0.08}, {"fam": "London breakout", "cfg": "{\"box_max_atr\": 0.4, \"exit_at\": \"16:00\", \"sl\": \"edge\", \"tp_mult\": 1.0, \"until\": \"12:00\"}", "n": 820, "h1": -0.038, "h2": -0.087, "avg": -0.064}, {"fam": "London breakout", "cfg": "{\"box_max_atr\": 0.4, \"exit_at\": \"16:00\", \"sl\": \"mid\", \"tp_mult\": 1.0, \"until\": \"10:00\"}", "n": 748, "h1": -0.148, "h2": -0.183, "avg": -0.167}, {"fam": "London breakout", "cfg": "{\"box_max_atr\": 0.4, \"exit_at\": \"16:00\", \"sl\": \"mid\", \"tp_mult\": 1.0, \"until\": \"12:00\"}", "n": 820, "h1": -0.135, "h2": -0.159, "avg": -0.148}, {"fam": "London breakout", "cfg": "{\"box_max_atr\": 0.4, \"exit_at\": \"16:00\", \"sl\": \"edge\", \"tp_mult\": 2.0, \"until\": \"10:00\"}", "n": 748, "h1": -0.003, "h2": -0.092, "avg": -0.05}, {"fam": "London breakout", "cfg": "{\"box_max_atr\": 0.4, \"exit_at\": \"16:00\", \"sl\": \"edge\", \"tp_mult\": 2.0, \"until\": \"12:00\"}", "n": 820, "h1": 0.007, "h2": -0.074, "avg": -0.036}, {"fam": "London breakout", "cfg": "{\"box_max_atr\": 0.4, \"exit_at\": \"16:00\", \"sl\": \"mid\", \"tp_mult\": 2.0, \"until\": \"10:00\"}", "n": 748, "h1": -0.061, "h2": -0.142, "avg": -0.104}, {"fam": "London breakout", "cfg": "{\"box_max_atr\": 0.4, \"exit_at\": \"16:00\", \"sl\": \"mid\", \"tp_mult\": 2.0, \"until\": \"12:00\"}", "n": 820, "h1": -0.039, "h2": -0.123, "avg": -0.084}, {"fam": "London breakout", "cfg": "{\"box_max_atr\": 0.4, \"exit_at\": \"16:00\", \"sl\": \"edge\", \"tp_mult\": 0, \"until\": \"10:00\"}", "n": 748, "h1": 0.019, "h2": -0.105, "avg": -0.047}, {"fam": "London breakout", "cfg": "{\"box_max_atr\": 0.4, \"exit_at\": \"16:00\", \"sl\": \"edge\", \"tp_mult\": 0, \"until\": \"12:00\"}", "n": 820, "h1": 0.021, "h2": -0.076, "avg": -0.031}, {"fam": "London breakout", "cfg": "{\"box_max_atr\": 0.4, \"exit_at\": \"16:00\", \"sl\": \"mid\", \"tp_mult\": 0, \"until\": \"10:00\"}", "n": 748, "h1": -0.044, "h2": -0.142, "avg": -0.096}, {"fam": "London breakout", "cfg": "{\"box_max_atr\": 0.4, \"exit_at\": \"16:00\", \"sl\": \"mid\", \"tp_mult\": 0, \"until\": \"12:00\"}", "n": 820, "h1": -0.037, "h2": -0.093, "avg": -0.067}, {"fam": "London breakout", "cfg": "{\"box_max_atr\": 0.6, \"exit_at\": \"16:00\", \"sl\": \"edge\", \"tp_mult\": 1.0, \"until\": \"10:00\"}", "n": 942, "h1": -0.036, "h2": -0.108, "avg": -0.074}, {"fam": "London breakout", "cfg": "{\"box_max_atr\": 0.6, \"exit_at\": \"16:00\", \"sl\": \"edge\", \"tp_mult\": 1.0, \"until\": \"12:00\"}", "n": 1046, "h1": -0.029, "h2": -0.091, "avg": -0.062}, {"fam": "London breakout", "cfg": "{\"box_max_atr\": 0.6, \"exit_at\": \"16:00\", \"sl\": \"mid\", \"tp_mult\": 1.0, \"until\": \"10:00\"}", "n": 942, "h1": -0.129, "h2": -0.172, "avg": -0.151}, {"fam": "London breakout", "cfg": "{\"box_max_atr\": 0.6, \"exit_at\": \"16:00\", \"sl\": \"mid\", \"tp_mult\": 1.0, \"until\": \"12:00\"}", "n": 1046, "h1": -0.122, "h2": -0.156, "avg": -0.14}, {"fam": "London breakout", "cfg": "{\"box_max_atr\": 0.6, \"exit_at\": \"16:00\", \"sl\": \"edge\", \"tp_mult\": 2.0, \"until\": \"10:00\"}", "n": 942, "h1": 0.003, "h2": -0.103, "avg": -0.052}, {"fam": "London breakout", "cfg": "{\"box_max_atr\": 0.6, \"exit_at\": \"16:00\", \"sl\": \"edge\", \"tp_mult\": 2.0, \"until\": \"12:00\"}", "n": 1046, "h1": 0.012, "h2": -0.087, "avg": -0.04}, {"fam": "London breakout", "cfg": "{\"box_max_atr\": 0.6, \"exit_at\": \"16:00\", \"sl\": \"mid\", \"tp_mult\": 2.0, \"until\": \"10:00\"}", "n": 942, "h1": -0.05, "h2": -0.15, "avg": -0.103}, {"fam": "London breakout", "cfg": "{\"box_max_atr\": 0.6, \"exit_at\": \"16:00\", \"sl\": \"mid\", \"tp_mult\": 2.0, \"until\": \"12:00\"}", "n": 1046, "h1": -0.033, "h2": -0.137, "avg": -0.089}, {"fam": "London breakout", "cfg": "{\"box_max_atr\": 0.6, \"exit_at\": \"16:00\", \"sl\": \"edge\", \"tp_mult\": 0, \"until\": \"10:00\"}", "n": 942, "h1": 0.022, "h2": -0.105, "avg": -0.045}, {"fam": "London breakout", "cfg": "{\"box_max_atr\": 0.6, \"exit_at\": \"16:00\", \"sl\": \"edge\", \"tp_mult\": 0, \"until\": \"12:00\"}", "n": 1046, "h1": 0.025, "h2": -0.08, "avg": -0.031}, {"fam": "London breakout", "cfg": "{\"box_max_atr\": 0.6, \"exit_at\": \"16:00\", \"sl\": \"mid\", \"tp_mult\": 0, \"until\": \"10:00\"}", "n": 942, "h1": -0.033, "h2": -0.135, "avg": -0.087}, {"fam": "London breakout", "cfg": "{\"box_max_atr\": 0.6, \"exit_at\": \"16:00\", \"sl\": \"mid\", \"tp_mult\": 0, \"until\": \"12:00\"}", "n": 1046, "h1": -0.026, "h2": -0.097, "avg": -0.064}, {"fam": "London breakout", "cfg": "{\"box_max_atr\": 1.0, \"exit_at\": \"16:00\", \"sl\": \"edge\", \"tp_mult\": 1.0, \"until\": \"10:00\"}", "n": 1003, "h1": -0.026, "h2": -0.103, "avg": -0.066}, {"fam": "London breakout", "cfg": "{\"box_max_atr\": 1.0, \"exit_at\": \"16:00\", \"sl\": \"edge\", \"tp_mult\": 1.0, \"until\": \"12:00\"}", "n": 1113, "h1": -0.023, "h2": -0.088, "avg": -0.057}, {"fam": "London breakout", "cfg": "{\"box_max_atr\": 1.0, \"exit_at\": \"16:00\", \"sl\": \"mid\", \"tp_mult\": 1.0, \"until\": \"10:00\"}", "n": 1003, "h1": -0.112, "h2": -0.162, "avg": -0.138}, {"fam": "London breakout", "cfg": "{\"box_max_atr\": 1.0, \"exit_at\": \"16:00\", \"sl\": \"mid\", \"tp_mult\": 1.0, \"until\": \"12:00\"}", "n": 1113, "h1": -0.113, "h2": -0.151, "avg": -0.133}, {"fam": "London breakout", "cfg": "{\"box_max_atr\": 1.0, \"exit_at\": \"16:00\", \"sl\": \"edge\", \"tp_mult\": 2.0, \"until\": \"10:00\"}", "n": 1003, "h1": 0.007, "h2": -0.094, "avg": -0.045}, {"fam": "London breakout", "cfg": "{\"box_max_atr\": 1.0, \"exit_at\": \"16:00\", \"sl\": \"edge\", \"tp_mult\": 2.0, \"until\": \"12:00\"}", "n": 1113, "h1": 0.012, "h2": -0.081, "avg": -0.037}, {"fam": "London breakout", "cfg": "{\"box_max_atr\": 1.0, \"exit_at\": \"16:00\", \"sl\": \"mid\", \"tp_mult\": 2.0, \"until\": \"10:00\"}", "n": 1003, "h1": -0.04, "h2": -0.135, "avg": -0.089}, {"fam": "London breakout", "cfg": "{\"box_max_atr\": 1.0, \"exit_at\": \"16:00\", \"sl\": \"mid\", \"tp_mult\": 2.0, \"until\": \"12:00\"}", "n": 1113, "h1": -0.032, "h2": -0.127, "avg": -0.082}, {"fam": "London breakout", "cfg": "{\"box_max_atr\": 1.0, \"exit_at\": \"16:00\", \"sl\": \"edge\", \"tp_mult\": 0, \"until\": \"10:00\"}", "n": 1003, "h1": 0.024, "h2": -0.097, "avg": -0.039}, {"fam": "London breakout", "cfg": "{\"box_max_atr\": 1.0, \"exit_at\": \"16:00\", \"sl\": \"edge\", \"tp_mult\": 0, \"until\": \"12:00\"}", "n": 1113, "h1": 0.024, "h2": -0.075, "avg": -0.028}, {"fam": "London breakout", "cfg": "{\"box_max_atr\": 1.0, \"exit_at\": \"16:00\", \"sl\": \"mid\", \"tp_mult\": 0, \"until\": \"10:00\"}", "n": 1003, "h1": -0.026, "h2": -0.122, "avg": -0.076}, {"fam": "London breakout", "cfg": "{\"box_max_atr\": 1.0, \"exit_at\": \"16:00\", \"sl\": \"mid\", \"tp_mult\": 0, \"until\": \"12:00\"}", "n": 1113, "h1": -0.026, "h2": -0.09, "avg": -0.06}, {"fam": "Opening-range breakout", "cfg": "{\"active_h\": 3.0, \"or_min\": 30, \"sl\": \"edge\", \"tp_mult\": 2.0}", "n": 1155, "h1": -0.058, "h2": -0.145, "avg": -0.102}, {"fam": "Opening-range breakout", "cfg": "{\"active_h\": 3.0, \"or_min\": 15, \"sl\": \"edge\", \"tp_mult\": 1.0}", "n": 1265, "h1": -0.165, "h2": -0.084, "avg": -0.123}, {"fam": "Opening-range breakout", "cfg": "{\"active_h\": 3.0, \"or_min\": 15, \"sl\": \"mid\", \"tp_mult\": 1.0}", "n": 1265, "h1": -0.138, "h2": -0.176, "avg": -0.158}, {"fam": "Opening-range breakout", "cfg": "{\"active_h\": 3.0, \"or_min\": 15, \"sl\": \"edge\", \"tp_mult\": 2.0}", "n": 1265, "h1": -0.14, "h2": -0.137, "avg": -0.139}, {"fam": "Opening-range breakout", "cfg": "{\"active_h\": 3.0, \"or_min\": 15, \"sl\": \"mid\", \"tp_mult\": 2.0}", "n": 1265, "h1": -0.221, "h2": -0.141, "avg": -0.18}, {"fam": "Opening-range breakout", "cfg": "{\"active_h\": 3.0, \"or_min\": 15, \"sl\": \"edge\", \"tp_mult\": 0}", "n": 1265, "h1": -0.09, "h2": -0.14, "avg": -0.116}, {"fam": "Opening-range breakout", "cfg": "{\"active_h\": 3.0, \"or_min\": 15, \"sl\": \"mid\", \"tp_mult\": 0}", "n": 1265, "h1": -0.073, "h2": -0.168, "avg": -0.122}, {"fam": "Opening-range breakout", "cfg": "{\"active_h\": 3.0, \"or_min\": 30, \"sl\": \"edge\", \"tp_mult\": 1.0}", "n": 1155, "h1": -0.063, "h2": -0.079, "avg": -0.071}, {"fam": "Opening-range breakout", "cfg": "{\"active_h\": 3.0, \"or_min\": 30, \"sl\": \"mid\", \"tp_mult\": 1.0}", "n": 1155, "h1": -0.075, "h2": -0.094, "avg": -0.085}, {"fam": "Opening-range breakout", "cfg": "{\"active_h\": 3.0, \"or_min\": 30, \"sl\": \"mid\", \"tp_mult\": 2.0}", "n": 1155, "h1": -0.084, "h2": -0.098, "avg": -0.091}, {"fam": "Opening-range breakout", "cfg": "{\"active_h\": 3.0, \"or_min\": 30, \"sl\": \"edge\", \"tp_mult\": 0}", "n": 1155, "h1": -0.011, "h2": -0.152, "avg": -0.082}, {"fam": "Opening-range breakout", "cfg": "{\"active_h\": 3.0, \"or_min\": 30, \"sl\": \"mid\", \"tp_mult\": 0}", "n": 1155, "h1": 0.041, "h2": -0.239, "avg": -0.101}, {"fam": "Opening-range breakout", "cfg": "{\"active_h\": 3.0, \"or_min\": 60, \"sl\": \"edge\", \"tp_mult\": 1.0}", "n": 907, "h1": -0.052, "h2": -0.099, "avg": -0.074}, {"fam": "Opening-range breakout", "cfg": "{\"active_h\": 3.0, \"or_min\": 60, \"sl\": \"mid\", \"tp_mult\": 1.0}", "n": 907, "h1": -0.101, "h2": -0.13, "avg": -0.114}, {"fam": "Opening-range breakout", "cfg": "{\"active_h\": 3.0, \"or_min\": 60, \"sl\": \"edge\", \"tp_mult\": 2.0}", "n": 907, "h1": -0.045, "h2": -0.135, "avg": -0.087}, {"fam": "Opening-range breakout", "cfg": "{\"active_h\": 3.0, \"or_min\": 60, \"sl\": \"mid\", \"tp_mult\": 2.0}", "n": 907, "h1": -0.094, "h2": -0.154, "avg": -0.122}, {"fam": "Opening-range breakout", "cfg": "{\"active_h\": 3.0, \"or_min\": 60, \"sl\": \"edge\", \"tp_mult\": 0}", "n": 907, "h1": -0.022, "h2": -0.137, "avg": -0.075}, {"fam": "Opening-range breakout", "cfg": "{\"active_h\": 3.0, \"or_min\": 60, \"sl\": \"mid\", \"tp_mult\": 0}", "n": 907, "h1": -0.026, "h2": -0.214, "avg": -0.113}, {"fam": "Noise-area momentum", "cfg": "{\"hard_sl_atr\": 0.5, \"lookback\": 14, \"use_vwap\": true, \"vm\": 1.0}", "n": 717, "h1": -0.003, "h2": -0.071, "avg": -0.04}, {"fam": "Noise-area momentum", "cfg": "{\"hard_sl_atr\": 0.35, \"lookback\": 14, \"use_vwap\": true, \"vm\": 0.8}", "n": 816, "h1": -0.026, "h2": -0.127, "avg": -0.08}, {"fam": "Noise-area momentum", "cfg": "{\"hard_sl_atr\": 0.5, \"lookback\": 14, \"use_vwap\": true, \"vm\": 0.8}", "n": 816, "h1": -0.015, "h2": -0.077, "avg": -0.048}, {"fam": "Noise-area momentum", "cfg": "{\"hard_sl_atr\": 0.75, \"lookback\": 14, \"use_vwap\": true, \"vm\": 0.8}", "n": 816, "h1": -0.009, "h2": -0.049, "avg": -0.031}, {"fam": "Noise-area momentum", "cfg": "{\"hard_sl_atr\": 0.35, \"lookback\": 14, \"use_vwap\": false, \"vm\": 0.8}", "n": 816, "h1": -0.016, "h2": -0.11, "avg": -0.067}, {"fam": "Noise-area momentum", "cfg": "{\"hard_sl_atr\": 0.5, \"lookback\": 14, \"use_vwap\": false, \"vm\": 0.8}", "n": 816, "h1": -0.007, "h2": -0.068, "avg": -0.04}, {"fam": "Noise-area momentum", "cfg": "{\"hard_sl_atr\": 0.75, \"lookback\": 14, \"use_vwap\": false, \"vm\": 0.8}", "n": 816, "h1": -0.004, "h2": -0.045, "avg": -0.026}, {"fam": "Noise-area momentum", "cfg": "{\"hard_sl_atr\": 0.35, \"lookback\": 14, \"use_vwap\": true, \"vm\": 1.0}", "n": 717, "h1": -0.009, "h2": -0.122, "avg": -0.07}, {"fam": "Noise-area momentum", "cfg": "{\"hard_sl_atr\": 0.75, \"lookback\": 14, \"use_vwap\": true, \"vm\": 1.0}", "n": 717, "h1": -0.001, "h2": -0.044, "avg": -0.024}, {"fam": "Noise-area momentum", "cfg": "{\"hard_sl_atr\": 0.35, \"lookback\": 14, \"use_vwap\": false, \"vm\": 1.0}", "n": 717, "h1": -0.007, "h2": -0.112, "avg": -0.064}, {"fam": "Noise-area momentum", "cfg": "{\"hard_sl_atr\": 0.5, \"lookback\": 14, \"use_vwap\": false, \"vm\": 1.0}", "n": 717, "h1": -0.001, "h2": -0.067, "avg": -0.036}, {"fam": "Noise-area momentum", "cfg": "{\"hard_sl_atr\": 0.75, \"lookback\": 14, \"use_vwap\": false, \"vm\": 1.0}", "n": 717, "h1": -0.0, "h2": -0.044, "avg": -0.023}, {"fam": "Noise-area momentum", "cfg": "{\"hard_sl_atr\": 0.35, \"lookback\": 14, \"use_vwap\": true, \"vm\": 1.25}", "n": 584, "h1": -0.002, "h2": -0.13, "avg": -0.071}, {"fam": "Noise-area momentum", "cfg": "{\"hard_sl_atr\": 0.5, \"lookback\": 14, \"use_vwap\": true, \"vm\": 1.25}", "n": 584, "h1": 0.003, "h2": -0.08, "avg": -0.042}, {"fam": "Noise-area momentum", "cfg": "{\"hard_sl_atr\": 0.75, \"lookback\": 14, \"use_vwap\": true, \"vm\": 1.25}", "n": 584, "h1": 0.003, "h2": -0.05, "avg": -0.025}, {"fam": "Noise-area momentum", "cfg": "{\"hard_sl_atr\": 0.35, \"lookback\": 14, \"use_vwap\": false, \"vm\": 1.25}", "n": 584, "h1": -0.01, "h2": -0.114, "avg": -0.066}, {"fam": "Noise-area momentum", "cfg": "{\"hard_sl_atr\": 0.5, \"lookback\": 14, \"use_vwap\": false, \"vm\": 1.25}", "n": 584, "h1": -0.002, "h2": -0.071, "avg": -0.039}, {"fam": "Noise-area momentum", "cfg": "{\"hard_sl_atr\": 0.75, \"lookback\": 14, \"use_vwap\": false, \"vm\": 1.25}", "n": 584, "h1": -0.001, "h2": -0.046, "avg": -0.025}, {"fam": "Noise-area momentum", "cfg": "{\"hard_sl_atr\": 0.35, \"lookback\": 14, \"use_vwap\": true, \"vm\": 1.5}", "n": 461, "h1": -0.02, "h2": -0.121, "avg": -0.076}, {"fam": "Noise-area momentum", "cfg": "{\"hard_sl_atr\": 0.5, \"lookback\": 14, \"use_vwap\": true, \"vm\": 1.5}", "n": 461, "h1": -0.005, "h2": -0.069, "avg": -0.04}, {"fam": "Noise-area momentum", "cfg": "{\"hard_sl_atr\": 0.75, \"lookback\": 14, \"use_vwap\": true, \"vm\": 1.5}", "n": 461, "h1": -0.003, "h2": -0.042, "avg": -0.024}, {"fam": "Noise-area momentum", "cfg": "{\"hard_sl_atr\": 0.35, \"lookback\": 14, \"use_vwap\": false, \"vm\": 1.5}", "n": 461, "h1": -0.024, "h2": -0.109, "avg": -0.071}, {"fam": "Noise-area momentum", "cfg": "{\"hard_sl_atr\": 0.5, \"lookback\": 14, \"use_vwap\": false, \"vm\": 1.5}", "n": 461, "h1": -0.008, "h2": -0.06, "avg": -0.036}, {"fam": "Noise-area momentum", "cfg": "{\"hard_sl_atr\": 0.75, \"lookback\": 14, \"use_vwap\": false, \"vm\": 1.5}", "n": 461, "h1": -0.005, "h2": -0.036, "avg": -0.022}, {"fam": "Opening-gap fade", "cfg": "{\"delay\": 0, \"gmax\": 0.6, \"gmin\": 0.15, \"sl_gap\": 1.0, \"target\": 1.0}", "n": 671, "h1": -0.025, "h2": 0.012, "avg": -0.005}, {"fam": "Opening-gap fade", "cfg": "{\"delay\": 0, \"gmax\": 0.5, \"gmin\": 0.1, \"sl_gap\": 0.75, \"target\": 0.5}", "n": 722, "h1": -0.072, "h2": -0.027, "avg": -0.048}, {"fam": "Opening-gap fade", "cfg": "{\"delay\": 15, \"gmax\": 0.5, \"gmin\": 0.1, \"sl_gap\": 0.75, \"target\": 0.5}", "n": 693, "h1": -0.054, "h2": -0.059, "avg": -0.057}, {"fam": "Opening-gap fade", "cfg": "{\"delay\": 0, \"gmax\": 0.5, \"gmin\": 0.1, \"sl_gap\": 1.5, \"target\": 0.5}", "n": 722, "h1": -0.008, "h2": 0.0, "avg": -0.004}, {"fam": "Opening-gap fade", "cfg": "{\"delay\": 15, \"gmax\": 0.5, \"gmin\": 0.1, \"sl_gap\": 1.5, \"target\": 0.5}", "n": 693, "h1": 0.001, "h2": -0.054, "avg": -0.027}, {"fam": "Opening-gap fade", "cfg": "{\"delay\": 0, \"gmax\": 0.5, \"gmin\": 0.1, \"sl_gap\": 0.75, \"target\": 1.0}", "n": 722, "h1": -0.075, "h2": -0.004, "avg": -0.038}, {"fam": "Opening-gap fade", "cfg": "{\"delay\": 15, \"gmax\": 0.5, \"gmin\": 0.1, \"sl_gap\": 0.75, \"target\": 1.0}", "n": 693, "h1": -0.028, "h2": -0.111, "avg": -0.071}, {"fam": "Opening-gap fade", "cfg": "{\"delay\": 0, \"gmax\": 0.5, \"gmin\": 0.1, \"sl_gap\": 1.5, \"target\": 1.0}", "n": 722, "h1": 0.009, "h2": 0.003, "avg": 0.006}, {"fam": "Opening-gap fade", "cfg": "{\"delay\": 15, \"gmax\": 0.5, \"gmin\": 0.1, \"sl_gap\": 1.5, \"target\": 1.0}", "n": 693, "h1": -0.01, "h2": -0.096, "avg": -0.054}, {"fam": "Opening-gap fade", "cfg": "{\"delay\": 0, \"gmax\": 1.0, \"gmin\": 0.1, \"sl_gap\": 0.75, \"target\": 0.5}", "n": 973, "h1": -0.066, "h2": -0.032, "avg": -0.048}, {"fam": "Opening-gap fade", "cfg": "{\"delay\": 15, \"gmax\": 1.0, \"gmin\": 0.1, \"sl_gap\": 0.75, \"target\": 0.5}", "n": 978, "h1": -0.049, "h2": -0.05, "avg": -0.05}, {"fam": "Opening-gap fade", "cfg": "{\"delay\": 0, \"gmax\": 1.0, \"gmin\": 0.1, \"sl_gap\": 1.5, \"target\": 0.5}", "n": 973, "h1": -0.011, "h2": -0.006, "avg": -0.008}, {"fam": "Opening-gap fade", "cfg": "{\"delay\": 15, \"gmax\": 1.0, \"gmin\": 0.1, \"sl_gap\": 1.5, \"target\": 0.5}", "n": 978, "h1": -0.006, "h2": -0.043, "avg": -0.026}, {"fam": "Opening-gap fade", "cfg": "{\"delay\": 0, \"gmax\": 1.0, \"gmin\": 0.1, \"sl_gap\": 0.75, \"target\": 1.0}", "n": 973, "h1": -0.061, "h2": -0.028, "avg": -0.043}, {"fam": "Opening-gap fade", "cfg": "{\"delay\": 15, \"gmax\": 1.0, \"gmin\": 0.1, \"sl_gap\": 0.75, \"target\": 1.0}", "n": 978, "h1": -0.032, "h2": -0.092, "avg": -0.063}, {"fam": "Opening-gap fade", "cfg": "{\"delay\": 0, \"gmax\": 1.0, \"gmin\": 0.1, \"sl_gap\": 1.5, \"target\": 1.0}", "n": 973, "h1": 0.006, "h2": -0.008, "avg": -0.002}, {"fam": "Opening-gap fade", "cfg": "{\"delay\": 15, \"gmax\": 1.0, \"gmin\": 0.1, \"sl_gap\": 1.5, \"target\": 1.0}", "n": 978, "h1": -0.015, "h2": -0.075, "avg": -0.047}, {"fam": "Opening-gap fade", "cfg": "{\"delay\": 0, \"gmax\": 0.5, \"gmin\": 0.2, \"sl_gap\": 0.75, \"target\": 0.5}", "n": 471, "h1": -0.032, "h2": 0.004, "avg": -0.012}, {"fam": "Opening-gap fade", "cfg": "{\"delay\": 15, \"gmax\": 0.5, \"gmin\": 0.2, \"sl_gap\": 0.75, \"target\": 0.5}", "n": 468, "h1": -0.058, "h2": -0.052, "avg": -0.055}, {"fam": "Opening-gap fade", "cfg": "{\"delay\": 0, \"gmax\": 0.5, \"gmin\": 0.2, \"sl_gap\": 1.5, \"target\": 0.5}", "n": 471, "h1": 0.031, "h2": 0.007, "avg": 0.018}, {"fam": "Opening-gap fade", "cfg": "{\"delay\": 15, \"gmax\": 0.5, \"gmin\": 0.2, \"sl_gap\": 1.5, \"target\": 0.5}", "n": 468, "h1": -0.026, "h2": -0.036, "avg": -0.031}, {"fam": "Opening-gap fade", "cfg": "{\"delay\": 0, \"gmax\": 0.5, \"gmin\": 0.2, \"sl_gap\": 0.75, \"target\": 1.0}", "n": 471, "h1": -0.025, "h2": 0.029, "avg": 0.004}, {"fam": "Opening-gap fade", "cfg": "{\"delay\": 15, \"gmax\": 0.5, \"gmin\": 0.2, \"sl_gap\": 0.75, \"target\": 1.0}", "n": 468, "h1": -0.037, "h2": -0.115, "avg": -0.076}, {"fam": "Opening-gap fade", "cfg": "{\"delay\": 0, \"gmax\": 0.5, \"gmin\": 0.2, \"sl_gap\": 1.5, \"target\": 1.0}", "n": 471, "h1": 0.024, "h2": 0.018, "avg": 0.021}, {"fam": "Opening-gap fade", "cfg": "{\"delay\": 15, \"gmax\": 0.5, \"gmin\": 0.2, \"sl_gap\": 1.5, \"target\": 1.0}", "n": 468, "h1": -0.033, "h2": -0.071, "avg": -0.052}, {"fam": "Opening-gap fade", "cfg": "{\"delay\": 0, \"gmax\": 1.0, \"gmin\": 0.2, \"sl_gap\": 0.75, \"target\": 0.5}", "n": 722, "h1": -0.037, "h2": -0.014, "avg": -0.024}, {"fam": "Opening-gap fade", "cfg": "{\"delay\": 15, \"gmax\": 1.0, \"gmin\": 0.2, \"sl_gap\": 0.75, \"target\": 0.5}", "n": 753, "h1": -0.05, "h2": -0.043, "avg": -0.047}, {"fam": "Opening-gap fade", "cfg": "{\"delay\": 0, \"gmax\": 1.0, \"gmin\": 0.2, \"sl_gap\": 1.5, \"target\": 0.5}", "n": 722, "h1": 0.014, "h2": -0.003, "avg": 0.004}, {"fam": "Opening-gap fade", "cfg": "{\"delay\": 15, \"gmax\": 1.0, \"gmin\": 0.2, \"sl_gap\": 1.5, \"target\": 0.5}", "n": 753, "h1": -0.026, "h2": -0.029, "avg": -0.028}, {"fam": "Opening-gap fade", "cfg": "{\"delay\": 0, \"gmax\": 1.0, \"gmin\": 0.2, \"sl_gap\": 0.75, \"target\": 1.0}", "n": 722, "h1": -0.022, "h2": -0.013, "avg": -0.017}, {"fam": "Opening-gap fade", "cfg": "{\"delay\": 15, \"gmax\": 1.0, \"gmin\": 0.2, \"sl_gap\": 0.75, \"target\": 1.0}", "n": 753, "h1": -0.039, "h2": -0.088, "avg": -0.065}, {"fam": "Opening-gap fade", "cfg": "{\"delay\": 0, \"gmax\": 1.0, \"gmin\": 0.2, \"sl_gap\": 1.5, \"target\": 1.0}", "n": 722, "h1": 0.014, "h2": -0.002, "avg": 0.005}, {"fam": "Opening-gap fade", "cfg": "{\"delay\": 15, \"gmax\": 1.0, \"gmin\": 0.2, \"sl_gap\": 1.5, \"target\": 1.0}", "n": 753, "h1": -0.032, "h2": -0.054, "avg": -0.043}, {"fam": "Prior-day high/low sweep", "cfg": "{\"close_back\": \"inside\", \"tf\": 15, \"tp_r\": 2.0}", "n": 1511, "h1": -0.184, "h2": -0.233, "avg": -0.21}, {"fam": "Prior-day high/low sweep", "cfg": "{\"close_back\": \"inside\", \"tf\": 15, \"tp_r\": 1.0}", "n": 1522, "h1": -0.16, "h2": -0.218, "avg": -0.191}, {"fam": "Prior-day high/low sweep", "cfg": "{\"close_back\": \"strong\", \"tf\": 15, \"tp_r\": 1.0}", "n": 1418, "h1": -0.142, "h2": -0.212, "avg": -0.18}, {"fam": "Prior-day high/low sweep", "cfg": "{\"close_back\": \"strong\", \"tf\": 15, \"tp_r\": 2.0}", "n": 1406, "h1": -0.168, "h2": -0.243, "avg": -0.209}, {"fam": "Prior-day high/low sweep", "cfg": "{\"close_back\": \"inside\", \"tf\": 15, \"tp_r\": 3.0}", "n": 1497, "h1": -0.181, "h2": -0.293, "avg": -0.242}, {"fam": "Prior-day high/low sweep", "cfg": "{\"close_back\": \"strong\", \"tf\": 15, \"tp_r\": 3.0}", "n": 1397, "h1": -0.161, "h2": -0.331, "avg": -0.253}, {"fam": "Prior-day high/low sweep", "cfg": "{\"close_back\": \"inside\", \"tf\": 60, \"tp_r\": 1.0}", "n": 1281, "h1": -0.103, "h2": -0.183, "avg": -0.147}, {"fam": "Prior-day high/low sweep", "cfg": "{\"close_back\": \"strong\", \"tf\": 60, \"tp_r\": 1.0}", "n": 1104, "h1": -0.08, "h2": -0.194, "avg": -0.141}, {"fam": "Prior-day high/low sweep", "cfg": "{\"close_back\": \"inside\", \"tf\": 60, \"tp_r\": 2.0}", "n": 1268, "h1": -0.129, "h2": -0.26, "avg": -0.2}, {"fam": "Prior-day high/low sweep", "cfg": "{\"close_back\": \"strong\", \"tf\": 60, \"tp_r\": 2.0}", "n": 1095, "h1": -0.065, "h2": -0.262, "avg": -0.172}, {"fam": "Prior-day high/low sweep", "cfg": "{\"close_back\": \"inside\", \"tf\": 60, \"tp_r\": 3.0}", "n": 1254, "h1": -0.139, "h2": -0.248, "avg": -0.199}, {"fam": "Prior-day high/low sweep", "cfg": "{\"close_back\": \"strong\", \"tf\": 60, \"tp_r\": 3.0}", "n": 1087, "h1": -0.051, "h2": -0.255, "avg": -0.162}, {"fam": "Trend pullback", "cfg": "{\"don\": 20, \"max_hold_h\": 72, \"pb_atr\": 0.5, \"tp_r\": 2.0}", "n": 784, "h1": -0.034, "h2": -0.065, "avg": -0.05}, {"fam": "Trend pullback", "cfg": "{\"don\": 20, \"max_hold_h\": 24, \"pb_atr\": 0.35, \"tp_r\": 1.5}", "n": 1126, "h1": -0.059, "h2": 0.002, "avg": -0.027}, {"fam": "Trend pullback", "cfg": "{\"don\": 20, \"max_hold_h\": 72, \"pb_atr\": 0.35, \"tp_r\": 1.5}", "n": 927, "h1": -0.099, "h2": -0.002, "avg": -0.048}, {"fam": "Trend pullback", "cfg": "{\"don\": 20, \"max_hold_h\": 24, \"pb_atr\": 0.35, \"tp_r\": 2.0}", "n": 1092, "h1": -0.055, "h2": -0.021, "avg": -0.038}, {"fam": "Trend pullback", "cfg": "{\"don\": 20, \"max_hold_h\": 72, \"pb_atr\": 0.35, \"tp_r\": 2.0}", "n": 865, "h1": -0.083, "h2": -0.052, "avg": -0.067}, {"fam": "Trend pullback", "cfg": "{\"don\": 20, \"max_hold_h\": 24, \"pb_atr\": 0.35, \"tp_r\": 3.0}", "n": 1077, "h1": -0.044, "h2": -0.039, "avg": -0.041}, {"fam": "Trend pullback", "cfg": "{\"don\": 20, \"max_hold_h\": 72, \"pb_atr\": 0.35, \"tp_r\": 3.0}", "n": 816, "h1": -0.05, "h2": -0.036, "avg": -0.043}, {"fam": "Trend pullback", "cfg": "{\"don\": 20, \"max_hold_h\": 24, \"pb_atr\": 0.5, \"tp_r\": 1.5}", "n": 1001, "h1": -0.044, "h2": -0.009, "avg": -0.026}, {"fam": "Trend pullback", "cfg": "{\"don\": 20, \"max_hold_h\": 72, \"pb_atr\": 0.5, \"tp_r\": 1.5}", "n": 832, "h1": -0.061, "h2": -0.009, "avg": -0.034}, {"fam": "Trend pullback", "cfg": "{\"don\": 20, \"max_hold_h\": 24, \"pb_atr\": 0.5, \"tp_r\": 2.0}", "n": 970, "h1": -0.03, "h2": -0.037, "avg": -0.033}, {"fam": "Trend pullback", "cfg": "{\"don\": 20, \"max_hold_h\": 24, \"pb_atr\": 0.5, \"tp_r\": 3.0}", "n": 956, "h1": -0.013, "h2": -0.057, "avg": -0.035}, {"fam": "Trend pullback", "cfg": "{\"don\": 20, \"max_hold_h\": 72, \"pb_atr\": 0.5, \"tp_r\": 3.0}", "n": 744, "h1": 0.011, "h2": -0.062, "avg": -0.026}, {"fam": "Trend pullback", "cfg": "{\"don\": 20, \"max_hold_h\": 24, \"pb_atr\": 0.75, \"tp_r\": 1.5}", "n": 766, "h1": 0.001, "h2": 0.009, "avg": 0.005}, {"fam": "Trend pullback", "cfg": "{\"don\": 20, \"max_hold_h\": 72, \"pb_atr\": 0.75, \"tp_r\": 1.5}", "n": 660, "h1": -0.011, "h2": 0.001, "avg": -0.005}, {"fam": "Trend pullback", "cfg": "{\"don\": 20, \"max_hold_h\": 24, \"pb_atr\": 0.75, \"tp_r\": 2.0}", "n": 744, "h1": 0.015, "h2": -0.04, "avg": -0.013}, {"fam": "Trend pullback", "cfg": "{\"don\": 20, \"max_hold_h\": 72, \"pb_atr\": 0.75, \"tp_r\": 2.0}", "n": 625, "h1": 0.003, "h2": -0.061, "avg": -0.03}, {"fam": "Trend pullback", "cfg": "{\"don\": 20, \"max_hold_h\": 24, \"pb_atr\": 0.75, \"tp_r\": 3.0}", "n": 736, "h1": 0.023, "h2": -0.043, "avg": -0.011}, {"fam": "Trend pullback", "cfg": "{\"don\": 20, \"max_hold_h\": 72, \"pb_atr\": 0.75, \"tp_r\": 3.0}", "n": 602, "h1": 0.034, "h2": 0.027, "avg": 0.03}, {"fam": "Asian-session range fade", "cfg": "{\"lookback\": 8, \"sl_mult\": 1.0}", "n": 1792, "h1": -0.115, "h2": -0.161, "avg": -0.138}, {"fam": "Asian-session range fade", "cfg": "{\"lookback\": 8, \"sl_mult\": 0.5, \"start\": \"19:30\"}", "n": 1837, "h1": -0.232, "h2": -0.356, "avg": -0.296}, {"fam": "Asian-session range fade", "cfg": "{\"lookback\": 8, \"sl_mult\": 0.5, \"start\": \"18:30\"}", "n": 1896, "h1": -0.27, "h2": -0.357, "avg": -0.314}, {"fam": "Asian-session range fade", "cfg": "{\"lookback\": 8, \"sl_mult\": 1.0, \"start\": \"19:30\"}", "n": 1792, "h1": -0.115, "h2": -0.161, "avg": -0.138}, {"fam": "Asian-session range fade", "cfg": "{\"lookback\": 8, \"sl_mult\": 1.0, \"start\": \"18:30\"}", "n": 1842, "h1": -0.142, "h2": -0.173, "avg": -0.158}, {"fam": "Asian-session range fade", "cfg": "{\"lookback\": 8, \"sl_mult\": 1.5, \"start\": \"19:30\"}", "n": 1763, "h1": -0.063, "h2": -0.11, "avg": -0.087}, {"fam": "Asian-session range fade", "cfg": "{\"lookback\": 8, \"sl_mult\": 1.5, \"start\": \"18:30\"}", "n": 1797, "h1": -0.082, "h2": -0.131, "avg": -0.107}, {"fam": "Asian-session range fade", "cfg": "{\"lookback\": 16, \"sl_mult\": 0.5, \"start\": \"19:30\"}", "n": 1273, "h1": -0.225, "h2": -0.24, "avg": -0.233}, {"fam": "Asian-session range fade", "cfg": "{\"lookback\": 16, \"sl_mult\": 0.5, \"start\": \"18:30\"}", "n": 1343, "h1": -0.266, "h2": -0.249, "avg": -0.257}, {"fam": "Asian-session range fade", "cfg": "{\"lookback\": 16, \"sl_mult\": 1.0, \"start\": \"19:30\"}", "n": 1268, "h1": -0.099, "h2": -0.136, "avg": -0.118}, {"fam": "Asian-session range fade", "cfg": "{\"lookback\": 16, \"sl_mult\": 1.0, \"start\": \"18:30\"}", "n": 1332, "h1": -0.126, "h2": -0.135, "avg": -0.13}, {"fam": "Asian-session range fade", "cfg": "{\"lookback\": 16, \"sl_mult\": 1.5, \"start\": \"19:30\"}", "n": 1266, "h1": -0.05, "h2": -0.087, "avg": -0.069}, {"fam": "Asian-session range fade", "cfg": "{\"lookback\": 16, \"sl_mult\": 1.5, \"start\": \"18:30\"}", "n": 1328, "h1": -0.063, "h2": -0.09, "avg": -0.077}, {"fam": "Tokyo-fix flow (gotobi)", "cfg": "{\"days\": \"gotobi\", \"entry\": \"08:00\", \"exit_at\": \"09:55\"}", "n": 80, "h1": 0.082, "h2": 0.16, "avg": 0.126}, {"fam": "Tokyo-fix flow (gotobi)", "cfg": "{\"days\": \"all\", \"entry\": \"08:00\", \"exit_at\": \"09:55\"}", "n": 270, "h1": 0.055, "h2": -0.029, "avg": 0.006}, {"fam": "Tokyo-fix flow (gotobi)", "cfg": "{\"days\": \"other\", \"entry\": \"08:00\", \"exit_at\": \"09:55\"}", "n": 190, "h1": 0.044, "h2": -0.107, "avg": -0.045}, {"fam": "Tokyo-fix flow (gotobi)", "cfg": "{\"days\": \"gotobi\", \"entry\": \"09:00\", \"exit_at\": \"09:55\"}", "n": 92, "h1": -0.078, "h2": 0.005, "avg": -0.037}, {"fam": "Tokyo-fix flow (gotobi)", "cfg": "{\"days\": \"all\", \"entry\": \"09:00\", \"exit_at\": \"09:55\"}", "n": 306, "h1": -0.038, "h2": -0.035, "avg": -0.036}, {"fam": "Tokyo-fix flow (gotobi)", "cfg": "{\"days\": \"other\", \"entry\": \"09:00\", \"exit_at\": \"09:55\"}", "n": 214, "h1": -0.019, "h2": -0.051, "avg": -0.036}, {"fam": "US data-release shock", "cfg": "{\"exit_at\": \"12:00\", \"k\": 2.5, \"mode\": \"follow\", \"sl\": \"mid\", \"slot\": \"08:30\", \"tp_r\": 2.0}", "n": 107, "h1": -0.535, "h2": -0.394, "avg": -0.437}, {"fam": "US data-release shock", "cfg": "{\"exit_at\": \"12:00\", \"k\": 2.0, \"mode\": \"follow\", \"sl\": \"mid\", \"slot\": \"08:30\", \"tp_r\": 1.0}", "n": 160, "h1": -0.256, "h2": -0.243, "avg": -0.248}, {"fam": "US data-release shock", "cfg": "{\"exit_at\": \"12:00\", \"k\": 2.0, \"mode\": \"fade\", \"sl\": \"mid\", \"slot\": \"08:30\", \"tp_r\": 1.0}", "n": 160, "h1": -0.221, "h2": -0.034, "avg": -0.104}, {"fam": "US data-release shock", "cfg": "{\"exit_at\": \"12:00\", \"k\": 2.0, \"mode\": \"follow\", \"sl\": \"mid\", \"slot\": \"08:30\", \"tp_r\": 2.0}", "n": 160, "h1": -0.489, "h2": -0.248, "avg": -0.339}, {"fam": "US data-release shock", "cfg": "{\"exit_at\": \"12:00\", \"k\": 2.0, \"mode\": \"fade\", \"sl\": \"mid\", \"slot\": \"08:30\", \"tp_r\": 2.0}", "n": 160, "h1": -0.115, "h2": -0.027, "avg": -0.06}, {"fam": "US data-release shock", "cfg": "{\"exit_at\": \"12:00\", \"k\": 2.0, \"mode\": \"follow\", \"sl\": \"mid\", \"slot\": \"08:30\", \"tp_r\": 0}", "n": 160, "h1": -0.689, "h2": -0.307, "avg": -0.45}, {"fam": "US data-release shock", "cfg": "{\"exit_at\": \"12:00\", \"k\": 2.0, \"mode\": \"fade\", \"sl\": \"mid\", \"slot\": \"08:30\", \"tp_r\": 0}", "n": 160, "h1": -0.835, "h2": -0.277, "avg": -0.486}, {"fam": "US data-release shock", "cfg": "{\"exit_at\": \"12:00\", \"k\": 2.0, \"mode\": \"follow\", \"sl\": \"ext\", \"slot\": \"08:30\", \"tp_r\": 1.0}", "n": 160, "h1": -0.209, "h2": -0.017, "avg": -0.089}, {"fam": "US data-release shock", "cfg": "{\"exit_at\": \"12:00\", \"k\": 2.0, \"mode\": \"fade\", \"sl\": \"ext\", \"slot\": \"08:30\", \"tp_r\": 1.0}", "n": 160, "h1": -0.221, "h2": -0.034, "avg": -0.104}, {"fam": "US data-release shock", "cfg": "{\"exit_at\": \"12:00\", \"k\": 2.0, \"mode\": \"follow\", \"sl\": \"ext\", \"slot\": \"08:30\", \"tp_r\": 2.0}", "n": 160, "h1": -0.311, "h2": -0.045, "avg": -0.145}, {"fam": "US data-release shock", "cfg": "{\"exit_at\": \"12:00\", \"k\": 2.0, \"mode\": \"fade\", \"sl\": \"ext\", \"slot\": \"08:30\", \"tp_r\": 2.0}", "n": 160, "h1": -0.115, "h2": -0.027, "avg": -0.06}, {"fam": "US data-release shock", "cfg": "{\"exit_at\": \"12:00\", \"k\": 2.0, \"mode\": \"follow\", \"sl\": \"ext\", \"slot\": \"08:30\", \"tp_r\": 0}", "n": 160, "h1": -0.355, "h2": -0.085, "avg": -0.186}, {"fam": "US data-release shock", "cfg": "{\"exit_at\": \"12:00\", \"k\": 2.0, \"mode\": \"fade\", \"sl\": \"ext\", \"slot\": \"08:30\", \"tp_r\": 0}", "n": 160, "h1": -0.835, "h2": -0.277, "avg": -0.486}, {"fam": "US data-release shock", "cfg": "{\"exit_at\": \"12:00\", \"k\": 3.0, \"mode\": \"follow\", \"sl\": \"mid\", \"slot\": \"08:30\", \"tp_r\": 1.0}", "n": 79, "h1": -0.401, "h2": -0.424, "avg": -0.418}, {"fam": "US data-release shock", "cfg": "{\"exit_at\": \"12:00\", \"k\": 3.0, \"mode\": \"fade\", \"sl\": \"mid\", \"slot\": \"08:30\", \"tp_r\": 1.0}", "n": 79, "h1": -0.232, "h2": 0.288, "avg": 0.156}, {"fam": "US data-release shock", "cfg": "{\"exit_at\": \"12:00\", \"k\": 3.0, \"mode\": \"follow\", \"sl\": \"mid\", \"slot\": \"08:30\", \"tp_r\": 2.0}", "n": 79, "h1": -0.242, "h2": -0.529, "avg": -0.457}, {"fam": "US data-release shock", "cfg": "{\"exit_at\": \"12:00\", \"k\": 3.0, \"mode\": \"fade\", \"sl\": \"mid\", \"slot\": \"08:30\", \"tp_r\": 2.0}", "n": 79, "h1": -0.017, "h2": 0.252, "avg": 0.184}, {"fam": "US data-release shock", "cfg": "{\"exit_at\": \"12:00\", \"k\": 3.0, \"mode\": \"follow\", \"sl\": \"mid\", \"slot\": \"08:30\", \"tp_r\": 0}", "n": 79, "h1": -0.501, "h2": -0.481, "avg": -0.486}, {"fam": "US data-release shock", "cfg": "{\"exit_at\": \"12:00\", \"k\": 3.0, \"mode\": \"fade\", \"sl\": \"mid\", \"slot\": \"08:30\", \"tp_r\": 0}", "n": 79, "h1": -0.718, "h2": 0.003, "avg": -0.179}, {"fam": "US data-release shock", "cfg": "{\"exit_at\": \"12:00\", \"k\": 3.0, \"mode\": \"follow\", \"sl\": \"ext\", \"slot\": \"08:30\", \"tp_r\": 1.0}", "n": 79, "h1": -0.106, "h2": -0.109, "avg": -0.108}, {"fam": "US data-release shock", "cfg": "{\"exit_at\": \"12:00\", \"k\": 3.0, \"mode\": \"fade\", \"sl\": \"ext\", \"slot\": \"08:30\", \"tp_r\": 1.0}", "n": 79, "h1": -0.232, "h2": 0.288, "avg": 0.156}, {"fam": "US data-release shock", "cfg": "{\"exit_at\": \"12:00\", \"k\": 3.0, \"mode\": \"follow\", \"sl\": \"ext\", \"slot\": \"08:30\", \"tp_r\": 2.0}", "n": 79, "h1": -0.336, "h2": -0.146, "avg": -0.194}, {"fam": "US data-release shock", "cfg": "{\"exit_at\": \"12:00\", \"k\": 3.0, \"mode\": \"fade\", \"sl\": \"ext\", \"slot\": \"08:30\", \"tp_r\": 2.0}", "n": 79, "h1": -0.017, "h2": 0.252, "avg": 0.184}, {"fam": "US data-release shock", "cfg": "{\"exit_at\": \"12:00\", \"k\": 3.0, \"mode\": \"follow\", \"sl\": \"ext\", \"slot\": \"08:30\", \"tp_r\": 0}", "n": 79, "h1": -0.418, "h2": -0.174, "avg": -0.236}, {"fam": "US data-release shock", "cfg": "{\"exit_at\": \"12:00\", \"k\": 3.0, \"mode\": \"fade\", \"sl\": \"ext\", \"slot\": \"08:30\", \"tp_r\": 0}", "n": 79, "h1": -0.718, "h2": 0.003, "avg": -0.179}, {"fam": "Home-hours seasonality", "cfg": "{\"leg\": \"europe\", \"sl_atr\": 0.4}", "n": 495, "h1": -0.102, "h2": -0.019, "avg": -0.059}, {"fam": "Home-hours seasonality", "cfg": "{\"leg\": \"europe\", \"sl_atr\": 0.3}", "n": 495, "h1": -0.123, "h2": 0.015, "avg": -0.052}, {"fam": "Home-hours seasonality", "cfg": "{\"leg\": \"europe\", \"sl_atr\": 0.6}", "n": 495, "h1": -0.061, "h2": 0.014, "avg": -0.022}, {"fam": "Home-hours seasonality", "cfg": "{\"leg\": \"us\", \"sl_atr\": 0.3}", "n": 495, "h1": -0.074, "h2": -0.226, "avg": -0.153}, {"fam": "Home-hours seasonality", "cfg": "{\"leg\": \"us\", \"sl_atr\": 0.6}", "n": 495, "h1": -0.039, "h2": -0.132, "avg": -0.087}, {"fam": "NR4 inside-bar breakout", "cfg": "{\"inside\": true, \"nr\": 4, \"tf\": \"4h\", \"tp_mult\": 2.0}", "n": 1261, "h1": -0.132, "h2": -0.101, "avg": -0.116}, {"fam": "NR4 inside-bar breakout", "cfg": "{\"inside\": true, \"nr\": 4, \"tf\": \"1h\", \"tp_mult\": 1.0}", "n": 3989, "h1": -0.204, "h2": -0.248, "avg": -0.227}, {"fam": "NR4 inside-bar breakout", "cfg": "{\"inside\": false, \"nr\": 4, \"tf\": \"1h\", \"tp_mult\": 1.0}", "n": 9137, "h1": -0.19, "h2": -0.222, "avg": -0.207}, {"fam": "NR4 inside-bar breakout", "cfg": "{\"inside\": true, \"nr\": 4, \"tf\": \"1h\", \"tp_mult\": 2.0}", "n": 3840, "h1": -0.194, "h2": -0.248, "avg": -0.222}, {"fam": "NR4 inside-bar breakout", "cfg": "{\"inside\": false, \"nr\": 4, \"tf\": \"1h\", \"tp_mult\": 2.0}", "n": 8320, "h1": -0.185, "h2": -0.215, "avg": -0.201}, {"fam": "NR4 inside-bar breakout", "cfg": "{\"inside\": true, \"nr\": 4, \"tf\": \"1h\", \"tp_mult\": 3.0}", "n": 3797, "h1": -0.143, "h2": -0.267, "avg": -0.207}, {"fam": "NR4 inside-bar breakout", "cfg": "{\"inside\": false, \"nr\": 4, \"tf\": \"1h\", \"tp_mult\": 3.0}", "n": 8082, "h1": -0.152, "h2": -0.221, "avg": -0.188}, {"fam": "NR4 inside-bar breakout", "cfg": "{\"inside\": true, \"nr\": 4, \"tf\": \"4h\", \"tp_mult\": 1.0}", "n": 1289, "h1": -0.097, "h2": -0.114, "avg": -0.106}, {"fam": "NR4 inside-bar breakout", "cfg": "{\"inside\": false, \"nr\": 4, \"tf\": \"4h\", \"tp_mult\": 1.0}", "n": 2562, "h1": -0.102, "h2": -0.171, "avg": -0.137}, {"fam": "NR4 inside-bar breakout", "cfg": "{\"inside\": false, \"nr\": 4, \"tf\": \"4h\", \"tp_mult\": 2.0}", "n": 2417, "h1": -0.096, "h2": -0.142, "avg": -0.119}, {"fam": "NR4 inside-bar breakout", "cfg": "{\"inside\": true, \"nr\": 4, \"tf\": \"4h\", \"tp_mult\": 3.0}", "n": 1247, "h1": -0.176, "h2": -0.105, "avg": -0.139}, {"fam": "NR4 inside-bar breakout", "cfg": "{\"inside\": false, \"nr\": 4, \"tf\": \"4h\", \"tp_mult\": 3.0}", "n": 2363, "h1": -0.106, "h2": -0.172, "avg": -0.139}, {"fam": "Last-half-hour momentum", "cfg": "{\"sig\": \"first\", \"sl_atr\": 0.25}", "n": 1294, "h1": -0.024, "h2": 0.0, "avg": -0.011}, {"fam": "Last-half-hour momentum", "cfg": "{\"min_move_atr\": 0.0, \"sig\": \"first\", \"sl_atr\": 0.15}", "n": 1294, "h1": -0.035, "h2": -0.024, "avg": -0.029}, {"fam": "Last-half-hour momentum", "cfg": "{\"min_move_atr\": 0.2, \"sig\": \"first\", \"sl_atr\": 0.15}", "n": 840, "h1": -0.04, "h2": -0.012, "avg": -0.025}, {"fam": "Last-half-hour momentum", "cfg": "{\"min_move_atr\": 0.0, \"sig\": \"first\", \"sl_atr\": 0.25}", "n": 1294, "h1": -0.024, "h2": 0.0, "avg": -0.011}, {"fam": "Last-half-hour momentum", "cfg": "{\"min_move_atr\": 0.2, \"sig\": \"first\", \"sl_atr\": 0.25}", "n": 840, "h1": -0.026, "h2": 0.009, "avg": -0.008}, {"fam": "Last-half-hour momentum", "cfg": "{\"min_move_atr\": 0.0, \"sig\": \"first\", \"sl_atr\": 0.4}", "n": 1294, "h1": -0.018, "h2": -0.001, "avg": -0.009}, {"fam": "Last-half-hour momentum", "cfg": "{\"min_move_atr\": 0.2, \"sig\": \"first\", \"sl_atr\": 0.4}", "n": 840, "h1": -0.02, "h2": 0.005, "avg": -0.007}, {"fam": "Last-half-hour momentum", "cfg": "{\"min_move_atr\": 0.0, \"sig\": \"penult\", \"sl_atr\": 0.15}", "n": 1286, "h1": -0.008, "h2": -0.149, "avg": -0.081}, {"fam": "Last-half-hour momentum", "cfg": "{\"min_move_atr\": 0.2, \"sig\": \"penult\", \"sl_atr\": 0.15}", "n": 80, "h1": 0.287, "h2": 0.303, "avg": 0.294}, {"fam": "Last-half-hour momentum", "cfg": "{\"min_move_atr\": 0.0, \"sig\": \"penult\", \"sl_atr\": 0.25}", "n": 1286, "h1": -0.005, "h2": -0.087, "avg": -0.047}, {"fam": "Last-half-hour momentum", "cfg": "{\"min_move_atr\": 0.2, \"sig\": \"penult\", \"sl_atr\": 0.25}", "n": 80, "h1": 0.183, "h2": 0.127, "avg": 0.157}, {"fam": "Last-half-hour momentum", "cfg": "{\"min_move_atr\": 0.0, \"sig\": \"penult\", \"sl_atr\": 0.4}", "n": 1286, "h1": -0.004, "h2": -0.056, "avg": -0.031}, {"fam": "Last-half-hour momentum", "cfg": "{\"min_move_atr\": 0.2, \"sig\": \"penult\", \"sl_atr\": 0.4}", "n": 80, "h1": 0.112, "h2": 0.047, "avg": 0.081}, {"fam": "Overnight drift", "cfg": "{\"skip_friday\": true, \"sl_atr\": 0.6}", "n": 1048, "h1": 0.029, "h2": -0.03, "avg": -0.001}, {"fam": "Overnight drift", "cfg": "{\"skip_friday\": true, \"sl_atr\": 0.4}", "n": 1048, "h1": 0.056, "h2": -0.034, "avg": 0.01}, {"fam": "Overnight drift", "cfg": "{\"skip_friday\": false, \"sl_atr\": 0.4}", "n": 1295, "h1": -0.041, "h2": -0.012, "avg": -0.026}, {"fam": "Overnight drift", "cfg": "{\"skip_friday\": false, \"sl_atr\": 0.6}", "n": 1295, "h1": -0.028, "h2": -0.019, "avg": -0.024}, {"fam": "Overnight drift", "cfg": "{\"skip_friday\": true, \"sl_atr\": 1.0}", "n": 1048, "h1": 0.027, "h2": -0.01, "avg": 0.008}, {"fam": "Overnight drift", "cfg": "{\"skip_friday\": false, \"sl_atr\": 1.0}", "n": 1295, "h1": -0.008, "h2": 0.001, "avg": -0.004}, {"fam": "4h Donchian breakout", "cfg": "{\"max_days\": 10, \"n\": 20, \"sl_atr\": 1.5, \"trail_atr\": 2.0}", "n": 419, "h1": -0.058, "h2": -0.095, "avg": -0.078}, {"fam": "4h Donchian breakout", "cfg": "{\"max_days\": 10, \"n\": 10, \"sl_atr\": 1.5, \"trail_atr\": 1.5}", "n": 557, "h1": -0.064, "h2": -0.091, "avg": -0.078}, {"fam": "4h Donchian breakout", "cfg": "{\"max_days\": 10, \"n\": 10, \"sl_atr\": 1.5, \"trail_atr\": 2.0}", "n": 460, "h1": -0.058, "h2": -0.071, "avg": -0.065}, {"fam": "4h Donchian breakout", "cfg": "{\"max_days\": 10, \"n\": 10, \"sl_atr\": 1.5, \"trail_atr\": 3.0}", "n": 436, "h1": -0.105, "h2": -0.03, "avg": -0.065}, {"fam": "4h Donchian breakout", "cfg": "{\"max_days\": 10, \"n\": 20, \"sl_atr\": 1.5, \"trail_atr\": 1.5}", "n": 491, "h1": -0.046, "h2": -0.099, "avg": -0.074}, {"fam": "4h Donchian breakout", "cfg": "{\"max_days\": 10, \"n\": 20, \"sl_atr\": 1.5, \"trail_atr\": 3.0}", "n": 401, "h1": -0.088, "h2": -0.082, "avg": -0.085}, {"fam": "4h Donchian breakout", "cfg": "{\"max_days\": 10, \"n\": 40, \"sl_atr\": 1.5, \"trail_atr\": 1.5}", "n": 400, "h1": -0.098, "h2": -0.081, "avg": -0.089}, {"fam": "4h Donchian breakout", "cfg": "{\"max_days\": 10, \"n\": 40, \"sl_atr\": 1.5, \"trail_atr\": 2.0}", "n": 353, "h1": -0.072, "h2": -0.056, "avg": -0.063}, {"fam": "4h Donchian breakout", "cfg": "{\"max_days\": 10, \"n\": 40, \"sl_atr\": 1.5, \"trail_atr\": 3.0}", "n": 345, "h1": -0.077, "h2": -0.072, "avg": -0.074}, {"fam": "Index dip-buy", "cfg": "{\"drop_atr\": 1.0, \"max_days\": 5, \"sl_atr\": 1.5, \"tp_atr\": 1.0}", "n": 142, "h1": 0.012, "h2": -0.035, "avg": -0.013}, {"fam": "Index dip-buy", "cfg": "{\"drop_atr\": 0.75, \"max_days\": 5, \"sl_atr\": 1.0, \"tp_atr\": 0.75}", "n": 208, "h1": 0.055, "h2": -0.076, "avg": -0.017}, {"fam": "Index dip-buy", "cfg": "{\"drop_atr\": 0.75, \"max_days\": 5, \"sl_atr\": 1.5, \"tp_atr\": 0.75}", "n": 179, "h1": 0.015, "h2": -0.099, "avg": -0.045}, {"fam": "Index dip-buy", "cfg": "{\"drop_atr\": 0.75, \"max_days\": 5, \"sl_atr\": 1.0, \"tp_atr\": 1.0}", "n": 195, "h1": 0.077, "h2": -0.135, "avg": -0.035}, {"fam": "Index dip-buy", "cfg": "{\"drop_atr\": 0.75, \"max_days\": 5, \"sl_atr\": 1.5, \"tp_atr\": 1.0}", "n": 170, "h1": 0.025, "h2": -0.096, "avg": -0.037}, {"fam": "Index dip-buy", "cfg": "{\"drop_atr\": 0.75, \"max_days\": 5, \"sl_atr\": 1.0, \"tp_atr\": 1.5}", "n": 186, "h1": 0.127, "h2": -0.141, "avg": -0.017}, {"fam": "Index dip-buy", "cfg": "{\"drop_atr\": 0.75, \"max_days\": 5, \"sl_atr\": 1.5, \"tp_atr\": 1.5}", "n": 164, "h1": 0.069, "h2": -0.118, "avg": -0.028}, {"fam": "Index dip-buy", "cfg": "{\"drop_atr\": 1.0, \"max_days\": 5, \"sl_atr\": 1.0, \"tp_atr\": 0.75}", "n": 167, "h1": 0.028, "h2": -0.015, "avg": 0.005}, {"fam": "Index dip-buy", "cfg": "{\"drop_atr\": 1.0, \"max_days\": 5, \"sl_atr\": 1.5, \"tp_atr\": 0.75}", "n": 150, "h1": -0.03, "h2": 0.027, "avg": 0.001}, {"fam": "Index dip-buy", "cfg": "{\"drop_atr\": 1.0, \"max_days\": 5, \"sl_atr\": 1.0, \"tp_atr\": 1.0}", "n": 159, "h1": 0.103, "h2": -0.087, "avg": 0.004}, {"fam": "Index dip-buy", "cfg": "{\"drop_atr\": 1.0, \"max_days\": 5, \"sl_atr\": 1.0, \"tp_atr\": 1.5}", "n": 153, "h1": 0.118, "h2": -0.12, "avg": -0.009}, {"fam": "Index dip-buy", "cfg": "{\"drop_atr\": 1.0, \"max_days\": 5, \"sl_atr\": 1.5, \"tp_atr\": 1.5}", "n": 138, "h1": 0.08, "h2": -0.082, "avg": -0.004}, {"fam": "Index dip-buy", "cfg": "{\"drop_atr\": 1.5, \"max_days\": 5, \"sl_atr\": 1.0, \"tp_atr\": 0.75}", "n": 91, "h1": 0.041, "h2": 0.103, "avg": 0.077}, {"fam": "Index dip-buy", "cfg": "{\"drop_atr\": 1.5, \"max_days\": 5, \"sl_atr\": 1.5, \"tp_atr\": 0.75}", "n": 82, "h1": 0.024, "h2": 0.08, "avg": 0.057}, {"fam": "Index dip-buy", "cfg": "{\"drop_atr\": 1.5, \"max_days\": 5, \"sl_atr\": 1.0, \"tp_atr\": 1.0}", "n": 85, "h1": 0.129, "h2": -0.055, "avg": 0.025}, {"fam": "Index dip-buy", "cfg": "{\"drop_atr\": 1.5, \"max_days\": 5, \"sl_atr\": 1.5, \"tp_atr\": 1.0}", "n": 77, "h1": 0.08, "h2": 0.0, "avg": 0.035}, {"fam": "Index dip-buy", "cfg": "{\"drop_atr\": 1.5, \"max_days\": 5, \"sl_atr\": 1.0, \"tp_atr\": 1.5}", "n": 83, "h1": 0.192, "h2": -0.029, "avg": 0.064}, {"fam": "Index dip-buy", "cfg": "{\"drop_atr\": 1.5, \"max_days\": 5, \"sl_atr\": 1.5, \"tp_atr\": 1.5}", "n": 74, "h1": 0.069, "h2": -0.034, "avg": 0.009}];
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const tip = document.getElementById("tip");
+const fmt = v => (v >= 0 ? "+" : "−") + Math.abs(v).toFixed(3);
+function showTip(ev, rows) {
+  tip.replaceChildren();
+  rows.forEach(([cls, text, key]) => {
+    const d = document.createElement("div");
+    if (key) { const k = document.createElement("span"); k.className = "key"; k.style.background = key; d.appendChild(k); }
+    const s = document.createElement("span"); s.className = cls; s.textContent = text; d.appendChild(s);
+    tip.appendChild(d);
+  });
+  tip.style.display = "block";
+  const w = tip.offsetWidth, h = tip.offsetHeight;
+  let x = ev.clientX + 14, y = ev.clientY + 14;
+  if (x + w > innerWidth - 8) x = ev.clientX - w - 14;
+  if (y + h > innerHeight - 8) y = ev.clientY - h - 14;
+  tip.style.left = x + "px"; tip.style.top = y + "px";
+}
+const hideTip = () => { tip.style.display = "none"; };
+const NS = "http://www.w3.org/2000/svg";
+const el = (n, a) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); return e; };
+
+function dumbbell() {
+  const host = document.getElementById("dumbbell");
+  host.replaceChildren();
+  const rows = [...FAM].sort((a, b) => b.net - a.net);
+  const lo = -0.5, hi = 0.25;
+  rows.forEach(r => {
+    const row = document.createElement("div"); row.className = "db-row";
+    const lab = document.createElement("div"); lab.className = "db-label"; lab.textContent = r.name; row.appendChild(lab);
+    const tr = document.createElement("div"); tr.className = "db-track"; row.appendChild(tr);
+    host.appendChild(row);
+    const W = tr.clientWidth || 600, pad = 8;
+    const x = v => pad + (Math.max(lo, Math.min(hi, v)) - lo) / (hi - lo) * (W - 2 * pad);
+    const svg = el("svg", { viewBox: `0 0 ${W} 30`, preserveAspectRatio: "none" });
+    for (let t = -0.4; t <= 0.21; t += 0.1) svg.appendChild(el("line", { x1: x(t), x2: x(t), y1: 0, y2: 30, stroke: Math.abs(t) < 1e-9 ? css("--axis") : css("--grid"), "stroke-width": 1 }));
+    svg.appendChild(el("line", { x1: x(r.gross), x2: x(r.net), y1: 15, y2: 15, stroke: css("--muted"), "stroke-width": 2, "stroke-linecap": "round" }));
+    [["gross", "Before costs", css("--s1")], ["net", "After costs", css("--s2")]].forEach(([k, name, col]) => {
+      const c = el("circle", { cx: x(r[k]), cy: 15, r: 5, fill: col, stroke: css("--surface"), "stroke-width": 2 });
+      const hit = el("circle", { cx: x(r[k]), cy: 15, r: 12, fill: "transparent", tabindex: 0 });
+      const on = ev => showTip(ev.clientX ? ev : { clientX: hit.getBoundingClientRect().x, clientY: hit.getBoundingClientRect().y },
+        [["tv", fmt(r.gross) + " R", css("--s1")], ["tl", "before costs"], ["tv", fmt(r.net) + " R", css("--s2")], ["tl", "after costs · " + r.n.toLocaleString() + " trades"], ["tl", r.name]]);
+      hit.addEventListener("pointermove", on); hit.addEventListener("focus", on);
+      hit.addEventListener("pointerleave", hideTip); hit.addEventListener("blur", hideTip);
+      svg.appendChild(c); svg.appendChild(hit);
+    });
+    tr.appendChild(svg);
+  });
+  const ax = document.createElement("div"); ax.className = "db-axis";
+  ax.appendChild(document.createElement("div"));
+  const at = document.createElement("div"); ax.appendChild(at); host.appendChild(ax);
+  const W = at.clientWidth || 600, pad = 8;
+  const x = v => pad + (v - lo) / (hi - lo) * (W - 2 * pad);
+  const svg = el("svg", { viewBox: `0 0 ${W} 30` });
+  for (let t = -0.4; t <= 0.21; t += 0.1) {
+    const tx = el("text", { x: x(t), y: 16, "text-anchor": "middle", "font-size": 11, fill: css("--muted"), "font-family": "IBM Plex Mono, monospace" });
+    tx.textContent = (t > 1e-9 ? "+" : t < -1e-9 ? "−" : "") + Math.abs(t).toFixed(1); svg.appendChild(tx);
+  }
+  const cap = el("text", { x: W - pad, y: 29, "text-anchor": "end", "font-size": 11, fill: css("--muted") }); cap.textContent = "R per trade";
+  svg.appendChild(cap); at.appendChild(svg);
+}
+
+const WATCH = c => (c.fam === "Tokyo-fix flow (gotobi)" && c.cfg.includes('"entry": "08:00"') && c.cfg.includes('"gotobi"')) ||
+                   (c.fam === "Last-half-hour momentum" && c.cfg.includes('"penult"') && c.cfg.includes('"min_move_atr": 0.2'));
+function scatter() {
+  const host = document.getElementById("scatter");
+  host.replaceChildren();
+  const W = host.clientWidth || 700, H = Math.max(300, Math.min(460, W * 0.7));
+  const m = { l: 48, r: 12, t: 12, b: 40 };
+  const xlo = -0.9, xhi = 0.4, ylo = -0.6, yhi = 0.4;
+  const X = v => m.l + (Math.max(xlo, Math.min(xhi, v)) - xlo) / (xhi - xlo) * (W - m.l - m.r);
+  const Y = v => m.t + (yhi - Math.max(ylo, Math.min(yhi, v))) / (yhi - ylo) * (H - m.t - m.b);
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, height: H });
+  svg.appendChild(el("rect", { x: X(0), y: Y(yhi), width: X(xhi) - X(0), height: Y(0) - Y(yhi), fill: css("--quad") }));
+  const q = el("text", { x: X(xhi) - 6, y: Y(yhi) + 16, "text-anchor": "end", "font-size": 12, fill: css("--ink-2") }); q.textContent = "profitable in both halves"; svg.appendChild(q);
+  const mono = { "font-size": 11, fill: css("--muted"), "font-family": "IBM Plex Mono, monospace" };
+  for (let t = -0.8; t <= 0.41; t += 0.2) {
+    svg.appendChild(el("line", { x1: X(t), x2: X(t), y1: m.t, y2: H - m.b, stroke: Math.abs(t) < 1e-9 ? css("--axis") : css("--grid"), "stroke-width": 1 }));
+    const tx = el("text", { x: X(t), y: H - m.b + 16, "text-anchor": "middle", ...mono }); tx.textContent = (t > 1e-9 ? "+" : t < -1e-9 ? "−" : "") + Math.abs(t).toFixed(1); svg.appendChild(tx);
+  }
+  for (let t = -0.6; t <= 0.41; t += 0.2) {
+    svg.appendChild(el("line", { x1: m.l, x2: W - m.r, y1: Y(t), y2: Y(t), stroke: Math.abs(t) < 1e-9 ? css("--axis") : css("--grid"), "stroke-width": 1 }));
+    const tx = el("text", { x: m.l - 6, y: Y(t) + 4, "text-anchor": "end", ...mono }); tx.textContent = (t > 1e-9 ? "+" : t < -1e-9 ? "−" : "") + Math.abs(t).toFixed(1); svg.appendChild(tx);
+  }
+  const xl = el("text", { x: W - m.r, y: H - 4, "text-anchor": "end", "font-size": 12, fill: css("--ink-2") }); xl.textContent = "Feb–May: R per trade after costs →"; svg.appendChild(xl);
+  const yl = el("text", { x: m.l + 4, y: m.t + 12, "font-size": 12, fill: css("--ink-2") }); yl.textContent = "↑ Jun–Sep"; svg.appendChild(yl);
+  const pts = CFG.map(c => ({ ...c, px: X(c.h1), py: Y(c.h2), w: WATCH(c) }));
+  pts.sort((a, b) => a.w - b.w).forEach(p => svg.appendChild(el("circle", { cx: p.px, cy: p.py, r: 4, fill: p.w ? css("--s2") : css("--s1"), stroke: css("--surface"), "stroke-width": 2 })));
+  const lab = (text, p, dx, dy) => { const t = el("text", { x: p.px + dx, y: p.py + dy, "font-size": 12, fill: css("--ink"), "text-anchor": dx < 0 ? "end" : "start" }); t.textContent = text; svg.appendChild(t); };
+  const tk = pts.find(p => p.w && p.fam.startsWith("Tokyo")); if (tk) lab("Tokyo pre-fix", tk, 8, -8);
+  const eod = pts.filter(p => p.w && p.fam.startsWith("Last")).sort((a, b) => b.h2 - a.h2)[0]; if (eod) lab("End-of-day momentum", eod, -8, -8);
+  const hitLayer = el("rect", { x: 0, y: 0, width: W, height: H, fill: "transparent" });
+  hitLayer.addEventListener("pointermove", ev => {
+    const r = svg.getBoundingClientRect(), sx = W / r.width;
+    const mx = (ev.clientX - r.left) * sx, my = (ev.clientY - r.top) * sx;
+    let best = null, bd = 24 * sx;
+    pts.forEach(p => { const d = Math.hypot(p.px - mx, p.py - my); if (d < bd) { bd = d; best = p; } });
+    if (!best) return hideTip();
+    showTip(ev, [["tv", `${fmt(best.h1)} → ${fmt(best.h2)} R`], ["tl", "Feb–May → Jun–Sep"], ["tl", `${best.fam} · ${best.n} trades`],
+                 ["tl", best.cfg.replace(/[{}"]/g, "").replace(/,/g, ", ")]]);
+  });
+  hitLayer.addEventListener("pointerleave", hideTip);
+  svg.appendChild(hitLayer);
+  host.appendChild(svg);
+  const tb = document.querySelector("#both-table tbody"); tb.replaceChildren();
+  CFG.filter(c => c.h1 > 0 && c.h2 > 0).sort((a, b) => b.h2 - a.h2).forEach(c => {
+    const tr = document.createElement("tr");
+    [[c.fam, ""], [c.cfg.replace(/[{}"]/g, "").replace(/,/g, ", "), ""], [c.n, "num"], [fmt(c.h1), "num"], [fmt(c.h2), "num"]].forEach(([v, k]) => {
+      const td = document.createElement("td"); td.textContent = v; if (k) td.className = k; tr.appendChild(td); });
+    tb.appendChild(tr);
+  });
+}
+function draw() { dumbbell(); scatter(); }
+draw();
+let rt; addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(draw, 150); });
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", draw);
+</script>
+</body>
+</html>
