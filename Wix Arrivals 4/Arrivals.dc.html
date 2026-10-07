@@ -30,7 +30,6 @@ a:hover{color:#0F62E6;text-decoration:underline}
 
   <!-- top bar -->
   <div style="flex:0 0 56px;display:flex;align-items:center;gap:6px;padding:0 16px;background:#fff;border-bottom:1px solid #EDEDED;white-space:nowrap;overflow:visible;position:relative">
-    <div onClick="{{ toggleScope }}" title="Demo: switch between v1 and full scope" style="position:fixed;right:20px;bottom:20px;z-index:20;box-shadow:0 2px 8px rgba(17,109,255,.35);display:flex;align-items:center;gap:8px;height:28px;padding:0 10px 0 12px;border-radius:14px;background:#116DFF;color:#fff;font-size:12px;font-weight:600;cursor:pointer;user-select:none"><span>v1</span><span style="display:flex;align-items:center;width:28px;height:16px;border-radius:8px;background:rgba(255,255,255,.22);padding:2px;box-sizing:border-box"><sc-if value="{{ scopeIsFull }}" hint-placeholder-val="{{ false }}"><span style="width:12px;height:12px;border-radius:50%;background:#fff;margin-left:auto"></span></sc-if><sc-if value="{{ isV1 }}" hint-placeholder-val="{{ true }}"><span style="width:12px;height:12px;border-radius:50%;background:#fff"></span></sc-if></span><span>Full</span></div>
     <div style="display:flex;align-items:baseline;gap:4px;padding-right:18px"><span style="font-size:17px;font-weight:700;letter-spacing:-.02em">WIX</span><span style="font-size:17px;font-weight:400;letter-spacing:.01em">STUDIO</span></div>
     <span style="width:22px;height:22px;border-radius:5px;background:#F9C8F0;color:#151414;font-size:11px;font-weight:700;display:grid;place-items:center">J</span>
     <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="#151414" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg>
@@ -963,7 +962,7 @@ a:hover{color:#0F62E6;text-decoration:underline}
   </sc-if>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;startScreen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Intro&quot;,&quot;Onboarding&quot;,&quot;Dashboard&quot;,&quot;Settings&quot;],&quot;default&quot;:&quot;Intro&quot;,&quot;tsType&quot;:&quot;'Intro'|'Onboarding'|'Dashboard'|'Settings'&quot;,&quot;section&quot;:&quot;Demo&quot;},&quot;liveLayout&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Tiles&quot;,&quot;List&quot;],&quot;default&quot;:&quot;Tiles&quot;,&quot;tsType&quot;:&quot;'Tiles'|'List'&quot;,&quot;section&quot;:&quot;Dashboard&quot;},&quot;v1Scope&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;label&quot;:&quot;v1 scope&quot;,&quot;section&quot;:&quot;Scope&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;startScreen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Intro&quot;,&quot;Onboarding&quot;,&quot;Dashboard&quot;,&quot;Settings&quot;],&quot;default&quot;:&quot;Intro&quot;,&quot;tsType&quot;:&quot;'Intro'|'Onboarding'|'Dashboard'|'Settings'&quot;,&quot;section&quot;:&quot;Demo&quot;},&quot;liveLayout&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Tiles&quot;,&quot;List&quot;],&quot;default&quot;:&quot;Tiles&quot;,&quot;tsType&quot;:&quot;'Tiles'|'List'&quot;,&quot;section&quot;:&quot;Dashboard&quot;}}">
 const RES = {
   ok: { color:'#25A55A', skin:'success', badge:'Approved' },
   wn: { color:'#E8951C', skin:'warning', badge:'Warned' },
@@ -1056,7 +1055,7 @@ class Component extends DCLogic {
   };
   contentRef = React.createRef();
 
-  isV1() { return this.state.v1 ?? (this.props.v1Scope ?? true); }
+  isV1() { return false; }
   componentDidMount() {
     document.body.setAttribute('data-wds-theme', 'studio');
     this.applyStart(this.props.startScreen);
