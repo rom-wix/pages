@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/wix-design-system-claude-bundle-4ea31e09-f079-42c6-9b45-28501dc6b386/tokens/all.css">
+<link rel="stylesheet" href="_ds/wix-design-system-claude-bundle-4ea31e09-f079-42c6-9b45-28501dc6b386/tokens/all.st.css">
+<link rel="stylesheet" href="_ds/wix-design-system-claude-bundle-4ea31e09-f079-42c6-9b45-28501dc6b386/tokens/component.st.css">
+<link rel="stylesheet" href="_ds/wix-design-system-claude-bundle-4ea31e09-f079-42c6-9b45-28501dc6b386/tokens/foundation.st.css">
+<link rel="stylesheet" href="_ds/wix-design-system-claude-bundle-4ea31e09-f079-42c6-9b45-28501dc6b386/tokens/semantic.st.css">
+<link rel="stylesheet" href="_ds/wix-design-system-claude-bundle-4ea31e09-f079-42c6-9b45-28501dc6b386/tokens/themes/studio.css">
+<link rel="stylesheet" href="_ds/wix-design-system-claude-bundle-4ea31e09-f079-42c6-9b45-28501dc6b386/fonts/fonts.css">
+<link rel="stylesheet" href="_ds/wix-design-system-claude-bundle-4ea31e09-f079-42c6-9b45-28501dc6b386/_ds_bundle.css">
+<script src="_ds/wix-design-system-claude-bundle-4ea31e09-f079-42c6-9b45-28501dc6b386/_ds_bundle.js"></script>
+<style>
+html,body{margin:0;background:#EDEDED}
+body{font-family:Madefor,'Helvetica Neue',Helvetica,Arial,sans-serif;color:#151414;-webkit-font-smoothing:antialiased}
+a{color:#116DFF;text-decoration:none}
+a:hover{color:#0F62E6;text-decoration:underline}
+</style>
+</helmet>
+
+<section data-wds-theme="studio" style="padding:40px;display:flex;flex-direction:column;gap:28px">
+  <div style="display:flex;flex-direction:column;gap:8px;max-width:900px">
+    <div style="font-size:12px;font-weight:600;letter-spacing:.08em;color:#767676">TURN 1 · SETTINGS ONLY</div>
+    <div style="font-size:26px;font-weight:700;letter-spacing:-.01em">Entrance policy: three ways to keep one default simple and let power users add more</div>
+    <div style="font-size:14px;color:#525252;line-height:1.5;max-width:820px">A policy = check-in window (X min before / X min after session start) + intake forms. One default policy, connected to all doors. Each concept shows the Doors &amp; access index and a single door page. Doors, hardware and plans cards are unchanged from v5 and collapsed here.</div>
+  </div>
+
+  <div style="display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap">
+
+    <!-- ============ 1a ============ -->
+    <div id="1a" style="width:760px;display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;align-items:center;gap:10px"><span style="background:#151414;color:#fff;font-size:12px;font-weight:700;border-radius:5px;padding:2px 8px">1a</span><span style="font-size:18px;font-weight:700">Policy card on the index, doors pick from a dropdown</span></div>
+        <div style="font-size:13.5px;color:#525252;line-height:1.5">The default policy is edited in one place on Doors &amp; access. Each door has a dropdown that says "Default policy". The only way to create a second policy is "Create new policy…" at the bottom of that dropdown, so most users never see policy management at all.</div>
+        <div style="font-size:12.5px;color:#767676"><b style="color:#151414">Trade-off:</b> the door page doesn't show the rules themselves, only a summary.</div>
+      </div>
+
+      <!-- index -->
+      <div style="background:#F7F7F7;border:1px solid #DFDFDF;border-radius:10px;padding:24px 28px 28px;display:flex;flex-direction:column;gap:16px">
+        <div style="font-size:11px;font-weight:600;letter-spacing:.08em;color:#767676">DOORS &amp; ACCESS · INDEX</div>
+        <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px">
+          <div style="display:flex;flex-direction:column;gap:4px"><x-import component-from-global-scope="WixDesignSystem.Heading" size="large" hint-size="220px,32px">Doors &amp; access</x-import><div style="font-size:13px">Hardware and plans are set per door. Entrance rules are shared through a policy.</div></div>
+          <x-import component-from-global-scope="WixDesignSystem.Button" skin="dark" size="small" hint-size="100px,30px">+ Add Door</x-import>
+        </div>
+        <x-import component-from-global-scope="WixDesignSystem.Card" hideOverflow="{{ true }}" hint-size="100%,220px">
+          <div style="padding:16px 22px 12px"><x-import component-from-global-scope="WixDesignSystem.Heading" size="small" hint-size="60px,24px">Doors</x-import></div>
+          <sc-for list="{{ doors }}" as="d" hint-placeholder-count="3">
+            <div style="display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1.2fr) 120px 16px;gap:14px;align-items:center;padding:13px 22px;border-top:1px solid #F0F0F0">
+              <div style="display:flex;align-items:center;gap:12px;min-width:0"><span style="width:34px;height:34px;border-radius:8px;background:#F3F3F3;display:grid;place-items:center;flex:0 0 34px"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#151414" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4.5A1.5 1.5 0 016.5 3h9A1.5 1.5 0 0117 4.5V21M3 21h18M13.5 12.5v.01"></path></svg></span><div><div style="font-size:14px;font-weight:600">{{ d.name }}</div><div style="font-size:12.5px;color:#767676;margin-top:1px">{{ d.meta }}</div></div></div>
+              <div><div style="font-size:12px;color:#767676">Entrance policy</div><div style="font-size:13.5px;margin-top:1px">Default policy</div></div>
+              <x-import component-from-global-scope="WixDesignSystem.Badge" skin="{{ d.skin }}" size="small" type="transparent" hint-size="80px,20px">{{ d.status }}</x-import>
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#A8A8A8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>
+            </div>
+          </sc-for>
+        </x-import>
+        <x-import component-from-global-scope="WixDesignSystem.Card" hideOverflow="{{ true }}" hint-size="100%,300px">
+          <div style="padding:16px 22px 12px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+            <div style="display:flex;flex-direction:column;gap:2px"><div style="display:flex;align-items:center;gap:10px"><x-import component-from-global-scope="WixDesignSystem.Heading" size="small" hint-size="160px,24px">Entrance policy</x-import><x-import component-from-global-scope="WixDesignSystem.Badge" skin="neutralLight" size="small" hint-size="90px,20px">All 3 doors</x-import></div><div style="font-size:13px;color:#767676">Who gets in and what they must have signed. Checked the moment someone scans.</div></div>
+          </div>
+          <div style="padding:14px 22px;border-top:1px solid #F0F0F0;display:flex;flex-direction:column;gap:10px">
+            <div style="font-size:14px;font-weight:500">Check-in window</div>
+            <div style="display:flex;align-items:center;gap:10px;font-size:14px;flex-wrap:wrap">Clients with a booking can enter from<div style="width:118px"><x-import component-from-global-scope="WixDesignSystem.Dropdown" size="small" options="{{ beforeOpts }}" selectedId="{{ 15 }}" hint-size="118px,30px"></x-import></div>before the session starts until<div style="width:118px"><x-import component-from-global-scope="WixDesignSystem.Dropdown" size="small" options="{{ afterOpts }}" selectedId="{{ 10 }}" hint-size="118px,30px"></x-import></div>after.</div>
+            <div style="font-size:12.5px;color:#767676">Outside the window, staff see the booking but the door stays closed.</div>
+          </div>
+          <div style="padding:14px 22px 8px;border-top:1px solid #F0F0F0;display:flex;align-items:center;justify-content:space-between"><div style="font-size:14px;font-weight:500">Forms collected</div><x-import component-from-global-scope="WixDesignSystem.TextButton" size="small" hint-size="110px,20px">Create new form</x-import></div>
+          <div style="display:flex;align-items:center;gap:14px;padding:10px 22px"><span style="width:32px;height:32px;border-radius:8px;background:#F3F3F3;display:grid;place-items:center;flex:0 0 32px"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#151414" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"></rect><path d="M9 4V3h6v1M9 10h6M9 14h4"></path></svg></span><div style="flex:1;font-size:14px">Liability waiver</div><div>{{ segFlag }}</div><x-import component-from-global-scope="WixDesignSystem.ToggleSwitch" checked="{{ true }}" hint-size="36px,20px"></x-import></div>
+          <div style="display:flex;align-items:center;gap:14px;padding:10px 22px 18px"><span style="width:32px;height:32px;border-radius:8px;background:#F3F3F3;display:grid;place-items:center;flex:0 0 32px"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#151414" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"></rect><path d="M9 4V3h6v1M9 10h6M9 14h4"></path></svg></span><div style="flex:1;font-size:14px">Health questionnaire</div><div>{{ segBlock }}</div><x-import component-from-global-scope="WixDesignSystem.ToggleSwitch" checked="{{ true }}" hint-size="36px,20px"></x-import></div>
+          <div style="padding:12px 22px 16px;border-top:1px solid #F0F0F0;font-size:13px;color:#525252">Need different rules at one door? Open the door and choose <b>Create new policy</b>.</div>
+        </x-import>
+      </div>
+
+      <!-- door -->
+      <div style="background:#F7F7F7;border:1px solid #DFDFDF;border-radius:10px;padding:24px 28px 28px;display:flex;flex-direction:column;gap:16px">
+        <div style="font-size:11px;font-weight:600;letter-spacing:.08em;color:#767676">DOOR PAGE · STUDIO B</div>
+        <div style="display:flex;align-items:center;gap:12px"><x-import component-from-global-scope="WixDesignSystem.Heading" size="large" hint-size="140px,32px">Studio B</x-import><x-import component-from-global-scope="WixDesignSystem.Badge" skin="success" size="small" type="transparent" hint-size="60px,20px">Live</x-import></div>
+        <x-import component-from-global-scope="WixDesignSystem.Card" hideOverflow="{{ true }}" hint-size="100%,150px">
+          <div style="padding:16px 22px;display:flex;align-items:center;gap:16px">
+            <div style="flex:1;display:flex;flex-direction:column;gap:2px"><x-import component-from-global-scope="WixDesignSystem.Heading" size="small" hint-size="160px,24px">Entrance policy</x-import><div style="font-size:13px;color:#767676">Check-in window and forms this door enforces.</div></div>
+            <div style="width:250px"><x-import component-from-global-scope="WixDesignSystem.Dropdown" size="small" options="{{ policyOpts }}" selectedId="{{ 1 }}" hint-size="250px,30px"></x-import></div>
+          </div>
+          <div style="padding:12px 22px 16px;border-top:1px solid #F0F0F0;display:flex;align-items:center;gap:16px;font-size:13px;color:#525252">
+            <div style="flex:1;line-height:1.5">15 min before → 10 min after session start · Liability waiver: let in · Health questionnaire: block</div>
+            <x-import component-from-global-scope="WixDesignSystem.TextButton" size="small" hint-size="120px,20px">Edit default policy</x-import>
+          </div>
+        </x-import>
+        <div style="display:flex;flex-direction:column;gap:10px;opacity:.55">
+          <div style="background:#fff;border-radius:8px;border:1px solid #E6E6E6;padding:14px 22px;font-size:14px;font-weight:500;display:flex;justify-content:space-between"><span>Hardware at this door</span><span style="color:#767676;font-weight:400">1 reader</span></div>
+          <div style="background:#fff;border-radius:8px;border:1px solid #E6E6E6;padding:14px 22px;font-size:14px;font-weight:500;display:flex;justify-content:space-between"><span>Plans that open this door</span><span style="color:#767676;font-weight:400">2 of 4 plans</span></div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:12.5px;color:#525252;line-height:1.5"><span style="flex:0 0 auto;width:18px;height:18px;border-radius:50%;background:#151414;color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center">i</span><span style="flex:1">Dropdown lists: <b>Default policy · all 3 doors</b> and <b>Create new policy…</b>, which opens a copy of the default policy editor for naming and adjusting. Once a second policy exists, the index card becomes a list of policies.</span></div>
+      </div>
+    </div>
+
+    <!-- ============ 1b ============ -->
+    <div id="1b" style="width:760px;display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;align-items:center;gap:10px"><span style="background:#151414;color:#fff;font-size:12px;font-weight:700;border-radius:5px;padding:2px 8px">1b</span><span style="font-size:18px;font-weight:700">Edit at the door, shared until you split it</span></div>
+        <div style="font-size:13.5px;color:#525252;line-height:1.5">The word "policy" barely appears. The door page keeps the full editor from v5 (window + forms), with a badge saying the rules are shared by all doors. Editing changes every door. One link, "Make this door different", forks a policy just for that door.</div>
+        <div style="font-size:12.5px;color:#767676"><b style="color:#151414">Trade-off:</b> users must notice the "shared" badge or they may change every door by accident.</div>
+      </div>
+
+      <div style="background:#F7F7F7;border:1px solid #DFDFDF;border-radius:10px;padding:24px 28px 28px;display:flex;flex-direction:column;gap:16px">
+        <div style="font-size:11px;font-weight:600;letter-spacing:.08em;color:#767676">DOORS &amp; ACCESS · INDEX</div>
+        <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px">
+          <div style="display:flex;flex-direction:column;gap:4px"><x-import component-from-global-scope="WixDesignSystem.Heading" size="large" hint-size="220px,32px">Doors &amp; access</x-import><div style="font-size:13px">Hardware, plans and entrance rules are managed per door. Open a door to manage it.</div></div>
+          <x-import component-from-global-scope="WixDesignSystem.Button" skin="dark" size="small" hint-size="100px,30px">+ Add Door</x-import>
+        </div>
+        <x-import component-from-global-scope="WixDesignSystem.Card" hideOverflow="{{ true }}" hint-size="100%,220px">
+          <div style="padding:16px 22px 12px"><x-import component-from-global-scope="WixDesignSystem.Heading" size="small" hint-size="60px,24px">Doors</x-import></div>
+          <sc-for list="{{ doors }}" as="d" hint-placeholder-count="3">
+            <div style="display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1.2fr) 120px 16px;gap:14px;align-items:center;padding:13px 22px;border-top:1px solid #F0F0F0">
+              <div style="display:flex;align-items:center;gap:12px;min-width:0"><span style="width:34px;height:34px;border-radius:8px;background:#F3F3F3;display:grid;place-items:center;flex:0 0 34px"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#151414" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4.5A1.5 1.5 0 016.5 3h9A1.5 1.5 0 0117 4.5V21M3 21h18M13.5 12.5v.01"></path></svg></span><div><div style="font-size:14px;font-weight:600">{{ d.name }}</div><div style="font-size:12.5px;color:#767676;margin-top:1px">{{ d.meta }}</div></div></div>
+              <div><div style="font-size:12px;color:#767676">Entrance rules</div><div style="font-size:13.5px;margin-top:1px">Shared</div></div>
+              <x-import component-from-global-scope="WixDesignSystem.Badge" skin="{{ d.skin }}" size="small" type="transparent" hint-size="80px,20px">{{ d.status }}</x-import>
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#A8A8A8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>
+            </div>
+          </sc-for>
+        </x-import>
+        <x-import component-from-global-scope="WixDesignSystem.Card" hideOverflow="{{ true }}" hint-size="100%,150px">
+          <div style="padding:16px 22px 8px"><x-import component-from-global-scope="WixDesignSystem.Heading" size="small" hint-size="180px,24px">Applies to every door</x-import></div>
+          <div style="display:flex;align-items:center;gap:16px;padding:14px 22px;border-top:1px solid #F0F0F0">
+            <div style="flex:1"><div style="font-size:14px;font-weight:500">Entrance rules</div><div style="font-size:13px;color:#767676;margin-top:2px">Check-in window and intake forms. Shared by all 3 doors.</div></div>
+            <span style="font-size:13px;color:#767676">15 min before · 10 min after · 2 forms</span>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#A8A8A8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>
+          </div>
+          <div style="display:flex;align-items:center;gap:16px;padding:14px 22px;border-top:1px solid #F0F0F0">
+            <div style="flex:1"><div style="font-size:14px;font-weight:500">Member pass</div><div style="font-size:13px;color:#767676;margin-top:2px">One pass per client, works at every door their plan opens.</div></div>
+            <span style="font-size:13px;color:#767676">Email + Wallet</span>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#A8A8A8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>
+          </div>
+        </x-import>
+      </div>
+
+      <div style="background:#F7F7F7;border:1px solid #DFDFDF;border-radius:10px;padding:24px 28px 28px;display:flex;flex-direction:column;gap:16px">
+        <div style="font-size:11px;font-weight:600;letter-spacing:.08em;color:#767676">DOOR PAGE · STUDIO B</div>
+        <div style="display:flex;align-items:center;gap:12px"><x-import component-from-global-scope="WixDesignSystem.Heading" size="large" hint-size="140px,32px">Studio B</x-import><x-import component-from-global-scope="WixDesignSystem.Badge" skin="success" size="small" type="transparent" hint-size="60px,20px">Live</x-import></div>
+        <div style="display:flex;flex-direction:column;gap:10px;opacity:.55">
+          <div style="background:#fff;border-radius:8px;border:1px solid #E6E6E6;padding:14px 22px;font-size:14px;font-weight:500;display:flex;justify-content:space-between"><span>Hardware at this door</span><span style="color:#767676;font-weight:400">1 reader</span></div>
+          <div style="background:#fff;border-radius:8px;border:1px solid #E6E6E6;padding:14px 22px;font-size:14px;font-weight:500;display:flex;justify-content:space-between"><span>Plans that open this door</span><span style="color:#767676;font-weight:400">2 of 4 plans</span></div>
+        </div>
+        <x-import component-from-global-scope="WixDesignSystem.Card" hideOverflow="{{ true }}" hint-size="100%,320px">
+          <div style="padding:16px 22px 12px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+            <div style="display:flex;flex-direction:column;gap:2px"><div style="display:flex;align-items:center;gap:10px"><x-import component-from-global-scope="WixDesignSystem.Heading" size="small" hint-size="150px,24px">Entrance rules</x-import><x-import component-from-global-scope="WixDesignSystem.Badge" skin="neutralLight" size="small" hint-size="120px,20px">Shared by 3 doors</x-import></div><div style="font-size:13px;color:#767676">Changes here also apply to Front entrance and Pool gate.</div></div>
+            <x-import component-from-global-scope="WixDesignSystem.TextButton" size="small" hint-size="150px,20px">Make this door different</x-import>
+          </div>
+          <div style="padding:14px 22px;border-top:1px solid #F0F0F0;display:flex;flex-direction:column;gap:10px">
+            <div style="font-size:14px;font-weight:500">Check-in window</div>
+            <div style="display:flex;align-items:center;gap:10px;font-size:14px;flex-wrap:wrap">Clients with a booking can enter from<div style="width:118px"><x-import component-from-global-scope="WixDesignSystem.Dropdown" size="small" options="{{ beforeOpts }}" selectedId="{{ 15 }}" hint-size="118px,30px"></x-import></div>before the session starts until<div style="width:118px"><x-import component-from-global-scope="WixDesignSystem.Dropdown" size="small" options="{{ afterOpts }}" selectedId="{{ 10 }}" hint-size="118px,30px"></x-import></div>after.</div>
+          </div>
+          <div style="padding:14px 22px 8px;border-top:1px solid #F0F0F0;display:flex;align-items:center;justify-content:space-between"><div style="font-size:14px;font-weight:500">Forms collected</div><x-import component-from-global-scope="WixDesignSystem.TextButton" size="small" hint-size="110px,20px">Create new form</x-import></div>
+          <div style="display:flex;align-items:center;gap:14px;padding:10px 22px"><span style="width:32px;height:32px;border-radius:8px;background:#F3F3F3;display:grid;place-items:center;flex:0 0 32px"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#151414" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"></rect><path d="M9 4V3h6v1M9 10h6M9 14h4"></path></svg></span><div style="flex:1;font-size:14px">Liability waiver</div><div>{{ segFlag2 }}</div><x-import component-from-global-scope="WixDesignSystem.ToggleSwitch" checked="{{ true }}" hint-size="36px,20px"></x-import></div>
+          <div style="display:flex;align-items:center;gap:14px;padding:10px 22px 18px"><span style="width:32px;height:32px;border-radius:8px;background:#F3F3F3;display:grid;place-items:center;flex:0 0 32px"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#151414" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"></rect><path d="M9 4V3h6v1M9 10h6M9 14h4"></path></svg></span><div style="flex:1;font-size:14px">Health questionnaire</div><div>{{ segBlock2 }}</div><x-import component-from-global-scope="WixDesignSystem.ToggleSwitch" checked="{{ true }}" hint-size="36px,20px"></x-import></div>
+        </x-import>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="font-size:11px;font-weight:600;letter-spacing:.08em;color:#767676">AFTER "MAKE THIS DOOR DIFFERENT" · CARD HEADER ONLY</div>
+          <div style="background:#fff;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.08);padding:16px 22px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+            <div style="display:flex;flex-direction:column;gap:2px"><div style="display:flex;align-items:center;gap:10px"><x-import component-from-global-scope="WixDesignSystem.Heading" size="small" hint-size="150px,24px">Entrance rules</x-import><x-import component-from-global-scope="WixDesignSystem.Badge" skin="standard" size="small" type="outlined" hint-size="110px,20px">Only this door</x-import></div><div style="font-size:13px;color:#767676">Started as a copy of the shared rules. Other doors are unaffected.</div></div>
+            <x-import component-from-global-scope="WixDesignSystem.TextButton" size="small" hint-size="150px,20px">Use shared rules again</x-import>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:12.5px;color:#525252;line-height:1.5"><span style="flex:0 0 auto;width:18px;height:18px;border-radius:50%;background:#151414;color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center">i</span>Under the hood this creates a policy named after the door. A third door can later join it via a small "Same as Studio B" option, but that's hidden until two policies exist.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ 1c ============ -->
+    <div id="1c" style="width:760px;display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;align-items:center;gap:10px"><span style="background:#151414;color:#fff;font-size:12px;font-weight:700;border-radius:5px;padding:2px 8px">1c</span><span style="font-size:18px;font-weight:700">Policies tab, doors assigned to policies</span></div>
+        <div style="font-size:13.5px;color:#525252;line-height:1.5">The architecture is visible: Doors &amp; access gets a second tab, Entrance policies. It lists one default policy with its doors as chips and a "+ New policy" button. Each policy is a card you edit in place; doors are assigned from the policy, not the door.</div>
+        <div style="font-size:12.5px;color:#767676"><b style="color:#151414">Trade-off:</b> most users see a tab and a list with one item they never need to touch.</div>
+      </div>
+
+      <div style="background:#F7F7F7;border:1px solid #DFDFDF;border-radius:10px;padding:24px 28px 28px;display:flex;flex-direction:column;gap:16px">
+        <div style="font-size:11px;font-weight:600;letter-spacing:.08em;color:#767676">DOORS &amp; ACCESS · ENTRANCE POLICIES TAB</div>
+        <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px">
+          <div style="display:flex;flex-direction:column;gap:4px"><x-import component-from-global-scope="WixDesignSystem.Heading" size="large" hint-size="220px,32px">Doors &amp; access</x-import><div style="font-size:13px">Doors hold hardware and plans. Policies hold the entrance rules doors follow.</div></div>
+          <x-import component-from-global-scope="WixDesignSystem.Button" skin="dark" size="small" hint-size="110px,30px">+ New policy</x-import>
+        </div>
+        <x-import component-from-global-scope="WixDesignSystem.Tabs" items="{{ tabItems }}" activeId="{{ 2 }}" hint-size="100%,40px"></x-import>
+        <x-import component-from-global-scope="WixDesignSystem.Card" hideOverflow="{{ true }}" hint-size="100%,330px">
+          <div style="padding:16px 22px 12px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+            <div style="display:flex;flex-direction:column;gap:2px"><div style="display:flex;align-items:center;gap:10px"><x-import component-from-global-scope="WixDesignSystem.Heading" size="small" hint-size="130px,24px">Default policy</x-import><x-import component-from-global-scope="WixDesignSystem.Badge" skin="neutralLight" size="small" hint-size="60px,20px">Default</x-import></div><div style="font-size:13px;color:#767676">New doors follow this policy automatically.</div></div>
+            <x-import component-from-global-scope="WixDesignSystem.TextButton" size="small" hint-size="60px,20px">Rename</x-import>
+          </div>
+          <div style="padding:14px 22px;border-top:1px solid #F0F0F0;display:grid;grid-template-columns:150px minmax(0,1fr);gap:8px 20px;align-items:center;font-size:14px">
+            <div style="color:#767676;font-size:13px">Check-in window</div>
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><div style="width:118px"><x-import component-from-global-scope="WixDesignSystem.Dropdown" size="small" options="{{ beforeOpts }}" selectedId="{{ 15 }}" hint-size="118px,30px"></x-import></div>before session start until<div style="width:118px"><x-import component-from-global-scope="WixDesignSystem.Dropdown" size="small" options="{{ afterOpts }}" selectedId="{{ 10 }}" hint-size="118px,30px"></x-import></div>after</div>
+            <div style="color:#767676;font-size:13px;align-self:start;padding-top:8px">Forms collected</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;align-items:center;gap:14px"><div style="flex:1">Liability waiver</div><div>{{ segFlag3 }}</div><x-import component-from-global-scope="WixDesignSystem.ToggleSwitch" checked="{{ true }}" hint-size="36px,20px"></x-import></div>
+              <div style="display:flex;align-items:center;gap:14px"><div style="flex:1">Health questionnaire</div><div>{{ segBlock3 }}</div><x-import component-from-global-scope="WixDesignSystem.ToggleSwitch" checked="{{ true }}" hint-size="36px,20px"></x-import></div>
+              <div style="display:flex;align-items:center;gap:14px;color:#A8A8A8"><div style="flex:1">Photo consent</div><x-import component-from-global-scope="WixDesignSystem.ToggleSwitch" checked="{{ false }}" hint-size="36px,20px"></x-import></div>
+            </div>
+            <div style="color:#767676;font-size:13px">Doors</div>
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><x-import component-from-global-scope="WixDesignSystem.Tag" id="d1" size="small" removable="{{ false }}" hint-size="100px,24px">Front entrance</x-import><x-import component-from-global-scope="WixDesignSystem.Tag" id="d2" size="small" removable="{{ false }}" hint-size="70px,24px">Studio B</x-import><x-import component-from-global-scope="WixDesignSystem.Tag" id="d3" size="small" removable="{{ false }}" hint-size="80px,24px">Pool gate</x-import><span style="font-size:12.5px;color:#767676">All doors</span></div>
+          </div>
+        </x-import>
+        <x-import component-from-global-scope="WixDesignSystem.SectionHelper" skin="standard" title="One policy is enough for most businesses" hint-size="100%,80px">Create another only when a door needs a different window or different forms, then move that door onto it.</x-import>
+      </div>
+
+      <div style="background:#F7F7F7;border:1px solid #DFDFDF;border-radius:10px;padding:24px 28px 28px;display:flex;flex-direction:column;gap:16px">
+        <div style="font-size:11px;font-weight:600;letter-spacing:.08em;color:#767676">DOOR PAGE · STUDIO B</div>
+        <div style="display:flex;align-items:center;gap:12px"><x-import component-from-global-scope="WixDesignSystem.Heading" size="large" hint-size="140px,32px">Studio B</x-import><x-import component-from-global-scope="WixDesignSystem.Badge" skin="success" size="small" type="transparent" hint-size="60px,20px">Live</x-import></div>
+        <x-import component-from-global-scope="WixDesignSystem.Card" hideOverflow="{{ true }}" hint-size="100%,110px">
+          <div style="padding:16px 22px;display:flex;align-items:center;gap:16px">
+            <span style="width:40px;height:40px;border-radius:8px;background:#E7F0FF;color:#116DFF;display:grid;place-items:center;flex:0 0 40px"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6z"></path><path d="M9 12l2 2 4-4"></path></svg></span>
+            <div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:500">Follows <b>Default policy</b></div><div style="font-size:13px;color:#767676;margin-top:2px">15 min before → 10 min after · Liability waiver: let in · Health questionnaire: block</div></div>
+            <x-import component-from-global-scope="WixDesignSystem.TextButton" size="small" hint-size="90px,20px">View policy</x-import>
+            <div style="width:170px"><x-import component-from-global-scope="WixDesignSystem.Dropdown" size="small" options="{{ policyOpts }}" selectedId="{{ 1 }}" hint-size="170px,30px"></x-import></div>
+          </div>
+        </x-import>
+        <div style="display:flex;flex-direction:column;gap:10px;opacity:.55">
+          <div style="background:#fff;border-radius:8px;border:1px solid #E6E6E6;padding:14px 22px;font-size:14px;font-weight:500;display:flex;justify-content:space-between"><span>Hardware at this door</span><span style="color:#767676;font-weight:400">1 reader</span></div>
+          <div style="background:#fff;border-radius:8px;border:1px solid #E6E6E6;padding:14px 22px;font-size:14px;font-weight:500;display:flex;justify-content:space-between"><span>Plans that open this door</span><span style="color:#767676;font-weight:400">2 of 4 plans</span></div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:12.5px;color:#525252;line-height:1.5"><span style="flex:0 0 auto;width:18px;height:18px;border-radius:50%;background:#151414;color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center">i</span>The door page only references the policy; rules are edited on the Policies tab. Assignment works from both sides: the dropdown here or the door chips on the policy.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const W = window.WixDesignSystem;
+    const seg = val => W ? React.createElement(W.SegmentedToggle, { selected: val, size: 'small', onClick: () => {} },
+      React.createElement(W.SegmentedToggle.Button, { value: 'flag', key: 'f' }, 'Let in'),
+      React.createElement(W.SegmentedToggle.Button, { value: 'block', key: 'b' }, 'Block')) : null;
+    const mins = [5, 10, 15, 20, 30, 45, 60].map(m => ({ id: m, value: m + ' min' }));
+    return {
+      doors: [
+        { name: 'Front entrance', meta: '2 readers · 3 plans', status: 'Live', skin: 'success' },
+        { name: 'Studio B', meta: '1 reader · 2 plans', status: 'Live', skin: 'success' },
+        { name: 'Pool gate', meta: 'No hardware · 1 plan', status: 'Staff scan', skin: 'neutralLight' },
+      ],
+      beforeOpts: mins, afterOpts: mins,
+      policyOpts: [{ id: 1, value: 'Default policy · all 3 doors' }, { id: 'div', value: '-' }, { id: 2, value: '+ Create new policy…' }],
+      tabItems: [{ id: 1, title: 'Doors' }, { id: 2, title: 'Entrance policies' }],
+      segFlag: seg('flag'), segBlock: seg('block'),
+      segFlag2: seg('flag'), segBlock2: seg('block'),
+      segFlag3: seg('flag'), segBlock3: seg('block'),
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/wix-design-system-claude-bundle-4ea31e09-f079-42c6-9b45-28501dc6b386/tokens/all.css">
+<link rel="stylesheet" href="_ds/wix-design-system-claude-bundle-4ea31e09-f079-42c6-9b45-28501dc6b386/tokens/all.st.css">
+<link rel="stylesheet" href="_ds/wix-design-system-claude-bundle-4ea31e09-f079-42c6-9b45-28501dc6b386/tokens/component.st.css">
+<link rel="stylesheet" href="_ds/wix-design-system-claude-bundle-4ea31e09-f079-42c6-9b45-28501dc6b386/tokens/foundation.st.css">
+<link rel="stylesheet" href="_ds/wix-design-system-claude-bundle-4ea31e09-f079-42c6-9b45-28501dc6b386/tokens/semantic.st.css">
+<link rel="stylesheet" href="_ds/wix-design-system-claude-bundle-4ea31e09-f079-42c6-9b45-28501dc6b386/tokens/themes/studio.css">
+<link rel="stylesheet" href="_ds/wix-design-system-claude-bundle-4ea31e09-f079-42c6-9b45-28501dc6b386/fonts/fonts.css">
+<link rel="stylesheet" href="_ds/wix-design-system-claude-bundle-4ea31e09-f079-42c6-9b45-28501dc6b386/_ds_bundle.css">
+<script src="_ds/wix-design-system-claude-bundle-4ea31e09-f079-42c6-9b45-28501dc6b386/_ds_bundle.js"></script>
+<style>
+html,body{margin:0;height:100%;background:#F7F7F7}
+body{font-family:Madefor,'Helvetica Neue',Helvetica,Arial,sans-serif;color:#151414;-webkit-font-smoothing:antialiased}
+a{color:#116DFF;text-decoration:none}
+a:hover{color:#0F62E6;text-decoration:underline}
+@keyframes arIn{from{opacity:0;transform:translateY(6px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes arPulse{0%{box-shadow:0 0 0 0 rgba(37,165,90,.45)}70%{box-shadow:0 0 0 8px rgba(37,165,90,0)}100%{box-shadow:0 0 0 0 rgba(37,165,90,0)}}
+</style>
+</helmet>
+<div data-wds-theme="studio" style="height:100vh;min-height:640px;display:flex;flex-direction:column;background:#F7F7F7;overflow:hidden">
+
+  <!-- top bar -->
+  <div style="flex:0 0 56px;display:flex;align-items:center;gap:6px;padding:0 16px;background:#fff;border-bottom:1px solid #EDEDED;white-space:nowrap;overflow:hidden">
+    <div style="display:flex;align-items:baseline;gap:4px;padding-right:18px"><span style="font-size:17px;font-weight:700;letter-spacing:-.02em">WIX</span><span style="font-size:17px;font-weight:400;letter-spacing:.01em">STUDIO</span></div>
+    <span style="width:22px;height:22px;border-radius:5px;background:#F9C8F0;color:#151414;font-size:11px;font-weight:700;display:grid;place-items:center">J</span>
+    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="#151414" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg>
+    <div style="display:flex;align-items:center;gap:6px;background:#EDEDED;border-radius:6px;padding:6px 10px;margin-left:10px;font-size:14px">Jim's Gym<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg></div>
+    <div style="display:flex;align-items:center;gap:6px;padding:6px 10px;font-size:14px">Resources<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg></div>
+    <div style="display:flex;align-items:center;gap:6px;padding:6px 10px;font-size:14px">Community<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg></div>
+    <div style="display:flex;align-items:center;gap:6px;padding:6px 10px;font-size:14px">Help<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg></div>
+    <div style="margin-left:auto;flex:0 1 460px;min-width:0;overflow:hidden;height:32px;border-radius:6px;background:#F3F3F3;border:1px solid #E6E6E6;display:flex;align-items:center;gap:8px;padding:0 12px;font-size:13px;color:#767676"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>Search for tools, apps, help &amp; more...</div>
+    <div style="display:flex;align-items:center;gap:14px;margin-left:16px">
+      <span style="position:relative;display:grid;place-items:center"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="#151414" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"></path></svg><span style="position:absolute;top:-9px;right:-10px;background:#E62214;color:#fff;font-size:9px;font-weight:700;border-radius:8px;padding:1px 4px">50</span></span>
+      <span style="position:relative;display:grid;place-items:center"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="#151414" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 0112 0v5l1.5 2h-15zM10 20.5a2 2 0 004 0"></path></svg><span style="position:absolute;top:-9px;right:-12px;background:#E62214;color:#fff;font-size:9px;font-weight:700;border-radius:8px;padding:1px 4px">99+</span></span>
+      <x-import component-from-global-scope="WixDesignSystem.Avatar" name="Rachel Lowe" size="size30" imgProps="{{ meImg }}" hint-size="30px,30px"></x-import>
+      <div style="display:flex;align-items:center;gap:7px;height:32px;padding:0 12px;border-radius:8px;border:1px solid #E6E6E6;box-shadow:0 1px 4px rgba(0,0,0,.06);font-size:13px;font-weight:600;background:#fff"><span style="width:14px;height:14px;border-radius:50%;background:#151414;display:block"></span>Ask Aria</div>
+    </div>
+  </div>
+
+  <div style="flex:1;min-height:0;display:flex">
+
+    <!-- sidebar -->
+    <div style="width:244px;flex:0 0 244px;display:flex;flex-direction:column;border-right:1px solid #EDEDED;background:#F7F7F7">
+      <div style="flex:1;min-height:0;overflow-y:auto;padding:14px 12px 10px">
+        <div style="display:flex;align-items:center;gap:10px;padding:4px 8px 14px;font-size:13px">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 108-8 8.5 8.5 0 00-6 2.5L4 8M4 4v4h4M12 8v4l3 2"></path></svg>
+          <span style="display:flex;align-items:center;gap:6px;font-weight:500"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><circle cx="6" cy="6" r="1.6"></circle><circle cx="12" cy="6" r="1.6"></circle><circle cx="18" cy="6" r="1.6"></circle><circle cx="6" cy="12" r="1.6"></circle><circle cx="12" cy="12" r="1.6"></circle><circle cx="18" cy="12" r="1.6"></circle><circle cx="6" cy="18" r="1.6"></circle><circle cx="12" cy="18" r="1.6"></circle><circle cx="18" cy="18" r="1.6"></circle></svg>Quick Actions</span>
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" style="margin-left:auto"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M9 5v14"></path></svg>
+        </div>
+        <div style="padding:0 8px 16px;border-bottom:1px solid #E6E6E6;margin-bottom:12px">
+          <div style="display:flex;align-items:center;justify-content:space-between;font-size:14px;font-weight:600">Let's set up your business<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg></div>
+          <div style="height:3px;background:#E0E0E0;border-radius:2px;margin:12px 0 8px;overflow:hidden"><div style="width:25%;height:100%;background:#116DFF"></div></div>
+          <div style="font-size:12px;color:#767676">2/8 completed</div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:1px;font-size:14px">
+          <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:6px;cursor:pointer" style-hover="background:#EDEDED"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19l5-5M14 4l6 6-7 7-6-6zM4 20l2-5 3 3z"></path></svg>Setup</div>
+          <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:6px;cursor:pointer" style-hover="background:#EDEDED"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7M6 10v10h12V10"></path></svg>Home</div>
+          <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:6px;cursor:pointer" style-hover="background:#EDEDED"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8zM19 16l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"></path></svg>AI Agents<span style="margin-left:auto;background:#FFA94D;color:#151414;font-size:11px;font-weight:600;border-radius:4px;padding:1px 6px">NEW</span></div>
+          <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:6px;cursor:pointer" style-hover="background:#EDEDED"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="2"></rect><path d="M4 10h16M9 3v4M15 3v4"></path></svg>Booking Calendar<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" style="margin-left:auto"><path d="M9 6l6 6-6 6"></path></svg></div>
+          <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:6px;cursor:pointer" style-hover="background:#EDEDED"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M16.5 7H10a2.5 2.5 0 000 5h4a2.5 2.5 0 010 5H7"></path></svg>Getting Paid<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" style="margin-left:auto"><path d="M9 6l6 6-6 6"></path></svg></div>
+          <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:6px;cursor:pointer" style-hover="background:#EDEDED"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h16l-1.5 12h-13zM9 8V6a3 3 0 016 0v2"></path></svg>Catalog<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" style="margin-left:auto"><path d="M9 6l6 6-6 6"></path></svg></div>
+          <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:6px;cursor:pointer" style-hover="background:#EDEDED"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"></circle><path d="M3 19c0-3 3-5 6-5s6 2 6 5M16 5a3 3 0 010 6M21 19c0-2.4-1.6-4.2-4-4.8"></path></svg>Staff<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" style="margin-left:auto"><path d="M9 6l6 6-6 6"></path></svg></div>
+
+          <div onClick="{{ navArrivals }}" style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:6px;cursor:pointer" style-hover="background:#EDEDED"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4.5A1.5 1.5 0 016.5 3h9A1.5 1.5 0 0117 4.5V21M3 21h18M13.5 12.5v.01"></path></svg>Arrivals<span style="margin-left:auto;background:#FFA94D;color:#151414;font-size:11px;font-weight:600;border-radius:4px;padding:1px 6px">NEW</span><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 15l6-6 6 6"></path></svg></div>
+          <div onClick="{{ goDash }}" style="display:flex;align-items:center;padding:7px 10px 7px 36px;border-radius:6px;cursor:pointer;background:{{ nav.dash }}" style-hover="background:#EDEDED">Live arrivals</div>
+          <div onClick="{{ goSettings }}" style="display:flex;align-items:center;padding:7px 10px 7px 36px;border-radius:6px;cursor:pointer;background:{{ nav.settings }}" style-hover="background:#EDEDED">Doors &amp; access</div>
+          <div onClick="{{ goPass }}" style="display:flex;align-items:center;padding:7px 10px 7px 36px;border-radius:6px;cursor:pointer;background:{{ nav.pass }}" style-hover="background:#EDEDED">Member pass</div>
+
+          <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:6px;cursor:pointer" style-hover="background:#EDEDED"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6" height="6" rx="1"></rect><rect x="14" y="4" width="6" height="6" rx="1"></rect><rect x="4" y="14" width="6" height="6" rx="1"></rect><rect x="14" y="14" width="6" height="6" rx="1"></rect></svg>Apps<span style="margin-left:auto;background:#151414;color:#fff;font-size:11px;font-weight:600;border-radius:9px;min-width:18px;height:18px;display:grid;place-items:center">3</span><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"></path></svg></div>
+          <div style="height:1px;background:#E6E6E6;margin:10px 8px"></div>
+          <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:6px;cursor:pointer" style-hover="background:#EDEDED"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="13" rx="2"></rect><path d="M8 21h8M12 17v4"></path></svg>Site &amp; Mobile App<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" style="margin-left:auto"><path d="M9 6l6 6-6 6"></path></svg></div>
+          <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:6px;cursor:pointer" style-hover="background:#EDEDED"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10v4h3l6 4V6L7 10zM17 9a4 4 0 010 6"></path></svg>Marketing<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" style="margin-left:auto"><path d="M9 6l6 6-6 6"></path></svg></div>
+          <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:6px;cursor:pointer" style-hover="background:#EDEDED"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13l3-8h12l3 8v6H3zM3 13h5l1 2h6l1-2h5"></path></svg>Inbox</div>
+          <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:6px;cursor:pointer" style-hover="background:#EDEDED"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6"></path></svg>Customers &amp; Leads<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" style="margin-left:auto"><path d="M9 6l6 6-6 6"></path></svg></div>
+          <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:6px;cursor:pointer" style-hover="background:#EDEDED"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V4M4 20h16M8 15l4-4 3 3 5-6"></path></svg>Analytics<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" style="margin-left:auto"><path d="M9 6l6 6-6 6"></path></svg></div>
+          <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:6px;cursor:pointer" style-hover="background:#EDEDED"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3L5 14h6l-1 7 8-11h-6z"></path></svg>Automations</div>
+          <div style="height:1px;background:#E6E6E6;margin:10px 8px"></div>
+          <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:6px;cursor:pointer" style-hover="background:#EDEDED"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"></path></svg>Settings</div>
+        </div>
+      </div>
+      <div style="padding:10px 12px 14px;border-top:1px solid #E6E6E6;display:flex;flex-direction:column;gap:1px;font-size:14px">
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:6px;cursor:pointer" style-hover="background:#EDEDED"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>Add More Tools</div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:6px;cursor:pointer" style-hover="background:#EDEDED"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1-4L16 5l3 3L8 19z"></path></svg>Edit Site</div>
+      </div>
+    </div>
+
+    <!-- content -->
+    <div ref="{{ contentRef }}" style="flex:1;min-width:0;overflow-y:auto;position:relative">
+
+      <!-- ================= INTRO ================= -->
+      <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+      <div data-screen-label="01 Intro" style="max-width:1240px;margin:0 auto;padding:28px 40px 40px;min-height:calc(100% - 68px);display:flex;flex-direction:column">
+        <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#151414"><span>Apps</span><span style="color:#A8A8A8">/</span><span>Arrivals</span></div>
+        <div style="flex:1;display:flex;align-items:center;gap:56px;flex-wrap:wrap;padding:36px 0">
+          <div style="flex:1 1 420px;min-width:320px;max-width:560px;display:flex;flex-direction:column;gap:20px">
+            <div style="display:flex">
+              <x-import component-from-global-scope="WixDesignSystem.Badge" skin="general" size="medium" uppercase="{{ false }}" hint-size="160px,30px">New · Door access for Wix</x-import>
+            </div>
+            <x-import component-from-global-scope="WixDesignSystem.Heading" size="extraLarge" hint-size="100%,96px">Take control of who walks through your doors</x-import>
+            <x-import component-from-global-scope="WixDesignSystem.Text" size="medium" hint-size="100%,48px">Arrivals turns the plans and bookings you already sell into real access control, and keeps a record of every arrival for you.</x-import>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <sc-for list="{{ benefits }}" as="b" hint-placeholder-count="4">
+                <div style="display:flex;gap:12px;align-items:flex-start">
+                  <span style="width:22px;height:22px;border-radius:50%;background:#E7F0FF;color:#116DFF;display:grid;place-items:center;flex:0 0 22px;margin-top:1px"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"></path></svg></span>
+                  <div style="font-size:15px;line-height:1.5;text-wrap:pretty"><b style="font-weight:600">{{ b.title }}.</b> <span style="color:#525252">{{ b.desc }}</span></div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;margin-top:8px">
+              <x-import component-from-global-scope="WixDesignSystem.Button" skin="dark" size="large" onClick="{{ startOnboard }}" hint-size="130px,42px">Let's Start</x-import>
+              <x-import component-from-global-scope="WixDesignSystem.Button" priority="secondary" skin="dark" size="large" onClick="{{ loadSampleDash }}" hint-size="170px,42px">See a sample dashboard</x-import>
+            </div>
+          </div>
+
+          <div style="flex:0 1 380px;min-width:300px;display:flex;justify-content:center">
+            <div style="width:340px;background:#fff;border-radius:16px;box-shadow:0 12px 40px rgba(0,0,0,.10);padding:22px 20px 20px">
+              <div style="font-size:13px;color:#525252;text-align:center;line-height:1.5">One plan, one pass, one door. This is the loop Arrivals runs for you.</div>
+              <div style="margin-top:18px;border-radius:14px;background:#116DFF;padding:16px 18px;color:#fff">
+                <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:10px;font-weight:700;letter-spacing:.12em">JIM'S GYM</span><span style="font-size:10px;font-weight:600;background:rgba(255,255,255,.22);border-radius:4px;padding:3px 7px">WALLET PASS</span></div>
+                <div style="display:flex;align-items:center;gap:11px;margin-top:16px">
+                  <x-import component-from-global-scope="WixDesignSystem.Avatar" name="Ava Silva" size="size36" imgProps="{{ avaImg }}" hint-size="36px,36px"></x-import>
+                  <div><div style="font-size:15px;font-weight:600">Ava Silva</div><div style="font-size:12px;opacity:.9;margin-top:1px">Unlimited membership · active</div></div>
+                </div>
+              </div>
+              <div style="display:flex;gap:8px;margin-top:10px">
+                <span style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;background:#000;color:#fff;border-radius:8px;height:32px;font-size:11px;font-weight:600">Add to Apple Wallet</span>
+                <span style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;background:#fff;border:1px solid #DADCE0;color:#3C4043;border-radius:8px;height:32px;font-size:11px;font-weight:600">Add to Google Wallet</span>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;padding:10px 0">
+                <span style="width:1px;height:12px;background:#D6D6D6;display:block"></span>
+                <span style="width:30px;height:30px;border-radius:50%;background:#E7F0FF;color:#116DFF;display:grid;place-items:center"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V5.5A1.5 1.5 0 015.5 4H8M16 4h2.5A1.5 1.5 0 0120 5.5V8M20 16v2.5a1.5 1.5 0 01-1.5 1.5H16M8 20H5.5A1.5 1.5 0 014 18.5V16M7 12h10"></path></svg></span>
+                <span style="width:1px;height:12px;background:#D6D6D6;display:block"></span>
+              </div>
+              <div style="border:1px solid #E6E6E6;border-radius:12px;overflow:hidden">
+                <div style="display:flex;align-items:center;gap:11px;padding:12px 14px">
+                  <span style="width:32px;height:32px;border-radius:8px;background:#F3F3F3;display:grid;place-items:center;flex:0 0 32px"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#151414" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4.5A1.5 1.5 0 016.5 3h9A1.5 1.5 0 0117 4.5V21M3 21h18M13.5 12.5v.01"></path></svg></span>
+                  <div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:600">Front Entrance</div><div style="font-size:12px;color:#767676;margin-top:1px">Kisi reader · unlocked</div></div>
+                  <x-import component-from-global-scope="WixDesignSystem.Badge" skin="success" size="small" hint-size="70px,20px">Approved</x-import>
+                </div>
+                <div style="display:flex;justify-content:space-between;padding:9px 14px;border-top:1px solid #F0F0F0;background:#FAFAFA;font-size:12px;color:#767676"><span>Logged to arrival history</span><span>9:07 AM</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="font-size:14px;color:#151414">Already have a Kisi, Salto or Brivo reader? You can <a onClick="{{ startOnboard }}" style="text-decoration:underline;color:#151414;cursor:pointer">connect it during setup</a>.</div>
+      </div>
+      </sc-if>
+
+      <!-- ================= ONBOARDING ================= -->
+      <sc-if value="{{ isOnboard }}" hint-placeholder-val="{{ false }}">
+      <div data-screen-label="02 Onboarding" style="max-width:1000px;margin:0 auto;padding:28px 40px 60px">
+        <div style="display:flex;align-items:center;gap:10px;font-size:14px"><a onClick="{{ goIntro }}" style="color:#151414;cursor:pointer">Arrivals</a><span style="color:#A8A8A8">/</span><span>Set up</span></div>
+        <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin:10px 0 22px">
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <x-import component-from-global-scope="WixDesignSystem.Heading" size="extraLarge" hint-size="260px,40px">Set up Arrivals</x-import>
+            <x-import component-from-global-scope="WixDesignSystem.Text" size="small" secondary="{{ true }}" hint-size="360px,20px">Five short steps. You can change everything later in Doors &amp; access.</x-import>
+          </div>
+          <x-import component-from-global-scope="WixDesignSystem.TextButton" size="small" skin="dark" onClick="{{ obExit }}" hint-size="90px,20px">Finish later</x-import>
+        </div>
+
+        <x-import component-from-global-scope="WixDesignSystem.Card" hideOverflow="{{ true }}" hint-size="100%,480px">
+          <div style="padding:20px 24px;border-bottom:1px solid #EDEDED">
+            <x-import component-from-global-scope="WixDesignSystem.Stepper" steps="{{ steps }}" activeStep="{{ activeStep }}" onClick="{{ onStepClick }}" type="circle" fit="stretched" size="small" hint-size="100%,36px"></x-import>
+          </div>
+          <div style="padding:24px 24px 26px">
+            <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:22px">
+              <x-import component-from-global-scope="WixDesignSystem.Heading" size="medium" hint-size="320px,28px">{{ obTitle }}</x-import>
+              <x-import component-from-global-scope="WixDesignSystem.Text" size="small" secondary="{{ true }}" hint-size="420px,20px">{{ obSub }}</x-import>
+            </div>
+
+            <!-- step 1 door -->
+            <sc-if value="{{ obIs.door }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;flex-direction:column;gap:22px;max-width:620px">
+              <x-import component-from-global-scope="WixDesignSystem.FormField" label="Door name" infoContent="Staff see this name every time they scan." hint-size="100%,64px">
+                <x-import component-from-global-scope="WixDesignSystem.Input" value="{{ obDoorName }}" onChange="{{ onObDoorName }}" placeholder="e.g. Front Entrance" hint-size="100%,36px"></x-import>
+              </x-import>
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <x-import component-from-global-scope="WixDesignSystem.Text" size="small" weight="bold" hint-size="120px,20px">Location</x-import>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px">
+                  <sc-for list="{{ locCards }}" as="l" hint-placeholder-count="2">
+                    <div onClick="{{ l.go }}" style="display:flex;align-items:center;gap:12px;border:1px solid {{ l.border }};background:{{ l.bg }};border-radius:8px;padding:14px 16px;cursor:pointer">
+                      <x-import component-from-global-scope="WixDesignSystem.Radio" checked="{{ l.checked }}" onChange="{{ l.go }}" hint-size="18px,18px"></x-import>
+                      <div><div style="font-size:14px;font-weight:600">{{ l.name }}</div><div style="font-size:12.5px;color:#767676;margin-top:2px">{{ l.addr }}</div></div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+            </sc-if>
+
+            <!-- step 2 hardware -->
+            <sc-if value="{{ obIs.hardware }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <sc-for list="{{ hwCards }}" as="h" hint-placeholder-count="3">
+                <div onClick="{{ h.go }}" style="display:flex;align-items:flex-start;gap:12px;border:1px solid {{ h.border }};background:{{ h.bg }};border-radius:8px;padding:16px;cursor:pointer">
+                  <div style="padding-top:2px"><x-import component-from-global-scope="WixDesignSystem.Radio" checked="{{ h.checked }}" onChange="{{ h.go }}" hint-size="18px,18px"></x-import></div>
+                  <div style="flex:1;min-width:0">
+                    <div style="display:flex;align-items:center;gap:10px"><span style="font-size:14.5px;font-weight:600">{{ h.title }}</span><x-import component-from-global-scope="WixDesignSystem.Badge" skin="neutralLight" size="tiny" uppercase="{{ false }}" hint-size="80px,18px">{{ h.tag }}</x-import></div>
+                    <div style="font-size:13px;color:#525252;margin-top:4px;line-height:1.5">{{ h.desc }}</div>
+                  </div>
+                </div>
+              </sc-for>
+              <sc-if value="{{ hwIsReader }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top:8px">
+                <sc-if value="{{ notPaired }}" hint-placeholder-val="{{ true }}">
+                <div style="display:flex;gap:18px;align-items:center;background:#F7F7F7;border-radius:8px;padding:18px 20px;flex-wrap:wrap">
+                  <div style="flex:1;min-width:240px">
+                    <div style="font-size:13px;color:#525252">Enter this code in your reader's admin app</div>
+                    <div style="font-size:26px;font-weight:700;letter-spacing:.08em;margin-top:4px">{{ pairCode }}</div>
+                    <div style="font-size:12.5px;color:#767676;margin-top:4px">Kisi, Salto and Brivo readers accept it. Nothing changes at the door for clients.</div>
+                  </div>
+                  <x-import component-from-global-scope="WixDesignSystem.Button" priority="secondary" skin="dark" size="small" onClick="{{ pairNow }}" hint-size="140px,30px">Simulate pairing</x-import>
+                </div>
+                </sc-if>
+                <sc-if value="{{ paired }}" hint-placeholder-val="{{ false }}">
+                <x-import component-from-global-scope="WixDesignSystem.SectionHelper" skin="success" title="Kisi reader K-2 is paired" hint-size="100%,70px">The reader now asks Arrivals before it unlocks, and every entry lands in your log.</x-import>
+                </sc-if>
+              </div>
+              </sc-if>
+              <sc-if value="{{ hwIsBuy }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top:8px;display:flex;gap:18px;align-items:center;background:#F7F7F7;border-radius:8px;padding:18px 20px;flex-wrap:wrap">
+                <div style="flex:1;min-width:240px;font-size:13px;color:#525252;line-height:1.5"><b style="color:#151414;font-weight:600">Hardware comes from a local distributor.</b> Certified Kisi, Salto and Brivo partners near {{ obLoc }} quote and install for you.</div>
+                <x-import component-from-global-scope="WixDesignSystem.Button" priority="secondary" skin="dark" size="small" onClick="{{ toastDistributor }}" hint-size="170px,30px">Find a distributor</x-import>
+              </div>
+              </sc-if>
+              <sc-if value="{{ hwShowFallback }}" hint-placeholder-val="{{ false }}">
+              <x-import component-from-global-scope="WixDesignSystem.SectionHelper" skin="standard" hint-size="100%,50px">You can carry on and finish the hardware later. Until it is connected, your front desk scans passes from the Wix Owner app.</x-import>
+              </sc-if>
+            </div>
+            </sc-if>
+
+            <!-- step 3 plans -->
+            <sc-if value="{{ obIs.plans }}" hint-placeholder-val="{{ false }}">
+            <div>
+              <sc-if value="{{ obPlanNone }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-bottom:14px"><x-import component-from-global-scope="WixDesignSystem.SectionHelper" skin="warning" title="Nothing opens this door yet" hint-size="100%,70px">With no plan connected, every scan at {{ obDoorName }} is denied, including your own members. Switch on at least one.</x-import></div>
+              </sc-if>
+              <div style="border:1px solid #EDEDED;border-radius:8px;overflow:hidden">
+                <sc-for list="{{ obPlans }}" as="p" hint-placeholder-count="4">
+                  <div style="display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:1px solid #F0F0F0">
+                    <div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:500">{{ p.name }}</div><div style="font-size:12.5px;color:#767676;margin-top:2px">{{ p.meta }} · {{ p.subs }}</div></div>
+                    <x-import component-from-global-scope="WixDesignSystem.ToggleSwitch" checked="{{ p.on }}" onChange="{{ p.go }}" hint-size="36px,20px"></x-import>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="font-size:12.5px;color:#767676;margin-top:14px;line-height:1.5">Later you can count entries like a punch card, limit a plan to certain days and hours, and connect it to more doors.</div>
+            </div>
+            </sc-if>
+
+            <!-- step 4 forms -->
+            <sc-if value="{{ obIs.forms }}" hint-placeholder-val="{{ false }}">
+            <div>
+              <div style="border:1px solid #EDEDED;border-radius:8px;overflow:hidden">
+                <div style="display:flex;align-items:center;gap:14px;padding:10px 18px;background:#FAFAFA;border-bottom:1px solid #EDEDED;font-size:12.5px;color:#525252"><span style="flex:1">Collected at this door</span><span>If it's missing</span></div>
+                <sc-for list="{{ obForms }}" as="f" hint-placeholder-count="3">
+                  <div style="display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:1px solid #F0F0F0;min-height:36px">
+                    <x-import component-from-global-scope="WixDesignSystem.ToggleSwitch" checked="{{ f.on }}" onChange="{{ f.go }}" hint-size="36px,20px"></x-import>
+                    <div style="flex:1;min-width:0;font-size:14.5px;font-weight:500">{{ f.name }}</div>
+                    <sc-if value="{{ f.on }}" hint-placeholder-val="{{ true }}"><div>{{ f.seg }}</div></sc-if>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="font-size:12.5px;color:#767676;margin-top:14px;line-height:1.5">{{ obMissSummary }}</div>
+            </div>
+            </sc-if>
+
+            <!-- step 5 pass -->
+            <sc-if value="{{ obIs.pass }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;gap:28px;align-items:flex-start;flex-wrap:wrap">
+              <div style="flex:1 1 340px;min-width:300px">
+                <div style="border:1px solid #EDEDED;border-radius:8px;overflow:hidden">
+                  <sc-for list="{{ obPassRows }}" as="r" hint-placeholder-count="2">
+                    <div style="display:flex;align-items:flex-start;gap:14px;padding:16px 18px;border-bottom:1px solid #F0F0F0">
+                      <div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:500">{{ r.name }}</div><div style="font-size:12.5px;color:#767676;margin-top:3px;line-height:1.45">{{ r.desc }}</div></div>
+                      <x-import component-from-global-scope="WixDesignSystem.ToggleSwitch" checked="{{ r.on }}" onChange="{{ r.go }}" hint-size="36px,20px"></x-import>
+                    </div>
+                  </sc-for>
+                </div>
+                <div style="font-size:12.5px;color:#767676;margin-top:14px;line-height:1.5">Colours, logo and what the pass shows can be changed any time in Member pass.</div>
+              </div>
+              <div style="width:250px;flex:0 0 250px;background:#F3F3F3;border-radius:12px;padding:20px 18px;display:flex;flex-direction:column;align-items:center">
+                <div style="font-size:12px;color:#767676;margin-bottom:12px">Member's pass preview</div>
+                <div style="width:206px;background:#fff;border-radius:14px;box-shadow:0 8px 22px rgba(0,0,0,.10);overflow:hidden">
+                  <div style="background:{{ passBrand }};color:{{ passTextColor }};padding:12px 16px;display:flex;align-items:center;justify-content:space-between"><span style="font-size:11.5px;font-weight:700;letter-spacing:.06em">{{ passBizUpper }}</span><span style="font-size:10px;font-weight:600;background:rgba(255,255,255,.22);padding:3px 8px;border-radius:10px">ACTIVE</span></div>
+                  <div style="padding:16px;text-align:center">
+                    <div style="font-size:15px;font-weight:600">Jordan Reyes</div>
+                    <div style="font-size:12px;color:#767676;margin-top:2px">10-class pack</div>
+                    <div style="margin:14px 0 6px;padding:10px;border-radius:10px;background:#F7F7F7"><div style="font-size:10.5px;color:#767676">Sessions remaining</div><div style="font-size:28px;font-weight:700;color:{{ passBrand }};line-height:1.1;margin-top:2px">3</div></div>
+                    <div style="font-size:11.5px;color:#767676;margin-top:10px">Present at the door</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </sc-if>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:16px 24px;border-top:1px solid #EDEDED">
+            <sc-if value="{{ obCanBack }}" hint-placeholder-val="{{ false }}">
+            <x-import component-from-global-scope="WixDesignSystem.Button" priority="secondary" skin="dark" onClick="{{ obBack }}" hint-size="80px,36px">Back</x-import>
+            </sc-if>
+            <x-import component-from-global-scope="WixDesignSystem.Button" skin="dark" onClick="{{ obNext }}" hint-size="110px,36px">{{ obNextLabel }}</x-import>
+            <sc-if value="{{ obNotLast }}" hint-placeholder-val="{{ true }}">
+            <div style="margin-left:auto"><x-import component-from-global-scope="WixDesignSystem.TextButton" size="small" skin="dark" onClick="{{ obSkip }}" hint-size="110px,20px">Skip this step</x-import></div>
+            </sc-if>
+          </div>
+        </x-import>
+      </div>
+      </sc-if>
+
+      <!-- ================= TEST SCAN ================= -->
+      <sc-if value="{{ isTest }}" hint-placeholder-val="{{ false }}">
+      <div data-screen-label="03 Test scan" style="max-width:620px;margin:0 auto;padding:48px 40px 60px">
+        <sc-if value="{{ testIdle }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px">
+          <x-import component-from-global-scope="WixDesignSystem.Heading" size="large" hint-size="360px,36px">One scan before you open</x-import>
+          <x-import component-from-global-scope="WixDesignSystem.Text" size="medium" secondary="{{ true }}" hint-size="100%,44px">This runs a sample pass against {{ obDoorName }} exactly as a real client would. Test entries never show up in your reports.</x-import>
+          <div style="width:100%;margin-top:14px">
+            <x-import component-from-global-scope="WixDesignSystem.Card" hint-size="100%,260px">
+              <div style="padding:32px;display:flex;flex-direction:column;align-items:center;gap:20px">
+                <div style="width:128px;height:128px;border-radius:10px;background:repeating-conic-gradient(#151414 0 25%, #fff 0 50%) 0 0/16px 16px;border:6px solid #fff;box-shadow:0 0 0 1px #E6E6E6"></div>
+                <x-import component-from-global-scope="WixDesignSystem.Button" skin="dark" size="large" onClick="{{ runTest }}" hint-size="170px,42px">Run the test scan</x-import>
+              </div>
+            </x-import>
+          </div>
+        </div>
+        </sc-if>
+        <sc-if value="{{ testRunning }}" hint-placeholder-val="{{ false }}">
+        <x-import component-from-global-scope="WixDesignSystem.Card" hint-size="100%,240px">
+          <div style="padding:56px 30px;display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center">
+            <x-import component-from-global-scope="WixDesignSystem.Loader" size="medium" hint-size="48px,48px"></x-import>
+            <div style="font-size:15px;font-weight:600">Checking the pass, the plan and the waiver…</div>
+            <div style="font-size:13px;color:#767676">This is what happens in the half-second before the door opens.</div>
+          </div>
+        </x-import>
+        </sc-if>
+        <sc-if value="{{ testDone }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:20px">
+          <x-import component-from-global-scope="WixDesignSystem.Card" hideOverflow="{{ true }}" hint-size="100%,340px">
+            <div style="display:flex;align-items:center;gap:14px;padding:22px 24px;background:#E6F6EC;border-bottom:1px solid #CDEBD8">
+              <span style="width:40px;height:40px;border-radius:50%;background:#25A55A;color:#fff;display:grid;place-items:center;flex:0 0 40px;animation:arPulse 1.8s infinite"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"></path></svg></span>
+              <div><div style="font-size:18px;font-weight:600">Approved. The door would open.</div><div style="font-size:13px;color:#525252;margin-top:2px">Arrivals is working end to end at {{ obDoorName }}.</div></div>
+            </div>
+            <div style="padding:4px 24px 12px">
+              <sc-for list="{{ testLines }}" as="l" hint-placeholder-count="5">
+                <div style="display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid #F0F0F0;font-size:14px"><span style="color:#767676">{{ l.label }}</span><span style="text-align:right;font-weight:500">{{ l.value }}</span></div>
+              </sc-for>
+            </div>
+          </x-import>
+          <div style="display:flex;justify-content:center;gap:10px">
+            <x-import component-from-global-scope="WixDesignSystem.Button" skin="dark" onClick="{{ finishSetup }}" hint-size="140px,36px">Go to Arrivals</x-import>
+            <x-import component-from-global-scope="WixDesignSystem.Button" priority="secondary" skin="dark" onClick="{{ testAgain }}" hint-size="120px,36px">Run it again</x-import>
+          </div>
+        </div>
+        </sc-if>
+      </div>
+      </sc-if>
+
+      <!-- ================= DASHBOARD ================= -->
+      <sc-if value="{{ isDash }}" hint-placeholder-val="{{ false }}">
+      <div data-screen-label="04 Dashboard" style="max-width:1248px;margin:0 auto;padding:28px 40px 60px;display:flex;flex-direction:column;gap:18px">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap">
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <x-import component-from-global-scope="WixDesignSystem.Heading" size="extraLarge" hint-size="200px,40px">Live arrivals</x-import>
+            <div style="font-size:13px;color:#151414">Every arrival across your doors, live, and a full record of who came through. <a onClick="{{ goSettings }}" style="cursor:pointer">Manage doors</a></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <x-import component-from-global-scope="WixDesignSystem.Button" priority="secondary" skin="dark" size="small" onClick="{{ goSettings }}" hint-size="150px,30px">Manage Settings</x-import>
+            <x-import component-from-global-scope="WixDesignSystem.Button" skin="dark" size="small" onClick="{{ openManual }}" hint-size="160px,30px">+ New Manual Entry</x-import>
+          </div>
+        </div>
+
+        <sc-if value="{{ firstBanner }}" hint-placeholder-val="{{ false }}">
+        <x-import component-from-global-scope="WixDesignSystem.SectionHelper" skin="success" title="{{ firstBannerTitle }}" showCloseButton="{{ true }}" onClose="{{ dismissFirstBanner }}" hint-size="100%,70px">Her pass opened {{ obDoorName }} on her Unlimited membership. From here the log keeps itself.</x-import>
+        </sc-if>
+
+        <x-import component-from-global-scope="WixDesignSystem.Card" hint-size="100%,52px">
+          <div style="display:flex;align-items:center;gap:30px;padding:14px 24px;flex-wrap:wrap;font-size:14px">
+            <span>Entries today <b style="font-weight:600">{{ stats.today }}</b></span>
+            <span style="display:inline-flex;align-items:center;gap:7px"><span style="width:8px;height:8px;border-radius:50%;background:#25A55A;animation:arPulse 1.8s infinite"></span>At the door now <b style="font-weight:600;color:#116DFF">{{ stats.now }}</b></span>
+            <span>Denied today <b style="font-weight:600;color:#116DFF">{{ stats.denied }}</b></span>
+            <span>Doors online <b style="font-weight:600;color:#116DFF">{{ stats.doors }}</b></span>
+            <span style="margin-left:auto;display:inline-flex;align-items:center;gap:6px;color:#116DFF;cursor:pointer" onClick="{{ cycleLoc }}">{{ dashLocName }}<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg></span>
+          </div>
+        </x-import>
+
+        <!-- first run: nothing yet -->
+        <sc-if value="{{ zeroDash }}" hint-placeholder-val="{{ false }}">
+        <x-import component-from-global-scope="WixDesignSystem.Card" hint-size="100%,380px">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));border-bottom:1px solid #EDEDED">
+            <sc-for list="{{ zeroSummary }}" as="s" hint-placeholder-count="4">
+              <div style="padding:16px 24px;border-right:1px solid #F0F0F0"><div style="font-size:12.5px;color:#767676">{{ s.label }}</div><div style="font-size:14.5px;font-weight:600;margin-top:4px">{{ s.value }}</div></div>
+            </sc-for>
+          </div>
+          <div style="padding:48px 24px 52px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px">
+            <span style="width:60px;height:60px;border-radius:50%;background:#F3F3F3;display:grid;place-items:center;margin-bottom:6px"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#767676" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4.5A1.5 1.5 0 016.5 3h9A1.5 1.5 0 0117 4.5V21M3 21h18M13.5 12.5v.01"></path></svg></span>
+            <x-import component-from-global-scope="WixDesignSystem.Heading" size="medium" hint-size="280px,28px">No one has walked in yet</x-import>
+            <div style="font-size:14px;color:#525252;max-width:440px;line-height:1.5">The moment someone scans in at {{ obDoorName }} they appear here, and the full record starts building underneath.</div>
+            <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;justify-content:center">
+              <x-import component-from-global-scope="WixDesignSystem.Button" skin="dark" onClick="{{ simulateFirst }}" hint-size="180px,36px">Simulate a real arrival</x-import>
+              <x-import component-from-global-scope="WixDesignSystem.Button" priority="secondary" skin="dark" onClick="{{ openManual }}" hint-size="190px,36px">Check someone in by hand</x-import>
+            </div>
+            <div style="margin-top:6px"><x-import component-from-global-scope="WixDesignSystem.TextButton" size="small" onClick="{{ loadSample }}" hint-size="130px,20px">Load sample data</x-import></div>
+          </div>
+        </x-import>
+        </sc-if>
+
+        <sc-if value="{{ hasData }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;gap:18px">
+          <!-- live -->
+          <x-import component-from-global-scope="WixDesignSystem.Card" hint-size="100%,260px">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 24px 6px">
+              <div style="display:flex;flex-direction:column;gap:2px">
+                <x-import component-from-global-scope="WixDesignSystem.Heading" size="small" hint-size="160px,24px">At the door now</x-import>
+                <div style="font-size:13px;color:#767676">{{ dashLocName }} · all doors · last 10 min</div>
+              </div>
+              <x-import component-from-global-scope="WixDesignSystem.Button" priority="secondary" skin="dark" size="small" onClick="{{ simulate }}" hint-size="120px,30px">Simulate scan</x-import>
+            </div>
+            <sc-if value="{{ isTiles }}" hint-placeholder-val="{{ true }}">
+            <div style="padding:14px 24px 22px;display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px">
+              <sc-for list="{{ live }}" as="p" hint-placeholder-count="3">
+                <div style="border:1px solid #EDEDED;border-top:3px solid {{ p.color }};border-radius:8px;padding:16px 12px 14px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;animation:arIn .28s cubic-bezier(.34,1.2,.5,1) both">
+                  <x-import component-from-global-scope="WixDesignSystem.Avatar" name="{{ p.name }}" size="size48" imgProps="{{ p.img }}" onClick="{{ p.openContact }}" hint-size="48px,48px"></x-import>
+                  <a onClick="{{ p.openContact }}" style="font-size:14px;font-weight:600;margin-top:6px;cursor:pointer;color:#151414">{{ p.name }}</a>
+                  <div style="font-size:13px;font-weight:600;color:{{ p.color }}">{{ p.result }}</div>
+                  <div style="font-size:12px;color:#767676;line-height:1.4">{{ p.detail }}</div>
+                  <div style="margin-top:6px;font-size:11.5px;color:#525252;background:#F3F3F3;border-radius:4px;padding:3px 8px">{{ p.source }} · {{ p.door }}</div>
+                  <div style="font-size:11.5px;color:#A8A8A8">{{ p.time }}</div>
+                </div>
+              </sc-for>
+            </div>
+            </sc-if>
+            <sc-if value="{{ isList }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:6px 0 10px">
+              <sc-for list="{{ live }}" as="p" hint-placeholder-count="3">
+                <div style="display:flex;align-items:center;gap:14px;padding:12px 24px;border-bottom:1px solid #F0F0F0;animation:arIn .28s cubic-bezier(.34,1.2,.5,1) both">
+                  <span style="width:4px;height:36px;border-radius:2px;background:{{ p.color }};flex:0 0 4px"></span>
+                  <x-import component-from-global-scope="WixDesignSystem.Avatar" name="{{ p.name }}" size="size36" imgProps="{{ p.img }}" onClick="{{ p.openContact }}" hint-size="36px,36px"></x-import>
+                  <div style="flex:1;min-width:0"><a onClick="{{ p.openContact }}" style="font-size:14px;font-weight:600;cursor:pointer;color:#151414">{{ p.name }}</a><div style="font-size:12.5px;color:#767676;margin-top:1px">{{ p.result }} · {{ p.detail }}</div></div>
+                  <div style="text-align:right"><div style="font-size:13px">{{ p.door }}</div><div style="font-size:12px;color:#A8A8A8;margin-top:1px">{{ p.source }} · {{ p.time }}</div></div>
+                </div>
+              </sc-for>
+            </div>
+            </sc-if>
+            <sc-if value="{{ noLive }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:28px 24px 32px;text-align:center;font-size:13.5px;color:#767676">No one at the door right now. New arrivals appear here the moment they scan in.</div>
+            </sc-if>
+          </x-import>
+
+          <!-- history -->
+          <x-import component-from-global-scope="WixDesignSystem.Card" hideOverflow="{{ true }}" hint-size="100%,420px">
+            <div style="display:flex;align-items:center;gap:12px;padding:18px 24px 14px;flex-wrap:wrap">
+              <x-import component-from-global-scope="WixDesignSystem.Heading" size="small" hint-size="150px,24px">Arrival history</x-import>
+              <div style="margin-left:auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+                <div style="width:170px"><x-import component-from-global-scope="WixDesignSystem.Dropdown" size="small" options="{{ resOptions }}" selectedId="{{ resFilter }}" onSelect="{{ onResFilter }}" hint-size="170px,30px"></x-import></div>
+                <div style="width:130px"><x-import component-from-global-scope="WixDesignSystem.Dropdown" size="small" options="{{ rangeOptions }}" selectedId="{{ range }}" onSelect="{{ onRange }}" hint-size="130px,30px"></x-import></div>
+                <div style="width:220px"><x-import component-from-global-scope="WixDesignSystem.Search" size="small" value="{{ query }}" onChange="{{ onQuery }}" onClear="{{ clearQuery }}" placeholder="Search clients..." hint-size="220px,30px"></x-import></div>
+              </div>
+            </div>
+            <sc-if value="{{ hasChips }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;align-items:center;gap:10px;padding:0 24px 12px">
+              <span style="display:inline-flex;align-items:center;gap:8px;background:#F3F3F3;border-radius:4px;padding:4px 10px;font-size:13px"><b style="font-weight:600">Result:</b> {{ resLabel }}<span onClick="{{ clearRes }}" style="cursor:pointer;font-size:14px">×</span></span>
+              <a onClick="{{ clearRes }}" style="font-size:12px;cursor:pointer">Clear all</a>
+            </div>
+            </sc-if>
+            <div style="overflow-x:auto">
+              <div style="min-width:860px">
+                <div style="display:grid;grid-template-columns:2fr 1.1fr 1.4fr 1.1fr 1.7fr .8fr 40px;gap:12px;align-items:center;padding:12px 24px;border-top:1px solid #EDEDED;border-bottom:1px solid #EDEDED;font-size:14px;font-weight:500">
+                  <span>Client</span><span>Result</span><span>Door</span><span>Method</span><span>Plan / booking</span><span>Time ↓</span><span></span>
+                </div>
+                <sc-for list="{{ historyRows }}" as="h" hint-placeholder-count="6">
+                  <div style="display:grid;grid-template-columns:2fr 1.1fr 1.4fr 1.1fr 1.7fr .8fr 40px;gap:12px;align-items:center;padding:12px 24px;border-bottom:1px solid #F0F0F0;font-size:14px" style-hover="background:#FAFAFA">
+                    <span style="display:flex;align-items:center;gap:10px;min-width:0"><x-import component-from-global-scope="WixDesignSystem.Avatar" name="{{ h.name }}" size="size30" imgProps="{{ h.img }}" hint-size="30px,30px"></x-import><a onClick="{{ h.openContact }}" style="cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ h.name }}</a></span>
+                    <span><x-import component-from-global-scope="WixDesignSystem.Badge" skin="{{ h.skin }}" size="small" type="transparent" hint-size="80px,20px">{{ h.badge }}</x-import></span>
+                    <span>{{ h.door }}</span>
+                    <span style="color:#525252">{{ h.method }}</span>
+                    <span style="color:#525252">{{ h.plan }}</span>
+                    <span style="color:#525252;white-space:nowrap">{{ h.time }}</span>
+                    <span style="color:#151414;cursor:pointer;text-align:center" onClick="{{ h.openContact }}">···</span>
+                  </div>
+                </sc-for>
+                <sc-if value="{{ noHistory }}" hint-placeholder-val="{{ false }}">
+                <div style="padding:30px 24px;text-align:center;font-size:13.5px;color:#767676">No arrivals match these filters.</div>
+                </sc-if>
+              </div>
+            </div>
+          </x-import>
+        </div>
+        </sc-if>
+      </div>
+      </sc-if>
+
+      <!-- ================= SETTINGS ================= -->
+      <sc-if value="{{ isSettings }}" hint-placeholder-val="{{ false }}">
+      <div style="max-width:1000px;margin:0 auto;padding:28px 40px 60px">
+
+        <!-- index -->
+        <sc-if value="{{ sIndex }}" hint-placeholder-val="{{ true }}">
+        <div data-screen-label="05 Settings" style="display:flex;flex-direction:column;gap:18px">
+          <div>
+            <div style="display:flex;align-items:center;gap:10px;font-size:14px"><a onClick="{{ goDash }}" style="color:#151414;cursor:pointer">Arrivals</a><span style="color:#A8A8A8">/</span><span>Doors &amp; access</span></div>
+            <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-top:10px;flex-wrap:wrap">
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <x-import component-from-global-scope="WixDesignSystem.Heading" size="extraLarge" hint-size="260px,40px">Doors &amp; access</x-import>
+                <div style="font-size:13px">Hardware, plans and intake forms are set up per door. Open a door to manage it.</div>
+              </div>
+              <x-import component-from-global-scope="WixDesignSystem.Button" skin="dark" size="small" onClick="{{ toastAddDoor }}" hint-size="110px,30px">+ Add Door</x-import>
+            </div>
+          </div>
+
+          <x-import component-from-global-scope="WixDesignSystem.Card" hideOverflow="{{ true }}" hint-size="100%,360px">
+            <div style="display:flex;align-items:center;gap:12px;padding:18px 24px;flex-wrap:wrap">
+              <x-import component-from-global-scope="WixDesignSystem.Heading" size="small" hint-size="80px,24px">Doors</x-import>
+              <div style="margin-left:auto;display:flex;align-items:center;gap:10px">
+                <span style="font-size:13px;color:#767676">Location</span>
+                <div style="width:230px"><x-import component-from-global-scope="WixDesignSystem.Dropdown" size="small" options="{{ locOptions }}" selectedId="{{ locId }}" onSelect="{{ onLoc }}" hint-size="230px,30px"></x-import></div>
+              </div>
+            </div>
+            <sc-for list="{{ doorCards }}" as="d" hint-placeholder-count="3">
+              <div onClick="{{ d.open }}" style="display:grid;grid-template-columns:minmax(0,2.2fr) repeat(3,minmax(0,1fr)) 110px 20px;gap:16px;align-items:center;padding:16px 24px;border-top:1px solid #F0F0F0;cursor:pointer" style-hover="background:#FAFAFA">
+                <div style="display:flex;align-items:center;gap:12px;min-width:0">
+                  <span style="width:36px;height:36px;border-radius:8px;background:#F3F3F3;display:grid;place-items:center;flex:0 0 36px"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#151414" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4.5A1.5 1.5 0 016.5 3h9A1.5 1.5 0 0117 4.5V21M3 21h18M13.5 12.5v.01"></path></svg></span>
+                  <div style="min-width:0"><div style="font-size:14.5px;font-weight:600">{{ d.name }}</div><div style="font-size:12.5px;color:#767676;margin-top:2px">{{ d.meta }}</div></div>
+                </div>
+                <sc-for list="{{ d.chips }}" as="c" hint-placeholder-count="3">
+                  <div style="min-width:0"><div style="font-size:12px;color:#767676">{{ c.label }}</div><div style="font-size:13.5px;margin-top:2px;color:{{ c.color }}">{{ c.value }}</div></div>
+                </sc-for>
+                <div><x-import component-from-global-scope="WixDesignSystem.Badge" skin="{{ d.skin }}" size="small" type="transparent" hint-size="90px,20px">{{ d.status }}</x-import></div>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#A8A8A8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>
+              </div>
+            </sc-for>
+            <div style="padding:14px 24px 20px;border-top:1px solid #F0F0F0">
+              <x-import component-from-global-scope="WixDesignSystem.AddItem" size="small" onClick="{{ toastAddDoor }}" hint-size="100%,48px">Add a door to {{ locName }}</x-import>
+            </div>
+          </x-import>
+
+          <x-import component-from-global-scope="WixDesignSystem.Card" hideOverflow="{{ true }}" hint-size="100%,220px">
+            <div style="padding:18px 24px 8px"><x-import component-from-global-scope="WixDesignSystem.Heading" size="small" hint-size="200px,24px">Applies to every door</x-import></div>
+            <div onClick="{{ goPass }}" style="display:flex;align-items:center;gap:16px;padding:16px 24px;border-top:1px solid #F0F0F0;cursor:pointer" style-hover="background:#FAFAFA">
+              <div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:500">Member pass</div><div style="font-size:13px;color:#767676;margin-top:2px">Each client gets one pass, saved to their phone. It works at every door their plan opens.</div></div>
+              <span style="font-size:13px;color:#767676">{{ passSummary }}</span>
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#A8A8A8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>
+            </div>
+            <div style="display:flex;align-items:center;gap:16px;padding:16px 24px;border-top:1px solid #F0F0F0">
+              <div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:500">Log arrivals to the booking calendar</div><div style="font-size:13px;color:#767676;margin-top:2px">Each arrival sets the client's attendance to "Checked in" on their Wix Bookings session.</div></div>
+              <x-import component-from-global-scope="WixDesignSystem.ToggleSwitch" checked="{{ logArrival }}" onChange="{{ toggleLogArrival }}" hint-size="36px,20px"></x-import>
+            </div>
+            <div style="display:flex;align-items:center;gap:16px;padding:16px 24px;border-top:1px solid #F0F0F0">
+              <div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:500">Guided setup</div><div style="font-size:13px;color:#767676;margin-top:2px">Walk through the five setup steps again for a new door.</div></div>
+              <x-import component-from-global-scope="WixDesignSystem.Button" priority="secondary" skin="dark" size="small" onClick="{{ restartSetup }}" hint-size="110px,30px">Run setup</x-import>
+            </div>
+          </x-import>
+        </div>
+        </sc-if>
+
+        <!-- one door -->
+        <sc-if value="{{ sDoor }}" hint-placeholder-val="{{ false }}">
+        <div data-screen-label="06 Door settings" style="display:flex;flex-direction:column;gap:18px">
+          <div>
+            <div style="display:flex;align-items:center;gap:10px;font-size:14px"><a onClick="{{ goDash }}" style="color:#151414;cursor:pointer">Arrivals</a><span style="color:#A8A8A8">/</span><a onClick="{{ goSettings }}" style="color:#151414;cursor:pointer">Doors &amp; access</a><span style="color:#A8A8A8">/</span><span>{{ door.name }}</span></div>
+            <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-top:10px;flex-wrap:wrap">
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <div style="display:flex;align-items:center;gap:12px"><x-import component-from-global-scope="WixDesignSystem.Heading" size="extraLarge" hint-size="260px,40px">{{ door.name }}</x-import><x-import component-from-global-scope="WixDesignSystem.Badge" skin="{{ door.skin }}" size="small" type="transparent" hint-size="80px,20px">{{ door.status }}</x-import></div>
+                <div style="font-size:13px">{{ door.meta }} · {{ door.today }} arrivals logged today</div>
+              </div>
+              <div style="display:flex;gap:10px">
+                <x-import component-from-global-scope="WixDesignSystem.Button" priority="secondary" skin="dark" size="small" onClick="{{ toastRename }}" hint-size="90px,30px">Rename</x-import>
+                <x-import component-from-global-scope="WixDesignSystem.Button" priority="secondary" skin="dark" size="small" onClick="{{ toastRemove }}" hint-size="90px,30px">Remove</x-import>
+              </div>
+            </div>
+          </div>
+
+          <x-import component-from-global-scope="WixDesignSystem.Card" hideOverflow="{{ true }}" hint-size="100%,220px">
+            <div style="padding:18px 24px 8px;display:flex;flex-direction:column;gap:2px">
+              <x-import component-from-global-scope="WixDesignSystem.Heading" size="small" hint-size="200px,24px">Hardware at this door</x-import>
+              <div style="font-size:13px;color:#767676">Readers, turnstiles and gates that ask Arrivals before they unlock.</div>
+            </div>
+            <sc-for list="{{ door.devices }}" as="hw" hint-placeholder-count="1">
+              <div style="display:flex;align-items:center;gap:14px;padding:16px 24px;border-top:1px solid #F0F0F0">
+                <span style="width:40px;height:40px;border-radius:8px;background:#E7F0FF;color:#116DFF;display:grid;place-items:center;flex:0 0 40px"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"></rect><path d="M8 10V7a4 4 0 018 0v3"></path></svg></span>
+                <div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:500">{{ hw.name }}</div><div style="font-size:13px;color:#767676;margin-top:2px">{{ hw.meta }}</div></div>
+                <x-import component-from-global-scope="WixDesignSystem.Badge" skin="{{ hw.skin }}" size="small" type="transparent" hint-size="90px,20px">{{ hw.state }}</x-import>
+                <x-import component-from-global-scope="WixDesignSystem.TextButton" size="small" onClick="{{ hw.manage }}" hint-size="90px,20px">{{ hw.action }}</x-import>
+              </div>
+            </sc-for>
+            <sc-if value="{{ door.noDevices }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:16px 24px;border-top:1px solid #F0F0F0;font-size:13.5px;color:#525252">No hardware here yet. Arrivals at this door are logged by staff scan, pass or self check-in.</div>
+            </sc-if>
+            <div style="padding:14px 24px 20px;border-top:1px solid #F0F0F0;display:flex;flex-direction:column;gap:12px">
+              <x-import component-from-global-scope="WixDesignSystem.AddItem" size="small" onClick="{{ toastConnect }}" hint-size="100%,48px">Set up new hardware</x-import>
+              <x-import component-from-global-scope="WixDesignSystem.SectionHelper" skin="standard" title="Need help with hardware?" actionText="Find a distributor" onAction="{{ toastDistributor }}" hint-size="100%,90px">A local distributor can advise on the right reader for this door, supply it, and install it.</x-import>
+            </div>
+          </x-import>
+
+          <x-import component-from-global-scope="WixDesignSystem.Card" hideOverflow="{{ true }}" hint-size="100%,300px">
+            <div style="padding:18px 24px 12px;display:flex;align-items:flex-end;justify-content:space-between;gap:12px">
+              <div style="display:flex;flex-direction:column;gap:2px">
+                <x-import component-from-global-scope="WixDesignSystem.Heading" size="small" hint-size="240px,24px">Plans that open this door</x-import>
+                <div style="font-size:13px;color:#767676">Clients holding a switched-on plan are let through.</div>
+              </div>
+              <x-import component-from-global-scope="WixDesignSystem.TextButton" size="small" onClick="{{ toastNewPlan }}" hint-size="120px,20px">Create new plan</x-import>
+            </div>
+            <div style="display:grid;grid-template-columns:minmax(0,2fr) 120px 170px 50px;gap:16px;padding:11px 24px;border-top:1px solid #EDEDED;border-bottom:1px solid #EDEDED;font-size:14px;font-weight:500"><span>Plan</span><span>Subscribers</span><span>Access hours</span><span style="text-align:right">Opens</span></div>
+            <sc-for list="{{ door.planRows }}" as="p" hint-placeholder-count="4">
+              <div style="display:grid;grid-template-columns:minmax(0,2fr) 120px 170px 50px;gap:16px;align-items:center;padding:14px 24px;border-bottom:1px solid #F0F0F0">
+                <div style="min-width:0"><div style="font-size:14.5px">{{ p.name }}</div><div style="font-size:12.5px;color:#767676;margin-top:2px">{{ p.meta }}</div></div>
+                <div style="font-size:14px">{{ p.subs }}</div>
+                <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:{{ p.hoursColor }}">{{ p.hours }}<x-import component-from-global-scope="WixDesignSystem.TextButton" size="small" onClick="{{ p.edit }}" hint-size="30px,20px">Edit</x-import></div>
+                <div style="display:flex;justify-content:flex-end"><x-import component-from-global-scope="WixDesignSystem.ToggleSwitch" checked="{{ p.on }}" onChange="{{ p.go }}" hint-size="36px,20px"></x-import></div>
+              </div>
+            </sc-for>
+          </x-import>
+
+          <x-import component-from-global-scope="WixDesignSystem.Card" hideOverflow="{{ true }}" hint-size="100%,260px">
+            <div style="padding:18px 24px 12px;display:flex;align-items:flex-end;justify-content:space-between;gap:12px">
+              <div style="display:flex;flex-direction:column;gap:2px">
+                <x-import component-from-global-scope="WixDesignSystem.Heading" size="small" hint-size="260px,24px">Forms collected at this door</x-import>
+                <div style="font-size:13px;color:#767676">Checked the moment someone scans. Choose what happens when one is missing.</div>
+              </div>
+              <x-import component-from-global-scope="WixDesignSystem.TextButton" size="small" onClick="{{ toastNewForm }}" hint-size="120px,20px">Create new form</x-import>
+            </div>
+            <sc-for list="{{ door.formRows }}" as="f" hint-placeholder-count="3">
+              <div style="display:flex;align-items:center;gap:14px;padding:14px 24px;border-top:1px solid #F0F0F0;min-height:36px">
+                <span style="width:36px;height:36px;border-radius:8px;background:#F3F3F3;display:grid;place-items:center;flex:0 0 36px"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#151414" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"></rect><path d="M9 4V3h6v1M9 10h6M9 14h4"></path></svg></span>
+                <div style="flex:1;min-width:0;font-size:14.5px">{{ f.name }}</div>
+                <x-import component-from-global-scope="WixDesignSystem.TextButton" size="small" onClick="{{ toastEditForm }}" hint-size="70px,20px">Edit form</x-import>
+                <sc-if value="{{ f.on }}" hint-placeholder-val="{{ true }}"><div>{{ f.seg }}</div></sc-if>
+                <x-import component-from-global-scope="WixDesignSystem.ToggleSwitch" checked="{{ f.on }}" onChange="{{ f.go }}" hint-size="36px,20px"></x-import>
+              </div>
+            </sc-for>
+            <sc-if value="{{ door.hasSummary }}" hint-placeholder-val="{{ true }}">
+            <div style="padding:14px 24px 18px;border-top:1px solid #F0F0F0;font-size:13px;color:#525252">{{ door.summary }}</div>
+            </sc-if>
+          </x-import>
+        </div>
+        </sc-if>
+
+        <!-- member pass -->
+        <sc-if value="{{ sPass }}" hint-placeholder-val="{{ false }}">
+        <div data-screen-label="07 Member pass" style="display:flex;flex-direction:column;gap:18px">
+          <div>
+            <div style="display:flex;align-items:center;gap:10px;font-size:14px"><a onClick="{{ goDash }}" style="color:#151414;cursor:pointer">Arrivals</a><span style="color:#A8A8A8">/</span><span>Member pass</span></div>
+            <div style="display:flex;flex-direction:column;gap:6px;margin-top:10px">
+              <x-import component-from-global-scope="WixDesignSystem.Heading" size="extraLarge" hint-size="260px,40px">Member pass</x-import>
+              <div style="font-size:13px;max-width:640px">Each client gets a single pass. It carries whichever plan they hold and opens every door that plan allows.</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap">
+            <div style="flex:1 1 440px;min-width:320px;display:flex;flex-direction:column;gap:18px">
+              <x-import component-from-global-scope="WixDesignSystem.Card" hint-size="100%,150px">
+                <x-import component-from-global-scope="WixDesignSystem.Card.Header" title="Issue a pass" subtitle="Manually issue or re-issue a pass for a specific client." hint-size="100%,70px"></x-import>
+                <x-import component-from-global-scope="WixDesignSystem.Card.Content" hint-size="100%,70px">
+                  <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+                    <div style="flex:1;min-width:200px"><x-import component-from-global-scope="WixDesignSystem.Dropdown" placeholder="Choose a client" options="{{ issueOptions }}" selectedId="{{ issueClient }}" onSelect="{{ onIssue }}" hint-size="100%,36px"></x-import></div>
+                    <x-import component-from-global-scope="WixDesignSystem.Button" skin="dark" onClick="{{ generatePass }}" disabled="{{ noIssueClient }}" hint-size="130px,36px">Generate pass</x-import>
+                  </div>
+                </x-import>
+              </x-import>
+
+              <x-import component-from-global-scope="WixDesignSystem.Card" hideOverflow="{{ true }}" hint-size="100%,260px">
+                <div style="padding:18px 24px 8px"><x-import component-from-global-scope="WixDesignSystem.Heading" size="small" hint-size="200px,24px">Delivery</x-import></div>
+                <sc-for list="{{ deliveryRows }}" as="r" hint-placeholder-count="3">
+                  <div style="display:flex;align-items:flex-start;gap:16px;padding:16px 24px;border-top:1px solid #F0F0F0;opacity:{{ r.dim }}">
+                    <div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:500">{{ r.name }}</div><div style="font-size:13px;color:#767676;margin-top:2px;line-height:1.45">{{ r.desc }}</div></div>
+                    <x-import component-from-global-scope="WixDesignSystem.ToggleSwitch" checked="{{ r.on }}" onChange="{{ r.go }}" hint-size="36px,20px"></x-import>
+                  </div>
+                </sc-for>
+              </x-import>
+
+              <x-import component-from-global-scope="WixDesignSystem.Card" hideOverflow="{{ true }}" hint-size="100%,200px">
+                <div style="padding:18px 24px 8px"><x-import component-from-global-scope="WixDesignSystem.Heading" size="small" hint-size="200px,24px">What the pass shows</x-import></div>
+                <sc-for list="{{ showRows }}" as="r" hint-placeholder-count="3">
+                  <div style="display:flex;align-items:flex-start;gap:16px;padding:16px 24px;border-top:1px solid #F0F0F0">
+                    <div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:500">{{ r.name }}</div><div style="font-size:13px;color:#767676;margin-top:2px;line-height:1.45">{{ r.desc }}</div></div>
+                    <x-import component-from-global-scope="WixDesignSystem.ToggleSwitch" checked="{{ r.on }}" onChange="{{ r.go }}" hint-size="36px,20px"></x-import>
+                  </div>
+                </sc-for>
+              </x-import>
+            </div>
+
+            <div style="flex:0 0 300px;position:sticky;top:20px">
+              <x-import component-from-global-scope="WixDesignSystem.Card" hint-size="300px,520px">
+                <x-import component-from-global-scope="WixDesignSystem.Card.Header" title="Design" subtitle="Updates every client's pass." hint-size="100%,70px"></x-import>
+                <x-import component-from-global-scope="WixDesignSystem.Card.Content" hint-size="100%,440px">
+                  <div style="display:flex;flex-direction:column;gap:18px">
+                    <div style="background:#F3F3F3;border-radius:10px;padding:18px;display:flex;justify-content:center">
+                      <div style="width:210px;background:#fff;border-radius:14px;box-shadow:0 8px 22px rgba(0,0,0,.10);overflow:hidden">
+                        <div style="background:{{ passBrand }};color:{{ passTextColor }};padding:12px 16px;display:flex;align-items:center;justify-content:space-between"><span style="font-size:11.5px;font-weight:700;letter-spacing:.06em">{{ passBizUpper }}</span><span style="font-size:10px;font-weight:600;background:rgba(255,255,255,.22);padding:3px 8px;border-radius:10px">ACTIVE</span></div>
+                        <div style="padding:16px;text-align:center">
+                          <sc-if value="{{ passShowName }}" hint-placeholder-val="{{ true }}"><div style="font-size:15px;font-weight:600">Jordan Reyes</div></sc-if>
+                          <div style="font-size:12px;color:#767676;margin-top:2px">10-class pack</div>
+                          <sc-if value="{{ passShowSessions }}" hint-placeholder-val="{{ true }}"><div style="margin:12px 0 4px;padding:10px;border-radius:10px;background:#F7F7F7"><div style="font-size:10.5px;color:#767676">Sessions remaining</div><div style="font-size:28px;font-weight:700;color:{{ passBrand }};line-height:1.1;margin-top:2px">3</div></div></sc-if>
+                          <div style="width:88px;height:88px;margin:12px auto 4px;background:repeating-conic-gradient(#151414 0 25%, #fff 0 50%) 0 0/11px 11px"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <x-import component-from-global-scope="WixDesignSystem.FormField" label="Business name" hint-size="100%,64px">
+                      <x-import component-from-global-scope="WixDesignSystem.Input" value="{{ passBiz }}" onChange="{{ onBiz }}" hint-size="100%,36px"></x-import>
+                    </x-import>
+                    <div style="display:flex;flex-direction:column;gap:8px">
+                      <x-import component-from-global-scope="WixDesignSystem.Text" size="small" weight="bold" hint-size="100px,20px">Brand colour</x-import>
+                      <div style="display:flex;gap:10px">
+                        <sc-for list="{{ swatches }}" as="s" hint-placeholder-count="5">
+                          <span onClick="{{ s.go }}" style="width:28px;height:28px;border-radius:50%;background:{{ s.color }};cursor:pointer;box-shadow:{{ s.ring }}"></span>
+                        </sc-for>
+                      </div>
+                    </div>
+                  </div>
+                </x-import>
+              </x-import>
+            </div>
+          </div>
+        </div>
+        </sc-if>
+      </div>
+      </sc-if>
+
+    </div>
+  </div>
+
+  <!-- manual entry modal -->
+  <x-import component-from-global-scope="WixDesignSystem.Modal" isOpen="{{ manualOpen }}" onRequestClose="{{ closeManual }}" shouldCloseOnOverlayClick="{{ true }}" hint-size="0px,0px">
+    <x-import component-from-global-scope="WixDesignSystem.CustomModalLayout" title="New manual entry" subtitle="Check a client in by hand. It's logged as a manual entry at the front door." primaryButtonText="Done" primaryButtonOnClick="{{ closeManual }}" onCloseButtonClick="{{ closeManual }}" width="560px" showHeaderDivider="{{ true }}" hint-size="560px,480px">
+      <div style="display:flex;flex-direction:column;gap:12px;padding-bottom:6px">
+        <x-import component-from-global-scope="WixDesignSystem.Search" value="{{ mQuery }}" onChange="{{ onMQuery }}" onClear="{{ clearMQuery }}" placeholder="Search clients..." hint-size="100%,36px"></x-import>
+        <div style="display:flex;flex-direction:column">
+          <sc-for list="{{ manualClients }}" as="c" hint-placeholder-count="5">
+            <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #F0F0F0">
+              <x-import component-from-global-scope="WixDesignSystem.Avatar" name="{{ c.name }}" size="size36" imgProps="{{ c.img }}" hint-size="36px,36px"></x-import>
+              <div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:500">{{ c.name }}</div><div style="font-size:12.5px;color:#767676;margin-top:1px">{{ c.svc }}</div></div>
+              <sc-if value="{{ c.notDone }}" hint-placeholder-val="{{ true }}">
+              <x-import component-from-global-scope="WixDesignSystem.Button" priority="secondary" skin="dark" size="small" onClick="{{ c.checkin }}" hint-size="90px,30px">Check in</x-import>
+              </sc-if>
+              <sc-if value="{{ c.done }}" hint-placeholder-val="{{ false }}">
+              <x-import component-from-global-scope="WixDesignSystem.Badge" skin="success" size="small" type="transparent" hint-size="90px,20px">Checked in</x-import>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </x-import>
+  </x-import>
+
+  <!-- issue pass modal -->
+  <x-import component-from-global-scope="WixDesignSystem.Modal" isOpen="{{ issueOpen }}" onRequestClose="{{ closeIssue }}" shouldCloseOnOverlayClick="{{ true }}" hint-size="0px,0px">
+    <x-import component-from-global-scope="WixDesignSystem.CustomModalLayout" title="{{ issueTitle }}" subtitle="Share the link so they can add the pass to their wallet." primaryButtonText="Done" primaryButtonOnClick="{{ closeIssue }}" secondaryButtonText="Send by email" secondaryButtonOnClick="{{ sendPassEmail }}" onCloseButtonClick="{{ closeIssue }}" width="520px" hint-size="520px,260px">
+      <div style="display:flex;gap:10px;align-items:center;padding-bottom:6px">
+        <div style="flex:1"><x-import component-from-global-scope="WixDesignSystem.Input" value="{{ passLink }}" readOnly="{{ true }}" hint-size="100%,36px"></x-import></div>
+        <x-import component-from-global-scope="WixDesignSystem.Button" priority="secondary" skin="dark" onClick="{{ copyPassLink }}" hint-size="80px,36px">Copy</x-import>
+      </div>
+    </x-import>
+  </x-import>
+
+  <!-- edit access modal -->
+  <x-import component-from-global-scope="WixDesignSystem.Modal" isOpen="{{ editOpen }}" onRequestClose="{{ closeEdit }}" shouldCloseOnOverlayClick="{{ true }}" hint-size="0px,0px">
+    <x-import component-from-global-scope="WixDesignSystem.CustomModalLayout" title="{{ editTitle }}" subtitle="Applies wherever this plan opens a door." primaryButtonText="Save" primaryButtonOnClick="{{ saveEdit }}" secondaryButtonText="Cancel" secondaryButtonOnClick="{{ closeEdit }}" onCloseButtonClick="{{ closeEdit }}" width="560px" showHeaderDivider="{{ true }}" hint-size="560px,480px">
+      <div style="display:flex;flex-direction:column;gap:20px;padding-bottom:6px">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <x-import component-from-global-scope="WixDesignSystem.Text" size="small" weight="bold" hint-size="100px,20px">Entries</x-import>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <sc-for list="{{ limitCards }}" as="l" hint-placeholder-count="2">
+              <div onClick="{{ l.go }}" style="display:flex;align-items:flex-start;gap:10px;border:1px solid {{ l.border }};background:{{ l.bg }};border-radius:8px;padding:14px;cursor:pointer">
+                <x-import component-from-global-scope="WixDesignSystem.Radio" checked="{{ l.checked }}" onChange="{{ l.go }}" hint-size="18px,18px"></x-import>
+                <div><div style="font-size:14px;font-weight:600">{{ l.title }}</div><div style="font-size:12.5px;color:#767676;margin-top:2px">{{ l.desc }}</div></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px">
+          <div style="flex:1"><div style="font-size:14px;font-weight:600">Limit access hours</div><div style="font-size:12.5px;color:#767676;margin-top:2px">Outside these hours the pass is denied.</div></div>
+          <x-import component-from-global-scope="WixDesignSystem.ToggleSwitch" checked="{{ aeHours }}" onChange="{{ toggleAeHours }}" hint-size="36px,20px"></x-import>
+        </div>
+        <sc-if value="{{ aeHours }}" hint-placeholder-val="{{ false }}">
+        <div style="border:1px solid #EDEDED;border-radius:8px;overflow:hidden">
+          <sc-for list="{{ dayRows }}" as="d" hint-placeholder-count="3">
+            <div style="display:flex;align-items:center;gap:14px;padding:12px 16px;border-bottom:1px solid #F0F0F0">
+              <x-import component-from-global-scope="WixDesignSystem.ToggleSwitch" size="small" checked="{{ d.on }}" onChange="{{ d.go }}" hint-size="30px,16px"></x-import>
+              <span style="flex:1;font-size:14px">{{ d.label }}</span>
+              <span style="font-size:14px;color:{{ d.color }}">{{ d.time }}</span>
+            </div>
+          </sc-for>
+        </div>
+        </sc-if>
+      </div>
+    </x-import>
+  </x-import>
+
+  <!-- contact side panel -->
+  <sc-if value="{{ contactOpen }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ closeContact }}" style="position:fixed;inset:56px 0 0 0;background:rgba(21,20,20,.25);z-index:40"></div>
+  <div style="position:fixed;top:56px;right:0;bottom:0;width:400px;max-width:100%;z-index:41;box-shadow:-8px 0 24px rgba(0,0,0,.12);animation:arIn .2s ease both">
+    <x-import component-from-global-scope="WixDesignSystem.SidePanel" width="400px" height="100%" onCloseButtonClick="{{ closeContact }}" hint-size="400px,100%">
+      <x-import component-from-global-scope="WixDesignSystem.SidePanel.Header" title="{{ contact.name }}" subtitle="Contact" hint-size="100%,70px"></x-import>
+      <x-import component-from-global-scope="WixDesignSystem.SidePanel.Content" hint-size="100%,400px">
+        <div style="display:flex;flex-direction:column;gap:20px;padding:20px 0">
+          <div style="display:flex;align-items:center;gap:14px">
+            <x-import component-from-global-scope="WixDesignSystem.Avatar" name="{{ contact.name }}" size="size60" imgProps="{{ contact.img }}" hint-size="60px,60px"></x-import>
+            <div style="min-width:0"><div style="font-size:16px;font-weight:600">{{ contact.name }}</div><div style="font-size:13px;color:#525252;margin-top:3px">{{ contact.email }}</div><div style="font-size:13px;color:#525252">{{ contact.phone }}</div></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <x-import component-from-global-scope="WixDesignSystem.Text" size="small" weight="bold" hint-size="100px,20px">Latest arrival</x-import>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;background:#F7F7F7;border-radius:8px;padding:12px 14px">
+              <div><div style="font-size:14px;font-weight:500">{{ contact.door }}</div><div style="font-size:12.5px;color:#767676;margin-top:2px">{{ contact.method }} · {{ contact.time }}</div></div>
+              <x-import component-from-global-scope="WixDesignSystem.Badge" skin="{{ contact.skin }}" size="small" type="transparent" hint-size="80px,20px">{{ contact.badge }}</x-import>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <x-import component-from-global-scope="WixDesignSystem.Text" size="small" weight="bold" hint-size="100px,20px">Plan</x-import>
+            <div style="font-size:14px">{{ contact.plan }}</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <x-import component-from-global-scope="WixDesignSystem.Text" size="small" weight="bold" hint-size="100px,20px">Intake forms</x-import>
+            <div style="display:flex;align-items:center;justify-content:space-between;border:1px solid #EDEDED;border-radius:8px;padding:12px 14px"><div><div style="font-size:14px">Liability waiver</div><div style="font-size:12.5px;color:#767676;margin-top:2px">Signed Jan 12, 2026</div></div><x-import component-from-global-scope="WixDesignSystem.Badge" skin="success" size="small" type="outlined" hint-size="60px,20px">Valid</x-import></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;border:1px solid #EDEDED;border-radius:8px;padding:12px 14px"><div><div style="font-size:14px">Health declaration</div><div style="font-size:12.5px;color:#767676;margin-top:2px">No submissions yet</div></div><x-import component-from-global-scope="WixDesignSystem.Badge" skin="danger" size="small" type="outlined" hint-size="80px,20px">Not valid</x-import></div>
+          </div>
+          <div style="display:flex;gap:10px">
+            <x-import component-from-global-scope="WixDesignSystem.Button" priority="secondary" skin="dark" size="small" onClick="{{ contactCheckin }}" hint-size="120px,30px">Check in now</x-import>
+            <x-import component-from-global-scope="WixDesignSystem.Button" priority="secondary" skin="dark" size="small" onClick="{{ contactIssue }}" hint-size="120px,30px">Re-issue pass</x-import>
+          </div>
+        </div>
+      </x-import>
+    </x-import>
+  </div>
+  </sc-if>
+
+  <!-- toast -->
+  <sc-if value="{{ toastShow }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;left:50%;bottom:28px;transform:translateX(-50%);z-index:2000;background:#151414;color:#fff;border-radius:8px;padding:12px 18px;font-size:14px;box-shadow:0 8px 24px rgba(0,0,0,.2);display:flex;align-items:center;gap:10px;animation:arIn .2s ease both"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#5FD38D" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"></path></svg>{{ toastMsg }}</div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;startScreen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Intro&quot;,&quot;Onboarding&quot;,&quot;Dashboard&quot;,&quot;Settings&quot;],&quot;default&quot;:&quot;Intro&quot;,&quot;tsType&quot;:&quot;'Intro'|'Onboarding'|'Dashboard'|'Settings'&quot;,&quot;section&quot;:&quot;Demo&quot;},&quot;liveLayout&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Tiles&quot;,&quot;List&quot;],&quot;default&quot;:&quot;Tiles&quot;,&quot;tsType&quot;:&quot;'Tiles'|'List'&quot;,&quot;section&quot;:&quot;Dashboard&quot;}}">
+const RES = {
+  ok: { color:'#25A55A', skin:'success', badge:'Approved' },
+  wn: { color:'#E8951C', skin:'warning', badge:'Warned' },
+  er: { color:'#E62214', skin:'danger', badge:'Denied' },
+};
+const P = n => 'https://randomuser.me/api/portraits/' + n + '.jpg';
+const POOL = [
+  { name:'Ava Silva', detail:'Unlimited membership', photo:P('women/65') },
+  { name:'Liam Ford', detail:'10-class pack · 4 left', photo:P('men/45') },
+  { name:'Priya Rao', detail:'Vinyasa Flow · booking', photo:P('women/12') },
+  { name:'Ben Joss', detail:'Off-peak membership', photo:P('men/22') },
+];
+const DOORPOOL = ['Front Entrance','Studio B side door','Pool gate'];
+const SAMPLE_LIVE = [
+  { id:1, name:'Jordan Reyes', res:'ok', result:'Approved', detail:'Unlimited membership', door:'Front Entrance', source:'Staff scan', time:'9:07 AM', photo:P('men/32') },
+  { id:2, name:'Maya Cohen', res:'ok', result:'Approved', detail:'Vinyasa Flow · booking', door:'Front Entrance', source:'Kiosk', time:'9:05 AM', photo:P('women/44') },
+  { id:3, name:'Dana Katz', res:'wn', result:'Warning', detail:'Plan may be lapsed', door:'Pool gate', source:'Kisi reader', time:'9:03 AM', photo:P('women/68') },
+];
+const SAMPLE_HIST = [
+  { id:1, name:'Jordan Reyes', res:'ok', door:'Front Entrance', method:'Staff scan', plan:'Unlimited membership', time:'9:07 AM', photo:P('men/32') },
+  { id:2, name:'Maya Cohen', res:'ok', door:'Front Entrance', method:'Kiosk', plan:'Vinyasa Flow', time:'9:05 AM', photo:P('women/44') },
+  { id:3, name:'Dana Katz', res:'wn', door:'Pool gate', method:'Kisi reader', plan:'Off-peak (lapsed?)', time:'9:03 AM', photo:P('women/68') },
+  { id:4, name:'Erin Lee', res:'ok', door:'Front Entrance', method:'QR pass', plan:'Off-peak · 1 credit', time:'8:58 AM', photo:P('women/28') },
+  { id:5, name:'Noa Bar', res:'ok', door:'Front Entrance', method:'Guest pass', plan:'Vinyasa Flow · email', time:'8:55 AM', photo:P('women/33') },
+  { id:6, name:'Tom Adler', res:'er', door:'Studio B side door', method:'Staff scan', plan:'No active plan', time:'8:49 AM', photo:P('men/54') },
+  { id:7, name:'Sara Gold', res:'ok', door:'Pool gate', method:'Kisi reader', plan:'Unlimited membership', time:'8:41 AM', photo:P('women/50') },
+  { id:8, name:'Ravi Mehta', res:'er', door:'Front Entrance', method:'Kiosk', plan:'Membership expired', time:'8:30 AM', photo:P('men/61') },
+];
+const FIRST = { id:'first', name:'Ava Silva', res:'ok', result:'Approved', detail:'Unlimited membership', door:'Front Entrance', source:'Member pass', method:'Member pass', plan:'Unlimited membership', time:'Just now', photo:P('women/65') };
+const CLIENTS = [
+  { name:'Ava Silva', svc:'Unlimited membership', photo:P('women/65') },
+  { name:'Liam Ford', svc:'10-class pack · 4 left', photo:P('men/45') },
+  { name:'Priya Rao', svc:'Vinyasa Flow · 9:30 AM', photo:P('women/12') },
+  { name:'Ben Joss', svc:'Off-peak membership', photo:P('men/22') },
+  { name:'Noa Bar', svc:'Single session · guest', photo:P('women/33') },
+  { name:'Sam Winter', svc:'Monthly membership', photo:P('men/52') },
+];
+const PLANS = [
+  { name:'Unlimited membership', meta:'Recurring', subs:'184', hours:'24/7' },
+  { name:'Off-peak membership', meta:'Recurring', subs:'92', hours:'10:00–16:00' },
+  { name:'10-class pack', meta:'Limited · 10 sessions', subs:'47', hours:'—' },
+  { name:'Monthly membership', meta:'Recurring · 12 entries/mo', subs:'126', hours:'06:00–22:00' },
+];
+const FORMS = ['Liability waiver','Health declaration','Membership agreement'];
+const LOCS = [ { id:'broadway', name:'Broadway studio', addr:'620 Broadway' }, { id:'hudson', name:'Hudson Yards', addr:'55 Hudson Yards' } ];
+const DOORS = [
+  { id:'front', loc:'broadway', name:'Front Entrance', meta:'Main door · street level', status:'Online', today:'96' },
+  { id:'studiob', loc:'broadway', name:'Studio B side door', meta:'Class studio · lower floor', status:'Online', today:'18' },
+  { id:'pool', loc:'broadway', name:'Pool gate', meta:'Turnstile · outdoor deck', status:'Needs setup', today:'6' },
+  { id:'hmain', loc:'hudson', name:'Main entrance', meta:'Lobby · level 1', status:'Online', today:'41' },
+  { id:'hstudio', loc:'hudson', name:'Cycle studio door', meta:'Level 2', status:'Needs setup', today:'0' },
+];
+const DEFAULT_CFG = {
+  front: { plans:['Unlimited membership','Off-peak membership','Monthly membership'], forms:['Liability waiver','Health declaration'], devices:[{ name:'Kisi reader · K-2', meta:'Paired Mar 4 · firmware up to date', state:'Connected' }] },
+  studiob: { plans:['Unlimited membership','Off-peak membership'], forms:['Liability waiver'], devices:[] },
+  pool: { plans:['Unlimited membership'], forms:['Liability waiver','Health declaration'], devices:[{ name:'Pool gate turnstile', meta:'Reader detected. Finish pairing to log entries.', state:'Pairing' }] },
+  hmain: { plans:['Unlimited membership','Monthly membership'], forms:['Liability waiver'], devices:[{ name:'Kisi reader · K-1', meta:'Paired Jun 18 · firmware up to date', state:'Connected' }] },
+  hstudio: { plans:[], forms:[], devices:[] },
+};
+const OBS = [
+  { key:'door', title:'Name your first door', sub:'Start with the entrance you most want to control.', step:'Door' },
+  { key:'hardware', title:'Decide how people get in', sub:'Arrivals works with a staff phone today, or with a reader at the door.', step:'Hardware' },
+  { key:'plans', title:'Choose the plans that open it', sub:'Only the plans you pick here are let through this door.', step:'Plans' },
+  { key:'forms', title:'Require a form', sub:'Waivers and health forms are checked the moment someone scans.', step:'Forms' },
+  { key:'pass', title:'Set up the member pass', sub:'One pass per client, saved to their phone, works at every door their plan opens.', step:'Member pass' },
+];
+const SWATCHES = ['#116DFF','#151414','#25A55A','#7B3FF2','#E8591C'];
+const SCREEN_MAP = { Intro:'intro', Onboarding:'onboard', Dashboard:'dashboard', Settings:'settings' };
+
+class Component extends DCLogic {
+  state = {
+    page: 'intro', setupDone: false, obStep: 0, obDone: {},
+    obDoorName: 'Front Entrance', obLoc: 'broadway', hwPath: null, paired: false,
+    obPlanSel: ['Unlimited membership','Monthly membership'], obFormSel: ['Liability waiver'], formMiss: {},
+    passEmail: true, passAppQR: true, passWallet: true, passGuest: false, passShowSessions: true, passShowName: true,
+    testState: 'idle', fresh: true, sample: false, firstBanner: false,
+    live: [], history: [], added: 0, query: '', resFilter: 'all', range: 'today',
+    manualOpen: false, mQuery: '', manualDone: [], contact: null,
+    sView: 'index', doorId: 'front', locId: 'broadway', doorCfg: null, logArrival: true,
+    issueClient: null, issueOpen: false, passBrand: '#116DFF', passBiz: "Jim's Gym",
+    editPlan: null, aeLimit: 'unlimited', aeHours: false, days: { week:true, sat:true, sun:false },
+    toastMsg: '',
+  };
+  contentRef = React.createRef();
+
+  componentDidMount() {
+    document.body.setAttribute('data-wds-theme', 'studio');
+    this.applyStart(this.props.startScreen);
+    if (!window.WixDesignSystem) {
+      this._poll = setInterval(() => { if (window.WixDesignSystem) { clearInterval(this._poll); this.forceUpdate(); } }, 100);
+    }
+  }
+  componentWillUnmount() { clearInterval(this._poll); clearTimeout(this._t); clearTimeout(this._tt); }
+  componentDidUpdate(pp, ps) {
+    if (pp.startScreen !== this.props.startScreen) this.applyStart(this.props.startScreen);
+    if ((ps.page !== this.state.page || ps.sView !== this.state.sView || ps.obStep !== this.state.obStep) && this.contentRef.current) this.contentRef.current.scrollTop = 0;
+  }
+  applyStart(s) {
+    const page = SCREEN_MAP[s] || 'intro';
+    if (page === 'dashboard' || page === 'settings') this.setState({ page, setupDone: true, sView: 'index', ...(this.state.fresh ? this.sampleState() : {}) });
+    else this.setState({ page, obStep: 0 });
+  }
+  sampleState() { return { fresh: false, sample: true, firstBanner: false, live: SAMPLE_LIVE, history: SAMPLE_HIST, added: 0 }; }
+
+  toast(msg) {
+    this.setState({ toastMsg: msg });
+    clearTimeout(this._t);
+    this._t = setTimeout(() => this.setState({ toastMsg: '' }), 2600);
+  }
+  addArrival(p, res, door, method) {
+    const id = Date.now() + Math.random();
+    const result = res === 'ok' ? 'Approved' : res === 'wn' ? 'Warning' : 'Denied';
+    const detail = res === 'er' ? 'No active plan' : p.detail;
+    this.setState(s => ({
+      fresh: false, added: s.added + 1,
+      live: [{ id, name:p.name, photo:p.photo, res, result, detail, door, source:method, time:'Just now' }, ...s.live].slice(0, 8),
+      history: [{ id, name:p.name, photo:p.photo, res, door, method, plan:detail, time:'Just now' }, ...s.history],
+    }));
+  }
+  simulate() {
+    const p = POOL[Math.floor(Math.random() * POOL.length)];
+    const r = Math.random();
+    this.addArrival(p, r > .82 ? 'er' : r > .68 ? 'wn' : 'ok', DOORPOOL[Math.floor(Math.random() * DOORPOOL.length)], 'Staff scan');
+  }
+  manualCheckin(c) {
+    this.addArrival({ name:c.name, photo:c.photo, detail:c.svc }, 'ok', this.state.obDoorName || 'Front Entrance', 'Manual entry');
+    this.setState(s => ({ manualDone: [...s.manualDone, c.name] }));
+    this.toast(c.name + ' checked in');
+  }
+  obNext() {
+    const i = this.state.obStep;
+    if (i >= 4) { this.setState(s => ({ obDone: { ...s.obDone, pass: true }, page: 'test', testState: 'idle' })); return; }
+    this.setState(s => ({ obDone: { ...s.obDone, [OBS[i].key]: true }, obStep: i + 1 }));
+  }
+  finishSetup() {
+    this.setState({ page:'dashboard', setupDone:true, testState:'idle', fresh:true, sample:false, live:[], history:[], firstBanner:false });
+    this.toast('Arrivals is live at ' + (this.state.obDoorName || 'Front Entrance'));
+  }
+  guard(fn) { return () => { if (!this.state.setupDone) this.setState({ page: 'intro' }); else fn(); }; }
+
+  renderVals() {
+    const W = window.WixDesignSystem;
+    const s = this.state;
+    const img = src => (src ? { src } : undefined);
+    const doorName = s.obDoorName || 'Front Entrance';
+    const seg = (val, set) => W ? React.createElement(W.SegmentedToggle, { selected: val, size: 'small', onClick: (e, v) => set(v) },
+      React.createElement(W.SegmentedToggle.Button, { value: 'flag', key: 'f' }, 'Let in, flag'),
+      React.createElement(W.SegmentedToggle.Button, { value: 'block', key: 'b' }, 'Block')) : null;
+    const selCard = on => ({ border: on ? '#116DFF' : '#DFDFDF', bg: on ? '#F2F7FF' : '#fff', checked: on });
+    const missOf = (scope, n) => s.formMiss[scope + '|' + n] || 'block';
+    const setMiss = (scope, n, v) => this.setState(st => ({ formMiss: { ...st.formMiss, [scope + '|' + n]: v } }));
+    const togList = (key, n) => this.setState(st => ({ [key]: st[key].includes(n) ? st[key].filter(x => x !== n) : [...st[key], n] }));
+    const flip = key => () => this.setState(st => ({ [key]: !st[key] }));
+
+    // ---------- onboarding ----------
+    const obStep = Math.max(0, Math.min(s.obStep, 4));
+    const cur = OBS[obStep];
+    const steps = OBS.map((o, i) => ({ text: o.step, type: s.obDone[o.key] && i !== obStep ? 'completed' : 'normal' }));
+    const hwDefs = [
+      { key:'phone', title:'Staff scan on a phone', tag:'Quick start', desc:'Your front desk scans client passes with the Wix Owner app. Nothing to install, nothing to buy.' },
+      { key:'reader', title:'I already have hardware', tag:'Kisi, Salto, Brivo', desc:'Pair it once and Arrivals decides who it opens for, and logs every entry.' },
+      { key:'buy', title:'I need hardware', tag:'From $290', desc:'Find a certified distributor near you to supply and fit it. Staff scanning covers you until it is in.' },
+    ];
+    const formsOn = FORMS.filter(f => s.obFormSel.includes(f));
+    const obBlk = formsOn.filter(f => missOf('ob', f) === 'block');
+    const obMissSummary = !formsOn.length ? 'Skip this if you collect nothing at the door. You can switch a form on later.'
+      : !obBlk.length ? 'Nothing here blocks entry. Missing forms show up as a flag in your arrivals list.'
+      : 'Block stops the scan until the form is signed. Let in, flag opens the door and marks the entry so someone can follow up.';
+
+    const brandHex = (s.passBrand || '#116DFF').replace('#', '');
+    const lum = [0, 2, 4].map(i => parseInt(brandHex.slice(i, i + 2), 16) / 255).map(c => c <= .03928 ? c / 12.92 : Math.pow((c + .055) / 1.055, 2.4));
+    const passTextColor = (.2126 * lum[0] + .7152 * lum[1] + .0722 * lum[2]) > .45 ? '#151414' : '#FFFFFF';
+
+    // ---------- dashboard ----------
+    const q = s.query.trim().toLowerCase();
+    const hist = s.history.filter(h => (!q || h.name.toLowerCase().includes(q)) && (s.resFilter === 'all' || h.res === s.resFilter));
+    const decorate = h => ({ ...h, img: img(h.photo), color: RES[h.res].color, skin: RES[h.res].skin, badge: RES[h.res].badge, openContact: () => this.setState({ contact: h }) });
+    const liveLayout = this.props.liveLayout || 'Tiles';
+    const resLabels = { all:'All results', ok:'Approved', wn:'Warned', er:'Denied' };
+    const deniedCount = s.history.filter(h => h.res === 'er').length;
+    const locForDash = LOCS.find(l => l.id === s.locId) || LOCS[0];
+
+    const cc = s.contact;
+    const contact = cc ? { ...cc, img: img(cc.photo), skin: RES[cc.res].skin, badge: RES[cc.res].badge,
+      email: cc.name.toLowerCase().replace(/[^a-z]+/g, '.') + '@gmail.com', phone: '+1 212 487 9560',
+      method: cc.method || cc.source, plan: cc.plan || cc.detail } : {};
+
+    // ---------- settings ----------
+    const cfg = s.doorCfg || DEFAULT_CFG;
+    const writeCfg = (id, patch) => this.setState(st => { const c = st.doorCfg || DEFAULT_CFG; return { doorCfg: { ...c, [id]: { ...c[id], ...patch } } }; });
+    const toggleIn = (id, key, n) => writeCfg(id, { [key]: cfg[id][key].includes(n) ? cfg[id][key].filter(x => x !== n) : [...cfg[id][key], n] });
+    const doorLabel = d => d.id === 'front' ? doorName : d.name;
+    const stSkin = st => (st === 'Online' || st === 'Connected') ? 'success' : 'warning';
+    const doorCards = DOORS.filter(d => d.loc === s.locId).map(d => {
+      const c = cfg[d.id];
+      const hw = !c.devices.length ? { v:'None', col:'#767676' } : c.devices[0].state === 'Connected' ? { v:c.devices.length + ' connected', col:'#151414' } : { v:'Pairing needed', col:'#B26B00' };
+      return { ...d, name: doorLabel(d), skin: stSkin(d.status), open: () => this.setState({ sView:'door', doorId:d.id }),
+        chips: [
+          { label:'Hardware', value:hw.v, color:hw.col },
+          { label:'Plans', value:c.plans.length ? c.plans.length + ' of ' + PLANS.length : 'None yet', color:c.plans.length ? '#151414' : '#767676' },
+          { label:'Forms', value:c.forms.length ? c.forms.length + ' required' : 'None', color:c.forms.length ? '#151414' : '#767676' },
+        ] };
+    });
+    const dDef = DOORS.find(d => d.id === s.doorId) || DOORS[0];
+    const dLoc = LOCS.find(l => l.id === dDef.loc);
+    const dCfg = cfg[dDef.id];
+    const dOn = FORMS.filter(f => dCfg.forms.includes(f));
+    const dBlk = dOn.filter(f => missOf(dDef.id, f) === 'block');
+    const door = {
+      name: doorLabel(dDef), status: dDef.status, skin: stSkin(dDef.status), meta: dLoc.name + ' · ' + dDef.meta, today: dDef.today,
+      devices: dCfg.devices.map(h => ({ ...h, skin: stSkin(h.state), action: h.state === 'Connected' ? 'Manage' : 'Finish pairing', manage: () => this.toast(h.name + ': opens device settings') })),
+      noDevices: !dCfg.devices.length,
+      planRows: PLANS.map(p => ({ ...p, on: dCfg.plans.includes(p.name), hoursColor: p.hours === '—' ? '#A8A8A8' : '#151414',
+        go: () => toggleIn(dDef.id, 'plans', p.name), edit: () => this.setState({ editPlan: p.name }) })),
+      formRows: FORMS.map(f => ({ name: f, on: dCfg.forms.includes(f), go: () => toggleIn(dDef.id, 'forms', f), seg: seg(missOf(dDef.id, f), v => setMiss(dDef.id, f, v)) })),
+      summary: !dOn.length ? 'No forms are collected at this door yet.' : !dBlk.length ? 'Nothing here blocks entry. Staff are warned when a form is missing.' : dBlk.join(' and ') + (dBlk.length > 1 ? ' block' : ' blocks') + ' entry.' + (dBlk.length < dOn.length ? ' The rest only warn staff.' : ''),
+      hasSummary: true,
+    };
+
+    const pDeliv = !s.passEmail && !s.passAppQR;
+    const nav = { dash:'transparent', settings:'transparent', pass:'transparent' };
+    if (s.page === 'dashboard') nav.dash = '#E8E8E8';
+    if (s.page === 'settings') nav[s.sView === 'pass' ? 'pass' : 'settings'] = '#E8E8E8';
+
+    return {
+      meImg: img(P('women/79')), avaImg: img(P('women/65')), contentRef: this.contentRef,
+      nav,
+      navArrivals: () => this.setState(st => ({ page: st.setupDone ? 'dashboard' : 'intro' })),
+      goDash: this.guard(() => this.setState({ page:'dashboard' })),
+      goSettings: this.guard(() => this.setState({ page:'settings', sView:'index' })),
+      goPass: this.guard(() => this.setState({ page:'settings', sView:'pass' })),
+      goIntro: () => this.setState({ page:'intro' }),
+      isIntro: s.page === 'intro', isOnboard: s.page === 'onboard', isTest: s.page === 'test', isDash: s.page === 'dashboard', isSettings: s.page === 'settings',
+
+      // intro
+      benefits: [
+        { title:'Plans become access', desc:'Memberships, punch cards and bookings decide who the door opens for. Nothing to re-enter.' },
+        { title:'A pass in every wallet', desc:'One pass in Apple or Google Wallet that updates itself when a plan renews or runs out.' },
+        { title:'A record that keeps itself', desc:'Every entry, denial and manual check-in, with the door, the time and the plan used.' },
+        { title:'Works with what you have', desc:'Scan from a phone today, add a Kisi, Salto or Brivo reader whenever you are ready.' },
+      ],
+      startOnboard: () => this.setState({ page:'onboard', obStep:0 }),
+      loadSampleDash: () => this.setState({ page:'dashboard', setupDone:true, ...this.sampleState() }),
+
+      // onboarding
+      steps, activeStep: obStep, onStepClick: i => this.setState({ obStep: i }),
+      obTitle: cur.title, obSub: cur.sub,
+      obIs: { door: obStep === 0, hardware: obStep === 1, plans: obStep === 2, forms: obStep === 3, pass: obStep === 4 },
+      obDoorName: doorName, onObDoorName: e => this.setState({ obDoorName: e.target.value }),
+      obLoc: (LOCS.find(l => l.id === s.obLoc) || LOCS[0]).name,
+      locCards: LOCS.map(l => ({ ...l, ...selCard(s.obLoc === l.id), go: () => this.setState({ obLoc: l.id }) })),
+      hwCards: hwDefs.map(h => ({ ...h, ...selCard(s.hwPath === h.key), go: () => this.setState({ hwPath: h.key }) })),
+      hwIsReader: s.hwPath === 'reader', hwIsBuy: s.hwPath === 'buy', hwShowFallback: s.hwPath === 'reader' || s.hwPath === 'buy',
+      paired: s.paired, notPaired: !s.paired, pairCode: '4192 · 7730',
+      pairNow: () => { this.setState({ paired: true }); this.toast('Kisi reader K-2 paired to ' + doorName); },
+      toastDistributor: () => this.toast('Opens the distributor directory'),
+      obPlans: PLANS.map(p => ({ name:p.name, meta:p.meta, subs:p.subs + ' active', on: s.obPlanSel.includes(p.name), go: () => togList('obPlanSel', p.name) })),
+      obPlanNone: !s.obPlanSel.length,
+      obForms: FORMS.map(f => ({ name:f, on: s.obFormSel.includes(f), go: () => togList('obFormSel', f), seg: seg(missOf('ob', f), v => setMiss('ob', f, v)) })),
+      obMissSummary,
+      obPassRows: [
+        { name:'Email the pass when a client buys a plan', desc:'Sent with an Add to Apple Wallet / Google Wallet button as soon as the plan is purchased.', on:s.passEmail, go:flip('passEmail') },
+        { name:'Issue the pass in the member app', desc:'The pass appears in My Pass in Spaces, where clients can view it or save it to their wallet.', on:s.passAppQR, go:flip('passAppQR') },
+      ],
+      obCanBack: obStep > 0, obBack: () => this.setState(st => ({ obStep: Math.max(0, st.obStep - 1) })),
+      obNext: () => this.obNext(), obNextLabel: obStep >= 4 ? 'Finish setup' : 'Continue', obNotLast: obStep < 4,
+      obSkip: () => this.setState(st => ({ obStep: st.obStep + 1 })),
+      obExit: () => { this.setState({ page:'dashboard', setupDone:true, fresh:true, sample:false, live:[], history:[] }); this.toast('Setup saved. Pick it up any time from Doors & access.'); },
+
+      // test
+      testIdle: s.testState === 'idle', testRunning: s.testState === 'running', testDone: s.testState === 'done',
+      runTest: () => { this.setState({ testState:'running' }); clearTimeout(this._tt); this._tt = setTimeout(() => this.setState({ testState:'done' }), 1500); },
+      testAgain: () => this.setState({ testState:'idle' }),
+      finishSetup: () => this.finishSetup(),
+      testLines: [
+        { label:'Pass', value:'Test pass · Ava Silva (sample)' },
+        { label:'Plan', value:'Unlimited membership · active' },
+        { label:'Door', value: doorName + ' · ' + (LOCS.find(l => l.id === s.obLoc) || LOCS[0]).name },
+        { label:'Waiver', value: s.obFormSel.length ? s.obFormSel[0] + ' · signed' : 'None required' },
+        { label:'Logged as', value:'Test entry, removed from reports' },
+      ],
+
+      // dashboard
+      zeroDash: s.fresh, hasData: !s.fresh,
+      zeroSummary: [
+        { label:'Door live', value: doorName },
+        { label:'How people get in', value: s.hwPath === 'reader' ? 'Kisi reader + staff phones' : s.hwPath === 'buy' ? 'Staff phones (hardware on the way)' : 'Staff phones' },
+        { label:'Plans that open it', value: s.obPlanSel.length + ' of ' + PLANS.length },
+        { label:'Form checked', value: s.obFormSel.length ? s.obFormSel[0] : 'None' },
+      ],
+      simulateFirst: () => this.setState({ fresh:false, sample:false, firstBanner:true, live:[FIRST], history:[FIRST], added:0 }),
+      loadSample: () => this.setState(this.sampleState()),
+      firstBanner: s.firstBanner, firstBannerTitle: FIRST.name + ' just became your first arrival',
+      dismissFirstBanner: () => this.setState({ firstBanner:false }),
+      stats: {
+        today: s.fresh ? '0' : String(s.sample ? 120 + s.added : s.history.length),
+        now: String(s.fresh ? 0 : s.live.length),
+        denied: String(s.fresh ? 0 : deniedCount),
+        doors: s.sample ? '2 / 3' : '1 / 1',
+      },
+      dashLocName: locForDash.name,
+      cycleLoc: () => this.setState(st => ({ locId: st.locId === 'broadway' ? 'hudson' : 'broadway' })),
+      live: s.live.map(decorate), noLive: !s.live.length,
+      isTiles: liveLayout === 'Tiles' && s.live.length > 0, isList: liveLayout === 'List' && s.live.length > 0,
+      simulate: () => this.simulate(),
+      historyRows: hist.map(decorate), noHistory: !hist.length,
+      query: s.query, onQuery: e => this.setState({ query: e.target.value }), clearQuery: () => this.setState({ query: '' }),
+      resOptions: Object.keys(resLabels).map(k => ({ id:k, value:resLabels[k] })), resFilter: s.resFilter,
+      onResFilter: o => this.setState({ resFilter: o.id }), hasChips: s.resFilter !== 'all', resLabel: resLabels[s.resFilter], clearRes: () => this.setState({ resFilter:'all' }),
+      rangeOptions: [{ id:'today', value:'Today' }, { id:'7d', value:'Last 7 days' }, { id:'30d', value:'Last 30 days' }], range: s.range, onRange: o => this.setState({ range: o.id }),
+      openManual: () => this.setState({ manualOpen:true, mQuery:'', manualDone:[] }),
+      closeManual: () => this.setState({ manualOpen:false }),
+      manualOpen: s.manualOpen, mQuery: s.mQuery, onMQuery: e => this.setState({ mQuery: e.target.value }), clearMQuery: () => this.setState({ mQuery:'' }),
+      manualClients: CLIENTS.filter(c => !s.mQuery.trim() || c.name.toLowerCase().includes(s.mQuery.trim().toLowerCase())).map(c => {
+        const done = s.manualDone.includes(c.name);
+        return { ...c, img: img(c.photo), done, notDone: !done, checkin: () => this.manualCheckin(c) };
+      }),
+      contactOpen: !!cc, contact, closeContact: () => this.setState({ contact:null }),
+      contactCheckin: () => { if (cc) { this.manualCheckin({ name:cc.name, photo:cc.photo, svc:contact.plan }); this.setState({ contact:null }); } },
+      contactIssue: () => { if (cc) this.setState({ contact:null, issueClient: cc.name, issueOpen:true }); },
+
+      // settings
+      sIndex: s.sView === 'index', sDoor: s.sView === 'door', sPass: s.sView === 'pass',
+      locOptions: LOCS.map(l => ({ id:l.id, value:l.name })), locId: s.locId, onLoc: o => this.setState({ locId: o.id }), locName: locForDash.name,
+      doorCards, door,
+      passSummary: pDeliv ? 'Manual only' : 'Auto-issued',
+      logArrival: s.logArrival, toggleLogArrival: flip('logArrival'),
+      restartSetup: () => this.setState({ page:'onboard', obStep:0, obDone:{}, hwPath:null, paired:false }),
+      toastAddDoor: () => this.toast('Opens the add-door flow'),
+      toastRename: () => this.toast('Rename this door'),
+      toastRemove: () => this.toast('Remove this door'),
+      toastConnect: () => this.toast('Opens the hardware pairing flow'),
+      toastNewPlan: () => this.toast('Opens Wix Pricing Plans'),
+      toastNewForm: () => this.toast('Opens Wix Forms'),
+      toastEditForm: () => this.toast('Opens this form in Wix Forms'),
+
+      // edit access modal
+      editOpen: !!s.editPlan, editTitle: 'Access for ' + (s.editPlan || ''),
+      closeEdit: () => this.setState({ editPlan:null }),
+      saveEdit: () => { this.toast('Access updated for ' + s.editPlan); this.setState({ editPlan:null }); },
+      limitCards: [
+        { key:'unlimited', title:'Unlimited', desc:'Enter as often as they like' },
+        { key:'limited', title:'Limited', desc:'Each entry uses a credit' },
+      ].map(l => ({ ...l, ...selCard(s.aeLimit === l.key), go: () => this.setState({ aeLimit: l.key }) })),
+      aeHours: s.aeHours, toggleAeHours: flip('aeHours'),
+      dayRows: [
+        { key:'week', label:'Mon–Fri', time:'6:00 AM – 10:00 PM' },
+        { key:'sat', label:'Saturday', time:'8:00 AM – 8:00 PM' },
+        { key:'sun', label:'Sunday', time:'8:00 AM – 6:00 PM' },
+      ].map(d => ({ ...d, on: !!s.days[d.key], time: s.days[d.key] ? d.time : 'Closed', color: s.days[d.key] ? '#151414' : '#A8A8A8',
+        go: () => this.setState(st => ({ days: { ...st.days, [d.key]: !st.days[d.key] } })) })),
+
+      // pass
+      issueOptions: ['Ava Silva','Jordan Reyes','Marcus Lin','Priya Patel','Devon Brooks'].map(n => ({ id:n, value:n })),
+      issueClient: s.issueClient, onIssue: o => this.setState({ issueClient: o.id }), noIssueClient: !s.issueClient,
+      generatePass: () => { if (s.issueClient) this.setState({ issueOpen:true }); },
+      issueOpen: s.issueOpen, closeIssue: () => this.setState({ issueOpen:false }), issueTitle: 'Pass ready for ' + (s.issueClient || ''),
+      passLink: 'jims-gym.wixarrivals.com/pass/' + (s.issueClient || '').toLowerCase().replace(/[^a-z]+/g, '-'),
+      copyPassLink: () => { try { navigator.clipboard && navigator.clipboard.writeText('https://jims-gym.wixarrivals.com/pass/' + (s.issueClient || '').toLowerCase().replace(/[^a-z]+/g, '-')); } catch (e) {} this.toast('Pass link copied'); },
+      sendPassEmail: () => { this.toast('Pass emailed to ' + s.issueClient); this.setState({ issueOpen:false }); },
+      deliveryRows: [
+        { name:'Email the pass when a client buys a plan', desc:'Includes Add to Apple Wallet and Google Wallet buttons.', on:s.passEmail, go:flip('passEmail'), dim:1 },
+        { name:'Issue the pass in the member app', desc:'Shows under My Pass in Spaces by Wix.', on:s.passAppQR, go:flip('passAppQR'), dim:1 },
+        { name:'Update the wallet pass automatically', desc:'Renewals, expiry and remaining sessions sync to the saved pass.', on:s.passWallet, go:flip('passWallet'), dim:1 },
+        { name:'Allow guest passes', desc:'Single-session bookings get a one-day pass by email.', on:s.passGuest, go:flip('passGuest'), dim:1 },
+      ],
+      showRows: [
+        { name:"Client's name", desc:'Helps staff match the pass to the person.', on:s.passShowName, go:flip('passShowName') },
+        { name:'Sessions remaining', desc:'For punch cards and limited plans.', on:s.passShowSessions, go:flip('passShowSessions') },
+      ],
+      passShowName: s.passShowName, passShowSessions: s.passShowSessions,
+      passBrand: s.passBrand, passTextColor, passBiz: s.passBiz, passBizUpper: (s.passBiz || '').toUpperCase(),
+      onBiz: e => this.setState({ passBiz: e.target.value }),
+      swatches: SWATCHES.map(c => ({ color:c, ring: c === s.passBrand ? '0 0 0 2px #fff, 0 0 0 4px ' + c : '0 0 0 1px rgba(0,0,0,.08)', go: () => this.setState({ passBrand: c }) })),
+
+      toastShow: !!s.toastMsg, toastMsg: s.toastMsg,
+    };
+  }
+}
+</script>
+</body>
+</html>

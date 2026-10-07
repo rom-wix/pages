@@ -1,0 +1,208 @@
+<!doctype html>
+<!--
+  Creator Kit htmdx artifact.
+  Locate ck-internal-htmdx in the host's available skills and read its SKILL.md
+  before editing. If unavailable, report the missing dependency.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="ck-artifact-format" content="htmdx@2">
+    <meta name="ck-renderer" content="@wix/htmdx@4.11.0">
+    <meta name="ck-template-skill" content="ck-research-terminology">
+    <title>Terminology Guide · Arrivals</title>
+    <link rel="icon" type="image/svg+xml" data-ck-favicon href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48' shape-rendering='crispEdges'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='17.63' y1='16.5' x2='41.22' y2='49.35' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%23F4ACE8'/%3E%3Cstop offset='1' stop-color='%23FB810E'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M42 6H48V42H42V48H6V42H0V6H6V0H42V6Z' fill='url(%23g)'/%3E%3Cpath d='M32 42H16V36H32V42ZM16 36H10V12H16V36ZM38 36H32V30H38V36ZM38 18H32V12H38V18ZM32 12H16V6H32V12Z'/%3E%3C/svg%3E">
+    <script src="https://cdn.jsdelivr.net/npm/@wix/htmdx@4.11.0/dist/browser.js" defer></script>
+  </head>
+  <body>
+    <script
+      type="text/htmdx"
+      data-ck-source="primary"
+      data-ck-format="htmdx@2"
+    >
+---
+title: Terminology Guide
+layout: creator-kit
+subtitle: "Wix Bookings + Pricing Plans"
+project: "Arrivals"
+owner: "Rom"
+phase: Discovery · Terminology
+updated: "2026-10-03"
+theme: teal
+logo: creator-kit
+logo-alt: Creator Kit
+---
+
+## Key terms
+
+<SignalGrid>
+- **The hierarchy | gray:** Location › Area › Entrance › Hardware — How a business's physical setup is organized, from address down to the reader. Not "Door" or "Device".
+- **The place people get in | gray:** Entrance — Any point clients pass through: a door, turnstile, gate or front desk. Not "Door".
+- **The group of entrances | gray:** Area — An optional part of a location, like Pool or Cycle studio. Not "Zone" or "Room".
+- **The rules | gray:** Entry rules — The entry window and required forms that an entrance follows. Not "Entrance policy" or "Check-in rules".
+- **The manual action | gray:** Approve entry — Staff let a client in from manual entry. Not "Check in".
+- **The time limit | gray:** Entry window — When a client with a booking can enter. Not "Check-in window".
+</SignalGrid>
+
+<MetricStrip>
+- Terms in the product: **28**
+- Needs a decision: **3**
+- Terms to avoid: **13**
+</MetricStrip>
+
+## Terms in the product
+
+Words Arrivals' UI, help content, and merchant-facing copy will use. Use them
+as written in product specs, UX concepts, and final copy.
+
+### Objects
+
+<DataTable>
+| Term | What it means | Where it shows up | Why this term |
+| --- | --- | --- | --- |
+| **Location** | A business address. The top level of the hierarchy. | Location picker on Entrances, onboarding, entries log filter | Wix business info and Bookings already say "location". Vendors' "site" means the website at Wix. |
+| **Area** | An optional part of a location that groups entrances, like Pool, Cycle studio or Main floor | Entrances page grouping, entries log filter, entry rules assignment | Plain language. The Events glossary uses "area" for a venue section that groups access, which is the same idea. |
+| **Entrance** | Any point where clients get in: a door, turnstile, gate or front desk. It can have hardware or not. | Entrances list, entrance page, live arrivals tiles, entries log column, onboarding ("Name your first entrance") | Covers every kind of entry point, including a front desk with no hardware. Pairs with "entry": clients enter through an entrance. |
+| **Hardware** | Section label for the physical equipment at an entrance | "Hardware at this entrance", entrances list column, onboarding step | Already used in v6. A clear group label for readers, turnstiles and locks. |
+| **Reader** | A device at an entrance that reads a pass and asks Arrivals before it unlocks. Kisi, Salto and Brivo make them. | Hardware list ("Kisi reader K-2"), pairing flow | What vendors and installers call it. Name other hardware by type too: turnstile, lock. |
+| **Staff phone** | A phone with the Wix Owner app that scans passes at an entrance with no hardware | Hardware empty state, onboarding, entrances list ("Kisi reader + staff phones") | Plain and already in v6. Shows that hardware is optional. |
+| **Entry rules** | The entry window and required forms an entrance follows. Every entrance follows one set. "Default rules" are created automatically. | Entrances page, entrance page dropdown, onboarding ("Set the entry rules") | Chosen by the team (2026-10-03). Keeps rules copy about entry, not check-in. |
+| **Entry window** | When a client with a booking can enter, relative to the session start | Entry rules ("Clients with a booking can enter from 15 min before the session starts until 10 min after") | Review action item: rules copy talks about entry. Replaces "check-in window". |
+| **Entry** | One record of someone getting in, or being stopped, at an entrance | "Entries today", entries log, reports | Already in v6 and in the earlier guide. Keep "entry" for the record, not for the place. |
+| **Member pass** | The one pass each client saves to Apple or Google Wallet. It opens every entrance their plan covers. | Member pass page, client wallet, intro | Earlier guide and v6. One pass per client. |
+| **Guest pass** | An emailed pass for a one-time booker who doesn't have an account | Booking confirmation email, client pass page | Earlier guide. Signals non-member, single session. |
+| **Plan** | A recurring membership bought through Pricing Plans | Plans per entrance ("Plans allowed in"), entry details | Matches Pricing Plans UI. "Membership" is OK in context copy. |
+| **Pack** | A prepaid bundle of sessions, like a 10-class pack | Plans per entrance, entry details ("10-class pack · 6 left") | Earlier guide. "Punch card" is OK as a nickname in marketing copy. |
+| **Credit** | One unit used from a pack or limited plan each time a client enters | Entry details ("Each entry uses a credit") | Earlier guide. |
+| **Client** | A person with a booking, plan or pack | Throughout | Matches Wix Bookings. |
+| **Walk-in** | Someone who arrives with no booking or plan | Manual entry, live arrivals | Earlier guide. See "Needs a decision" for drop-in. |
+</DataTable>
+
+### Actions
+
+<DataTable>
+| Term | What it means | Where it shows up | Why this term |
+| --- | --- | --- | --- |
+| **Approve entry** | Staff let a client in manually | Manual entry button, client card on live arrivals | Review action item. Replaces "Check in". |
+| **New manual entry** | Start logging someone by hand | Live arrivals header button | Already in v6. Write it in sentence case. |
+| **Enter** | What a client does at an entrance | Entry rules, help content ("Clients can enter from…") | Matches "entry" and "entrance". |
+| **Add entrance** | Create a new entrance at a location or area | Entrances page button, empty state ("Add an entrance to Broadway studio") | Replaces "Add Door". |
+| **Pair** | Connect a reader to an entrance | Hardware setup ("Kisi reader K-2 is paired") | Already in v6. Standard for hardware. |
+| **Scan** | Read a pass at a reader or with a staff phone | Live arrivals empty state, intro | Earlier guide. Clients and staff both say it. |
+</DataTable>
+
+### Statuses
+
+<DataTable>
+| Term | What it means | Where it shows up | Why this term |
+| --- | --- | --- | --- |
+| **Approved** | The client was let in, by scan or by staff | Entries log, live arrivals, intro card | Already in v6. Pairs with "Approve entry". |
+| **Online** | The entrance's hardware is connected and working | Entrances list | Already in v6. |
+| **Pairing needed** | A reader was found but isn't connected to the entrance yet | Entrances list, hardware section | Already in v6. Says what to do next. |
+</DataTable>
+
+### Features and capabilities
+
+<DataTable>
+| Term | What it means | Where it shows up | Why this term |
+| --- | --- | --- | --- |
+| **Arrivals** | The feature: turns plans and bookings into access at the entrance and keeps a log of every entry | App name, dashboard nav, intro | Renamed from "Access Control" on 2026-07-31. |
+| **Live arrivals** | The real-time view of who's coming in right now | Dashboard nav, dashboard page | Already in v6. |
+</DataTable>
+
+### Categories and navigation
+
+<DataTable>
+| Term | What it means | Where it shows up | Why this term |
+| --- | --- | --- | --- |
+| **Entrances & access** | Settings for locations, areas, entrances, hardware, plans and entry rules | Dashboard nav, page title, breadcrumb | Replaces "Doors & access". Keeps "access" for the plans part. |
+</DataTable>
+
+## Terms to avoid
+
+<DataTable>
+| Don't use | Use instead | Why |
+| --- | --- | --- |
+| Door | **Entrance** | Many entrances aren't doors (Pool gate is a turnstile, some are a front desk). Fine inside a name the business gives an entrance, like "Studio B side door", and in marketing copy. |
+| Device | **Hardware**, or the type (**Reader**, **Turnstile**) | Vague next to "staff phone". The Wix glossary lists "devices" as a prohibited variant (Editor). |
+| Access point | **Entrance** | Vendor jargon (Salto, Brivo). OK in API and developer docs only. |
+| Entry (for the place) | **Entrance** | "Entry" is the log record ("14 entries today"). The glossary lists "entry" as a prohibited variant of Item (CMS). |
+| Zone | **Area** | Avigilon Alta and Salto use it, but it reads as security jargon to studio owners. |
+| Room, Space | **Area** | Bookings already uses Resources for rooms. The glossary lists "space" as a prohibited variant of "site" (Mobile). Also wrong for outdoor areas. |
+| Site, Place, Branch | **Location** | At Wix, "site" means the website. Kisi says "place" and Glofox says "branch", but Wix says "location". |
+| Check in (manual entry) | **Approve entry** | Review action item. "Check in" is the existing Bookings attendance action. |
+| Check-in window | **Entry window** | Review action item. Rules copy talks about entry. |
+| Forms required to check in | **Forms required for entry** | Same reason. Also "Nothing here blocks entry", not "blocks check-in". |
+| Entrance policy, Policy | **Entry rules** | Chosen by the team. Use "Default rules", not "Default policy". |
+| Checked in | **Approved** | Matches "Approve entry". |
+| Check-in gate, Access control | **Arrivals** | Feature renamed. "Access control" is OK in developer docs only. |
+</DataTable>
+
+## Needs a decision
+
+<DataTable>
+| Term | The choice | Options | Recommended default |
+| --- | --- | --- | --- |
+| Result of a failed entry | The label for an entry that wasn't let through, now that the action is "Approve entry" | Denied vs Not approved vs Not eligible | **Denied** — pairs with "Approved" and is short in a log. These labels are for staff, so keep softer wording on screens clients see. The earlier guide's "Not eligible" doesn't fit a manual approve flow. |
+| Naming a set of entry rules | How to refer to one set when there's more than one | "rules" (Default rules, Create new rules) vs "rule set" (Default rule set, New rule set) | **rules** — "Default rules" and "3 entrances follow these rules" read naturally. "Rule set" sounds technical. |
+| Paid single entry, no booking | Still open from the earlier guide | Walk-in vs drop-in | **Walk-in** for the person. "Drop-in" only as the name of a paid single-session option. |
+</DataTable>
+
+## Follow-ups
+
+- Confirm with product that Area is optional (an entrance can sit directly under a location), so empty states and onboarding don't force an area.
+- Update prototype v6 copy: "Doors & access" → "Entrances & access", "+ Add Door" → "Add entrance", "Doors online" → "Entrances online", "Door name" → "Entrance name", "Plans that open this door" → "Plans allowed in", "Check in" / "Check in now" → "Approve entry".
+- Confirm with Bookings UX writing that "Check in" stays on the booking list and in the Owner app (existing attendance), and that "Approve entry" in Arrivals writes the same attendance record.
+- This guide replaces the earlier decisions on "Door access" (#12), "Check-in window" (#16) and the check-in/entry split (#19) in `terminology-research-access-control.md`.
+- Submit Entrance, Area (Arrivals meaning), Entry rules and Entry window to the UX Writing glossary. None of them has a Services-domain entry today.
+
+## Research behind these terms
+
+<Foldout title="What vendors, competitors and users call each level">
+<DataTable>
+| Term | Competitor and vendor terms | User language |
+| --- | --- | --- |
+| **Location** | Kisi: Place · Brivo: Site · Salto KS: Site · Avigilon Alta: Site · Glofox: Branch (Location ID) | "multi-location gyms", "2+ sites" |
+| **Area** | Avigilon Alta: Zone · Salto: Zone · Kisi: Floors · Brivo: groups doors by site and floor | — (no user signal) |
+| **Entrance** | Kisi: Lock / Door · Brivo: Door / Access point · Salto: Access point · Avigilon Alta: Entry ("a door, parking gate, turnstile or elevator") · Glofox: Door column · Competitor research: "Entry point" | "at the door", "door entry", "gym gate", "let them in" |
+| **Hardware** | Kisi: Reader, Controller · UniFi: Reader, Hub · Salto: Wall reader, Lock · GymMaster: Door reader | "door control", "physical access" |
+| **Entry rules** | UniFi: Access policies · Kisi, Brivo, Alta: Groups plus schedules | "who's allowed in" |
+| **Approve entry** | GymMaster: remote unlock · Mindbody: acknowledge alert | "let them in", "allow entry" |
+</DataTable>
+</Foldout>
+
+<Foldout title="Wix glossary findings">
+<DataTable>
+| Term | Glossary result | Weight |
+| --- | --- | --- |
+| Area | **Events:** a section of a seating map that groups access, like "VIP Balcony". **Stores:** a local delivery radius. | Cross-domain overlap. Events meaning is close to this one, Stores meaning is unrelated. OK to reuse. |
+| Resource | **Services:** items or spaces needed to provide a service, like a room or equipment | Same domain. This is why the guide avoids "Room" for areas. |
+| Devices | **Editor:** prohibited variant of Breakpoints | Cross-domain. Another reason to avoid "Device". |
+| Entry | **Patterns (CMS):** prohibited variant of Item | Cross-domain. Use "entry" only for the log record, never for the place. |
+| Site, Space | **Mobile:** "site" is the business in member apps, and "space" is a prohibited variant | Cross-domain. Avoid both for locations and areas. |
+| Business location | **Marketing tools:** a business's locations in Google Business Profile | Matches this meaning. Supports "Location". |
+| Check-in | **Wixel Platform:** recording a guest's arrival at an event venue | Cross-domain. Arrivals moves to "entry" anyway. |
+| Location, Entrance, Zone, Hardware, Reader, Turnstile | No entry | Free to define. Submit to the glossary. |
+</DataTable>
+</Foldout>
+
+## Sources
+
+<Sources>
+- [Arrivals v6 prototype](https://claude.ai/design/p/6588f7cd-0e1b-48c0-947b-a24e26a24e6b)
+- [Earlier terminology guide](./terminology-research-access-control.md)
+- [Competitor Research](./competitor-research-access-control.md)
+- [UX Research](../ux/research/ux-research.md)
+- [User Voice Research](./user-voice-access-control.md)
+- [Door hardware integration design](../product/door-hardware-integration-design.md)
+- [Kisi: Places](https://docs.kisi.io/concepts/places)
+- [Brivo: Sites](https://support.brivo.com/l/en/article/xnm8rjxp9i-manage-sites)
+- [Avigilon Alta admin guide](https://www.avigilon.com/fs/documents/avigilon-alta-access-administrator-guide-en.pdf)
+- [Salto: Access points](https://support.saltosystems.com/es/space/user-guide/operator/access-points/readers)
+- [Kisi × Glofox setup](https://docs.kisi.io/marketplace/fitness/glofox/set_up_glofox)
+- Wix UX Writing Glossary · checked 2026-10-03
+</Sources>
+    </script>
+  </body>
+</html>
