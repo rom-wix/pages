@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Alfred on the Bookings calendar · Pebble peek</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,18 +32,42 @@
 }
 
 * { box-sizing: border-box; }
-html, body { margin: 0; height: 100%; }
+html, body { margin: 0; }
 body {
   background: #E6E8EC;
-  display: flex; align-items: center; justify-content: center;
   overflow: hidden;
   font-family: 'Wix Madefor Text', system-ui, -apple-system, 'Segoe UI', sans-serif;
   color: var(--cal-text);
   -webkit-font-smoothing: antialiased;
 }
 
-/* The design is drawn at 1440×900 and scaled to fit the window. */
-.stage-wrap { position: relative; }
+/* The design is drawn at 1440×900 and scaled to fit the window; the zoom bar
+   (and pinch-zoom) can enlarge it. It scrolls inside .scroller, so the page
+   itself never overflows and the zoom bar stays pinned to the screen.
+   margin: auto centres the stage without clipping when it overflows. */
+.scroller {
+  position: fixed; inset: 0; overflow: auto; display: flex;
+  padding: 64px 12px 12px; /* the strip at the top keeps the zoom bar off the design */
+  overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
+}
+.stage-wrap { position: relative; flex-shrink: 0; margin: auto; }
+
+.zoom-bar {
+  position: fixed; z-index: 10;
+  right: max(12px, env(safe-area-inset-right)); top: max(8px, env(safe-area-inset-top));
+  display: flex; align-items: center; gap: 2px; padding: 4px;
+  border-radius: 999px; background: rgba(15, 15, 15, 0.92);
+  box-shadow: 0 8px 24px rgba(15, 15, 15, 0.22);
+  font-family: 'Wix Madefor Text', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+.zoom-bar button {
+  min-width: 44px; height: 44px; padding: 0 12px; border: 0; border-radius: 999px;
+  background: transparent; color: #FFFFFF; font-size: 15px; font-weight: 600; cursor: pointer;
+}
+.zoom-bar button.sym { font-size: 22px; line-height: 1; }
+.zoom-bar button:hover { background: rgba(255, 255, 255, 0.12); }
+.zoom-bar button:focus-visible { outline: 2px solid #FFFFFF; outline-offset: -2px; }
+.zoom-bar output { min-width: 52px; text-align: center; color: #FFFFFF; font-size: 13px; font-weight: 600; }
 .stage {
   position: absolute; left: 0; top: 0;
   width: 1440px; height: 900px; overflow: hidden;
@@ -192,6 +216,7 @@ button { font-family: inherit; }
 </style>
 </head>
 <body>
+<div class="scroller" id="scroller">
 <div class="stage-wrap" id="stageWrap">
 <main class="stage" id="stage">
 
@@ -290,6 +315,14 @@ button { font-family: inherit; }
 
 </main>
 </div>
+</div>
+
+<div class="zoom-bar" role="toolbar" aria-label="Zoom">
+  <button class="sym" id="zoomOut" aria-label="Zoom out">−</button>
+  <output id="zoomLevel" aria-live="polite">100%</output>
+  <button class="sym" id="zoomIn" aria-label="Zoom in">+</button>
+  <button id="zoomFit">Fit</button>
+</div>
 
 <script>
 (function () {
@@ -367,16 +400,48 @@ button { font-family: inherit; }
     }).join('') + '</div>';
   }).join('');
 
-  // ---------- Scale the 1440×900 stage to fit the window ----------
+  // ---------- Scale the 1440×900 stage: fit by default, zoomable ----------
   var stage = document.getElementById('stage');
   var wrap = document.getElementById('stageWrap');
-  function fit() {
-    var s = Math.min(window.innerWidth / 1440, window.innerHeight / 900, 1);
-    stage.style.transform = 'scale(' + s + ')';
-    wrap.style.width = 1440 * s + 'px';
-    wrap.style.height = 900 * s + 'px';
+  var level = document.getElementById('zoomLevel');
+  var sc = document.getElementById('scroller');
+  var scale = 1, fitMode = true;
+  var MAX = 2;
+
+  // Fit to the scroll area's size, not innerWidth: on iPhone, pinch-zoom
+  // changes innerWidth, and refitting to it undid the zoom.
+  function fitScale() { return Math.min((sc.clientWidth - 24) / 1440, (sc.clientHeight - 76) / 900, 1); }
+  function minScale() { return Math.min(fitScale(), 0.25); }
+
+  function apply(next, keepCenter) {
+    var cx, cy;
+    if (keepCenter) {
+      cx = (sc.scrollLeft + sc.clientWidth / 2 - wrap.offsetLeft) / scale;
+      cy = (sc.scrollTop + sc.clientHeight / 2 - wrap.offsetTop) / scale;
+    }
+    scale = Math.max(minScale(), Math.min(MAX, next));
+    stage.style.transform = 'scale(' + scale + ')';
+    wrap.style.width = 1440 * scale + 'px';
+    wrap.style.height = 900 * scale + 'px';
+    level.textContent = Math.round(scale * 100) + '%';
+    if (keepCenter) {
+      sc.scrollLeft = cx * scale + wrap.offsetLeft - sc.clientWidth / 2;
+      sc.scrollTop = cy * scale + wrap.offsetTop - sc.clientHeight / 2;
+    }
   }
-  window.addEventListener('resize', fit);
+  function zoomBy(f) { fitMode = false; apply(scale * f, true); }
+  function fit() { fitMode = true; apply(fitScale(), false); sc.scrollLeft = 0; sc.scrollTop = 0; }
+
+  document.getElementById('zoomIn').addEventListener('click', function () { zoomBy(1.25); });
+  document.getElementById('zoomOut').addEventListener('click', function () { zoomBy(0.8); });
+  document.getElementById('zoomFit').addEventListener('click', fit);
+  document.addEventListener('keydown', function (e) {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key === '+' || e.key === '=') zoomBy(1.25);
+    else if (e.key === '-') zoomBy(0.8);
+    else if (e.key === '0') fit();
+  });
+  window.addEventListener('resize', function () { if (fitMode) apply(fitScale(), false); });
   fit();
 
   // ---------- Alfred: open / close ----------
