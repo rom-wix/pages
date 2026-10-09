@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alfred on the Bookings calendar · Pebble peek</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400;600;700&family=Wix+Madefor+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ---------- Alfred look & feel (from wix-private/alfred · alfred-standalone-web) ---------- */
+:root {
+  --al-alfred: #9FD3EC;
+  --al-sky: #BEE1EE;
+  --al-mist: #F7FBFC;
+  --al-soft: #E4F3FA;
+  --al-ink: #0F0F0F;
+  --al-muted: #4B5A62;
+  --al-line-2: rgba(15, 15, 15, 0.14);
+  --al-pink: #F5A3C6;
+  --al-shadow-float: 0 16px 40px 0 rgba(15, 15, 15, 0.12);
+  --al-shadow-hint: 0 8px 24px 0 rgba(15, 15, 15, 0.08);
+  --al-ease: cubic-bezier(0.2, 0, 0, 1);
+
+  /* Calendar (Wix Design System-style backdrop) */
+  --cal-page: #F2F3F5;
+  --cal-blue: #116DFF;
+  --cal-text: #151414;
+  --cal-text-2: #5A6075;
+  --cal-text-3: #6B7085;
+  --cal-grid: #E8EBEF;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body {
+  background: #E6E8EC;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+  font-family: 'Wix Madefor Text', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color: var(--cal-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* The design is drawn at 1440×900 and scaled to fit the window. */
+.stage-wrap { position: relative; }
+.stage {
+  position: absolute; left: 0; top: 0;
+  width: 1440px; height: 900px; overflow: hidden;
+  background: var(--cal-page);
+  transform-origin: 0 0;
+  box-shadow: 0 10px 40px rgba(0, 6, 36, 0.12);
+}
+
+button { font-family: inherit; }
+:focus-visible { outline: 2px solid var(--al-ink); outline-offset: 2px; }
+
+/* ---------- Calendar backdrop ---------- */
+.side { position: absolute; left: 0; top: 0; width: 268px; height: 900px; padding: 18px 16px 18px 20px; display: flex; flex-direction: column; gap: 18px; }
+.side-title { display: flex; align-items: center; justify-content: space-between; height: 28px; }
+.side-title h1 { margin: 0; font-family: 'Wix Madefor Display', system-ui, sans-serif; font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
+.plain-icon { width: 32px; height: 32px; border: 0; background: transparent; border-radius: 8px; color: #3B4057; padding: 0; display: flex; align-items: center; justify-content: center; }
+.panel { background: #FFFFFF; border-radius: 12px; box-shadow: 0 1px 2px rgba(0, 6, 36, 0.06); }
+.month { padding: 14px 12px 12px; }
+.month-head { display: flex; align-items: center; justify-content: space-between; padding: 0 4px 10px; font-size: 14px; font-weight: 600; }
+.month-head span:last-child { display: flex; gap: 4px; color: #3B4057; }
+.dow, .week { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 2px; text-align: center; }
+.dow { font-size: 11px; color: var(--cal-text-3); padding-bottom: 6px; }
+.weeks { display: flex; flex-direction: column; gap: 2px; }
+.week { border-radius: 8px; }
+.week.current { background: #EAF2FF; }
+.day { height: 28px; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+.day span { width: 26px; height: 26px; border-radius: 999px; display: flex; align-items: center; justify-content: center; }
+.day.muted span { color: #A3A7B5; }
+.day.today span { background: var(--cal-blue); color: #FFFFFF; font-weight: 600; }
+.activity-head { display: flex; align-items: center; justify-content: space-between; }
+.activity-head h2 { margin: 0; font-size: 14px; font-weight: 700; }
+.activity-head span { font-size: 12px; color: var(--cal-blue); font-weight: 500; }
+.act { padding: 12px 14px; display: flex; flex-direction: column; gap: 2px; border-bottom: 1px solid #EEF0F3; }
+.act:last-child { border-bottom: 0; }
+.act b { font-size: 13px; font-weight: 600; }
+.act span { font-size: 12px; color: var(--cal-text-2); }
+.act small { font-size: 11px; color: #7A7F93; }
+
+.top { position: absolute; left: 268px; top: 0; width: 1156px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+.top-left, .top-right { display: flex; align-items: center; gap: 12px; }
+.top-right { gap: 8px; }
+.top h2 { margin: 0; font-family: 'Wix Madefor Display', system-ui, sans-serif; font-size: 18px; font-weight: 700; }
+.btn-today { height: 36px; padding: 0 18px; border-radius: 18px; border: 1px solid var(--cal-blue); background: #FFFFFF; color: var(--cal-blue); font-size: 14px; font-weight: 500; }
+.round-icon { width: 36px; height: 36px; border: 0; border-radius: 18px; background: transparent; color: #3B4057; padding: 0; display: flex; align-items: center; justify-content: center; }
+.select { height: 36px; padding: 0 12px 0 14px; border-radius: 8px; border: 1px solid #D5D9E0; background: #FFFFFF; color: var(--cal-text); font-size: 14px; display: flex; align-items: center; gap: 8px; }
+.btn-add { height: 36px; padding: 0 18px 0 14px; border-radius: 18px; border: 0; background: var(--cal-blue); color: #FFFFFF; font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 6px; }
+
+.grid-card { position: absolute; left: 268px; top: 64px; width: 1156px; height: 820px; background: #FFFFFF; border-radius: 12px; box-shadow: 0 1px 3px rgba(0, 6, 36, 0.08), 0 4px 12px rgba(0, 6, 36, 0.04); overflow: hidden; }
+.abs { position: absolute; }
+.shade { background: rgba(0, 6, 36, 0.035); width: 156px; }
+.hline { left: 64px; right: 0; height: 0; border-top: 1px solid var(--cal-grid); }
+.hlabel { left: 0; width: 54px; text-align: right; font-size: 11px; color: var(--cal-text-3); }
+.vline { top: 0; bottom: 0; width: 0; border-left: 1px solid var(--cal-grid); }
+.dayhead { top: 0; width: 156px; height: 48px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+.dayhead .lbl { font-size: 12px; font-weight: 500; color: var(--cal-text-2); }
+.dayhead .num { min-width: 28px; height: 28px; border-radius: 999px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; }
+.dayhead.today .lbl { color: var(--cal-blue); }
+.dayhead.today .num { background: var(--cal-blue); color: #FFFFFF; }
+.head-rule { left: 0; right: 0; top: 48px; height: 0; border-top: 1px solid #DDE1E7; }
+.event { width: 150px; border-radius: 6px; padding: 6px 8px; display: flex; flex-direction: column; gap: 1px; overflow: hidden; }
+.event b, .event span { font-size: 12px; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.event b { font-weight: 600; }
+.event small { font-size: 11px; line-height: 1.3; opacity: 0.8; }
+.ev-blue { background: #E3EEFF; color: #0F3A85; }
+.ev-green { background: #DDF3E6; color: #135C34; }
+.ev-purple { background: #ECE5FF; color: #47309E; }
+.ev-grey { background: repeating-linear-gradient(135deg, #EEF0F3 0 6px, #E6E9ED 6px 12px); color: #4A5260; }
+.now-line { left: 376px; width: 156px; height: 0; border-top: 2px solid var(--cal-blue); }
+.now-dot { left: 371px; width: 10px; height: 10px; border-radius: 999px; background: var(--cal-blue); }
+
+/* ---------- Alfred ---------- */
+.al-root { font-family: 'Wix Madefor Text', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 15px; line-height: 1.5; color: var(--al-ink); }
+.al-display { font-family: 'Wix Madefor Display', 'Wix Madefor Text', system-ui, sans-serif; font-weight: 700; letter-spacing: -0.04em; line-height: 1.05; }
+.al-card { background: #FFFFFF; border-radius: 24px; box-shadow: var(--al-shadow-float); }
+
+.al-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  height: 48px; padding: 0 22px; border: 0; border-radius: 999px;
+  background: var(--al-ink); color: #FFFFFF;
+  font-size: 15px; font-weight: 600; white-space: nowrap; cursor: pointer;
+  transition: filter 150ms var(--al-ease);
+}
+.al-btn:hover { filter: brightness(1.3); }
+.al-btn-sm { height: 38px; padding: 0 14px; font-size: 13px; }
+
+.al-link {
+  position: relative; display: inline-flex; align-items: center;
+  padding: 4px 2px; border: 0; background: transparent; color: var(--al-ink);
+  font-size: 15px; font-weight: 600; white-space: nowrap;
+  text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; cursor: pointer;
+}
+.al-link:hover { text-decoration-thickness: 2px; }
+.al-link-sm { font-size: 13px; }
+.al-link::after, .al-icon-btn::after {
+  content: ''; position: absolute; left: 50%; top: 50%;
+  width: max(100%, 44px); height: max(100%, 44px); transform: translate(-50%, -50%);
+}
+.al-icon-btn {
+  position: relative; width: 36px; height: 36px; padding: 0; border: 0; border-radius: 10px;
+  background: transparent; color: var(--al-ink);
+  display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
+}
+.al-icon-btn:hover { background: var(--al-mist); }
+
+.al-hint {
+  display: inline-block; white-space: nowrap;
+  border-radius: 14px 14px 14px 4px; background: #FFFFFF;
+  padding: 8px 14px; font-size: 13px; font-weight: 600; line-height: 1.4; color: var(--al-ink);
+  box-shadow: var(--al-shadow-hint);
+}
+.al-wash { background-image: radial-gradient(circle at 50% 50%, rgba(159, 211, 236, 0.42) 0%, rgba(159, 211, 236, 0.22) 40%, transparent 70%); }
+
+.al-bob { animation: al-hint-bob 2.8s ease-in-out infinite; }
+.al-breathe { animation: al-pebble-breathe 4.2s var(--al-ease) infinite; transform-origin: 50% 52%; }
+.al-breathe-fast { animation: al-pebble-breathe 1.6s cubic-bezier(0.45, 0, 0.55, 1) infinite; transform-origin: 50% 52%; }
+.al-pop { animation: al-pop 0.3s var(--al-ease) both; }
+@keyframes al-hint-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+@keyframes al-pebble-breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.035); } }
+@keyframes al-pop { from { opacity: 0; transform: translateY(10px) scale(0.97); } }
+
+/* Peek: Pebble rises from the bottom edge of the calendar card. */
+.peek-pebble {
+  position: absolute; left: 286px; top: 826px; width: 88px; height: 58px;
+  overflow: hidden; border: 0; padding: 0; background: transparent; cursor: pointer;
+  display: flex; justify-content: center; align-items: flex-start;
+}
+.peek-pebble svg { flex-shrink: 0; transition: transform 180ms var(--al-ease); }
+.peek-pebble:hover svg { transform: translateY(-4px); }
+
+.peek-hint { position: absolute; left: 374px; top: 786px; font-size: 14px; padding: 10px 16px; }
+.peek-actions { position: absolute; left: 374px; top: 834px; display: flex; align-items: center; gap: 14px; }
+
+.alfred-card { position: absolute; left: 292px; top: 478px; width: 392px; overflow: hidden; }
+.alfred-card-top { position: relative; height: 120px; background: var(--al-soft); overflow: hidden; }
+.alfred-card-body { padding: 20px 22px 22px; display: flex; flex-direction: column; gap: 14px; }
+.alfred-card ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.alfred-card li { display: flex; align-items: flex-start; gap: 10px; font-size: 15px; line-height: 1.45; }
+.alfred-card li svg { flex-shrink: 0; margin-top: 2px; }
+
+[hidden] { display: none !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  .al-bob, .al-breathe, .al-breathe-fast, .al-pop { animation: none; }
+  .peek-pebble svg { transition: none; }
+}
+</style>
+</head>
+<body>
+<div class="stage-wrap" id="stageWrap">
+<main class="stage" id="stage">
+
+  <!-- ================= Calendar backdrop ================= -->
+  <aside class="side">
+    <div class="side-title">
+      <h1>Calendar</h1>
+      <button class="plain-icon" aria-label="Collapse side panel">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 4v16"/></svg>
+      </button>
+    </div>
+    <section class="panel month" aria-label="October 2026">
+      <div class="month-head">
+        <span>October 2026</span>
+        <span aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+        </span>
+      </div>
+      <div class="dow" aria-hidden="true"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div>
+      <div class="weeks" id="weeks"></div>
+    </section>
+    <section style="display: flex; flex-direction: column; gap: 10px;">
+      <div class="activity-head"><h2>Activity</h2><span>See all</span></div>
+      <div class="panel">
+        <div class="act"><b>New booking</b><span>Gal Cohen · Physio Assessment</span><small>Today, 8:12 AM</small></div>
+        <div class="act"><b>Rescheduled</b><span>Ori Tal · Follow-up Session</span><small>Yesterday, 6:40 PM</small></div>
+        <div class="act"><b>Cancelled</b><span>Noa Katz · Sports Massage</span><small>Yesterday, 2:05 PM</small></div>
+      </div>
+    </section>
+  </aside>
+
+  <header class="top">
+    <div class="top-left">
+      <button class="btn-today">Today</button>
+      <div style="display: flex; gap: 2px;">
+        <button class="round-icon" aria-label="Previous week"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+        <button class="round-icon" aria-label="Next week"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+      </div>
+      <h2>October 12 – 18, 2026</h2>
+    </div>
+    <div class="top-right">
+      <button class="select">All staff <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
+      <button class="select">Week <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
+      <button class="round-icon" aria-label="Filters"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg></button>
+      <button class="round-icon" aria-label="Display settings"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
+      <button class="btn-add"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>Add</button>
+    </div>
+  </header>
+
+  <section class="grid-card" id="grid" aria-label="Week of October 12, 2026"></section>
+
+  <!-- ================= Alfred: collapsed peek ================= -->
+  <div class="al-root" id="peek">
+    <span class="al-hint al-bob peek-hint">Busy week. Want me to take the calls?</span>
+    <div class="peek-actions">
+      <button class="al-btn al-btn-sm" data-open>Tell me more</button>
+      <button class="al-link al-link-sm" data-dismiss>Not now</button>
+    </div>
+    <button class="peek-pebble" aria-label="Open Alfred" data-open>
+      <svg class="al-breathe" width="88" height="88" viewBox="0 0 64 64" aria-hidden="true">
+        <path d="M31 14c11-1 21 7 21 18 0 11-8 21-19 21S12 46 12 33c0-10 9-18 19-19z" fill="#9FD3EC"/>
+        <ellipse cx="27.5" cy="30" rx="2.2" ry="3.6" fill="#0F0F0F"/>
+        <ellipse cx="39.5" cy="30" rx="2.2" ry="3.6" fill="#0F0F0F"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- ================= Alfred: expanded card ================= -->
+  <section class="al-root al-card alfred-card al-pop" id="card" role="dialog" aria-labelledby="cardTitle" hidden>
+    <div class="alfred-card-top">
+      <div class="al-wash" style="position: absolute; left: -40px; top: -36px; width: 230px; height: 230px;"></div>
+      <svg class="al-breathe-fast" width="92" height="92" viewBox="0 0 64 64" aria-hidden="true" style="position: absolute; left: 14px; top: 26px;">
+        <path d="M31 14c11-1 21 7 21 18 0 11-8 21-19 21S12 46 12 33c0-10 9-18 19-19z" fill="#9FD3EC"/>
+        <ellipse cx="26" cy="32" rx="2.2" ry="2.6" fill="#0F0F0F"/>
+        <ellipse cx="38" cy="32" rx="2.2" ry="2.6" fill="#0F0F0F"/>
+      </svg>
+      <span class="al-hint al-bob" style="position: absolute; left: 100px; top: 28px;">Here's how I'd help this week</span>
+      <button class="al-icon-btn" aria-label="Close" data-close style="position: absolute; top: 12px; right: 12px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="alfred-card-body">
+      <h2 class="al-display" id="cardTitle" style="margin: 0; font-size: 24px; line-height: 1.1;">Every call answered, even in a week like this.</h2>
+      <ul>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg>Pick up every call while you're with clients</li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg>Answer callers' questions about your business</li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg>Take messages and send them straight to you</li>
+      </ul>
+      <div style="display: flex; align-items: center; gap: 18px; padding-top: 6px;">
+        <button class="al-btn">Put Alfred on the line</button>
+        <button class="al-link" data-close>Not now</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+</div>
+
+<script>
+(function () {
+  // ---------- Calendar data (sample physio studio, week of Oct 12, 2026) ----------
+  var COL = 156, GX = 64, GY = 48, HR = 70, START = 8, END = 19;
+  function yOf(h) { return GY + (h - START) * HR; }
+  function fmt(h) { var hh = Math.floor(h), mm = Math.round((h - hh) * 60), t = hh > 12 ? hh - 12 : hh; return t + ':' + (mm < 10 ? '0' + mm : mm); }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+  var html = '';
+  var d, x;
+  // Closed hours
+  for (d = 0; d < 7; d++) {
+    x = GX + COL * d;
+    if (d >= 5) html += '<div class="abs shade" style="left:' + x + 'px;top:' + GY + 'px;height:' + (END - START) * HR + 'px"></div>';
+    else {
+      html += '<div class="abs shade" style="left:' + x + 'px;top:' + GY + 'px;height:' + HR + 'px"></div>';
+      html += '<div class="abs shade" style="left:' + x + 'px;top:' + yOf(17) + 'px;height:' + (END - 17) * HR + 'px"></div>';
+    }
+  }
+  // Hour lines and labels
+  for (var h = START; h < END; h++) {
+    var label = h === 12 ? '12 PM' : (h > 12 ? (h - 12) + ' PM' : h + ' AM');
+    html += '<div class="abs hline" style="top:' + yOf(h) + 'px"></div>';
+    html += '<span class="abs hlabel" style="top:' + (yOf(h) + 4) + 'px">' + label + '</span>';
+  }
+  // Day columns and headers
+  var labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  labels.forEach(function (l, i) {
+    x = GX + COL * i;
+    html += '<div class="abs vline" style="left:' + x + 'px"></div>';
+    html += '<div class="abs dayhead' + (i === 2 ? ' today' : '') + '" style="left:' + x + 'px"><span class="lbl">' + l + '</span><span class="num">' + (12 + i) + '</span></div>';
+  });
+  html += '<div class="abs head-rule"></div>';
+  // Events
+  [
+    [0, 9, 10, 'Physio Assessment', 'Lior Ben-Ami', 'blue'],
+    [0, 10.5, 11.5, 'Sports Massage', 'Noa Katz', 'green'],
+    [0, 13, 14, 'Follow-up Session', 'Amit Shalev', 'blue'],
+    [0, 16, 17, 'Pilates Class', '6 of 8 booked', 'purple'],
+    [1, 9, 10, 'Follow-up Session', 'Ron Levi', 'blue'],
+    [1, 11, 12, 'Sports Massage', 'Tamar Golan', 'green'],
+    [1, 12, 13, 'Lunch', 'Blocked time', 'grey'],
+    [1, 15, 16, 'Physio Assessment', 'Yael Mor', 'blue'],
+    [2, 9, 10, 'Physio Assessment', 'Gal Cohen', 'blue'],
+    [2, 10, 11, 'Follow-up Session', 'Shira Peretz', 'blue'],
+    [2, 11, 12, 'Sports Massage', 'Eden Raz', 'green'],
+    [2, 12, 13, 'Follow-up Session', 'Ori Tal', 'blue'],
+    [2, 13, 14, 'Physio Assessment', 'Michal Dror', 'blue'],
+    [2, 16, 17, 'Pilates Class', '8 of 8 booked', 'purple'],
+    [3, 9.5, 10.5, 'Sports Massage', 'Adi Friedman', 'green'],
+    [3, 12, 13, 'Follow-up Session', 'Ben Hadad', 'blue'],
+    [4, 9, 10, 'Pilates Class', '5 of 8 booked', 'purple'],
+    [4, 10.5, 11.5, 'Follow-up Session', 'Liat Zur', 'blue'],
+    [4, 12, 13, 'Physio Assessment', 'Tom Avni', 'blue']
+  ].forEach(function (e) {
+    html += '<div class="abs event ev-' + e[5] + '" style="left:' + (GX + COL * e[0] + 3) + 'px;top:' + (yOf(e[1]) + 1) + 'px;height:' + ((e[2] - e[1]) * HR - 3) + 'px">' +
+      '<b>' + esc(e[3]) + '</b><span>' + esc(e[4]) + '</span><small>' + fmt(e[1]) + ' – ' + fmt(e[2]) + '</small></div>';
+  });
+  // Current time (Wed, 11:20)
+  var now = 11 + 20 / 60;
+  html += '<div class="abs now-line" style="top:' + (yOf(now) - 1) + 'px"></div>';
+  html += '<div class="abs now-dot" style="top:' + (yOf(now) - 5) + 'px"></div>';
+  document.getElementById('grid').innerHTML = html;
+
+  // Mini month (October 2026, weeks start Monday)
+  var rows = [[28, 29, 30, 1, 2, 3, 4]], n = 5;
+  for (var r = 0; r < 4; r++) { var row = []; for (var k = 0; k < 7; k++) { row.push(n > 31 ? n - 31 : n); n++; } rows.push(row); }
+  document.getElementById('weeks').innerHTML = rows.map(function (row, ri) {
+    return '<div class="week' + (ri === 2 ? ' current' : '') + '">' + row.map(function (v, ci) {
+      var cls = 'day';
+      if ((ri === 0 && ci < 3) || (ri === 4 && ci === 6)) cls += ' muted';
+      if (ri === 2 && v === 14) cls += ' today';
+      return '<span class="' + cls + '"><span>' + v + '</span></span>';
+    }).join('') + '</div>';
+  }).join('');
+
+  // ---------- Scale the 1440×900 stage to fit the window ----------
+  var stage = document.getElementById('stage');
+  var wrap = document.getElementById('stageWrap');
+  function fit() {
+    var s = Math.min(window.innerWidth / 1440, window.innerHeight / 900, 1);
+    stage.style.transform = 'scale(' + s + ')';
+    wrap.style.width = 1440 * s + 'px';
+    wrap.style.height = 900 * s + 'px';
+  }
+  window.addEventListener('resize', fit);
+  fit();
+
+  // ---------- Alfred: open / close ----------
+  var peek = document.getElementById('peek');
+  var card = document.getElementById('card');
+  function open() {
+    peek.hidden = true;
+    card.hidden = false;
+    card.classList.remove('al-pop'); void card.offsetWidth; card.classList.add('al-pop');
+    card.querySelector('[data-close]').focus();
+  }
+  function close() {
+    card.hidden = true;
+    peek.hidden = false;
+    peek.querySelector('.peek-pebble').focus();
+  }
+  function dismiss() { peek.hidden = true; card.hidden = true; }
+  document.querySelectorAll('[data-open]').forEach(function (b) { b.addEventListener('click', open); });
+  document.querySelectorAll('[data-close]').forEach(function (b) { b.addEventListener('click', close); });
+  document.querySelectorAll('[data-dismiss]').forEach(function (b) { b.addEventListener('click', dismiss); });
+  card.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+})();
+</script>
+</body>
+</html>
